@@ -176,13 +176,9 @@ class DB_fbsql extends DB_common
         }
 
         if (!$this->connection) {
-            if ($php_errormsg) {
-                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
-                                         null, null, null,
-                                         $php_errormsg);
-            } else {
-                return $this->raiseError(DB_ERROR_CONNECT_FAILED);
-            }
+            return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                     null, null, null,
+                                     $php_errormsg);
         }
 
         if ($dsn['database']) {

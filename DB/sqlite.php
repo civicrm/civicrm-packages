@@ -240,13 +240,9 @@ class DB_sqlite extends DB_common
         $php_errormsg = '';
 
         if (!$this->connection = @$connect_function($dsn['database'])) {
-            if ($php_errormsg) {
-                return $this->raiseError(DB_ERROR_NODBSELECTED,
-                                         null, null, null,
-                                         $php_errormsg);
-            } else {
-                return $this->sqliteRaiseError(DB_ERROR_NODBSELECTED);
-            }
+            return $this->raiseError(DB_ERROR_NODBSELECTED,
+                                     null, null, null,
+                                     $php_errormsg);
         }
         return DB_OK;
     }

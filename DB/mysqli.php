@@ -329,12 +329,10 @@ class DB_mysqli extends DB_common
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED,
                                          null, null, null,
                                          $err);
-            } elseif ($php_errormsg) {
+            } else {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED,
                                          null, null, null,
                                          $php_errormsg);
-            } else {
-                return $this->raiseError(DB_ERROR_CONNECT_FAILED);
             }
         }
 
