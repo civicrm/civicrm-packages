@@ -46,107 +46,107 @@ to LDAP servers is also avaible from a separate package).
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
       <dir name="DB">
-	<file role="php">common.php</file>
-	<file role="php">dbase.php</file>
-	<file role="php">fbsql.php</file>
-	<file role="php">ibase.php</file>
-	<file role="php">ifx.php</file>
-	<file role="php">msql.php</file>
-	<file role="php">mssql.php</file>
-	<file role="php">mysql.php</file>
-	<file role="php">oci8.php</file>
-	<file role="php">odbc.php</file>
-	<file role="php">pgsql.php</file>
-	<file role="php">sybase.php</file>
-	<file role="php">storage.php</file>
-	<file role="data">IDEAS</file>
-	<file role="data">MAINTAINERS</file>
-	<file role="data">STATUS</file>
-	<file role="data">TESTERS</file>
-	<dir name="tests">
-	  <file role="test">db_error.phpt</file>
-	  <file role="test">db_parsedsn.phpt</file>
-	  <file role="test">db_factory.phpt</file>
-	  <file role="test">db_ismanip.phpt</file>
-	  <file role="test">db_error2.phpt</file>
-	  <dir name="oci8">
-	    <file role="test">06prepexec.phpt</file>
-	    <file role="test">08affectedrows.phpt</file>
-	    <file role="test">09numrows.phpt</file>
-	    <file role="test">13limit.phpt</file>
-	    <file role="test">05sequences.phpt</file>
-	    <file role="test">07errornative.phpt</file>
-	    <file role="test">01connect.phpt</file>
-	    <file role="test">10errormap.phpt</file>
-	    <file role="test">04numcols.phpt</file>
-	    <file role="test">03simplequery.phpt</file>
-	    <file role="test">02fetch.phpt</file>
-	  </dir>
-	  <dir name="odbc">
-	    <file role="test">06prepexec.phpt</file>
-	    <file role="test">09numrows.phpt</file>
-	    <file role="test">07errornative.phpt</file>
-	    <file role="test">01connect.phpt</file>
-	    <file role="test">10errormap.phpt</file>
-	    <file role="test">04numcols.phpt</file>
-	    <file role="test">03simplequery.phpt</file>
-	    <file role="test">02fetch.phpt</file>
-	  </dir>
-	  <dir name="ibase">
-	    <file role="test">06prepexec.phpt</file>
-	    <file role="test">05sequences.phpt</file>
-	    <file role="test">01connect.phpt</file>
-	    <file role="test">10errormap.phpt</file>
-	    <file role="test">04numcols.phpt</file>
-	    <file role="test">03simplequery.phpt</file>
-	    <file role="test">02fetch.phpt</file>
-	  </dir>
-	  <dir name="mysql">
-	    <file role="test">06prepexec.phpt</file>
-	    <file role="test">08affectedrows.phpt</file>
-	    <file role="test">09numrows.phpt</file>
-	    <file role="test">13limit.phpt</file>
-	    <file role="test">05sequences.phpt</file>
-	    <file role="test">07errornative.phpt</file>
-	    <file role="test">12tableinfo.phpt</file>
-	    <file role="test">01connect.phpt</file>
-	    <file role="test">10errormap.phpt</file>
-	    <file role="test">04numcols.phpt</file>
-	    <file role="test">03simplequery.phpt</file>
-	    <file role="test">14fetchmode_object.phpt</file>
-	    <file role="test">02fetch.phpt</file>
-	  </dir>
-	  <dir name="pgsql">
-	    <file role="test">06prepexec.phpt</file>
-	    <file role="test">11transact.phpt</file>
-	    <file role="test">08affectedrows.phpt</file>
-	    <file role="test">09numrows.phpt</file>
-	    <file role="test">13limit.phpt</file>
-	    <file role="test">05sequences.phpt</file>
-	    <file role="test">07errornative.phpt</file>
-	    <file role="test">01connect.phpt</file>
-	    <file role="test">10errormap.phpt</file>
-	    <file role="test">04numcols.phpt</file>
-	    <file role="test">03simplequery.phpt</file>
-	    <file role="test">14fetchmode_object.phpt</file>
-	    <file role="test">02fetch.phpt</file>
-	  </dir>
-	  <dir name="driver">
-	    <file role="test">06prepexec.phpt</file>
-	    <file role="test">08affectedrows.phpt</file>
-	    <file role="test">09numrows.phpt</file>
-	    <file role="test">13limit.phpt</file>
-	    <file role="test">05sequences.phpt</file>
-	    <file role="test">15quote.phpt</file>
-	    <file role="test">01connect.phpt</file>
-	    <file role="test">10errormap.phpt</file>
-	    <file role="test">04numcols.phpt</file>
-	    <file role="test">03simplequery.phpt</file>
-	    <file role="test">14fetchmode_object.phpt</file>
-	    <file role="test">02fetch.phpt</file>
-	  </dir>
-	</dir>
+        <file role="php">common.php</file>
+        <file role="php">dbase.php</file>
+        <file role="php">fbsql.php</file>
+        <file role="php">ibase.php</file>
+        <file role="php">ifx.php</file>
+        <file role="php">msql.php</file>
+        <file role="php">mssql.php</file>
+        <file role="php">mysql.php</file>
+        <file role="php">oci8.php</file>
+        <file role="php">odbc.php</file>
+        <file role="php">pgsql.php</file>
+        <file role="php">sybase.php</file>
+        <file role="php">storage.php</file>
+        <file role="data">IDEAS</file>
+        <file role="data">MAINTAINERS</file>
+        <file role="data">STATUS</file>
+        <file role="data">TESTERS</file>
+    </dir>
+    <dir name="tests">
+      <file role="test">db_error.phpt</file>
+      <file role="test">db_parsedsn.phpt</file>
+      <file role="test">db_factory.phpt</file>
+      <file role="test">db_ismanip.phpt</file>
+      <file role="test">db_error2.phpt</file>
+      <dir name="oci8">
+        <file role="test">06prepexec.phpt</file>
+        <file role="test">08affectedrows.phpt</file>
+        <file role="test">09numrows.phpt</file>
+        <file role="test">13limit.phpt</file>
+        <file role="test">05sequences.phpt</file>
+        <file role="test">07errornative.phpt</file>
+        <file role="test">01connect.phpt</file>
+        <file role="test">10errormap.phpt</file>
+        <file role="test">04numcols.phpt</file>
+        <file role="test">03simplequery.phpt</file>
+        <file role="test">02fetch.phpt</file>
       </dir>
+      <dir name="odbc">
+        <file role="test">06prepexec.phpt</file>
+        <file role="test">09numrows.phpt</file>
+        <file role="test">07errornative.phpt</file>
+        <file role="test">01connect.phpt</file>
+        <file role="test">10errormap.phpt</file>
+        <file role="test">04numcols.phpt</file>
+        <file role="test">03simplequery.phpt</file>
+        <file role="test">02fetch.phpt</file>
+      </dir>
+      <dir name="ibase">
+        <file role="test">06prepexec.phpt</file>
+        <file role="test">05sequences.phpt</file>
+        <file role="test">01connect.phpt</file>
+        <file role="test">10errormap.phpt</file>
+        <file role="test">04numcols.phpt</file>
+        <file role="test">03simplequery.phpt</file>
+        <file role="test">02fetch.phpt</file>
+      </dir>
+      <dir name="mysql">
+        <file role="test">06prepexec.phpt</file>
+        <file role="test">08affectedrows.phpt</file>
+        <file role="test">09numrows.phpt</file>
+        <file role="test">13limit.phpt</file>
+        <file role="test">05sequences.phpt</file>
+        <file role="test">07errornative.phpt</file>
+        <file role="test">12tableinfo.phpt</file>
+        <file role="test">01connect.phpt</file>
+        <file role="test">10errormap.phpt</file>
+        <file role="test">04numcols.phpt</file>
+        <file role="test">03simplequery.phpt</file>
+        <file role="test">14fetchmode_object.phpt</file>
+        <file role="test">02fetch.phpt</file>
+      </dir>
+      <dir name="pgsql">
+        <file role="test">06prepexec.phpt</file>
+        <file role="test">11transact.phpt</file>
+        <file role="test">08affectedrows.phpt</file>
+        <file role="test">09numrows.phpt</file>
+        <file role="test">13limit.phpt</file>
+        <file role="test">05sequences.phpt</file>
+        <file role="test">07errornative.phpt</file>
+        <file role="test">01connect.phpt</file>
+        <file role="test">10errormap.phpt</file>
+        <file role="test">04numcols.phpt</file>
+        <file role="test">03simplequery.phpt</file>
+        <file role="test">14fetchmode_object.phpt</file>
+        <file role="test">02fetch.phpt</file>
+      </dir>
+      <dir name="driver">
+        <file role="test">06prepexec.phpt</file>
+        <file role="test">08affectedrows.phpt</file>
+        <file role="test">09numrows.phpt</file>
+        <file role="test">13limit.phpt</file>
+        <file role="test">05sequences.phpt</file>
+        <file role="test">15quote.phpt</file>
+        <file role="test">01connect.phpt</file>
+        <file role="test">10errormap.phpt</file>
+        <file role="test">04numcols.phpt</file>
+        <file role="test">03simplequery.phpt</file>
+        <file role="test">14fetchmode_object.phpt</file>
+        <file role="test">02fetch.phpt</file>
+      </dir>
+    </dir>
     </filelist>
   </release>
 </package>
