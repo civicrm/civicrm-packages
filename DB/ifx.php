@@ -507,6 +507,19 @@ class DB_ifx extends DB_common
     }
 
     // }}}
+    // {{{ errorNative()
+
+    /**
+     * Gets the DBMS' native error code and message produced by the last query
+     *
+     * @return string  the DBMS' error code and message
+     */
+    function errorNative()
+    {
+        return @ifx_error() . ' ' . @ifx_errormsg();
+    }
+
+    // }}}
     // {{{ errorCode()
 
     /**
@@ -528,43 +541,6 @@ class DB_ifx extends DB_common
             }
         }
         return DB_ERROR;
-    }
-
-    // }}}
-    // {{{ errorNative()
-
-    /**
-     * Gets the DBMS' native error code and message produced by the last query
-     *
-     * @return string  the DBMS' error code and message
-     */
-    function errorNative()
-    {
-        return @ifx_error() . ' ' . @ifx_errormsg();
-    }
-
-    // }}}
-    // {{{ getSpecialQuery()
-
-    /**
-     * Obtain the query string needed for listing a given type of objects
-     *
-     * @param string $type  the kind of objects you want to retrieve
-     *
-     * @return string  the SQL query string or null if the driver doesn't
-     *                  support the object type requested
-     *
-     * @access protected
-     * @see DB_common::getListOf()
-     */
-    function getSpecialQuery($type)
-    {
-        switch ($type) {
-            case 'tables':
-                return 'SELECT tabname FROM systables WHERE tabid >= 100';
-            default:
-                return null;
-        }
     }
 
     // }}}
@@ -665,6 +641,30 @@ class DB_ifx extends DB_common
             @ifx_free_result($id);
         }
         return $res;
+    }
+
+    // }}}
+    // {{{ getSpecialQuery()
+
+    /**
+     * Obtain the query string needed for listing a given type of objects
+     *
+     * @param string $type  the kind of objects you want to retrieve
+     *
+     * @return string  the SQL query string or null if the driver doesn't
+     *                  support the object type requested
+     *
+     * @access protected
+     * @see DB_common::getListOf()
+     */
+    function getSpecialQuery($type)
+    {
+        switch ($type) {
+            case 'tables':
+                return 'SELECT tabname FROM systables WHERE tabid >= 100';
+            default:
+                return null;
+        }
     }
 
     // }}}

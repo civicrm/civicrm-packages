@@ -442,19 +442,6 @@ class DB_fbsql extends DB_common
      }
 
     // }}}
-    // {{{ errorNative()
-
-    /**
-     * Get the DBMS' native error code produced by the last query
-     *
-     * @return int  the DBMS' error code
-     */
-    function errorNative()
-    {
-        return @fbsql_errno($this->connection);
-    }
-
-    // }}}
     // {{{ nextId()
 
     /**
@@ -630,6 +617,19 @@ class DB_fbsql extends DB_common
         }
         return $this->raiseError($errno, null, null, null,
                         @fbsql_error($this->connection));
+    }
+
+    // }}}
+    // {{{ errorNative()
+
+    /**
+     * Get the DBMS' native error code produced by the last query
+     *
+     * @return int  the DBMS' error code
+     */
+    function errorNative()
+    {
+        return @fbsql_errno($this->connection);
     }
 
     // }}}

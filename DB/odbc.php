@@ -489,22 +489,6 @@ class DB_odbc extends DB_common
     }
 
     // }}}
-    // {{{ errorNative()
-
-    /**
-     * Gets the DBMS' native error code and message produced by the last query
-     *
-     * @return string  the DBMS' error code and message
-     */
-    function errorNative()
-    {
-        if (!isset($this->connection) || !is_resource($this->connection)) {
-            return @odbc_error() . ' ' . @odbc_errormsg();
-        }
-        return @odbc_error($this->connection) . ' ' . @odbc_errormsg($this->connection);
-    }
-
-    // }}}
     // {{{ nextId()
 
     /**
@@ -649,73 +633,78 @@ class DB_odbc extends DB_common
     }
 
     // }}}
-    // {{{ getSpecialQuery()
+    // {{{ odbcRaiseError()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Produces a DB_Error object regarding the current problem
      *
-     * Thanks to symbol1@gmail.com and Philippe.Jausions@11abacus.com.
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
      *
-     * @param string $type  the kind of objects you want to retrieve
+     * @return object  the DB_Error object
      *
-     * @return string  the list of objects requested
-     *
-     * @access protected
-     * @see DB_common::getListOf()
-     * @since Method available since Release 1.7.0
+     * @see DB_common::raiseError(),
+     *      DB_odbc::errorNative(), DB_common::errorCode()
      */
-    function getSpecialQuery($type)
+    function odbcRaiseError($errno = null)
     {
-        switch ($type) {
-            case 'databases':
-                if (version_compare(phpversion(), '4.3.0', '<')) {
-                    return null;
-                }
-                $res = @odbc_data_source($this->connection, SQL_FETCH_FIRST);
-                if (is_array($res)) {
-                    $out = array($res['server']);
-                    while($res = @odbc_data_source($this->connection,
-                                                   SQL_FETCH_NEXT))
-                    {
-                        $out[] = $res['server'];
+        if ($errno === null) {
+            switch ($this->dbsyntax) {
+                case 'access':
+                    if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
+                        $this->errorcode_map['07001'] = DB_ERROR_NOSUCHFIELD;
+                    } else {
+                        // Doing this in case mode changes during runtime.
+                        $this->errorcode_map['07001'] = DB_ERROR_MISMATCH;
                     }
-                    return $out;
-                } else {
-                    return $this->odbcRaiseError();
-                }
-                break;
-            case 'tables':
-            case 'schema.tables':
-                $keep = 'TABLE';
-                break;
-            case 'views':
-                $keep = 'VIEW';
-                break;
-            default:
-                return null;
-        }
 
-        /*
-         * Removing non-conforming items in the while loop rather than
-         * in the odbc_tables() call because some backends choke on this:
-         *     odbc_tables($this->connection, '', '', '', 'TABLE')
-         */
-        $res  = @odbc_tables($this->connection);
-        if (!$res) {
-            return $this->odbcRaiseError();
-        }
-        $out = array();
-        while ($row = odbc_fetch_array($res)) {
-            if ($row['TABLE_TYPE'] != $keep) {
-                continue;
+                    $native_code = odbc_error($this->connection);
+
+                    // S1000 is for "General Error."  Let's be more specific.
+                    if ($native_code == 'S1000') {
+                        $errormsg = odbc_errormsg($this->connection);
+                        static $error_regexps;
+                        if (!isset($error_regexps)) {
+                            $error_regexps = array(
+                                '/includes related records.$/i'  => DB_ERROR_CONSTRAINT,
+                                '/cannot contain a Null value/i' => DB_ERROR_CONSTRAINT_NOT_NULL,
+                            );
+                        }
+                        foreach ($error_regexps as $regexp => $code) {
+                            if (preg_match($regexp, $errormsg)) {
+                                return $this->raiseError($code,
+                                        null, null, null,
+                                        $native_code . ' ' . $errormsg);
+                            }
+                        }
+                        $errno = DB_ERROR;
+                    } else {
+                        $errno = $this->errorCode($native_code);
+                    }
+                    break;
+                default:
+                    $errno = $this->errorCode(odbc_error($this->connection));
             }
-            if ($type == 'schema.tables') {
-                $out[] = $row['TABLE_SCHEM'] . '.' . $row['TABLE_NAME'];
-            } else {
-                $out[] = $row['TABLE_NAME'];
-            }
         }
-        return $out;
+        return $this->raiseError($errno, null, null, null,
+                                 $this->errorNative());
+    }
+
+    // }}}
+    // {{{ errorNative()
+
+    /**
+     * Gets the DBMS' native error code and message produced by the last query
+     *
+     * @return string  the DBMS' error code and message
+     */
+    function errorNative()
+    {
+        if (!isset($this->connection) || !is_resource($this->connection)) {
+            return @odbc_error() . ' ' . @odbc_errormsg();
+        }
+        return @odbc_error($this->connection) . ' ' . @odbc_errormsg($this->connection);
     }
 
     // }}}
@@ -808,62 +797,73 @@ class DB_odbc extends DB_common
     }
 
     // }}}
-    // {{{ odbcRaiseError()
+    // {{{ getSpecialQuery()
 
     /**
-     * Produces a DB_Error object regarding the current problem
+     * Obtain the query string needed for listing a given type of objects
      *
-     * @param int $errno  if the error is being manually raised pass a
-     *                     DB_ERROR* constant here.  If this isn't passed
-     *                     the error information gathered from the DBMS.
+     * Thanks to symbol1@gmail.com and Philippe.Jausions@11abacus.com.
      *
-     * @return object  the DB_Error object
+     * @param string $type  the kind of objects you want to retrieve
      *
-     * @see DB_common::raiseError(),
-     *      DB_odbc::errorNative(), DB_common::errorCode()
+     * @return string  the list of objects requested
+     *
+     * @access protected
+     * @see DB_common::getListOf()
+     * @since Method available since Release 1.7.0
      */
-    function odbcRaiseError($errno = null)
+    function getSpecialQuery($type)
     {
-        if ($errno === null) {
-            switch ($this->dbsyntax) {
-                case 'access':
-                    if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
-                        $this->errorcode_map['07001'] = DB_ERROR_NOSUCHFIELD;
-                    } else {
-                        // Doing this in case mode changes during runtime.
-                        $this->errorcode_map['07001'] = DB_ERROR_MISMATCH;
+        switch ($type) {
+            case 'databases':
+                if (version_compare(phpversion(), '4.3.0', '<')) {
+                    return null;
+                }
+                $res = @odbc_data_source($this->connection, SQL_FETCH_FIRST);
+                if (is_array($res)) {
+                    $out = array($res['server']);
+                    while($res = @odbc_data_source($this->connection,
+                                                   SQL_FETCH_NEXT))
+                    {
+                        $out[] = $res['server'];
                     }
+                    return $out;
+                } else {
+                    return $this->odbcRaiseError();
+                }
+                break;
+            case 'tables':
+            case 'schema.tables':
+                $keep = 'TABLE';
+                break;
+            case 'views':
+                $keep = 'VIEW';
+                break;
+            default:
+                return null;
+        }
 
-                    $native_code = odbc_error($this->connection);
-
-                    // S1000 is for "General Error."  Let's be more specific.
-                    if ($native_code == 'S1000') {
-                        $errormsg = odbc_errormsg($this->connection);
-                        static $error_regexps;
-                        if (!isset($error_regexps)) {
-                            $error_regexps = array(
-                                '/includes related records.$/i'  => DB_ERROR_CONSTRAINT,
-                                '/cannot contain a Null value/i' => DB_ERROR_CONSTRAINT_NOT_NULL,
-                            );
-                        }
-                        foreach ($error_regexps as $regexp => $code) {
-                            if (preg_match($regexp, $errormsg)) {
-                                return $this->raiseError($code,
-                                        null, null, null,
-                                        $native_code . ' ' . $errormsg);
-                            }
-                        }
-                        $errno = DB_ERROR;
-                    } else {
-                        $errno = $this->errorCode($native_code);
-                    }
-                    break;
-                default:
-                    $errno = $this->errorCode(odbc_error($this->connection));
+        /*
+         * Removing non-conforming items in the while loop rather than
+         * in the odbc_tables() call because some backends choke on this:
+         *     odbc_tables($this->connection, '', '', '', 'TABLE')
+         */
+        $res  = @odbc_tables($this->connection);
+        if (!$res) {
+            return $this->odbcRaiseError();
+        }
+        $out = array();
+        while ($row = odbc_fetch_array($res)) {
+            if ($row['TABLE_TYPE'] != $keep) {
+                continue;
+            }
+            if ($type == 'schema.tables') {
+                $out[] = $row['TABLE_SCHEM'] . '.' . $row['TABLE_NAME'];
+            } else {
+                $out[] = $row['TABLE_NAME'];
             }
         }
-        return $this->raiseError($errno, null, null, null,
-                                 $this->errorNative());
+        return $out;
     }
 
     // }}}

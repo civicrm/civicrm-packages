@@ -587,6 +587,49 @@ class DB_mssql extends DB_common
     }
 
     // }}}
+    // {{{ quoteIdentifier()
+
+    /**
+     * Quote a string so it can be safely used as a table or column name
+     *
+     * @param string $str  identifier name to be quoted
+     *
+     * @return string  quoted identifier string
+     *
+     * @see DB_common::quoteIdentifier()
+     * @since Method available since Release 1.6.0
+     */
+    function quoteIdentifier($str)
+    {
+        return '[' . str_replace(']', ']]', $str) . ']';
+    }
+
+    // }}}
+    // {{{ mssqlRaiseError()
+
+    /**
+     * Produces a DB_Error object regarding the current problem
+     *
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError(),
+     *      DB_mssql::errorNative(), DB_mssql::errorCode()
+     */
+    function mssqlRaiseError($code = null)
+    {
+        $message = @mssql_get_last_message();
+        if (!$code) {
+            $code = $this->errorNative();
+        }
+        return $this->raiseError($this->errorCode($code, $message),
+                                 null, null, null, "$code - $message");
+    }
+
+    // }}}
     // {{{ errorNative()
 
     /**
@@ -631,31 +674,6 @@ class DB_mssql extends DB_common
         } else {
             return DB_ERROR;
         }
-    }
-
-    // }}}
-    // {{{ mssqlRaiseError()
-
-    /**
-     * Produces a DB_Error object regarding the current problem
-     *
-     * @param int $errno  if the error is being manually raised pass a
-     *                     DB_ERROR* constant here.  If this isn't passed
-     *                     the error information gathered from the DBMS.
-     *
-     * @return object  the DB_Error object
-     *
-     * @see DB_common::raiseError(),
-     *      DB_mssql::errorNative(), DB_mssql::errorCode()
-     */
-    function mssqlRaiseError($code = null)
-    {
-        $message = @mssql_get_last_message();
-        if (!$code) {
-            $code = $this->errorNative();
-        }
-        return $this->raiseError($this->errorCode($code, $message),
-                                 null, null, null, "$code - $message");
     }
 
     // }}}
@@ -881,24 +899,6 @@ class DB_mssql extends DB_common
         } elseif (!in_array($value, $array)) {
             array_push($array, $value);
         }
-    }
-
-    // }}}
-    // {{{ quoteIdentifier()
-
-    /**
-     * Quote a string so it can be safely used as a table or column name
-     *
-     * @param string $str  identifier name to be quoted
-     *
-     * @return string  quoted identifier string
-     *
-     * @see DB_common::quoteIdentifier()
-     * @since Method available since Release 1.6.0
-     */
-    function quoteIdentifier($str)
-    {
-        return '[' . str_replace(']', ']]', $str) . ']';
     }
 
     // }}}

@@ -539,6 +539,33 @@ class DB_msql extends DB_common
         return addslashes($str);
     }
 
+    // }}}
+    // {{{ msqlRaiseError()
+
+    /**
+     * Produces a DB_Error object regarding the current problem
+     *
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError(),
+     *      DB_msql::errorNative(), DB_msql::errorCode()
+     */
+    function msqlRaiseError($errno = null)
+    {
+        $native = $this->errorNative();
+        if ($errno === null) {
+            $errno = $this->errorCode($native);
+        }
+        return $this->raiseError($errno, null, null, null, $native);
+    }
+
+    // }}}
+    // {{{ errorNative()
+
     /**
      * Gets the DBMS' native error message produced by the last query
      *
@@ -625,30 +652,6 @@ class DB_msql extends DB_common
             }
         }
         return DB_ERROR;
-    }
-
-    // }}}
-    // {{{ msqlRaiseError()
-
-    /**
-     * Produces a DB_Error object regarding the current problem
-     *
-     * @param int $errno  if the error is being manually raised pass a
-     *                     DB_ERROR* constant here.  If this isn't passed
-     *                     the error information gathered from the DBMS.
-     *
-     * @return object  the DB_Error object
-     *
-     * @see DB_common::raiseError(),
-     *      DB_msql::errorNative(), DB_msql::errorCode()
-     */
-    function msqlRaiseError($errno = null)
-    {
-        $native = $this->errorNative();
-        if ($errno === null) {
-            $errno = $this->errorCode($native);
-        }
-        return $this->raiseError($errno, null, null, null, $native);
     }
 
     // }}}

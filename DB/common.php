@@ -466,105 +466,6 @@ class DB_common extends PEAR
     }
 
     // }}}
-    // {{{ errorCode()
-
-    /**
-     * Map native error codes to DB's portable ones
-     *
-     * Uses the <var>$errorcode_map</var> property defined in each driver.
-     *
-     * @param string|int $nativecode  the error code returned by the DBMS
-     *
-     * @return int  the portable DB error code.  Return DB_ERROR if the
-     *               current driver doesn't have a mapping for the
-     *               $nativecode submitted.
-     */
-    function errorCode($nativecode)
-    {
-        if (isset($this->errorcode_map[$nativecode])) {
-            return $this->errorcode_map[$nativecode];
-        }
-        // Fall back to DB_ERROR if there was no mapping.
-        return DB_ERROR;
-    }
-
-    // }}}
-    // {{{ errorMessage()
-
-    /**
-     * Map a DB error code to a textual message
-     *
-     * @param integer $dbcode  the DB error code
-     *
-     * @return string  the error message corresponding to the error code
-     *                  submitted.  false if the error code is unknown.
-     *
-     * @see DB::errorMessage()
-     */
-    function errorMessage($dbcode)
-    {
-        return DB::errorMessage($this->errorcode_map[$dbcode]);
-    }
-
-    // }}}
-    // {{{ raiseError()
-
-    /**
-     * Communicate an error and invoke error callbacks, etc
-     *
-     * Basically a wrapper for PEAR::raiseError without the message string.
-     *
-     * @param mixed   integer error code, or a PEAR error object (all
-     *                 other parameters are ignored if this parameter is
-     *                 an object
-     * @param int     error mode, see PEAR_Error docs
-     * @param mixed   if error mode is PEAR_ERROR_TRIGGER, this is the
-     *                 error level (E_USER_NOTICE etc).  If error mode is
-     *                 PEAR_ERROR_CALLBACK, this is the callback function,
-     *                 either as a function name, or as an array of an
-     *                 object and method name.  For other error modes this
-     *                 parameter is ignored.
-     * @param string  extra debug information.  Defaults to the last
-     *                 query and native error code.
-     * @param mixed   native error code, integer or string depending the
-     *                 backend
-     *
-     * @return object  the PEAR_Error object
-     *
-     * @see PEAR_Error
-     */
-    function &raiseError($code = DB_ERROR, $mode = null, $options = null,
-                         $userinfo = null, $nativecode = null)
-    {
-        // The error is yet a DB error object
-        if (is_object($code)) {
-            // because we the static PEAR::raiseError, our global
-            // handler should be used if it is set
-            if ($mode === null && !empty($this->_default_error_mode)) {
-                $mode    = $this->_default_error_mode;
-                $options = $this->_default_error_options;
-            }
-            $tmp = PEAR::raiseError($code, null, $mode, $options,
-                                    null, null, true);
-            return $tmp;
-        }
-
-        if ($userinfo === null) {
-            $userinfo = $this->last_query;
-        }
-
-        if ($nativecode) {
-            $userinfo .= ' [nativecode=' . trim($nativecode) . ']';
-        } else {
-            $userinfo .= ' [DB Error: ' . DB::errorMessage($code) . ']';
-        }
-
-        $tmp = PEAR::raiseError(null, $code, $mode, $options, $userinfo,
-                                'DB_Error', true);
-        return $tmp;
-    }
-
-    // }}}
     // {{{ setFetchMode()
 
     /**
@@ -1783,19 +1684,6 @@ class DB_common extends PEAR
     }
 
     // }}}
-    // {{{ errorNative()
-
-    /**
-     * Get the DBMS' native error code produced by the last query
-     *
-     * @return mixed  the DBMS' error code.  A DB_Error object on failure.
-     */
-    function errorNative()
-    {
-        return $this->raiseError(DB_ERROR_NOT_CAPABLE);
-    }
-
-    // }}}
     // {{{ getSequenceName()
 
     /**
@@ -1880,6 +1768,118 @@ class DB_common extends PEAR
     function dropSequence($seq_name)
     {
         return $this->raiseError(DB_ERROR_NOT_CAPABLE);
+    }
+
+    // }}}
+    // {{{ raiseError()
+
+    /**
+     * Communicate an error and invoke error callbacks, etc
+     *
+     * Basically a wrapper for PEAR::raiseError without the message string.
+     *
+     * @param mixed   integer error code, or a PEAR error object (all
+     *                 other parameters are ignored if this parameter is
+     *                 an object
+     * @param int     error mode, see PEAR_Error docs
+     * @param mixed   if error mode is PEAR_ERROR_TRIGGER, this is the
+     *                 error level (E_USER_NOTICE etc).  If error mode is
+     *                 PEAR_ERROR_CALLBACK, this is the callback function,
+     *                 either as a function name, or as an array of an
+     *                 object and method name.  For other error modes this
+     *                 parameter is ignored.
+     * @param string  extra debug information.  Defaults to the last
+     *                 query and native error code.
+     * @param mixed   native error code, integer or string depending the
+     *                 backend
+     *
+     * @return object  the PEAR_Error object
+     *
+     * @see PEAR_Error
+     */
+    function &raiseError($code = DB_ERROR, $mode = null, $options = null,
+                         $userinfo = null, $nativecode = null)
+    {
+        // The error is yet a DB error object
+        if (is_object($code)) {
+            // because we the static PEAR::raiseError, our global
+            // handler should be used if it is set
+            if ($mode === null && !empty($this->_default_error_mode)) {
+                $mode    = $this->_default_error_mode;
+                $options = $this->_default_error_options;
+            }
+            $tmp = PEAR::raiseError($code, null, $mode, $options,
+                                    null, null, true);
+            return $tmp;
+        }
+
+        if ($userinfo === null) {
+            $userinfo = $this->last_query;
+        }
+
+        if ($nativecode) {
+            $userinfo .= ' [nativecode=' . trim($nativecode) . ']';
+        } else {
+            $userinfo .= ' [DB Error: ' . DB::errorMessage($code) . ']';
+        }
+
+        $tmp = PEAR::raiseError(null, $code, $mode, $options, $userinfo,
+                                'DB_Error', true);
+        return $tmp;
+    }
+
+    // }}}
+    // {{{ errorNative()
+
+    /**
+     * Get the DBMS' native error code produced by the last query
+     *
+     * @return mixed  the DBMS' error code.  A DB_Error object on failure.
+     */
+    function errorNative()
+    {
+        return $this->raiseError(DB_ERROR_NOT_CAPABLE);
+    }
+
+    // }}}
+    // {{{ errorCode()
+
+    /**
+     * Map native error codes to DB's portable ones
+     *
+     * Uses the <var>$errorcode_map</var> property defined in each driver.
+     *
+     * @param string|int $nativecode  the error code returned by the DBMS
+     *
+     * @return int  the portable DB error code.  Return DB_ERROR if the
+     *               current driver doesn't have a mapping for the
+     *               $nativecode submitted.
+     */
+    function errorCode($nativecode)
+    {
+        if (isset($this->errorcode_map[$nativecode])) {
+            return $this->errorcode_map[$nativecode];
+        }
+        // Fall back to DB_ERROR if there was no mapping.
+        return DB_ERROR;
+    }
+
+    // }}}
+    // {{{ errorMessage()
+
+    /**
+     * Map a DB error code to a textual message
+     *
+     * @param integer $dbcode  the DB error code
+     *
+     * @return string  the error message corresponding to the error code
+     *                  submitted.  false if the error code is unknown.
+     *
+     * @see DB::errorMessage()
+     */
+    function errorMessage($dbcode)
+    {
+        return DB::errorMessage($this->errorcode_map[$dbcode]);
     }
 
     // }}}

@@ -505,28 +505,6 @@ class DB_oci8 extends DB_common
     }
 
     // }}}
-    // {{{ errorNative()
-
-    /**
-     * Get the DBMS' native error code produced by the last query
-     *
-     * @return int  the DBMS' error code.  FALSE if the code could not be
-     *               determined
-     */
-    function errorNative()
-    {
-        if (is_resource($this->last_stmt)) {
-            $error = @OCIError($this->last_stmt);
-        } else {
-            $error = @OCIError($this->connection);
-        }
-        if (is_array($error)) {
-            return $error['code'];
-        }
-        return false;
-    }
-
-    // }}}
     // {{{ prepare()
 
     /**
@@ -942,29 +920,25 @@ class DB_oci8 extends DB_common
     }
 
     // }}}
-    // {{{ getSpecialQuery()
+    // {{{ errorNative()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Get the DBMS' native error code produced by the last query
      *
-     * @param string $type  the kind of objects you want to retrieve
-     *
-     * @return string  the SQL query string or null if the driver doesn't
-     *                  support the object type requested
-     *
-     * @access protected
-     * @see DB_common::getListOf()
+     * @return int  the DBMS' error code.  FALSE if the code could not be
+     *               determined
      */
-    function getSpecialQuery($type)
+    function errorNative()
     {
-        switch ($type) {
-            case 'tables':
-                return 'SELECT table_name FROM user_tables';
-            case 'synonyms':
-                return 'SELECT synonym_name FROM user_synonyms';
-            default:
-                return null;
+        if (is_resource($this->last_stmt)) {
+            $error = @OCIError($this->last_stmt);
+        } else {
+            $error = @OCIError($this->connection);
         }
+        if (is_array($error)) {
+            return $error['code'];
+        }
+        return false;
     }
 
     // }}}
@@ -1079,6 +1053,32 @@ class DB_oci8 extends DB_common
             }
         }
         return $res;
+    }
+
+    // }}}
+    // {{{ getSpecialQuery()
+
+    /**
+     * Obtain the query string needed for listing a given type of objects
+     *
+     * @param string $type  the kind of objects you want to retrieve
+     *
+     * @return string  the SQL query string or null if the driver doesn't
+     *                  support the object type requested
+     *
+     * @access protected
+     * @see DB_common::getListOf()
+     */
+    function getSpecialQuery($type)
+    {
+        switch ($type) {
+            case 'tables':
+                return 'SELECT table_name FROM user_tables';
+            case 'synonyms':
+                return 'SELECT synonym_name FROM user_synonyms';
+            default:
+                return null;
+        }
     }
 
     // }}}

@@ -235,98 +235,6 @@ class DB_sybase extends DB_common
     }
 
     // }}}
-    // {{{ errorNative()
-
-    /**
-     * Gets the DBMS' native error message produced by the last query
-     *
-     * @return string  the DBMS' error message
-     */
-    function errorNative()
-    {
-        return @sybase_get_last_message();
-    }
-
-    // }}}
-    // {{{ errorCode()
-
-    /**
-     * Determine PEAR::DB error code from the database's text error message.
-     *
-     * @param  string  $errormsg  error message returned from the database
-     * @return integer  an error number from a DB error constant
-     */
-    function errorCode($errormsg)
-    {
-        static $error_regexps;
-        if (!isset($error_regexps)) {
-            $error_regexps = array(
-                '/Incorrect syntax near/'
-                    => DB_ERROR_SYNTAX,
-                '/^Unclosed quote before the character string [\"\'].*[\"\']\./'
-                    => DB_ERROR_SYNTAX,
-                '/Implicit conversion from datatype [\"\'].+[\"\'] to [\"\'].+[\"\'] is not allowed\./'
-                    => DB_ERROR_INVALID_NUMBER,
-                '/Cannot drop the table [\"\'].+[\"\'], because it doesn\'t exist in the system catalogs\./'
-                    => DB_ERROR_NOSUCHTABLE,
-                '/Only the owner of object [\"\'].+[\"\'] or a user with System Administrator \(SA\) role can run this command\./'
-                    => DB_ERROR_ACCESS_VIOLATION,
-                '/^.+ permission denied on object .+, database .+, owner .+/'
-                    => DB_ERROR_ACCESS_VIOLATION,
-                '/^.* permission denied, database .+, owner .+/'
-                    => DB_ERROR_ACCESS_VIOLATION,
-                '/[^.*] not found\./'
-                    => DB_ERROR_NOSUCHTABLE,
-                '/There is already an object named/'
-                    => DB_ERROR_ALREADY_EXISTS,
-                '/Invalid column name/'
-                    => DB_ERROR_NOSUCHFIELD,
-                '/does not allow null values/'
-                    => DB_ERROR_CONSTRAINT_NOT_NULL,
-                '/Command has been aborted/'
-                    => DB_ERROR_CONSTRAINT,
-                '/^Cannot drop the index .* because it doesn\'t exist/i'
-                    => DB_ERROR_NOT_FOUND,
-                '/^There is already an index/i'
-                    => DB_ERROR_ALREADY_EXISTS,
-                '/^There are fewer columns in the INSERT statement than values specified/i'
-                    => DB_ERROR_VALUE_COUNT_ON_ROW,
-            );
-        }
-
-        foreach ($error_regexps as $regexp => $code) {
-            if (preg_match($regexp, $errormsg)) {
-                return $code;
-            }
-        }
-        return DB_ERROR;
-    }
-
-    // }}}
-    // {{{ sybaseRaiseError()
-
-    /**
-     * Produces a DB_Error object regarding the current problem
-     *
-     * @param int $errno  if the error is being manually raised pass a
-     *                     DB_ERROR* constant here.  If this isn't passed
-     *                     the error information gathered from the DBMS.
-     *
-     * @return object  the DB_Error object
-     *
-     * @see DB_common::raiseError(),
-     *      DB_sybase::errorNative(), DB_sybase::errorCode()
-     */
-    function sybaseRaiseError($errno = null)
-    {
-        $native = $this->errorNative();
-        if ($errno === null) {
-            $errno = $this->errorCode($native);
-        }
-        return $this->raiseError($errno, null, null, null, $native);
-    }
-
-    // }}}
     // {{{ simpleQuery()
 
     /**
@@ -622,33 +530,6 @@ class DB_sybase extends DB_common
     }
 
     // }}}
-    // {{{ getSpecialQuery()
-
-    /**
-     * Obtain the query string needed for listing a given type of objects
-     *
-     * @param string $type  the kind of objects you want to retrieve
-     *
-     * @return string  the SQL query string or null if the driver doesn't
-     *                  support the object type requested
-     *
-     * @access protected
-     * @see DB_common::getListOf()
-     */
-    function getSpecialQuery($type)
-    {
-        switch ($type) {
-            case 'tables':
-                return "SELECT name FROM sysobjects WHERE type = 'U'"
-                       . ' ORDER BY name';
-            case 'views':
-                return "SELECT name FROM sysobjects WHERE type = 'V'";
-            default:
-                return null;
-        }
-    }
-
-    // }}}
     // {{{ autoCommit()
 
     /**
@@ -711,6 +592,98 @@ class DB_sybase extends DB_common
             }
         }
         return DB_OK;
+    }
+
+    // }}}
+    // {{{ sybaseRaiseError()
+
+    /**
+     * Produces a DB_Error object regarding the current problem
+     *
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError(),
+     *      DB_sybase::errorNative(), DB_sybase::errorCode()
+     */
+    function sybaseRaiseError($errno = null)
+    {
+        $native = $this->errorNative();
+        if ($errno === null) {
+            $errno = $this->errorCode($native);
+        }
+        return $this->raiseError($errno, null, null, null, $native);
+    }
+
+    // }}}
+    // {{{ errorNative()
+
+    /**
+     * Gets the DBMS' native error message produced by the last query
+     *
+     * @return string  the DBMS' error message
+     */
+    function errorNative()
+    {
+        return @sybase_get_last_message();
+    }
+
+    // }}}
+    // {{{ errorCode()
+
+    /**
+     * Determine PEAR::DB error code from the database's text error message.
+     *
+     * @param  string  $errormsg  error message returned from the database
+     * @return integer  an error number from a DB error constant
+     */
+    function errorCode($errormsg)
+    {
+        static $error_regexps;
+        if (!isset($error_regexps)) {
+            $error_regexps = array(
+                '/Incorrect syntax near/'
+                    => DB_ERROR_SYNTAX,
+                '/^Unclosed quote before the character string [\"\'].*[\"\']\./'
+                    => DB_ERROR_SYNTAX,
+                '/Implicit conversion from datatype [\"\'].+[\"\'] to [\"\'].+[\"\'] is not allowed\./'
+                    => DB_ERROR_INVALID_NUMBER,
+                '/Cannot drop the table [\"\'].+[\"\'], because it doesn\'t exist in the system catalogs\./'
+                    => DB_ERROR_NOSUCHTABLE,
+                '/Only the owner of object [\"\'].+[\"\'] or a user with System Administrator \(SA\) role can run this command\./'
+                    => DB_ERROR_ACCESS_VIOLATION,
+                '/^.+ permission denied on object .+, database .+, owner .+/'
+                    => DB_ERROR_ACCESS_VIOLATION,
+                '/^.* permission denied, database .+, owner .+/'
+                    => DB_ERROR_ACCESS_VIOLATION,
+                '/[^.*] not found\./'
+                    => DB_ERROR_NOSUCHTABLE,
+                '/There is already an object named/'
+                    => DB_ERROR_ALREADY_EXISTS,
+                '/Invalid column name/'
+                    => DB_ERROR_NOSUCHFIELD,
+                '/does not allow null values/'
+                    => DB_ERROR_CONSTRAINT_NOT_NULL,
+                '/Command has been aborted/'
+                    => DB_ERROR_CONSTRAINT,
+                '/^Cannot drop the index .* because it doesn\'t exist/i'
+                    => DB_ERROR_NOT_FOUND,
+                '/^There is already an index/i'
+                    => DB_ERROR_ALREADY_EXISTS,
+                '/^There are fewer columns in the INSERT statement than values specified/i'
+                    => DB_ERROR_VALUE_COUNT_ON_ROW,
+            );
+        }
+
+        foreach ($error_regexps as $regexp => $code) {
+            if (preg_match($regexp, $errormsg)) {
+                return $code;
+            }
+        }
+        return DB_ERROR;
     }
 
     // }}}
@@ -891,6 +864,33 @@ class DB_sybase extends DB_common
             $array = array($value);
         } elseif (!in_array($value, $array)) {
             array_push($array, $value);
+        }
+    }
+
+    // }}}
+    // {{{ getSpecialQuery()
+
+    /**
+     * Obtain the query string needed for listing a given type of objects
+     *
+     * @param string $type  the kind of objects you want to retrieve
+     *
+     * @return string  the SQL query string or null if the driver doesn't
+     *                  support the object type requested
+     *
+     * @access protected
+     * @see DB_common::getListOf()
+     */
+    function getSpecialQuery($type)
+    {
+        switch ($type) {
+            case 'tables':
+                return "SELECT name FROM sysobjects WHERE type = 'U'"
+                       . ' ORDER BY name';
+            case 'views':
+                return "SELECT name FROM sysobjects WHERE type = 'V'";
+            default:
+                return null;
         }
     }
 

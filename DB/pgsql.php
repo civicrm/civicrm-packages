@@ -381,46 +381,6 @@ class DB_pgsql extends DB_common
     }
 
     // }}}
-    // {{{ errorCode()
-
-    /**
-     * Determine PEAR::DB error code from the database's text error message.
-     *
-     * @param  string  $errormsg  error message returned from the database
-     * @return integer  an error number from a DB error constant
-     */
-    function errorCode($errormsg)
-    {
-        static $error_regexps;
-        if (!isset($error_regexps)) {
-            $error_regexps = array(
-                '/(([Rr]elation|[Ss]equence|[Tt]able)( [\"\'].*[\"\'])? does not exist|[Cc]lass ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
-                '/index .* does not exist/' => DB_ERROR_NOT_FOUND,
-                '/[Cc]olumn [\"\'].*[\"\'] .*does not exist/' => DB_ERROR_NOSUCHFIELD,
-                '/[Rr]elation [\"\'].*[\"\'] already exists|[Cc]annot insert a duplicate key into (a )?unique index.*/' => DB_ERROR_ALREADY_EXISTS,
-                '/(divide|division) by zero$/'          => DB_ERROR_DIVZERO,
-                '/pg_atoi: error in .*: can\'t parse /' => DB_ERROR_INVALID_NUMBER,
-                '/invalid input syntax for integer/'    => DB_ERROR_INVALID_NUMBER,
-                '/ttribute [\"\'].*[\"\'] not found$|[Rr]elation [\"\'].*[\"\'] does not have attribute [\"\'].*[\"\']/' => DB_ERROR_NOSUCHFIELD,
-                '/parser: parse error at or near \"/'   => DB_ERROR_SYNTAX,
-                '/syntax error at/'                     => DB_ERROR_SYNTAX,
-                '/permission denied/'                   => DB_ERROR_ACCESS_VIOLATION,
-                '/violates not-null constraint/'        => DB_ERROR_CONSTRAINT_NOT_NULL,
-                '/violates [\w ]+ constraint/'          => DB_ERROR_CONSTRAINT,
-                '/referential integrity violation/'     => DB_ERROR_CONSTRAINT,
-                '/more expressions than target columns/i' => DB_ERROR_VALUE_COUNT_ON_ROW,
-            );
-        }
-        foreach ($error_regexps as $regexp => $code) {
-            if (preg_match($regexp, $errormsg)) {
-                return $code;
-            }
-        }
-        // Fall back to DB_ERROR if there was no mapping.
-        return DB_ERROR;
-    }
-
-    // }}}
     // {{{ fetchInto()
 
     /**
@@ -828,71 +788,43 @@ class DB_pgsql extends DB_common
     }
 
     // }}}
-    // {{{ _pgFieldFlags()
+    // {{{ errorCode()
 
     /**
-     * Get a column's flags
+     * Determine PEAR::DB error code from the database's text error message.
      *
-     * Supports "not_null", "default_value", "primary_key", "unique_key"
-     * and "multiple_key".  The default value is passed through
-     * rawurlencode() in case there are spaces in it.
-     *
-     * @param int $resource   the PostgreSQL result identifier
-     * @param int $num_field  the field number
-     *
-     * @return string  the flags
-     *
-     * @access private
+     * @param  string  $errormsg  error message returned from the database
+     * @return integer  an error number from a DB error constant
      */
-    function _pgFieldFlags($resource, $num_field, $table_name)
+    function errorCode($errormsg)
     {
-        $field_name = @pg_fieldname($resource, $num_field);
-
-        $result = @pg_exec($this->connection, "SELECT f.attnotnull, f.atthasdef
-                                FROM pg_attribute f, pg_class tab, pg_type typ
-                                WHERE tab.relname = typ.typname
-                                AND typ.typrelid = f.attrelid
-                                AND f.attname = '$field_name'
-                                AND tab.relname = '$table_name'");
-        if (@pg_numrows($result) > 0) {
-            $row = @pg_fetch_row($result, 0);
-            $flags  = ($row[0] == 't') ? 'not_null ' : '';
-
-            if ($row[1] == 't') {
-                $result = @pg_exec($this->connection, "SELECT a.adsrc
-                                    FROM pg_attribute f, pg_class tab, pg_type typ, pg_attrdef a
-                                    WHERE tab.relname = typ.typname AND typ.typrelid = f.attrelid
-                                    AND f.attrelid = a.adrelid AND f.attname = '$field_name'
-                                    AND tab.relname = '$table_name' AND f.attnum = a.adnum");
-                $row = @pg_fetch_row($result, 0);
-                $num = preg_replace("/'(.*)'::\w+/", "\\1", $row[0]);
-                $flags .= 'default_' . rawurlencode($num) . ' ';
-            }
-        } else {
-            $flags = '';
+        static $error_regexps;
+        if (!isset($error_regexps)) {
+            $error_regexps = array(
+                '/(([Rr]elation|[Ss]equence|[Tt]able)( [\"\'].*[\"\'])? does not exist|[Cc]lass ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
+                '/index .* does not exist/' => DB_ERROR_NOT_FOUND,
+                '/[Cc]olumn [\"\'].*[\"\'] .*does not exist/' => DB_ERROR_NOSUCHFIELD,
+                '/[Rr]elation [\"\'].*[\"\'] already exists|[Cc]annot insert a duplicate key into (a )?unique index.*/' => DB_ERROR_ALREADY_EXISTS,
+                '/(divide|division) by zero$/'          => DB_ERROR_DIVZERO,
+                '/pg_atoi: error in .*: can\'t parse /' => DB_ERROR_INVALID_NUMBER,
+                '/invalid input syntax for integer/'    => DB_ERROR_INVALID_NUMBER,
+                '/ttribute [\"\'].*[\"\'] not found$|[Rr]elation [\"\'].*[\"\'] does not have attribute [\"\'].*[\"\']/' => DB_ERROR_NOSUCHFIELD,
+                '/parser: parse error at or near \"/'   => DB_ERROR_SYNTAX,
+                '/syntax error at/'                     => DB_ERROR_SYNTAX,
+                '/permission denied/'                   => DB_ERROR_ACCESS_VIOLATION,
+                '/violates not-null constraint/'        => DB_ERROR_CONSTRAINT_NOT_NULL,
+                '/violates [\w ]+ constraint/'          => DB_ERROR_CONSTRAINT,
+                '/referential integrity violation/'     => DB_ERROR_CONSTRAINT,
+                '/more expressions than target columns/i' => DB_ERROR_VALUE_COUNT_ON_ROW,
+            );
         }
-        $result = @pg_exec($this->connection, "SELECT i.indisunique, i.indisprimary, i.indkey
-                                FROM pg_attribute f, pg_class tab, pg_type typ, pg_index i
-                                WHERE tab.relname = typ.typname
-                                AND typ.typrelid = f.attrelid
-                                AND f.attrelid = i.indrelid
-                                AND f.attname = '$field_name'
-                                AND tab.relname = '$table_name'");
-        $count = @pg_numrows($result);
-
-        for ($i = 0; $i < $count ; $i++) {
-            $row = @pg_fetch_row($result, $i);
-            $keys = explode(' ', $row[2]);
-
-            if (in_array($num_field + 1, $keys)) {
-                $flags .= ($row[0] == 't' && $row[1] == 'f') ? 'unique_key ' : '';
-                $flags .= ($row[1] == 't') ? 'primary_key ' : '';
-                if (count($keys) > 1)
-                    $flags .= 'multiple_key ';
+        foreach ($error_regexps as $regexp => $code) {
+            if (preg_match($regexp, $errormsg)) {
+                return $code;
             }
         }
-
-        return trim($flags);
+        // Fall back to DB_ERROR if there was no mapping.
+        return DB_ERROR;
     }
 
     // }}}
@@ -982,6 +914,74 @@ class DB_pgsql extends DB_common
             @pg_freeresult($id);
         }
         return $res;
+    }
+
+    // }}}
+    // {{{ _pgFieldFlags()
+
+    /**
+     * Get a column's flags
+     *
+     * Supports "not_null", "default_value", "primary_key", "unique_key"
+     * and "multiple_key".  The default value is passed through
+     * rawurlencode() in case there are spaces in it.
+     *
+     * @param int $resource   the PostgreSQL result identifier
+     * @param int $num_field  the field number
+     *
+     * @return string  the flags
+     *
+     * @access private
+     */
+    function _pgFieldFlags($resource, $num_field, $table_name)
+    {
+        $field_name = @pg_fieldname($resource, $num_field);
+
+        $result = @pg_exec($this->connection, "SELECT f.attnotnull, f.atthasdef
+                                FROM pg_attribute f, pg_class tab, pg_type typ
+                                WHERE tab.relname = typ.typname
+                                AND typ.typrelid = f.attrelid
+                                AND f.attname = '$field_name'
+                                AND tab.relname = '$table_name'");
+        if (@pg_numrows($result) > 0) {
+            $row = @pg_fetch_row($result, 0);
+            $flags  = ($row[0] == 't') ? 'not_null ' : '';
+
+            if ($row[1] == 't') {
+                $result = @pg_exec($this->connection, "SELECT a.adsrc
+                                    FROM pg_attribute f, pg_class tab, pg_type typ, pg_attrdef a
+                                    WHERE tab.relname = typ.typname AND typ.typrelid = f.attrelid
+                                    AND f.attrelid = a.adrelid AND f.attname = '$field_name'
+                                    AND tab.relname = '$table_name' AND f.attnum = a.adnum");
+                $row = @pg_fetch_row($result, 0);
+                $num = preg_replace("/'(.*)'::\w+/", "\\1", $row[0]);
+                $flags .= 'default_' . rawurlencode($num) . ' ';
+            }
+        } else {
+            $flags = '';
+        }
+        $result = @pg_exec($this->connection, "SELECT i.indisunique, i.indisprimary, i.indkey
+                                FROM pg_attribute f, pg_class tab, pg_type typ, pg_index i
+                                WHERE tab.relname = typ.typname
+                                AND typ.typrelid = f.attrelid
+                                AND f.attrelid = i.indrelid
+                                AND f.attname = '$field_name'
+                                AND tab.relname = '$table_name'");
+        $count = @pg_numrows($result);
+
+        for ($i = 0; $i < $count ; $i++) {
+            $row = @pg_fetch_row($result, $i);
+            $keys = explode(' ', $row[2]);
+
+            if (in_array($num_field + 1, $keys)) {
+                $flags .= ($row[0] == 't' && $row[1] == 'f') ? 'unique_key ' : '';
+                $flags .= ($row[1] == 't') ? 'primary_key ' : '';
+                if (count($keys) > 1)
+                    $flags .= 'multiple_key ';
+            }
+        }
+
+        return trim($flags);
     }
 
     // }}}

@@ -554,19 +554,6 @@ class DB_mysql extends DB_common
      }
 
     // }}}
-    // {{{ errorNative()
-
-    /**
-     * Get the DBMS' native error code produced by the last query
-     *
-     * @return int  the DBMS' error code
-     */
-    function errorNative()
-    {
-        return @mysql_errno($this->connection);
-    }
-
-    // }}}
     // {{{ nextId()
 
     /**
@@ -891,6 +878,19 @@ class DB_mysql extends DB_common
         return $this->raiseError($errno, null, null, null,
                                  @mysql_errno($this->connection) . ' ** ' .
                                  @mysql_error($this->connection));
+    }
+
+    // }}}
+    // {{{ errorNative()
+
+    /**
+     * Get the DBMS' native error code produced by the last query
+     *
+     * @return int  the DBMS' error code
+     */
+    function errorNative()
+    {
+        return @mysql_errno($this->connection);
     }
 
     // }}}

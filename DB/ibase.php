@@ -826,6 +826,71 @@ class DB_ibase extends DB_common
     }
 
     // }}}
+    // {{{ ibaseRaiseError()
+
+    /**
+     * Produces a DB_Error object regarding the current problem
+     *
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError()
+     */
+    function &ibaseRaiseError($db_errno = null, $native_errmsg = null)
+    {
+        if ($native_errmsg === null) {
+            $native_errmsg = @ibase_errmsg();
+        }
+        // memo for the interbase php module hackers: we need something similar
+        // to mysql_errno() to retrieve error codes instead of this ugly hack
+        if (preg_match('/^([^0-9\-]+)([0-9\-]+)\s+(.*)$/', $native_errmsg, $m)) {
+            $native_errno = (int)$m[2];
+        } else {
+            $native_errno = null;
+        }
+        // try to map the native error to the DB one
+        if ($db_errno === null) {
+            if ($native_errno) {
+                // try to interpret Interbase error code (that's why we need ibase_errno()
+                // in the interbase module to return the real error code)
+                switch ($native_errno) {
+                    case -204:
+                        if (is_int(strpos($m[3], 'Table unknown'))) {
+                            $db_errno = DB_ERROR_NOSUCHTABLE;
+                        }
+                        break;
+                    default:
+                        $db_errno = $this->errorCode($native_errno);
+                }
+            } else {
+                $error_regexps = array(
+                    '/[tT]able not found/' => DB_ERROR_NOSUCHTABLE,
+                    '/[tT]able .* already exists/' => DB_ERROR_ALREADY_EXISTS,
+                    '/unsuccessful metadata update .* failed attempt to store duplicate value/i' => DB_ERROR_ALREADY_EXISTS,
+                    '/unsuccessful metadata update .* not found/i' => DB_ERROR_NOT_FOUND,
+                    '/validation error for column .* value "\*\*\* null/' => DB_ERROR_CONSTRAINT_NOT_NULL,
+                    '/violation of [\w ]+ constraint/' => DB_ERROR_CONSTRAINT,
+                    '/conversion error from string/' => DB_ERROR_INVALID_NUMBER,
+                    '/no permission for/' => DB_ERROR_ACCESS_VIOLATION,
+                    '/arithmetic exception, numeric overflow, or string truncation/' => DB_ERROR_DIVZERO
+                );
+                foreach ($error_regexps as $regexp => $code) {
+                    if (preg_match($regexp, $native_errmsg)) {
+                        $db_errno = $code;
+                        $native_errno = null;
+                        break;
+                    }
+                }
+            }
+        }
+        $tmp =& $this->raiseError($db_errno, null, null, null, $native_errmsg);
+        return $tmp;
+    }
+
+    // }}}
     // {{{ tableInfo()
 
     /**
@@ -914,71 +979,6 @@ class DB_ibase extends DB_common
             @ibase_free_result($id);
         }
         return $res;
-    }
-
-    // }}}
-    // {{{ ibaseRaiseError()
-
-    /**
-     * Produces a DB_Error object regarding the current problem
-     *
-     * @param int $errno  if the error is being manually raised pass a
-     *                     DB_ERROR* constant here.  If this isn't passed
-     *                     the error information gathered from the DBMS.
-     *
-     * @return object  the DB_Error object
-     *
-     * @see DB_common::raiseError()
-     */
-    function &ibaseRaiseError($db_errno = null, $native_errmsg = null)
-    {
-        if ($native_errmsg === null) {
-            $native_errmsg = @ibase_errmsg();
-        }
-        // memo for the interbase php module hackers: we need something similar
-        // to mysql_errno() to retrieve error codes instead of this ugly hack
-        if (preg_match('/^([^0-9\-]+)([0-9\-]+)\s+(.*)$/', $native_errmsg, $m)) {
-            $native_errno = (int)$m[2];
-        } else {
-            $native_errno = null;
-        }
-        // try to map the native error to the DB one
-        if ($db_errno === null) {
-            if ($native_errno) {
-                // try to interpret Interbase error code (that's why we need ibase_errno()
-                // in the interbase module to return the real error code)
-                switch ($native_errno) {
-                    case -204:
-                        if (is_int(strpos($m[3], 'Table unknown'))) {
-                            $db_errno = DB_ERROR_NOSUCHTABLE;
-                        }
-                        break;
-                    default:
-                        $db_errno = $this->errorCode($native_errno);
-                }
-            } else {
-                $error_regexps = array(
-                    '/[tT]able not found/' => DB_ERROR_NOSUCHTABLE,
-                    '/[tT]able .* already exists/' => DB_ERROR_ALREADY_EXISTS,
-                    '/unsuccessful metadata update .* failed attempt to store duplicate value/i' => DB_ERROR_ALREADY_EXISTS,
-                    '/unsuccessful metadata update .* not found/i' => DB_ERROR_NOT_FOUND,
-                    '/validation error for column .* value "\*\*\* null/' => DB_ERROR_CONSTRAINT_NOT_NULL,
-                    '/violation of [\w ]+ constraint/' => DB_ERROR_CONSTRAINT,
-                    '/conversion error from string/' => DB_ERROR_INVALID_NUMBER,
-                    '/no permission for/' => DB_ERROR_ACCESS_VIOLATION,
-                    '/arithmetic exception, numeric overflow, or string truncation/' => DB_ERROR_DIVZERO
-                );
-                foreach ($error_regexps as $regexp => $code) {
-                    if (preg_match($regexp, $native_errmsg)) {
-                        $db_errno = $code;
-                        $native_errno = null;
-                        break;
-                    }
-                }
-            }
-        }
-        $tmp =& $this->raiseError($db_errno, null, null, null, $native_errmsg);
-        return $tmp;
     }
 
     // }}}

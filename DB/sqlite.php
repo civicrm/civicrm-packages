@@ -473,58 +473,6 @@ class DB_sqlite extends DB_common
     }
 
     // }}}
-    // {{{ errorNative()
-
-    /**
-     * Gets the DBMS' native error message produced by the last query
-     *
-     * {@internal This is used to retrieve more meaningfull error messages
-     * because sqlite_last_error() does not provide adequate info.}}
-     *
-     * @return string  the DBMS' error message
-     */
-    function errorNative()
-    {
-        return($this->_lasterror);
-    }
-
-    // }}}
-    // {{{ errorCode()
-
-    /**
-     * Determine PEAR::DB error code from the database's text error message
-     *
-     * @param string $errormsg  the error message returned from the database
-     *
-     * @return integer  the DB error number
-     */
-    function errorCode($errormsg)
-    {
-        static $error_regexps;
-        if (!isset($error_regexps)) {
-            $error_regexps = array(
-                '/^no such table:/' => DB_ERROR_NOSUCHTABLE,
-                '/^no such index:/' => DB_ERROR_NOT_FOUND,
-                '/^(table|index) .* already exists$/' => DB_ERROR_ALREADY_EXISTS,
-                '/PRIMARY KEY must be unique/i' => DB_ERROR_CONSTRAINT,
-                '/is not unique/' => DB_ERROR_CONSTRAINT,
-                '/uniqueness constraint failed/' => DB_ERROR_CONSTRAINT,
-                '/may not be NULL/' => DB_ERROR_CONSTRAINT_NOT_NULL,
-                '/^no such column:/' => DB_ERROR_NOSUCHFIELD,
-                '/^near ".*": syntax error$/' => DB_ERROR_SYNTAX,
-                '/[0-9]+ values for [0-9]+ columns/i' => DB_ERROR_VALUE_COUNT_ON_ROW,
-            );
-        }
-        foreach ($error_regexps as $regexp => $code) {
-            if (preg_match($regexp, $errormsg)) {
-                return $code;
-            }
-        }
-        // Fall back to DB_ERROR if there was no mapping.
-        return DB_ERROR;
-    }
-
-    // }}}
     // {{{ dropSequence()
 
     /**
@@ -615,6 +563,178 @@ class DB_sqlite extends DB_common
         } while ($repeat);
 
         return $this->raiseError($result);
+    }
+
+    // }}}
+    // {{{ getDbFileStats()
+
+    /**
+     * Get the file stats for the current database
+     *
+     * Possible arguments are dev, ino, mode, nlink, uid, gid, rdev, size,
+     * atime, mtime, ctime, blksize, blocks or a numeric key between
+     * 0 and 12.
+     *
+     * @param string $arg  the array key for stats()
+     *
+     * @return mixed  an array on an unspecified key, integer on a passed
+     *                arg and false at a stats error
+     */
+    function getDbFileStats($arg = '')
+    {
+        $stats = stat($this->dsn['database']);
+        if ($stats == false) {
+            return false;
+        }
+        if (is_array($stats)) {
+            if (is_numeric($arg)) {
+                if (((int)$arg <= 12) & ((int)$arg >= 0)) {
+                    return false;
+                }
+                return $stats[$arg ];
+            }
+            if (array_key_exists(trim($arg), $stats)) {
+                return $stats[$arg ];
+            }
+        }
+        return $stats;
+    }
+
+    // }}}
+    // {{{ escapeSimple()
+
+    /**
+     * Escape a string according to the current DBMS's standards
+     *
+     * In SQLite, this makes things safe for inserts/updates, but may
+     * cause problems when performing text comparisons against columns
+     * containing binary data. See the
+     * {@link http://php.net/sqlite_escape_string PHP manual} for more info.
+     *
+     * @param string $str  the string to be escaped
+     *
+     * @return string  the escaped string
+     *
+     * @since Method available since Release 1.6.1
+     * @see DB_common::escapeSimple()
+     */
+    function escapeSimple($str)
+    {
+        return @sqlite_escape_string($str);
+    }
+
+    // }}}
+    // {{{ modifyLimitQuery()
+
+    function modifyLimitQuery($query, $from, $count, $params = array())
+    {
+        $query = $query . " LIMIT $count OFFSET $from";
+        return $query;
+    }
+
+    // }}}
+    // {{{ modifyQuery()
+
+    /**
+     * "DELETE FROM table" gives 0 affected rows in SQLite
+     *
+     * This little hack lets you know how many rows were deleted.
+     *
+     * @param string $query  the SQL query string
+     *
+     * @return string  the SQL query string
+     *
+     * @access private
+     */
+    function _modifyQuery($query)
+    {
+        if ($this->options['portability'] & DB_PORTABILITY_DELETE_COUNT) {
+            if (preg_match('/^\s*DELETE\s+FROM\s+(\S+)\s*$/i', $query)) {
+                $query = preg_replace('/^\s*DELETE\s+FROM\s+(\S+)\s*$/',
+                                      'DELETE FROM \1 WHERE 1=1', $query);
+            }
+        }
+        return $query;
+    }
+
+    // }}}
+    // {{{ sqliteRaiseError()
+
+    /**
+     * Produces a DB_Error object regarding the current problem
+     *
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError(),
+     *      DB_sqlite::errorNative(), DB_sqlite::errorCode()
+     */
+    function sqliteRaiseError($errno = null)
+    {
+        $native = $this->errorNative();
+        if ($errno === null) {
+            $errno = $this->errorCode($native);
+        }
+
+        $errorcode = @sqlite_last_error($this->connection);
+        $userinfo = "$errorcode ** $this->last_query";
+
+        return $this->raiseError($errno, null, null, $userinfo, $native);
+    }
+
+    // }}}
+    // {{{ errorNative()
+
+    /**
+     * Gets the DBMS' native error message produced by the last query
+     *
+     * {@internal This is used to retrieve more meaningfull error messages
+     * because sqlite_last_error() does not provide adequate info.}}
+     *
+     * @return string  the DBMS' error message
+     */
+    function errorNative()
+    {
+        return($this->_lasterror);
+    }
+
+    // }}}
+    // {{{ errorCode()
+
+    /**
+     * Determine PEAR::DB error code from the database's text error message
+     *
+     * @param string $errormsg  the error message returned from the database
+     *
+     * @return integer  the DB error number
+     */
+    function errorCode($errormsg)
+    {
+        static $error_regexps;
+        if (!isset($error_regexps)) {
+            $error_regexps = array(
+                '/^no such table:/' => DB_ERROR_NOSUCHTABLE,
+                '/^no such index:/' => DB_ERROR_NOT_FOUND,
+                '/^(table|index) .* already exists$/' => DB_ERROR_ALREADY_EXISTS,
+                '/PRIMARY KEY must be unique/i' => DB_ERROR_CONSTRAINT,
+                '/is not unique/' => DB_ERROR_CONSTRAINT,
+                '/uniqueness constraint failed/' => DB_ERROR_CONSTRAINT,
+                '/may not be NULL/' => DB_ERROR_CONSTRAINT_NOT_NULL,
+                '/^no such column:/' => DB_ERROR_NOSUCHFIELD,
+                '/^near ".*": syntax error$/' => DB_ERROR_SYNTAX,
+                '/[0-9]+ values for [0-9]+ columns/i' => DB_ERROR_VALUE_COUNT_ON_ROW,
+            );
+        }
+        foreach ($error_regexps as $regexp => $code) {
+            if (preg_match($regexp, $errormsg)) {
+                return $code;
+            }
+        }
+        // Fall back to DB_ERROR if there was no mapping.
+        return DB_ERROR;
     }
 
     // }}}
@@ -792,126 +912,6 @@ class DB_sqlite extends DB_common
             default:
                 return null;
         }
-    }
-
-    // }}}
-    // {{{ getDbFileStats()
-
-    /**
-     * Get the file stats for the current database
-     *
-     * Possible arguments are dev, ino, mode, nlink, uid, gid, rdev, size,
-     * atime, mtime, ctime, blksize, blocks or a numeric key between
-     * 0 and 12.
-     *
-     * @param string $arg  the array key for stats()
-     *
-     * @return mixed  an array on an unspecified key, integer on a passed
-     *                arg and false at a stats error
-     */
-    function getDbFileStats($arg = '')
-    {
-        $stats = stat($this->dsn['database']);
-        if ($stats == false) {
-            return false;
-        }
-        if (is_array($stats)) {
-            if (is_numeric($arg)) {
-                if (((int)$arg <= 12) & ((int)$arg >= 0)) {
-                    return false;
-                }
-                return $stats[$arg ];
-            }
-            if (array_key_exists(trim($arg), $stats)) {
-                return $stats[$arg ];
-            }
-        }
-        return $stats;
-    }
-
-    // }}}
-    // {{{ escapeSimple()
-
-    /**
-     * Escape a string according to the current DBMS's standards
-     *
-     * In SQLite, this makes things safe for inserts/updates, but may
-     * cause problems when performing text comparisons against columns
-     * containing binary data. See the
-     * {@link http://php.net/sqlite_escape_string PHP manual} for more info.
-     *
-     * @param string $str  the string to be escaped
-     *
-     * @return string  the escaped string
-     *
-     * @since Method available since Release 1.6.1
-     * @see DB_common::escapeSimple()
-     */
-    function escapeSimple($str)
-    {
-        return @sqlite_escape_string($str);
-    }
-
-    // }}}
-    // {{{ modifyLimitQuery()
-
-    function modifyLimitQuery($query, $from, $count, $params = array())
-    {
-        $query = $query . " LIMIT $count OFFSET $from";
-        return $query;
-    }
-
-    // }}}
-    // {{{ modifyQuery()
-
-    /**
-     * "DELETE FROM table" gives 0 affected rows in SQLite
-     *
-     * This little hack lets you know how many rows were deleted.
-     *
-     * @param string $query  the SQL query string
-     *
-     * @return string  the SQL query string
-     *
-     * @access private
-     */
-    function _modifyQuery($query)
-    {
-        if ($this->options['portability'] & DB_PORTABILITY_DELETE_COUNT) {
-            if (preg_match('/^\s*DELETE\s+FROM\s+(\S+)\s*$/i', $query)) {
-                $query = preg_replace('/^\s*DELETE\s+FROM\s+(\S+)\s*$/',
-                                      'DELETE FROM \1 WHERE 1=1', $query);
-            }
-        }
-        return $query;
-    }
-
-    // }}}
-    // {{{ sqliteRaiseError()
-
-    /**
-     * Produces a DB_Error object regarding the current problem
-     *
-     * @param int $errno  if the error is being manually raised pass a
-     *                     DB_ERROR* constant here.  If this isn't passed
-     *                     the error information gathered from the DBMS.
-     *
-     * @return object  the DB_Error object
-     *
-     * @see DB_common::raiseError(),
-     *      DB_sqlite::errorNative(), DB_sqlite::errorCode()
-     */
-    function sqliteRaiseError($errno = null)
-    {
-        $native = $this->errorNative();
-        if ($errno === null) {
-            $errno = $this->errorCode($native);
-        }
-
-        $errorcode = @sqlite_last_error($this->connection);
-        $userinfo = "$errorcode ** $this->last_query";
-
-        return $this->raiseError($errno, null, null, $userinfo, $native);
     }
 
     // }}}
