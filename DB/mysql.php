@@ -84,6 +84,7 @@ class DB_mysql extends DB_common
             1008 => DB_ERROR_CANNOT_DROP,
             1022 => DB_ERROR_ALREADY_EXISTS,
             1046 => DB_ERROR_NODBSELECTED,
+            1048 => DB_ERROR_CONSTRAINT,
             1050 => DB_ERROR_ALREADY_EXISTS,
             1051 => DB_ERROR_NOSUCHTABLE,
             1054 => DB_ERROR_NOSUCHFIELD,
@@ -92,8 +93,7 @@ class DB_mysql extends DB_common
             1100 => DB_ERROR_NOT_LOCKED,
             1136 => DB_ERROR_VALUE_COUNT_ON_ROW,
             1146 => DB_ERROR_NOSUCHTABLE,
-            1048 => DB_ERROR_CONSTRAINT,
-            1216 => DB_ERROR_CONSTRAINT
+            1216 => DB_ERROR_CONSTRAINT,
         );
     }
 
