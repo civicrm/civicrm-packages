@@ -19,7 +19,7 @@
  * @author     James L. Pine <jlp@valinux.com>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -46,7 +46,7 @@ require_once 'DB/common.php';
  * @author     James L. Pine <jlp@valinux.com>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -69,6 +69,9 @@ class DB_oci8 extends DB_common
     /**
      * The capabilities of this DB implementation
      *
+     * The 'new_link' element contains the PHP version that first provided
+     * new_link support for this DBMS.  Contains false if it's unsupported.
+     *
      * Meaning of the 'limit' element:
      *   + 'emulate' = emulate with fetch row by number
      *   + 'alter'   = alter the query
@@ -78,6 +81,7 @@ class DB_oci8 extends DB_common
      */
     var $features = array(
         'limit'         => 'alter',
+        'new_link'      => '5.0.0',
         'pconnect'      => true,
         'prepare'       => true,
         'ssl'           => false,
@@ -164,61 +168,86 @@ class DB_oci8 extends DB_common
     // {{{ connect()
 
     /**
-     * Connect to a database and log in as the specified user.
+     * Connect to the database server, log in and open the database
      *
-     * @param $dsn the data source name (see DB::parseDSN for syntax)
-     * @param $persistent (optional) whether the connection should
-     *        be persistent
+     * If PHP is at version 5.0.0 or greater:
+     *   + Generally, oci_connect() or oci_pconnect() are used.
+     *   + But if the new_link DSN option is set to true, oci_new_connect()
+     *     is used.
      *
-     * @return int DB_OK on success, a DB error code on failure
+     * When using PHP version 4.x, OCILogon() or OCIPLogon() are used.
+     *
+     * PEAR DB's oci8 driver supports the following extra DSN options:
+     *   + charset       The character set to be used on the connection.
+     *                    Only used if PHP is at version 5.0.0 or greater
+     *                    and the Oracle server is at 9.2 or greater.
+     *                    Available since PEAR DB 1.7.0.
+     *   + new_link      If set to true, causes subsequent calls to
+     *                    connect() to return a new connection link
+     *                    instead of the existing one.  WARNING: this is
+     *                    not portable to other DBMS's.
+     *                    Available since PEAR DB 1.7.0.
+     *
+     * @param array $dsn         the data source name
+     * @param bool  $persistent  should the connection be persistent?
+     *
+     * @return int  DB_OK on success. A DB_error object on failure.
+     *
+     * @access private
+     * @see DB::connect(), DB::parseDSN()
      */
-    function connect($dsninfo, $persistent = false)
+    function connect($dsn, $persistent = false)
     {
         if (!DB::assertExtension('oci8')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        $this->dsn = $dsninfo;
-        if ($dsninfo['dbsyntax']) {
-            $this->dbsyntax = $dsninfo['dbsyntax'];
+        $this->dsn = $dsn;
+        if ($dsn['dbsyntax']) {
+            $this->dbsyntax = $dsn['dbsyntax'];
         }
 
         if (version_compare(phpversion(), '5.0.0', '>=')) {
-            $connect_function = $persistent ? 'oci_pconnect' : 'oci_connect';
-            $char = empty($dsninfo['charset']) ? null : $dsninfo['charset'];
-            $conn = @$connect_function($dsninfo['username'],
-                                       $dsninfo['password'],
-                                       $dsninfo['database'],
-                                       $char);
+            if (isset($dsn['new_link'])
+                && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true))
+            {
+                $connect_function = 'oci_new_connect';
+            } else {
+                $connect_function = $persistent ? 'oci_pconnect'
+                                    : 'oci_connect';
+            }
+            $char = empty($dsn['charset']) ? null : $dsn['charset'];
+            $this->connection = @$connect_function($dsn['username'],
+                                                   $dsn['password'],
+                                                   $dsn['database'],
+                                                   $char);
             $error = OCIError();
             if (!empty($error) && $error['code'] == 12541) {
                 // Couldn't find TNS listener.  Try direct connection.
-                $conn = @$connect_function($dsninfo['username'],
-                                           $dsninfo['password'],
-                                           null,
-                                           $char);
+                $this->connection = @$connect_function($dsn['username'],
+                                                       $dsn['password'],
+                                                       null,
+                                                       $char);
             }
         } else {
             $connect_function = $persistent ? 'OCIPLogon' : 'OCILogon';
-            if ($dsninfo['hostspec']) {
-                $conn = @$connect_function($dsninfo['username'],
-                                           $dsninfo['password'],
-                                           $dsninfo['hostspec']);
-            } elseif ($dsninfo['username'] || $dsninfo['password']) {
-                $conn = @$connect_function($dsninfo['username'],
-                                           $dsninfo['password']);
-            } else {
-                $conn = false;
+            if ($dsn['hostspec']) {
+                $this->connection = @$connect_function($dsn['username'],
+                                                       $dsn['password'],
+                                                       $dsn['hostspec']);
+            } elseif ($dsn['username'] || $dsn['password']) {
+                $this->connection = @$connect_function($dsn['username'],
+                                                       $dsn['password']);
             }
         }
 
-        if ($conn == false) {
+        if (!$this->connection) {
             $error = OCIError();
             $error = (is_array($error)) ? $error['message'] : null;
-            return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
-                                     null, $error);
+            return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                     null, null, null,
+                                     $error);
         }
-        $this->connection = $conn;
         return DB_OK;
     }
 
