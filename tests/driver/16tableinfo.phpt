@@ -99,12 +99,7 @@ function examineArrayData($array, $field = false, $query = true) {
     global $dbh, $quirks;
 
     if (!is_array($array)) {
-        print "This DMBS didn't produce proper results\n";
-        if ($key == 'table') {
-            print "\n\n\n\n";
-        } else {
-            print "\n\n\n\n\n\n";
-        }
+        print "This DMBS didn't produce proper results\n\n\n\n\n";
         return;
     }
 
@@ -566,8 +561,10 @@ print "{$array['num_fields']}\n";
 print "\norder:\n";
 if (is_array($array['order'])) {
     ksort($array['order']);
+    examineArrayData($array['order']);
+} else {
+    print "This DMBS didn't produce proper results\n\n\n\n\n\n\n";
 }
-examineArrayData($array['order']);
 
 
 
