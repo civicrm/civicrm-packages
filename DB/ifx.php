@@ -375,14 +375,6 @@ class DB_ifx extends DB_common
     }
 
     // }}}
-    // {{{ numRows()
-
-    function numRows($result)
-    {
-        return $this->raiseError(DB_ERROR_NOT_CAPABLE);
-    }
-
-    // }}}
     // {{{ numCols()
 
     /**
