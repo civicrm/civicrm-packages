@@ -131,9 +131,8 @@ foreach ($nums as $key => $val) {
 }
 
 if (count($diff) > 0) {
-    echo "FAIL";
-    print_r($nums);
-    print_r($res);
+    echo "FAIL\n";
+    print_r($diff);
 } else {
     echo 'OK';
 }
@@ -153,20 +152,27 @@ $diff = array();
 $res =& $dbh->getCol('SELECT b FROM pearquote ORDER BY n');
 foreach ($bools as $key => $val) {
     if ($val === true) {
-        if ($res[$key] != 1 || $res[$key] != true) {
+        if ($res[$key] == 1 || $res[$key] == true ||
+            substr(strtolower($res[$key]), 0, 1) == 't')
+        {
+            // good
+        } else {
             $diff[] = "in:true != out:{$res[$key]}";
         }
     } else {
-        if ($res[$key] != 0 || $res[$key] != false) {
+        if ($res[$key] == 0 || $res[$key] == false ||
+            substr(strtolower($res[$key]), 0, 1) == 'f')
+        {
+            // good
+        } else {
             $diff[] = "in:false != out:{$res[$key]}";
         }
     }
 }
 
 if (count($diff) > 0) {
-    echo 'FAIL';
-    print_r($nums);
-    print_r($res);
+    echo "FAIL\n";
+    print_r($diff);
 } else {
     echo "OK\n";
 }
