@@ -745,7 +745,7 @@ class DB_pgsql extends DB_common
         }
 
         // free the result only if we were called on a table
-        if (is_string ($result) && is_resource($id)) {
+        if (is_string($result) && is_resource($id)) {
             @pg_freeresult($id);
         }
         return $res;
