@@ -224,7 +224,7 @@ class DB_common extends PEAR
      *   + sybase
      *
      * InterBase doesn't seem to be able to use delimited identifiers
-     * via PHP.
+     * via PHP 4.  They work fine under PHP 5.
      *
      * @param string $str  identifier name to be quoted
      *
