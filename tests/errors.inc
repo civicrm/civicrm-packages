@@ -69,10 +69,18 @@ switch ($dbh->phptype) {
 }
 
 
-print "Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL\n";
-$dbh->query('INSERT INTO a VALUES (NULL)');
+print "Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on insert\n";
+$dbh->setErrorHandling(PEAR_ERROR_RETURN);
+$dbh->query('DROP TABLE peartestnull');
+$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'errhandler');
+$dbh->query('CREATE TABLE peartestnull (a CHAR(3) NOT NULL)');
+$dbh->query('INSERT INTO peartestnull VALUES (NULL)');
+
+print "Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on update\n";
+$dbh->query("INSERT INTO peartestnull VALUES ('one')");
+$dbh->query("UPDATE peartestnull SET a = NULL WHERE a = 'one'");
 switch ($dbh->phptype) {
-    case 'sqlite':
+    case 'mysql':
         print "  $dbh->phptype doesn't consider this an error\n";
         break;
 }
@@ -120,5 +128,6 @@ $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 $dbh->query('DROP TABLE phptest');
 $dbh->query('DROP TABLE b');
 $dbh->query('DROP TABLE a');
+$dbh->query('DROP TABLE peartestnull');
 
 ?>
