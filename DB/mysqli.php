@@ -179,7 +179,9 @@ class DB_mysqli extends DB_common
         }
 
         $conn = false;
-        @ini_set('track_errors', true);
+        $ini = ini_get('track_errors');
+        ini_set('track_errors', 1);
+        $php_errormsg = '';
 
         if ($this->getOption('ssl') === true) {
             $init = mysqli_init();
@@ -212,7 +214,7 @@ class DB_mysqli extends DB_common
             );
         }
 
-        @ini_restore('track_errors');
+        ini_set('track_errors', $ini);
 
         if (!$conn) {
             if (($err = @mysqli_connect_error()) != '') {

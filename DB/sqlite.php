@@ -157,7 +157,10 @@ class DB_sqlite extends DB_common
 
         $connect_function = $persistent ? 'sqlite_popen' : 'sqlite_open';
 
+        // track_errors must remain on for simpleQuery()
+        ini_set('track_errors', 1);
         $php_errormsg = '';
+
         if (!($conn = @$connect_function($dsninfo['database']))) {
             if (empty($php_errormsg)) {
                 return $this->sqliteRaiseError(DB_ERROR_NODBSELECTED);
@@ -166,9 +169,8 @@ class DB_sqlite extends DB_common
                                          null, null, $php_errormsg);
             }
         }
+
         $this->connection = $conn;
-
-
         return DB_OK;
     }
 
@@ -207,10 +209,16 @@ class DB_sqlite extends DB_common
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
         $query = $this->_modifyQuery($query);
-        ini_set('track_errors', true);
+
+        if (!ini_get('track_errors')) {
+            // leave it on, since will need it on every time.
+            ini_set('track_errors', 1);
+        }
+        $php_errormsg = '';
+
         $result = @sqlite_query($query, $this->connection);
-        ini_restore('track_errors');
-        $this->_lasterror = isset($php_errormsg) ? $php_errormsg : '';
+        $this->_lasterror = $php_errormsg ? $php_errormsg : '';
+
         $this->result = $result;
         if (!$this->result) {
             return $this->sqliteRaiseError(null);
