@@ -43,7 +43,6 @@ class DB_dbase extends DB_common
     var $phptype, $dbsyntax;
     var $prepare_tokens = array();
     var $prepare_types = array();
-    var $transaction_opcount = 0;
     var $res_row = array();
     var $result = 0;
 
