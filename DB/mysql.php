@@ -213,7 +213,7 @@ class DB_mysql extends DB_common
         }
         $params[] = $dsn['username'] ? $dsn['username'] : null;
         $params[] = $dsn['password'] ? $dsn['password'] : null;
-        if (isset($dsn['new_link'])
+        if (isset($dsn['new_link']) && !$persistent
             && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true))
         {
             $params[] = true;
