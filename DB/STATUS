@@ -17,7 +17,7 @@ numCols              x    T    x    x    x    T    T    x    T    x
 numRows              x    n    n    x    x    T    E    x    T    n
 errorNative          x    n    x    n    n    T    x    x    T    n
 prepare/execute      e    x    e    e    e    E    T    e    E    e
-sequences            e    T    n    n    n    E    T    n    T    n
+sequences            e    T    n    n    x    E    T    n    T    n
 affectedRows         x    n    x    x    n    T    T    x    T    x
 fetch modes          x    T    x    x    x    T    T    x    T    x
 fetch row by number  x    n    x    x    x    x    n    x    x    x
