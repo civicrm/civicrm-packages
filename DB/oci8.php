@@ -590,9 +590,7 @@ class DB_oci8 extends DB_common
      */
     function &execute($stmt, $data = array())
     {
-        if (!is_array($data)) {
-            $data = array($data);
-        }
+        $data = (array)$data;
         $this->last_parameters = $data;
         $this->_data = $data;
 

@@ -493,9 +493,7 @@ class DB_ibase extends DB_common
      */
     function &execute($stmt, $data = array())
     {
-        if (!is_array($data)) {
-            $data = array($data);
-        }
+        $data = (array)$data;
         $this->last_parameters = $data;
 
         $types =& $this->prepare_types[(int)$stmt];

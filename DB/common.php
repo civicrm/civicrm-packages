@@ -1008,9 +1008,7 @@ class DB_common extends PEAR
     function executeEmulateQuery($stmt, $data = array())
     {
         $stmt = (int)$stmt;
-        if (!is_array($data)) {
-            $data = array($data);
-        }
+        $data = (array)$data;
         $this->last_parameters = $data;
 
         if (count($this->prepare_types[$stmt]) != count($data)) {
@@ -1238,7 +1236,7 @@ class DB_common extends PEAR
      */
     function &getOne($query, $params = array())
     {
-        settype($params, 'array');
+        $params = (array)$params;
         if ($this->features['limit'] == 'alter') {
             $query = $this->modifyLimitQuery($query, 0, 1, $params);
         }
@@ -1356,7 +1354,7 @@ class DB_common extends PEAR
      */
     function &getCol($query, $col = 0, $params = array())
     {
-        settype($params, 'array');
+        $params = (array)$params;
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
 
@@ -1488,7 +1486,7 @@ class DB_common extends PEAR
     function &getAssoc($query, $force_array = false, $params = array(),
                        $fetchmode = DB_FETCHMODE_DEFAULT, $group = false)
     {
-        settype($params, 'array');
+        $params = (array)$params;
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
 
