@@ -76,7 +76,7 @@ class DB_pgsql extends DB_common
         'limit'         => 'alter',
         'pconnect'      => true,
         'prepare'       => false,
-        'ssl'           => false,
+        'ssl'           => true,
         'transactions'  => true,
     );
 
@@ -142,13 +142,36 @@ class DB_pgsql extends DB_common
     // {{{ connect()
 
     /**
-     * Connect to a database and log in as the specified user.
+     * Connect to the database server, log in and open the database
      *
-     * @param $dsn the data source name (see DB::parseDSN for syntax)
-     * @param $persistent (optional) whether the connection should
-     *        be persistent
+     * The pgsql driver supports several DSN options:
      *
-     * @return int DB_OK on success, a DB error code on failure.
+     *   + connect_timeout  How many seconds to wait for a connection to
+     *                       be established.  Available since PEAR DB 1.7.0.
+     *   + new_link         Causes subsequent calls to connect() to return a
+     *                       new connection link instead of the existing one.
+     *                       WARNING: this is not portable to other DBMS's.
+     *                       Available only if PHP is >= 4.3.0 and PEAR DB
+     *                       is >= 1.7.0.
+     *   + options          Command line options to be sent to the server.
+     *                       Available since PEAR DB 1.6.4.
+     *   + service          Specifies a service name in pg_service.conf that
+     *                       holds additional connection parameters.
+     *                       Available since PEAR DB 1.7.0.
+     *   + sslmode          How should SSL be used when connecting?  Values:
+     *                       disable, allow, prefer or require.
+     *                       Available since PEAR DB 1.7.0.
+     *   + tty              This was used to specify where to send server
+     *                       debug output.  Available since PEAR DB 1.6.4.
+     *
+     * @param array $dsn         the data source name
+     * @param bool  $persistent  should the connection should be persistent?
+     *
+     * @return int  DB_OK on success. A DB_error object on failure.
+     *
+     * @access private
+     * @see DB::connect(), DB::parseDSN()
+     * @link http://www.postgresql.org/docs/current/static/libpq.html#LIBPQ-CONNECT
      */
     function connect($dsninfo, $persistent = false)
     {
@@ -162,39 +185,56 @@ class DB_pgsql extends DB_common
         }
 
         $protocol = $dsninfo['protocol'] ? $dsninfo['protocol'] : 'tcp';
-        $connstr = '';
 
+        $params = array();
+        $params[0] = '';
         if ($protocol == 'tcp') {
             if ($dsninfo['hostspec']) {
-                $connstr .= 'host=' . $dsninfo['hostspec'];
+                $params[0] .= 'host=' . $dsninfo['hostspec'];
             }
             if ($dsninfo['port']) {
-                $connstr .= ' port=' . $dsninfo['port'];
+                $params[0] .= ' port=' . $dsninfo['port'];
             }
         } elseif ($protocol == 'unix') {
             // Allow for pg socket in non-standard locations.
             if ($dsninfo['socket']) {
-                $connstr .= 'host=' . $dsninfo['socket'];
+                $params[0] .= 'host=' . $dsninfo['socket'];
             }
             if ($dsninfo['port']) {
-                $connstr .= ' port=' . $dsninfo['port'];
+                $params[0] .= ' port=' . $dsninfo['port'];
             }
         }
-
         if ($dsninfo['database']) {
-            $connstr .= ' dbname=\'' . addslashes($dsninfo['database']) . '\'';
+            $params[0] .= ' dbname=\'' . addslashes($dsninfo['database']) . '\'';
         }
         if ($dsninfo['username']) {
-            $connstr .= ' user=\'' . addslashes($dsninfo['username']) . '\'';
+            $params[0] .= ' user=\'' . addslashes($dsninfo['username']) . '\'';
         }
         if ($dsninfo['password']) {
-            $connstr .= ' password=\'' . addslashes($dsninfo['password']) . '\'';
+            $params[0] .= ' password=\'' . addslashes($dsninfo['password']) . '\'';
         }
         if (!empty($dsninfo['options'])) {
-            $connstr .= ' options=' . $dsninfo['options'];
+            $params[0] .= ' options=' . $dsninfo['options'];
         }
         if (!empty($dsninfo['tty'])) {
-            $connstr .= ' tty=' . $dsninfo['tty'];
+            $params[0] .= ' tty=' . $dsninfo['tty'];
+        }
+        if (!empty($dsninfo['connect_timeout'])) {
+            $params[0] .= ' connect_timeout=' . $dsninfo['connect_timeout'];
+        }
+        if (!empty($dsninfo['sslmode'])) {
+            $params[0] .= ' sslmode=' . $dsninfo['sslmode'];
+        }
+        if (!empty($dsninfo['service'])) {
+            $params[0] .= ' service=' . $dsninfo['service'];
+        }
+
+        if (version_compare(phpversion(), '4.3.0', '>=')) {
+            if (isset($dsninfo['new_link'])
+                && $dsninfo['new_link'] == 'true')
+            {
+                $params[] = PGSQL_CONNECT_FORCE_NEW;
+            }
         }
 
         $connect_function = $persistent ? 'pg_pconnect' : 'pg_connect';
@@ -202,10 +242,10 @@ class DB_pgsql extends DB_common
         $ini = ini_get('track_errors');
         $php_errormsg = '';
         if ($ini) {
-            $conn = @$connect_function($connstr);
+            $conn = @call_user_func_array($connect_function, $params);
         } else {
             ini_set('track_errors', 1);
-            $conn = @$connect_function($connstr);
+            $conn = @call_user_func_array($connect_function, $params);
             ini_set('track_errors', $ini);
         }
         if ($conn == false) {

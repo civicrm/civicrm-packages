@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.152 2005-01-31 18:48:22 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.153 2005-01-31 19:43:48 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -103,6 +103,7 @@ mysql & mysqli:
 
 mysql:
 * Add new_link and client_flags support to connect().
+  Request 1905.
 
 oci8:
 * When running PHP5, use the new oci_new_connect() and
@@ -128,6 +129,8 @@ odbc:
   drivers.
 
 pgsql:
+* Add connect_timeout (Request 3228), new_link, sslmode,
+  and service support to connect().
 * Allow multiple open parentheses in query strings
   (due to regex in simpleQuery()).  Bug 2586.
 * Use pg_affected_rows() instead of the undocumented
@@ -136,7 +139,7 @@ pgsql:
 * Add duplicate index creation to errorcode_map.
 
 sqlite:
-* Add tableInfo().  Request #1317.
+* Add tableInfo().  Request 1317.
 * Capture $php_errormsg on connection errors to make
   debugging easier.
 * Add duplicate index creation to errorcode_map.
