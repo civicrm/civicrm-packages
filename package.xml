@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.40 2004-01-25 19:10:12 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.41 2004-01-25 19:25:21 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -101,6 +101,8 @@ also avaible from a separate package).
 - Whitespace cleanup.
 - Docblock enhancements.
 - Change double quotes to single quotes for minor efficiency gain on strings that don't need to be evaluated.
+- quoteSmart() and escapeSimple() methods introduced.
+- quote() and quoteString() are now officially deprecated.
 - REWORK PORTABILITY FEATURES
     * Added new 'portability' option.
     * The 'optimize' option is now deprecated, but full backwards compatibility is built in.
@@ -127,7 +129,6 @@ also avaible from a separate package).
     * Centralize $result validation check.
 
 == ibase ====================
-- Improve DBMS specific quote() methods.
 - Fix mem leaks in some drivers even when free() is called.  (cox)
 - TABLEINFO() CLEAN UP / STANDARDIZATION
     * Can now be passsed a DB_result object, which has become the primary means of calling this method.
@@ -159,7 +160,6 @@ also avaible from a separate package).
 - Add @ to mssql_query() in tableInfo().
 - Made possible to call _mssql_field_flags() multiple times with different table names
 - Add 8134, 'Divide by zero error encountered' to errormap.  But doesn't pass errormap tests due PHP not reporting it as an error.  See PHP bug 26799.
-- Improve DBMS specific quote() methods.
 - Fix mem leaks in some drivers even when free() is called.  (cox)
 - TABLEINFO() CLEAN UP / STANDARDIZATION
     * Can now be passsed a DB_result object, which has become the primary means of calling this method.
@@ -177,7 +177,6 @@ also avaible from a separate package).
     * Have mssqlRaiseError() take advantage of the new/fixed methods.
 
 == mysql ====================
-- Improve DBMS specific quote() methods.
 - Fix mem leaks in some drivers even when free() is called.  (cox)
 - TABLEINFO() CLEAN UP / STANDARDIZATION
     * Can now be passsed a DB_result object, which has become the primary means of calling this method.
@@ -190,7 +189,6 @@ also avaible from a separate package).
 - Remove ocifreestatement() from freeResult() so can get results from SELECT queries.  Bug 229.  PHP Bug 25747.
 - Add errorcode_map for ORA-00921 'unexpected end of SQL command.'  oci8 now passes all errormap tests.
 - Suppress stdout by placing @ in front of several OCI*() calls.  Bug 77.
-- Improve DBMS specific quote() methods.
 - Return by reference oci8RaiseError().
 - Fix mem leaks in some drivers even when free() is called.  (cox)
 - TABLEINFO() CLEAN UP / STANDARDIZATION
@@ -218,7 +216,6 @@ also avaible from a separate package).
     * Do type checking before entering loop to save processing.
 
 == odbc =====================
-- Improve DBMS specific quote() methods.
 - Fix mem leaks in some drivers even when free() is called.  (cox)
 
 == pgsql ====================
@@ -226,7 +223,6 @@ also avaible from a separate package).
 - Allow EXPLAIN in simpleQuery() and merge the method's three preg tests into one.  Bug 593.
 - Eliminate potential for undefined variable in _pgFieldFlags().
 - Add several items to errorcode_map. pgsql now passes all errormap tests.
-- Improve DBMS specific quote() methods.
 - Make error-matching regular expressions case-insensitive. (chagenbu)
 - Allow for postgres sockets in a non-standard location.  Bug 339.  (chagenbu)
 - Fix mem leaks in some drivers even when free() is called.  (cox)
@@ -264,7 +260,6 @@ also avaible from a separate package).
 - Implement sequences.
 - Make fetchInto() drop numbered keys when DB_FETCHMODE_ASSOC.  Bug 350.
 - Quiet the sybase connect call.  Bug 437.
-- Improve DBMS specific quote() methods.
 - Set $this->_db so sybase_select_db() in simpleQuery() will work.  Bug 49.
 - Fix mem leaks in some drivers even when free() is called.  (cox)
 - MAKE ERROR MESSAGES WORK:
