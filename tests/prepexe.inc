@@ -60,8 +60,8 @@ echo "\n";
 echo "\n------------4------------\n";
 
 $sth1 = $dbh->prepare("SELECT * FROM phptest WHERE a = ? ORDER BY b");
-print_4($sth1, '72');
-print_4($sth1, '71');
+print_4($sth1, 72);
+print_4($sth1, 71);
 $sth2 = $dbh->prepare("SELECT * FROM phptest WHERE b = ? ORDER BY b");
 print_4($sth2, 'set1');
 $sth3 = $dbh->prepare("SELECT * FROM phptest WHERE c = & ORDER BY b");
