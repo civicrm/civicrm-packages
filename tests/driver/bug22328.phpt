@@ -1,5 +1,7 @@
 --TEST--
 DB_driver::bug22328
+--INI--
+error_reporting = 2047
 --SKIPIF--
 <?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--

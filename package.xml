@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.119 2004-09-21 18:26:27 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.120 2004-09-22 22:16:46 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -54,29 +54,13 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.6</version>
+    <version>1.6.7</version>
     <state>stable</state>
-    <date>2004-09-21</date>
+    <date>pending</date>
     <notes><![CDATA[
-=============
-BUGS FIXED:
-
-* mssql:
-Use comma, rather than colon, to delimit port in connect().
-Bug 2140.  (danielc)
-
-* dbase and pgsql:
-Use track_errors instead of output buffering to capture
-error messages when connecting.  Bug 2011.  (danielc)
-
-* pgsql:
-Add port to connect string when protocol is unix.
-Bug 1919.  (danielc)
-
-* pgsql:
-Accommodate changes made to PostgreSQL so "no such field"
-errors get properly indicated rather than being mislabeled
-as "no such table."  (danielc)
+* Add --INI-- section with error_reporting = 2047 to
+test files ensuring they pass under recent versions of
+PHP 5.  (danielc)
     ]]></notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>

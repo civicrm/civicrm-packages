@@ -1,5 +1,7 @@
 --TEST--
 DB_driver::sequences
+--INI--
+error_reporting = 2047
 --SKIPIF--
 <?php
 error_reporting(E_ALL);
