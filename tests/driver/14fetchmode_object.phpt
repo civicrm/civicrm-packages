@@ -1,10 +1,10 @@
 --TEST--
 DB_driver::fetchmode object
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
+<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--
 <?php
-require_once 'connect.inc';
+require_once './connect.inc';
 require_once '../fetchmode_object.inc';
 ?>
 --EXPECT--
