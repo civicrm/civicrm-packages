@@ -421,7 +421,7 @@ class DB_dbase extends DB_common
      */
     function tableInfo($result = null, $mode = null)
     {
-        if (version_compare(phpversion(), '5.0.0', '>=')) {
+        if (function_exists('dbase_get_header_info')) {
             $id = @dbase_get_header_info($this->connection);
             if (!$id && $php_errormsg) {
                 return $this->raiseError(DB_ERROR,

@@ -870,7 +870,7 @@ class DB_ibase extends DB_common
      */
     function errorNative()
     {
-        if (version_compare(phpversion(), '5.0.0', '>=')) {
+        if (function_exists('ibase_errcode')) {
             return @ibase_errcode();
         }
         if (preg_match('/^Dynamic SQL Error SQL error code = ([0-9-]+)/i',

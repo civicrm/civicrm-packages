@@ -215,7 +215,7 @@ class DB_oci8 extends DB_common
             $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        if (version_compare(phpversion(), '5.0.0', '>=')) {
+        if (function_exists('oci_connect')) {
             if (isset($dsn['new_link'])
                 && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true))
             {
@@ -269,7 +269,7 @@ class DB_oci8 extends DB_common
      */
     function disconnect()
     {
-        if (version_compare(phpversion(), '5.0.0', '>=')) {
+        if (function_exists('oci_close')) {
             $ret = @oci_close($this->connection);
         } else {
             $ret = @OCILogOff($this->connection);

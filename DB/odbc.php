@@ -815,7 +815,7 @@ class DB_odbc extends DB_common
     {
         switch ($type) {
             case 'databases':
-                if (version_compare(phpversion(), '4.3.0', '<')) {
+                if (!function_exists('odbc_data_source')) {
                     return null;
                 }
                 $res = @odbc_data_source($this->connection, SQL_FETCH_FIRST);
