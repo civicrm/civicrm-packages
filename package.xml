@@ -38,6 +38,12 @@ to LDAP servers and MS ADO (using COM) are also avaible from a separate package)
       <name>Tomas V.V.Cox</name>
       <email>cox@idecnet.com</email>
     </maintainer>
+    <maintainer>
+      <user>chagenbu</user>
+      <role>contributor</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
   </maintainers>
   <release>
     <version>1.5.0RC3</version>
