@@ -26,7 +26,7 @@ test - |
 results:
 |72 - set1 - opaque
 placeholder
-test - |
+test - 1234-56-78|
 |72 - set2 - opaque
 placeholder
 test - |
@@ -41,7 +41,7 @@ FALSE
 ------------4------------
 |72 - set1 - opaque
 placeholder
-test - |
+test - 1234-56-78|
 |72 - set2 - opaque
 placeholder
 test - |
@@ -52,11 +52,11 @@ test - |
 ~~
 |72 - set1 - opaque
 placeholder
-test - |
+test - 1234-56-78|
 ~~
 |72 - set1 - opaque
 placeholder
-test - |
+test - 1234-56-78|
 |72 - set2 - opaque
 placeholder
 test - |

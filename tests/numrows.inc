@@ -29,7 +29,7 @@ if (!DB::isError($rows = $sth->numRows())) {
     print "\n";
 }
 for ($i = 0; $i < 5; $i++) {
-    $sth = $dbh->query("INSERT INTO phptest (a) VALUES($i)");
+    $sth = $dbh->query("INSERT INTO phptest (a) VALUES ($i)");
     $sth = $dbh->query("SELECT a FROM phptest");
     if (!DB::isError($rows = $sth->numRows())) {
         print "$rows\n";

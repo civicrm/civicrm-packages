@@ -33,11 +33,11 @@ print_results();
 echo "\n------------2------------\n";
 
 $dbh->query('DELETE FROM phptest');
-$sth = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES (?,?,&)");
+$sth = $dbh->prepare('INSERT INTO phptest (a, b, c, d) VALUES (?, ?, &, ?)');
 $data = array(
-    0 => array(72, 'set1', $tmpfile),
-    1 => array(72, 'set2', $tmpfile),
-    2 => array(72, 'set3', $tmpfile)
+    0 => array(72, 'set1', $tmpfile, '1234-56-78'),
+    1 => array(72, 'set2', $tmpfile, null),
+    2 => array(72, 'set3', $tmpfile, null)
 );
 $dbh->executeMultiple($sth, $data);
 print_results();
@@ -64,8 +64,8 @@ echo "\n------------4------------\n";
 $sth1 = $dbh->prepare("SELECT * FROM phptest WHERE a = ? ORDER BY b");
 print_4($sth1, 72);
 print_4($sth1, 71);
-$sth2 = $dbh->prepare("SELECT * FROM phptest WHERE b = ? ORDER BY b");
-print_4($sth2, 'set1');
+$sth2 = $dbh->prepare("SELECT * FROM phptest WHERE d = ? ORDER BY b");
+print_4($sth2, '1234-56-78');
 $sth3 = $dbh->prepare("SELECT * FROM phptest WHERE c = & ORDER BY b");
 print_4($sth3, $tmpfile);
 

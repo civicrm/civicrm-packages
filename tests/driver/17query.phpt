@@ -58,10 +58,10 @@ $dbh->setFetchMode(DB_FETCHMODE_ASSOC);
 $res =& $dbh->query('DELETE FROM phptest WHERE a = 17');
 print 'delete: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
 
-$res =& $dbh->query("INSERT INTO phptest (a, b) VALUES (17, 'one')");
+$res =& $dbh->query("INSERT INTO phptest (a, b, c) VALUES (17, 'one', 'One')");
 print 'insert: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
 
-$res =& $dbh->query('INSERT INTO phptest (a, b) VALUES (?, ?)', array(17, 'two'));
+$res =& $dbh->query('INSERT INTO phptest (a, b, c) VALUES (?, ?, ?)', array(17, 'two', 'Two'));
 print 'insert: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
 
 
@@ -69,7 +69,7 @@ $res =& $dbh->query('SELECT a, b FROM phptest WHERE a = 17');
 $row = $res->fetchRow();
 print "a = {$row['a']}, b = {$row['b']}\n";
 
-$res =& $dbh->query('SELECT a, b FROM phptest WHERE b = ?', array('two'));
+$res =& $dbh->query('SELECT a, b FROM phptest WHERE c = ?', array('Two'));
 $row = $res->fetchRow();
 print "a = {$row['a']}, b = {$row['b']}\n";
 
