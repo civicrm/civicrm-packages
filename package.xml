@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.163 2005-02-05 01:49:22 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.164 2005-02-08 20:38:51 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -117,6 +117,11 @@ ifx:
   DB_PORTABILITY_NUMROWS must be enabled).
 * Add $this->DB_common() call to the constructor,
   just like is done in all the other drivers.
+* Add items to error map:
+  + -236: insert column count doesn't match value count
+  + -316: create duplicate index
+  + -319: drop non-existant index
+  + -692: delete record with foreign key constraint
 
 mssql:
 * Use "," to delimit port only for Windows.  Use ":"
@@ -196,6 +201,10 @@ sybase:
 * Remove $num_rows property.  Wasn't used in all
   drivers and numRows() can get the answer
   directly from the DBMS' API.
+* Add items to error mapping:
+  + insert column count doesn't match value count
+  + create duplicate index
+  + drop non-existant index
 
 tests:
 * setup.inc now uses an array for the DSN's
