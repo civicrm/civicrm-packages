@@ -90,6 +90,7 @@ class DB_oci8 extends DB_common
             1722 => DB_ERROR_INVALID_NUMBER,
             2289 => DB_ERROR_NOSUCHTABLE,
             2291 => DB_ERROR_CONSTRAINT,
+            2292 => DB_ERROR_CONSTRAINT,
             2449 => DB_ERROR_CONSTRAINT,
         );
     }
