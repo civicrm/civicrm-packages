@@ -119,6 +119,7 @@ class DB_sybase extends DB_common
                 return $this->raiseError(DB_ERROR_NODBSELECTED, null,
                                          null, null, sybase_get_last_message());
             }
+            $this->_db = $dsninfo['database'];
         }
 
         $this->connection = $conn;
