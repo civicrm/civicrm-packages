@@ -192,8 +192,8 @@ class DB_oci8 extends DB_common
      * Fetch a row and insert the data into an existing array.
      *
      * The array's keys will be converted to lower case if
-     * <var>$options['optimize']</var> is set to <samp>portability</samp>
-     * AND <var>$fetchmode</var> is set to <samp>DB_FETCHMODE_ASSOC</samp>.
+     * <var>$options['optimize']</var> is set to <kbd>portability</kbd>
+     * AND <var>$fetchmode</var> is set to <kbd>DB_FETCHMODE_ASSOC</kbd>.
      *
      * <var>$options['optimize']</var> can be set when instantiating the
      * DB class via DB::connect(), but can be changed using
@@ -281,9 +281,9 @@ class DB_oci8 extends DB_common
      * @param $str mixed data to be quoted
      *
      * @return mixed Submitted variable's type = returned value:
-     *               + null = the string <samp>NULL</samp>
-     *               + boolean = <samp>1</samp> if true or
-     *                 <samp>0</samp> if false.  Use the NUMBER(1)
+     *               + null = the string <kbd>NULL</kbd>
+     *               + boolean = <kbd>1</kbd> if true or
+     *                 <kbd>0</kbd> if false.  Use the NUMBER(1)
      *                 data type because Oracle doesn't have BOOLEAN.
      *               + integer or double = the unquoted number
      *               + other (including strings and numeric strings) =
@@ -379,21 +379,21 @@ class DB_oci8 extends DB_common
      *
      * With oci8, this is emulated.
      *
-     * prepare() requires a generic query as string like <samp>
+     * prepare() requires a generic query as string like <code>
      *    INSERT INTO numbers VALUES (?, ?, ?)
-     * </samp>.  The <samp>?</samp> characters are placeholders.
+     * </code>.  The <kbd>?</kbd> characters are placeholders.
      *
      * Three types of placeholders can be used:
-     *   + <samp>?</samp>  a quoted scalar value, i.e. strings, integers
-     *   + <samp>!</samp>  value is inserted 'as is'
-     *   + <samp>&</samp>  requires a file name.  The file's contents get
+     *   + <kbd>?</kbd>  a quoted scalar value, i.e. strings, integers
+     *   + <kbd>!</kbd>  value is inserted 'as is'
+     *   + <kbd>&</kbd>  requires a file name.  The file's contents get
      *                     inserted into the query (i.e. saving binary
      *                     data in a db)
      *
      * Use backslashes to escape placeholder characters if you don't want
-     * them to be interpreted as placeholders.  Example: <samp>
-     * "UPDATE foo SET col=? WHERE col='over \& under'"
-     * </samp>
+     * them to be interpreted as placeholders.  Example: <code>
+     *    "UPDATE foo SET col=? WHERE col='over \& under'"
+     * </code>
      *
      * @param string $query query to be prepared
      * @return mixed DB statement resource on success. DB_Error on failure.
