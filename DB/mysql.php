@@ -157,13 +157,22 @@ class DB_mysql extends DB_common
     // {{{ connect()
 
     /**
-     * Connect to a database and log in as the specified user.
+     * Connect to the database server, log in and open the database
      *
-     * @param $dsn the data source name (see DB::parseDSN for syntax)
-     * @param $persistent (optional) whether the connection should
-     *        be persistent
-     * @access public
-     * @return int DB_OK on success, a DB error on failure
+     * Since version 1.7.0 of PEAR DB, the mysql driver supports two
+     * additional DSN options:
+     *   + new_link      Causes subsequent calls to connect() to return a
+     *                   new connection link instead of the existing one.
+     *   + client_flags  Any combination of MYSQL_CLIENT_* constants.  Only
+     *                   effective if PHP is at version 4.3.0 or greater.
+     *
+     * @param array $dsn         the data source name
+     * @param bool  $persistent  should the connection should be persistent?
+     *
+     * @return int  DB_OK on success. A DB_error object on failure.
+     *
+     * @access private
+     * @see DB::connect()
      */
     function connect($dsninfo, $persistent = false)
     {
@@ -187,22 +196,25 @@ class DB_mysql extends DB_common
 
         $connect_function = $persistent ? 'mysql_pconnect' : 'mysql_connect';
 
-        $ini = ini_get('track_errors');
-        ini_set('track_errors', 1);
-        $php_errormsg = '';
-
-        if ($dbhost && $dsninfo['username'] && isset($dsninfo['password'])) {
-            $conn = @$connect_function($dbhost, $dsninfo['username'],
-                                       $dsninfo['password']);
-        } elseif ($dbhost && $dsninfo['username']) {
-            $conn = @$connect_function($dbhost, $dsninfo['username']);
-        } elseif ($dbhost) {
-            $conn = @$connect_function($dbhost);
-        } else {
-            $conn = false;
+        $params = array();
+        $params[] = $dbhost;
+        $params[] = $dsninfo['username'] ? $dsninfo['username'] : null;
+        $params[] = $dsninfo['password'] ? $dsninfo['password'] : null;
+        $params[] = isset($dsninfo['new_link']) ? $dsninfo['new_link'] : null;
+        if (version_compare(phpversion(), '4.3.0', '>=')) {
+            $params[] = isset($dsninfo['client_flags'])
+                        ? $dsninfo['client_flags'] : null;
         }
 
-        ini_set('track_errors', $ini);
+        $ini = ini_get('track_errors');
+        $php_errormsg = '';
+        if ($ini) {
+            $conn = @call_user_func_array($connect_function, $params);
+        } else {
+            ini_set('track_errors', 1);
+            $conn = @call_user_func_array($connect_function, $params);
+            ini_set('track_errors', $ini);
+        }
 
         if (!$conn) {
             if (($err = @mysql_error()) != '') {

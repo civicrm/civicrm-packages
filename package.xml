@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.151 2005-01-31 07:11:16 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.152 2005-01-31 18:48:22 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -100,6 +100,9 @@ mysql & mysqli:
 * Remove $num_rows property.  Wasn't used in all
   drivers and numRows() can get the answer
   directly from the DBMS' API.
+
+mysql:
+* Add new_link and client_flags support to connect().
 
 oci8:
 * When running PHP5, use the new oci_new_connect() and
