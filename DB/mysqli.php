@@ -21,9 +21,6 @@
 // $Id$
 
 
-// NOTE:  The tableInfo() method must be redone because the functions it
-// relies on no longer exist in the new extension.
-//
 // EXPERIMENTAL
 
 
@@ -230,11 +227,14 @@ class DB_mysqli extends DB_common
         if (!$result) {
             return $this->mysqlRaiseError();
         }
+# this next block is still sketchy..
         if (is_object($result)) {
             $numrows = $this->numrows($result);
             if (is_object($numrows)) {
                 return $numrows;
             }
+# need to come up with different means for next line
+# since $result is object (int)$result won't fly...
             $this->num_rows[(int)$result] = $numrows;
             return $result;
         }
@@ -327,6 +327,8 @@ class DB_mysqli extends DB_common
      */
     function freeResult($result)
     {
+# need to come up with different means for next line
+# since $result is object (int)$result won't fly...
         unset($this->num_rows[(int)$result]);
         return @mysqli_free_result($result);
     }
