@@ -163,7 +163,7 @@ class DB_sqlite extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('sqlite')) {
+        if (!PEAR::loadExtension('sqlite')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 

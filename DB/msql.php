@@ -126,7 +126,7 @@ class DB_msql extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('msql')) {
+        if (!PEAR::loadExtension('msql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 

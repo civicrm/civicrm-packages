@@ -867,30 +867,6 @@ class DB
     }
 
     // }}}
-    // {{{ assertExtension()
-
-    /**
-     * Load a PHP database extension if it is not loaded already
-     *
-     * @param string $name the base name of the extension (without the .so or
-     *                     .dll suffix)
-     *
-     * @return boolean  true if the extension was already or successfully
-     *                  loaded, false if it could not be loaded
-     *
-     * @access public
-     */
-    function assertExtension($name)
-    {
-        if (!extension_loaded($name)) {
-            $dlext = OS_WINDOWS ? '.dll' : '.so';
-            $dlprefix = OS_WINDOWS ? 'php_' : '';
-            @dl($dlprefix . $name . $dlext);
-            return extension_loaded($name);
-        }
-        return true;
-    }
-    // }}}
 }
 
 // }}}

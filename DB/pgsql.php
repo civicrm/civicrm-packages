@@ -178,7 +178,7 @@ class DB_pgsql extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('pgsql')) {
+        if (!PEAR::loadExtension('pgsql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 

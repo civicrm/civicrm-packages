@@ -198,7 +198,7 @@ class DB_oci8 extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('oci8')) {
+        if (!PEAR::loadExtension('oci8')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 

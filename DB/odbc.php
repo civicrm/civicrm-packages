@@ -172,7 +172,7 @@ class DB_odbc extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('odbc')) {
+        if (!PEAR::loadExtension('odbc')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 

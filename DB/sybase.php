@@ -164,8 +164,8 @@ class DB_sybase extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('sybase') &&
-            !DB::assertExtension('sybase_ct'))
+        if (!PEAR::loadExtension('sybase') &&
+            !PEAR::loadExtension('sybase_ct'))
         {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }

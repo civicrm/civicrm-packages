@@ -186,7 +186,7 @@ class DB_ibase extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('interbase')) {
+        if (!PEAR::loadExtension('interbase')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 

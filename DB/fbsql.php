@@ -146,7 +146,7 @@ class DB_fbsql extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('fbsql')) {
+        if (!PEAR::loadExtension('fbsql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 

@@ -180,7 +180,7 @@ class DB_mysql extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('mysql')) {
+        if (!PEAR::loadExtension('mysql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 

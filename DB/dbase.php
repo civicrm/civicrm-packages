@@ -146,7 +146,7 @@ class DB_dbase extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('dbase')) {
+        if (!PEAR::loadExtension('dbase')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 

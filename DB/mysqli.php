@@ -267,7 +267,7 @@ class DB_mysqli extends DB_common
      */
     function connect($dsn, $persistent = false)
     {
-        if (!DB::assertExtension('mysqli')) {
+        if (!PEAR::loadExtension('mysqli')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
