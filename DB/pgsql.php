@@ -219,8 +219,7 @@ class DB_pgsql extends DB_common
 
         $protocol = $dsn['protocol'] ? $dsn['protocol'] : 'tcp';
 
-        $params = array();
-        $params[0] = '';
+        $params = array('');
         if ($protocol == 'tcp') {
             if ($dsn['hostspec']) {
                 $params[0] .= 'host=' . $dsn['hostspec'];

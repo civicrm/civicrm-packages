@@ -184,22 +184,20 @@ class DB_mssql extends DB_common
             $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        $dbhost = $dsn['hostspec'] ? $dsn['hostspec'] : 'localhost';
+        $params = array(
+            $dsn['hostspec'] ? $dsn['hostspec'] : 'localhost',
+            $dsn['username'] ? $dsn['username'] : null,
+            $dsn['password'] ? $dsn['password'] : null,
+        );
         if ($dsn['port']) {
-            $dbhost .= ((substr(PHP_OS, 0, 3) == 'WIN') ? ',' : ':')
-                     . $dsn['port'];
+            $params[0] .= ((substr(PHP_OS, 0, 3) == 'WIN') ? ',' : ':')
+                        . $dsn['port'];
         }
 
         $connect_function = $persistent ? 'mssql_pconnect' : 'mssql_connect';
 
-        if ($dbhost && $dsn['username'] && $dsn['password']) {
-            $this->connection = @$connect_function($dbhost, $dsn['username'],
-                                                   $dsn['password']);
-        } elseif ($dbhost && $dsn['username']) {
-            $this->connection = @$connect_function($dbhost, $dsn['username']);
-        } else {
-            $this->connection = @$connect_function($dbhost);
-        }
+        $this->connection = @call_user_func_array($connect_function, $params);
+
         if (!$this->connection) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED,
                                      null, null, null,
