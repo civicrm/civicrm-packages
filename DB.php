@@ -262,8 +262,9 @@ class DB
 
         $classname = "DB_${type}";
         if (!class_exists($classname)) {
-            return PEAR::raiseError(null, DB_ERROR_NOT_FOUND,
-                                    null, null, null, 'DB_Error', true);
+            return PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
+                                    "Unable to include the DB/{$type}.php file",
+                                    'DB_Error', true);
         }
 
         @$obj =& new $classname;
