@@ -71,10 +71,11 @@ require_once './mktable.inc';
  * @see PEAR::setErrorHandling()
  */
 function pe($o){
-    global $dbh;
+    global $dbh, $skip_array;
 
     if ($o->getMessage() == "DB Error: can't distinguish duplicate field names") {
         print "NOTICE: $dbh->phptype can't distinguish duplicate field names\n";
+        $skip_array = true;
         return;
     }
 
@@ -96,7 +97,13 @@ function pe($o){
  * @return void
  */
 function examineArrayData($array, $field = false, $query = true) {
-    global $dbh, $quirks;
+    global $dbh, $quirks, $skip_array;
+
+    if ($skip_array == true) {
+        $skip_array = false;
+        print "\n\n\n\n\n";
+        return;
+    }
 
     foreach ($array as $key => $value) {
         if ($field !== false &&
@@ -239,11 +246,11 @@ $quirks = array(
         4 => array(
             'type' => 'SQLCHAR',
             'len' => 4,
-            'flags' => 'not_null default_df%20t',
+            'flags' => 'not_null',
         ),
         5 => array(
-            'type' => 'SQLREAL',
-            'len' => 4,
+            'type' => 'SQLDECIMAL',
+            'len' => 513,
             'flags' => '',
         ),
         9 => array(

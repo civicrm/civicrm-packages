@@ -17,13 +17,13 @@ $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, "errhandler");
 
 
 print "Trying to provoke DB_ERROR_NOSUCHTABLE\n";
-$dbh->query("SELECT * FROM tableThatDoesNotExist");
+$dbh->query("SELECT * FROM tableThatsBogus");
 
 print "Trying to provoke DB_ERROR_ALREADY_EXISTS for create table\n";
 $dbh->query($test_mktable_query);
 
 print "Trying to provoke DB_ERROR_NOSUCHTABLE\n";
-$dbh->query("DROP TABLE tableThatDoesNotExist");
+$dbh->query("DROP TABLE tableThatsBogus");
 
 
 print "Trying to provoke DB_ERROR_CONSTRAINT for primary key insert duplicate\n";

@@ -26,7 +26,7 @@ $dbh->query('DROP TABLE php_limit');
 
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
-$dbh->query('CREATE TABLE php_limit (a VARCHAR(20))');
+$dbh->query('CREATE TABLE php_limit (a CHAR(20))');
 
 
 $from    = 0;
