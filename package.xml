@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.45 2004-01-29 02:16:19 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.46 2004-01-29 03:41:30 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -143,6 +143,7 @@ dropSequence() for uniformity between drivers.
           <file name="15quote.phpt"/>
           <file name="16tableinfo.phpt"/>
           <file name="17query.phpt"/>
+          <file name="18get.phpt"/>
           <file name="bug22328.phpt"/>
           <file name="connect.inc"/>
           <file name="mktable.inc"/>
