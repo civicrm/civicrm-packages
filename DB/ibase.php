@@ -244,6 +244,11 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ disconnect()
 
+    /**
+     * Disconnects from the database server
+     *
+     * @return bool  TRUE on success, FALSE on failure
+     */
     function disconnect()
     {
         $ret = @ibase_close($this->connection);
@@ -254,6 +259,15 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ simpleQuery()
 
+    /**
+     * Sends a query to the database server
+     *
+     * @param string  the SQL query string
+     *
+     * @return mixed  + a PHP result resrouce for successful SELECT queries
+     *                + the DB_OK constant for other successful queries
+     *                + a DB_Error object on failure
+     */
     function simpleQuery($query)
     {
         $ismanip = DB::isManip($query);
@@ -324,24 +338,26 @@ class DB_ibase extends DB_common
     // {{{ fetchInto()
 
     /**
-     * Fetch a row and insert the data into an existing array.
+     * Places a row from the result set into the given array
      *
      * Formating of the array and the data therein are configurable.
      * See DB_result::fetchInto() for more information.
      *
-     * @param resource $result    query result identifier
-     * @param array    $arr       (reference) array where data from the row
-     *                            should be placed
-     * @param int      $fetchmode how the resulting array should be indexed
-     * @param int      $rownum    the row number to fetch
+     * This method is not meant to be called directly.  Use
+     * DB_result::fetchInto() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return mixed DB_OK on success, null when end of result set is
-     *               reached or on failure
+     * @param resource $result    the query result resource
+     * @param array    $arr       the referenced array to put the data in
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch (0 = first row)
+     *
+     * @return mixed  DB_OK on success, NULL when the end of a result set is
+     *                 reached or on failure
      *
      * @see DB_result::fetchInto()
-     * @access private
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum !== null) {
             return $this->ibaseRaiseError(DB_ERROR_NOT_CAPABLE);
@@ -373,6 +389,19 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ freeResult()
 
+    /**
+     * Deletes the result set and frees the memory occupied by the result set
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::free() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return bool  TRUE on success, FALSE if $result is invalid
+     *
+     * @see DB_result::free()
+     */
     function freeResult($result)
     {
         return @ibase_free_result($result);
@@ -391,13 +420,11 @@ class DB_ibase extends DB_common
     // {{{ affectedRows()
 
     /**
-     * Gets the number of rows affected by the last data manipulation
-     * query
+     * Determines the number of rows affected by a data maniuplation query
      *
-     * @return int  the number of rows affected.  If the last query was
-     *               a SELECT, returns 0.  If the DBMS or PHP driver
-     *               doesn't yet support this feature a PEAR Error
-     *               object is returned with a code of DB_ERROR_NOT_CAPABLE.
+     * 0 is returned for queries that don't manipulate data.
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
      */
     function affectedRows()
     {
@@ -410,6 +437,19 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ numCols()
 
+    /**
+     * Gets the number of columns in a result set
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::numCols() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of columns.  A DB_Error object on failure.
+     *
+     * @see DB_result::numCols()
+     */
     function numCols($result)
     {
         $cols = @ibase_num_fields($result);
@@ -578,6 +618,14 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ autoCommit()
 
+    /**
+     * Enable or disable automatic commits
+     *
+     * @param bool $onoff  true turns it on, false turns it off
+     *
+     * @return int  DB_OK on success.  A DB_Error object if the driver
+     *               doesn't support auto-committing transactions.
+     */
     function autoCommit($onoff = false)
     {
         $this->autocommit = $onoff ? 1 : 0;
@@ -587,6 +635,11 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ commit()
 
+    /**
+     * Commits the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
+     */
     function commit()
     {
         return @ibase_commit($this->connection);
@@ -595,6 +648,11 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ rollback()
 
+    /**
+     * Reverts the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
+     */
     function rollback()
     {
         return @ibase_rollback($this->connection);
@@ -616,13 +674,13 @@ class DB_ibase extends DB_common
      *
      * @param string  $seq_name  name of the sequence
      * @param boolean $ondemand  when true, the seqence is automatically
-     *                           created if it does not exist
+     *                            created if it does not exist
      *
-     * @return int  the next id number in the sequence.  DB_Error if problem.
+     * @return int  the next id number in the sequence.
+     *               A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::nextID()
-     * @access public
+     * @see DB_common::nextID(), DB_common::getSequenceName(),
+     *      DB_ibase::createSequence(), DB_ibase::dropSequence()
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -656,11 +714,14 @@ class DB_ibase extends DB_common
     // {{{ createSequence()
 
     /**
-     * Create the sequence
+     * Creates a new sequence
      *
-     * @param string $seq_name the name of the sequence
-     * @return mixed DB_OK on success or DB error on error
-     * @access public
+     * @param string $seq_name  name of the new sequence
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
+     *
+     * @see DB_common::createSequence(), DB_common::getSequenceName(),
+     *      DB_ibase::nextID(), DB_ibase::dropSequence()
      */
     function createSequence($seq_name)
     {
@@ -676,11 +737,14 @@ class DB_ibase extends DB_common
     // {{{ dropSequence()
 
     /**
-     * Drop a sequence
+     * Deletes a sequence
      *
-     * @param string $seq_name the name of the sequence
-     * @return mixed DB_OK on success or DB error on error
-     * @access public
+     * @param string $seq_name  name of the sequence to be deleted
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
+     *
+     * @see DB_common::dropSequence(), DB_common::getSequenceName(),
+     *      DB_ibase::nextID(), DB_ibase::createSequence()
      */
     function dropSequence($seq_name)
     {
@@ -856,14 +920,14 @@ class DB_ibase extends DB_common
     // {{{ ibaseRaiseError()
 
     /**
-     * Gather information about an error, then use that info to create a
-     * DB error object and finally return that object.
+     * Produces a DB_Error object regarding the current problem
      *
-     * @param  integer  $db_errno  PEAR error number (usually a DB constant) if
-     *                             manually raising an error
-     * @param  string  $native_errmsg  text of error message if known
-     * @return object  DB error object
-     * @see DB_common::errorCode()
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
      * @see DB_common::raiseError()
      */
     function &ibaseRaiseError($db_errno = null, $native_errmsg = null)

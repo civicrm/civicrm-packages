@@ -198,11 +198,9 @@ class DB_fbsql extends DB_common
     // {{{ disconnect()
 
     /**
-     * Log out and disconnect from the database.
+     * Disconnects from the database server
      *
-     * @access public
-     *
-     * @return bool true on success, false if not connected.
+     * @return bool  TRUE on success, FALSE on failure
      */
     function disconnect()
     {
@@ -215,16 +213,13 @@ class DB_fbsql extends DB_common
     // {{{ simpleQuery()
 
     /**
-     * Send a query to fbsql and return the results as a fbsql resource
-     * identifier.
+     * Sends a query to the database server
      *
-     * @param the SQL query
+     * @param string  the SQL query string
      *
-     * @access public
-     *
-     * @return mixed returns a valid fbsql result for successful SELECT
-     * queries, DB_OK for other successful queries.  A DB error is
-     * returned on failure.
+     * @return mixed  + a PHP result resrouce for successful SELECT queries
+     *                + the DB_OK constant for other successful queries
+     *                + a DB_Error object on failure
      */
     function simpleQuery($query)
     {
@@ -263,24 +258,26 @@ class DB_fbsql extends DB_common
     // {{{ fetchInto()
 
     /**
-     * Fetch a row and insert the data into an existing array.
+     * Places a row from the result set into the given array
      *
      * Formating of the array and the data therein are configurable.
      * See DB_result::fetchInto() for more information.
      *
-     * @param resource $result    query result identifier
-     * @param array    $arr       (reference) array where data from the row
-     *                            should be placed
-     * @param int      $fetchmode how the resulting array should be indexed
-     * @param int      $rownum    the row number to fetch
+     * This method is not meant to be called directly.  Use
+     * DB_result::fetchInto() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return mixed DB_OK on success, null when end of result set is
-     *               reached or on failure
+     * @param resource $result    the query result resource
+     * @param array    $arr       the referenced array to put the data in
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch (0 = first row)
+     *
+     * @return mixed  DB_OK on success, NULL when the end of a result set is
+     *                 reached or on failure
      *
      * @see DB_result::fetchInto()
-     * @access private
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum !== null) {
             if (!@fbsql_data_seek($result, $rownum)) {
@@ -311,13 +308,17 @@ class DB_fbsql extends DB_common
     // {{{ freeResult()
 
     /**
-     * Free the internal resources associated with $result.
+     * Deletes the result set and frees the memory occupied by the result set
      *
-     * @param $result fbsql result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::free() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @access public
+     * @param resource $result  PHP's query result resource
      *
-     * @return bool true on success, false if $result is invalid
+     * @return bool  TRUE on success, FALSE if $result is invalid
+     *
+     * @see DB_result::free()
      */
     function freeResult($result)
     {
@@ -327,6 +328,14 @@ class DB_fbsql extends DB_common
     // }}}
     // {{{ autoCommit()
 
+    /**
+     * Enable or disable automatic commits
+     *
+     * @param bool $onoff  true turns it on, false turns it off
+     *
+     * @return int  DB_OK on success.  A DB_Error object if the driver
+     *               doesn't support auto-committing transactions.
+     */
     function autoCommit($onoff=false)
     {
         if ($onoff) {
@@ -339,6 +348,11 @@ class DB_fbsql extends DB_common
     // }}}
     // {{{ commit()
 
+    /**
+     * Commits the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
+     */
     function commit()
     {
         @fbsql_commit();
@@ -347,6 +361,11 @@ class DB_fbsql extends DB_common
     // }}}
     // {{{ rollback()
 
+    /**
+     * Reverts the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
+     */
     function rollback()
     {
         @fbsql_rollback();
@@ -356,13 +375,17 @@ class DB_fbsql extends DB_common
     // {{{ numCols()
 
     /**
-     * Get the number of columns in a result set.
+     * Gets the number of columns in a result set
      *
-     * @param $result fbsql result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::numCols() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @access public
+     * @param resource $result  PHP's query result resource
      *
-     * @return int the number of columns per row in $result
+     * @return int  the number of columns.  A DB_Error object on failure.
+     *
+     * @see DB_result::numCols()
      */
     function numCols($result)
     {
@@ -377,13 +400,17 @@ class DB_fbsql extends DB_common
     // {{{ numRows()
 
     /**
-     * Get the number of rows in a result set.
+     * Gets the number of rows in a result set
      *
-     * @param $result fbsql result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::numRows() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @access public
+     * @param resource $result  PHP's query result resource
      *
-     * @return int the number of rows in $result
+     * @return int  the number of rows.  A DB_Error object on failure.
+     *
+     * @see DB_result::numRows()
      */
     function numRows($result)
     {
@@ -398,10 +425,11 @@ class DB_fbsql extends DB_common
     // {{{ affectedRows()
 
     /**
-     * Gets the number of rows affected by the data manipulation
-     * query.  For other queries, this function returns 0.
+     * Determines the number of rows affected by a data maniuplation query
      *
-     * @return number of rows affected by the last query
+     * 0 is returned for queries that don't manipulate data.
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
      */
     function affectedRows()
     {
@@ -417,12 +445,9 @@ class DB_fbsql extends DB_common
     // {{{ errorNative()
 
     /**
-     * Get the native error code of the last error (if any) that
-     * occured on the current connection.
+     * Get the DBMS' native error code produced by the last query
      *
-     * @access public
-     *
-     * @return int native fbsql error code
+     * @return int  the DBMS' error code
      */
     function errorNative()
     {
@@ -437,13 +462,13 @@ class DB_fbsql extends DB_common
      *
      * @param string  $seq_name  name of the sequence
      * @param boolean $ondemand  when true, the seqence is automatically
-     *                           created if it does not exist
+     *                            created if it does not exist
      *
-     * @return int  the next id number in the sequence.  DB_Error if problem.
+     * @return int  the next id number in the sequence.
+     *               A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::nextID()
-     * @access public
+     * @see DB_common::nextID(), DB_common::getSequenceName(),
+     *      DB_fbsql::createSequence(), DB_fbsql::dropSequence()
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -476,12 +501,10 @@ class DB_fbsql extends DB_common
      *
      * @param string $seq_name  name of the new sequence
      *
-     * @return int  DB_OK on success.  A DB_Error object is returned if
-     *              problems arise.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::createSequence()
-     * @access public
+     * @see DB_common::createSequence(), DB_common::getSequenceName(),
+     *      DB_fbsql::nextID(), DB_fbsql::dropSequence()
      */
     function createSequence($seq_name)
     {
@@ -503,11 +526,10 @@ class DB_fbsql extends DB_common
      *
      * @param string $seq_name  name of the sequence to be deleted
      *
-     * @return int  DB_OK on success.  DB_Error if problems.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::dropSequence()
-     * @access public
+     * @see DB_common::dropSequence(), DB_common::getSequenceName(),
+     *      DB_fbsql::nextID(), DB_fbsql::createSequence()
      */
     function dropSequence($seq_name)
     {
@@ -526,6 +548,22 @@ class DB_fbsql extends DB_common
     // }}}
     // {{{ modifyLimitQuery()
 
+    /**
+     * Adds LIMIT clauses to a query string according to current DBMS standards
+     *
+     * @param string $query   the query to modify
+     * @param int    $from    the row to start to fetching (0 = the first row)
+     * @param int    $count   the numbers of rows to fetch
+     * @param mixed  $params  array, string or numeric data to be used in
+     *                         execution of the statement.  Quantity of items
+     *                         passed must match quantity of placeholders in
+     *                         query:  meaning 1 placeholder for non-array
+     *                         parameters or 1 placeholder per array element.
+     *
+     * @return string  the query string with LIMIT clauses added
+     *
+     * @access protected
+     */
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
         if (DB::isManip($query)) {
@@ -541,19 +579,21 @@ class DB_fbsql extends DB_common
     // {{{ quoteSmart()
 
     /**
-     * Format input so it can be safely used in a query
+     * Formats input so it can be safely used in a query
      *
-     * @param mixed $in  data to be quoted
+     * @param mixed $in  the data to be formatted
      *
-     * @return mixed Submitted variable's type = returned value:
-     *               + null = the string <samp>NULL</samp>
-     *               + boolean = string <samp>TRUE</samp> or <samp>FALSE</samp>
-     *               + integer or double = the unquoted number
-     *               + other (including strings and numeric strings) =
-     *                 the data escaped according to MySQL's settings
-     *                 then encapsulated between single quotes
+     * @return mixed  the formatted data.  The format depends on the input's
+     *                 PHP type:
+     *                 + null = the string <samp>NULL</samp>
+     *                 + boolean = string <samp>TRUE</samp> or <samp>FALSE</samp>
+     *                 + integer or double = the unquoted number
+     *                 + other (including strings and numeric strings) =
+     *                   the data escaped according to FrontBase's settings
+     *                   then encapsulated between single quotes
      *
-     * @internal
+     * @see DB_common::quoteSmart()
+     * @since Method available since Release 1.6.0
      */
     function quoteSmart($in)
     {
@@ -572,14 +612,16 @@ class DB_fbsql extends DB_common
     // {{{ fbsqlRaiseError()
 
     /**
-     * Gather information about an error, then use that info to create a
-     * DB error object and finally return that object.
+     * Produces a DB_Error object regarding the current problem
      *
-     * @param  integer  $errno  PEAR error number (usually a DB constant) if
-     *                          manually raising an error
-     * @return object  DB error object
-     * @see DB_common::errorCode()
-     * @see DB_common::raiseError()
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError(),
+     *      DB_fbsql::errorNative(), DB_common::errorCode()
      */
     function fbsqlRaiseError($errno = null)
     {

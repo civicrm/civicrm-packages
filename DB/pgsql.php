@@ -295,9 +295,9 @@ class DB_pgsql extends DB_common
     // {{{ disconnect()
 
     /**
-     * Log out and disconnect from the database.
+     * Disconnects from the database server
      *
-     * @return bool true on success, false if not connected.
+     * @return bool  TRUE on success, FALSE on failure
      */
     function disconnect()
     {
@@ -310,14 +310,13 @@ class DB_pgsql extends DB_common
     // {{{ simpleQuery()
 
     /**
-     * Send a query to PostgreSQL and return the results as a
-     * PostgreSQL resource identifier.
+     * Sends a query to the database server
      *
-     * @param $query the SQL query
+     * @param string  the SQL query string
      *
-     * @return int returns a valid PostgreSQL result for successful SELECT
-     * queries, DB_OK for other successful queries.  A DB error code
-     * is returned on failure.
+     * @return mixed  + a PHP result resrouce for successful SELECT queries
+     *                + the DB_OK constant for other successful queries
+     *                + a DB_Error object on failure
      */
     function simpleQuery($query)
     {
@@ -425,24 +424,26 @@ class DB_pgsql extends DB_common
     // {{{ fetchInto()
 
     /**
-     * Fetch a row and insert the data into an existing array.
+     * Places a row from the result set into the given array
      *
      * Formating of the array and the data therein are configurable.
      * See DB_result::fetchInto() for more information.
      *
-     * @param resource $result    query result identifier
-     * @param array    $arr       (reference) array where data from the row
-     *                            should be placed
-     * @param int      $fetchmode how the resulting array should be indexed
-     * @param int      $rownum    the row number to fetch
+     * This method is not meant to be called directly.  Use
+     * DB_result::fetchInto() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return mixed DB_OK on success, null when end of result set is
-     *               reached or on failure
+     * @param resource $result    the query result resource
+     * @param array    $arr       the referenced array to put the data in
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch (0 = first row)
+     *
+     * @return mixed  DB_OK on success, NULL when the end of a result set is
+     *                 reached or on failure
      *
      * @see DB_result::fetchInto()
-     * @access private
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         $result_int = (int)$result;
         $rownum = ($rownum !== null) ? $rownum : $this->row[$result_int];
@@ -474,11 +475,17 @@ class DB_pgsql extends DB_common
     // {{{ freeResult()
 
     /**
-     * Free the internal resources associated with $result.
+     * Deletes the result set and frees the memory occupied by the result set
      *
-     * @param $result int PostgreSQL result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::free() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return bool true on success, false if $result is invalid
+     * @param resource $result  PHP's query result resource
+     *
+     * @return bool  TRUE on success, FALSE if $result is invalid
+     *
+     * @see DB_result::free()
      */
     function freeResult($result)
     {
@@ -506,20 +513,21 @@ class DB_pgsql extends DB_common
     // }}}
     // {{{ quoteSmart()
 
-    /**
-     * Format input so it can be safely used in a query
+     * Formats input so it can be safely used in a query
      *
-     * @param mixed $in  data to be quoted
+     * @param mixed $in  the data to be formatted
      *
-     * @return mixed Submitted variable's type = returned value:
-     *               + null = the string <samp>NULL</samp>
-     *               + boolean = string <samp>TRUE</samp> or <samp>FALSE</samp>
-     *               + integer or double = the unquoted number
-     *               + other (including strings and numeric strings) =
-     *                 the data escaped according to MySQL's settings
-     *                 then encapsulated between single quotes
+     * @return mixed  the formatted data.  The format depends on the input's
+     *                 PHP type:
+     *                 + null = the string <samp>NULL</samp>
+     *                 + boolean = string <samp>TRUE</samp> or <samp>FALSE</samp>
+     *                 + integer or double = the unquoted number
+     *                 + other (including strings and numeric strings) =
+     *                   the data escaped according to MySQL's settings
+     *                   then encapsulated between single quotes
      *
-     * @internal
+     * @see DB_common::quoteSmart()
+     * @since Method available since Release 1.6.0
      */
     function quoteSmart($in)
     {
@@ -540,17 +548,18 @@ class DB_pgsql extends DB_common
     /**
      * Escape a string according to the current DBMS's standards
      *
-     * PostgreSQL treats a backslash as an escape character, so they are
-     * removed.
+     * {@internal PostgreSQL treats a backslash as an escape character,
+     * so they are escaped as well.
      *
      * Not using pg_escape_string() yet because it requires PostgreSQL
-     * to be at version 7.2 or greater.
+     * to be at version 7.2 or greater.}}
      *
      * @param string $str  the string to be escaped
      *
      * @return string  the escaped string
      *
-     * @internal
+     * @see DB_common::quoteSmart()
+     * @since Method available since Release 1.6.0
      */
     function escapeSimple($str)
     {
@@ -561,11 +570,17 @@ class DB_pgsql extends DB_common
     // {{{ numCols()
 
     /**
-     * Get the number of columns in a result set.
+     * Gets the number of columns in a result set
      *
-     * @param $result resource PostgreSQL result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::numCols() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return int the number of columns per row in $result
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of columns.  A DB_Error object on failure.
+     *
+     * @see DB_result::numCols()
      */
     function numCols($result)
     {
@@ -580,11 +595,17 @@ class DB_pgsql extends DB_common
     // {{{ numRows()
 
     /**
-     * Get the number of rows in a result set.
+     * Gets the number of rows in a result set
      *
-     * @param $result resource PostgreSQL result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::numRows() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return int the number of rows in $result
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
+     *
+     * @see DB_result::numRows()
      */
     function numRows($result)
     {
@@ -599,10 +620,12 @@ class DB_pgsql extends DB_common
     // {{{ errorNative()
 
     /**
-     * Get the native error code of the last error (if any) that
-     * occured on the current connection.
+     * Gets the DBMS' native error message produced by the last query
      *
-     * @return int native PostgreSQL error code
+     * {@internal Error messages are used instead of error codes 
+     * in order to support older versions of PostgreSQL.}}
+     *
+     * @return string  the DBMS' error message
      */
     function errorNative()
     {
@@ -613,7 +636,12 @@ class DB_pgsql extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable/disable automatic commits
+     * Enable or disable automatic commits
+     *
+     * @param bool $onoff  true turns it on, false turns it off
+     *
+     * @return int  DB_OK on success.  A DB_Error object if the driver
+     *               doesn't support auto-committing transactions.
      */
     function autoCommit($onoff = false)
     {
@@ -627,7 +655,9 @@ class DB_pgsql extends DB_common
     // {{{ commit()
 
     /**
-     * Commit the current transaction.
+     * Commits the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      */
     function commit()
     {
@@ -647,7 +677,9 @@ class DB_pgsql extends DB_common
     // {{{ rollback()
 
     /**
-     * Roll back (undo) the current transaction.
+     * Reverts the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      */
     function rollback()
     {
@@ -665,10 +697,11 @@ class DB_pgsql extends DB_common
     // {{{ affectedRows()
 
     /**
-     * Gets the number of rows affected by the last query.
-     * if the last query was a select, returns 0.
+     * Determines the number of rows affected by a data maniuplation query
      *
-     * @return int number of rows affected by the last query or DB_ERROR
+     * 0 is returned for queries that don't manipulate data.
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
      */
     function affectedRows()
     {
@@ -683,13 +716,13 @@ class DB_pgsql extends DB_common
      *
      * @param string  $seq_name  name of the sequence
      * @param boolean $ondemand  when true, the seqence is automatically
-     *                           created if it does not exist
+     *                            created if it does not exist
      *
-     * @return int  the next id number in the sequence.  DB_Error if problem.
+     * @return int  the next id number in the sequence.
+     *               A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::nextID()
-     * @access public
+     * @see DB_common::nextID(), DB_common::getSequenceName(),
+     *      DB_pgsql::createSequence(), DB_pgsql::dropSequence()
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -724,11 +757,14 @@ class DB_pgsql extends DB_common
     // {{{ createSequence()
 
     /**
-     * Create the sequence
+     * Creates a new sequence
      *
-     * @param string $seq_name the name of the sequence
-     * @return mixed DB_OK on success or DB error on error
-     * @access public
+     * @param string $seq_name  name of the new sequence
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
+     *
+     * @see DB_common::createSequence(), DB_common::getSequenceName(),
+     *      DB_pgsql::nextID(), DB_pgsql::dropSequence()
      */
     function createSequence($seq_name)
     {
@@ -741,11 +777,14 @@ class DB_pgsql extends DB_common
     // {{{ dropSequence()
 
     /**
-     * Drop a sequence
+     * Deletes a sequence
      *
-     * @param string $seq_name the name of the sequence
-     * @return mixed DB_OK on success or DB error on error
-     * @access public
+     * @param string $seq_name  name of the sequence to be deleted
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
+     *
+     * @see DB_common::dropSequence(), DB_common::getSequenceName(),
+     *      DB_pgsql::nextID(), DB_pgsql::createSequence()
      */
     function dropSequence($seq_name)
     {
@@ -766,15 +805,16 @@ class DB_pgsql extends DB_common
     // {{{ pgsqlRaiseError()
 
     /**
-     * Gather information about an error, then use that info to create a
-     * DB error object and finally return that object.
+     * Produces a DB_Error object regarding the current problem
      *
-     * @param  integer  $errno  PEAR error number (usually a DB constant) if
-     *                          manually raising an error
-     * @return object  DB error object
-     * @see errorNative()
-     * @see errorCode()
-     * @see DB_common::raiseError()
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError(),
+     *      DB_pgsql::errorNative(), DB_pgsql::errorCode()
      */
     function pgsqlRaiseError($errno = null)
     {

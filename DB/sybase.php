@@ -223,11 +223,9 @@ class DB_sybase extends DB_common
     // {{{ disconnect()
 
     /**
-     * Log out and disconnect from the database.
+     * Disconnects from the database server
      *
-     * @access public
-     *
-     * @return bool true on success, false if not connected.
+     * @return bool  TRUE on success, FALSE on failure
      */
     function disconnect()
     {
@@ -240,9 +238,9 @@ class DB_sybase extends DB_common
     // {{{ errorNative()
 
     /**
-     * Get the last server error messge (if any)
+     * Gets the DBMS' native error message produced by the last query
      *
-     * @return string sybase last error message
+     * @return string  the DBMS' error message
      */
     function errorNative()
     {
@@ -308,15 +306,16 @@ class DB_sybase extends DB_common
     // {{{ sybaseRaiseError()
 
     /**
-     * Gather information about an error, then use that info to create a
-     * DB error object and finally return that object.
+     * Produces a DB_Error object regarding the current problem
      *
-     * @param  integer  $errno  PEAR error number (usually a DB constant) if
-     *                          manually raising an error
-     * @return object  DB error object
-     * @see errorNative()
-     * @see errorCode()
-     * @see DB_common::raiseError()
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError(),
+     *      DB_sybase::errorNative(), DB_sybase::errorCode()
      */
     function sybaseRaiseError($errno = null)
     {
@@ -331,16 +330,13 @@ class DB_sybase extends DB_common
     // {{{ simpleQuery()
 
     /**
-     * Send a query to Sybase and return the results as a Sybase resource
-     * identifier.
+     * Sends a query to the database server
      *
-     * @param the SQL query
+     * @param string  the SQL query string
      *
-     * @access public
-     *
-     * @return mixed returns a valid Sybase result for successful SELECT
-     * queries, DB_OK for other successful queries.  A DB error is
-     * returned on failure.
+     * @return mixed  + a PHP result resrouce for successful SELECT queries
+     *                + the DB_OK constant for other successful queries
+     *                + a DB_Error object on failure
      */
     function simpleQuery($query)
     {
@@ -392,24 +388,26 @@ class DB_sybase extends DB_common
     // {{{ fetchInto()
 
     /**
-     * Fetch a row and insert the data into an existing array.
+     * Places a row from the result set into the given array
      *
      * Formating of the array and the data therein are configurable.
      * See DB_result::fetchInto() for more information.
      *
-     * @param resource $result    query result identifier
-     * @param array    $arr       (reference) array where data from the row
-     *                            should be placed
-     * @param int      $fetchmode how the resulting array should be indexed
-     * @param int      $rownum    the row number to fetch
+     * This method is not meant to be called directly.  Use
+     * DB_result::fetchInto() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return mixed DB_OK on success, null when end of result set is
-     *               reached or on failure
+     * @param resource $result    the query result resource
+     * @param array    $arr       the referenced array to put the data in
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch (0 = first row)
+     *
+     * @return mixed  DB_OK on success, NULL when the end of a result set is
+     *                 reached or on failure
      *
      * @see DB_result::fetchInto()
-     * @access private
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum !== null) {
             if (!@sybase_data_seek($result, $rownum)) {
@@ -450,13 +448,17 @@ class DB_sybase extends DB_common
     // {{{ freeResult()
 
     /**
-     * Free the internal resources associated with $result.
+     * Deletes the result set and frees the memory occupied by the result set
      *
-     * @param $result Sybase result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::free() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @access public
+     * @param resource $result  PHP's query result resource
      *
-     * @return bool true on success, false if $result is invalid
+     * @return bool  TRUE on success, FALSE if $result is invalid
+     *
+     * @see DB_result::free()
      */
     function freeResult($result)
     {
@@ -467,13 +469,17 @@ class DB_sybase extends DB_common
     // {{{ numCols()
 
     /**
-     * Get the number of columns in a result set.
+     * Gets the number of columns in a result set
      *
-     * @param $result Sybase result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::numCols() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @access public
+     * @param resource $result  PHP's query result resource
      *
-     * @return int the number of columns per row in $result
+     * @return int  the number of columns.  A DB_Error object on failure.
+     *
+     * @see DB_result::numCols()
      */
     function numCols($result)
     {
@@ -488,13 +494,17 @@ class DB_sybase extends DB_common
     // {{{ numRows()
 
     /**
-     * Get the number of rows in a result set.
+     * Gets the number of rows in a result set
      *
-     * @param $result Sybase result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::numRows() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @access public
+     * @param resource $result  PHP's query result resource
      *
-     * @return int the number of rows in $result
+     * @return int  the number of rows.  A DB_Error object on failure.
+     *
+     * @see DB_result::numRows()
      */
     function numRows($result)
     {
@@ -509,10 +519,11 @@ class DB_sybase extends DB_common
     // {{{ affectedRows()
 
     /**
-     * Gets the number of rows affected by the data manipulation
-     * query.  For other queries, this function returns 0.
+     * Determines the number of rows affected by a data maniuplation query
      *
-     * @return number of rows affected by the last query
+     * 0 is returned for queries that don't manipulate data.
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
      */
     function affectedRows()
     {
@@ -532,13 +543,13 @@ class DB_sybase extends DB_common
      *
      * @param string  $seq_name  name of the sequence
      * @param boolean $ondemand  when true, the seqence is automatically
-     *                           created if it does not exist
+     *                            created if it does not exist
      *
-     * @return int  the next id number in the sequence.  DB_Error if problem.
+     * @return int  the next id number in the sequence.
+     *               A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::nextID()
-     * @access public
+     * @see DB_common::nextID(), DB_common::getSequenceName(),
+     *      DB_sybase::createSequence(), DB_sybase::dropSequence()
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -578,12 +589,10 @@ class DB_sybase extends DB_common
      *
      * @param string $seq_name  name of the new sequence
      *
-     * @return int  DB_OK on success.  A DB_Error object is returned if
-     *              problems arise.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::createSequence()
-     * @access public
+     * @see DB_common::createSequence(), DB_common::getSequenceName(),
+     *      DB_sybase::nextID(), DB_sybase::dropSequence()
      */
     function createSequence($seq_name)
     {
@@ -601,11 +610,10 @@ class DB_sybase extends DB_common
      *
      * @param string $seq_name  name of the sequence to be deleted
      *
-     * @return int  DB_OK on success.  DB_Error if problems.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::dropSequence()
-     * @access public
+     * @see DB_common::dropSequence(), DB_common::getSequenceName(),
+     *      DB_sybase::nextID(), DB_sybase::createSequence()
      */
     function dropSequence($seq_name)
     {
@@ -644,7 +652,12 @@ class DB_sybase extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable/disable automatic commits
+     * Enable or disable automatic commits
+     *
+     * @param bool $onoff  true turns it on, false turns it off
+     *
+     * @return int  DB_OK on success.  A DB_Error object if the driver
+     *               doesn't support auto-committing transactions.
      */
     function autoCommit($onoff = false)
     {
@@ -658,7 +671,9 @@ class DB_sybase extends DB_common
     // {{{ commit()
 
     /**
-     * Commit the current transaction.
+     * Commits the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      */
     function commit()
     {
@@ -679,7 +694,9 @@ class DB_sybase extends DB_common
     // {{{ rollback()
 
     /**
-     * Roll back (undo) the current transaction.
+     * Reverts the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      */
     function rollback()
     {

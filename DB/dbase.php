@@ -254,6 +254,11 @@ class DB_dbase extends DB_common
     // }}}
     // {{{ disconnect()
 
+    /**
+     * Disconnects from the database server
+     *
+     * @return bool  TRUE on success, FALSE on failure
+     */
     function disconnect()
     {
         $ret = @dbase_close($this->connection);
@@ -276,24 +281,26 @@ class DB_dbase extends DB_common
     // {{{ fetchInto()
 
     /**
-     * Fetch a row and insert the data into an existing array.
+     * Places a row from the result set into the given array
      *
      * Formating of the array and the data therein are configurable.
      * See DB_result::fetchInto() for more information.
      *
-     * @param resource $result    query result identifier
-     * @param array    $arr       (reference) array where data from the row
-     *                            should be placed
-     * @param int      $fetchmode how the resulting array should be indexed
-     * @param int      $rownum    the row number to fetch
+     * This method is not meant to be called directly.  Use
+     * DB_result::fetchInto() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return mixed DB_OK on success, null when end of result set is
-     *               reached or on failure
+     * @param resource $result    the query result resource
+     * @param array    $arr       the referenced array to put the data in
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch (0 = first row)
+     *
+     * @return mixed  DB_OK on success, NULL when the end of a result set is
+     *                 reached or on failure
      *
      * @see DB_result::fetchInto()
-     * @access private
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum === null) {
             $rownum = $this->res_row[(int)$result]++;
@@ -321,6 +328,19 @@ class DB_dbase extends DB_common
     // }}}
     // {{{ numCols()
 
+    /**
+     * Gets the number of columns in a result set
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::numCols() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of columns.  A DB_Error object on failure.
+     *
+     * @see DB_result::numCols()
+     */
     function numCols($foo)
     {
         return @dbase_numfields($this->connection);
@@ -329,6 +349,19 @@ class DB_dbase extends DB_common
     // }}}
     // {{{ numRows()
 
+    /**
+     * Gets the number of rows in a result set
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::numRows() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
+     *
+     * @see DB_result::numRows()
+     */
     function numRows($foo)
     {
         return @dbase_numrecords($this->connection);
@@ -338,22 +371,24 @@ class DB_dbase extends DB_common
     // {{{ quoteSmart()
 
     /**
-     * Format input so it can be safely used in a query
+     * Formats input so it can be safely used in a query
      *
-     * @param mixed $in  data to be quoted
+     * @param mixed $in  the data to be formatted
      *
-     * @return mixed Submitted variable's type = returned value:
-     *               + null = the string <samp>NULL</samp>
-     *               + boolean = <samp>T</samp> if true or
-     *                 <samp>F</samp> if false.  Use the <kbd>Logical</kbd>
-     *                 data type.
-     *               + integer or double = the unquoted number
-     *               + other (including strings and numeric strings) =
-     *                 the data with single quotes escaped by preceeding
-     *                 single quotes then the whole string is encapsulated
-     *                 between single quotes
+     * @return mixed  the formatted data.  The format depends on the input's
+     *                 PHP type:
+     *                 + null = the string <samp>NULL</samp>
+     *                 + boolean = <samp>T</samp> if true or
+     *                   <samp>F</samp> if false.  Use the <kbd>Logical</kbd>
+     *                   data type.
+     *                 + integer or double = the unquoted number
+     *                 + other (including strings and numeric strings) =
+     *                   the data with single quotes escaped by preceeding
+     *                   single quotes then the whole string is encapsulated
+     *                   between single quotes
      *
-     * @internal
+     * @see DB_common::quoteSmart()
+     * @since Method available since Release 1.6.0
      */
     function quoteSmart($in)
     {

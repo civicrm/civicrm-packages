@@ -231,6 +231,11 @@ class DB_odbc extends DB_common
     // }}}
     // {{{ disconnect()
 
+    /**
+     * Disconnects from the database server
+     *
+     * @return bool  TRUE on success, FALSE on failure
+     */
     function disconnect()
     {
         $err = @odbc_close($this->connection);
@@ -242,14 +247,13 @@ class DB_odbc extends DB_common
     // {{{ simpleQuery()
 
     /**
-     * Send a query to ODBC and return the results as a ODBC resource
-     * identifier.
+     * Sends a query to the database server
      *
-     * @param $query the SQL query
+     * @param string  the SQL query string
      *
-     * @return int returns a valid ODBC result for successful SELECT
-     * queries, DB_OK for other successful queries.  A DB error code
-     * is returned on failure.
+     * @return mixed  + a PHP result resrouce for successful SELECT queries
+     *                + the DB_OK constant for other successful queries
+     *                + a DB_Error object on failure
      */
     function simpleQuery($query)
     {
@@ -290,24 +294,26 @@ class DB_odbc extends DB_common
     // {{{ fetchInto()
 
     /**
-     * Fetch a row and insert the data into an existing array.
+     * Places a row from the result set into the given array
      *
      * Formating of the array and the data therein are configurable.
      * See DB_result::fetchInto() for more information.
      *
-     * @param resource $result    query result identifier
-     * @param array    $arr       (reference) array where data from the row
-     *                            should be placed
-     * @param int      $fetchmode how the resulting array should be indexed
-     * @param int      $rownum    the row number to fetch
+     * This method is not meant to be called directly.  Use
+     * DB_result::fetchInto() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return mixed DB_OK on success, null when end of result set is
-     *               reached or on failure
+     * @param resource $result    the query result resource
+     * @param array    $arr       the referenced array to put the data in
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch (0 = first row)
+     *
+     * @return mixed  DB_OK on success, NULL when the end of a result set is
+     *                 reached or on failure
      *
      * @see DB_result::fetchInto()
-     * @access private
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         $arr = array();
         if ($rownum !== null) {
@@ -345,6 +351,19 @@ class DB_odbc extends DB_common
     // }}}
     // {{{ freeResult()
 
+    /**
+     * Deletes the result set and frees the memory occupied by the result set
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::free() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return bool  TRUE on success, FALSE if $result is invalid
+     *
+     * @see DB_result::free()
+     */
     function freeResult($result)
     {
         return @odbc_free_result($result);
@@ -353,6 +372,19 @@ class DB_odbc extends DB_common
     // }}}
     // {{{ numCols()
 
+    /**
+     * Gets the number of columns in a result set
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::numCols() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of columns.  A DB_Error object on failure.
+     *
+     * @see DB_result::numCols()
+     */
     function numCols($result)
     {
         $cols = @odbc_num_fields($result);
@@ -366,10 +398,11 @@ class DB_odbc extends DB_common
     // {{{ affectedRows()
 
     /**
-     * Returns the number of rows affected by a manipulative query
-     * (INSERT, DELETE, UPDATE)
-     * @return mixed int affected rows, 0 when non manip queries or
-     *               DB error on error
+     * Determines the number of rows affected by a data maniuplation query
+     *
+     * 0 is returned for queries that don't manipulate data.
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
      */
     function affectedRows()
     {
@@ -387,11 +420,20 @@ class DB_odbc extends DB_common
     // {{{ numRows()
 
     /**
-     * ODBC may or may not support counting rows in the result set of
-     * SELECTs.
+     * Gets the number of rows in a result set
      *
-     * @param $result the odbc result resource
-     * @return the number of rows, or 0
+     * Not all ODBC drivers support this functionality.  If they don't
+     * a DB_Error object for DB_ERROR_UNSUPPORTED is returned.
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::numRows() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
+     *
+     * @see DB_result::numRows()
      */
     function numRows($result)
     {
@@ -406,9 +448,7 @@ class DB_odbc extends DB_common
     // {{{ quoteIdentifier()
 
     /**
-     * Quote a string so it can be safely used as a table / column name
-     *
-     * Quoting style depends on which dbsyntax was passed in the DSN.
+     * Quote a string so it can be safely used as a table or column name
      *
      * Use 'mssql' as the dbsyntax in the DB DSN only if you've unchecked
      * "Use ANSI quoted identifiers" when setting up the ODBC data source.
@@ -417,8 +457,8 @@ class DB_odbc extends DB_common
      *
      * @return string  quoted identifier string
      *
-     * @since 1.6.0
-     * @access public
+     * @see DB_common::quoteIdentifier()
+     * @since Method available since Release 1.6.0
      */
     function quoteIdentifier($str)
     {
@@ -452,12 +492,9 @@ class DB_odbc extends DB_common
     // {{{ errorNative()
 
     /**
-     * Get the native error code of the last error (if any) that
-     * occured on the current connection.
+     * Gets the DBMS' native error code and message produced by the last query
      *
-     * @access public
-     *
-     * @return int ODBC error code
+     * @return string  the DBMS' error code and message
      */
     function errorNative()
     {
@@ -475,13 +512,13 @@ class DB_odbc extends DB_common
      *
      * @param string  $seq_name  name of the sequence
      * @param boolean $ondemand  when true, the seqence is automatically
-     *                           created if it does not exist
+     *                            created if it does not exist
      *
-     * @return int  the next id number in the sequence.  DB_Error if problem.
+     * @return int  the next id number in the sequence.
+     *               A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::nextID()
-     * @access public
+     * @see DB_common::nextID(), DB_common::getSequenceName(),
+     *      DB_odbc::createSequence(), DB_odbc::dropSequence()
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -528,12 +565,10 @@ class DB_odbc extends DB_common
      *
      * @param string $seq_name  name of the new sequence
      *
-     * @return int  DB_OK on success.  A DB_Error object is returned if
-     *              problems arise.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::createSequence()
-     * @access public
+     * @see DB_common::createSequence(), DB_common::getSequenceName(),
+     *      DB_odbc::nextID(), DB_odbc::dropSequence()
      */
     function createSequence($seq_name)
     {
@@ -551,11 +586,10 @@ class DB_odbc extends DB_common
      *
      * @param string $seq_name  name of the sequence to be deleted
      *
-     * @return int  DB_OK on success.  DB_Error if problems.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::dropSequence()
-     * @access public
+     * @see DB_common::dropSequence(), DB_common::getSequenceName(),
+     *      DB_odbc::nextID(), DB_odbc::createSequence()
      */
     function dropSequence($seq_name)
     {
@@ -566,6 +600,14 @@ class DB_odbc extends DB_common
     // }}}
     // {{{ autoCommit()
 
+    /**
+     * Enable or disable automatic commits
+     *
+     * @param bool $onoff  true turns it on, false turns it off
+     *
+     * @return int  DB_OK on success.  A DB_Error object if the driver
+     *               doesn't support auto-committing transactions.
+     */
     function autoCommit($onoff = false)
     {
         if (!@odbc_autocommit($this->connection, $onoff)) {
@@ -577,6 +619,11 @@ class DB_odbc extends DB_common
     // }}}
     // {{{ commit()
 
+    /**
+     * Commits the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
+     */
     function commit()
     {
         if (!@odbc_commit($this->connection)) {
@@ -588,6 +635,11 @@ class DB_odbc extends DB_common
     // }}}
     // {{{ rollback()
 
+    /**
+     * Reverts the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
+     */
     function rollback()
     {
         if (!@odbc_rollback($this->connection)) {
@@ -759,15 +811,16 @@ class DB_odbc extends DB_common
     // {{{ odbcRaiseError()
 
     /**
-     * Gather information about an error, then use that info to create a
-     * DB error object and finally return that object.
+     * Produces a DB_Error object regarding the current problem
      *
-     * @param  integer  $errno  PEAR error number (usually a DB constant) if
-     *                          manually raising an error
-     * @return object  DB error object
-     * @see errorNative()
-     * @see DB_common::errorCode()
-     * @see DB_common::raiseError()
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError(),
+     *      DB_odbc::errorNative(), DB_common::errorCode()
      */
     function odbcRaiseError($errno = null)
     {

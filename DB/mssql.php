@@ -217,6 +217,11 @@ class DB_mssql extends DB_common
     // }}}
     // {{{ disconnect()
 
+    /**
+     * Disconnects from the database server
+     *
+     * @return bool  TRUE on success, FALSE on failure
+     */
     function disconnect()
     {
         $ret = @mssql_close($this->connection);
@@ -227,6 +232,15 @@ class DB_mssql extends DB_common
     // }}}
     // {{{ simpleQuery()
 
+    /**
+     * Sends a query to the database server
+     *
+     * @param string  the SQL query string
+     *
+     * @return mixed  + a PHP result resrouce for successful SELECT queries
+     *                + the DB_OK constant for other successful queries
+     *                + a DB_Error object on failure
+     */
     function simpleQuery($query)
     {
         $ismanip = DB::isManip($query);
@@ -274,24 +288,26 @@ class DB_mssql extends DB_common
     // {{{ fetchInto()
 
     /**
-     * Fetch a row and insert the data into an existing array.
+     * Places a row from the result set into the given array
      *
      * Formating of the array and the data therein are configurable.
      * See DB_result::fetchInto() for more information.
      *
-     * @param resource $result    query result identifier
-     * @param array    $arr       (reference) array where data from the row
-     *                            should be placed
-     * @param int      $fetchmode how the resulting array should be indexed
-     * @param int      $rownum    the row number to fetch
+     * This method is not meant to be called directly.  Use
+     * DB_result::fetchInto() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return mixed DB_OK on success, null when end of result set is
-     *               reached or on failure
+     * @param resource $result    the query result resource
+     * @param array    $arr       the referenced array to put the data in
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch (0 = first row)
+     *
+     * @return mixed  DB_OK on success, NULL when the end of a result set is
+     *                 reached or on failure
      *
      * @see DB_result::fetchInto()
-     * @access private
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum !== null) {
             if (!@mssql_data_seek($result, $rownum)) {
@@ -321,6 +337,19 @@ class DB_mssql extends DB_common
     // }}}
     // {{{ freeResult()
 
+    /**
+     * Deletes the result set and frees the memory occupied by the result set
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::free() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return bool  TRUE on success, FALSE if $result is invalid
+     *
+     * @see DB_result::free()
+     */
     function freeResult($result)
     {
         return @mssql_free_result($result);
@@ -329,6 +358,19 @@ class DB_mssql extends DB_common
     // }}}
     // {{{ numCols()
 
+    /**
+     * Gets the number of columns in a result set
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::numCols() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of columns.  A DB_Error object on failure.
+     *
+     * @see DB_result::numCols()
+     */
     function numCols($result)
     {
         $cols = @mssql_num_fields($result);
@@ -341,6 +383,19 @@ class DB_mssql extends DB_common
     // }}}
     // {{{ numRows()
 
+    /**
+     * Gets the number of rows in a result set
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::numRows() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
+     *
+     * @see DB_result::numRows()
+     */
     function numRows($result)
     {
         $rows = @mssql_num_rows($result);
@@ -354,7 +409,12 @@ class DB_mssql extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable/disable automatic commits
+     * Enable or disable automatic commits
+     *
+     * @param bool $onoff  true turns it on, false turns it off
+     *
+     * @return int  DB_OK on success.  A DB_Error object if the driver
+     *               doesn't support auto-committing transactions.
      */
     function autoCommit($onoff = false)
     {
@@ -368,7 +428,9 @@ class DB_mssql extends DB_common
     // {{{ commit()
 
     /**
-     * Commit the current transaction.
+     * Commits the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      */
     function commit()
     {
@@ -389,7 +451,9 @@ class DB_mssql extends DB_common
     // {{{ rollback()
 
     /**
-     * Roll back (undo) the current transaction.
+     * Reverts the current transaction
+     *
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      */
     function rollback()
     {
@@ -410,10 +474,11 @@ class DB_mssql extends DB_common
     // {{{ affectedRows()
 
     /**
-     * Gets the number of rows affected by the last query.
-     * if the last query was a select, returns 0.
+     * Determines the number of rows affected by a data maniuplation query
      *
-     * @return number of rows affected by the last query or DB_ERROR
+     * 0 is returned for queries that don't manipulate data.
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
      */
     function affectedRows()
     {
@@ -443,13 +508,13 @@ class DB_mssql extends DB_common
      *
      * @param string  $seq_name  name of the sequence
      * @param boolean $ondemand  when true, the seqence is automatically
-     *                           created if it does not exist
+     *                            created if it does not exist
      *
-     * @return int  the next id number in the sequence.  DB_Error if problem.
+     * @return int  the next id number in the sequence.
+     *               A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::nextID()
-     * @access public
+     * @see DB_common::nextID(), DB_common::getSequenceName(),
+     *      DB_mssql::createSequence(), DB_mssql::dropSequence()
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -489,12 +554,10 @@ class DB_mssql extends DB_common
      *
      * @param string $seq_name  name of the new sequence
      *
-     * @return int  DB_OK on success.  A DB_Error object is returned if
-     *              problems arise.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::createSequence()
-     * @access public
+     * @see DB_common::createSequence(), DB_common::getSequenceName(),
+     *      DB_mssql::nextID(), DB_mssql::dropSequence()
      */
     function createSequence($seq_name)
     {
@@ -512,11 +575,10 @@ class DB_mssql extends DB_common
      *
      * @param string $seq_name  name of the sequence to be deleted
      *
-     * @return int  DB_OK on success.  DB_Error if problems.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::dropSequence()
-     * @access public
+     * @see DB_common::dropSequence(), DB_common::getSequenceName(),
+     *      DB_mssql::nextID(), DB_mssql::createSequence()
      */
     function dropSequence($seq_name)
     {
@@ -528,9 +590,9 @@ class DB_mssql extends DB_common
     // {{{ errorNative()
 
     /**
-     * Determine MS SQL Server error code by querying @@ERROR.
+     * Get the DBMS' native error code produced by the last query
      *
-     * @return mixed  mssql's native error code or DB_ERROR if unknown.
+     * @return int  the DBMS' error code
      */
     function errorNative()
     {
@@ -575,15 +637,16 @@ class DB_mssql extends DB_common
     // {{{ mssqlRaiseError()
 
     /**
-     * Gather information about an error, then use that info to create a
-     * DB error object and finally return that object.
+     * Produces a DB_Error object regarding the current problem
      *
-     * @param  integer  $code  PEAR error number (usually a DB constant) if
-     *                         manually raising an error
-     * @return object  DB error object
-     * @see errorCode()
-     * @see errorNative()
-     * @see DB_common::raiseError()
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError(),
+     *      DB_mssql::errorNative(), DB_mssql::errorCode()
      */
     function mssqlRaiseError($code = null)
     {
@@ -824,16 +887,14 @@ class DB_mssql extends DB_common
     // {{{ quoteIdentifier()
 
     /**
-     * Quote a string so it can be safely used as a table / column name
-     *
-     * Quoting style depends on which database driver is being used.
+     * Quote a string so it can be safely used as a table or column name
      *
      * @param string $str  identifier name to be quoted
      *
      * @return string  quoted identifier string
      *
-     * @since 1.6.0
-     * @access public
+     * @see DB_common::quoteIdentifier()
+     * @since Method available since Release 1.6.0
      */
     function quoteIdentifier($str)
     {

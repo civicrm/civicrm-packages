@@ -314,16 +314,15 @@ class DB_common extends PEAR
     // {{{ quoteSmart()
 
     /**
-     * Format input so it can be safely used in a query
+     * Formats input so it can be safely used in a query
      *
      * The output depends on the PHP data type of input and the database
      * type being used.
      *
      * @param mixed $in  the data to be formatted
      *
-     * @return mixed  the format of the results depends on the input's
-     *                PHP type:
-     *
+     * @return mixed  the formatted data.  The format depends on the input's
+     *                 PHP type:
      * <ul>
      *  <li>
      *    <kbd>input</kbd> -> <samp>returns</samp>
@@ -1159,14 +1158,14 @@ class DB_common extends PEAR
     // {{{ modifyQuery()
 
     /**
-     * This method is used by backends to alter queries for various reasons
+     * Changes a query string for various DBMS specific reasons
      *
      * It is defined here to assure that all implementations
      * have this method defined.
      *
-     * @param string $query  the query to modify
+     * @param string $query  the query string to modify
      *
-     * @return string  the modified query
+     * @return string  the modified query string
      *
      * @access protected
      */
@@ -1179,10 +1178,13 @@ class DB_common extends PEAR
     // {{{ modifyLimitQuery()
 
     /**
-     * This method is used by backends to alter limited queries
+     * Adds LIMIT clauses to a query string according to current DBMS standards
+     *
+     * It is defined here to assure that all implementations
+     * have this method defined.
      *
      * @param string $query   the query to modify
-     * @param intr   $from    the row to start to fetching (0 = the first row)
+     * @param int    $from    the row to start to fetching (0 = the first row)
      * @param int    $count   the numbers of rows to fetch
      * @param mixed  $params  array, string or numeric data to be used in
      *                         execution of the statement.  Quantity of items
@@ -1190,7 +1192,7 @@ class DB_common extends PEAR
      *                         query:  meaning 1 placeholder for non-array
      *                         parameters or 1 placeholder per array element.
      *
-     * @return string  the modified query
+     * @return string  the query string with LIMIT clauses added
      *
      * @access protected
      */
@@ -1717,7 +1719,7 @@ class DB_common extends PEAR
      * @param bool $onoff  true turns it on, false turns it off
      *
      * @return int  DB_OK on success.  A DB_Error object if the driver
-     *              doesn't support auto-committing transactions
+     *               doesn't support auto-committing transactions.
      */
     function autoCommit($onoff = false)
     {
@@ -1728,7 +1730,7 @@ class DB_common extends PEAR
     // {{{ commit()
 
     /**
-     * Commits an open transaction
+     * Commits the current transaction
      *
      * @return int  DB_OK on success.  A DB_Error object on failure.
      */
@@ -1741,7 +1743,7 @@ class DB_common extends PEAR
     // {{{ rollback()
 
     /**
-     * Rolls back an open transaction
+     * Reverts the current transaction
      *
      * @return int  DB_OK on success.  A DB_Error object on failure.
      */
@@ -1786,7 +1788,7 @@ class DB_common extends PEAR
     /**
      * Get the DBMS' native error code produced by the last query
      *
-     * @return mixed  the DBMS's error code.  A DB_Error object on failure.
+     * @return mixed  the DBMS' error code.  A DB_Error object on failure.
      */
     function errorNative()
     {

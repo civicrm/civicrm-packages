@@ -263,9 +263,9 @@ class DB_oci8 extends DB_common
     // {{{ disconnect()
 
     /**
-     * Log out and disconnect from the database.
+     * Disconnects from the database server
      *
-     * @return bool true on success, false if not connected.
+     * @return bool  TRUE on success, FALSE on failure
      */
     function disconnect()
     {
@@ -282,14 +282,13 @@ class DB_oci8 extends DB_common
     // {{{ simpleQuery()
 
     /**
-     * Send a query to oracle and return the results as an oci8 resource
-     * identifier.
+     * Sends a query to the database server
      *
-     * @param $query the SQL query
+     * @param string  the SQL query string
      *
-     * @return int returns a valid oci8 result for successful SELECT
-     * queries, DB_OK for other successful queries.  A DB error code
-     * is returned on failure.
+     * @return mixed  + a PHP result resrouce for successful SELECT queries
+     *                + the DB_OK constant for other successful queries
+     *                + a DB_Error object on failure
      */
     function simpleQuery($query)
     {
@@ -336,24 +335,26 @@ class DB_oci8 extends DB_common
     // {{{ fetchInto()
 
     /**
-     * Fetch a row and insert the data into an existing array.
+     * Places a row from the result set into the given array
      *
      * Formating of the array and the data therein are configurable.
      * See DB_result::fetchInto() for more information.
      *
-     * @param resource $result    query result identifier
-     * @param array    $arr       (reference) array where data from the row
-     *                            should be placed
-     * @param int      $fetchmode how the resulting array should be indexed
-     * @param int      $rownum    the row number to fetch
+     * This method is not meant to be called directly.  Use
+     * DB_result::fetchInto() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return mixed DB_OK on success, null when end of result set is
-     *               reached or on failure
+     * @param resource $result    the query result resource
+     * @param array    $arr       the referenced array to put the data in
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch (0 = first row)
+     *
+     * @return mixed  DB_OK on success, NULL when the end of a result set is
+     *                 reached or on failure
      *
      * @see DB_result::fetchInto()
-     * @access private
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum !== null) {
             return $this->raiseError(DB_ERROR_NOT_CAPABLE);
@@ -384,11 +385,17 @@ class DB_oci8 extends DB_common
     // {{{ freeResult()
 
     /**
-     * Free the internal resources associated with $result.
+     * Deletes the result set and frees the memory occupied by the result set
      *
-     * @param $result oci8 result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::free() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return bool true on success, false if $result is invalid
+     * @param resource $result  PHP's query result resource
+     *
+     * @return bool  TRUE on success, FALSE if $result is invalid
+     *
+     * @see DB_result::free()
      */
     function freeResult($result)
     {
@@ -427,6 +434,22 @@ class DB_oci8 extends DB_common
     // }}}
     // {{{ numRows()
 
+    /**
+     * Gets the number of rows in a result set
+     *
+     * Only works if the DB_PORTABILITY_NUMROWS portability option
+     * is turned on.
+     *
+     * This method is not meant to be called directly.  Use
+     * DB_result::numRows() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
+     *
+     * @see DB_result::numRows(), DB_common::setOption()
+     */
     function numRows($result)
     {
         // emulate numRows for Oracle.  yuck.
@@ -460,11 +483,17 @@ class DB_oci8 extends DB_common
     // {{{ numCols()
 
     /**
-     * Get the number of columns in a result set.
+     * Gets the number of columns in a result set
      *
-     * @param $result oci8 result identifier
+     * This method is not meant to be called directly.  Use
+     * DB_result::numCols() instead.  It can't be declared "protected"
+     * because DB_result is a separate object.
      *
-     * @return int the number of columns per row in $result
+     * @param resource $result  PHP's query result resource
+     *
+     * @return int  the number of columns.  A DB_Error object on failure.
+     *
+     * @see DB_result::numCols()
      */
     function numCols($result)
     {
@@ -479,12 +508,10 @@ class DB_oci8 extends DB_common
     // {{{ errorNative()
 
     /**
-     * Get the native error code of the last error (if any) that occured
-     * on the current connection.  This does not work, as OCIError does
-     * not work unless given a statement.  If OCIError does return
-     * something, so will this.
+     * Get the DBMS' native error code produced by the last query
      *
-     * @return int native oci8 error code
+     * @return int  the DBMS' error code.  FALSE if the code could not be
+     *               determined
      */
     function errorNative()
     {
@@ -652,9 +679,12 @@ class DB_oci8 extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable/disable automatic commits
+     * Enable or disable automatic commits
      *
-     * @param $onoff true/false whether to autocommit
+     * @param bool $onoff  true turns it on, false turns it off
+     *
+     * @return int  DB_OK on success.  A DB_Error object if the driver
+     *               doesn't support auto-committing transactions.
      */
     function autoCommit($onoff = false)
     {
@@ -666,9 +696,9 @@ class DB_oci8 extends DB_common
     // {{{ commit()
 
     /**
-     * Commit transactions on the current connection
+     * Commits the current transaction
      *
-     * @return DB_ERROR or DB_OK
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      */
     function commit()
     {
@@ -683,9 +713,9 @@ class DB_oci8 extends DB_common
     // {{{ rollback()
 
     /**
-     * Roll back all uncommitted transactions on the current connection.
+     * Reverts the current transaction
      *
-     * @return DB_ERROR or DB_OK
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      */
     function rollback()
     {
@@ -700,10 +730,11 @@ class DB_oci8 extends DB_common
     // {{{ affectedRows()
 
     /**
-     * Gets the number of rows affected by the last query.
-     * if the last query was a select, returns 0.
+     * Determines the number of rows affected by a data maniuplation query
      *
-     * @return number of rows affected by the last query or DB_ERROR
+     * 0 is returned for queries that don't manipulate data.
+     *
+     * @return int  the number of rows.  A DB_Error object on failure.
      */
     function affectedRows()
     {
@@ -720,6 +751,15 @@ class DB_oci8 extends DB_common
     // }}}
     // {{{ modifyQuery()
 
+    /**
+     * Changes a query string for various DBMS specific reasons
+     *
+     * @param string $query  the query string to modify
+     *
+     * @return string  the modified query string
+     *
+     * @access protected
+     */
     function modifyQuery($query)
     {
         // "SELECT 2+2" must be "SELECT 2+2 FROM dual" in Oracle
@@ -734,14 +774,20 @@ class DB_oci8 extends DB_common
     // {{{ modifyLimitQuery()
 
     /**
-     * Emulate the row limit support altering the query
+     * Adds LIMIT clauses to a query string according to current DBMS standards
      *
-     * @param string $query The query to treat
-     * @param int    $from  The row to start to fetch from
-     * @param int    $count The offset
-     * @return string The modified query
+     * @param string $query   the query to modify
+     * @param int    $from    the row to start to fetching (0 = the first row)
+     * @param int    $count   the numbers of rows to fetch
+     * @param mixed  $params  array, string or numeric data to be used in
+     *                         execution of the statement.  Quantity of items
+     *                         passed must match quantity of placeholders in
+     *                         query:  meaning 1 placeholder for non-array
+     *                         parameters or 1 placeholder per array element.
      *
-     * @author Tomas V.V.Cox <cox@idecnet.com>
+     * @return string  the query string with LIMIT clauses added
+     *
+     * @access protected
      */
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
@@ -797,13 +843,13 @@ class DB_oci8 extends DB_common
      *
      * @param string  $seq_name  name of the sequence
      * @param boolean $ondemand  when true, the seqence is automatically
-     *                           created if it does not exist
+     *                            created if it does not exist
      *
-     * @return int  the next id number in the sequence.  DB_Error if problem.
+     * @return int  the next id number in the sequence.
+     *               A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::nextID()
-     * @access public
+     * @see DB_common::nextID(), DB_common::getSequenceName(),
+     *      DB_oci8::createSequence(), DB_oci8::dropSequence()
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -836,12 +882,10 @@ class DB_oci8 extends DB_common
      *
      * @param string $seq_name  name of the new sequence
      *
-     * @return int  DB_OK on success.  A DB_Error object is returned if
-     *              problems arise.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::createSequence()
-     * @access public
+     * @see DB_common::createSequence(), DB_common::getSequenceName(),
+     *      DB_oci8::nextID(), DB_oci8::dropSequence()
      */
     function createSequence($seq_name)
     {
@@ -857,11 +901,10 @@ class DB_oci8 extends DB_common
      *
      * @param string $seq_name  name of the sequence to be deleted
      *
-     * @return int  DB_OK on success.  DB_Error if problems.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
-     * @internal
-     * @see DB_common::dropSequence()
-     * @access public
+     * @see DB_common::dropSequence(), DB_common::getSequenceName(),
+     *      DB_oci8::nextID(), DB_oci8::createSequence()
      */
     function dropSequence($seq_name)
     {
@@ -873,14 +916,16 @@ class DB_oci8 extends DB_common
     // {{{ oci8RaiseError()
 
     /**
-     * Gather information about an error, then use that info to create a
-     * DB error object and finally return that object.
+     * Produces a DB_Error object regarding the current problem
      *
-     * @param  integer  $errno  PEAR error number (usually a DB constant) if
-     *                          manually raising an error
-     * @return object  DB error object
-     * @see DB_common::errorCode()
-     * @see DB_common::raiseError()
+     * @param int $errno  if the error is being manually raised pass a
+     *                     DB_ERROR* constant here.  If this isn't passed
+     *                     the error information gathered from the DBMS.
+     *
+     * @return object  the DB_Error object
+     *
+     * @see DB_common::raiseError(),
+     *      DB_oci8::errorNative(), DB_oci8::errorCode()
      */
     function oci8RaiseError($errno = null)
     {
