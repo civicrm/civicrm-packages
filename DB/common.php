@@ -96,12 +96,14 @@ class DB_common extends PEAR
 
     /**
     * $options["persistent"] -> boolean persistent connection true|false?
+    * $options["ssl"] -> boolean use ssl to connect true|false?
     * $options["optimize"] -> string 'performance' or 'portability'
     * $options["debug"] -> integer numeric debug level
     * @var array
     */
     var $options = array(
         'persistent' => false,
+        'ssl' => false,
         'optimize' => 'performance',
         'debug' => 0,
         'seqname_format' => '%s_seq',

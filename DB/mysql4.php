@@ -94,13 +94,13 @@ class DB_mysql4 extends DB_common
      * Connect to a database and log in as the specified user.
      *
      * @param $dsn the data source name (see DB::parseDSN for syntax)
-     * @param $ssl (optional) whether the connection should
-     *        use the ssl method or not
+     * @param $persistent (optional) whether the connection should
+     *        be persistent
      * @access public
      * @return int DB_OK on success, a DB error on failure
      */
 
-    function connect($dsninfo, $ssl = false)
+    function connect($dsninfo, $persistent = false)
     {
         if (!DB::assertExtension('mysql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
@@ -118,7 +118,7 @@ class DB_mysql4 extends DB_common
         $user = $dsninfo['username'];
         $pw = $dsninfo['password'];
 
-        $ssl_mode = $ssl ? 'CLIENT_SSL' : NULL;
+        $ssl_mode = $this->getOption('ssl') === true ? 'CLIENT_SSL' : NULL;
 
         @ini_set('track_errors', true);
 
