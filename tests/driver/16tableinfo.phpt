@@ -17,8 +17,10 @@ error_reporting = 2047
  * 'driver' => array(
  *     'clob' => DBMS's column type for creating CLOB fields
  *     'date' => DBMS's column type for creating DATE fields
+ *     'dateliteral' => The SQL keyword necessary for defining dates
  *     'finds_table' => Can this DBMS determine table names from queries?
  *     'size_from_table' => Does this DBMS know the column size via table name?
+ *     'handles_results' => Can the DBMS get info from query results?
  *     'commands' => array(
  *         Extra commands to be passed to PHP's eval() function
  *     )
