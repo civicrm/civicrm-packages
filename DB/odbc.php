@@ -441,6 +441,9 @@ class DB_odbc extends DB_common
         if ($nrows == -1) {
             return $this->odbcRaiseError(DB_ERROR_UNSUPPORTED);
         }
+        if ($nrows === false) {
+            return $this->odbcRaiseError();
+        }
         return $nrows;
     }
 
