@@ -52,7 +52,8 @@ class DB_mssql extends DB_common
         );
         // XXX Add here error codes ie: 'S100E' => DB_ERROR_SYNTAX
         $this->errorcode_map = array(
-
+            208   => DB_ERROR_NOSUCHTABLE,
+            3701  => DB_ERROR_NOSUCHTABLE
         );
     }
 
@@ -352,11 +353,13 @@ class DB_mssql extends DB_common
                 $repeat = 1;
                 $result = $this->createSequence($seq_name);
                 if (DB::isError($result)) {
-                    return $result;
+                    return $this->raiseError($result);
                 }
-            } else {
+            } elseif (!DB::isError($result)) {
                 $result = $this->query("SELECT @@IDENTITY FROM $seqname");
                 $repeat = 0;
+            } else {
+                $repeat = false;
             }
         } while ($repeat);
         if (DB::isError($result)) {
@@ -389,14 +392,12 @@ class DB_mssql extends DB_common
 
     function errorCode()
     {
-        $this->pushErrorHandling(PEAR_ERROR_RETURN);
-        $error_code = $this->getOne('select @@ERROR as ErrorCode');
-        $this->popErrorHandling();
-        // XXX Debug
-        if (!isset($this->errorcode_map[$error_code])) {
-            return DB_ERROR;
-        }
-        return $error_code;
+       $res = mssql_query('select @@ERROR as ErrorCode', $this->connection);
+       if (!$res) {
+           return DB_ERROR;
+       }
+       $row = mssql_fetch_row($res);
+       return $row[0];
     }
 
     // }}}
@@ -404,13 +405,16 @@ class DB_mssql extends DB_common
 
     function mssqlRaiseError($code = null)
     {
-        if ($code !== null) {
-            $code = $this->errorCode();
-            if (DB::isError($code)) {
-                return $this->raiseError($code);
+        $native_msg = mssql_get_last_message();
+        $native_code = $this->errorCode();
+        if ($code === null) {
+            if (isset($this->errorcode_map[$native_code])) {
+                $code = $this->errorcode_map[$native_code];
+            } else {
+                $code = DB_ERROR;
             }
         }
-        return $this->raiseError($code, null, null, null, mssql_get_last_message());
+        return $this->raiseError($code, null, null, null, $native_code . ' - ' . $native_msg);
     }
 
     // }}}
