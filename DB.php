@@ -569,7 +569,8 @@ class DB
     {
         if (!extension_loaded($name)) {
             $dlext = OS_WINDOWS ? '.dll' : '.so';
-            @dl($name . $dlext);
+            $dlprefix = OS_WINDOWS ? 'php_' : '';
+            @dl($dlprefix . $name . $dlext);
             return extension_loaded($name);
         }
         return true;
