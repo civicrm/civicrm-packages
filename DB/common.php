@@ -496,7 +496,7 @@ class DB_common extends PEAR
         if ($nativecode) {
             $userinfo .= ' [nativecode=' . trim($nativecode) . ']';
         } else {
-            $userinfo .= DB::errorMessage($code);
+            $userinfo .= 'DB Error: ' . DB::errorMessage($code);
         }
 
         $tmp = PEAR::raiseError(null, $code, $mode, $options, $userinfo,
