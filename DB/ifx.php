@@ -74,7 +74,7 @@ class DB_ifx extends DB_common
      */
     function connect(&$dsninfo, $persistent = false)
     {
-        if (!DB::assertExtension('informix') || !DB::assertExtension('Informix')) {
+        if (!DB::assertExtension('informix') && !DB::assertExtension('Informix')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
         $this->dsn = $dsninfo;
