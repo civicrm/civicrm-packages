@@ -48,7 +48,7 @@ TESTS CONFORMANCE
 10errormap           -    o    -    -    X    X    -    -    -    o    -
 13limit              -    o    -    -    o    o    -    -    -    o    -
 14fetchmode_object   -    o    -    -    o    o    -    -    -    o    -
-15quote              -    X    -    -    X    o    -    -    -    o    -
+15quote              -    X    -    -    o    o    -    -    -    o    -
 
                                                          o -> Test passed
                                                          X -> Test failed
