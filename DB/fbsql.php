@@ -544,10 +544,10 @@ class DB_fbsql extends DB_common
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
         if (DB::isManip($query)) {
-            return preg_replace('/^([\s(])*SELECT(?!\s*TOP\s*\()/i',
+            return preg_replace('/^([\s(])*SELECT/i',
                                 "\\1SELECT TOP($count)", $query);
         } else {
-            return preg_replace('/([\s(])*SELECT(?!\s*TOP\s*\()/i',
+            return preg_replace('/([\s(])*SELECT/i',
                                 "\\1SELECT TOP($from, $count)", $query);
         }
     }

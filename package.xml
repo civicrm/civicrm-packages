@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.178 2005-03-03 16:57:30 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.179 2005-03-04 23:12:35 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,16 +66,17 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.2</version>
+    <version>1.7.3</version>
     <state>stable</state>
-    <date>2005-03-03</date>
+    <date>2005-03-04</date>
     <notes><![CDATA[
 all:
-* Make modifyLimitQuery() accommodate queries
-  that already have ";" appended to them.  Bug 3666.
-* getOne() and getRow() should not use limit
-  queries if the query contains aggregation
-  functions: AVG, COUNT, MAX, MIN, SUM.  Bug 3680.
+* Remove modifyLimitQuery() from getOne()
+  and getRow() due to backwards compatibility
+  issues.  This undoes request 1771 and the
+  hacks required fix the problems it brought
+  (bug 3663, bug 3666 and bug 3680).
+  Fixes bug 3705.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">

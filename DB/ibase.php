@@ -319,7 +319,7 @@ class DB_ibase extends DB_common
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
         if ($this->dsn['dbsyntax'] == 'firebird') {
-            $query = preg_replace('/^([\s(])*SELECT(?!\s*FIRST\s*\d+)/i',
+            $query = preg_replace('/^([\s(])*SELECT/i',
                                   "SELECT FIRST $count SKIP $from", $query);
         }
         return $query;

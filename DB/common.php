@@ -1220,11 +1220,7 @@ class DB_common extends PEAR
     function &getOne($query, $params = array())
     {
         $params = (array)$params;
-        if ($this->features['limit'] == 'alter') {
-            if (!preg_match('/(AVG|COUNT|MAX|MIN|SUM)\s*\(/i', $query)) {
-                $query = $this->modifyLimitQuery($query, 0, 1, $params);
-            }
-        }
+        // modifyLimitQuery() would be nice here, but it causes BC issues
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
             if (DB::isError($sth)) {
@@ -1288,11 +1284,7 @@ class DB_common extends PEAR
                 $params = array();
             }
         }
-        if ($this->features['limit'] == 'alter') {
-            if (!preg_match('/(AVG|COUNT|MAX|MIN|SUM)\s*\(/i', $query)) {
-                $query = $this->modifyLimitQuery($query, 0, 1, $params);
-            }
-        }
+        // modifyLimitQuery() would be nice here, but it causes BC issues
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
             if (DB::isError($sth)) {
