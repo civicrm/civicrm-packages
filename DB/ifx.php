@@ -552,7 +552,7 @@ class DB_ifx extends DB_common
     // {{{ tableInfo()
 
     /**
-     * Returns information about a table or a result set.
+     * Returns information about a table or a result set
      *
      * NOTE: only supports 'table' if <var>$result</var> is a table name.
      *
@@ -561,14 +561,17 @@ class DB_ifx extends DB_common
      * <samp>can't distinguish duplicate field names</samp>.
      *
      * @param object|string  $result  DB_result object from a query or a
-     *                                string containing the name of a table
+     *                                 string containing the name of a table.
+     *                                 While this also accepts a query result
+     *                                 resource identifier, this behavior is
+     *                                 deprecated.
      * @param int            $mode    a valid tableInfo mode
-     * @return array  an associative array with the information requested
-     *                or an error object if something is wrong
-     * @access public
-     * @internal
-     * @since 1.6.0
+     *
+     * @return array  an associative array with the information requested.
+     *                 A DB_Error object on failure.
+     *
      * @see DB_common::tableInfo()
+     * @since Method available since Release 1.6.0
      */
     function tableInfo($result, $mode = null)
     {

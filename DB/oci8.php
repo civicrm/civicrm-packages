@@ -923,7 +923,7 @@ class DB_oci8 extends DB_common
     // {{{ tableInfo()
 
     /**
-     * Returns information about a table or a result set.
+     * Returns information about a table or a result set
      *
      * NOTE: only supports 'table' and 'flags' if <var>$result</var>
      * is a table name.
@@ -931,12 +931,15 @@ class DB_oci8 extends DB_common
      * NOTE: flags won't contain index information.
      *
      * @param object|string  $result  DB_result object from a query or a
-     *                                string containing the name of a table
+     *                                 string containing the name of a table.
+     *                                 While this also accepts a query result
+     *                                 resource identifier, this behavior is
+     *                                 deprecated.
      * @param int            $mode    a valid tableInfo mode
-     * @return array  an associative array with the information requested
-     *                or an error object if something is wrong
-     * @access public
-     * @internal
+     *
+     * @return array  an associative array with the information requested.
+     *                 A DB_Error object on failure.
+     *
      * @see DB_common::tableInfo()
      */
     function tableInfo($result, $mode = null)
@@ -999,15 +1002,15 @@ class DB_oci8 extends DB_common
                  * Extract the result resource identifier.
                  */
                 $result = $result->result;
-            } else {
-                /*
-                 * ELSE, probably received a result resource identifier.
-                 * Deprecated.  Here for compatibility only.
-                 */
             }
+
+            $res = array();
 
             if ($result === $this->last_stmt) {
                 $count = @OCINumCols($result);
+                if ($mode) {
+                    $res['num_fields'] = $count;
+                }
                 for ($i = 0; $i < $count; $i++) {
                     $res[$i] = array(
                         'table' => '',
@@ -1023,10 +1026,6 @@ class DB_oci8 extends DB_common
                         $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
                     }
                 }
-                if ($mode) {
-                    $res['num_fields'] = $count;
-                }
-
             } else {
                 return $this->raiseError(DB_ERROR_NOT_CAPABLE);
             }

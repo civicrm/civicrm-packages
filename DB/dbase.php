@@ -333,8 +333,8 @@ class DB_dbase extends DB_common
      *                       is examined regardless of what is provided here.
      * @param int   $mode    a valid tableInfo mode
      *
-     * @return array  an associative array with the information requested
-     *                or an error object if something is wrong
+     * @return array  an associative array with the information requested.
+     *                 A DB_Error object on failure.
      *
      * @see DB_common::tableInfo()
      * @since Method available since Release 1.7.0

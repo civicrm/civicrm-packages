@@ -590,8 +590,8 @@ class DB_sqlite extends DB_common
      * @param string         $result  a string containing the name of a table
      * @param int            $mode    a valid tableInfo mode
      *
-     * @return array  an associative array with the information requested
-     *                or an error object if something is wrong
+     * @return array  an associative array with the information requested.
+     *                 A DB_Error object on failure.
      *
      * @see DB_common::tableInfo()
      * @since Method available since Release 1.7.0
@@ -607,21 +607,7 @@ class DB_sqlite extends DB_common
                                       "PRAGMA table_info('$result');",
                                       SQLITE_ASSOC);
             $got_string = true;
-        } elseif (isset($result->result)) {
-            /*
-             * Probably received a result object.
-             * Extract the result resource identifier.
-             */
-            $this->last_query = '';
-            return $this->raiseError(DB_ERROR_NOT_CAPABLE, null, null, null,
-                                     'This DBMS can not obtain tableInfo' .
-                                     ' from result sets');
         } else {
-            /*
-             * Probably received a result resource identifier.
-             * Copy it.
-             * Deprecated.  Here for compatibility only.
-             */
             $this->last_query = '';
             return $this->raiseError(DB_ERROR_NOT_CAPABLE, null, null, null,
                                      'This DBMS can not obtain tableInfo' .
@@ -645,10 +631,10 @@ class DB_sqlite extends DB_common
             if (strpos($id[$i]['type'], '(') !== false) {
                 $bits = explode('(', $id[$i]['type']);
                 $type = $bits[0];
-                $len = rtrim($bits[1],')');
+                $len  = rtrim($bits[1],')');
             } else {
                 $type = $id[$i]['type'];
-                $len = 0;
+                $len  = 0;
             }
 
             $flags = '';

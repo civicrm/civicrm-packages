@@ -866,11 +866,14 @@ class DB_mysql extends DB_common
      * Returns information about a table or a result set
      *
      * @param object|string  $result  DB_result object from a query or a
-     *                                string containing the name of a table
+     *                                 string containing the name of a table.
+     *                                 While this also accepts a query result
+     *                                 resource identifier, this behavior is
+     *                                 deprecated.
      * @param int            $mode    a valid tableInfo mode
      *
-     * @return array  an associative array with the information requested
-     *                or an error object if something is wrong
+     * @return array  an associative array with the information requested.
+     *                 A DB_Error object on failure.
      *
      * @see DB_common::tableInfo()
      */

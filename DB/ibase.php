@@ -751,18 +751,21 @@ class DB_ibase extends DB_common
     // {{{ tableInfo()
 
     /**
-     * Returns information about a table or a result set.
+     * Returns information about a table or a result set
      *
      * NOTE: only supports 'table' and 'flags' if <var>$result</var>
      * is a table name.
      *
      * @param object|string  $result  DB_result object from a query or a
-     *                                string containing the name of a table
+     *                                 string containing the name of a table.
+     *                                 While this also accepts a query result
+     *                                 resource identifier, this behavior is
+     *                                 deprecated.
      * @param int            $mode    a valid tableInfo mode
-     * @return array  an associative array with the information requested
-     *                or an error object if something is wrong
-     * @access public
-     * @internal
+     *
+     * @return array  an associative array with the information requested.
+     *                 A DB_Error object on failure.
+     *
      * @see DB_common::tableInfo()
      */
     function tableInfo($result, $mode = null)
@@ -772,8 +775,8 @@ class DB_ibase extends DB_common
              * Probably received a table name.
              * Create a result resource identifier.
              */
-             $id = @ibase_query($this->connection,
-                                "SELECT * FROM $result WHERE 1=0");
+            $id = @ibase_query($this->connection,
+                               "SELECT * FROM $result WHERE 1=0");
             $got_string = true;
         } elseif (isset($result->result)) {
             /*
@@ -788,7 +791,7 @@ class DB_ibase extends DB_common
              * Copy it.
              * Deprecated.  Here for compatibility only.
              */
-             $id = $result;
+            $id = $result;
             $got_string = false;
         }
 
