@@ -35,7 +35,8 @@ $dbh->query("INSERT INTO a VALUES(1)");
 $dbh->query("INSERT INTO b VALUES(2)");
 
 print "Trying to provoke DB_ERROR_DIVZERO\n";
-$dbh->query("SELECT 0/0");
+// Interbase detects the error on fetching
+$dbh->getAll("SELECT 0/0 FROM phptest");
 
 print "Trying to provoke DB_ERROR_INVALID_NUMBER\n";
 $dbh->query("UPDATE phptest SET a = 'abc' WHERE a = 42");
