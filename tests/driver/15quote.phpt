@@ -54,7 +54,7 @@ $nums = array(
 
 echo "String escape test: ";
 foreach ($strings as $s) {
-    $quoted = $dbh->quote($s);
+    $quoted = $dbh->quoteSmart($s);
     $dbh->query("INSERT INTO pearquote VALUES (1, $quoted)");
 }
 $diff = array_diff($strings, $res = $dbh->getCol("SELECT s FROM pearquote"));
@@ -70,7 +70,7 @@ $dbh->query("DELETE FROM pearquote");
 
 echo "\nNumber escape test: ";
 foreach ($nums as $n) {
-    $quoted = $dbh->quote($n);
+    $quoted = $dbh->quoteSmart($n);
     $dbh->query("INSERT INTO pearquote VALUES ($quoted, 'foo')");
 }
 $diff = array_diff($nums, $res = $dbh->getCol("SELECT n FROM pearquote"));
