@@ -466,8 +466,11 @@ class DB
      */
     function isManip($query)
     {
-        $manips = 'INSERT|UPDATE|DELETE|LOAD DATA|'.'REPLACE|CREATE|DROP|'.
-                  'ALTER|GRANT|REVOKE|'.'LOCK|UNLOCK';
+        $manips = 'INSERT|UPDATE|DELETE|REPLACE|'
+                . 'CREATE|DROP|'
+                . 'LOAD DATA|SELECT .* INTO|COPY|'
+                . 'ALTER|GRANT|REVOKE|'
+                . 'LOCK|UNLOCK';
         if (preg_match('/^\s*"?('.$manips.')\s+/i', $query)) {
             return true;
         }

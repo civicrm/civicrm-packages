@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.139 2004-12-10 20:57:53 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.140 2004-12-10 21:06:33 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -64,6 +64,10 @@ NOTICE!  fbsql has undergone major changes:
   mysql.php.
 = - = - = - = - = - = - = - = - = - = - = - = - =
 
+common:
+* Consider SELECT INTO and COPY data manipulation
+  queries in isManip().  Bug 2883.
+
 ibase:
 * Add items to errorcode_map (from MDB2):
   -303 => DB_ERROR_INVALID
@@ -93,6 +97,8 @@ odbc:
 pgsql:
 * Allow multiple open parentheses in query strings
   (due to regex in simpleQuery()).  Bug 2586.
+* Use pg_affected_rows() instead of the undocumented
+  pg_cmdtuples() in affectedRows().
 
 sqlite:
 * Add tableInfo().  Request #1317.

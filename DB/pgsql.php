@@ -192,9 +192,9 @@ class DB_pgsql extends DB_common
         // Determine which queries that should return data, and which
         // should return an error code only.
         if ($ismanip) {
-            $this->affected = @pg_cmdtuples($result);
+            $this->affected = @pg_affected_rows($result);
             return DB_OK;
-        } elseif (preg_match('/^\s*\(*\s*(SELECT(?!\s+INTO)|EXPLAIN|SHOW)\s/si', $query)) {
+        } elseif (preg_match('/^\s*\(*\s*(SELECT|EXPLAIN|SHOW)\s/si', $query)) {
             /* PostgreSQL commands:
                ABORT, ALTER, BEGIN, CLOSE, CLUSTER, COMMIT, COPY,
                CREATE, DECLARE, DELETE, DROP TABLE, EXPLAIN, FETCH,
