@@ -396,14 +396,12 @@ class DB_ibase extends DB_common
                 $pdata[$i] = &$data;
             }
             if ($types[$j] == DB_PARAM_OPAQUE) {
-                $fp = fopen($pdata[$i], 'r');
-                $pdata[$i] = '';
-                if ($fp) {
-                    while (($buf = fread($fp, 4096)) != false) {
-                        $pdata[$i] .= $buf;
-                    }
-                    fclose($fp);
+                $fp = @fopen($pdata[$i], 'rb');
+                if (!$fp) {
+                    return $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
                 }
+                $pdata[$i] = fread($fp, filesize($pdata[$i]));
+                fclose($fp);
             }
         }
         $res = call_user_func_array('ibase_execute', $pdata);
