@@ -62,11 +62,11 @@ class DB_ibase extends DB_common
         // just a few of the tons of Interbase error codes listed in the
         // Language Reference section of the Interbase manual
         $this->errorcode_map = array(
+            88   => DB_ERROR_NOSUCHTABLE,
             -104 => DB_ERROR_SYNTAX,
             -150 => DB_ERROR_ACCESS_VIOLATION,
             -151 => DB_ERROR_ACCESS_VIOLATION,
             -155 => DB_ERROR_NOSUCHTABLE,
-            88   => DB_ERROR_NOSUCHTABLE,
             -157 => DB_ERROR_NOSUCHFIELD,
             -158 => DB_ERROR_VALUE_COUNT_ON_ROW,
             -170 => DB_ERROR_MISMATCH,
@@ -79,11 +79,11 @@ class DB_ibase extends DB_common
             -219 => DB_ERROR_NOSUCHTABLE,
             -297 => DB_ERROR_CONSTRAINT,
             -530 => DB_ERROR_CONSTRAINT,
-            -607 => DB_ERROR_NOSUCHTABLE,
-            -803 => DB_ERROR_CONSTRAINT,
-            -904 => MDB2_ERROR_CONNECT_FAILED,
             -551 => DB_ERROR_ACCESS_VIOLATION,
             -552 => DB_ERROR_ACCESS_VIOLATION,
+            -607 => DB_ERROR_NOSUCHTABLE,
+            -803 => DB_ERROR_CONSTRAINT,
+            -904 => DB_ERROR_CONNECT_FAILED,
             -922 => DB_ERROR_NOSUCHDB,
             -923 => DB_ERROR_CONNECT_FAILED,
             -924 => DB_ERROR_CONNECT_FAILED
