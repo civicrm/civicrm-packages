@@ -131,6 +131,10 @@ class DB_mysql extends DB_common
 
         $connect_function = $persistent ? 'mysql_pconnect' : 'mysql_connect';
 
+        $ini = ini_get('track_errors');
+        ini_set('track_errors', 1);
+        $php_errormsg = '';
+
         if ($dbhost && $dsninfo['username'] && isset($dsninfo['password'])) {
             $conn = @$connect_function($dbhost, $dsninfo['username'],
                                        $dsninfo['password']);
@@ -141,6 +145,9 @@ class DB_mysql extends DB_common
         } else {
             $conn = false;
         }
+
+        ini_set('track_errors', $ini);
+
         if (!$conn) {
             if (($err = @mysql_error()) != '') {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
