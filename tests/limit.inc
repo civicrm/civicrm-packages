@@ -15,14 +15,14 @@ function pe($o) {
     global $dbh;
 
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-    $dbh->query('DROP TABLE php_limit');
+    drop_table($dbh, 'phptest');
 
     die($o->toString());
 }
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-$dbh->query('DROP TABLE php_limit');
+drop_table($dbh, 'php_limit');
 
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
@@ -66,6 +66,6 @@ switch ($dbh->phptype) {
         break;
 }
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-$dbh->query('DROP TABLE php_limit');
+drop_table($dbh, 'php_limit');
 
 ?>

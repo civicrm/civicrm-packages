@@ -14,7 +14,7 @@ function pe($o) {
     global $dbh;
 
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-    $dbh->query('DROP TABLE phptest');
+    drop_table($dbh, 'phptest');
 
     die($o->toString());
 }
@@ -51,6 +51,6 @@ switch ($dbh->phptype) {
         break;
 }
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-$dbh->query('DROP TABLE phptest');
+drop_table($dbh, 'phptest');
 
 ?>

@@ -24,16 +24,6 @@ function check_error($e, $expected_db_code, $should_be_error = true) {
     }
 }
 
-function drop_table($dbh, $table) {
-    switch ($dbh->phptype) {
-        case 'fbsql':
-            $res = $dbh->query("DROP TABLE $table CASCADE");
-            break;
-        default:
-            $res = $dbh->query("DROP TABLE $table");
-    }
-    return $res;
-}
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);

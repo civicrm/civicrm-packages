@@ -37,9 +37,10 @@
  * Establishes the DB object and connects to the database.
  */
 require_once './connect.inc';
+require_once './droptable.inc';
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-$dbh->query("DROP TABLE phptest");
+drop_table($dbh, 'phptest');
 
 //$dbh->setErrorHandling(PEAR_ERROR_TRIGGER);
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'debug_die');
@@ -72,6 +73,13 @@ switch ($type) {
         $tabletype = '';
         break;
     case 'fbsql':
+        $null = '';
+        $chrc = 'CHAR(255)';
+        $chrd = 'CHAR(20)';
+        $default = "DEFAULT 'def' NOT NULL";
+        $date_literal = ' DATE ';
+        $tabletype = '';
+        break;
     case 'msql':
     case 'ifx':
         // doing this for ifx to keep certain versions happy

@@ -2,7 +2,7 @@
 
 function error_handler(&$obj) {
     print "sequences.inc error_handler:\n    ";
-    print $obj->getMessage();
+    print $obj->getDebugInfo() . "\n";
 }
 ob_implicit_flush(true);
 

@@ -4,6 +4,10 @@
 // the transaction.
 $dbh2 = DB::connect($dbh->dsn);
 
+function error_handler(&$obj) {
+    print "\n" . $obj->getDebugInfo() . "\n";
+}
+
 function dumptable($expected) {
     global $dbh, $dbh2;
     print implode(' ', $dbh->getCol('SELECT b FROM phptest'));
@@ -18,36 +22,46 @@ function dumptable($expected) {
         print ".  ops=ok\n";
     }
 }
-$dbh->setErrorHandling(PEAR_ERROR_DIE);
+
+$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'error_handler');
+
+
 $dbh->autoCommit(true);
 $dbh->query("INSERT INTO phptest VALUES(1, 'one', 'One', '2001-02-19')");
-print "after autocommit: ";
+
+print '1) after autocommit: ';
 dumptable(0);
+
 $dbh->autoCommit(false);
 $dbh->query("INSERT INTO phptest VALUES(2, 'two', 'Two', '2001-02-20')");
 $dbh->query("INSERT INTO phptest VALUES(3, 'three', 'Three', '2001-02-21')");
-print "before commit: ";
+print '2) before commit: ';
 dumptable(2);
+
 $dbh->commit();
-print "after commit: ";
+print '3) after commit: ';
 dumptable(0);
+
 $dbh->query("INSERT INTO phptest VALUES(4, 'four', 'Four', '2001-02-22')");
 $dbh->query("INSERT INTO phptest VALUES(5, 'five', 'Five', '2001-02-23')");
-print "before rollback: ";
+print '4) before rollback: ';
 dumptable(2);
+
 $dbh->rollback();
-print "after rollback: ";
+print '5) after rollback: ';
 dumptable(0);
+
 $dbh->autoCommit(true);
 $dbh->query("INSERT INTO phptest VALUES(6, 'six', 'Six', '2001-02-24')");
 $dbh->query("INSERT INTO phptest VALUES(7, 'seven', 'Seven', '2001-02-25')");
-print "before autocommit+rollback: ";
-dumptable(0);
-$dbh->rollback();
-print "after autocommit+rollback: ";
+print '6) before autocommit+rollback: ';
 dumptable(0);
 
-print "testing that select doesn't disturbe opcount: ";
+$dbh->rollback();
+print '7) after autocommit+rollback: ';
+dumptable(0);
+
+print '8) testing that select doesn\'t disturbe opcount: ';
 $dbh->autoCommit(false);
 $dbh->simpleQuery("SELECT * FROM phptest");
 $dbh->simpleQuery("SELECT a,c FROM phptest");

@@ -7,6 +7,7 @@ error_reporting = 2047
 --FILE--
 <?php
 require_once './connect.inc';
+require_once './droptable.inc';
 require_once '../limit.inc';
 ?>
 --EXPECT--
