@@ -10,33 +10,18 @@ require_once './mktable.inc';
 require_once '../errors.inc';
 ?>
 --EXPECT--
-Trying to provoke DB_ERROR_NOSUCHTABLE
-  DB Error: no such table
-Trying to provoke DB_ERROR_ALREADY_EXISTS for create table
-  DB Error: already exists
-Trying to provoke DB_ERROR_NOSUCHTABLE
-  DB Error: no such table
-Trying to provoke DB_ERROR_CONSTRAINT for primary key insert duplicate
-  DB Error: constraint violation
-Trying to provoke DB_ERROR_CONSTRAINT for primary key update duplicate
-  DB Error: constraint violation
-Trying to provoke DB_ERROR_CONSTRAINT for unique key insert duplicate
-  DB Error: constraint violation
-Trying to provoke DB_ERROR_CONSTRAINT for unique key update duplicate
-  DB Error: constraint violation
-Trying to provoke DB_ERROR_CONSTRAINT for foreign key on insert
-  DB Error: constraint violation
-Trying to provoke DB_ERROR_CONSTRAINT for foreign key on delete
-  DB Error: constraint violation
-Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on insert
-  DB Error: null value violates not-null constraint
-Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on update
-  DB Error: null value violates not-null constraint
-Trying to provoke DB_ERROR_DIVZERO
-  DB Error: division by zero
-Trying to provoke DB_ERROR_INVALID_NUMBER
-  DB Error: invalid number
-Trying to provoke DB_ERROR_NOSUCHFIELD
-  DB Error: no such field
-Trying to provoke DB_ERROR_SYNTAX
-  DB Error: syntax error
+Trying to provoke DB_ERROR_NOSUCHTABLE:  matches expected outcome
+Trying to provoke DB_ERROR_ALREADY_EXISTS for create table:  matches expected outcome
+Trying to provoke DB_ERROR_NOSUCHTABLE:  matches expected outcome
+Trying to provoke DB_ERROR_CONSTRAINT for primary key insert duplicate:  matches expected outcome
+Trying to provoke DB_ERROR_CONSTRAINT for primary key update duplicate:  matches expected outcome
+Trying to provoke DB_ERROR_CONSTRAINT for unique key insert duplicate:  matches expected outcome
+Trying to provoke DB_ERROR_CONSTRAINT for unique key update duplicate:  matches expected outcome
+Trying to provoke DB_ERROR_CONSTRAINT for foreign key on insert:  matches expected outcome
+Trying to provoke DB_ERROR_CONSTRAINT for foreign key on delete:  matches expected outcome
+Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on insert:  matches expected outcome
+Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on update:  matches expected outcome
+Trying to provoke DB_ERROR_DIVZERO:  matches expected outcome
+Trying to provoke DB_ERROR_INVALID_NUMBER:  matches expected outcome
+Trying to provoke DB_ERROR_NOSUCHFIELD:  matches expected outcome
+Trying to provoke DB_ERROR_SYNTAX:  matches expected outcome

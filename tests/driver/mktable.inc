@@ -71,6 +71,7 @@ switch ($type) {
         $default = "DEFAULT 'def' NOT NULL";
         $tabletype = '';
         break;
+    case 'fbsql':
     case 'msql':
     case 'ifx':
         // doing this for ifx to keep certain versions happy
