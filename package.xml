@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.47 2004-01-31 01:29:20 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.48 2004-01-31 02:30:13 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
 DB is a database abstraction layer providing:
 * an OO-style query API
 * a DSN (data source name) format for specifying
-&nbsp;&nbsp; database servers
+&#160;&#160; database servers
 * prepare/execute (bind) emulation for databases
-&nbsp;&nbsp; that don't support it natively
+&#160;&#160; that don't support it natively
 * a result object for each query response
 * portable error codes
 * sequence emulation
 * sequential and non-sequential row fetching as well
-&nbsp;&nbsp; as bulk fetching
+&#160;&#160; as bulk fetching
 * ordered array, associative array and object formats
-&nbsp;&nbsp; supported for the fetched rows
+&#160;&#160; supported for the fetched rows
 * row limit support
 * transactions support
 * table information interface
