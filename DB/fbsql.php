@@ -49,7 +49,6 @@ class DB_fbsql extends DB_common
     var $phptype, $dbsyntax;
     var $prepare_tokens = array();
     var $prepare_types = array();
-    var $num_rows = array();
     var $fetchmode = DB_FETCHMODE_ORDERED;
 
     // }}}
@@ -189,11 +188,6 @@ class DB_fbsql extends DB_common
         if (DB::isManip($query)) {
             return DB_OK;
         }
-        $numrows = $this->numrows($result);
-        if (is_object($numrows)) {
-            return $numrows;
-        }
-        $this->num_rows[(int)$result] = $numrows;
         return $result;
     }
 
