@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.107 2004-06-25 18:51:43 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.108 2004-07-01 23:40:45 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -65,9 +65,16 @@ BUGS FIXED:
 When using resources as array index, convert to int first.
 http://bugs.php.net/28879  (danielc)
 
+* mysqli:
+Adjust tableInfo() so it can deal with changes made to
+mysqli_fetch_field()'s behavior.  Add the $mysqli_flags
+and $mysqli_types properties as part of this effort.
+(danielc)
+
 * pgsql:
 Adjust getListOf('tables') to accommodate the addition of
 sql_* core tables in PostgreSQL 7.4.2.  Bug 1549.
+(Patch by yiwakiri and jpbarrette)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>

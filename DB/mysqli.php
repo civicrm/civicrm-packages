@@ -36,6 +36,7 @@ require_once 'DB/common.php';
  * @version  $Id$
  * @category Database
  * @author   Daniel Convissor <danielc@php.net>
+ * @since    Class functional since Release 1.6.3
  */
 class DB_mysqli extends DB_common
 {
@@ -50,6 +51,61 @@ class DB_mysqli extends DB_common
     var $autocommit = true;
     var $fetchmode = DB_FETCHMODE_ORDERED; /* Default fetch mode */
     var $_db = false;
+
+    /**
+     * Array for converting MYSQLI_*_FLAG constants to text values
+     * @var    array
+     * @access public
+     * @since  Property available since Release 1.6.5
+     */
+    var $mysqli_flags = array(
+        MYSQLI_NOT_NULL_FLAG        => 'not_null',
+        MYSQLI_PRI_KEY_FLAG         => 'primary_key',
+        MYSQLI_UNIQUE_KEY_FLAG      => 'unique_key',
+        MYSQLI_MULTIPLE_KEY_FLAG    => 'multiple_key',
+        MYSQLI_BLOB_FLAG            => 'blob',
+        MYSQLI_UNSIGNED_FLAG        => 'unsigned',
+        MYSQLI_ZEROFILL_FLAG        => 'zerofill',
+        MYSQLI_AUTO_INCREMENT_FLAG  => 'auto_increment',
+        MYSQLI_TIMESTAMP_FLAG       => 'timestamp',
+        MYSQLI_SET_FLAG             => 'set',
+        // MYSQLI_NUM_FLAG             => 'numeric',  // unnecessary
+        // MYSQLI_PART_KEY_FLAG        => 'multiple_key',  // duplicatvie
+        MYSQLI_GROUP_FLAG           => 'group_by'
+    );
+
+    /**
+     * Array for converting MYSQLI_TYPE_* constants to text values
+     * @var    array
+     * @access public
+     * @since  Property available since Release 1.6.5
+     */
+    var $mysqli_types = array(
+        MYSQLI_TYPE_DECIMAL     => 'decimal',
+        MYSQLI_TYPE_TINY        => 'tinyint',
+        MYSQLI_TYPE_SHORT       => 'int',
+        MYSQLI_TYPE_LONG        => 'int',
+        MYSQLI_TYPE_FLOAT       => 'float',
+        MYSQLI_TYPE_DOUBLE      => 'double',
+        // MYSQLI_TYPE_NULL        => 'DEFAULT NULL',  // let flags handle it
+        MYSQLI_TYPE_TIMESTAMP   => 'timestamp',
+        MYSQLI_TYPE_LONGLONG    => 'bigint',
+        MYSQLI_TYPE_INT24       => 'mediumint',
+        MYSQLI_TYPE_DATE        => 'date',
+        MYSQLI_TYPE_TIME        => 'time',
+        MYSQLI_TYPE_DATETIME    => 'datetime',
+        MYSQLI_TYPE_YEAR        => 'year',
+        MYSQLI_TYPE_NEWDATE     => 'date',
+        MYSQLI_TYPE_ENUM        => 'enum',
+        MYSQLI_TYPE_SET         => 'set',
+        MYSQLI_TYPE_TINY_BLOB   => 'tinyblob',
+        MYSQLI_TYPE_MEDIUM_BLOB => 'mediumblob',
+        MYSQLI_TYPE_LONG_BLOB   => 'longblob',
+        MYSQLI_TYPE_BLOB        => 'blob',
+        MYSQLI_TYPE_VAR_STRING  => 'varchar',
+        MYSQLI_TYPE_STRING      => 'char',
+        MYSQLI_TYPE_GEOMETRY    => 'geometry',
+    );
 
     // }}}
     // {{{ constructor
@@ -804,24 +860,16 @@ class DB_mysqli extends DB_common
                 $tmp = @mysqli_fetch_field($id);
                 $res[$i]['table'] = $case_func($tmp->table);
                 $res[$i]['name']  = $case_func($tmp->name);
-                $res[$i]['type']  = $tmp->type;
+                $res[$i]['type']  = isset($this->mysqli_types[$tmp->type]) ?
+                                          $this->mysqli_types[$tmp->type] :
+                                          'unknown';
                 $res[$i]['len']   = $tmp->max_length;
 
                 $res[$i]['flags'] = '';
-                if ($tmp->flags & MYSQLI_NOT_NULL_FLAG) {
-                    $res[$i]['flags'] .= 'not_null ';
-                }
-                if ($tmp->flags & MYSQLI_PRI_KEY_FLAG) {
-                    $res[$i]['flags'] .= 'primary_key ';
-                }
-                if ($tmp->flags & MYSQLI_UNIQUE_KEY_FLAG) {
-                    $res[$i]['flags'] .= 'unique_key ';
-                }
-                if ($tmp->flags & MYSQLI_MULTIPLE_KEY_FLAG) {
-                    $res[$i]['flags'] .= 'multiple_key ';
-                }
-                if ($tmp->flags & MYSQLI_BLOB_FLAG) {
-                    $res[$i]['flags'] .= 'blob ';
+                foreach ($this->mysqli_flags as $const => $means) {
+                    if ($tmp->flags & $const) {
+                        $res[$i]['flags'] .= $means . ' ';
+                    }
                 }
                 if ($tmp->def) {
                     $res[$i]['flags'] .= 'default_' . rawurlencode($tmp->def);
@@ -835,24 +883,16 @@ class DB_mysqli extends DB_common
                 $tmp = @mysqli_fetch_field($id);
                 $res[$i]['table'] = $case_func($tmp->table);
                 $res[$i]['name']  = $case_func($tmp->name);
-                $res[$i]['type']  = $tmp->type;
+                $res[$i]['type']  = isset($this->mysqli_types[$tmp->type]) ?
+                                          $this->mysqli_types[$tmp->type] :
+                                          'unknown';
                 $res[$i]['len']   = $tmp->max_length;
 
                 $res[$i]['flags'] = '';
-                if ($tmp->flags & MYSQLI_NOT_NULL_FLAG) {
-                    $res[$i]['flags'] .= 'not_null ';
-                }
-                if ($tmp->flags & MYSQLI_PRI_KEY_FLAG) {
-                    $res[$i]['flags'] .= 'primary_key ';
-                }
-                if ($tmp->flags & MYSQLI_UNIQUE_KEY_FLAG) {
-                    $res[$i]['flags'] .= 'unique_key ';
-                }
-                if ($tmp->flags & MYSQLI_MULTIPLE_KEY_FLAG) {
-                    $res[$i]['flags'] .= 'multiple_key ';
-                }
-                if ($tmp->flags & MYSQLI_BLOB_FLAG) {
-                    $res[$i]['flags'] .= 'blob ';
+                foreach ($this->mysqli_flags as $const => $means) {
+                    if ($tmp->flags & $const) {
+                        $res[$i]['flags'] .= $means . ' ';
+                    }
                 }
                 if ($tmp->def) {
                     $res[$i]['flags'] .= 'default_' . rawurlencode($tmp->def);
