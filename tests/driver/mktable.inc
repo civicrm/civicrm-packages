@@ -54,12 +54,14 @@ if ($dbh->phptype == 'odbc') {
     $type = $dbh->phptype;
 }
 
+
 switch ($type) {
     case 'access':
         $null = 'NULL';
         $chrc = 'VARCHAR(255)';
         $chrd = 'VARCHAR(20)';
         $default = '';
+        $tabletype = '';
         break;
     case 'db2':
     case 'ibase':
@@ -67,6 +69,7 @@ switch ($type) {
         $chrc = 'VARCHAR(255)';
         $chrd = 'VARCHAR(20)';
         $default = "DEFAULT 'def' NOT NULL";
+        $tabletype = '';
         break;
     case 'msql':
     case 'ifx':
@@ -75,20 +78,35 @@ switch ($type) {
         $chrc = 'CHAR(255)';
         $chrd = 'CHAR(20)';
         $default = "DEFAULT 'def' NOT NULL";
+        $tabletype = '';
+        break;
+    case 'mysql':
+    case 'mysqli':
+        $null = 'NULL';
+        $chrc = 'VARCHAR(255)';
+        $chrd = 'VARCHAR(20)';
+        $default = "DEFAULT 'def' NOT NULL";
+        if (!empty($needinnodb)) {
+            $tabletype = 'TYPE=INNODB';
+        } else {
+            $tabletype = '';
+        }
         break;
     default:
         $null = 'NULL';
         $chrc = 'VARCHAR(255)';
         $chrd = 'VARCHAR(20)';
         $default = "DEFAULT 'def' NOT NULL";
+        $tabletype = '';
 }
+
 
 $test_mktable_query = "
     CREATE TABLE phptest (
       a INTEGER $null,
       b CHAR(40) $default,
       c $chrc $null,
-      d $chrd $null)
+      d $chrd $null) $tabletype
 ";
 
 

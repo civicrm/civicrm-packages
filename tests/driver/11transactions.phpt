@@ -4,6 +4,7 @@ DB_driver::transaction test
 <?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--
 <?php
+$needinnodb = true;
 require_once './mktable.inc';
 require_once '../transactions.inc';
 ?>
