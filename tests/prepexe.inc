@@ -12,11 +12,10 @@ fclose($fp);
 // 1) Multiple prepare/exec INSERT queries
 echo "------------1------------\n";
 
-$sth1 = $dbh->prepare("INSERT INTO phptest (a, b) VALUES(?, 'a')");
-$sth2 = $dbh->prepare("INSERT INTO phptest (a,b) VALUES(?,?)");
-$sth3 = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES(?,?,&)");
+$sth1 = $dbh->prepare("INSERT INTO phptest (a, b) VALUES (?, 'a')");
+$sth2 = $dbh->prepare("INSERT INTO phptest (a,b) VALUES (?,?)");
+$sth3 = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES (?,?,&)");
 print "sth1,sth2,sth3 created\n";
-
 if (($res = $dbh->execute($sth1, array(72))) == DB_OK) {
     print "sth1 executed\n";
 }
@@ -32,7 +31,7 @@ print_results();
 echo "\n------------2------------\n";
 
 $dbh->query('DELETE FROM phptest');
-$sth = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES(?,?,&)");
+$sth = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES (?,?,&)");
 $data = array(
     0 => array(72, 'set1', $tmpfile),
     1 => array(72, 'set2', $tmpfile),
