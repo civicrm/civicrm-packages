@@ -34,6 +34,7 @@ tableInfo        x    n    n    n    T    T    -    T    n    T    T    -
 
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
 
+
 TYPE (getListOf)
 tables           x    -    -    -    x    x    -    x    -    x    x    -
 views            -    -    -    -    x    n    -    -    -    x    x    -
@@ -66,5 +67,9 @@ Symbols:
 15quote          -    o    -    -    o    o    -    o    o    o    o    o
 16tableinfo      -    -    -    -    o    o    -    o    -    o    o    -
 17query          -    X    -    -    o    o    -    o    o    o    o    o
+18get            -    X    -    -    o    o    -    o    o    o    o    o
 
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
+
+NOTE: getAll() and getAssoc() crashes PHP 5 when using DB_FETCHMODE_OBJECT.
+      See http://bugs.php.net/?id=27123
