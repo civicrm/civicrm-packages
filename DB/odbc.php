@@ -609,6 +609,76 @@ class DB_odbc extends DB_common
     }
 
     // }}}
+    // {{{ getSpecialQuery()
+
+    /**
+     * Obtain the query string needed for listing a given type of objects
+     *
+     * Thanks to symbol1@gmail.com and Philippe.Jausions@11abacus.com.
+     *
+     * @param string $type  the kind of objects you want to retrieve
+     *
+     * @return string  the list of objects requested
+     *
+     * @access private
+     * @see DB_common::getListOf()
+     * @since Method available since Release 1.7.0
+     */
+    function getSpecialQuery($type)
+    {
+        switch ($type) {
+            case 'databases':
+                if (version_compare(phpversion(), '4.3.0', '<')) {
+                    return null;
+                }
+                $res = @odbc_data_source($this->connection, SQL_FETCH_FIRST);
+                if (is_array($res)) {
+                    $out = array($res['server']);
+                    while($res = @odbc_data_source($this->connection,
+                                                   SQL_FETCH_NEXT))
+                    {
+                        $out[] = $res['server'];
+                    }
+                    return $out;
+                } else {
+                    return $this->odbcRaiseError();
+                }
+                break;
+            case 'tables':
+            case 'schema.tables':
+                $keep = 'TABLE';
+                break;
+            case 'views':
+                $keep = 'VIEW';
+                break;
+            default:
+                return null;
+        }
+
+        /*
+         * Removing non-conforming items in the while loop rather than
+         * in the odbc_tables() call because some backends choke on this:
+         *     odbc_tables($this->connection, '', '', '', 'TABLE')
+         */
+        $res  = @odbc_tables($this->connection);
+        if (!$res) {
+            return $this->odbcRaiseError();
+        }
+        $out = array();
+        while ($row = odbc_fetch_array($res)) {
+            if ($row['TABLE_TYPE'] != $keep) {
+                continue;
+            }
+            if ($type == 'schema.tables') {
+                $out[] = $row['TABLE_SCHEM'] . '.' . $row['TABLE_NAME'];
+            } else {
+                $out[] = $row['TABLE_NAME'];
+            }
+        }
+        return $out;
+    }
+
+    // }}}
     // {{{ tableInfo()
 
     /**
