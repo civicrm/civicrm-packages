@@ -448,7 +448,7 @@ class DB_sqlite extends DB_common
     {
         $rows = @sqlite_num_rows($result);
         if (!is_integer($rows)) {
-            return $this->raiseError();
+            return $this->sqliteRaiseError();
         }
         return $rows;
     }
