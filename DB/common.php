@@ -26,7 +26,7 @@
  * inherited by all such.
  */
 
-require_once "PEAR.php";
+require_once 'PEAR.php';
 
 class DB_common extends PEAR
 {
@@ -1144,7 +1144,7 @@ class DB_common extends PEAR
         }
         $params = (empty($params)) ? array() : $params;
         $fetchmode = (empty($fetchmode)) ? DB_FETCHMODE_DEFAULT : $fetchmode;
-        settype($params, "array");
+        settype($params, 'array');
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
 
@@ -1158,7 +1158,7 @@ class DB_common extends PEAR
             $res = $this->query($query);
         }
 
-        if (DB::isError($res)) {
+        if (DB::isError($res) || $res == DB_OK) {
             return $res;
         }
 
