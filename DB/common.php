@@ -398,6 +398,8 @@ class DB_common extends PEAR
      *
      * With some database backends, this is emulated.
      *
+     * This method gets overridden a DBMS specific one if it exists.
+     *
      * prepare() requires a generic query as string like <code>
      *    INSERT INTO numbers VALUES (?, ?, ?)
      * </code>.  The <kbd>?</kbd> characters are placeholders.
@@ -416,8 +418,10 @@ class DB_common extends PEAR
      *
      * @param string $query query to be prepared
      * @return mixed DB statement resource on success. DB_Error on failure.
+     * @see DB_common::execute()
+     * @see DB_oci8::prepare()
+     * @see DB_ibase::prepare()
      * @access public
-     * @see execute()
      */
     function prepare($query)
     {
@@ -442,7 +446,7 @@ class DB_common extends PEAR
                     $newtokens[] = preg_replace('/\\\([&?!])/', "\\1", $val);
             }
         }
-        
+
         $this->prepare_tokens[] = &$newtokens;
         end($this->prepare_tokens);
 
@@ -561,23 +565,26 @@ class DB_common extends PEAR
 
     // }}}
     // {{{ execute()
+
     /**
-    * Executes a prepared SQL query
-    * With execute() the generic query of prepare is
-    * assigned with the given data array. The values
-    * of the array inserted into the query in the same
-    * order like the array order
-    *
-    * @param resource $stmt query handle from prepare()
-    * @param array    $data numeric array containing the
-    *                       data to insert into the query
-    *
-    * @return mixed  a new DB_Result or a DB_Error when fail
-    *
-    * @access public
-    * @see prepare()
-    */
-    function &execute($stmt, $data = false)
+     * Executes a DB statement prepared with prepare().
+     *
+     * This method gets overridden a DBMS specific one if it exists.
+     *
+     * @param resource  $stmt  a DB statement resource returned from prepare()
+     * @param mixed  $data  array, string or numeric data to be used in
+     *                      execution of the statement.  Quantity of items
+     *                      passed must match quantity of placeholders in
+     *                      query:  meaning 1 for non-array items or the
+     *                      quantity of elements in the array.
+     * @return mixed  a new DB_Result or a DB_Error when fail
+     * @see DB_common::prepare()
+     * @see DB_common::executeEmulateQuery()
+     * @see DB_oci8::execute()
+     * @see DB_ibase::execute()
+     * @access public
+     */
+    function &execute($stmt, $data = array())
     {
         $realquery = $this->executeEmulateQuery($stmt, $data);
         if (DB::isError($realquery)) {
@@ -597,69 +604,47 @@ class DB_common extends PEAR
     // {{{ executeEmulateQuery()
 
     /**
-    * Emulates the execute statement, when not supported
-    *
-    * @param resource $stmt query handle from prepare()
-    * @param array    $data numeric array containing the
-    *                       data to insert into the query
-    *
-    * @return mixed a string containing the real query run when emulating
-    * prepare/execute.  A DB error code is returned on failure.
-    *
-    * @access private
-    * @see execute()
-    */
-
-    function executeEmulateQuery($stmt, $data = false)
+     * Emulates the execute statement, when not supported.
+     *
+     * @param resource  $stmt  a DB statement resource returned from execute()
+     * @param mixed  $data  array, string or numeric data to be used in
+     *                      execution of the statement.  Quantity of items
+     *                      passed must match quantity of placeholders in
+     *                      query:  meaning 1 for non-array items or the
+     *                      quantity of elements in the array.
+     * @return mixed a string containing the real query run when emulating
+     *               prepare/execute.  A DB error code is returned on failure.
+     * @access private
+     * @see DB_common::execute()
+     */
+    function executeEmulateQuery($stmt, $data = array())
     {
-        $p = &$this->prepare_tokens;
-
-        if (!isset($this->prepare_tokens[$stmt]) ||
-            !is_array($this->prepare_tokens[$stmt]) ||
-            !sizeof($this->prepare_tokens[$stmt]))
-        {
-            return $this->raiseError(DB_ERROR_INVALID);
+        if (!is_array($data)) {
+            $data = array($data);
         }
 
-        $qq = &$this->prepare_tokens[$stmt];
-        $qp = sizeof($qq) - 1;
-
-        if ((!$data && $qp > 0) ||
-            (!is_array($data) && $qp > 1) ||
-            (is_array($data) && $qp > sizeof($data)))
-        {
+        if (($qp = count($this->prepare_types[$stmt])) != count($data)) {
             $this->last_query = $this->prepared_queries[$stmt];
-            return $this->raiseError(DB_ERROR_NEED_MORE_DATA);
+            return $this->raiseError(DB_ERROR_MISMATCH);
         }
 
-        $realquery = $qq[0];
+        $realquery = $this->prepare_tokens[$stmt][0];
+
         for ($i = 0; $i < $qp; $i++) {
-            $type = $this->prepare_types[$stmt][$i];
-            if ($type == DB_PARAM_OPAQUE) {
-                if (is_array($data)) {
-                    $fp = fopen($data[$i], 'rb');
-                } else {
-                    $fp = fopen($data, 'rb');
+            if ($this->prepare_types[$stmt][$i] == DB_PARAM_SCALAR) {
+                $realquery .= $this->quote($data[$i]);
+            } elseif ($this->prepare_types[$stmt][$i] == DB_PARAM_OPAQUE) {
+                $fp = @fopen($data[$i], 'rb');
+                if (!$fp) {
+                    return $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
                 }
-
-                $pdata = '';
-
-                if ($fp) {
-                    while (($buf = fread($fp, 4096)) != false) {
-                        $pdata .= $buf;
-                    }
-                    fclose($fp);
-                }
+                $realquery .= $this->quote(fread($fp, filesize($data[$i])));
+                fclose($fp);
             } else {
-                if (is_array($data)) {
-                    $pdata = &$data[$i];
-                } else {
-                    $pdata = &$data;
-                }
+                $realquery .= $data[$i];
             }
 
-            $realquery .= ($type != DB_PARAM_MISC) ? $this->quote($pdata) : $pdata;
-            $realquery .= $qq[$i + 1];
+            $realquery .= $this->prepare_tokens[$stmt][$i + 1];
         }
 
         return $realquery;
@@ -762,16 +747,24 @@ class DB_common extends PEAR
      * Send a query to the database and return any results with a
      * DB_result object.
      *
-     * @access public
+     * The query string can be either a normal statement to be sent directly
+     * to the server OR if <var>$params</var> are passed the query can have
+     * placeholders and it will be passed through prepare() and execute().
      *
      * @param string $query  the SQL query or the statement to prepare
-     * @param string $params the data to be added to the query
+     * @param mixed  $params array, string or numeric data to be used in
+     *                       execution of the statement.  Quantity of items
+     *                       passed must match quantity of placeholders in
+     *                       query:  meaning 1 for non-array items or the
+     *                       quantity of elements in the array.
      * @return mixed a DB_result object or DB_OK on success, a DB
      *                error on failure
      *
-     * @see DB::isError
-     * @see DB_common::prepare
-     * @see DB_common::execute
+     * @see DB_common::simpleQuery()
+     * @see DB_common::prepare()
+     * @see DB_common::execute()
+     * @see DB::isError()
+     * @access public
      */
     function &query($query, $params = array()) {
         if (sizeof($params) > 0) {
