@@ -796,11 +796,16 @@ class DB_mysql extends DB_common
     /**
      * Changes a query string for various DBMS specific reasons
      *
+     * This little hack lets you know how many rows were deleted
+     * when running a "DELETE FROM table" query.  Only implemented
+     * if the DB_PORTABILITY_DELETE_COUNT portability option is on.
+     *
      * @param string $query  the query string to modify
      *
      * @return string  the modified query string
      *
      * @access protected
+     * @see DB_common::setOption()
      */
     function modifyQuery($query)
     {

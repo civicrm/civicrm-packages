@@ -732,6 +732,8 @@ class DB_oci8 extends DB_common
     /**
      * Changes a query string for various DBMS specific reasons
      *
+     * "SELECT 2+2" must be "SELECT 2+2 FROM dual" in Oracle.
+     *
      * @param string $query  the query string to modify
      *
      * @return string  the modified query string
@@ -740,7 +742,6 @@ class DB_oci8 extends DB_common
      */
     function modifyQuery($query)
     {
-        // "SELECT 2+2" must be "SELECT 2+2 FROM dual" in Oracle
         if (preg_match('/^\s*SELECT/i', $query) &&
             !preg_match('/\sFROM\s/i', $query)) {
             $query .= ' FROM dual';

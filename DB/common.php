@@ -1061,14 +1061,15 @@ class DB_common extends PEAR
     /**
      * Changes a query string for various DBMS specific reasons
      *
-     * It is defined here to assure that all implementations
-     * have this method defined.
+     * It is defined here to ensure all drivers have this method available.
      *
      * @param string $query  the query string to modify
      *
      * @return string  the modified query string
      *
      * @access protected
+     * @see DB_mysql::modifyQuery(), DB_oci8::modifyQuery(),
+     *      DB_sqlite::modifyQuery()
      */
     function modifyQuery($query)
     {
