@@ -49,7 +49,7 @@ New Features:
 - Added $dbh->freePrepared(), for explicitily free a prepared result
 - Test suite enhanced
 - Added new *experimental* driver for SQLite
-- Added transaction capability to the ifx driver
+- Added transaction capability to the ifx and sybase driver
 
 Bugs fixed:
 - Fixed memory leaks with methods that did automatic prepare/execute
