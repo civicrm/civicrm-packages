@@ -236,7 +236,7 @@ class DB_pgsql extends DB_common
         if (empty($error_regexps)) {
             $error_regexps = array(
                 '/(Table does not exist\.|Relation [\"\'].*[\"\'] does not exist|sequence does not exist|class ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
-                '/Relation [\"\'].*[\"\'] already exists|Cannot insert a duplicate key into (a )?unique index.*/'      => DB_ERROR_ALREADY_EXISTS,
+                '/Relation [\"\'].*[\"\'] already exists|Cannot insert a duplicate key into unique index.*/'      => DB_ERROR_ALREADY_EXISTS,
                 '/divide by zero$/'                     => DB_ERROR_DIVZERO,
                 '/pg_atoi: error in .*: can\'t parse /' => DB_ERROR_INVALID_NUMBER,
                 '/ttribute [\"\'].*[\"\'] not found$|Relation [\"\'].*[\"\'] does not have attribute [\"\'].*[\"\']/' => DB_ERROR_NOSUCHFIELD,
