@@ -606,7 +606,7 @@ class DB_pgsql extends DB_common
                                     FROM pg_attribute f, pg_class tab, pg_type typ, pg_attrdef a
                                     WHERE tab.relname = typ.typname AND typ.typrelid = f.attrelid
                                     AND f.attrelid = a.adrelid AND f.attname = '$field_name'
-                                    AND tab.relname = '$table_name'");
+                                    AND tab.relname = '$table_name' AND f.attnum = a.adnum");
                 $row = @pg_fetch_row($result, 0);
                 $num = str_replace('\'', '', $row[0]);
 
