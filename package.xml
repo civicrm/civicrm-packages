@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
 <package version="1.0">
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
@@ -35,7 +34,7 @@ to LDAP servers and MS ADO (using COM) are also avaible from a separate package)
     </maintainer>
     <maintainer>
       <user>cox</user>
-      <role>developer</role>
+      <role>lead</role>
       <name>Tomas V.V.Cox</name>
       <email>cox@idecnet.com</email>
     </maintainer>
@@ -43,25 +42,15 @@ to LDAP servers and MS ADO (using COM) are also avaible from a separate package)
   <release>
     <version>1.5.0RC2</version>
     <state>stable</state>
-    <date>xxxx-xx-xx</date>
+    <date>2003-09-14</date>
     <notes>
 New Features:
-- Added $dbh->freePrepared(), for explicitily free a prepared result
-- Test suite enhanced
-- Added new *experimental* driver for SQLite
-- Added transaction capability to the ifx and sybase driver
+- Added "isnullable" and "primary_key" field flags for tableInfo() (only avaible when passed a table name)
+- Added transactions support for the Informix driver
 
 Bugs fixed:
-- Fixed memory leaks with methods that did automatic prepare/execute
-- ibase: better error handling and various bugfixes
-- mssql: added port setting to connect and enhancements to the error hanlder
-- mysql: $db->createSequence(); $db->nextID(); now returns 1 and other minor fixes
-- odbc: added native quote() function, better error handling, and other bugfixes
-- pgsql: minor bugfixes
-
-Special thanks for those persons who sent patches and bug reports. This release
-is done for public testing before the final release in sync with the
-upcomming PHP 4.3.3 version.
+- SQLite driver now passes all the tests
+- Various others bugfixes
 </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
