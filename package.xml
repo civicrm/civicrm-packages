@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.122 2004-09-25 21:57:59 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.123 2004-10-04 17:14:32 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -48,17 +48,13 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.7</version>
+    <version>1.6.8</version>
     <state>stable</state>
-    <date>2004-09-25</date>
+    <date>pending</date>
     <notes><![CDATA[
-* pgsql:
-Don't anchor start of error regex.  Bug 2399.  (danielc)
-
-* tests:
-Add --INI-- section with error_reporting = 2047 to
-test files ensuring they pass under recent versions of
-PHP 5.  (danielc)
+* odbc
+Allow use of cursor argument to odbc connect functions.
+Bug 2385.  (danielc)
     ]]></notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>

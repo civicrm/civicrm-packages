@@ -146,8 +146,16 @@ class DB_odbc extends DB_common
         } else {
             $connect_function = 'odbc_connect';
         }
-        $conn = @$connect_function($odbcdsn, $dsninfo['username'],
-                                   $dsninfo['password']);
+
+        if (empty($dsninfo['cursor'])) {
+            $conn = @$connect_function($odbcdsn, $dsninfo['username'],
+                                       $dsninfo['password']);
+        } else {
+            $conn = @$connect_function($odbcdsn, $dsninfo['username'],
+                                       $dsninfo['password'],
+                                       $dsninfo['cursor']);
+        }
+
         if (!is_resource($conn)) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
                                          null, $this->errorNative());
