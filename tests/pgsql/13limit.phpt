@@ -1,5 +1,5 @@
 --TEST--
-DB_pgsql row limit
+DB_pgsql::row limit
 --SKIPIF--
 <?php require "skipif.inc"; ?>
 --FILE--

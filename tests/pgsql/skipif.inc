@@ -12,7 +12,7 @@ if (!extension_loaded("pgsql") && ini_get("enable_dl")) {
 if (!extension_loaded("pgsql")) {
     die("skip\n");
 }
-$conn = @pg_connect("host=localhost dbname=test");
+$conn = @pg_connect("host=localhost dbname=test user=postgres");
 if (!is_resource($conn)) {
     die("skip\n");
 }

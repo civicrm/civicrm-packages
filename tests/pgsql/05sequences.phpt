@@ -1,5 +1,5 @@
 --TEST--
-DB_pgsql sequences
+DB_pgsql::sequences
 --SKIPIF--
 <?php require "skipif.inc"; ?>
 --FILE--

@@ -1,10 +1,9 @@
 --TEST--
-DB_pgsql fetch test
+DB_pgsql::fetch test
 --SKIPIF--
 <?php include("skipif.inc"); ?>
 --FILE--
 <?php
-require_once "DB.php";
 include("mktable.inc");
 include("../fetchrow.inc");
 include("../fetchmodes.inc");

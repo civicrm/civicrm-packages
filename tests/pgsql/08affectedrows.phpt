@@ -4,7 +4,6 @@ DB_pgsql::affectedRows test
 <?php include("skipif.inc"); ?>
 --FILE--
 <?php
-require_once "DB.php";
 include("mktable.inc");
 $dbh->query("INSERT INTO phptest (a,b) VALUES(1, 'test')");
 $dbh->query("INSERT INTO phptest (a,b) VALUES(2, 'test')");

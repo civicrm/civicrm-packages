@@ -4,7 +4,6 @@ DB_pgsql::prepare/execute test
 <?php include("skipif.inc"); ?>
 --FILE--
 <?php
-require_once "DB.php";
 include("mktable.inc");
 include("../prepexe.inc");
 ?>

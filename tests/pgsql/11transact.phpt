@@ -1,5 +1,5 @@
 --TEST--
-DB_pgsql transaction test
+DB_pgsql::transaction test
 --SKIPIF--
 <?php require "skipif.inc"; ?>
 --FILE--

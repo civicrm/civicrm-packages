@@ -1,10 +1,9 @@
 --TEST--
-DB_pgsql error mapping
+DB_pgsql::error mapping
 --SKIPIF--
 <?php require "skipif.inc"; ?>
 --FILE--
 <?php
-require "connect.inc";
 require "mktable.inc";
 // The DB_ERROR_CONSTRAINT test will fail on PostgreSQL < 7.x
 require "../errors.inc";
