@@ -565,8 +565,8 @@ class DB_sqlite extends DB_common
                  */
                 return 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL '
                        . 'SELECT * FROM sqlite_temp_master) '
-                       . sprintf("WHERE tbl_name LIKE '%s' AND type!='meta' ", $args['table'])
-                       . ' ORDER BY type DESC, name;';
+                       . "WHERE tbl_name LIKE '{$args['table']}' AND type!='meta' "
+                       . 'ORDER BY type DESC, name;';
             case 'alter':
                 /*
                  * SQLite does not support ALTER TABLE; this is a helper query
