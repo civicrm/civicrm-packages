@@ -69,9 +69,14 @@ switch ($type) {
         $chr  = 'VARCHAR(8)';
         $identifier = 'q\ut] "dn[t';
         break;
-    case 'msql':
     case 'ifx':
         // doing this for ifx to keep certain versions happy
+        $decimal = 'DECIMAL(3,1)';
+        $null = '';
+        $chr  = 'CHAR(8)';
+        $identifier = '';
+        break;
+    case 'msql':
         $decimal = 'DECIMAL(3,1)';
         $null = '';
         $chr  = 'CHAR(8)';

@@ -189,7 +189,7 @@ $quirks = array(
         4 => array(
             'type' => 'SQLCHAR',
             'len' => 4,
-            'flags' => 'not_null default_df%20t',
+            'flags' => 'not_null',
         ),
         5 => array(
             'type' => 'SQLREAL',
@@ -281,7 +281,7 @@ $quirks = array(
         ),
         5 => array(
             'type' => 'real',
-            'len' => 4,
+            'len' => 513,
             'flags' => '',
         ),
         9 => array(
