@@ -100,6 +100,12 @@ if ($type == 'NULL' || $row['d'] == '') {
 $res =& $dbh->query('DELETE FROM phptest WHERE a = ?', array(17));
 print '8) delete: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
+$res =& $dbh->query('DELETE FROM phptest WHERE a = ?', array(0));
+print '9) delete with array(0) as param: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
+
+$res =& $dbh->query('DELETE FROM phptest WHERE a = ?', 0);
+print '10) delete with 0 as param: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
+
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 drop_table($dbh, 'phptest');
@@ -114,3 +120,5 @@ drop_table($dbh, 'phptest');
 6) insert: okay
 7) a = 11, b = three, d = NULL
 8) delete: okay
+9) delete with array(0) as param: okay
+10) delete with 0 as param: okay
