@@ -12,6 +12,7 @@ require_once '../errors.inc';
 --EXPECT--
 Trying to provoke DB_ERROR_NOSUCHTABLE:  matches expected outcome
 Trying to provoke DB_ERROR_ALREADY_EXISTS for create table:  matches expected outcome
+Trying to provoke DB_ERROR_ALREADY_EXISTS for create index:  matches expected outcome
 Trying to provoke DB_ERROR_NOSUCHTABLE:  matches expected outcome
 Trying to provoke DB_ERROR_CONSTRAINT for primary key insert duplicate:  matches expected outcome
 Trying to provoke DB_ERROR_CONSTRAINT for primary key update duplicate:  matches expected outcome

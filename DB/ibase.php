@@ -769,6 +769,7 @@ class DB_ibase extends DB_common
                 $error_regexps = array(
                     '/[tT]able not found/' => DB_ERROR_NOSUCHTABLE,
                     '/[tT]able .* already exists/' => DB_ERROR_ALREADY_EXISTS,
+                    '/unsuccessful metadata update .* failed attempt to store duplicate value/i' => DB_ERROR_ALREADY_EXISTS,
                     '/validation error for column .* value "\*\*\* null/' => DB_ERROR_CONSTRAINT_NOT_NULL,
                     '/violation of [\w ]+ constraint/' => DB_ERROR_CONSTRAINT,
                     '/conversion error from string/' => DB_ERROR_INVALID_NUMBER,

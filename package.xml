@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.145 2005-01-10 23:45:07 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.146 2005-01-28 19:46:33 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -83,8 +83,9 @@ ibase:
 
 mssql:
 * Use "," to delimit port only for Windows.  Use ":"
-for other OS's.  This bug was introduced when
-resolving Bug #2140.  (Bug #2731)
+  for other OS's.  This bug was introduced when
+  resolving Bug #2140.  (Bug #2731)
+* Add 1913 (duplicate index creation) to errorcode_map.
 
 mysql & mysqli:
 * Added 1061 => DB_ERROR_ALREADY_EXISTS to error map.
@@ -111,11 +112,13 @@ pgsql:
 * Use pg_affected_rows() instead of the undocumented
   pg_cmdtuples() in affectedRows().
 * Make $num_rows property private.
+* Add duplicate index creation to errorcode_map.
 
 sqlite:
 * Add tableInfo().  Request #1317.
 * Capture $php_errormsg on connection errors to make
   debugging easier.
+* Add duplicate index creation to errorcode_map.
 
 sybase:
 * Provide debugging information to raiseError() when

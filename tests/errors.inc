@@ -38,6 +38,21 @@ print 'Trying to provoke DB_ERROR_ALREADY_EXISTS for create table:  ';
 $res = $dbh->query($test_mktable_query);
 check_error($res, DB_ERROR_ALREADY_EXISTS);
 
+print 'Trying to provoke DB_ERROR_ALREADY_EXISTS for create index:  ';
+$res = drop_table($dbh, 'a');
+$res = $dbh->query('CREATE TABLE a (a INTEGER)');
+$res = $dbh->query('CREATE INDEX aa_idx ON a (a)');
+$res = $dbh->query('CREATE INDEX aa_idx ON a (a)');
+switch ($dbh->phptype) {
+    case 'fbsql':
+        // FrontBase doesn't assign a specific code for this yet.
+        check_error($res, DB_ERROR);
+        break;
+    default:
+        check_error($res, DB_ERROR_ALREADY_EXISTS);
+}
+$res = drop_table($dbh, 'a');
+
 
 print 'Trying to provoke DB_ERROR_NOSUCHTABLE:  ';
 $res = drop_table($dbh, 'tableThatsBogus');
