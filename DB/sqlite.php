@@ -157,7 +157,6 @@ class DB_sqlite extends DB_common
      */
     function connect($dsninfo, $persistent = false)
     {
-        $ret = DB_OK;
         $file = $dsninfo['database'];
 
         if (!DB::assertExtension('sqlite')) {
@@ -544,7 +543,6 @@ class DB_sqlite extends DB_common
      */
     function getSpecialQuery($type, $args=array())
     {
-        $query = '';
         if(!is_array($args))
             return $this->raiseError('no key specified', null, null, null,
                                      'Argument has to be an array.');
