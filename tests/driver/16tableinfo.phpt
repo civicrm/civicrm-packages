@@ -160,6 +160,49 @@ $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
 
 $quirks = array(
+    'ibase' => array(
+        'clob' => 'VARCHAR(50)',
+        'date' => 'DATE',
+        'finds_table' => false,
+        'commands' => array(
+        ),
+        0 => array(
+            'type' => 'INTEGER',
+            'len' => 4,
+            'flags' => 'unique_key not_null',
+        ),
+        1 => array(
+            'type' => 'INTEGER',
+            'len' => 4,
+            'flags' => 'primary_key not_null',
+        ),
+        2 => array(
+            'type' => 'VARCHAR',
+            'len' => 50,
+            'flags' => '',
+        ),
+        3 => array(
+            'type' => 'DATE',
+            'len' => 4,
+            'flags' => 'unique_key not_null',
+        ),
+        4 => array(
+            'type' => 'CHAR',
+            'len' => 4,
+            'flags' => 'not_null default',
+        ),
+        5 => array(
+            'type' => 'NUMERIC(9,1)',
+            'len' => 4,
+            'flags' => '',
+        ),
+        9 => array(
+            'type' => 'VARCHAR',
+            'len' => 20,
+            'flags' => '',
+        ),
+    ),
+
     'ifx' => array(
         'clob' => 'CHAR(29)',
         'date' => 'CHAR(10)',
@@ -514,6 +557,8 @@ print "Passing DB_TABLEINFO_ORDERTABLE to method in DB_result.\n";
 print "Output = DB_TABLEINFO_ORDERTABLE.\n";
 print "------------------------------------------\n";
 $array = $resultobj->tableInfo(DB_TABLEINFO_ORDERTABLE);
+// Free this to keep interbase happy.
+$resultobj->free();
 
 print "\nfirst field:\n";
 examineArrayData($array[0], 0);
