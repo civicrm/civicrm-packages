@@ -13,7 +13,8 @@
 // | obtain it through the world-wide-web, please send a note to          |
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
-// | Author: Sterling Hughes <sterling@php.net>                           |
+// | Authors: Sterling Hughes <sterling@php.net>                          |
+// |          Antônio Carlos Venâncio Júnior <floripa@php.net>            |
 // +----------------------------------------------------------------------+
 //
 // $Id$
@@ -53,7 +54,15 @@ class DB_sybase extends DB_common
             'limit' => 'emulate'
         );
         $this->errorcode_map = array(
-            102 => DB_ERROR_SYNTAX,
+            102   => DB_ERROR_SYNTAX,
+            105   => DB_ERROR_SYNTAX,
+            156   => DB_ERROR_SYNTAX,
+            208   => DB_ERROR_NOSUCHTABLE,
+            257   => DB_ERROR_INVALID_NUMBER,
+            3701  => DB_ERROR_NOSUCHTABLE,
+            10304 => DB_ERROR_ACCESS_VIOLATION,
+            10330 => DB_ERROR_ACCESS_VIOLATION,
+            10331 => DB_ERROR_ACCESS_VIOLATION
         );
     }
 
@@ -78,28 +87,19 @@ class DB_sybase extends DB_common
         $user = $dsninfo['username'];
         $pw   = $dsninfo['password'];
 
-        $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
+        $interface = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
         $connect_function = $persistent ? 'sybase_pconnect' : 'sybase_connect';
 
-        if ($dbhost && $user && $pw) {
-            $conn = $connect_function($dbhost, $user, $pw);
-        } elseif ($dbhost && $user) {
-            $conn = $connect_function($dbhost, $user);
-        } elseif ($dbhost) {
-            $conn = $connect_function($dbhost);
+        if ($interface && $user && $pw) {
+            $conn = $connect_function($interface, $user, $pw);
         } else {
-            $conn = $connect_function();
+            $conn = FALSE;
         }
 
         if (!$conn) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED);
         }
 
-        if ($dsninfo['database']) {
-            if (!@sybase_select_db($dsninfo['database'], $conn)) {
-                return $this->raiseError(DB_ERROR_NODBSELECTED);
-            }
-        }
         $this->connection = $conn;
         return DB_OK;
     }
@@ -137,28 +137,49 @@ class DB_sybase extends DB_common
     // }}}
     // {{{ errorCode()
 
-    function errorCode($errmsg = '')
+    function errorCode($errormsg = '')
     {
-        if (!empty($errmsg)) {
-            if (ereg ('^Incorrect syntax near', $errmsg)) {
-                $error['code'] = 102;
-                $error['userinfo'] = $this->last_query . '<br>';
-            }
-            $error['userinfo'] .= $errmsg;
-            if (isset($this->errorcode_map[$error['code']])) {
-                $error['message'] = $this->errorcode_map[$error['code']];
-            }
-            return $error;
+        static $error_regexps;
+        if (empty($error_regexps)) {
+            $error_regexps = array(
+                '/Incorrect syntax near [\"\'].+[\"\']\./'
+                    => 102,
+                '/^Unclosed quote before the character string [\"\'].*[\"\']\./'
+                    => 105,
+                '/Incorrect syntax near the keyword [\"\'].+[\"\']\./'
+                    => 156,
+                '/Implicit conversion from datatype [\"\'].+[\"\'] to [\"\'].+[\"\'] is not allowed\./'
+                    => 257,
+                '/Cannot drop the table [\"\'].+[\"\'], because it doesn\'t exist in the system catalogs\./'
+                    => 3701,
+                '/Only the owner of object [\"\'].+[\"\'] or a user with System Administrator \(SA\) role can run this command\./'
+                    => 10304,
+                '/^.+ permission denied on object .+, database .+, owner .+/'
+                    => 10330,
+                '/^.* permission denied, database .+, owner .+/'
+                    => 10331,
+                '/[^.*] not found\./'
+                    => 208
+            );
         }
-
-        // Fall back to DB_ERROR if there was no mapping.
-        return DB_ERROR;
+        while (list($regexp, $code) = each($error_regexps)) {
+            if (preg_match($regexp, $errormsg)) {
+                $error['code'] = $code;
+            }
+        }
+        $error['userinfo'] = $errormsg;
+        if (isset($error['code']) && isset($this->errorcode_map[$error['code']])) {
+            $error['message'] = $this->errorcode_map[$error['code']];
+        } else {
+            return DB_ERROR;
+        }
+        return $error;
     }
 
     // }}}
     // {{{ sybaseRaiseError()
 
-    function sybaseRaiseError()
+    function sybaseRaiseError($errno = null)
     {
         $native = $this->errorNative();
         $error = $this->errorCode($native);
@@ -258,7 +279,7 @@ class DB_sybase extends DB_common
     {
         if ($rownum !== null) {
             if (!sybase_data_seek($result, $rownum)) {
-                return $this->raiseError();
+                return $this->sybaseRaiseError();
             }
         }
         $ar = ($fetchmode & DB_FETCHMODE_ASSOC) ? @sybase_fetch_array($result) : @sybase_fetch_row($result);
@@ -266,8 +287,7 @@ class DB_sybase extends DB_common
             // reported not work as seems that sybase_get_last_message()
             // always return a message here
             //if ($errmsg = sybase_get_last_message()) {
-            //    echo $errmsg;
-                //return $this->raiseError($errmsg);
+            //    return $this->sybaseRaiseError($errmsg);
             //} else {
                 return null;
             //}
@@ -316,7 +336,7 @@ class DB_sybase extends DB_common
     {
         $cols = @sybase_num_fields($result);
         if (!$cols) {
-            return $this->raiseError();
+            return $this->sybaseRaiseError();
         }
         return $cols;
     }
@@ -337,7 +357,7 @@ class DB_sybase extends DB_common
     {
         $rows = @sybase_num_rows($result);
         if ($rows === null) {
-            return $this->raiseError();
+            return $this->sybaseRaiseError();
         }
         return $rows;
     }
