@@ -68,14 +68,20 @@ class DB_ifx extends DB_common
             '-201'    => DB_ERROR_SYNTAX,
             '-206'    => DB_ERROR_NOSUCHTABLE,
             '-217'    => DB_ERROR_NOSUCHFIELD,
+            '-239'    => DB_ERROR_CONSTRAINT,
+            '-253'    => DB_ERROR_SYNTAX,
+            '-310'    => DB_ERROR_ALREADY_EXISTS,
             '-329'    => DB_ERROR_NODBSELECTED,
+            '-346'    => DB_ERROR_CONSTRAINT,
+            '-691'    => DB_ERROR_CONSTRAINT,
             '-1204'   => DB_ERROR_INVALID_DATE,
             '-1205'   => DB_ERROR_INVALID_DATE,
             '-1206'   => DB_ERROR_INVALID_DATE,
             '-1209'   => DB_ERROR_INVALID_DATE,
             '-1210'   => DB_ERROR_INVALID_DATE,
-            '-1212'   => DB_ERROR_INVALID_DATE
-       );
+            '-1212'   => DB_ERROR_INVALID_DATE,
+            '-1213'   => DB_ERROR_INVALID_NUMBER,
+        );
     }
 
     // }}}
