@@ -147,7 +147,7 @@ class DB_ibase extends DB_common
             return $this->ibaseRaiseError();
         }
         if ($this->autocommit && $ismanip) {
-            ibase_commit($this->connection);
+            @ibase_commit($this->connection);
         }
         // Determine which queries that should return data, and which
         // should return an error code only.
@@ -237,7 +237,7 @@ class DB_ibase extends DB_common
             $arr = @ibase_fetch_row($result);
         }
         if (!$arr) {
-            if ($errmsg = ibase_errmsg()) {
+            if ($errmsg = @ibase_errmsg()) {
                 return $this->ibaseRaiseError(null, $errmsg);
             } else {
                 return null;
@@ -265,7 +265,7 @@ class DB_ibase extends DB_common
 
     function freeQuery($query)
     {
-        ibase_free_query($query);
+        @ibase_free_query($query);
         return true;
     }
 
@@ -274,7 +274,7 @@ class DB_ibase extends DB_common
 
     function numCols($result)
     {
-        $cols = ibase_num_fields($result);
+        $cols = @ibase_num_fields($result);
         if (!$cols) {
             return $this->ibaseRaiseError();
         }
@@ -334,7 +334,7 @@ class DB_ibase extends DB_common
         $newquery = substr($newquery, 0, -1);
         $this->last_query = $query;
         $newquery = $this->modifyQuery($newquery);
-        $stmt = ibase_prepare($this->connection, $newquery);
+        $stmt = @ibase_prepare($this->connection, $newquery);
         $this->prepare_types[(int)$stmt] = $types;
         $this->manip_query[(int)$stmt]   = DB::isManip($query);
         return $stmt;
@@ -401,7 +401,7 @@ class DB_ibase extends DB_common
         }
         /* XXX need this?
         if ($this->autocommit && $this->manip_query[(int)$stmt]) {
-            ibase_commit($this->connection);
+            @ibase_commit($this->connection);
         }*/
         if ($this->manip_query[(int)$stmt]) {
             $tmp = DB_OK;
@@ -423,7 +423,7 @@ class DB_ibase extends DB_common
         if (!is_resource($stmt)) {
             return false;
         }
-        ibase_free_query($stmt);
+        @ibase_free_query($stmt);
         unset($this->prepare_tokens[(int)$stmt]);
         unset($this->prepare_types[(int)$stmt]);
         unset($this->manip_query[(int)$stmt]);
@@ -444,7 +444,7 @@ class DB_ibase extends DB_common
 
     function commit()
     {
-        return ibase_commit($this->connection);
+        return @ibase_commit($this->connection);
     }
 
     // }}}
@@ -452,7 +452,7 @@ class DB_ibase extends DB_common
 
     function rollback()
     {
-        return ibase_rollback($this->connection);
+        return @ibase_rollback($this->connection);
     }
 
     // }}}
@@ -460,7 +460,7 @@ class DB_ibase extends DB_common
 
     function transactionInit($trans_args = 0)
     {
-        return $trans_args ? ibase_trans($trans_args, $this->connection) : ibase_trans();
+        return $trans_args ? @ibase_trans($trans_args, $this->connection) : @ibase_trans();
     }
 
     // }}}
@@ -565,14 +565,14 @@ class DB_ibase extends DB_common
                .' WHERE I.RDB$FIELD_NAME=\'' . $field_name . '\''
                .'  AND UPPER(R.RDB$RELATION_NAME)=\'' . strtoupper($table_name) . '\'';
 
-        $result = ibase_query($this->connection, $sql);
+        $result = @ibase_query($this->connection, $sql);
         if (!$result) {
             return $this->ibaseRaiseError();
         }
 
         $flags = '';
         if ($obj = @ibase_fetch_object($result)) {
-            ibase_free_result($result);
+            @ibase_free_result($result);
             if (isset($obj->CTYPE)  && trim($obj->CTYPE) == 'PRIMARY KEY') {
                 $flags .= 'primary_key ';
             }
@@ -590,12 +590,12 @@ class DB_ibase extends DB_common
                .' WHERE UPPER(R.RDB$RELATION_NAME)=\'' . strtoupper($table_name) . '\''
                .'  AND R.RDB$FIELD_NAME=\'' . $field_name . '\'';
 
-        $result = ibase_query($this->connection, $sql);
+        $result = @ibase_query($this->connection, $sql);
         if (!$result) {
             return $this->ibaseRaiseError();
         }
         if ($obj = @ibase_fetch_object($result)) {
-            ibase_free_result($result);
+            @ibase_free_result($result);
             if (isset($obj->NFLAG)) {
                 $flags .= 'not_null ';
             }
@@ -702,7 +702,7 @@ class DB_ibase extends DB_common
 
         // free the result only if we were called on a table
         if ($got_string) {
-            ibase_free_result($id);
+            @ibase_free_result($id);
         }
         return $res;
     }
@@ -724,7 +724,7 @@ class DB_ibase extends DB_common
     function &ibaseRaiseError($db_errno = null, $native_errmsg = null)
     {
         if ($native_errmsg === null) {
-            $native_errmsg = ibase_errmsg();
+            $native_errmsg = @ibase_errmsg();
         }
         // memo for the interbase php module hackers: we need something similar
         // to mysql_errno() to retrieve error codes instead of this ugly hack

@@ -175,7 +175,7 @@ class DB_ifx extends DB_common
         if (!$result) {
             return $this->ifxraiseError();
         }
-        $this->affected = ifx_affected_rows($result);
+        $this->affected = @ifx_affected_rows($result);
         // Determine which queries should return data, and which
         // should return an error code only.
         if (preg_match('/(SELECT)/i', $query)) {
@@ -185,7 +185,7 @@ class DB_ifx extends DB_common
         // may cause to stop it and commit the work?
 
         // Result has to be freed even with a insert or update
-        ifx_free_result($result);
+        @ifx_free_result($result);
 
         return DB_OK;
     }
@@ -436,7 +436,7 @@ class DB_ifx extends DB_common
      */
     function errorNative()
     {
-        return ifx_error() . ' ' . ifx_errormsg();
+        return @ifx_error() . ' ' . @ifx_errormsg();
     }
 
     // }}}

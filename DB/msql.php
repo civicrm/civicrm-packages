@@ -168,7 +168,7 @@ class DB_msql extends DB_common
             $arr = @msql_fetch_row($result);
         }
         if (!$arr) {
-            if ($error = msql_error()) {
+            if ($error = @msql_error()) {
                 return $this->raiseError($error);
             } else {
                 return null;

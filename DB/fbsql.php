@@ -154,7 +154,7 @@ class DB_fbsql extends DB_common
      */
     function disconnect()
     {
-        $ret = fbsql_close($this->connection);
+        $ret = @fbsql_close($this->connection);
         $this->connection = null;
         return $ret;
     }
@@ -298,7 +298,7 @@ class DB_fbsql extends DB_common
 
     function commit()
     {
-        fbsql_commit();
+        @fbsql_commit();
     }
 
     // }}}
@@ -306,7 +306,7 @@ class DB_fbsql extends DB_common
 
     function rollback()
     {
-        fbsql_rollback();
+        @fbsql_rollback();
     }
 
     // }}}
@@ -385,7 +385,7 @@ class DB_fbsql extends DB_common
      */
     function errorNative()
     {
-        return fbsql_errno($this->connection);
+        return @fbsql_errno($this->connection);
     }
 
     // }}}
@@ -424,7 +424,7 @@ class DB_fbsql extends DB_common
         if (DB::isError($result)) {
             return $result;
         }
-        return fbsql_insert_id($this->connection);
+        return @fbsql_insert_id($this->connection);
     }
 
     /**
@@ -533,7 +533,7 @@ class DB_fbsql extends DB_common
             $errno = $this->errorCode(fbsql_errno($this->connection));
         }
         return $this->raiseError($errno, null, null, null,
-                        fbsql_error($this->connection));
+                        @fbsql_error($this->connection));
     }
 
     // }}}

@@ -78,7 +78,7 @@ class DB_dbase extends DB_common
         }
         $this->dsn = $dsninfo;
         ob_start();
-        $conn  = dbase_open($dsninfo['database'], 0);
+        $conn  = @dbase_open($dsninfo['database'], 0);
         $error = ob_get_contents();
         ob_end_clean();
         if (!$conn) {
@@ -94,7 +94,7 @@ class DB_dbase extends DB_common
 
     function disconnect()
     {
-        $ret = dbase_close($this->connection);
+        $ret = @dbase_close($this->connection);
         $this->connection = null;
         return $ret;
     }
@@ -161,7 +161,7 @@ class DB_dbase extends DB_common
 
     function numCols($foo)
     {
-        return dbase_numfields($this->connection);
+        return @dbase_numfields($this->connection);
     }
 
     // }}}
@@ -169,7 +169,7 @@ class DB_dbase extends DB_common
 
     function numRows($foo)
     {
-        return dbase_numrecords($this->connection);
+        return @dbase_numrecords($this->connection);
     }
 
     // }}}

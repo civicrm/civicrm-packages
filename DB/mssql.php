@@ -97,12 +97,12 @@ class DB_mssql extends DB_common
         }
         if (!$conn) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
-                                         null, mssql_get_last_message());
+                                         null, @mssql_get_last_message());
         }
         if ($dsninfo['database']) {
             if (!@mssql_select_db($dsninfo['database'], $conn)) {
                 return $this->raiseError(DB_ERROR_NODBSELECTED, null, null,
-                                         null, mssql_get_last_message());
+                                         null, @mssql_get_last_message());
             }
             $this->_db = $dsninfo['database'];
         }
@@ -163,7 +163,7 @@ class DB_mssql extends DB_common
      */
     function nextResult($result)
     {
-        return mssql_next_result($result);
+        return @mssql_next_result($result);
     }
 
     // }}}
@@ -205,7 +205,7 @@ class DB_mssql extends DB_common
         if (!$arr) {
             /* This throws informative error messages,
                don't use it for now
-            if ($msg = mssql_get_last_message()) {
+            if ($msg = @mssql_get_last_message()) {
                 return $this->raiseError($msg);
             }
             */
@@ -436,11 +436,11 @@ class DB_mssql extends DB_common
      */
     function errorNative()
     {
-        $res = mssql_query('select @@ERROR as ErrorCode', $this->connection);
+        $res = @mssql_query('select @@ERROR as ErrorCode', $this->connection);
         if (!$res) {
             return DB_ERROR;
         }
-        $row = mssql_fetch_row($res);
+        $row = @mssql_fetch_row($res);
         return $row[0];
     }
 
@@ -484,7 +484,7 @@ class DB_mssql extends DB_common
      */
     function mssqlRaiseError($code = null)
     {
-        $message = mssql_get_last_message();
+        $message = @mssql_get_last_message();
         if (!$code) {
             $code = $this->errorNative();
         }

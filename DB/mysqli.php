@@ -160,13 +160,13 @@ class DB_mysqli extends DB_common
                 switch(mysqli_errno($conn)) {
                     case 1049:
                         return $this->raiseError(DB_ERROR_NOSUCHDB, null, null,
-                                                 null, mysqli_error($conn));
+                                                 null, @mysqli_error($conn));
                     case 1044:
                          return $this->raiseError(DB_ERROR_ACCESS_VIOLATION, null, null,
-                                                  null, mysqli_error($conn));
+                                                  null, @mysqli_error($conn));
                     default:
                         return $this->raiseError(DB_ERROR, null, null,
-                                                 null, mysqli_error($conn));
+                                                 null, @mysqli_error($conn));
                 }
             }
             // fix to allow calls to different databases in the same script
@@ -188,7 +188,7 @@ class DB_mysqli extends DB_common
      */
     function disconnect()
     {
-        $ret = mysqli_close($this->connection);
+        $ret = @mysqli_close($this->connection);
         $this->connection = null;
         return $ret;
     }
@@ -465,7 +465,7 @@ class DB_mysqli extends DB_common
      */
     function errorNative()
     {
-        return mysqli_errno($this->connection);
+        return @mysqli_errno($this->connection);
     }
 
     // }}}
@@ -683,7 +683,7 @@ class DB_mysqli extends DB_common
      * @internal
      */
     function escapeSimple($str) {
-        return mysqli_real_escape_string($str, $this->connection);
+        return @mysqli_real_escape_string($str, $this->connection);
     }
 
     // }}}

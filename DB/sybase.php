@@ -118,7 +118,7 @@ class DB_sybase extends DB_common
         if ($dsninfo['database']) {
             if (!@sybase_select_db($dsninfo['database'], $conn)) {
                 return $this->raiseError(DB_ERROR_NODBSELECTED, null,
-                                         null, null, sybase_get_last_message());
+                                         null, null, @sybase_get_last_message());
             }
             $this->_db = $dsninfo['database'];
         }
@@ -154,7 +154,7 @@ class DB_sybase extends DB_common
      */
     function errorNative()
     {
-        return sybase_get_last_message();
+        return @sybase_get_last_message();
     }
 
     // }}}
@@ -344,7 +344,7 @@ class DB_sybase extends DB_common
         if (!$arr) {
             // reported not work as seems that sybase_get_last_message()
             // always return a message here
-            //if ($errmsg = sybase_get_last_message()) {
+            //if ($errmsg = @sybase_get_last_message()) {
             //    return $this->sybaseRaiseError($errmsg);
             //} else {
                 return null;

@@ -300,12 +300,12 @@ class DB_sqlite extends DB_common
             }
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $arr = sqlite_fetch_array($result, SQLITE_ASSOC);
+            $arr = @sqlite_fetch_array($result, SQLITE_ASSOC);
             if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE && $arr) {
                 $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
-            $arr = sqlite_fetch_array($result, SQLITE_NUM);
+            $arr = @sqlite_fetch_array($result, SQLITE_NUM);
         }
         if (!$arr) {
             /* See: http://bugs.php.net/bug.php?id=22328 */
@@ -389,7 +389,7 @@ class DB_sqlite extends DB_common
      */
     function affectedRows()
     {
-        return sqlite_changes($this->connection);
+        return @sqlite_changes($this->connection);
     }
 
     // }}}
@@ -519,7 +519,7 @@ class DB_sqlite extends DB_common
             $result = $this->query("INSERT INTO $seqname VALUES (NULL)");
             $this->popErrorHandling();
             if ($result == DB_OK) {
-                $id = sqlite_last_insert_rowid($this->connection);
+                $id = @sqlite_last_insert_rowid($this->connection);
                 if ($id != 0) {
                     return $id;
                 }

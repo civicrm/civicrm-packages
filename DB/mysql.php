@@ -153,13 +153,13 @@ class DB_mysql extends DB_common
                switch(mysql_errno($conn)) {
                         case 1049:
                             return $this->raiseError(DB_ERROR_NOSUCHDB, null, null,
-                                                     null, mysql_error($conn));
+                                                     null, @mysql_error($conn));
                         case 1044:
                              return $this->raiseError(DB_ERROR_ACCESS_VIOLATION, null, null,
-                                                      null, mysql_error($conn));
+                                                      null, @mysql_error($conn));
                         default:
                             return $this->raiseError(DB_ERROR, null, null,
-                                                     null, mysql_error($conn));
+                                                     null, @mysql_error($conn));
                     }
             }
             // fix to allow calls to different databases in the same script
@@ -182,7 +182,7 @@ class DB_mysql extends DB_common
      */
     function disconnect()
     {
-        $ret = mysql_close($this->connection);
+        $ret = @mysql_close($this->connection);
         $this->connection = null;
         return $ret;
     }
@@ -473,7 +473,7 @@ class DB_mysql extends DB_common
      */
     function errorNative()
     {
-        return mysql_errno($this->connection);
+        return @mysql_errno($this->connection);
     }
 
     // }}}
@@ -503,7 +503,7 @@ class DB_mysql extends DB_common
             $this->popErrorHandling();
             if ($result == DB_OK) {
                 /** COMMON CASE **/
-                $id = mysql_insert_id($this->connection);
+                $id = @mysql_insert_id($this->connection);
                 if ($id != 0) {
                     return $id;
                 }
@@ -708,9 +708,9 @@ class DB_mysql extends DB_common
      */
     function escapeSimple($str) {
         if (function_exists('mysql_real_escape_string')) {
-            return mysql_real_escape_string($str, $this->connection);
+            return @mysql_real_escape_string($str, $this->connection);
         } else {
-            return mysql_escape_string($str);
+            return @mysql_escape_string($str);
         }
     }
 
