@@ -36,6 +36,10 @@ require_once 'DB/common.php';
  *
  * These methods overload the ones declared in DB_common.
  *
+ * NOTICE:  This driver needs PHP's track_errors ini setting to be on.
+ * It is automatically turned on when connecting to the database.
+ * Make sure your scripts don't turn it off.
+ *
  * @category   Database
  * @package    DB
  * @author     Urs Gehrig <urs@circle.ch>
@@ -256,6 +260,10 @@ class DB_sqlite extends DB_common
      * Send a query to SQLite and returns the results as a SQLite resource
      * identifier
      *
+     * NOTICE:  This method needs PHP's track_errors ini setting to be on.
+     * It is automatically turned on when connecting to the database.
+     * Make sure your scripts don't turn it off.
+     *
      * @param string $query  the SQL query
      *
      * @return mixed  a valid SQLite result for successful SELECT queries,
@@ -268,10 +276,6 @@ class DB_sqlite extends DB_common
         $this->last_query = $query;
         $query = $this->_modifyQuery($query);
 
-        if (!ini_get('track_errors')) {
-            // leave it on, since will need it on every time.
-            ini_set('track_errors', 1);
-        }
         $php_errormsg = '';
 
         $result = @sqlite_query($query, $this->connection);
