@@ -50,7 +50,8 @@ test("pgsql://user:pass@word@tcp(somehost:7777)/pear");
 // special backend options
 test('ibase://user:pass@localhost//var/lib/dbase.dbf?role=foo');
 test('dbase://@/?role=foo&dialect=bar');
-test('sqlite:///database?option=value&anotheroption=anothervalue');
+test('sqlite:////unix/path/to/database?option=value&anotheroption=anothervalue');
+test('sqlite:///c:/win/path/to/database?option=value');
 
 // some examples from manual
 test('mysql://username@hostspec');
@@ -386,7 +387,7 @@ Array
     [role] => foo
     [dialect] => bar
 )
-DSN: sqlite:///database?option=value&anotheroption=anothervalue
+DSN: sqlite:////unix/path/to/database?option=value&anotheroption=anothervalue
 Array
 (
     [phptype] => sqlite
@@ -397,9 +398,23 @@ Array
     [hostspec] => 
     [port] => 
     [socket] => 
-    [database] => database
+    [database] => /unix/path/to/database
     [option] => value
     [anotheroption] => anothervalue
+)
+DSN: sqlite:///c:/win/path/to/database?option=value
+Array
+(
+    [phptype] => sqlite
+    [dbsyntax] => sqlite
+    [username] => 
+    [password] => 
+    [protocol] => tcp
+    [hostspec] => 
+    [port] => 
+    [socket] => 
+    [database] => c:/win/path/to/database
+    [option] => value
 )
 DSN: mysql://username@hostspec
 Array
