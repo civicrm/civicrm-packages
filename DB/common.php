@@ -23,7 +23,7 @@ require_once 'PEAR.php';
 
 /**
  * DB_common is a base class for DB implementations, and must be
- * inherited by all such.
+ * inherited by all such
  *
  * @package  DB
  * @version  $Id$
@@ -154,11 +154,12 @@ class DB_common extends PEAR
     // {{{ quoteString()
 
     /**
-     * Quotes a string so it can be safely used within string delimiters
-     * in a query (preserved for compatibility issues, quote() is preffered).
+     * DEPRECATED: Quotes a string so it can be safely used within string
+     * delimiters in a query
      *
      * @return string quoted string
      *
+     * @see DB_common::quoteSmart(), DB_common::escapeSimple()
      * @deprecated  Deprecated in release 1.2 or lower
      * @internal
      */
@@ -175,19 +176,14 @@ class DB_common extends PEAR
     // {{{ quote()
 
     /**
-     * Quotes a string so it can be safely used in a query.
-     *
-     * The mysql, odbc and pgsql sub-classes have their own quote() methods
-     * that override this one and that vary their output depending on the
-     * PHP type of the variable submitted.
-     *
-     * It will return the string with single quotes around.
+     * DEPRECATED: Quotes a string so it can be safely used in a query
      *
      * @param string $string the input string to quote
      *
      * @return string The NULL string or the string quotes
      *                in magic_quote_sybase style
      *
+     * @see DB_common::quoteSmart(), DB_common::escapeSimple()
      * @deprecated  Deprecated in release 1.6.0
      * @internal
      */
@@ -216,30 +212,31 @@ class DB_common extends PEAR
      *                 backslashes, then the whole string is encapsulated
      *                 between single quotes
      *               + boolean = output depends on the driver in use:
-     *                 - string <samp>TRUE</samp> or <samp>FALSE</samp>
-     *                   for DBMS's with <kbd>BOOLEAN</kbd> handling:
-     *                     + fbsql
-     *                     + ibase
-     *                     + odbc
-     *                     + pgsql
-     *                 - int <samp>1</samp> if true, <samp>0</samp> if false
-     *                   for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
-     *                   Such drivers and the data types expected:
-     *                     + ifx     <kbd>SMALLINT</kbd> [1]
-     *                     + mssql   <kbd>BIT</kbd>
-     *                     + mysql   <kbd>TINYINT(1)</kbd>
-     *                     + mysql4  <kbd>TINYINT(1)</kbd>
-     *                     + oci8    <kbd>NUMBER(1)</kbd>
-     *                     + sqlite  <kbd>INTEGER</kbd>
-     *                     + sybase  <kbd>TINYINT(1)</kbd>
-     *                 - string <samp>T</samp> if true, <samp>F</samp> if false
-     *                   for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
-     *                   Such drivers and the data types expected:
-     *                     + dbase   <kbd>Logical</kbd>
+     *                - string <samp>TRUE</samp> or <samp>FALSE</samp>
+     *                  for DBMS's with <kbd>BOOLEAN</kbd> handling:
+     *                 # fbsql
+     *                 # ibase
+     *                 # odbc
+     *                 # pgsql
+     *                - int <samp>1</samp> if true, <samp>0</samp> if false
+     *                  for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
+     *                  Such drivers and the data types expected:
+     *                 # ifx     <kbd>SMALLINT</kbd> [1]
+     *                 # mssql   <kbd>BIT</kbd>
+     *                 # mysql   <kbd>TINYINT(1)</kbd>
+     *                 # mysql4  <kbd>TINYINT(1)</kbd>
+     *                 # oci8    <kbd>NUMBER(1)</kbd>
+     *                 # sqlite  <kbd>INTEGER</kbd>
+     *                 # sybase  <kbd>TINYINT(1)</kbd>
+     *                - string <samp>T</samp> if true, <samp>F</samp> if false
+     *                  for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
+     *                  Such drivers and the data types expected:
+     *                 # dbase   <kbd>Logical</kbd>
      *
      * [1] Accommodate the lowest common denominator because not all versions
      * of have <kbd>BOOLEAN</kbd>.
      *
+     * @since 1.6.0
      * @see DB_common::escapeSimple()
      * @access public
      */
@@ -266,7 +263,9 @@ class DB_common extends PEAR
      *
      * @return string  the escaped string
      *
+     * @since 1.6.0
      * @see DB_common::quoteSmart()
+     * @access public
      */
     function escapeSimple($str) {
         return str_replace("'", "''", $str);
@@ -277,7 +276,7 @@ class DB_common extends PEAR
 
     /**
      * Tell whether a DB implementation or its backend extension
-     * supports a given feature.
+     * supports a given feature
      *
      * @param array $feature name of the feature (see the DB class doc)
      * @return bool whether this DB implementation supports $feature
@@ -292,7 +291,7 @@ class DB_common extends PEAR
     // {{{ errorCode()
 
     /**
-     * Map native error codes to DB's portable ones.
+     * Map native error codes to DB's portable ones
      *
      * Requires that the DB implementation's constructor fills
      * in the <var>$errorcode_map</var> property.
@@ -319,7 +318,7 @@ class DB_common extends PEAR
 
     /**
      * Map a DB error code to a textual message.  This is actually
-     * just a wrapper for DB::errorMessage().
+     * just a wrapper for DB::errorMessage()
      *
      * @param integer $dbcode the DB error code
      *
@@ -337,9 +336,9 @@ class DB_common extends PEAR
     // {{{ raiseError()
 
     /**
-     * This method is used to communicate an error and invoke error
-     * callbacks etc.  Basically a wrapper for PEAR::raiseError
-     * without the message string.
+     * Communicate an error and invoke error callbacks, etc
+     *
+     * Basically a wrapper for PEAR::raiseError without the message string.
      *
      * @param mixed    integer error code, or a PEAR error object (all
      *                 other parameters are ignored if this parameter is
@@ -398,7 +397,7 @@ class DB_common extends PEAR
 
     /**
      * Sets which fetch mode should be used by default on queries
-     * on this connection.
+     * on this connection
      *
      * @param integer $fetchmode DB_FETCHMODE_ORDERED or
      *        DB_FETCHMODE_ASSOC, possibly bit-wise OR'ed with
@@ -439,7 +438,7 @@ class DB_common extends PEAR
     // {{{ setOption()
 
     /**
-     * Set run-time configuration options for the db class.
+     * Set run-time configuration options for the db class
      *
      * Options, their data types, default values and description:
      * <ul>
@@ -590,7 +589,7 @@ class DB_common extends PEAR
     // {{{ getOption()
 
     /**
-     * returns the value of an option
+     * Returns the value of an option
      *
      * @param string $option option name
      *
@@ -608,33 +607,46 @@ class DB_common extends PEAR
     // {{{ prepare()
 
     /**
-     * Prepares a query for multiple execution with execute().
+     * Prepares a query for multiple execution with execute()
+     *
+     * Creates a query that can be run multiple times.  Each time it is run,
+     * the placeholders, if any, will be replaced by the contents of
+     * execute()'s $data argument.
+     *
+     * Three types of placeholders can be used:
+     *   + <kbd>?</kbd>  scalar value (i.e. strings, integers).  The system
+     *                   will automatically quote and escape the data.
+     *   + <kbd>!</kbd>  value is inserted 'as is'
+     *   + <kbd>&</kbd>  requires a file name.  The file's contents get
+     *                   inserted into the query (i.e. saving binary
+     *                   data in a db)
+     *
+     * Example 1.
+     * <code> <?php
+     * $sth = $dbh->prepare('INSERT INTO tbl (a, b, c) VALUES (?, !, &)');
+     * $data = array(
+     *     "John's text",
+     *     "'it''s good'",
+     *     'filename.txt'
+     * );
+     * $res = $dbh->execute($sth, $data);
+     * ?></code>
+     *
+     * Use backslashes to escape placeholder characters if you don't want
+     * them to be interpreted as placeholders:
+     * <pre>
+     *    "UPDATE foo SET col=? WHERE col='over \& under'"
+     * </pre>
      *
      * With some database backends, this is emulated.
      *
-     * This method gets overridden a DBMS specific one if it exists.
-     *
-     * prepare() requires a generic query as string like <code>
-     *    INSERT INTO numbers VALUES (?, ?, ?)
-     * </code>.  The <kbd>?</kbd> characters are placeholders.
-     *
-     * Three types of placeholders can be used:
-     *   + <kbd>?</kbd>  a quoted scalar value, i.e. strings, integers
-     *   + <kbd>!</kbd>  value is inserted 'as is'
-     *   + <kbd>&</kbd>  requires a file name.  The file's contents get
-     *                     inserted into the query (i.e. saving binary
-     *                     data in a db)
-     *
-     * Use backslashes to escape placeholder characters if you don't want
-     * them to be interpreted as placeholders.  Example: <code>
-     *    "UPDATE foo SET col=? WHERE col='over \& under'"
-     * </code>
+     * {@internal ibase and oci8 have their own prepare() methods.}}
      *
      * @param string $query query to be prepared
+     *
      * @return mixed DB statement resource on success. DB_Error on failure.
+     *
      * @see DB_common::execute()
-     * @see DB_oci8::prepare()
-     * @see DB_ibase::prepare()
      * @access public
      */
     function prepare($query)
@@ -675,14 +687,14 @@ class DB_common extends PEAR
     // {{{ autoPrepare()
 
     /**
-     * Make automaticaly an insert or update query and call prepare() with it
+     * Automaticaly generate an insert or update query and pass it to prepare()
      *
      * @param string $table name of the table
      * @param array $table_fields ordered array containing the fields names
      * @param int $mode type of query to make (DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE)
      * @param string $where in case of update queries, this string will be put after the sql WHERE statement
      * @return resource handle for the query
-     * @see buildManipSQL
+     * @see DB_common::prepare(), DB_common::buildManipSQL()
      * @access public
      */
     function autoPrepare($table, $table_fields, $mode = DB_AUTOQUERY_INSERT, $where = false)
@@ -695,15 +707,15 @@ class DB_common extends PEAR
     // {{{ autoExecute()
 
     /**
-     * Make automaticaly an insert or update query and call prepare() and execute() with it
+     * Automaticaly generate an insert or update query and call prepare()
+     * and execute() with it
      *
      * @param string $table name of the table
      * @param array $fields_values assoc ($key=>$value) where $key is a field name and $value its value
      * @param int $mode type of query to make (DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE)
      * @param string $where in case of update queries, this string will be put after the sql WHERE statement
      * @return mixed  a new DB_Result or a DB_Error when fail
-     * @see buildManipSQL
-     * @see autoPrepare
+     * @see DB_common::autoPrepare(), DB_common::buildManipSQL()
      * @access public
      */
     function autoExecute($table, $fields_values, $mode = DB_AUTOQUERY_INSERT, $where = false)
@@ -781,21 +793,31 @@ class DB_common extends PEAR
     // {{{ execute()
 
     /**
-     * Executes a DB statement prepared with prepare().
+     * Executes a DB statement prepared with prepare()
      *
-     * This method gets overridden a DBMS specific one if it exists.
+     * Example 1.
+     * <code> <?php
+     * $sth = $dbh->prepare('INSERT INTO tbl (a, b, c) VALUES (?, !, &)');
+     * $data = array(
+     *     "John's text",
+     *     "'it''s good'",
+     *     'filename.txt'
+     * );
+     * $res = $dbh->execute($sth, $data);
+     * ?></code>
      *
      * @param resource  $stmt  a DB statement resource returned from prepare()
      * @param mixed  $data  array, string or numeric data to be used in
      *                      execution of the statement.  Quantity of items
      *                      passed must match quantity of placeholders in
-     *                      query:  meaning 1 for non-array items or the
-     *                      quantity of elements in the array.
+     *                      query:  meaning 1 placeholder for non-array
+     *                      parameters or 1 placeholder per array element.
+     *
      * @return mixed  a new DB_Result or a DB_Error when fail
+     *
+     * {@internal ibase and oci8 have their own execute() methods.}}
+     *
      * @see DB_common::prepare()
-     * @see DB_common::executeEmulateQuery()
-     * @see DB_oci8::execute()
-     * @see DB_ibase::execute()
      * @access public
      */
     function &execute($stmt, $data = array())
@@ -818,18 +840,20 @@ class DB_common extends PEAR
     // {{{ executeEmulateQuery()
 
     /**
-     * Emulates the execute statement, when not supported.
+     * Emulates the execute statement, when not supported
      *
      * @param resource  $stmt  a DB statement resource returned from execute()
      * @param mixed  $data  array, string or numeric data to be used in
      *                      execution of the statement.  Quantity of items
      *                      passed must match quantity of placeholders in
-     *                      query:  meaning 1 for non-array items or the
-     *                      quantity of elements in the array.
+     *                      query:  meaning 1 placeholder for non-array
+     *                      parameters or 1 placeholder per array element.
+     *
      * @return mixed a string containing the real query run when emulating
      *               prepare/execute.  A DB error code is returned on failure.
-     * @access private
+     *
      * @see DB_common::execute()
+     * @access private
      */
     function executeEmulateQuery($stmt, $data = array())
     {
@@ -870,7 +894,9 @@ class DB_common extends PEAR
 
     /**
      * This function does several execute() calls on the same
-     * statement handle.  $data must be an array indexed numerically
+     * statement handle
+     *
+     * $data must be an array indexed numerically
      * from 0, one execute call is done for every "row" in the array.
      *
      * If an error occurs during execute(), executeMultiple() does not
@@ -882,8 +908,8 @@ class DB_common extends PEAR
      *
      * @return mixed DB_OK or DB_Error
      *
+     * @see DB_common::prepare(), DB_common::execute()
      * @access public
-     * @see prepare(), execute()
      */
     function executeMultiple( $stmt, &$data )
     {
@@ -899,11 +925,11 @@ class DB_common extends PEAR
     // }}}
     // {{{ freePrepared()
 
-    /*
+    /**
      * Free the resource used in a prepared query
      *
      * @param $stmt The resurce returned by the prepare() function
-     * @see prepare()
+     * @see DB_common::prepare()
      */
     function freePrepared($stmt)
     {
@@ -922,7 +948,9 @@ class DB_common extends PEAR
 
     /**
      * This method is used by backends to alter queries for various
-     * reasons.  It is defined here to assure that all implementations
+     * reasons
+     *
+     * It is defined here to assure that all implementations
      * have this method defined.
      *
      * @param string $query  query to modify
@@ -959,7 +987,7 @@ class DB_common extends PEAR
 
     /**
      * Send a query to the database and return any results with a
-     * DB_result object.
+     * DB_result object
      *
      * The query string can be either a normal statement to be sent directly
      * to the server OR if <var>$params</var> are passed the query can have
@@ -969,15 +997,13 @@ class DB_common extends PEAR
      * @param mixed  $params array, string or numeric data to be used in
      *                       execution of the statement.  Quantity of items
      *                       passed must match quantity of placeholders in
-     *                       query:  meaning 1 for non-array items or the
-     *                       quantity of elements in the array.
-     * @return mixed a DB_result object or DB_OK on success, a DB
+     *                       query:  meaning 1 placeholder for non-array
+     *                       parameters or 1 placeholder per array element.
+     *
+     * @return mixed  a DB_result object or DB_OK on success, a DB
      *                error on failure
      *
-     * @see DB_common::simpleQuery()
-     * @see DB_common::prepare()
-     * @see DB_common::execute()
-     * @see DB::isError()
+     * @see DB_result, DB_common::prepare(), DB_common::execute()
      * @access public
      */
     function &query($query, $params = array()) {
@@ -1031,14 +1057,18 @@ class DB_common extends PEAR
 
     /**
      * Fetch the first column of the first row of data returned from
-     * a query.  Takes care of doing the query and freeing the results
-     * when finished.
+     * a query
      *
-     * @param string $query the SQL query
-     * @param array $params if supplied, prepare/execute will be used
-     *        with this array as execute parameters
+     * Takes care of doing the query and freeing the results when finished.
      *
-     * @return mixed DB_Error or the returned value of the query
+     * @param string $query  the SQL query
+     * @param mixed  $params array, string or numeric data to be used in
+     *                       execution of the statement.  Quantity of items
+     *                       passed must match quantity of placeholders in
+     *                       query:  meaning 1 placeholder for non-array
+     *                       parameters or 1 placeholder per array element.
+     *
+     * @return mixed  the returned value of the query.  DB_Error on failure.
      *
      * @access public
      */
@@ -1074,16 +1104,22 @@ class DB_common extends PEAR
     // {{{ getRow()
 
     /**
-     * Fetch the first row of data returned from a query.  Takes care
-     * of doing the query and freeing the results when finished.
+     * Fetch the first row of data returned from a query
      *
-     * @param string $query the SQL query
-     * @param array $params array if supplied, prepare/execute will be used
-     *        with this array as execute parameters
-     * @param integer $fetchmode the fetch mode to use
-     * @access public
+     * Takes care of doing the query and freeing the results when finished.
+     *
+     * @param string $query  the SQL query
+     * @param mixed  $params array, string or numeric data to be used in
+     *                       execution of the statement.  Quantity of items
+     *                       passed must match quantity of placeholders in
+     *                       query:  meaning 1 placeholder for non-array
+     *                       parameters or 1 placeholder per array element.
+     * @param int    $fetchmode  the fetch mode to use
+     *
      * @return array the first row of results as an array indexed from
-     * 0, or a DB error code.
+     *               0, or a DB error code.
+     *
+     * @access public
      */
     function &getRow($query,
                      $params = array(),
@@ -1137,19 +1173,22 @@ class DB_common extends PEAR
 
     /**
      * Fetch a single column from a result set and return it as an
-     * indexed array.
+     * indexed array
      *
-     * @param string $query the SQL query
+     * @param string $query  the SQL query
+     * @param mixed  $col    which column to return (integer [column number,
+     *                       starting at 0] or string [column name])
+     * @param mixed  $params array, string or numeric data to be used in
+     *                       execution of the statement.  Quantity of items
+     *                       passed must match quantity of placeholders in
+     *                       query:  meaning 1 placeholder for non-array
+     *                       parameters or 1 placeholder per array element.
      *
-     * @param mixed $col which column to return (integer [column number,
-     * starting at 0] or string [column name])
+     * @return array  an indexed array with the data from the first
+     *                row at index 0, or a DB error code
      *
-     * @param array $params array if supplied, prepare/execute will be used
-     *        with this array as execute parameters
+     * @see DB_common::query()
      * @access public
-     *
-     * @return array an indexed array with the data from the first
-     * row at index 0, or a DB error code.
      */
     function &getCol($query, $col = 0, $params = array())
     {
@@ -1192,7 +1231,7 @@ class DB_common extends PEAR
 
     /**
      * Fetch the entire result set of a query and return it as an
-     * associative array using the first column as the key.
+     * associative array using the first column as the key
      *
      * If the result set contains more than two columns, the value
      * will be an array of the values from column 2-n.  If the result
@@ -1204,33 +1243,41 @@ class DB_common extends PEAR
      *
      * For example, if the table "mytable" contains:
      *
+     * <pre>
      *  ID      TEXT       DATE
      * --------------------------------
      *  1       'one'      944679408
      *  2       'two'      944679408
      *  3       'three'    944679408
+     * </pre>
      *
      * Then the call getAssoc('SELECT id,text FROM mytable') returns:
+     * <pre>
      *   array(
      *     '1' => 'one',
      *     '2' => 'two',
      *     '3' => 'three',
      *   )
+     * </pre>
      *
      * ...while the call getAssoc('SELECT id,text,date FROM mytable') returns:
+     * <pre>
      *   array(
      *     '1' => array('one', '944679408'),
      *     '2' => array('two', '944679408'),
      *     '3' => array('three', '944679408')
      *   )
+     * </pre>
      *
      * If the more than one row occurs with the same value in the
      * first column, the last row overwrites all previous ones by
      * default.  Use the $group parameter if you don't want to
      * overwrite like this.  Example:
      *
+     * <pre>
      * getAssoc('SELECT category,id,name FROM mytable', false, null,
      *          DB_FETCHMODE_ASSOC, true) returns:
+     *
      *   array(
      *     '1' => array(array('id' => '4', 'name' => 'number four'),
      *                  array('id' => '6', 'name' => 'number six')
@@ -1239,29 +1286,32 @@ class DB_common extends PEAR
      *                  array('id' => '6', 'name' => 'number six')
      *            )
      *   )
+     * </pre>
      *
      * Keep in mind that database functions in PHP usually return string
      * values for results regardless of the database's internal type.
      *
-     * @param string $query the SQL query
+     * @param string  $query  the SQL query
+     * @param boolean $force_array  used only when the query returns
+     *                              exactly two columns.  If true, the values
+     *                              of the returned array will be one-element
+     *                              arrays instead of scalars.
+     * @param mixed   $params array, string or numeric data to be used in
+     *                        execution of the statement.  Quantity of items
+     *                        passed must match quantity of placeholders in
+     *                        query:  meaning 1 placeholder for non-array
+     *                        parameters or 1 placeholder per array element.
+     * @param boolean $group  if true, the values of the returned array
+     *                        is wrapped in another array.  If the same
+     *                        key value (in the first column) repeats
+     *                        itself, the values will be appended to
+     *                        this array instead of overwriting the
+     *                        existing values.
      *
-     * @param boolean $force_array used only when the query returns
-     * exactly two columns.  If true, the values of the returned array
-     * will be one-element arrays instead of scalars.
-     *
-     * @param array $params array if supplied, prepare/execute will be used
-     *        with this array as execute parameters
-     *
-     * @param boolean $group if true, the values of the returned array
-     *                       is wrapped in another array.  If the same
-     *                       key value (in the first column) repeats
-     *                       itself, the values will be appended to
-     *                       this array instead of overwriting the
-     *                       existing values.
+     * @return array  associative array with results from the query.
+     *                DB Error on failure.
      *
      * @access public
-     *
-     * @return array associative array with results from the query.
      */
     function &getAssoc($query, $force_array = false, $params = array(),
                        $fetchmode = DB_FETCHMODE_DEFAULT, $group = false)
@@ -1357,16 +1407,19 @@ class DB_common extends PEAR
     // {{{ getAll()
 
     /**
-     * Fetch all the rows returned from a query.
+     * Fetch all the rows returned from a query
      *
-     * @param string $query the SQL query
+     * @param string $query  the SQL query
+     * @param mixed  $params array, string or numeric data to be used in
+     *                       execution of the statement.  Quantity of items
+     *                       passed must match quantity of placeholders in
+     *                       query:  meaning 1 placeholder for non-array
+     *                       parameters or 1 placeholder per array element.
+     * @param int    $fetchmode  the fetch mode to use
      *
-     * @param array $params array if supplied, prepare/execute will be used
-     *        with this array as execute parameters
-     * @param integer $fetchmode the fetch mode to use
+     * @return array  an nested array.  DB error on failure.
      *
      * @access public
-     * @return array an nested array, or a DB error
      */
     function &getAll($query,
                      $params = null,
@@ -1474,7 +1527,7 @@ class DB_common extends PEAR
     // {{{ numRows()
 
     /**
-     * returns the number of rows in a result object
+     * Returns the number of rows in a result object
      *
      * @param object DB_Result the result object to check
      *
@@ -1491,7 +1544,7 @@ class DB_common extends PEAR
     // {{{ affectedRows()
 
     /**
-     * returns the affected rows of a query
+     * Returns the affected rows of a query
      *
      * @return mixed DB_Error or number of rows
      *
@@ -1506,7 +1559,7 @@ class DB_common extends PEAR
     // {{{ errorNative()
 
     /**
-     * returns an errormessage, provides by the database
+     * Returns an errormessage, provides by the database
      *
      * @return mixed DB_Error or message
      *
@@ -1521,7 +1574,7 @@ class DB_common extends PEAR
     // {{{ getSequenceName()
 
     /**
-     * Generate the name used inside the database for a sequence.
+     * Generate the name used inside the database for a sequence
      *
      * The createSequence() docblock contains notes about storing sequence
      * names.
@@ -1530,7 +1583,8 @@ class DB_common extends PEAR
      *
      * @return string  the sequence's name in the backend
      *
-     * @see DB_common::createSequence(), DB_common::setOption()
+     * @see DB_common::createSequence(), DB_common::dropSequence(),
+     *      DB_common::nextID(), DB_common::setOption()
      * @access private
      */
     function getSequenceName($sqn)
@@ -1550,6 +1604,9 @@ class DB_common extends PEAR
      *                           created if it does not exist
      *
      * @return int  the next id number in the sequence.  DB_Error if problem.
+     *
+     * @see DB_common::createSequence(), DB_common::dropSequence(),
+     *      DB_common::getSequenceName()
      * @access public
      */
     function nextId($seq_name, $ondemand = true)
@@ -1575,7 +1632,8 @@ class DB_common extends PEAR
      * @return int  DB_OK on success.  A DB_Error object is returned if
      *              problems arise.
      *
-     * @see DB_common::getSequenceName()
+     * @see DB_common::dropSequence(), DB_common::getSequenceName(),
+     *      DB_common::nextID()
      * @access public
      */
     function createSequence($seq_name)
@@ -1593,6 +1651,8 @@ class DB_common extends PEAR
      *
      * @return int  DB_OK on success.  DB_Error if problems.
      *
+     * @see DB_common::createSequence(), DB_common::getSequenceName(),
+     *      DB_common::nextID()
      * @access public
      */
     function dropSequence($seq_name)
@@ -1604,7 +1664,7 @@ class DB_common extends PEAR
     // {{{ tableInfo()
 
     /**
-     * Returns information about a table or a result set.
+     * Returns information about a table or a result set
      *
      * The format of the resulting array depends on which <var>$mode</var>
      * you select.  The sample output below is based on this query:
@@ -1737,7 +1797,7 @@ class DB_common extends PEAR
     // {{{ getTables()
 
     /**
-     * @deprecated
+     * @deprecated  Deprecated in release 1.2 or lower
      */
     function getTables()
     {
@@ -1775,7 +1835,7 @@ class DB_common extends PEAR
     // {{{ _rtrimArrayValues()
 
     /**
-     * Right trim all strings in an array.
+     * Right trim all strings in an array
      *
      * @param array  $array  the array to be trimmed (passed by reference)
      * @return void
