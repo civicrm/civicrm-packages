@@ -47,7 +47,7 @@ function pe($o){
     global $dbh;
 
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-    $dbh->query('DROP TABLE phptest');
+    drop_table($dbh, 'phptest');
 
     die($o->toString());
 }
@@ -278,8 +278,8 @@ if ($ret === '') {
 print "\n===================================================\n";
 
 
-$dbh->setErrorHandling(PEAR_ERROR_RETURN);
-$dbh->query('DROP TABLE phptest');
+drop_table($dbh, 'phptest');
+
 
 ?>
 --EXPECT--
