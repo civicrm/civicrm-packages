@@ -183,7 +183,7 @@ class DB_sybase extends DB_common
     {
         $native = $this->errorNative();
         $error = $this->errorCode($native);
-        return $this->raiseError($error['message'], null, null, $error['userinfo'], $error['code']);
+        return $this->raiseError($error['code'], null, null, $error['userinfo'], $error['message']);
     }
     // }}}
     // {{{ simpleQuery()
