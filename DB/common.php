@@ -1343,14 +1343,16 @@ class DB_common extends PEAR
 
         $fetchmode = is_int($col) ? DB_FETCHMODE_ORDERED : DB_FETCHMODE_ASSOC;
 
-        if (!is_array($row = $res->fetchRow($fetchmode)) ||
-            !array_key_exists($col, $row))
-        {
-            $ret =& $this->raiseError(DB_ERROR_TRUNCATED);
+        if (!is_array($row = $res->fetchRow($fetchmode))) {
+            $ret = array();
         } else {
-            $ret = array($row[$col]);
-            while (is_array($row = $res->fetchRow($fetchmode))) {
-                $ret[] = $row[$col];
+            if (!array_key_exists($col, $row)) {
+                $ret =& $this->raiseError(DB_ERROR_NOSUCHFIELD);
+            } else {
+                $ret = array($row[$col]);
+                while (is_array($row = $res->fetchRow($fetchmode))) {
+                    $ret[] = $row[$col];
+                }
             }
         }
 
