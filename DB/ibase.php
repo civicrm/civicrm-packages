@@ -335,18 +335,36 @@ class DB_ibase extends DB_common
 
     /**
      * Prepares a query for multiple execution with execute().
-     * @param $query query to be prepared
      *
-     * @return DB statement resource
+     * prepare() requires a generic query as string like <code>
+     *    INSERT INTO numbers VALUES (?, ?, ?)
+     * </code>.  The <kbd>?</kbd> characters are placeholders.
+     *
+     * Three types of placeholders can be used:
+     *   + <kbd>?</kbd>  a quoted scalar value, i.e. strings, integers
+     *   + <kbd>!</kbd>  value is inserted 'as is'
+     *   + <kbd>&</kbd>  requires a file name.  The file's contents get
+     *                     inserted into the query (i.e. saving binary
+     *                     data in a db)
+     *
+     * Use backslashes to escape placeholder characters if you don't want
+     * them to be interpreted as placeholders.  Example: <code>
+     *    "UPDATE foo SET col=? WHERE col='over \& under'"
+     * </code>
+     *
+     * @param string $query query to be prepared
+     * @return mixed DB statement resource on success. DB_Error on failure.
      */
     function prepare($query)
     {
-        $tokens = split('[&?!]', $query);
-        $token = 0;
-        $types = array();
-        $qlen = strlen($query);
-        for ($i = 0; $i < $qlen; $i++) {
-            switch ($query[$i]) {
+        $tokens   = preg_split('/((?<!\\\)[&?!])/', $query, -1,
+                               PREG_SPLIT_DELIM_CAPTURE);
+        $token    = 0;
+        $types    = array();
+        $newquery = '';
+
+        foreach ($tokens as $key => $val) {
+            switch ($val) {
                 case '?':
                     $types[$token++] = DB_PARAM_SCALAR;
                     break;
@@ -356,9 +374,13 @@ class DB_ibase extends DB_common
                 case '!':
                     $types[$token++] = DB_PARAM_MISC;
                     break;
+                default:
+                    $tokens[$key] = preg_replace('/\\\([&?!])/', "\\1", $val);
+                    $newquery .= $tokens[$key] . '?';
             }
         }
-        $newquery = strtr($query, '&', '?');
+
+        $newquery = substr($newquery, 0, -1);
         $this->last_query = $query;
         $newquery = $this->modifyQuery($newquery);
         $stmt = ibase_prepare($this->connection, $newquery);
