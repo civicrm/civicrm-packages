@@ -118,7 +118,6 @@ class DB_odbc extends DB_common
                     'pconnect' => true,
                     'transactions' => true
                 );
-                $default_dsn = 'localhost';
                 break;
             case 'navision':
                 // the Navision driver doesn't support fetch row by number
