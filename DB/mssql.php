@@ -497,7 +497,8 @@ class DB_mssql extends DB_common
                 $res[$i]['name']  = @mssql_field_name($id, $i);
                 $res[$i]['type']  = @mssql_field_type($id, $i);
                 $res[$i]['len']   = @mssql_field_length($id, $i);
-                $res[$i]['flags'] = '';
+                // We only support flags for tables
+                $res[$i]['flags'] = is_string($result) ? $this->_mssql_field_flags($result, $res[$i]['name']) : '';
             }
 
         } else { // full
@@ -508,7 +509,8 @@ class DB_mssql extends DB_common
                 $res[$i]['name']  = @mssql_field_name($id, $i);
                 $res[$i]['type']  = @mssql_field_type($id, $i);
                 $res[$i]['len']   = @mssql_field_length($id, $i);
-                $res[$i]['flags'] = '';
+                // We only support flags for tables
+                $res[$i]['flags'] = is_string($result) ? $this->_mssql_field_flags($result, $res[$i]['name']) : '';
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }
@@ -549,6 +551,44 @@ class DB_mssql extends DB_common
     }
 
     // }}}
-
+    // {{{ _mssql_field_flags()
+    /**
+    * Get the flags for a field, currently only supports "isnullable" and "primary_key"
+    *
+    * @param string The table name
+    * @param string The field
+    * @access private
+    */
+    function _mssql_field_flags($table, $column)
+    {
+        static $flags = false;
+        // At the first call we discover the flags for all fields
+        if ($flags === false) {
+            $flags = array();
+            // find nullable fields
+            $q_nulls = "SELECT syscolumns.name, syscolumns.isnullable
+                        FROM sysobjects
+                        INNER JOIN syscolumns ON sysobjects.id = syscolumns.id
+                        WHERE sysobjects.name ='$table' AND syscolumns.isnullable = 1";
+            $res = $this->getAll($q_nulls, DB_FETCHMODE_ASSOC);
+            foreach ($res as $data) {
+                if ($data['isnullable'] == 1) {
+                    $flags[$data['name']][] = 'isnullable';
+                }
+            }
+            // find primary keys
+            $res2 = $this->getAll("EXEC SP_PKEYS[$table]", DB_FETCHMODE_ASSOC);
+            foreach ($res2 as $data) {
+                if (!empty($data['COLUMN_NAME'])) {
+                    $flags[$data['COLUMN_NAME']][] = 'primary_key';
+                }
+            }
+        }
+        if (isset($flags[$column])) {
+            return implode(',', $flags[$column]);
+        }
+        return '';
+    }
+    // }}}
 }
 ?>
