@@ -9,6 +9,15 @@ include_once './include.inc';
 // Parts tested: DB_Error
 
 function test_error_handler($errno, $errmsg, $file, $line, $vars) {
+    if (defined('E_STRICT')) {
+        if ($errno & E_STRICT
+            && (error_reporting() & E_STRICT) != E_STRICT) {
+            // Ignore E_STRICT notices unless they have been turned on
+            return;
+        }
+    } else {
+        define('E_STRICT', 2048);
+    }
         $errortype = array (
                 1   =>  "Error",
                 2   =>  "Warning",
@@ -20,7 +29,8 @@ function test_error_handler($errno, $errmsg, $file, $line, $vars) {
                 128 =>  "Compile Warning",
                 256 =>  "User Error",
                 512 =>  "User Warning",
-                1024=>  "User Notice"
+                1024=>  "User Notice",
+        E_STRICT => 'Strict Notice',
         );
         $prefix = $errortype[$errno];
         $file = basename($file);
