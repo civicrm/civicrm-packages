@@ -31,7 +31,7 @@ $dbh->query('DROP TABLE php_limit');
 
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
-$dbh->query('CREATE TABLE php_limit (a VARCHAR(20))');
+$dbh->query('CREATE TABLE php_limit (a CHAR(20))');
 
 
 $res = $dbh->query('select * from php_limit');
@@ -48,6 +48,11 @@ while ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
 }
 
 
+switch ($dbh->phptype) {
+    case 'ibase':
+        $dbh->freeResult($res->result);  // Make interbase happy.
+        break;
+}
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 $dbh->query('DROP TABLE php_limit');
 
