@@ -18,19 +18,19 @@ Symbols:
 
                fbsql      ifx      mssql     mysqli     odbc     sybase
 FEATURE          |  ibase  |  msql   |   mysql |   oci8  |   pgsql |  sqlite
-simpleQuery      x    T    x    x    T    T    x    T    T    T    T    T
+simpleQuery      x    T    T    x    T    T    x    T    T    T    T    T
 numCols          x    T    x    x    T    T    x    T    T    T    T    T
 numRows          x    n    n    x    T    T    x    E    T    T    n    T 
-errorNative      x    n    x    n    T    T    x    T    T    T    T    E
-prepare/execute  e    T    e    e    E    E    e    T    E    E    e    E
-sequences        e    T    n    n    E    E    e    T    E    T    E    E
-affectedRows     x    n    x    x    n    T    x    T    T    T    T    T
-fetch modes      x    T    x    x    T    T    x    T    T    T    T    T
-fetch row by no  x    n    x    x    T    T    x    n    x    T    T    T
+errorNative      x    n    t    n    T    T    x    T    T    T    T    E
+prepare/execute  e    T    E    e    E    E    e    T    E    E    e    E
+sequences        e    T    E    n    E    E    e    T    E    T    E    E
+affectedRows     x    n    T    x    n    T    x    T    T    T    T    T
+fetch modes      x    T    T    x    T    T    x    T    T    T    T    T
+fetch row by no  x    n    T    x    T    T    x    n    x    T    T    T
 transactions     x    x    n    n    x    x    -    x    x    x    n    -
 auto-commit      x    x    n    n    n    n    -    x    x    x    n    -
-error mapping    x    T    e    -    t    t    -    T    T    E    l    l
-tableInfo        x    T    n    n    T    T    -    T    n    T    T    -
+error mapping    x    T    t    -    t    t    -    T    T    E    l    l
+tableInfo        x    T    t    n    T    T    -    T    n    T    T    -
 
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
 
@@ -53,21 +53,21 @@ Symbols:
 
                fbsql      ifx      mssql     mysqli     odbc     sybase
                  |  ibase  |  msql   |   mysql |   oci8  |   pgsql |  sqlite
-01connect        -    o    -    -    o    o    -    o    o    o    o    o 
-02fetch          -    o    -    -    o    o    -    o    o    o    o    o
-03simplequery    -    o    -    -    o    o    -    o    o    o    o    o
-04numcols        -    o    -    -    o    o    -    o    o    o    o    o
-05sequences      -    o    -    -    o    o    -    o    o    o    o    o
-06prepexec       -    o    -    -    o    o    -    o    o    o    o    o
-08affectedrows   -    X    -    -    o    o    -    o    o    o    o    o
-09numrows        -    X    -    -    o    o    -    o    o    o    o    o
-10errormap       -    o    -    -    E    N    -    o    o    o    E    N
-13limit          -    o    -    -    o    o    -    o    o    o    o    o
-14fetchmode_obje -    o    -    -    o    o    -    o    o    o    o    o
-15quote          -    o    -    -    o    o    -    o    o    o    o    o
-16tableinfo      -    o    -    -    o    o    -    o    -    o    o    -
-17query          -    X    -    -    o    o    -    o    o    o    o    o
-18get            -    X    -    -    o    o    -    o    o    o    o    o
+01connect        -    o    o    -    o    o    -    o    o    o    o    o 
+02fetch          -    o    o    -    o    o    -    o    o    o    o    o
+03simplequery    -    o    o    -    o    o    -    o    o    o    o    o
+04numcols        -    o    o    -    o    o    -    o    o    o    o    o
+05sequences      -    o    o    -    o    o    -    o    o    o    o    o
+06prepexec       -    o    o    -    o    o    -    o    o    o    o    o
+08affectedrows   -    X    o    -    o    o    -    o    o    o    o    o
+09numrows        -    X    X    -    o    o    -    o    o    o    o    o
+10errormap       -    o    N    -    E    N    -    o    o    o    E    N
+13limit          -    o    o    -    o    o    -    o    o    o    o    o
+14fetchmode_obje -    o    o    -    o    o    -    o    o    o    o    o
+15quote          -    o    X    -    o    o    -    o    o    o    o    o
+16tableinfo      -    o    X    -    o    o    -    o    -    o    o    -
+17query          -    X    o    -    o    o    -    o    o    o    o    o
+18get            -    X    o    -    o    o    -    o    o    o    o    o
 
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
 
