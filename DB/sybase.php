@@ -113,7 +113,8 @@ class DB_sybase extends DB_common
         }
 
         if (!$conn) {
-            return $this->raiseError(DB_ERROR_CONNECT_FAILED);
+            return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null, null,
+                                     @sybase_get_last_message());
         }
 
         if ($dsninfo['database']) {
