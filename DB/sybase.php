@@ -18,11 +18,12 @@
 // +----------------------------------------------------------------------+
 //
 // $Id$
-//
-//
+
+
 // TODO
 //    - This driver may fail with multiple connections under the same
 //      user/pass/host and different databases
+
 
 require_once 'DB/common.php';
 

@@ -25,7 +25,7 @@
 //               be registered here.
 
 
-require_once "DB/common.php";
+require_once 'DB/common.php';
 
 /**
  * Database independent query interface definition for PHP's FrontBase

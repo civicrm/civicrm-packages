@@ -18,9 +18,6 @@
 // +----------------------------------------------------------------------+
 //
 // $Id$
-//
-// Base class for DB implementations.
-//
 
 require_once 'PEAR.php';
 

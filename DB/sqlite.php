@@ -18,10 +18,8 @@
 // +----------------------------------------------------------------------+
 //
 // $Id$
-//
-// Database independent query interface definition for the PECL's SQLite
-// extension.
-//
+
+
 // SQLite function set:
 //   sqlite_open, sqlite_popen, sqlite_close, sqlite_query
 //   sqlite_libversion, sqlite_libencoding, sqlite_changes
@@ -35,6 +33,7 @@
 //
 // Status:
 //   EXPERIMENTAL
+
 
 /*
  * Example:

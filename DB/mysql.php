@@ -17,14 +17,13 @@
 // +----------------------------------------------------------------------+
 //
 // $Id$
-//
 
-//
+
 // XXX legend:
 //
 // XXX ERRORMSG: The error message from the mysql function should
 //               be registered here.
-//
+
 
 require_once 'DB/common.php';
 

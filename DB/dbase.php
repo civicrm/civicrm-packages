@@ -17,12 +17,13 @@
 // +----------------------------------------------------------------------+
 //
 // $Id$
-//
+
+
 // XXX legend:
 //  You have to compile your PHP with the --enable-dbase option
-//
 
-require_once "DB/common.php";
+
+require_once 'DB/common.php';
 
 /**
  * Database independent query interface definition for PHP's dbase
