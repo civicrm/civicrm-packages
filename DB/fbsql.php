@@ -150,7 +150,7 @@ class DB_fbsql extends DB_common
      *
      * @access public
      *
-     * @return bool TRUE on success, FALSE if not connected.
+     * @return bool true on success, false if not connected.
      */
     function disconnect()
     {
@@ -227,7 +227,7 @@ class DB_fbsql extends DB_common
      * @param int      $fetchmode how the resulting array should be indexed
      * @param int      $rownum    the row number to fetch
      *
-     * @return mixed DB_OK on success, NULL when end of result set is
+     * @return mixed DB_OK on success, null when end of result set is
      *               reached or on failure
      *
      * @see DB_result::fetchInto()
@@ -251,7 +251,7 @@ class DB_fbsql extends DB_common
         if (!$arr) {
             $errno = @fbsql_errno($this->connection);
             if (!$errno) {
-                return NULL;
+                return null;
             }
             return $this->fbsqlRaiseError($errno);
         }
@@ -274,7 +274,7 @@ class DB_fbsql extends DB_common
      *
      * @access public
      *
-     * @return bool TRUE on success, FALSE if $result is invalid
+     * @return bool true on success, false if $result is invalid
      */
     function freeResult($result)
     {

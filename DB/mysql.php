@@ -178,7 +178,7 @@ class DB_mysql extends DB_common
      *
      * @access public
      *
-     * @return bool TRUE on success, FALSE if not connected.
+     * @return bool true on success, false if not connected.
      */
     function disconnect()
     {
@@ -271,7 +271,7 @@ class DB_mysql extends DB_common
      * @param int      $fetchmode how the resulting array should be indexed
      * @param int      $rownum    the row number to fetch
      *
-     * @return mixed DB_OK on success, NULL when end of result set is
+     * @return mixed DB_OK on success, null when end of result set is
      *               reached or on failure
      *
      * @see DB_result::fetchInto()
@@ -299,7 +299,7 @@ class DB_mysql extends DB_common
             /*
             $errno = @mysql_errno($this->connection);
             if (!$errno) {
-                return NULL;
+                return null;
             }
             return $this->mysqlRaiseError($errno);
             */
@@ -328,7 +328,7 @@ class DB_mysql extends DB_common
      *
      * @access public
      *
-     * @return bool TRUE on success, FALSE if $result is invalid
+     * @return bool true on success, false if $result is invalid
      */
     function freeResult($result)
     {
@@ -707,7 +707,7 @@ class DB_mysql extends DB_common
      * @internal
      */
     function escapeSimple($str) {
-        if(function_exists('mysql_real_escape_string')) {
+        if (function_exists('mysql_real_escape_string')) {
             return mysql_real_escape_string($str, $this->connection);
         } else {
             return mysql_escape_string($str);
@@ -875,7 +875,7 @@ class DB_mysql extends DB_common
                 return DB_ERROR_NOT_CAPABLE;
             case 'users':
                 $sql = 'select distinct User from user';
-                if($this->dsn['database'] != 'mysql') {
+                if ($this->dsn['database'] != 'mysql') {
                     $dsn = $this->dsn;
                     $dsn['database'] = 'mysql';
                     if (DB::isError($db = DB::connect($dsn))) {

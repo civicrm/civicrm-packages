@@ -213,7 +213,7 @@ class DB_ibase extends DB_common
      * @param int      $fetchmode how the resulting array should be indexed
      * @param int      $rownum    the row number to fetch
      *
-     * @return mixed DB_OK on success, NULL when end of result set is
+     * @return mixed DB_OK on success, null when end of result set is
      *               reached or on failure
      *
      * @see DB_result::fetchInto()
@@ -221,7 +221,7 @@ class DB_ibase extends DB_common
      */
     function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
-        if ($rownum !== NULL) {
+        if ($rownum !== null) {
             return $this->ibaseRaiseError(DB_ERROR_NOT_CAPABLE);
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
@@ -416,7 +416,7 @@ class DB_ibase extends DB_common
      *
      * @param $stmt The interbase_query resource type
      *
-     * @return bool TRUE on success, FALSE if $result is invalid
+     * @return bool true on success, false if $result is invalid
      */
     function freePrepared($stmt)
     {

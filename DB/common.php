@@ -426,7 +426,7 @@ class DB_common extends PEAR
      *
      * @param integer $dbcode the DB error code
      *
-     * @return string the corresponding error message, of FALSE
+     * @return string the corresponding error message, of false
      * if the error code was unknown
      *
      * @access public

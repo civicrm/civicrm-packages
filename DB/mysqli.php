@@ -133,10 +133,10 @@ class DB_mysqli extends DB_common
             $conn = @mysqli_connect($dbhost, $dsninfo['username'],
                                     $dsninfo['password'], $ssl_mode);
         } elseif ($dbhost && isset($dsninfo['username'])) {
-            $conn = @mysqli_connect($dbhost, $dsninfo['username'], NULL,
+            $conn = @mysqli_connect($dbhost, $dsninfo['username'], null,
                                     $ssl_mode);
         } elseif ($dbhost) {
-            $conn = @mysqli_connect($dbhost, NULL, NULL, $ssl_mode);
+            $conn = @mysqli_connect($dbhost, null, null, $ssl_mode);
         } else {
             $conn = false;
         }
@@ -183,7 +183,7 @@ class DB_mysqli extends DB_common
     /**
      * Log out and disconnect from the database.
      *
-     * @return boolean TRUE on success, FALSE if not connected
+     * @return boolean true on success, false if not connected
      * @access public
      */
     function disconnect()
@@ -273,7 +273,7 @@ class DB_mysqli extends DB_common
      * @param int      $fetchmode how the resulting array should be indexed
      * @param int      $rownum    the row number to fetch
      *
-     * @return mixed DB_OK on success, NULL when end of result set is
+     * @return mixed DB_OK on success, null when end of result set is
      *               reached or on failure
      *
      * @see DB_result::fetchInto()
@@ -297,7 +297,7 @@ class DB_mysqli extends DB_common
         if (!$arr) {
             $errno = @mysqli_errno($this->connection);
             if (!$errno) {
-                return NULL;
+                return null;
             }
             return $this->mysqlRaiseError($errno);
         }
@@ -322,7 +322,7 @@ class DB_mysqli extends DB_common
      * Free the internal resources associated with $result.
      *
      * @param resource $result MySQL result identifier
-     * @return bool TRUE on success, FALSE if $result is invalid
+     * @return bool true on success, false if $result is invalid
      * @access public
      */
     function freeResult($result)
@@ -851,7 +851,7 @@ class DB_mysqli extends DB_common
                 return DB_ERROR_NOT_CAPABLE;
             case 'users':
                 $sql = 'select distinct User from user';
-                if($this->dsn['database'] != 'mysql') {
+                if ($this->dsn['database'] != 'mysql') {
                     $dsn = $this->dsn;
                     $dsn['database'] = 'mysql';
                     if (DB::isError($db = DB::connect($dsn))) {

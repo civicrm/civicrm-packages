@@ -205,7 +205,7 @@ class DB_sqlite extends DB_common
      * Log out and disconnect from the database.
      *
      * @access public
-     * @return bool TRUE on success, FALSE if not connected.
+     * @return bool true on success, false if not connected.
      * @todo fix return values
      */
     function disconnect()
@@ -286,7 +286,7 @@ class DB_sqlite extends DB_common
      * @param int      $fetchmode how the resulting array should be indexed
      * @param int      $rownum    the row number to fetch
      *
-     * @return mixed DB_OK on success, NULL when end of result set is
+     * @return mixed DB_OK on success, null when end of result set is
      *               reached or on failure
      *
      * @see DB_result::fetchInto()
@@ -333,7 +333,7 @@ class DB_sqlite extends DB_common
      *
      * @param $result SQLite result identifier
      * @access public
-     * @return bool TRUE on success, FALSE if $result is invalid
+     * @return bool true on success, false if $result is invalid
      */
     function freeResult(&$result)
     {
@@ -551,7 +551,7 @@ class DB_sqlite extends DB_common
      */
     function getSpecialQuery($type, $args=array())
     {
-        if(!is_array($args))
+        if (!is_array($args))
             return $this->raiseError('no key specified', null, null, null,
                                      'Argument has to be an array.');
         switch (strtolower($type)) {
@@ -605,7 +605,7 @@ class DB_sqlite extends DB_common
 
                 // This is a dirty hack, since the above query will no get executed with a single
                 // query call; so here the query method will be called directly and return a select instead.
-                foreach($q as $query) {
+                foreach ($q as $query) {
                     $this->query($query);
                 }
                 return "SELECT * FROM {$args['table']};";
@@ -626,7 +626,7 @@ class DB_sqlite extends DB_common
      *
      * @param string $arg Array key for stats()
      * @return mixed array on an unspecified key, integer on a passed arg and
-     * FALSE at a stats error.
+     * false at a stats error.
      */
     function getDbFileStats($arg = '')
     {
@@ -635,7 +635,7 @@ class DB_sqlite extends DB_common
             return false;
         }
         if (is_array($stats)) {
-            if(is_numeric($arg)) {
+            if (is_numeric($arg)) {
                 if (((int)$arg <= 12) & ((int)$arg >= 0)) {
                     return false;
                 }

@@ -108,7 +108,7 @@ class DB_sybase extends DB_common
             $conn = @$connect_function($interface, $dsninfo['username'],
                                        false);
         } else {
-            $conn = FALSE;
+            $conn = false;
         }
 
         if (!$conn) {
@@ -135,7 +135,7 @@ class DB_sybase extends DB_common
      *
      * @access public
      *
-     * @return bool TRUE on success, FALSE if not connected.
+     * @return bool true on success, false if not connected.
      */
     function disconnect()
     {
@@ -310,7 +310,7 @@ class DB_sybase extends DB_common
      * @param int      $fetchmode how the resulting array should be indexed
      * @param int      $rownum    the row number to fetch
      *
-     * @return mixed DB_OK on success, NULL when end of result set is
+     * @return mixed DB_OK on success, null when end of result set is
      *               reached or on failure
      *
      * @see DB_result::fetchInto()
@@ -369,7 +369,7 @@ class DB_sybase extends DB_common
      *
      * @access public
      *
-     * @return bool TRUE on success, FALSE if $result is invalid
+     * @return bool true on success, false if $result is invalid
      */
     function freeResult($result)
     {

@@ -596,7 +596,7 @@ class DB
             $dsn = substr($dsn, $pos + 3);
         } else {
             $str = $dsn;
-            $dsn = NULL;
+            $dsn = null;
         }
 
         // Get phptype and dbsyntax
@@ -840,7 +840,7 @@ class DB_result
      * @param int $fetchmode  how the resulting array should be indexed
      * @param int $rownum     the row number to fetch
      *
-     * @return array  a row of data, NULL on no more rows or PEAR_Error
+     * @return array  a row of data, null on no more rows or PEAR_Error
      *                object on error
      *
      * @see DB_common::setOption(), DB_common::setFetchMode()
@@ -924,7 +924,7 @@ class DB_result
      * @param int   $fetchmode  how the resulting array should be indexed
      * @param int   $rownum     the row number to fetch
      *
-     * @return mixed  DB_OK on success, NULL on no more rows or
+     * @return mixed  DB_OK on success, null on no more rows or
      *                a DB_Error object on error
      *
      * @see DB_common::setOption(), DB_common::setFetchMode()
@@ -1039,7 +1039,7 @@ class DB_result
     function free()
     {
         $err = $this->dbh->freeResult($this->result);
-        if(DB::isError($err)) {
+        if (DB::isError($err)) {
             return $err;
         }
         $this->result = false;
