@@ -918,7 +918,7 @@ class DB_common extends PEAR
      *     "'it''s good'",
      *     'filename.txt'
      * );
-     * $res = $dbh->execute($sth, $data);
+     * $res =& $dbh->execute($sth, $data);
      * ?></code>
      *
      * @param resource  $stmt  a DB statement resource returned from prepare()
@@ -928,7 +928,7 @@ class DB_common extends PEAR
      *                      query:  meaning 1 placeholder for non-array
      *                      parameters or 1 placeholder per array element.
      *
-     * @return mixed  a new DB_Result or a DB_Error when fail
+     * @return object  a new DB_Result or a DB_Error when fail
      *
      * {@internal ibase and oci8 have their own execute() methods.}}
      *
