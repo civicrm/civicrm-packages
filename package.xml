@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.113 2004-07-14 00:36:02 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.114 2004-07-20 13:16:44 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -54,40 +54,16 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.5</version>
+    <version>1.6.6</version>
     <state>stable</state>
-    <date>2004-07-14</date>
+    <date>pending</date>
     <notes><![CDATA[
 =============
 BUGS FIXED:
 
-* DB.php
-Add rawurldecode() to database portion of DSN.  Bug 1826.
-(danielc)
-
-* common, dbase, fbsql, ibase, oic8, pgsql:
-When using resources as array index, convert to int first.
-http://bugs.php.net/28879  (danielc)
-
-* mysqli:
-Adjust tableInfo() so it can deal with changes made to
-mysqli_fetch_field()'s behavior.  Add the $mysqli_flags
-and $mysqli_types properties as part of this effort.
-(danielc)
-
-mysql >= 4.0 doesn't need WHERE 1=1 hack for DELETE.  (danielc)
-
 * pgsql:
-Adjust getListOf('tables') to accommodate the addition of
-sql_* core tables in PostgreSQL 7.4.2.  Bug 1549.
-(Patch by yiwakiri and jpbarrette)
-
-* sybase:
-Use 'charset' and 'appname' from DSN in sybase connect.
-Bug 1812.  (danielc)
-
-Simplify connect by setting $dsninfo['password'] to false if
-it's empty.  Reworks hack for PEAR bug 631.  (danielc)
+Add port to connect string when protocol is unix.
+Bug 1919.  (danielc)
     ]]></notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>

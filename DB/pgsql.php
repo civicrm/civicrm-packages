@@ -100,6 +100,9 @@ class DB_pgsql extends DB_common
             if ($dsninfo['socket']) {
                 $connstr .= 'host=' . $dsninfo['socket'];
             }
+            if ($dsninfo['port']) {
+                $connstr .= ' port=' . $dsninfo['port'];
+            }
         }
 
         if ($dsninfo['database']) {
