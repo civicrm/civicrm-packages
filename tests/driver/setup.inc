@@ -10,7 +10,8 @@ if (!defined('PATH_SEPARATOR')) {
 
 ini_set('include_path', realpath(dirname(__FILE__) . '/../..')
         . PATH_SEPARATOR . '.' . PATH_SEPARATOR
-        . ini_get('include_path'));
+        . ini_get('include_path')
+);
 
 // Options used when connecting
 $options = array(
