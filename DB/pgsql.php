@@ -247,11 +247,15 @@ class DB_pgsql extends DB_common
             $error_regexps = array(
                 '/([Tt]able does not exist\.|[Rr]elation [\"\'].*[\"\'] does not exist|[Ss]equence does not exist|[Cc]lass ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
                 '/[Tt]able [\"\'].*[\"\'] does not exist/' => DB_ERROR_NOSUCHTABLE,
+                '/[Cc]olumn [\"\'].*[\"\'] does not exist/' => DB_ERROR_NOSUCHFIELD,
                 '/[Rr]elation [\"\'].*[\"\'] already exists|[Cc]annot insert a duplicate key into (a )?unique index.*/' => DB_ERROR_ALREADY_EXISTS,
-                '/divide by zero$/'                     => DB_ERROR_DIVZERO,
+                '/(divide|division) by zero$/'          => DB_ERROR_DIVZERO,
                 '/pg_atoi: error in .*: can\'t parse /' => DB_ERROR_INVALID_NUMBER,
+                '/invalid input syntax for integer/'    => DB_ERROR_INVALID_NUMBER,
                 '/ttribute [\"\'].*[\"\'] not found$|[Rr]elation [\"\'].*[\"\'] does not have attribute [\"\'].*[\"\']/' => DB_ERROR_NOSUCHFIELD,
                 '/parser: parse error at or near \"/'   => DB_ERROR_SYNTAX,
+                '/syntax error at/'                     => DB_ERROR_SYNTAX,
+                '/violates foreign key constraint/'     => DB_ERROR_CONSTRAINT,
                 '/referential integrity violation/'     => DB_ERROR_CONSTRAINT
             );
         }
