@@ -762,7 +762,7 @@ class DB_oci8 extends DB_common
         if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
             $case_func = 'strtolower';
         } else {
-            $case_func = '';
+            $case_func = 'strval';
         }
 
         if (is_string($result)) {

@@ -654,7 +654,7 @@ class DB_sybase extends DB_common
         if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
             $case_func = 'strtolower';
         } else {
-            $case_func = '';
+            $case_func = 'strval';
         }
 
         $count = @sybase_num_fields($id);

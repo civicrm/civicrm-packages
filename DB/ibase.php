@@ -659,7 +659,7 @@ class DB_ibase extends DB_common
         if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
             $case_func = 'strtolower';
         } else {
-            $case_func = '';
+            $case_func = 'strval';
         }
 
         $count = @ibase_num_fields($id);
