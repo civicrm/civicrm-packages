@@ -163,6 +163,7 @@ class DB_mysql extends DB_common
      * additional DSN options:
      *   + new_link      Causes subsequent calls to connect() to return a
      *                   new connection link instead of the existing one.
+     *                   WARNING: this is not portable to other DBMS's.
      *   + client_flags  Any combination of MYSQL_CLIENT_* constants.  Only
      *                   effective if PHP is at version 4.3.0 or greater.
      *
