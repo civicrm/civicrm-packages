@@ -463,6 +463,75 @@ class DB_sybase extends DB_common
      }
 
     // }}}
+    // {{{ nextId()
+
+    /**
+     * Get the next value in a sequence.  We emulate sequences
+     * for Sybase.  Will create the sequence if it does not exist.
+     *
+     * @access public
+     *
+     * @param $seq_name the name of the sequence
+     *
+     * @param $ondemand whether to create the sequence table on demand
+     * (default is true)
+     *
+     * @return a sequence integer, or a DB error
+     */
+    function nextId($seq_name, $ondemand = true)
+    {
+        $seqname = $this->getSequenceName($seq_name);
+        if (!@sybase_select_db($this->_db, $this->connection)) {
+            return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
+        }
+        $repeat = 0;
+        do {
+            $this->pushErrorHandling(PEAR_ERROR_RETURN);
+            $result = $this->query("INSERT INTO $seqname (vapor) VALUES (0)");
+            $this->popErrorHandling();
+            if ($ondemand && DB::isError($result) &&
+                ($result->getCode() == DB_ERROR || $result->getCode() == DB_ERROR_NOSUCHTABLE))
+            {
+                $repeat = 1;
+                $result = $this->createSequence($seq_name);
+                if (DB::isError($result)) {
+                    return $this->raiseError($result);
+                }
+            } elseif (!DB::isError($result)) {
+                $result =& $this->query("SELECT @@IDENTITY FROM $seqname");
+                $repeat = 0;
+            } else {
+                $repeat = false;
+            }
+        } while ($repeat);
+        if (DB::isError($result)) {
+            return $this->raiseError($result);
+        }
+        $result = $result->fetchRow(DB_FETCHMODE_ORDERED);
+        return $result[0];
+    }
+
+    // }}}
+    // {{{ createSequence()
+
+    function createSequence($seq_name)
+    {
+        $seqname = $this->getSequenceName($seq_name);
+        return $this->query("CREATE TABLE $seqname ".
+                            '(id numeric(10,0) IDENTITY NOT NULL ,' .
+                            'vapor int NULL)');
+    }
+
+    // }}}
+    // {{{ dropSequence()
+
+    function dropSequence($seq_name)
+    {
+        $seqname = $this->getSequenceName($seq_name);
+        return $this->query("DROP TABLE $seqname");
+    }
+
+    // }}}
     // {{{ getSpecialQuery()
 
     /**
