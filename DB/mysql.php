@@ -448,11 +448,9 @@ class DB_mysql extends DB_common
     function numCols($result)
     {
         $cols = @mysql_num_fields($result);
-
         if (!$cols) {
             return $this->mysqlRaiseError();
         }
-
         return $cols;
     }
 
@@ -617,7 +615,8 @@ class DB_mysql extends DB_common
                 }
 
                 // Release the lock
-                $result = $this->getOne("SELECT RELEASE_LOCK('${seqname}_lock')");
+                $result = $this->getOne('SELECT RELEASE_LOCK('
+                                        . "'${seqname}_lock')");
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
                 }
@@ -667,9 +666,9 @@ class DB_mysql extends DB_common
     function createSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
-        $res = $this->query("CREATE TABLE ${seqname} ".
-                            '(id INTEGER UNSIGNED AUTO_INCREMENT NOT NULL,'.
-                            ' PRIMARY KEY(id))');
+        $res = $this->query('CREATE TABLE ' . $seqname
+                            . ' (id INTEGER UNSIGNED AUTO_INCREMENT NOT NULL,'
+                            . ' PRIMARY KEY(id))');
         if (DB::isError($res)) {
             return $res;
         }
@@ -679,7 +678,7 @@ class DB_mysql extends DB_common
             return $res;
         }
         // so reset to zero
-        return $this->query("UPDATE ${seqname} SET id = 0;");
+        return $this->query("UPDATE ${seqname} SET id = 0");
     }
 
     // }}}
@@ -731,7 +730,8 @@ class DB_mysql extends DB_common
         // This should kill all rows except the highest
         // We should probably do something if $highest_id isn't
         // numeric, but I'm at a loss as how to handle that...
-        $result = $this->query("DELETE FROM ${seqname} WHERE id <> $highest_id");
+        $result = $this->query('DELETE FROM ' . $seqname
+                               . " WHERE id <> $highest_id");
         if (DB::isError($result)) {
             return $result;
         }

@@ -517,11 +517,9 @@ class DB_mysqli extends DB_common
     function numCols($result)
     {
         $cols = @mysqli_num_fields($result);
-
         if (!$cols) {
             return $this->mysqliRaiseError();
         }
-
         return $cols;
     }
 
@@ -661,8 +659,8 @@ class DB_mysqli extends DB_common
         do {
             $repeat = 0;
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
-            $result = $this->query("UPDATE ${seqname} ".
-                                   'SET id=LAST_INSERT_ID(id+1)');
+            $result = $this->query('UPDATE ' . $seqname
+                                   . ' SET id = LAST_INSERT_ID(id + 1)');
             $this->popErrorHandling();
             if ($result === DB_OK) {
                 // COMMON CASE
@@ -670,26 +668,30 @@ class DB_mysqli extends DB_common
                 if ($id != 0) {
                     return $id;
                 }
+
                 // EMPTY SEQ TABLE
-                // Sequence table must be empty for some reason, so fill it and return 1
+                // Sequence table must be empty for some reason,
+                // so fill it and return 1
                 // Obtain a user-level lock
-                $result = $this->getOne("SELECT GET_LOCK('${seqname}_lock',10)");
+                $result = $this->getOne('SELECT GET_LOCK('
+                                        . "'${seqname}_lock', 10)");
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
                 }
                 if ($result == 0) {
-                    // Failed to get the lock, bail with a DB_ERROR_NOT_LOCKED error
                     return $this->mysqliRaiseError(DB_ERROR_NOT_LOCKED);
                 }
 
                 // add the default value
-                $result = $this->query("REPLACE INTO ${seqname} (id) VALUES (0)");
+                $result = $this->query('REPLACE INTO ' . $seqname
+                                       . ' (id) VALUES (0)');
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
                 }
 
                 // Release the lock
-                $result = $this->getOne("SELECT RELEASE_LOCK('${seqname}_lock')");
+                $result = $this->getOne('SELECT RELEASE_LOCK('
+                                        . "'${seqname}_lock')");
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
                 }
@@ -701,6 +703,7 @@ class DB_mysqli extends DB_common
             {
                 // ONDEMAND TABLE CREATION
                 $result = $this->createSequence($seq_name);
+
                 // Since createSequence initializes the ID to be 1,
                 // we do not need to retrieve the ID again (or we will get 2)
                 if (DB::isError($result)) {
@@ -741,9 +744,9 @@ class DB_mysqli extends DB_common
     function createSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
-        $res = $this->query("CREATE TABLE ${seqname} ".
-                            '(id INTEGER UNSIGNED AUTO_INCREMENT NOT NULL,'.
-                            ' PRIMARY KEY(id))');
+        $res = $this->query('CREATE TABLE ' . $seqname
+                            . ' (id INTEGER UNSIGNED AUTO_INCREMENT NOT NULL,'
+                            . ' PRIMARY KEY(id))');
         if (DB::isError($res)) {
             return $res;
         }
@@ -799,10 +802,12 @@ class DB_mysqli extends DB_common
         if (DB::isError($highest_id)) {
             return $highest_id;
         }
+
         // This should kill all rows except the highest
         // We should probably do something if $highest_id isn't
         // numeric, but I'm at a loss as how to handle that...
-        $result = $this->query("DELETE FROM ${seqname} WHERE id <> $highest_id");
+        $result = $this->query('DELETE FROM ' . $seqname
+                               . " WHERE id <> $highest_id");
         if (DB::isError($result)) {
             return $result;
         }
@@ -973,25 +978,27 @@ class DB_mysqli extends DB_common
 
         for ($i = 0; $i < $count; $i++) {
             $tmp = @mysqli_fetch_field($id);
-            $res[$i] = array(
-                'table' => $case_func($tmp->table),
-                'name'  => $case_func($tmp->name),
-                'type'  => isset($this->mysqli_types[$tmp->type]) ?
-                                      $this->mysqli_types[$tmp->type] :
-                                      'unknown',
-                'len'   => $tmp->max_length,
-                'flags' => '',
-            );
 
+            $flags = '';
             foreach ($this->mysqli_flags as $const => $means) {
                 if ($tmp->flags & $const) {
-                    $res[$i]['flags'] .= $means . ' ';
+                    $flags .= $means . ' ';
                 }
             }
             if ($tmp->def) {
-                $res[$i]['flags'] .= 'default_' . rawurlencode($tmp->def);
+                $flags .= 'default_' . rawurlencode($tmp->def);
             }
-            $res[$i]['flags'] = trim($res[$i]['flags']);
+            $flags = trim($flags);
+
+            $res[$i] = array(
+                'table' => $case_func($tmp->table),
+                'name'  => $case_func($tmp->name),
+                'type'  => isset($this->mysqli_types[$tmp->type])
+                                    ? $this->mysqli_types[$tmp->type]
+                                    : 'unknown',
+                'len'   => $tmp->max_length,
+                'flags' => $flags,
+            );
 
             if ($mode & DB_TABLEINFO_ORDER) {
                 $res['order'][$res[$i]['name']] = $i;
