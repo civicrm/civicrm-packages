@@ -47,7 +47,7 @@ function check_error($e, $expected_db_code, $should_be_error = true) {
                 print '    ' . $e->getUserInfo() . "\n";
             }
         } else {
-            print "UNEXPECTED OUTCOME... expected error but it wasn't\n";
+            print "\n    UNEXPECTED OUTCOME... expected error but it wasn't\n";
         }
     } else {
         if (DB::isError($e)) {
@@ -295,7 +295,7 @@ switch ($dbh->phptype) {
 }
 
 
-print 'Trying to provoke DB_ERROR_INVALID_NUMBER:  ';
+print 'Trying to provoke DB_ERROR_INVALID_NUMBER putting chars in INT column:  ';
 $res = $dbh->query("UPDATE phptest SET a = 'abc' WHERE a = 42");
 switch ($dbh->phptype) {
     case 'mysql':
@@ -304,6 +304,50 @@ switch ($dbh->phptype) {
         check_error($res, DB_ERROR_INVALID_NUMBER, false);
         break;
     case 'msql':
+        check_error($res, DB_ERROR_INVALID);
+        break;
+    default:
+        check_error($res, DB_ERROR_INVALID_NUMBER);
+}
+
+
+print 'Trying to provoke DB_ERROR_INVALID_NUMBER putting float in INT column:  ';
+$res = $dbh->query("UPDATE phptest SET a = 8.9 WHERE a = 42");
+switch ($dbh->phptype) {
+    case 'fbsql':
+    case 'ibase':
+    case 'mssql':
+    case 'mysql':
+    case 'mysqli':
+    case 'oci8':
+    case 'odbc':
+    case 'pgsql':
+    case 'sqlite':
+        check_error($res, DB_ERROR_INVALID_NUMBER, false);
+        break;
+    case 'msql':
+        check_error($res, DB_ERROR_INVALID);
+        break;
+    default:
+        check_error($res, DB_ERROR_INVALID_NUMBER);
+}
+
+
+print 'Trying to provoke DB_ERROR_INVALID_NUMBER putting int in CHAR column:  ';
+$res = $dbh->query("UPDATE phptest SET b = 8 WHERE a = 42");
+switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'ibase:ibase':
+    case 'ibase:firebird':
+    case 'mssql:mssql':
+    case 'mysql:mysql':
+    case 'mysqli:mysqli':
+    case 'oci8:oci8':
+    case 'odbc:access':
+    case 'pgsql:pgsql':
+    case 'sqlite:sqlite':
+        check_error($res, DB_ERROR_INVALID_NUMBER, false);
+        break;
+    case 'msql:msql':
         check_error($res, DB_ERROR_INVALID);
         break;
     default:
