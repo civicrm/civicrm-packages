@@ -795,9 +795,9 @@ class DB_mysql4 extends DB_common
             for ($i=0; $i<$count; $i++) {
                 $res[$i]['table'] = $case_func(@mysqli_field_table($id, $i));
                 $res[$i]['name']  = $case_func(@mysqli_field_name($id, $i));
-                $res[$i]['type']  = @mysqli_field_type  ($id, $i);
-                $res[$i]['len']   = @mysqli_field_len   ($id, $i);
-                $res[$i]['flags'] = @mysqli_field_flags ($id, $i);
+                $res[$i]['type']  = @mysqli_field_type($id, $i);
+                $res[$i]['len']   = @mysqli_field_len($id, $i);
+                $res[$i]['flags'] = @mysqli_field_flags($id, $i);
             }
         } else { // full
             $res['num_fields']= $count;
@@ -805,9 +805,9 @@ class DB_mysql4 extends DB_common
             for ($i=0; $i<$count; $i++) {
                 $res[$i]['table'] = $case_func(@mysqli_field_table($id, $i));
                 $res[$i]['name']  = $case_func(@mysqli_field_name($id, $i));
-                $res[$i]['type']  = @mysqli_field_type  ($id, $i);
-                $res[$i]['len']   = @mysqli_field_len   ($id, $i);
-                $res[$i]['flags'] = @mysqli_field_flags ($id, $i);
+                $res[$i]['type']  = @mysqli_field_type($id, $i);
+                $res[$i]['len']   = @mysqli_field_len($id, $i);
+                $res[$i]['flags'] = @mysqli_field_flags($id, $i);
 
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;

@@ -590,9 +590,9 @@ class DB_fbsql extends DB_common
             for ($i=0; $i<$count; $i++) {
                 $res[$i]['table'] = $case_func(@fbsql_field_table($id, $i));
                 $res[$i]['name']  = $case_func(@fbsql_field_name($id, $i));
-                $res[$i]['type']  = @fbsql_field_type  ($id, $i);
-                $res[$i]['len']   = @fbsql_field_len   ($id, $i);
-                $res[$i]['flags'] = @fbsql_field_flags ($id, $i);
+                $res[$i]['type']  = @fbsql_field_type($id, $i);
+                $res[$i]['len']   = @fbsql_field_len($id, $i);
+                $res[$i]['flags'] = @fbsql_field_flags($id, $i);
             }
         } else { // full
             $res["num_fields"]= $count;
@@ -600,9 +600,9 @@ class DB_fbsql extends DB_common
             for ($i=0; $i<$count; $i++) {
                 $res[$i]['table'] = $case_func(@fbsql_field_table($id, $i));
                 $res[$i]['name']  = $case_func(@fbsql_field_name($id, $i));
-                $res[$i]['type']  = @fbsql_field_type  ($id, $i);
-                $res[$i]['len']   = @fbsql_field_len   ($id, $i);
-                $res[$i]['flags'] = @fbsql_field_flags ($id, $i);
+                $res[$i]['type']  = @fbsql_field_type($id, $i);
+                $res[$i]['len']   = @fbsql_field_len($id, $i);
+                $res[$i]['flags'] = @fbsql_field_flags($id, $i);
 
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
