@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.120 2004-09-22 22:16:46 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.121 2004-09-24 14:21:00 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -39,12 +39,6 @@ DB is compatible with both PHP 4 and PHP 5.
       <role>developer</role>
       <name>Tomas V.V.Cox</name>
       <email>cox@idecnet.com</email>
-    </maintainer>
-    <maintainer>
-      <user>chagenbu</user>
-      <role>helper</role>
-      <name>Chuck Hagenbuch</name>
-      <email>chuck@horde.org</email>
     </maintainer>
     <maintainer>
       <user>danielc</user>
