@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.65 2004-02-10 23:15:18 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.66 2004-02-10 23:23:33 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -82,10 +82,10 @@ Duplicate key constraint violations mapped to
 DB_ERROR_CONSTRAINT.  (danielc)
 
 - mysql:
-Added DB_PORTABILITY_CONSTRAINT portability option
-because other DBMS's map duplicate key constraints
-to DB_ERROR_CONSTRAINT but MySQL mapped it to
-DB_ERROR_ALREADY_EXISTS.  (danielc)
+Added DB_PORTABILITY_CONSTRAINT portability
+option because other DBMS's map duplicate key
+constraints to DB_ERROR_CONSTRAINT but MySQL
+mapped it to DB_ERROR_ALREADY_EXISTS.  (danielc)
 
 =============
 BUGS FIXED:
