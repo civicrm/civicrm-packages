@@ -595,39 +595,39 @@ class DB_pgsql extends DB_common
     {
         $field_name = @pg_fieldname($resource, $num_field);
 
-        $result = pg_exec($this->connection, "SELECT f.attnotnull, f.atthasdef
+        $result = @pg_exec($this->connection, "SELECT f.attnotnull, f.atthasdef
                                 FROM pg_attribute f, pg_class tab, pg_type typ
                                 WHERE tab.relname = typ.typname
                                 AND typ.typrelid = f.attrelid
                                 AND f.attname = '$field_name'
                                 AND tab.relname = '$table_name'");
-        if (pg_numrows($result) > 0) {
-            $row = pg_fetch_row($result, 0);
+        if (@pg_numrows($result) > 0) {
+            $row = @pg_fetch_row($result, 0);
             $flags  = ($row[0] == 't') ? 'not_null ' : '';
 
             if ($row[1] == 't') {
-                $result = pg_exec($this->connection, "SELECT a.adsrc
+                $result = @pg_exec($this->connection, "SELECT a.adsrc
                                     FROM pg_attribute f, pg_class tab, pg_type typ, pg_attrdef a
                                     WHERE tab.relname = typ.typname AND typ.typrelid = f.attrelid
                                     AND f.attrelid = a.adrelid AND f.attname = '$field_name'
                                     AND tab.relname = '$table_name'");
-                $row = pg_fetch_row($result, 0);
+                $row = @pg_fetch_row($result, 0);
                 $num = str_replace('\'', '', $row[0]);
 
                 $flags .= "default_$num ";
             }
         }
-        $result = pg_exec($this->connection, "SELECT i.indisunique, i.indisprimary, i.indkey
+        $result = @pg_exec($this->connection, "SELECT i.indisunique, i.indisprimary, i.indkey
                                 FROM pg_attribute f, pg_class tab, pg_type typ, pg_index i
                                 WHERE tab.relname = typ.typname
                                 AND typ.typrelid = f.attrelid
                                 AND f.attrelid = i.indrelid
                                 AND f.attname = '$field_name'
                                 AND tab.relname = '$table_name'");
-        $count = pg_numrows($result);
+        $count = @pg_numrows($result);
 
         for ($i = 0; $i < $count ; $i++) {
-            $row = pg_fetch_row($result, $i);
+            $row = @pg_fetch_row($result, $i);
             $keys = explode(" ", $row[2]);
 
             if (in_array($num_field + 1, $keys)) {
@@ -702,7 +702,7 @@ class DB_pgsql extends DB_common
         // table without a resultset
 
         if (is_string($result)) {
-            $id = pg_exec($this->connection,"SELECT * FROM $result");
+            $id = @pg_exec($this->connection,"SELECT * FROM $result");
             if (empty($id)) {
                 return $this->pgsqlRaiseError();
             }
