@@ -895,12 +895,18 @@ class DB_result
 
     // }}}
     // {{{ tableInfo()
+
     /**
-    * @deprecated
-    */
+     * @deprecated
+     * @internal
+     * @see DB_common::tableInfo()
+     */
     function tableInfo($mode = null)
     {
-        return $this->dbh->tableInfo($this->result, $mode);
+        if (is_string($mode)) {
+            return $this->dbh->raiseError(DB_ERROR_NEED_MORE_DATA);
+        }
+        return $this->dbh->tableInfo($this, $mode);
     }
 
     // }}}
