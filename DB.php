@@ -633,10 +633,16 @@ class DB_result
      * @param resource $result result resource id
      */
 
-    function DB_result(&$dbh, $result)
+    function DB_result(&$dbh, $result, $options = array())
     {
         $this->dbh = &$dbh;
         $this->result = $result;
+        $this->limit_from  = isset($options['limit_from'])  ? $options['limit_from']  : null;
+        $this->limit_count = isset($options['limit_count']) ? $options['limit_count'] : null;
+        $this->limit_type  = $dbh->features['limit'];
+        $this->autofree    = $dbh->options['autofree'];
+        $this->fetchmode   = $dbh->fetchmode;
+        $this->fetchmode_object_class = $dbh->fetchmode_object_class;
     }
 
     /**
@@ -651,17 +657,17 @@ class DB_result
     function fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
     {
         if ($fetchmode === DB_FETCHMODE_DEFAULT) {
-            $fetchmode = $this->dbh->fetchmode;
+            $fetchmode = $this->fetchmode;
         }
         if ($fetchmode === DB_FETCHMODE_OBJECT) {
             $fetchmode = DB_FETCHMODE_ASSOC;
-            $object_class = $this->dbh->fetchmode_object_class;
+            $object_class = $this->fetchmode_object_class;
         }
         if ($this->limit_from !== null) {
             if ($this->row_counter === null) {
                 $this->row_counter = $this->limit_from;
-                // For Interbase
-                if ($this->dbh->features['limit'] == false) {
+                // Skip rows
+                if ($this->limit_type == false) {
                     $i = 0;
                     while ($i++ < $this->limit_from) {
                         $this->dbh->fetchInto($this->result, $arr, $fetchmode);
@@ -673,7 +679,7 @@ class DB_result
             {
                 return null;
             }
-            if ($this->dbh->features['limit'] == 'emulate') {
+            if ($this->limit_type == 'emulate') {
                 $rownum = $this->row_counter;
             }
 
@@ -681,6 +687,9 @@ class DB_result
         }
         $res = $this->dbh->fetchInto($this->result, $arr, $fetchmode, $rownum);
         if ($res !== DB_OK) {
+            if ($res == null && $this->autofree) {
+                $this->free();
+            }
             return $res;
         }
         if (isset($object_class)) {
@@ -710,17 +719,17 @@ class DB_result
     function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
     {
         if ($fetchmode === DB_FETCHMODE_DEFAULT) {
-            $fetchmode = $this->dbh->fetchmode;
+            $fetchmode = $this->fetchmode;
         }
         if ($fetchmode === DB_FETCHMODE_OBJECT) {
             $fetchmode = DB_FETCHMODE_ASSOC;
-            $object_class = $this->dbh->fetchmode_object_class;
+            $object_class = $this->fetchmode_object_class;
         }
         if ($this->limit_from !== null) {
             if ($this->row_counter === null) {
                 $this->row_counter = $this->limit_from;
-                // For Interbase
-                if ($this->dbh->features['limit'] == false) {
+                // Skip rows
+                if ($this->limit_type == false) {
                     $i = 0;
                     while ($i++ < $this->limit_from) {
                         $this->dbh->fetchInto($this->result, $arr, $fetchmode);
@@ -732,7 +741,7 @@ class DB_result
             {
                 return null;
             }
-            if ($this->dbh->features['limit'] == 'emulate') {
+            if ($this->limit_type == 'emulate') {
                 $rownum = $this->row_counter;
             }
 
@@ -746,6 +755,8 @@ class DB_result
             } else {
                 $arr = new $object_class($arr);
             }
+        } elseif ($res == null && $this->autofree) {
+            $this->free();
         }
         return $res;
     }
@@ -811,7 +822,7 @@ class DB_result
     }
 
     /**
-    * returns the actual rows number
+    * returns the actual row number
     * @return integer
     */
     function getRowCounter()
