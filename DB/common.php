@@ -1518,7 +1518,7 @@ class DB_common extends PEAR
     function getSequenceName($sqn)
     {
         return sprintf($this->getOption('seqname_format'),
-                       preg_replace('/[^a-z0-9_]/i', '_', $sqn));
+                       preg_replace('/[^a-z0-9_.]/i', '_', $sqn));
     }
 
     // }}}
