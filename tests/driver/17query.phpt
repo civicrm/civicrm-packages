@@ -89,14 +89,18 @@ $res =& $dbh->query('SELECT a, b, d FROM phptest WHERE a = ?', 11);
 $row = $res->fetchRow();
 print "7) a = {$row['a']}, b = {$row['b']}, d = ";
 if ($dbh->phptype == 'msql') {
-    if (!array_key_exists('d', $row)) {
-        // msql doesn't return null columns
-        // http://bugs.php.net/?id=31960
-        print "got expected value\n";
-    } else {
+    if (array_key_exists('d', $row)) {
         $type = gettype($row['d']);
-        print "ERR: expected d's type to be NULL but it's $type and the value is ";
-        print $row['d'] . "\n";
+        if ($type == 'NULL' || $row['d'] == '') {
+            print "got expected value\n";
+        } else {
+            print "ERR: expected d's type to be NULL but it's $type and the value is ";
+            print $row['d'] . "\n";
+        }
+    } else {
+        // http://bugs.php.net/?id=31960
+        print "Prior to PHP 4.3.11 or 5.0.4, PHP's msql extension silently"
+              . " dropped columns with null values. You need to upgrade.\n";
     }
 } else {
     $type = gettype($row['d']);

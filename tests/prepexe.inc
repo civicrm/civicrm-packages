@@ -151,20 +151,25 @@ $res = $dbh->execute($sth6, array(11));
 $row = $res->fetchRow(DB_FETCHMODE_ASSOC);
 print "a = {$row['a']}, b = {$row['b']}, d = ";
 if ($dbh->phptype == 'msql') {
-    if (!array_key_exists('d', $row)) {
-        // msql doesn't return empty columns
-        // http://bugs.php.net/?id=31960
-        print "got expected outcome\n";
-    } else {
+    if (array_key_exists('d', $row)) {
         $type = gettype($row['d']);
-        print "UNexpected outcome: $type\n";
+        if ($type == 'NULL' || $row['d'] == '') {
+            print "got expected outcome\n";
+        } else {
+            $type = gettype($row['d']);
+            print "UN-expected outcome: $type\n";
+        }
+    } else {
+        // http://bugs.php.net/?id=31960
+        print "Prior to PHP 4.3.11 or 5.0.4, PHP's msql extension silently"
+              . " dropped columns with null values. You need to upgrade.\n";
     }
 } else {
     $type = gettype($row['d']);
     if ($type == 'string') {
         print "got expected outcome\n";
     } else {
-        print "UNexpected outcome: $type\n";
+        print "UN-expected outcome: $type\n";
     }
 }
 
