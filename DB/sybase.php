@@ -89,20 +89,20 @@ class DB_sybase extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
 
         $this->dsn = $dsninfo;
-        $user = $dsninfo['username'];
-        $pw   = $dsninfo['password'];
 
         $interface = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
         $connect_function = $persistent ? 'sybase_pconnect' : 'sybase_connect';
 
-        if ($interface && $user && $pw) {
-            $conn = @$connect_function($interface, $user, $pw);
-        } elseif ($interface && $user) {
+        if ($interface && $dsninfo['username'] && $dsninfo['password']) {
+            $conn = @$connect_function($interface, $dsninfo['username'],
+                                       $dsninfo['password']);
+        } elseif ($interface && $dsninfo['username']) {
             /*
              * Using false for pw as a workaround to avoid segfault.
              * See PEAR bug 631
              */
-            $conn = @$connect_function($interface, $user, false);
+            $conn = @$connect_function($interface, $dsninfo['username'],
+                                       false);
         } else {
             $conn = FALSE;
         }

@@ -139,14 +139,13 @@ class DB_odbc extends DB_common
             $odbcdsn = 'localhost';
         }
 
-        $user = $dsninfo['username'];
-        $pw = $dsninfo['password'];
         if ($this->provides('pconnect')) {
             $connect_function = $persistent ? 'odbc_pconnect' : 'odbc_connect';
         } else {
             $connect_function = 'odbc_connect';
         }
-        $conn = @$connect_function($odbcdsn, $user, $pw);
+        $conn = @$connect_function($odbcdsn, $dsninfo['username'],
+                                   $dsninfo['password']);
         if (!is_resource($conn)) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
                                          null, $this->errorNative());

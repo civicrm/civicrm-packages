@@ -98,8 +98,6 @@ class DB_ibase extends DB_common
             return $tmp;
         }
         $this->dsn = $dsninfo;
-        $user = $dsninfo['username'];
-        $pw   = $dsninfo['password'];
         $dbhost = $dsninfo['hostspec'] ?
                   ($dsninfo['hostspec'] . ':' . $dsninfo['database']) :
                   $dsninfo['database'];
@@ -108,25 +106,13 @@ class DB_ibase extends DB_common
 
         $params = array();
         $params[] = $dbhost;
-        $params[] = !empty($user) ? $user : null;
-        $params[] = !empty($pw) ? $pw : null;
+        $params[] = !empty($dsninfo['username']) ? $dsninfo['username'] : null;
+        $params[] = !empty($dsninfo['password']) ? $dsninfo['password'] : null;
         $params[] = isset($dsninfo['charset']) ? $dsninfo['charset'] : null;
         $params[] = isset($dsninfo['buffers']) ? $dsninfo['buffers'] : null;
         $params[] = isset($dsninfo['dialect']) ? $dsninfo['dialect'] : null;
         $params[] = isset($dsninfo['role'])    ? $dsninfo['role'] : null;
 
-        /*
-        if ($dbhost && $user && $pw) {
-            $conn = $connect_function($dbhost, $user, $pw);
-        } elseif ($dbhost && $user) {
-            $conn = $connect_function($dbhost, $user);
-        } elseif ($dbhost) {
-            $conn = $connect_function($dbhost);
-        } else {
-            $tmp =& $this->raiseError('no host, user or password');
-            return $tmp;
-        }
-        */
         $conn = @call_user_func_array($connect_function, $params);
         if (!$conn) {
             return $this->ibaseRaiseError(DB_ERROR_CONNECT_FAILED);

@@ -63,16 +63,15 @@ class DB_msql extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
 
         $this->dsn = $dsninfo;
-        $user = $dsninfo['username'];
-        $pw = $dsninfo['password'];
         $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
 
         $connect_function = $persistent ? 'msql_pconnect' : 'msql_connect';
 
-        if ($dbhost && $user && $pw) {
-            $conn = $connect_function($dbhost, $user, $pw);
-        } elseif ($dbhost && $user) {
-            $conn = $connect_function($dbhost,$user);
+        if ($dbhost && $dsninfo['username'] && $dsninfo['password']) {
+            $conn = $connect_function($dbhost, $dsninfo['username'],
+                                      $dsninfo['password']);
+        } elseif ($dbhost && $dsninfo['username']) {
+            $conn = $connect_function($dbhost, $dsninfo['username']);
         } else {
             $conn = $connect_function($dbhost);
         }

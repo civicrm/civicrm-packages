@@ -96,16 +96,16 @@ class DB_oci8 extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
         $this->dsn = $dsninfo;
-        $user = $dsninfo['username'];
-        $pw = $dsninfo['password'];
-        $hostspec = $dsninfo['hostspec'];
 
         $connect_function = $persistent ? 'OCIPLogon' : 'OCILogon';
 
-        if ($hostspec) {
-            $conn = @$connect_function($user,$pw,$hostspec);
-        } elseif ($user || $pw) {
-            $conn = @$connect_function($user,$pw);
+        if ($dsninfo['hostspec']) {
+            $conn = @$connect_function($dsninfo['username'],
+                                       $dsninfo['password'],
+                                       $dsninfo['hostspec']);
+        } elseif ($dsninfo['username'] || $dsninfo['password']) {
+            $conn = @$connect_function($dsninfo['username'],
+                                       $dsninfo['password']);
         } else {
             $conn = false;
         }

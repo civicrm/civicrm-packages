@@ -107,15 +107,14 @@ class DB_fbsql extends DB_common
 
         $this->dsn = $dsninfo;
         $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
-        $user = $dsninfo['username'];
-        $pw = $dsninfo['password'];
 
         $connect_function = $persistent ? 'fbsql_pconnect' : 'fbsql_connect';
 
-        if ($dbhost && $user && $pw) {
-            $conn = @$connect_function($dbhost, $user, $pw);
-        } elseif ($dbhost && $user) {
-            $conn = @$connect_function($dbhost, $user);
+        if ($dbhost && $dsninfo['username'] && $dsninfo['password']) {
+            $conn = @$connect_function($dbhost, $dsninfo['username'],
+                                       $dsninfo['password']);
+        } elseif ($dbhost && $dsninfo['username']) {
+            $conn = @$connect_function($dbhost, $dsninfo['username']);
         } elseif ($dbhost) {
             $conn = @$connect_function($dbhost);
         } else {

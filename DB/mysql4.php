@@ -120,18 +120,18 @@ class DB_mysql4 extends DB_common
                 $dbhost .= ':' . $dsninfo['port'];
             }
         }
-        $user = $dsninfo['username'];
-        $pw = $dsninfo['password'];
 
         $ssl_mode = $this->getOption('ssl') === true ? 'CLIENT_SSL' : NULL;
 
         @ini_set('track_errors', true);
 
-        if ($dbhost && $user && $pw) {
+        if ($dbhost && $dsninfo['username'] && $dsninfo['password']) {
             // Need to verify if arguments are okay
-            $conn = @mysqli_connect($dbhost, $user, $pw, $ssl_mode);
-        } elseif ($dbhost && $user) {
-            $conn = @mysqli_connect($dbhost, $user, NULL, $ssl_mode);
+            $conn = @mysqli_connect($dbhost, $dsninfo['username'],
+                                    $dsninfo['password'], $ssl_mode);
+        } elseif ($dbhost && $dsninfo['username']) {
+            $conn = @mysqli_connect($dbhost, $dsninfo['username'], NULL,
+                                    $ssl_mode);
         } elseif ($dbhost) {
             $conn = @mysqli_connect($dbhost, NULL, NULL, $ssl_mode);
         } else {

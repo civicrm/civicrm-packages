@@ -114,7 +114,6 @@ class DB_mysql extends DB_common
         if (!DB::assertExtension('mysql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
-
         $this->dsn = $dsninfo;
         if (isset($dsninfo['protocol']) && $dsninfo['protocol'] == 'unix') {
             $dbhost = ':' . $dsninfo['socket'];
@@ -124,15 +123,14 @@ class DB_mysql extends DB_common
                 $dbhost .= ':' . $dsninfo['port'];
             }
         }
-        $user = $dsninfo['username'];
-        $pw = $dsninfo['password'];
-
+        
         $connect_function = $persistent ? 'mysql_pconnect' : 'mysql_connect';
 
-        if ($dbhost && $user && $pw) {
-            $conn = @$connect_function($dbhost, $user, $pw);
-        } elseif ($dbhost && $user) {
-            $conn = @$connect_function($dbhost, $user);
+        if ($dbhost && $dsninfo['username'] && $dsninfo['password']) {
+            $conn = @$connect_function($dbhost, $dsninfo['username'],
+                                       $dsninfo['password']);
+        } elseif ($dbhost && $dsninfo['username']) {
+            $conn = @$connect_function($dbhost, $dsninfo['username']);
         } elseif ($dbhost) {
             $conn = @$connect_function($dbhost);
         } else {
