@@ -18,7 +18,7 @@ fclose($fp);
  * @see PEAR::setErrorHandling()
  */
 function pe($o) {
-    $o->toString();
+    print "\n" . $o->toString();
     exit;
 }
 
