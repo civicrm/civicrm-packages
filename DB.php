@@ -1,5 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
 // +----------------------------------------------------------------------+
 // | PHP Version 4                                                        |
 // +----------------------------------------------------------------------+
@@ -24,6 +24,8 @@
 
 require_once "PEAR.php";
 
+// {{{ constants
+// {{{ error codes
 /*
  * The method mapErrorCode in each DB_dbtype implementation maps
  * native error codes to one of these.
@@ -61,6 +63,8 @@ define("DB_ERROR_EXTENSION_NOT_FOUND",-25);
 define("DB_ERROR_ACCESS_VIOLATION",   -26);
 define("DB_ERROR_NOSUCHDB",           -27);
 
+// }}}
+// {{{ warning codes
 /*
  * Warnings are not detected as errors by DB::isError(), and are not
  * fatal.  You can detect whether an error is in fact a warning with
@@ -72,6 +76,8 @@ define("DB_ERROR_NOSUCHDB",           -27);
 define('DB_WARNING',           -1000);
 define('DB_WARNING_READ_ONLY', -1001);
 
+// }}}
+// {{{ prepared statement-related
 /*
  * These constants are used when storing information about prepared
  * statements (using the "prepare" method in DB_dbtype).
@@ -93,6 +99,8 @@ define('DB_PARAM_SCALAR', 1);
 define('DB_PARAM_OPAQUE', 2);
 define('DB_PARAM_MISC',   3);
 
+// }}}
+// {{{ binary data-related
 /*
  * These constants define different ways of returning binary data
  * from queries.  Again, this model has been borrowed from the ODBC
@@ -109,6 +117,8 @@ define('DB_BINMODE_PASSTHRU', 1);
 define('DB_BINMODE_RETURN',   2);
 define('DB_BINMODE_CONVERT',  3);
 
+// }}}
+// {{{ fetch modes
 /**
  * This is a special constant that tells DB the user hasn't specified
  * any particular get mode, so the default should be used.
@@ -149,6 +159,8 @@ define('DB_GETMODE_ORDERED', DB_FETCHMODE_ORDERED);
 define('DB_GETMODE_ASSOC',   DB_FETCHMODE_ASSOC);
 define('DB_GETMODE_FLIPPED', DB_FETCHMODE_FLIPPED);
 
+// }}}
+// {{{ tableInfo() && autoPrepare()-related
 /**
  * these are constants for the tableInfo-function
  * they are bitwised or'ed. so if there are more constants to be defined
@@ -165,7 +177,10 @@ define('DB_TABLEINFO_FULL', 3);
 define('DB_AUTOQUERY_INSERT', 1);
 define('DB_AUTOQUERY_UPDATE', 2);
 
+// }}}
+// }}}
 
+// {{{ class DB
 /**
  * The main "DB" class is simply a container class with some static
  * methods for creating DB objects as well as some utility functions
@@ -194,6 +209,7 @@ define('DB_AUTOQUERY_UPDATE', 2);
 
 class DB
 {
+    // {{{ &factory()
     /**
      * Create a new DB connection object for the specified database
      * type
@@ -222,6 +238,8 @@ class DB
         return $obj;
     }
 
+    // }}}
+    // {{{ &connect()
     /**
      * Create a new DB connection object and connect to the specified
      * database
@@ -288,6 +306,8 @@ class DB
         return $obj;
     }
 
+    // }}}
+    // {{{ apiVersion()
     /**
      * Return the DB API version
      *
@@ -300,6 +320,8 @@ class DB
         return 2;
     }
 
+    // }}}
+    // {{{ isError()
     /**
      * Tell whether a result code from a DB method is an error
      *
@@ -316,6 +338,8 @@ class DB
                  is_subclass_of($value, 'db_error')));
     }
 
+    // }}}
+    // {{{ isConnection()
     /**
      * Tell whether a value is a DB connection
      *
@@ -332,6 +356,8 @@ class DB
                 method_exists($value, 'simpleQuery'));
     }
 
+    // }}}
+    // {{{ isManip()
     /**
      * Tell whether a query is a data manipulation query (insert,
      * update or delete) or a data definition query (create, drop,
@@ -353,6 +379,8 @@ class DB
         return false;
     }
 
+    // }}}
+    // {{{ errorMessage()
     /**
      * Return a textual error message for a DB error code
      *
@@ -406,6 +434,8 @@ class DB
         return isset($errorMessages[$value]) ? $errorMessages[$value] : $errorMessages[DB_ERROR];
     }
 
+    // }}}
+    // {{{ parseDSN()
     /**
      * Parse a data source name
      *
@@ -554,6 +584,8 @@ class DB
         return $parsed;
     }
 
+    // }}}
+    // {{{ assertExtension()
     /**
      * Load a PHP database extension if it is not loaded already.
      *
@@ -575,8 +607,11 @@ class DB
         }
         return true;
     }
+    // }}}
 }
+// }}}
 
+// {{{ class DB_Error
 /**
  * DB_Error implements a class for reporting portable database error
  * messages.
@@ -586,6 +621,7 @@ class DB
  */
 class DB_Error extends PEAR_Error
 {
+    // {{{ constructor
     /**
      * DB_Error constructor.
      *
@@ -608,8 +644,11 @@ class DB_Error extends PEAR_Error
             $this->PEAR_Error("DB Error: $code", DB_ERROR, $mode, $level, $debuginfo);
         }
     }
+    // }}}
 }
+// }}}
 
+// {{{ class DB_Result
 /**
  * This class implements a wrapper for a DB result set.
  * A new instance of this class will be returned by the DB implementation
@@ -621,6 +660,8 @@ class DB_Error extends PEAR_Error
 
 class DB_result
 {
+    // {{{ properties
+
     var $dbh;
     var $result;
     var $row_counter = null;
@@ -636,6 +677,8 @@ class DB_result
     */
     var $limit_count = null;
 
+    // }}}
+    // {{{ constructor
     /**
      * DB_result constructor.
      * @param resource &$dbh   DB object reference
@@ -654,6 +697,8 @@ class DB_result
         $this->fetchmode_object_class = $dbh->fetchmode_object_class;
     }
 
+    // }}}
+    // {{{ fetchRow()
     /**
      * Fetch and return a row of data (it uses driver->fetchInto for that)
      * @param int $fetchmode format of fetched row
@@ -713,6 +758,8 @@ class DB_result
         return $arr;
     }
 
+    // }}}
+    // {{{ fetchInto()
     /**
      * Fetch a row of data into an existing variable.
      *
@@ -770,6 +817,8 @@ class DB_result
         return $res;
     }
 
+    // }}}
+    // {{{ numCols()
     /**
      * Get the the number of columns in a result set.
      *
@@ -782,6 +831,8 @@ class DB_result
         return $this->dbh->numCols($this->result);
     }
 
+    // }}}
+    // {{{ numRows()
     /**
      * Get the number of rows in a result set.
      *
@@ -794,6 +845,8 @@ class DB_result
         return $this->dbh->numRows($this->result);
     }
 
+    // }}}
+    // {{{ nextResult()
     /**
      * Get the next result if a batch of queries was executed.
      *
@@ -806,6 +859,8 @@ class DB_result
         return $this->dbh->nextResult($this->result);
     }
 
+    // }}}
+    // {{{ free()
     /**
      * Frees the resources allocated for this result set.
      * @return  int error code
@@ -822,6 +877,8 @@ class DB_result
         return true;
     }
 
+    // }}}
+    // {{{ tableInfo()
     /**
     * @deprecated
     */
@@ -830,6 +887,8 @@ class DB_result
         return $this->dbh->tableInfo($this->result, $mode);
     }
 
+    // }}}
+    // {{{ getRowCounter()
     /**
     * returns the actual row number
     * @return integer
@@ -838,14 +897,18 @@ class DB_result
     {
         return $this->row_counter;
     }
+    // }}}
 }
+// }}}
 
+// {{{ class DB_Row
 /**
 * Pear DB Row Object
 * @see DB_common::setFetchMode()
 */
 class DB_row
 {
+    // {{{ constructor
     /**
     * constructor
     *
@@ -857,6 +920,9 @@ class DB_row
             $this->$key = &$arr[$key];
         }
     }
+
+    // }}}
 }
+// }}}
 
 ?>
