@@ -769,7 +769,7 @@ class DB_common extends PEAR
                 return "INSERT INTO $table ($names) VALUES ($values)";
             case DB_AUTOQUERY_UPDATE:
                 $set = '';
-                while (list(, $value) = each($table_fields)) {
+                foreach ($table_fields as $value) {
                     if ($first) {
                         $first = false;
                     } else {
