@@ -158,8 +158,9 @@ class DB_common extends PEAR
      * in a query (preserved for compatibility issues, quote() is preffered).
      *
      * @return string quoted string
-     * @access public
-     * @see quote()
+     *
+     * @depricated  Depricated in release 1.2 or lower
+     * @internal
      */
     function quoteString($string)
     {
@@ -170,24 +171,98 @@ class DB_common extends PEAR
         return $string;
     }
 
+    // }}}
+    // {{{ quote()
+
     /**
      * Quotes a string so it can be safely used in a query.
      *
-     * It will return the string with single quotes around.
+     * The mysql, odbc and pgsql sub-classes have their own quote() methods
+     * that override this one and that vary their output depending on the
+     * PHP type of the variable submitted.
      *
-     * This method gets overridden if the DBMS being used has a quote()
-     * method in its sub-class.  Those overriding methods contain notes
-     * about which data types should be used to handle BOOLEAN data in
-     * each DBMS.
+     * It will return the string with single quotes around.
      *
      * @param string $string the input string to quote
      *
      * @return string The NULL string or the string quotes
      *                in magic_quote_sybase style
+     *
+     * @depricated  Depricated in release 1.6.0
+     * @internal
      */
-    function quote($string)
+    function quote($string = null)
     {
         return ($string === null) ? 'NULL' : "'".str_replace("'", "''", $string)."'";
+    }
+
+    // }}}
+    // {{{ quoteSmart()
+
+    /**
+     * Format input so it can be safely used in a query
+     *
+     * The output depends on the PHP data type of input and the database
+     * type being used.
+     *
+     * @param mixed $in  data to be quoted
+     *
+     * @return mixed Submitted variable's type = returned value:
+     *               + null = the string <samp>NULL</samp>
+     *               + integer or double = the unquoted number
+     *               + other (including strings and numeric strings) =
+     *                 the data with single quotes escaped by preceeding
+     *                 single quotes, backslashes are escaped by preceeding
+     *                 backslashes, then the whole string is encapsulated
+     *                 between single quotes
+     *               + boolean = output depends on the driver in use:
+     *                 - string <samp>TRUE</samp> or <samp>FALSE</samp>
+     *                   for DBMS's with <kbd>BOOLEAN</kbd> handling:
+     *                     + dbase
+     *                     + ifx
+     *                     + ibase
+     *                     + odbc
+     *                     + pgsql
+     *                 - int <samp>1</samp> if true, <samp>0</samp> if false
+     *                   for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
+     *                   Such drivers and the data types expected:
+     *                     + mssql   <kbd>BIT</kbd>
+     *                     + mysql   <kbd>TINYINT(1)</kbd>
+     *                     + mysql4  <kbd>TINYINT(1)</kbd>
+     *                     + oci8    <kbd>NUMBER(1)</kbd>
+     *                     + sqlite  <kbd>INTEGER</kbd>
+     *                     + sybase  <kbd>TINYINT(1)</kbd>
+     *
+     * @see DB_common::escapeSimple()
+     * @access public
+     */
+    function quoteSmart($in)
+    {
+        if (is_int($in) || is_double($in)) {
+            return $in;
+        } elseif (is_bool($in)) {
+            return $in ? 'TRUE' : 'FALSE';
+        } elseif (is_null($in)) {
+            return 'NULL';
+        } else {
+            return "'" . $this->escapeSimple($in) . "'";
+        }
+    }
+
+    // }}}
+    // {{{ escapeSimple()
+
+    /**
+     * Escape a string according to the current DBMS's standards
+     *
+     * @param string $str  the string to be escaped
+     *
+     * @return string  the escaped string
+     *
+     * @see DB_common::quoteSmart()
+     */
+    function escapeSimple($str) {
+        return str_replace("'", "''", $str);
     }
 
     // }}}
@@ -765,13 +840,13 @@ class DB_common extends PEAR
         $i = 0;
         foreach ($data as $value) {
             if ($this->prepare_types[$stmt][$i] == DB_PARAM_SCALAR) {
-                $realquery .= $this->quote($value);
+                $realquery .= $this->quoteSmart($value);
             } elseif ($this->prepare_types[$stmt][$i] == DB_PARAM_OPAQUE) {
                 $fp = @fopen($value, 'rb');
                 if (!$fp) {
                     return $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
                 }
-                $realquery .= $this->quote(fread($fp, filesize($value)));
+                $realquery .= $this->quoteSmart(fread($fp, filesize($value)));
                 fclose($fp);
             } else {
                 $realquery .= $value;
