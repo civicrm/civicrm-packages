@@ -106,8 +106,8 @@ class DB_ibase extends DB_common
 
         $params = array();
         $params[] = $dbhost;
-        $params[] = $dsninfo['username'] ? $dsninfo['username'] : null;
-        $params[] = $dsninfo['password'] ? $dsninfo['password'] : null;
+        $params[] = isset($dsninfo['username']) ? $dsninfo['username'] : null;
+        $params[] = isset($dsninfo['password']) ? $dsninfo['password'] : null;
         $params[] = isset($dsninfo['charset']) ? $dsninfo['charset'] : null;
         $params[] = isset($dsninfo['buffers']) ? $dsninfo['buffers'] : null;
         $params[] = isset($dsninfo['dialect']) ? $dsninfo['dialect'] : null;

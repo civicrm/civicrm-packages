@@ -75,7 +75,7 @@ class DB_pgsql extends DB_common
      * @param $persistent (optional) whether the connection should
      *        be persistent
      *
-     * @return int DB_OK on success, a DB error code on failure
+     * @return int DB_OK on success, a DB error code on failure.
      */
     function connect($dsninfo, $persistent = false)
     {
@@ -88,15 +88,15 @@ class DB_pgsql extends DB_common
         $connstr = '';
 
         if ($protocol == 'tcp') {
-            if ($dsninfo['hostspec']) {
+            if (isset($dsninfo['hostspec'])) {
                 $connstr .= 'host=' . $dsninfo['hostspec'];
             }
-            if ($dsninfo['port']) {
+            if (isset($dsninfo['port'])) {
                 $connstr .= ' port=' . $dsninfo['port'];
             }
         } elseif ($protocol == 'unix') {
             // Allow for pg socket in non-standard locations.
-            if ($dsninfo['socket']) {
+            if (isset($dsninfo['socket'])) {
                 $connstr .= 'host=' . $dsninfo['socket'];
             }
         }
@@ -104,10 +104,10 @@ class DB_pgsql extends DB_common
         if (isset($dsninfo['database'])) {
             $connstr .= ' dbname=\'' . addslashes($dsninfo['database']) . '\'';
         }
-        if ($dsninfo['username']) {
+        if (isset($dsninfo['username'])) {
             $connstr .= ' user=\'' . addslashes($dsninfo['username']) . '\'';
         }
-        if ($dsninfo['password']) {
+        if (isset($dsninfo['password'])) {
             $connstr .= ' password=\'' . addslashes($dsninfo['password']) . '\'';
         }
         if (isset($dsninfo['options'])) {

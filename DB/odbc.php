@@ -108,7 +108,7 @@ class DB_odbc extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
 
         $this->dsn = $dsninfo;
-        if ($dsninfo['dbsyntax']) {
+        if (isset($dsninfo['dbsyntax'])) {
             $this->dbsyntax = $dsninfo['dbsyntax'];
         }
         switch ($this->dbsyntax) {
