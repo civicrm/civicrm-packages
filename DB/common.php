@@ -1221,7 +1221,9 @@ class DB_common extends PEAR
     {
         $params = (array)$params;
         if ($this->features['limit'] == 'alter') {
-            $query = $this->modifyLimitQuery($query, 0, 1, $params);
+            if (!preg_match('/(AVG|COUNT|MAX|MIN|SUM)\s*\(/i', $query)) {
+                $query = $this->modifyLimitQuery($query, 0, 1, $params);
+            }
         }
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
@@ -1287,7 +1289,9 @@ class DB_common extends PEAR
             }
         }
         if ($this->features['limit'] == 'alter') {
-            $query = $this->modifyLimitQuery($query, 0, 1, $params);
+            if (!preg_match('/(AVG|COUNT|MAX|MIN|SUM)\s*\(/i', $query)) {
+                $query = $this->modifyLimitQuery($query, 0, 1, $params);
+            }
         }
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
