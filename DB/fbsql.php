@@ -72,20 +72,17 @@ class DB_fbsql extends DB_common
             'limit' => 'emulate'
         );
         $this->errorcode_map = array(
-            1004 => DB_ERROR_CANNOT_CREATE,
-            1005 => DB_ERROR_CANNOT_CREATE,
-            1006 => DB_ERROR_CANNOT_CREATE,
-            1007 => DB_ERROR_ALREADY_EXISTS,
-            1008 => DB_ERROR_CANNOT_DROP,
-            1046 => DB_ERROR_NODBSELECTED,
-            1050 => DB_ERROR_ALREADY_EXISTS,
-            1051 => DB_ERROR_NOSUCHTABLE,
-            1054 => DB_ERROR_NOSUCHFIELD,
-            1062 => DB_ERROR_ALREADY_EXISTS,
-            1064 => DB_ERROR_SYNTAX,
-            1100 => DB_ERROR_NOT_LOCKED,
-            1136 => DB_ERROR_VALUE_COUNT_ON_ROW,
-            1146 => DB_ERROR_NOSUCHTABLE,
+             22 => DB_ERROR_SYNTAX,
+             85 => DB_ERROR_ALREADY_EXISTS,
+            108 => DB_ERROR_SYNTAX,
+            116 => DB_ERROR_NOSUCHTABLE,
+            217 => DB_ERROR_INVALID_NUMBER,
+            226 => DB_ERROR_NOSUCHFIELD,
+            251 => DB_ERROR_SYNTAX,
+            357 => DB_ERROR_CONSTRAINT_NOT_NULL,
+            358 => DB_ERROR_CONSTRAINT,
+            360 => DB_ERROR_CONSTRAINT,
+            361 => DB_ERROR_CONSTRAINT,
         );
     }
 
