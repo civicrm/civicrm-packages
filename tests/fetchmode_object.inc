@@ -36,48 +36,52 @@ echo "--- fetch with param DB_FETCHMODE_OBJECT ---\n";
 $sth = $dbh->query("SELECT * FROM phptest");
 $row = $sth->fetchRow(DB_FETCHMODE_OBJECT);
 print_obj($row);
+$sth->free();  // keep fbsql happy.
+
 $sth = $dbh->query("SELECT * FROM phptest");
 $sth->fetchInto($row, DB_FETCHMODE_OBJECT);
 print_obj($row);
+$sth->free();  // keep fbsql happy.
 
 echo "--- fetch with default fetchmode DB_FETCHMODE_OBJECT ---\n";
 $dbh->setFetchMode(DB_FETCHMODE_OBJECT);
 $sth = $dbh->query("SELECT * FROM phptest");
 $row = $sth->fetchRow();
 print_obj($row);
+$sth->free();  // keep fbsql happy.
+
 $sth = $dbh->query("SELECT * FROM phptest");
 $sth->fetchInto($row);
 print_obj($row);
+$sth->free();  // keep fbsql happy.
 
 echo "--- fetch with default fetchmode DB_FETCHMODE_OBJECT and class DB_row ---\n";
 $dbh->setFetchMode(DB_FETCHMODE_OBJECT, 'DB_row');
 $sth = $dbh->query("SELECT * FROM phptest");
 $row = $sth->fetchRow();
 print_obj($row);
+$sth->free();  // keep fbsql happy.
+
 $sth = $dbh->query("SELECT * FROM phptest");
 $sth->fetchInto($row);
 print_obj($row);
+$sth->free();  // keep fbsql happy.
 
 echo "--- fetch with default fetchmode DB_FETCHMODE_OBJECT with no class then DB_row ---\n";
 $dbh->setFetchMode(DB_FETCHMODE_OBJECT);
 $sth = $dbh->query('SELECT * FROM phptest');
 $row = $sth->fetchRow();
 print_obj($row);
+$sth->free();  // keep fbsql happy.
+
 $dbh->setFetchMode(DB_FETCHMODE_OBJECT, 'DB_row');
 $sth = $dbh->query('SELECT * FROM phptest');
 $row = $sth->fetchRow();
 print_obj($row);
 
+$sth->free();  // keep fbsql happy.
+               // keep ibase happy: can't drop tbl that has results open against it.
 
-switch ($dbh->phptype) {
-    case 'ibase':
-        /*
-         * Interbase doesn't allow dropping tables that have result
-         * sets still open.
-         */
-        $dbh->freeResult($sth->result);
-        break;
-}
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 drop_table($dbh, 'phptest');
 

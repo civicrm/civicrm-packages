@@ -7,6 +7,7 @@ error_reporting = 2047
 --FILE--
 <?php
 require_once './connect.inc';
+require_once './droptable.inc';
 
 
 /**
@@ -23,7 +24,7 @@ function pe($o) {
     global $dbh;
 
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-    $dbh->query('DROP TABLE pearquote');
+    drop_table($dbh, 'pearquote');
 
     die($o->toString());
 }
@@ -31,7 +32,7 @@ function pe($o) {
 // DBMS boolean column type simulation...
 $boolean_col_type = array(
     'dbase'  => 'Logical',
-    'fbase'  => 'BOOLEAN',
+    'fbsql'  => 'BOOLEAN',
     'ibase'  => 'SMALLINT',
     'ifx'    => 'SMALLINT',
     'msql'   => 'INTEGER',
@@ -84,6 +85,7 @@ switch ($type) {
         $chr  = 'CHAR(8)';
         $identifier = 'q\ut] "dn[t';
         break;
+    case 'fbsql':
     case 'oci8':
         $decimal = 'DECIMAL(3,1)';
         $null = '';
@@ -98,7 +100,7 @@ switch ($type) {
 }
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-$dbh->query('DROP TABLE pearquote');
+drop_table($dbh, 'pearquote');
 
 
 if ($identifier) {
@@ -252,7 +254,7 @@ if (count($diff) > 0) {
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-$dbh->query('DROP TABLE pearquote');
+drop_table($dbh, 'pearquote');
 
 ?>
 --EXPECT--

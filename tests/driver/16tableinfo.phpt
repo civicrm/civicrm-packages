@@ -82,8 +82,8 @@ function pe($o){
     }
 
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-    $dbh->query('DROP TABLE phptest');
-    $dbh->query('DROP TABLE phptest_fk');
+    drop_table($dbh, 'phptest');
+    drop_table($dbh, 'phptest_fk');
 
     die($o->toString());
 }
@@ -175,9 +175,54 @@ $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
 
 $quirks = array(
+    'fbsql' => array(
+        'clob' => 'CHAR(29)',
+        'date' => 'DATE',
+        'dateliteral' => ' DATE ',
+        'finds_table' => false,
+        'commands' => array(
+        ),
+        0 => array(
+            'type' => 'INTEGER',
+            'len' => 0,
+            'flags' => '',
+        ),
+        1 => array(
+            'type' => 'INTEGER',
+            'len' => 0,
+            'flags' => 'not_null',
+        ),
+        2 => array(
+            'type' => 'CHARACTER',
+            'len' => 29,
+            'flags' => '',
+        ),
+        3 => array(
+            'type' => 'DATE',
+            'len' => 0,
+            'flags' => '',
+        ),
+        4 => array(
+            'type' => 'CHARACTER',
+            'len' => 2,
+            'flags' => '',
+        ),
+        5 => array(
+            'type' => 'DECIMAL',
+            'len' => 0,
+            'flags' => '',
+        ),
+        9 => array(
+            'type' => 'CHARACTER',
+            'len' => 20,
+            'flags' => '',
+        ),
+    ),
+
     'ibase' => array(
         'clob' => 'VARCHAR(50)',
         'date' => 'DATE',
+        'dateliteral' => '',
         'finds_table' => false,
         'commands' => array(
         ),
@@ -221,6 +266,7 @@ $quirks = array(
     'ifx' => array(
         'clob' => 'CHAR(29)',
         'date' => 'CHAR(10)',
+        'dateliteral' => '',
         'finds_table' => false,
         'commands' => array(
         ),
@@ -264,6 +310,7 @@ $quirks = array(
     'mssql' => array(
         'clob' => 'TEXT',
         'date' => 'SMALLDATETIME',
+        'dateliteral' => '',
         'finds_table' => false,
         'commands' => array(
             'ini_set("mssql.datetimeconvert", "Off");',
@@ -309,6 +356,7 @@ $quirks = array(
     'mysql' => array(
         'clob' => 'TEXT',
         'date' => 'DATE',
+        'dateliteral' => '',
         'finds_table' => true,
         'commands' => array(
         ),
@@ -352,6 +400,7 @@ $quirks = array(
     'mysqli' => array(
         'clob' => 'TEXT',
         'date' => 'DATE',
+        'dateliteral' => '',
         'finds_table' => true,
         'commands' => array(
         ),
@@ -395,6 +444,7 @@ $quirks = array(
     'oci8' => array(
         'clob' => 'CLOB',
         'date' => 'DATE',
+        'dateliteral' => '',
         'finds_table' => false,
         'commands' => array(
             '$dbh->query("ALTER SESSION SET NLS_DATE_FORMAT = \'YYYY-MM-DD\'");',
@@ -439,6 +489,7 @@ $quirks = array(
     'pgsql' => array(
         'clob' => 'TEXT',
         'date' => 'DATE',
+        'dateliteral' => '',
         'finds_table' => false,
         'commands' => array(
             '$dbh->query("SET DATESTYLE = ISO");',
@@ -483,6 +534,7 @@ $quirks = array(
     'sybase' => array(
         'clob' => 'TEXT',
         'date' => 'SMALLDATETIME',
+        'dateliteral' => '',
         'finds_table' => false,
         'commands' => array(
             '$dbh->query("SET DATEFORMAT ymd");',
@@ -544,7 +596,7 @@ $dbh->query("INSERT INTO phptest VALUES (3, 'three', 'Three', '2001-02-14')");
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-$dbh->query('DROP TABLE phptest_fk');
+drop_table($dbh, 'phptest_fk');
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
 
@@ -563,9 +615,12 @@ $dbh->query("
     )
 ");
 $dbh->query("CREATE INDEX thedidx ON phptest_fk (d)");
-$dbh->query("INSERT INTO phptest_fk VALUES (10, 1, 'One', '2001-02-16',  'c1', 1.1)");
-$dbh->query("INSERT INTO phptest_fk VALUES (20, 2, 'Two', '2001-02-15', 'c2', 2.2)");
-$dbh->query("INSERT INTO phptest_fk VALUES (30, 3, 'Three', '2001-02-14', 'c3', 3.3)");
+$dbh->query("INSERT INTO phptest_fk VALUES (10, 1, 'One',"
+            . $quirks[$dbh->phptype]['dateliteral'] . "'2001-02-16',  'c1', 1.1)");
+$dbh->query("INSERT INTO phptest_fk VALUES (20, 2, 'Two',"
+            . $quirks[$dbh->phptype]['dateliteral'] . "'2001-02-15', 'c2', 2.2)");
+$dbh->query("INSERT INTO phptest_fk VALUES (30, 3, 'Three',"
+            . $quirks[$dbh->phptype]['dateliteral'] . "'2001-02-14', 'c3', 3.3)");
 
 function &runQuery() {
     global $dbh, $resultobj;
@@ -746,8 +801,8 @@ examineArrayData($array[0], 0, false);
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-$dbh->query('DROP TABLE phptest');
-$dbh->query('DROP TABLE phptest_fk');
+drop_table($dbh, 'phptest');
+drop_table($dbh, 'phptest_fk');
 
 ?>
 --EXPECT--

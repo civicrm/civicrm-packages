@@ -46,7 +46,7 @@ function pe($o) {
     global $dbh;
 
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-    $dbh->query('DROP TABLE phptest');
+    drop_table($dbh, 'phptest');
 
     die($o->toString());
 }
@@ -58,22 +58,23 @@ $dbh->setFetchMode(DB_FETCHMODE_ASSOC);
 
 
 $res =& $dbh->query('DELETE FROM phptest WHERE a = 17');
-print 'delete: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
+print '1) delete: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 $res =& $dbh->query("INSERT INTO phptest (a, b, c) VALUES (17, 'one', 'One')");
-print 'insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
+print '2) insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 $res =& $dbh->query('INSERT INTO phptest (a, b, c) VALUES (?, ?, ?)', array(17, 'two', 'Two'));
-print 'insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
+print '3) insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 
 $res =& $dbh->query('SELECT a, b FROM phptest WHERE a = 17');
 $row = $res->fetchRow();
-print "a = {$row['a']}, b = {$row['b']}\n";
+print "4) a = {$row['a']}, b = {$row['b']}\n";
+$res->free();  // keep fbsql happy.
 
 $res =& $dbh->query('SELECT a, b FROM phptest WHERE c = ?', array('Two'));
 $row = $res->fetchRow();
-print "a = {$row['a']}, b = {$row['b']}\n";
+print "5) a = {$row['a']}, b = {$row['b']}\n";
 
 
 $array = array(
@@ -82,11 +83,11 @@ $array = array(
     'baz' => null,
 );
 $res =& $dbh->query('INSERT INTO phptest (a, b, d) VALUES (?, ?, ?)', $array);
-print 'insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
+print '6) insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 $res =& $dbh->query('SELECT a, b, d FROM phptest WHERE a = ?', 11);
 $row = $res->fetchRow();
-print "a = {$row['a']}, b = {$row['b']}, d = ";
+print "7) a = {$row['a']}, b = {$row['b']}, d = ";
 $type = gettype($row['d']);
 if ($type == 'NULL' || $row['d'] == '') {
     print "NULL\n";
@@ -97,19 +98,19 @@ if ($type == 'NULL' || $row['d'] == '') {
 
 
 $res =& $dbh->query('DELETE FROM phptest WHERE a = ?', array(17));
-print 'delete: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
+print '8) delete: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
-$dbh->query('DROP TABLE phptest');
+drop_table($dbh, 'phptest');
 
 ?>
 --EXPECT--
-delete: okay
-insert: okay
-insert: okay
-a = 17, b = one
-a = 17, b = two
-insert: okay
-a = 11, b = three, d = NULL
-delete: okay
+1) delete: okay
+2) insert: okay
+3) insert: okay
+4) a = 17, b = one
+5) a = 17, b = two
+6) insert: okay
+7) a = 11, b = three, d = NULL
+8) delete: okay

@@ -43,6 +43,7 @@ for ($i = 0; $i <= 3; $i++) {
     while ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
         echo $res->getRowCounter() . '.- ' . $row['a'] . "\n";
     }
+    $res->free();  // keep fbsql happy.
 }
 
 
@@ -55,16 +56,9 @@ while ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
     echo $res->getRowCounter() . '.- ' . $row['a'] . "\n";
 }
 
+$res->free();  // keep fbsql happy.
+               // keep ibase happy: can't drop tbl that has results open against it.
 
-switch ($dbh->phptype) {
-    case 'ibase':
-        /*
-         * Interbase doesn't allow dropping tables that have result
-         * sets still open.
-         */
-        $dbh->freeResult($res->result);
-        break;
-}
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 drop_table($dbh, 'php_limit');
 
