@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.73 2004-02-19 16:45:08 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.74 2004-02-19 17:34:41 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -169,7 +169,6 @@ queries, just like the other DBMS's.  (danielc)
         <file name="run.cvs"/>
         <file name="sequences.inc"/>
         <file name="simplequery.inc"/>
-        <file name="tableinfo.inc"/>
         <file name="transactions.inc"/>
         <dir name="driver" role="test">
           <file name="01connect.phpt"/>
