@@ -84,7 +84,14 @@ print 'insert: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
 
 $res =& $dbh->query('SELECT a, b, d FROM phptest WHERE a = ?', 11);
 $row = $res->fetchRow();
-print "a = {$row['a']}, b = {$row['b']}, d = " . gettype($row['d']) . "\n";
+print "a = {$row['a']}, b = {$row['b']}, d = ";
+$type = gettype($row['d']);
+if ($type == 'NULL') {
+    print "NULL\n";
+} else {
+    print "expected d's type to be NULL but it's $type and the value is ";
+    print $row['d'] . "\n";
+}
 
 
 $res =& $dbh->query('DELETE FROM phptest WHERE a = ?', array(17));
