@@ -425,7 +425,7 @@ class DB_oci8 extends DB_common
         if (!$stmt = @OCIParse($this->connection, $newquery)) {
             return $this->oci8RaiseError();
         }
-        $this->prepare_types[$stmt] = $types;
+        $this->prepare_types[(int)$stmt] = $types;
         $this->manip_query[(int)$stmt] = DB::isManip($query);
         return $stmt;
     }
@@ -455,7 +455,7 @@ class DB_oci8 extends DB_common
 
         $this->_data = $data;
 
-        $types =& $this->prepare_types[$stmt];
+        $types =& $this->prepare_types[(int)$stmt];
         if (count($types) != count($data)) {
             $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
             return $tmp;

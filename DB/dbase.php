@@ -105,7 +105,7 @@ class DB_dbase extends DB_common
     function &query($query = null)
     {
         // emulate result resources
-        $this->res_row[$this->result] = 0;
+        $this->res_row[(int)$this->result] = 0;
         $tmp =& new DB_result($this, $this->result++);
         return $tmp;
     }
@@ -134,7 +134,7 @@ class DB_dbase extends DB_common
     function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
         if ($rownum === null) {
-            $rownum = $this->res_row[$result]++;
+            $rownum = $this->res_row[(int)$result]++;
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $arr = @dbase_get_record_with_names($this->connection, $rownum);

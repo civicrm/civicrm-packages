@@ -282,8 +282,9 @@ class DB_pgsql extends DB_common
      */
     function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
-        $rownum = ($rownum !== null) ? $rownum : $this->row[$result];
-        if ($rownum >= $this->num_rows[$result]) {
+        $result_int = (int)$result;
+        $rownum = ($rownum !== null) ? $rownum : $this->row[$result_int];
+        if ($rownum >= $this->num_rows[$result_int]) {
             return null;
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
@@ -307,7 +308,7 @@ class DB_pgsql extends DB_common
         if ($this->options['portability'] & DB_PORTABILITY_NULL_TO_EMPTY) {
             $this->_convertNullArrayValuesToEmpty($arr);
         }
-        $this->row[$result] = ++$rownum;
+        $this->row[$result_int] = ++$rownum;
         return DB_OK;
     }
 

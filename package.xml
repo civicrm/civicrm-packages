@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.104 2004-05-01 02:42:25 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.105 2004-06-24 15:24:56 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -61,17 +61,15 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.4</version>
+    <version>1.6.5</version>
     <state>stable</state>
-    <date>2004-04-30</date>
+    <date>2004-06-24</date>
     <notes>
 =============
 BUGS FIXED:
 
-- common:
-Fix compatibility issue with getCol() introduced
-in version 1.6.3: when query produced no results,
-DB_ERROR_TRUNCATED error was raised.  (danielc)
+When using resources as array index, convert to int first.
+http://bugs.php.net/28879  (danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>

@@ -362,7 +362,7 @@ class DB_ibase extends DB_common
             $data = array($data);
         }
 
-        $types =& $this->prepare_types[$stmt];
+        $types =& $this->prepare_types[(int)$stmt];
         if (count($types) != count($data)) {
             $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
             return $tmp;

@@ -981,6 +981,7 @@ class DB_common extends PEAR
      */
     function executeEmulateQuery($stmt, $data = array())
     {
+        $stmt = (int)$stmt;
         if (!is_array($data)) {
             $data = array($data);
         }
@@ -1057,6 +1058,7 @@ class DB_common extends PEAR
      */
     function freePrepared($stmt)
     {
+        $stmt = (int)$stmt;
         // Free the internal prepared vars
         if (isset($this->prepare_tokens[$stmt])) {
             unset($this->prepare_tokens[$stmt]);

@@ -191,7 +191,7 @@ class DB_fbsql extends DB_common
         if (is_object($numrows)) {
             return $numrows;
         }
-        $this->num_rows[$result] = $numrows;
+        $this->num_rows[(int)$result] = $numrows;
         return $result;
     }
 
