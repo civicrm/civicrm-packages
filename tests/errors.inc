@@ -142,6 +142,9 @@ switch ($dbh->phptype) {
             case 'access':
                 check_error($res, DB_ERROR_DIVZERO, false);
                 break;
+            case 'db2':
+                check_error($res, DB_ERROR_DIVZERO);
+                break;
         }
         break;
     case 'ifx':
