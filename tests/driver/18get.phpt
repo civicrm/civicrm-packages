@@ -124,6 +124,20 @@ print "testing getCol:\n";
 $ret =& $dbh->getCol("SELECT * FROM phptest ORDER BY b");
 print_r($ret);
 
+print "testing getCol on query with no records:\n";
+$ret =& $dbh->getCol('SELECT * FROM phptest WHERE b > 200');
+print_r($ret);
+
+print "testing getCol with invalid column id:\n";
+$dbh->setErrorHandling(PEAR_ERROR_RETURN);
+$ret =& $dbh->getCol('SELECT b FROM phptest ORDER BY b', 1);
+if (DB::isError($ret)) {
+    echo $ret->getMessage() . "\n";
+} else {
+    print ">> Should have produced 'no such field' error\n";
+}
+$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
+
 print "testing getCol with 1 col:\n";
 $ret =& $dbh->getCol("SELECT * FROM phptest ORDER BY b", 1);
 print_r($ret);
@@ -321,6 +335,12 @@ Array
     [1] => 42
     [2] => 2
 )
+testing getCol on query with no records:
+Array
+(
+)
+testing getCol with invalid column id:
+DB Error: no such field
 testing getCol with 1 col:
 Array
 (
