@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.94 2004-04-07 05:12:27 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.95 2004-04-07 16:27:41 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -63,20 +63,15 @@ DB is compatible with both PHP 4 and PHP 5.
   <release>
     <version>1.6.2</version>
     <state>stable</state>
-    <date>PENDING</date>
+    <date>2004-04-07</date>
     <notes>
-
-changelog for pending 1.6.2 release 
-
-=============
-ENHANCEMENTS:
-
 =============
 BUGS FIXED:
 
 - mysql, mysqli, sqlite, tests:
-Eliminate object to integer conversion notices.
-Bug 1088.  (danielc)
+Eliminate object to integer conversion notices in
+PHP5.  Issue arose due to change in PHP between
+2004-03-21 and 2004-03-28.  Bug 1088.  (danielc)
 
 - mysqli:
 Move connection id to first argument in
