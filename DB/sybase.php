@@ -93,6 +93,9 @@ class DB_sybase extends DB_common
         }
 
         $this->dsn = $dsninfo;
+        if ($dsninfo['dbsyntax']) {
+            $this->dbsyntax = $dsninfo['dbsyntax'];
+        }
 
         $interface = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
         $connect_function = $persistent ? 'sybase_pconnect' : 'sybase_connect';

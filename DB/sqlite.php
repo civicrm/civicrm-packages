@@ -111,6 +111,9 @@ class DB_sqlite extends DB_common
         }
 
         $this->dsn = $dsninfo;
+        if ($dsninfo['dbsyntax']) {
+            $this->dbsyntax = $dsninfo['dbsyntax'];
+        }
 
         if ($dsninfo['database']) {
             if (!file_exists($dsninfo['database'])) {

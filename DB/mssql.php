@@ -81,7 +81,12 @@ class DB_mssql extends DB_common
         {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
+
         $this->dsn = $dsninfo;
+        if ($dsninfo['dbsyntax']) {
+            $this->dbsyntax = $dsninfo['dbsyntax'];
+        }
+
         $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
         $dbhost .= $dsninfo['port'] ? ',' . $dsninfo['port'] : '';
 

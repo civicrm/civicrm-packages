@@ -97,7 +97,12 @@ class DB_ibase extends DB_common
         if (!DB::assertExtension('interbase')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
+
         $this->dsn = $dsninfo;
+        if ($dsninfo['dbsyntax']) {
+            $this->dbsyntax = $dsninfo['dbsyntax'];
+        }
+
         $dbhost = $dsninfo['hostspec'] ?
                   ($dsninfo['hostspec'] . ':' . $dsninfo['database']) :
                   $dsninfo['database'];

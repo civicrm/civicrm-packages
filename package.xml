@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.124 2004-10-04 17:53:08 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.125 2004-10-05 00:06:54 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -48,17 +48,13 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.8</version>
+    <version>1.6.9</version>
     <state>stable</state>
-    <date>2004-10-04</date>
+    <date>pending</date>
     <notes><![CDATA[
-* odbc:
-Allow use of cursor argument to odbc connect functions.
-Bug 2385.  (danielc)
-
-* pgsql:
-Add "permission denied" to error regex.  Bug 2417.
-(stewart_linux-org-au)
+* If DSN contains "dbsyntax", always use that for
+$this->dbsyntax.  Used to only done only for odbc.
+(danielc)
     ]]></notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>

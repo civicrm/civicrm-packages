@@ -112,7 +112,11 @@ class DB_oci8 extends DB_common
         if (!DB::assertExtension('oci8')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
+
         $this->dsn = $dsninfo;
+        if ($dsninfo['dbsyntax']) {
+            $this->dbsyntax = $dsninfo['dbsyntax'];
+        }
 
         $connect_function = $persistent ? 'OCIPLogon' : 'OCILogon';
 

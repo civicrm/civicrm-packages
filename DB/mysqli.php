@@ -167,7 +167,11 @@ class DB_mysqli extends DB_common
         }
 
         $this->dsn = $dsninfo;
-        $conn      = false;
+        if ($dsninfo['dbsyntax']) {
+            $this->dbsyntax = $dsninfo['dbsyntax'];
+        }
+
+        $conn = false;
         @ini_set('track_errors', true);
 
         if ($this->getOption('ssl') === true) {

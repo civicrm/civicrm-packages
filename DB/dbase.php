@@ -76,7 +76,11 @@ class DB_dbase extends DB_common
         if (!DB::assertExtension('dbase')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
+
         $this->dsn = $dsninfo;
+        if ($dsninfo['dbsyntax']) {
+            $this->dbsyntax = $dsninfo['dbsyntax'];
+        }
 
         $ini = ini_get('track_errors');
         if ($ini) {

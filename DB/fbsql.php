@@ -108,6 +108,10 @@ class DB_fbsql extends DB_common
         }
 
         $this->dsn = $dsninfo;
+        if ($dsninfo['dbsyntax']) {
+            $this->dbsyntax = $dsninfo['dbsyntax'];
+        }
+
         $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
 
         $php_errormsg = '';

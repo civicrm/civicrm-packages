@@ -65,6 +65,10 @@ class DB_msql extends DB_common
         }
 
         $this->dsn = $dsninfo;
+        if ($dsninfo['dbsyntax']) {
+            $this->dbsyntax = $dsninfo['dbsyntax'];
+        }
+
         $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
 
         $connect_function = $persistent ? 'msql_pconnect' : 'msql_connect';

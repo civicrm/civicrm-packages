@@ -85,6 +85,10 @@ class DB_pgsql extends DB_common
         }
 
         $this->dsn = $dsninfo;
+        if ($dsninfo['dbsyntax']) {
+            $this->dbsyntax = $dsninfo['dbsyntax'];
+        }
+
         $protocol = $dsninfo['protocol'] ? $dsninfo['protocol'] : 'tcp';
         $connstr = '';
 
