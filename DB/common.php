@@ -213,10 +213,7 @@ class DB_common extends PEAR
         if (isset($this->errorcode_map[$nativecode])) {
             return $this->errorcode_map[$nativecode];
         }
-
-        //php_error(E_WARNING, get_class($this)."::errorCode: no mapping for $nativecode");
         // Fall back to DB_ERROR if there was no mapping.
-
         return DB_ERROR;
     }
 
