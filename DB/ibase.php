@@ -95,7 +95,6 @@ class DB_ibase extends DB_common
      * @var array
      */
     var $errorcode_map = array(
-        88   => DB_ERROR_NOSUCHTABLE,
         -104 => DB_ERROR_SYNTAX,
         -150 => DB_ERROR_ACCESS_VIOLATION,
         -151 => DB_ERROR_ACCESS_VIOLATION,
@@ -105,17 +104,21 @@ class DB_ibase extends DB_common
         -170 => DB_ERROR_MISMATCH,
         -171 => DB_ERROR_MISMATCH,
         -172 => DB_ERROR_INVALID,
-        -204 => DB_ERROR_INVALID,
+        // -204 =>  // Covers too many errors, need to use regex on msg
         -205 => DB_ERROR_NOSUCHFIELD,
         -206 => DB_ERROR_NOSUCHFIELD,
         -208 => DB_ERROR_INVALID,
         -219 => DB_ERROR_NOSUCHTABLE,
         -297 => DB_ERROR_CONSTRAINT,
         -303 => DB_ERROR_INVALID,
+# ???
+        -413 => DB_ERROR_INVALID_NUMBER,
         -530 => DB_ERROR_CONSTRAINT,
         -551 => DB_ERROR_ACCESS_VIOLATION,
         -552 => DB_ERROR_ACCESS_VIOLATION,
-        -607 => DB_ERROR_NOSUCHTABLE,
+        // -607 =>  // Covers too many errors, need to use regex on msg
+# ???
+        -625 => DB_ERROR_CONSTRAINT_NOT_NULL,
         -803 => DB_ERROR_CONSTRAINT,
         -804 => DB_ERROR_VALUE_COUNT_ON_ROW,
         -904 => DB_ERROR_CONNECT_FAILED,
@@ -845,57 +848,91 @@ class DB_ibase extends DB_common
      *
      * @return object  the DB_Error object
      *
-     * @see DB_common::raiseError()
+     * @see DB_common::raiseError(),
+     *      DB_ibase::errorNative(), DB_ibase::errorCode()
      */
-    function &ibaseRaiseError($db_errno = null, $native_errmsg = null)
+    function &ibaseRaiseError($errno = null)
     {
-        if ($native_errmsg === null) {
-            $native_errmsg = @ibase_errmsg();
+        if ($errno === null) {
+            $errno = $this->errorCode($this->errorNative());
         }
-        // memo for the interbase php module hackers: we need something similar
-        // to mysql_errno() to retrieve error codes instead of this ugly hack
-        if (preg_match('/^([^0-9\-]+)([0-9\-]+)\s+(.*)$/', $native_errmsg, $m)) {
-            $native_errno = (int)$m[2];
-        } else {
-            $native_errno = null;
+        $tmp =& $this->raiseError($errno, null, null, null, @ibase_errmsg());
+        return $tmp;
+    }
+
+    // }}}
+    // {{{ errorNative()
+
+    /**
+     * Get the DBMS' native error code produced by the last query
+     *
+     * @return int  the DBMS' error code.  NULL if there is no error code.
+     *
+     * @since Method available since Release 1.7.0
+     */
+    function errorNative()
+    {
+        if (version_compare(phpversion(), '5.0.0', '>=')) {
+            return @ibase_errcode();
         }
-        // try to map the native error to the DB one
-        if ($db_errno === null) {
-            if ($native_errno) {
-                // try to interpret Interbase error code (that's why we need ibase_errno()
-                // in the interbase module to return the real error code)
-                switch ($native_errno) {
-                    case -204:
-                        if (is_int(strpos($m[3], 'Table unknown'))) {
-                            $db_errno = DB_ERROR_NOSUCHTABLE;
-                        }
-                        break;
-                    default:
-                        $db_errno = $this->errorCode($native_errno);
-                }
-            } else {
-                $error_regexps = array(
-                    '/[tT]able not found/' => DB_ERROR_NOSUCHTABLE,
-                    '/[tT]able .* already exists/' => DB_ERROR_ALREADY_EXISTS,
-                    '/unsuccessful metadata update .* failed attempt to store duplicate value/i' => DB_ERROR_ALREADY_EXISTS,
-                    '/unsuccessful metadata update .* not found/i' => DB_ERROR_NOT_FOUND,
-                    '/validation error for column .* value "\*\*\* null/' => DB_ERROR_CONSTRAINT_NOT_NULL,
-                    '/violation of [\w ]+ constraint/' => DB_ERROR_CONSTRAINT,
-                    '/conversion error from string/' => DB_ERROR_INVALID_NUMBER,
-                    '/no permission for/' => DB_ERROR_ACCESS_VIOLATION,
-                    '/arithmetic exception, numeric overflow, or string truncation/' => DB_ERROR_DIVZERO
-                );
-                foreach ($error_regexps as $regexp => $code) {
-                    if (preg_match($regexp, $native_errmsg)) {
-                        $db_errno = $code;
-                        $native_errno = null;
-                        break;
-                    }
-                }
+        if (preg_match('/^Dynamic SQL Error SQL error code = ([0-9-]+)/i',
+                       @ibase_errmsg(), $m)) {
+            return (int)$m[1];
+        }
+        return null;
+    }
+
+    // }}}
+    // {{{ errorCode()
+
+    /**
+     * Map native error codes to DB's portable ones
+     *
+     * @param int $nativecode  the error code returned by the DBMS
+     *
+     * @return int  the portable DB error code.  Return DB_ERROR if the
+     *               current driver doesn't have a mapping for the
+     *               $nativecode submitted.
+     *
+     * @since Method available since Release 1.7.0
+     */
+    function errorCode($nativecode = null)
+    {
+        if (isset($this->errorcode_map[$nativecode])) {
+            return $this->errorcode_map[$nativecode];
+        }
+
+        static $error_regexps;
+        if (!isset($error_regexps)) {
+            $error_regexps = array(
+                '/table.*(not exist|not found|unknown)/i'
+                    => DB_ERROR_NOSUCHTABLE,
+                '/table .* already exists/i'
+                    => DB_ERROR_ALREADY_EXISTS,
+                '/unsuccessful metadata update .* failed attempt to store duplicate value/i'
+                    => DB_ERROR_ALREADY_EXISTS,
+                '/unsuccessful metadata update .* not found/i'
+                    => DB_ERROR_NOT_FOUND,
+                '/validation error for column .* value "\*\*\* null/i'
+                    => DB_ERROR_CONSTRAINT_NOT_NULL,
+                '/violation of [\w ]+ constraint/i'
+                    => DB_ERROR_CONSTRAINT,
+                '/conversion error from string/i'
+                    => DB_ERROR_INVALID_NUMBER,
+                '/no permission for/i'
+                    => DB_ERROR_ACCESS_VIOLATION,
+                '/arithmetic exception, numeric overflow, or string truncation/i'
+                    => DB_ERROR_DIVZERO,
+            );
+        }
+
+        $errormsg = @ibase_errmsg();
+        foreach ($error_regexps as $regexp => $code) {
+            if (preg_match($regexp, $errormsg)) {
+                return $code;
             }
         }
-        $tmp =& $this->raiseError($db_errno, null, null, null, $native_errmsg);
-        return $tmp;
+        return DB_ERROR;
     }
 
     // }}}
