@@ -337,7 +337,7 @@ class DB
      * <code> <?php
      * require_once 'DB.php';
      *
-     * $dsn = 'mysql://user:password@host/database'
+     * $dsn = 'mysql://user:password@host/database';
      * $options = array(
      *     'debug'       => 2,
      *     'portability' => DB_PORTABILITY_ALL,
