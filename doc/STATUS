@@ -1,29 +1,35 @@
-DB driver feature matrix:
+STATUS OF THE PEAR DB PACKAGE
+=============================
 
+$Id$
+------------------------------------------------------------------------
+
+DB Driver Feature Matrix
+------------------------
 Symbols:
-  "x" - implemented, but without tests
-  "t" - implemented, but one or more tests fail
-  "T" - implemented, passing all tests
-  "e" - emulated, without tests
-  "E" - emulated, passing all tests
-  "n" - returns "not capable"
-  "-" - no implementation of this feature
+  x  =  implemented, but without tests
+  t  =  implemented, but one or more tests fail
+  T  =  implemented, passing all tests
+  e  =  emulated, without tests
+  l  =  emulated, but one or more tests fail
+  E  =  emulated, passing all tests
+  n  =  returns "not capable"
+  -  =  no implementation of this feature or status unknown
 
-
-                bsql      ifx      mssql     mysql4     odbc     sybase
+               fbsql      ifx      mssql     mysql4     odbc     sybase
 FEATURE          |  ibase  |  msql   |   mysql |   oci8  |   pgsql |  sqlite
-simpleQuery      x    T    x    x    x    T    -    T    x    T    x    -
-numCols          x    T    x    x    x    T    -    T    x    T    x    -
-numRows          x    n    n    x    x    T    -    E    x    T    n    - 
-errorNative      x    n    x    n    n    T    -    x    x    T    n    -
-prepare/execute  e    x    e    e    e    E    -    T    e    E    e    -
-sequences        e    T    n    n    x    E    -    T    n    T    n    -
-affectedRows     x    n    x    x    n    T    -    T    x    T    x    -
-fetch modes      x    T    x    x    x    T    -    T    x    T    x    -
-fetch row by no  x    n    x    x    x    x    -    n    x    x    x    -
+simpleQuery      x    T    x    x    T    T    x    T    x    T    T    T
+numCols          x    T    x    x    T    T    x    T    x    T    T    T
+numRows          x    n    n    x    T    T    x    E    x    T    n    T 
+errorNative      x    n    x    n    T    T    x    T    x    T    T    E
+prepare/execute  e    x    e    e    E    E    e    T    e    E    e    E
+sequences        e    T    n    n    E    E    e    T    n    T    E    E
+affectedRows     x    n    x    x    n    T    x    T    x    T    T    T
+fetch modes      x    T    x    x    T    T    x    T    x    T    T    T
+fetch row by no  x    n    x    x    T    T    x    n    x    T    T    T
 transactions     x    x    n    n    x    x    -    x    x    x    n    -
 auto-commit      x    x    n    n    n    n    -    x    x    x    n    -
-error mapping    x    x    e    -    -    T    -    T    x    E    -    -
+error mapping    x    x    e    -    t    t    -    T    x    E    l    l
 tableInfo        x    n    n    n    x    T    -    T    n    x    n    -
 
 TYPE (getListOf)
@@ -33,22 +39,26 @@ users            -    -    -    -    -    x    -    -    -    x    -    -
 databases        -    -    -    -    -    x    -    -    -    x    -    -
 functions        -    -    -    -    -    -    -    -    -    x    -    -
 
+
+Test Conformance
+----------------
+Symbols:
+    o  =  Test passed
+    X  =  Test failed
+    N  =  Test failed due to DBMS not considering something an error
+    E  =  Test failed due to problem with PHP extension
+
                fbsql      ifx      mssql     mysql4     odbc     sybase
                  |  ibase  |  msql   |   mysql |   oci8  |   pgsql |  sqlite
-
-TESTS CONFORMANCE
-01connect        -    o    -    -    o    o    -    -    o    o    -    o 
-02fetch          -    o    -    -    o    o    -    -    o    o    -    o
-03simplequery    -    o    -    -    o    o    -    -    o    o    -    o
-04numcols        -    o    -    -    o    o    -    -    o    o    -    o
-05sequences      -    o    -    -    o    o    -    -    o    o    -    o
-06prepexec       -    o    -    -    o    o    -    -    o    o    -    o
-08affectedrows   -    X    -    -    o    o    -    -    o    o    -    o
-09numrows        -    X    -    -    o    o    -    -    o    o    -    o
-10errormap       -    o    -    -    X    X    -    -    o    o    -    o
-13limit          -    o    -    -    o    o    -    -    o    o    -    X
-14fetchmode_obje -    o    -    -    o    o    -    -    o    o    -    o
-15quote          -    X    -    -    o    o    -    -    X    o    -    o
-
-                                                         o -> Test passed
-                                                         X -> Test failed
+01connect        -    o    -    -    o    o    -    o    o    o    o    o 
+02fetch          -    o    -    -    o    o    -    o    o    o    o    o
+03simplequery    -    o    -    -    o    o    -    o    o    o    o    o
+04numcols        -    o    -    -    o    o    -    o    o    o    o    o
+05sequences      -    o    -    -    o    o    -    o    o    o    o    o
+06prepexec       -    o    -    -    o    o    -    o    o    o    o    o
+08affectedrows   -    X    -    -    o    o    -    o    o    o    o    o
+09numrows        -    X    -    -    o    o    -    o    o    o    o    o
+10errormap       -    o    -    -    E    N    -    o    o    o    E    N
+13limit          -    o    -    -    o    o    -    o    o    o    o    o
+14fetchmode_obje -    o    -    -    o    o    -    o    o    o    o    o
+15quote          -    X    -    -    o    o    -    o    X    o    o    o
