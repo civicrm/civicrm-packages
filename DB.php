@@ -200,37 +200,58 @@ define('DB_AUTOQUERY_UPDATE', 2);
 class DB
 {
     // {{{ &factory()
-    /**
-     * Create a new DB connection object for the specified database
-     * type
-     *
-     * @param string $type database type, for example "mysql"
-     *
-     * @return mixed a newly created DB object, or a DB error code on
-     * error
-     *
-     * access public
-     */
 
-    function &factory($type)
+    /**
+     * Create a new DB object for the specified database type.
+     *
+     * Allows creation of a DB_<driver> object from which the object's
+     * methods can be utilized without actually connecting to a database.
+     *
+     * @param string $type    database type, for example "mysql"
+     * @param array  $options associative array of option names and values
+     *
+     * @return object  a new DB object.  On error, an error object.
+     *
+     * @see DB_common::setOption()
+     * @access public
+     */
+    function &factory($type, $options = false)
     {
-        @include_once("DB/${type}.php");
+        if (!is_array($options)) {
+            $options = array('persistent' => $options);
+        }
+
+        if (isset($options['debug']) && $options['debug'] >= 2) {
+            // expose php errors with sufficient debug level
+            include_once "DB/{$type}.php";
+        } else {
+            @include_once "DB/{$type}.php";
+        }
 
         $classname = "DB_${type}";
 
         if (!class_exists($classname)) {
-            $tmp = PEAR::raiseError(null, DB_ERROR_NOT_FOUND,
-                                    null, null, null, 'DB_Error', true);
+            $tmp = PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
+                                    "Unable to include the DB/{$type}.php file",
+                                    'DB_Error', true);
             return $tmp;
         }
 
         @$obj =& new $classname;
+
+        foreach ($options as $option => $value) {
+            $test = $obj->setOption($option, $value);
+            if (DB::isError($test)) {
+                return $test;
+            }
+        }
 
         return $obj;
     }
 
     // }}}
     // {{{ &connect()
+
     /**
      * Create a new DB connection object and connect to the specified
      * database
