@@ -245,7 +245,7 @@ class DB_ifx extends DB_common
         if ($fetchmode !== DB_FETCHMODE_ASSOC) {
             $i=0;
             $order = array();
-            foreach ($arr as $key => $val) {
+            foreach ($arr as $val) {
                 $order[$i++] = $val;
             }
             $arr = $order;
@@ -429,7 +429,6 @@ class DB_ifx extends DB_common
             default:
                 return null;
         }
-        return $sql;
     }
 
     // }}}
