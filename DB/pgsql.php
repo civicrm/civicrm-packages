@@ -1066,8 +1066,8 @@ class DB_pgsql extends DB_common
                         . " ('pg_catalog', 'information_schema', 'pg_toast')";
             case 'views':
                 // Table cols: viewname | viewowner | definition
-                return 'SELECT viewname FROM pg_views'
-                       . " WHERE schemaname = 'public'";
+                return 'SELECT viewname from pg_views WHERE schemaname'
+                        . " NOT IN ('information_schema', 'pg_catalog')";
             case 'users':
                 // cols: usename |usesysid|usecreatedb|usetrace|usesuper|usecatupd|passwd  |valuntil
                 return 'SELECT usename FROM pg_user';
