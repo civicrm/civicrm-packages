@@ -747,7 +747,7 @@ class DB_ibase extends DB_common
                 $error_regexps = array(
                     '/[tT]able not found/' => DB_ERROR_NOSUCHTABLE,
                     '/[tT]able .* already exists/' => DB_ERROR_ALREADY_EXISTS,
-                    '/violation of FOREIGN KEY constraint/' => DB_ERROR_CONSTRAINT,
+                    '/violation of [\w ]+ constraint/' => DB_ERROR_CONSTRAINT,
                     '/conversion error from string/' => DB_ERROR_INVALID_NUMBER,
                     '/no permission for/' => DB_ERROR_ACCESS_VIOLATION,
                     '/arithmetic exception, numeric overflow, or string truncation/' => DB_ERROR_DIVZERO
