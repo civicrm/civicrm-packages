@@ -78,15 +78,15 @@ function pe($o) {
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 
 
-print 'Trying to provoke DB_ERROR_NOSUCHTABLE for select:  ';
+print 'DB_ERROR_NOSUCHTABLE for select:  ';
 $res = $dbh->query('SELECT * FROM tableThatsBogus');
 check_error($res, DB_ERROR_NOSUCHTABLE);
 
-print 'Trying to provoke DB_ERROR_NOSUCHTABLE for drop:  ';
+print 'DB_ERROR_NOSUCHTABLE for drop:  ';
 $res = drop_table($dbh, 'tableThatsBogus');
 check_error($res, DB_ERROR_NOSUCHTABLE);
 
-print 'Trying to provoke DB_ERROR_NOT_FOUND for drop index:  ';
+print 'DB_ERROR_NOT_FOUND for drop index:  ';
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'fbsql:fbsql':
     case 'ibase:firebird':
@@ -111,11 +111,11 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
 check_error($res, DB_ERROR_NOT_FOUND);
 
 
-print 'Trying to provoke DB_ERROR_ALREADY_EXISTS for create table:  ';
+print 'DB_ERROR_ALREADY_EXISTS for create table:  ';
 $res = $dbh->query($test_mktable_query);
 check_error($res, DB_ERROR_ALREADY_EXISTS);
 
-print 'Trying to provoke DB_ERROR_ALREADY_EXISTS for create index:  ';
+print 'DB_ERROR_ALREADY_EXISTS for create index:  ';
 $res = drop_table($dbh, 'a');
 $dbh->pushErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 $res = $dbh->query('CREATE TABLE a (a INTEGER)');
@@ -133,7 +133,7 @@ switch ($dbh->phptype) {
 $res = drop_table($dbh, 'a');
 
 
-print 'Trying to provoke DB_ERROR_CONSTRAINT for primary key insert duplicate:  ';
+print 'DB_ERROR_CONSTRAINT for primary key insert duplicate:  ';
 $res = drop_table($dbh, 'a');
 $dbh->pushErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 switch ($dbh->phptype) {
@@ -150,13 +150,13 @@ $res = $dbh->query('INSERT INTO a VALUES (1)');
 check_error($res, DB_ERROR_CONSTRAINT);
 
 
-print 'Trying to provoke DB_ERROR_CONSTRAINT for primary key update duplicate:  ';
+print 'DB_ERROR_CONSTRAINT for primary key update duplicate:  ';
 $res = $dbh->query('INSERT INTO a VALUES (2)');
 $res = $dbh->query('UPDATE a SET a=1 WHERE a=2');
 check_error($res, DB_ERROR_CONSTRAINT);
 
 
-print 'Trying to provoke DB_ERROR_CONSTRAINT for unique key insert duplicate:  ';
+print 'DB_ERROR_CONSTRAINT for unique key insert duplicate:  ';
 $res = drop_table($dbh, 'a');
 $dbh->pushErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 switch ($dbh->phptype) {
@@ -173,13 +173,13 @@ $res = $dbh->query('INSERT INTO a VALUES (1)');
 check_error($res, DB_ERROR_CONSTRAINT);
 
 
-print 'Trying to provoke DB_ERROR_CONSTRAINT for unique key update duplicate:  ';
+print 'DB_ERROR_CONSTRAINT for unique key update duplicate:  ';
 $res = $dbh->query('INSERT INTO a VALUES (2)');
 $res = $dbh->query('UPDATE a SET a=1 WHERE a=2');
 check_error($res, DB_ERROR_CONSTRAINT);
 
 
-print 'Trying to provoke DB_ERROR_CONSTRAINT for foreign key on insert:  ';
+print 'DB_ERROR_CONSTRAINT for foreign key on insert:  ';
 $res = drop_table($dbh, 'b');
 $res = drop_table($dbh, 'a');
 $dbh->pushErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
@@ -228,7 +228,7 @@ if ($dbh->phptype != 'msql') {
             check_error($res, DB_ERROR_CONSTRAINT);
     }   
 
-    print 'Trying to provoke DB_ERROR_CONSTRAINT for foreign key on delete:  ';
+    print 'DB_ERROR_CONSTRAINT for foreign key on delete:  ';
     $res = $dbh->query('INSERT INTO b (b) values (1)');
     $res = $dbh->query('DELETE FROM a WHERE a = 1');
     switch ($dbh->phptype) {
@@ -241,7 +241,7 @@ if ($dbh->phptype != 'msql') {
 }
 
 
-print 'Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on insert:  ';
+print 'DB_ERROR_CONSTRAINT_NOT_NULL on insert:  ';
 $res = drop_table($dbh, 'peartestnull');
 $dbh->pushErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 $res = $dbh->query('CREATE TABLE peartestnull (a CHAR(3) NOT NULL)');
@@ -250,7 +250,7 @@ $res = $dbh->query('INSERT INTO peartestnull VALUES (NULL)');
 check_error($res, DB_ERROR_CONSTRAINT_NOT_NULL);
 
 
-print 'Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on update:  ';
+print 'DB_ERROR_CONSTRAINT_NOT_NULL on update:  ';
 $res = $dbh->query("INSERT INTO peartestnull VALUES ('one')");
 $res = $dbh->query("UPDATE peartestnull SET a = NULL WHERE a = 'one'");
 switch ($dbh->phptype) {
@@ -263,7 +263,7 @@ switch ($dbh->phptype) {
 }
 
 
-print 'Trying to provoke DB_ERROR_NOSUCHFIELD joining ON bogus column:  ';
+print 'DB_ERROR_NOSUCHFIELD joining ON bogus column:  ';
 $res = $dbh->query('SELECT * FROM phptest JOIN a ON (phptest.a = a.b)');
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'msql:msql':
@@ -275,7 +275,7 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
 }
 
 
-print 'Trying to provoke DB_ERROR_NOSUCHFIELD joining USING bogus column:  ';
+print 'DB_ERROR_NOSUCHFIELD joining USING bogus column:  ';
 $res = $dbh->query('SELECT * FROM phptest JOIN a USING (b)');
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'ibase:ibase':
@@ -291,7 +291,7 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
 }
 
 
-print 'Trying to provoke DB_ERROR_DIVZERO:  ';
+print 'DB_ERROR_DIVZERO:  ';
 // Interbase detects the error on fetching
 $res = $dbh->getAll('SELECT 0/0 FROM phptest');
 switch ($dbh->phptype) {
@@ -323,7 +323,7 @@ switch ($dbh->phptype) {
 }
 
 
-print 'Trying to provoke DB_ERROR_INVALID_NUMBER putting chars in INT column:  ';
+print 'DB_ERROR_INVALID_NUMBER putting chars in INT column:  ';
 $res = $dbh->query("UPDATE phptest SET a = 'abc' WHERE a = 42");
 switch ($dbh->phptype) {
     case 'mysql':
@@ -336,7 +336,7 @@ switch ($dbh->phptype) {
 }
 
 
-print 'Trying to provoke DB_ERROR_INVALID_NUMBER putting float in INT column:  ';
+print 'DB_ERROR_INVALID_NUMBER putting float in INT column:  ';
 $res = $dbh->query("UPDATE phptest SET a = 8.9 WHERE a = 42");
 switch ($dbh->phptype) {
     case 'fbsql':
@@ -356,7 +356,7 @@ switch ($dbh->phptype) {
 }
 
 
-print 'Trying to provoke DB_ERROR_INVALID_NUMBER putting excessive int in INT column:  ';
+print 'DB_ERROR_INVALID_NUMBER putting excessive int in INT column:  ';
 $res = $dbh->query("UPDATE phptest SET a = 18446744073709551616 WHERE a = 42");
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'ibase:ibase':
@@ -378,7 +378,7 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
 }
 
 
-print 'Trying to provoke DB_ERROR_INVALID_NUMBER putting int in CHAR column:  ';
+print 'DB_ERROR_INVALID_NUMBER putting int in CHAR column:  ';
 $res = $dbh->query("UPDATE phptest SET b = 8 WHERE a = 42");
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'ibase:ibase':
@@ -398,17 +398,17 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
 }
 
 
-print 'Trying to provoke DB_ERROR_NOSUCHFIELD:  ';
+print 'DB_ERROR_NOSUCHFIELD:  ';
 $res = $dbh->query('SELECT e FROM phptest');
 check_error($res, DB_ERROR_NOSUCHFIELD);
 
 
-print 'Trying to provoke DB_ERROR_SYNTAX:  ';
+print 'DB_ERROR_SYNTAX:  ';
 $res = $dbh->query('CREATE');
 check_error($res, DB_ERROR_SYNTAX);
 
 
-print 'Trying to provoke DB_ERROR_VALUE_COUNT_ON_ROW:  ';
+print 'DB_ERROR_VALUE_COUNT_ON_ROW:  ';
 $res = $dbh->query('INSERT INTO phptest (a) VALUES (678, 2)');
 switch ($dbh->phptype) {
     case 'msql':
@@ -419,7 +419,7 @@ switch ($dbh->phptype) {
 }
 
 
-print 'Trying to provoke DB_ERROR_INVALID on CHAR column data too long:  ';
+print 'DB_ERROR_INVALID on CHAR column data too long:  ';
 $res = $dbh->query("INSERT INTO phptest (b) VALUES ('123456789.123456789.123456789.123456789.1')");
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'msql:msql':
@@ -439,7 +439,7 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
 }
 
 
-print 'Trying to provoke DB_ERROR_INVALID on VARCHAR column data too long:  ';
+print 'DB_ERROR_INVALID on VARCHAR column data too long:  ';
 $res = $dbh->query("INSERT INTO phptest (d) VALUES ('123456789.123456789.1')");
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'msql:msql':
