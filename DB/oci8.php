@@ -478,7 +478,7 @@ class DB_oci8 extends DB_common
                     fclose($fp);
                 }
             }
-            if (!OCIBindByName($stmt, ':bind' . $i, $pdata[$i], -1)) {
+            if (!@OCIBindByName($stmt, ':bind' . $i, $pdata[$i], -1)) {
                 $tmp = $this->oci8RaiseError($stmt);
                 return $tmp;
             }
@@ -601,10 +601,10 @@ class DB_oci8 extends DB_common
         // Let Oracle return the name of the columns instead of
         // coding a "home" SQL parser
         $q_fields = "SELECT * FROM ($query) WHERE NULL = NULL";
-        if (!$result = OCIParse($this->connection, $q_fields)) {
+        if (!$result = @OCIParse($this->connection, $q_fields)) {
             return $this->oci8RaiseError();
         }
-        if (!OCIExecute($result, OCI_DEFAULT)) {
+        if (!@OCIExecute($result, OCI_DEFAULT)) {
             return $this->oci8RaiseError($result);
         }
         $ncols = OCINumCols($result);
@@ -784,10 +784,10 @@ class DB_oci8 extends DB_common
             $q_fields = "select column_name, data_type, data_length, data_precision,
                          nullable, data_default from user_tab_columns
                          where table_name='$result' order by column_id";
-            if (!$stmt = OCIParse($this->connection, $q_fields)) {
+            if (!$stmt = @OCIParse($this->connection, $q_fields)) {
                 return $this->oci8RaiseError();
             }
-            if (!OCIExecute($stmt, OCI_DEFAULT)) {
+            if (!@OCIExecute($stmt, OCI_DEFAULT)) {
                 return $this->oci8RaiseError($stmt);
             }
             while (OCIFetch($stmt)) {
@@ -821,10 +821,10 @@ class DB_oci8 extends DB_common
                     $res[$i]['len']   = @OCIColumnSize($result, $i+1);
 
                     $q_fields = "select table_name, data_precision, nullable, data_default from user_tab_columns where column_name='$name'";
-                    if (!$stmt = OCIParse($this->connection, $q_fields)) {
+                    if (!$stmt = @OCIParse($this->connection, $q_fields)) {
                         return $this->oci8RaiseError();
                     }
-                    if (!OCIExecute($stmt, OCI_DEFAULT)) {
+                    if (!@OCIExecute($stmt, OCI_DEFAULT)) {
                         return $this->oci8RaiseError($stmt);
                     }
                     OCIFetch($stmt);
