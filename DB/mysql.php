@@ -277,11 +277,16 @@ class DB_mysql extends DB_common
             $arr = @mysql_fetch_row($result);
         }
         if (!$arr) {
+            // See: http://bugs.php.net/bug.php?id=22328
+            // for why we can't check errors on fetching
+            return null;
+            /*
             $errno = @mysql_errno($this->connection);
             if (!$errno) {
                 return NULL;
             }
             return $this->mysqlRaiseError($errno);
+            */
         }
         return DB_OK;
     }
