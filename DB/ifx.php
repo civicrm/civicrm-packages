@@ -39,6 +39,8 @@ class DB_ifx extends DB_common
     var $connection;
     var $affected = 0;
     var $dsn = array();
+    var $transaction_opcount = 0;
+    var $autocommit = true;
     var $fetchmode = DB_FETCHMODE_ORDERED; /* Default fetch mode */
 
     // }}}
@@ -127,12 +129,22 @@ class DB_ifx extends DB_common
      */
     function simpleQuery($query)
     {
+        $ismanip = DB::isManip($query);
         $this->last_query = $query;
         if (preg_match('/(SELECT)/i', $query)) {    //TESTME: Use !DB::isManip()?
             // the scroll is needed for fetching absolute row numbers
             // in a select query result
             $result = @ifx_query($query, $this->connection, IFX_SCROLL);
         } else {
+            if (!$this->autocommit && $ismanip) {
+                if ($this->transaction_opcount == 0) {
+                    $result = @ifx_query('BEGIN WORK', $this->connection);
+                    if (!$result) {
+                        return $this->ifxraiseError();
+                    }
+                }
+                $this->transaction_opcount++;
+            }
             $result = @ifx_query($query, $this->connection);
         }
         if (!$result) {
@@ -144,7 +156,7 @@ class DB_ifx extends DB_common
         if (preg_match('/(SELECT)/i', $query)) {
             return $result;
         }
-        // Result has to be freeed even with a insert or update
+        // Result has to be freed even with a insert or update
         ifx_free_result($result);
 
         return DB_OK;
@@ -261,6 +273,56 @@ class DB_ifx extends DB_common
         unset($this->prepare_tokens[(int)$result]);
         unset($this->prepare_types[(int)$result]);
         return true;
+    }
+
+    // }}}
+    // {{{ autoCommit()
+
+    /**
+     * Enable/disable automatic commits
+     */
+    function autoCommit($onoff = true)
+    {
+        // XXX if $this->transaction_opcount > 0, we should probably
+        // issue a warning here.
+        $this->autocommit = $onoff ? true : false;
+        return DB_OK;
+    }
+
+    // }}}
+    // {{{ commit()
+
+    /**
+     * Commit the current transaction.
+     */
+    function commit()
+    {
+        if ($this->transaction_opcount > 0) {
+            $result = @ifx_query('COMMIT WORK', $this->connection);
+            $this->transaction_opcount = 0;
+            if (!$result) {
+                return $this->ifxRaiseError();
+            }
+        }
+        return DB_OK;
+    }
+
+    // }}}
+    // {{{ rollback()
+
+    /**
+     * Roll back (undo) the current transaction.
+     */
+    function rollback()
+    {
+        if ($this->transaction_opcount > 0) {
+            $result = @ifx_query('ROLLBACK WORK', $this->connection);
+            $this->transaction_opcount = 0;
+            if (!$result) {
+                return $this->ifxRaiseError();
+            }
+        }
+        return DB_OK;
     }
 
     // }}}
