@@ -20,10 +20,10 @@ print "sth1,sth2,sth3,sth4 created\n";
 if (($res = $dbh->execute($sth1, array(72))) == DB_OK) {
     print "sth1 executed\n";
 }
-if (($res = $dbh->execute($sth2, array(72,'bing'))) == DB_OK) {
+if (($res = $dbh->execute($sth2, array(72, "that's right"))) == DB_OK) {
     print "sth2 executed\n";
 }
-if (($res = $dbh->execute($sth3, array(72,"'gazonk'",$tmpfile))) == DB_OK) {
+if (($res = $dbh->execute($sth3, array(72, "'it''s good'", $tmpfile))) == DB_OK) {
     print "sth3 executed\n";
 }
 if (($res = $dbh->execute($sth4)) == DB_OK) {
