@@ -310,7 +310,7 @@ class DB
      *     'debug'       => 2,
      *     'portability' => DB_PORTABILITY_ALL,
      * );
-     * 
+     *
      * $dbh =& DB::connect($dsn, $options);
      * if (DB::isError($dbh)) {
      *     die($dbh->getMessage());
@@ -729,7 +729,7 @@ class DB_Error extends PEAR_Error
 }
 
 // }}}
-// {{{ class DB_Result
+// {{{ class DB_result
 
 /**
  * This class implements a wrapper for a DB result set.
