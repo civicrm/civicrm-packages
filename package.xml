@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.89 2004-03-13 17:06:13 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.90 2004-03-15 07:27:25 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -61,50 +61,18 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.1</version>
+    <version>1.6.2</version>
     <state>stable</state>
-    <date>2004-03-13</date>
+    <date>PENDING</date>
     <notes>
+
+changelog for pending 1.6.2 release 
+
 =============
 ENHANCEMENTS:
 
-- all:
-Minor coding standards fixes.  (lsmith)
-
 =============
 BUGS FIXED:
-
-- all:
-All native function calls now get errors silenced
-via @.  (danielc)
-
-- all:
-LOAD DATA statements now return TRUE from isManip().
-Bug 1005.  (danielc)
-
-- common:
-Calling setFetchMode(DB_FETCHMODE_OBJECT) after
-using setFetchMode(DB_FETCHMODE_OBJECT, 'DB_row')
-didn't change the object type back to stdClass.
-Now it does.  (danielc)
-
-- mysql, mysqli, odbc:
-Move error code portability mapping from connect()
-to mysqlRaiseError() so the feature can be turned
-on/off during runtime.  (danielc)
-
-- oci8:
-In tableInfo() only return num_fields key if $mode
-is set.  (lsmith)
-
-- oci8:
-numRows() now works if called after execute().
-Bug 930.  (danielc)
-
-- sqlite:
-Now uses sqlite_escape_string() to escape strings
-in escapeSimple() and quoteSmart().
-(danielc via Matt Eaton)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
