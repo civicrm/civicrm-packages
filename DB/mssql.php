@@ -83,7 +83,7 @@ class DB_mssql extends DB_common
         }
         $this->dsn = $dsninfo;
         $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
-        $dbhost .= $dsninfo['port'] ? ':' . $dsninfo['port'] : '';
+        $dbhost .= $dsninfo['port'] ? ',' . $dsninfo['port'] : '';
 
         $connect_function = $persistent ? 'mssql_pconnect' : 'mssql_connect';
 
