@@ -1,5 +1,10 @@
 <?php
 
+// Testing here due to skip not working currently in head
+if (!$dbh->features['transactions']) {
+    die('this driver does not support transactions');
+}
+
 // View the table from a separate connection so we don't disturb
 // the transaction.
 $dbh2 = DB::connect($dbh->dsn);

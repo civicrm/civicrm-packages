@@ -3,7 +3,12 @@ DB_driver::transaction test
 --INI--
 error_reporting = 2047
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
+<?php
+chdir(dirname(__FILE__)); require_once './skipif.inc';
+if (!$db->features['transactions']) {
+    die('skip this driver does not support transactions');
+}
+?>
 --FILE--
 <?php
 $needinnodb = true;
