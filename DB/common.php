@@ -19,7 +19,7 @@
  * @author     Tomas V.V. Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -41,7 +41,7 @@ require_once 'PEAR.php';
  * @author     Tomas V.V. Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -483,6 +483,8 @@ class DB_common extends PEAR
 
         if ($nativecode) {
             $userinfo .= ' [nativecode=' . trim($nativecode) . ']';
+        } else {
+            $userinfo .= DB::errorMessage($code);
         }
 
         $tmp = PEAR::raiseError(null, $code, $mode, $options, $userinfo,
