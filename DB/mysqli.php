@@ -453,11 +453,10 @@ class DB_mysqli extends DB_common
     function affectedRows()
     {
         if (DB::isManip($this->last_query)) {
-            $result = @mysqli_affected_rows($this->connection);
+            return @mysqli_affected_rows($this->connection);
         } else {
-            $result = 0;
+            return 0;
         }
-        return $result;
      }
 
     // }}}
@@ -603,8 +602,7 @@ class DB_mysqli extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("DROP TABLE ${seqname}");
+        return $this->query('DROP TABLE ' . $this->getSequenceName($seq_name));
     }
 
     // }}}

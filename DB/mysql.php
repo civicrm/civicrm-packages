@@ -188,9 +188,8 @@ class DB_mysql extends DB_common
      */
     function disconnect()
     {
-        $ret = mysql_close($this->connection);
         $this->connection = null;
-        return $ret;
+        return mysql_close($this->connection);
     }
 
     // }}}
@@ -460,11 +459,10 @@ class DB_mysql extends DB_common
     function affectedRows()
     {
         if (DB::isManip($this->last_query)) {
-            $result = @mysql_affected_rows($this->connection);
+            return @mysql_affected_rows($this->connection);
         } else {
-            $result = 0;
+            return 0;
         }
-        return $result;
      }
 
     // }}}
@@ -616,8 +614,7 @@ class DB_mysql extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("DROP TABLE ${seqname}");
+        return $this->query('DROP TABLE ' . $this->getSequenceName($seq_name));
     }
 
     // }}}
