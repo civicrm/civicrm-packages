@@ -36,20 +36,20 @@
 // Status:
 //   EXPERIMENTAL
 
-/**
-* Example:
-*
+/*
+ * Example:
+ *
 <?php
 
     require_once 'DB.php';
 
     // Define a DSN
-    $dsn = "sqlite://dummy:@localhost/" . getcwd() . "/test.db?mode=0644";
+    $dsn = 'sqlite://dummy:@localhost/' . getcwd() . '/test.db?mode=0644';
 
     $db = DB::connect($dsn, false);
 
     // Give a new table name
-    $table = "tbl_" .  md5(uniqid(rand()));
+    $table = 'tbl_' .  md5(uniqid(rand()));
     $table = substr($table, 0, 10);
 
     // Create a new table
@@ -65,12 +65,21 @@
     print_r($arr );
     $db->disconnect();
 ?>
-*
-*/
+ *
+ */
 
 require_once 'DB/common.php';
 
-// {{{ class DB_sqlite
+/**
+ * Database independent query interface definition for the SQLite
+ * PECL extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Urs Gehrig <urs@circle.ch>
+ * @author   Mika Tuupola <tuupola@appelsiini.net>
+ */
 
 class DB_sqlite extends DB_common {
     // {{{ properties
@@ -79,56 +88,58 @@ class DB_sqlite extends DB_common {
     var $phptype, $dbsyntax;
     var $prepare_tokens = array();
     var $prepare_types = array();
-
     var $_lasterror = '';
 
     // }}}
     // {{{ constructor
 
     /**
-    * Constructor for this class; Error codes according to sqlite_exec
-    * Error Codes specification (see online manual, http://sqlite.org/c_interface.html.
-    * This errorhandling based on sqlite_exec is not yet implemented.
-    *
-    * @access public
-    */
+     * Constructor for this class.
+     *
+     * Error codes according to sqlite_exec.  Error Codes specification is
+     * in the {@link http://sqlite.org/c_interface.html online manual}.
+     *
+     * This errorhandling based on sqlite_exec is not yet implemented.
+     *
+     * @access public
+     */
     function DB_sqlite() {
 
         $this->DB_common();
         $this->phptype = 'sqlite';
         $this->dbsyntax = 'sqlite';
         $this->features = array (
-                              'prepare' => false,
-                              'pconnect' => true,
-                              'transactions' => false,
-                              'limit' => 'alter'
-                          );
+            'prepare' => false,
+            'pconnect' => true,
+            'transactions' => false,
+            'limit' => 'alter'
+        );
 
         // SQLite data types, http://www.sqlite.org/datatypes.html
         $this->keywords = array (
-                              "BLOB"      => "",
-                              "BOOLEAN"   => "",
-                              "CHARACTER" => "",
-                              "CLOB"      => "",
-                              "FLOAT"     => "",
-                              "INTEGER"   => "",
-                              "KEY"       => "",
-                              "NATIONAL"  => "",
-                              "NUMERIC"   => "",
-                              "NVARCHAR"  => "",
-                              "PRIMARY"   => "",
-                              "TEXT"      => "",
-                              "TIMESTAMP" => "",
-                              "UNIQUE"    => "",
-                              "VARCHAR"   => "",
-                              "VARYING"   => ""
-                          );
+            'BLOB'      => '',
+            'BOOLEAN'   => '',
+            'CHARACTER' => '',
+            'CLOB'      => '',
+            'FLOAT'     => '',
+            'INTEGER'   => '',
+            'KEY'       => '',
+            'NATIONAL'  => '',
+            'NUMERIC'   => '',
+            'NVARCHAR'  => '',
+            'PRIMARY'   => '',
+            'TEXT'      => '',
+            'TIMESTAMP' => '',
+            'UNIQUE'    => '',
+            'VARCHAR'   => '',
+            'VARYING'   => ''
+        );
         $this->errorcode_map = array(
-                                   1  => DB_ERROR_SYNTAX,
-                                   19 => DB_ERROR_CONSTRAINT,
-                                   20 => DB_ERROR_MISMATCH,
-                                   23 => DB_ERROR_ACCESS_VIOLATION
-                               );
+            1  => DB_ERROR_SYNTAX,
+            19 => DB_ERROR_CONSTRAINT,
+            20 => DB_ERROR_MISMATCH,
+            23 => DB_ERROR_ACCESS_VIOLATION
+        );
     }
 
     // }}}
@@ -138,7 +149,7 @@ class DB_sqlite extends DB_common {
      * Connect to a database represented by a file.
      *
      * @param $dsn the data source name; the file is taken as
-     *        database; "sqlite://root:@host/test.db"
+     *        database; "sqlite://root:@host/test.db?mode=0644"
      * @param $persistent (optional) whether the connection should
      *        be persistent
      * @access public
@@ -155,8 +166,8 @@ class DB_sqlite extends DB_common {
         if (isset($file)) {
             if (!file_exists($file)) {
                 touch($file );
-                $mode = is_numeric($dsninfo['mode']) ? 
-                                   octdec($dsninfo['mode']) : 0644; 
+                $mode = is_numeric($dsninfo['mode']) ?
+                                   octdec($dsninfo['mode']) : 0644;
                 chmod($file, $mode);
                 if (!file_exists($file)) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
@@ -242,7 +253,7 @@ class DB_sqlite extends DB_common {
     // {{{ nextResult()
 
     /**
-     * Move the internal sqlite result pointer to the next available result
+     * Move the internal sqlite result pointer to the next available result.
      *
      * @param a valid sqlite result resource
      * @access public
@@ -394,14 +405,14 @@ class DB_sqlite extends DB_common {
     }
 
     // }}}
-
-
+    // {{{ errorNative()
 
     /**
      * Get the native error string of the last error (if any) that
-     * occured on the current connection. This is used to retrieve
-     * more meaningfull error messages DB_pgsql way since
-     * sqlite_last_error() does not provide adequate info.
+     * occured on the current connection.
+     *
+     * This is used to retrieve more meaningfull error messages DB_pgsql
+     * way since sqlite_last_error() does not provide adequate info.
      *
      * @return string native SQLite error message
      */
@@ -409,6 +420,9 @@ class DB_sqlite extends DB_common {
     {
         return($this->_lasterror);
     }
+
+    // }}}
+    // {{{ errorCode()
 
     function errorCode($errormsg)
     {
@@ -430,13 +444,17 @@ class DB_sqlite extends DB_common {
         return DB_ERROR;
     }
 
-
+    // }}}
+    // {{{ dropSequence()
 
     function dropSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
         return $this->query("DROP TABLE $seqname");
     }
+
+    // }}}
+    // {{{ createSequence()
 
     function createSequence($seq_name)
     {
@@ -455,12 +473,16 @@ class DB_sqlite extends DB_common {
         if (DB::isError($result)) {
             return($result);
         }
-
     }
 
+    // }}}
+    // {{{ nextId()
+
     /**
-     * Get the next value in a sequence.  We emulate sequences
-     * for SQLite.  Will create the sequence if it does not exist.
+     * Get the next value in a sequence.
+     *
+     * We emulate sequences for SQLite.  Will create the sequence if it
+     * does not exist.
      *
      * @access public
      *
@@ -471,7 +493,6 @@ class DB_sqlite extends DB_common {
      *
      * @return mixed a sequence integer, or a DB error
      */
-
     function nextId($seq_name, $ondemand = true)
     {
         $seqname = $this->getSequenceName($seq_name);
@@ -500,76 +521,76 @@ class DB_sqlite extends DB_common {
         return $this->raiseError($result);
     }
 
-
     // }}}
     // {{{ getSpecialQuery()
 
     /**
-    * Returns the query needed to get some backend info. Refer to
-    * the online manual at http://sqlite.org/sqlite.html.
-    *
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info.
+     *
+     * Refer to the online manual at http://sqlite.org/sqlite.html.
+     *
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type, $args=array()) {
-        $query = "";
+        $query = '';
         if(!is_array($args))
             return $this->raiseError('no key specified', null, null, null,
                                      'Argument has to be an array.');
         switch (strtolower($type)) {
         case 'master':
-            $query .= "SELECT * FROM sqlite_master;";
+            $query .= 'SELECT * FROM sqlite_master;';
             break;
         case 'tables':
             $query .= "SELECT name FROM sqlite_master WHERE type='table' ";
-            $query .= "UNION ALL SELECT name FROM sqlite_temp_master ";
+            $query .= 'UNION ALL SELECT name FROM sqlite_temp_master ';
             $query .= "WHERE type='table' ORDER BY name;";
             break;
         case 'schema':
-            $query .= "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL ";
-            $query .= "SELECT * FROM sqlite_temp_master) ";
+            $query .= 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL ';
+            $query .= 'SELECT * FROM sqlite_temp_master) ';
             $query .= "WHERE type!='meta' ORDER BY tbl_name, type DESC, name;";
             break;
         case 'schemax':
         case 'schema_x':
-            /**
-            * Use like:
-            * $res = $db->query( $db->getSpecialQuery("schema_x", array("table" => "table3" )) );
-            */
-            $query .= "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL ";
-            $query .= "SELECT * FROM sqlite_temp_master) ";
+            /*
+             * Use like:
+             * $res = $db->query( $db->getSpecialQuery('schema_x', array('table' => 'table3' )) );
+             */
+            $query .= 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL ';
+            $query .= 'SELECT * FROM sqlite_temp_master) ';
             $query .= sprintf("WHERE tbl_name LIKE '%s' AND type!='meta' ", $args['table'] );
-            $query .= "ORDER BY type DESC, name;";
+            $query .= 'ORDER BY type DESC, name;';
             break;
         case 'alter':
-            /**
-            * SQLite does not support ALTER TABLE; this is a helper query to handle this. 'table'
-            * represents the table name, 'rows' the news rows to create, 'save' the row(s) to keep
-            * _with_ the data.
-            *
-            * Use like:
-            * $args = array(
-            *     'table' => $table,
-            *     'rows'  => "id INTEGER PRIMARY KEY, firstname TEXT, surname TEXT, datetime TEXT",
-            *     'save'  => "NULL, titel, content, datetime"
-            * );
-            * );
-            * $res = $db->query( $db->getSpecialQuery("alter", $args ) );
-            */
-            $rows = strtr($args['rows'], $this->keywords );
+            /*
+             * SQLite does not support ALTER TABLE; this is a helper query
+             * to handle this. 'table' represents the table name, 'rows'
+             * the news rows to create, 'save' the row(s) to keep _with_
+             * the data.
+             *
+             * Use like:
+             * $args = array(
+             *     'table' => $table,
+             *     'rows'  => "id INTEGER PRIMARY KEY, firstname TEXT, surname TEXT, datetime TEXT",
+             *     'save'  => "NULL, titel, content, datetime"
+             * );
+             * $res = $db->query( $db->getSpecialQuery('alter', $args) );
+             */
+            $rows = strtr($args['rows'], $this->keywords);
 
-            $query .= "BEGIN TRANSACTION;";
+            $query .= 'BEGIN TRANSACTION;';
             $query .= "CREATE TEMPORARY TABLE {$args['table']}_backup ({$args['rows']});";
             $query .= "INSERT INTO {$args['table']}_backup SELECT {$args['save']} FROM {$args['table']};";
             $query .= "DROP TABLE {$args['table']};";
             $query .= "CREATE TABLE {$args['table']} ({$args['rows']});";
             $query .= "INSERT INTO {$args['table']} SELECT {$rows} FROM {$args['table']}_backup;";
             $query .= "DROP TABLE {$args['table']}_backup;";
-            $query .= "COMMIT;";
+            $query .= 'COMMIT;';
 
             // This is a dirty hack, since the above query will no get executed with a single
             // query call; so here the query method will be called directly and return a select instead.
-            $q = explode(";", $query );
+            $q = explode(';', $query );
             for($i=0; $i<8; $i++) {
                 $result = $this->query( $q[$i] );
             }
@@ -585,15 +606,17 @@ class DB_sqlite extends DB_common {
     // {{{ getDbFileStats()
 
     /**
-    * Get the file stats for the current database. Possible arguments are
-    * dev, ino, mode, nlink, uid, gid, rdev, size, atime, mtime, ctime, blksize, blocks
-    * or a numeric key between 0 and 12.
-    *
-    * @param string $arg Array key for stats()
-    * @return mixed array on an unspecified key, integer on a passed arg and
-    * FALSE at a stats error.
-    */
-    function getDbFileStats($arg="" ) {
+     * Get the file stats for the current database.
+     *
+     * Possible arguments are dev, ino, mode, nlink, uid, gid, rdev, size,
+     * atime, mtime, ctime, blksize, blocks or a numeric key between
+     * 0 and 12.
+     *
+     * @param string $arg Array key for stats()
+     * @return mixed array on an unspecified key, integer on a passed arg and
+     * FALSE at a stats error.
+     */
+    function getDbFileStats($arg = '') {
         $stats = stat($this->dsn['database'] );
         if ($stats == false )
             return false;
@@ -611,7 +634,7 @@ class DB_sqlite extends DB_common {
     }
 
     // }}}
-    // {{{ modifyQuery()
+    // {{{ modifyLimitQuery()
 
     function modifyLimitQuery($query, $from, $count)
     {
@@ -619,13 +642,17 @@ class DB_sqlite extends DB_common {
         return $query;
     }
 
+    // }}}
+    // {{{ modifyQuery()
+
     /**
-    * "DELETE FROM table" gives 0 affected rows in SQLite. This little hack
-    * lets you know how many rows were deleted.
-    *
-    * @param string $query The SQL query string
-    * @return string The SQL query string
-    */
+     * "DELETE FROM table" gives 0 affected rows in SQLite.
+     *
+     * This little hack lets you know how many rows were deleted.
+     * 
+     * @param string $query The SQL query string
+     * @return string The SQL query string
+     */
     function _modifyQuery($query ) {
         if ($this->options['optimize'] == 'portability') {
             if (preg_match('/^\s*DELETE\s+FROM\s+(\S+)\s*$/i', $query)) {
@@ -640,11 +667,11 @@ class DB_sqlite extends DB_common {
     // {{{ sqliteRaiseError()
 
     /**
-    * Handling PEAR Errors
-    *
-    * @param int $errno  a PEAR error code
-    * @return object  a PEAR error object
-    */
+     * Handling PEAR Errors.
+     *
+     * @param int $errno  a PEAR error code
+     * @return object  a PEAR error object
+     */
     function sqliteRaiseError($errno = null) {
 
         $native = $this->errorNative();
@@ -652,7 +679,7 @@ class DB_sqlite extends DB_common {
             $errno = $this->errorCode($native);
         }
 
-        $errorcode = @sqlite_last_error($this->connection); 
+        $errorcode = @sqlite_last_error($this->connection);
         $userinfo = "$errorcode ** $this->last_query";
 
         return $this->raiseError($errno, null, null, $userinfo, $native);
@@ -660,7 +687,5 @@ class DB_sqlite extends DB_common {
 
     // }}}
 }
-
-// }}}
 
 ?>
