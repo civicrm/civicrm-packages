@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.168 2005-02-16 06:45:54 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.169 2005-02-18 23:25:42 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -115,9 +115,24 @@ ibase:
 * Add affectedRows() support.
 * Add numRows() support (Note:
   DB_PORTABILITY_NUMROWS must be enabled).
-* Add items to errorcode_map (from MDB2):
+* Add items to errorcode_map:
   -303 => DB_ERROR_INVALID
+  -413 => DB_ERROR_INVALID_NUMBER
+  -625 => DB_ERROR_CONSTRAINT_NOT_NULL
   -904 => DB_ERROR_CONNECT_FAILED
+* Refactor error handling to be like the other drivers:
+  Moved most code from ibaseRaiseError() into the new
+  errorNative() and errorCode() methods.
+* In errorNative():
+  + If PHP is >= 5.0.0, use ibase_errcode()
+  + Otherwise use a refined error code extraction regex
+    to keep it from catching numbers other than error codes.
+* Drop the bogus, non-standard $native_errmsg parameter
+  in ibaseRaiseError().
+* Remove the bogus error code 88.  It was a hack to catch
+  errors in nextID().  Now, when a generator does not exist,
+  "DB Error: syntax error" is produced instead of
+  "DB Error: no such table".
 
 ifx:
 * Add numRows() support (Note:
@@ -215,6 +230,7 @@ sybase:
   + insert column count doesn't match value count
   + create duplicate index
   + drop non-existant index
+  + illegal float/int conversion
 * Change identifier delimiting from [] to "".
   Note: "SET QUOTED_IDENTIFIER ON" must be executed
   sometime prior to using quoteIdentifier().
