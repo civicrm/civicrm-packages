@@ -1107,11 +1107,10 @@ class DB_common extends PEAR
      * Takes care of doing the query and freeing the results when finished.
      *
      * @param string $query  the SQL query
-     * @param mixed  $params array, string or numeric data to be used in
-     *                       execution of the statement.  Quantity of items
-     *                       passed must match quantity of placeholders in
-     *                       query:  meaning 1 placeholder for non-array
-     *                       parameters or 1 placeholder per array element.
+     * @param array  $params array to be used in execution of the statement.
+     *                       Quantity of array elements must match quantity
+     *                       of placeholders in query.  This function does
+     *                       NOT support scalars.
      * @param int    $fetchmode  the fetch mode to use
      *
      * @return array the first row of results as an array indexed from
@@ -1408,11 +1407,10 @@ class DB_common extends PEAR
      * Fetch all the rows returned from a query
      *
      * @param string $query  the SQL query
-     * @param mixed  $params array, string or numeric data to be used in
-     *                       execution of the statement.  Quantity of items
-     *                       passed must match quantity of placeholders in
-     *                       query:  meaning 1 placeholder for non-array
-     *                       parameters or 1 placeholder per array element.
+     * @param array  $params array to be used in execution of the statement.
+     *                       Quantity of array elements must match quantity
+     *                       of placeholders in query.  This function does
+     *                       NOT support scalars.
      * @param int    $fetchmode  the fetch mode to use
      *
      * @return array  an nested array.  DB error on failure.
