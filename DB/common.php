@@ -1231,6 +1231,9 @@ class DB_common extends PEAR
     function &getOne($query, $params = array())
     {
         settype($params, 'array');
+        if ($this->features['limit'] == 'alter') {
+            $query = $this->modifyLimitQuery($query, 0, 1, $params);
+        }
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
             if (DB::isError($sth)) {
@@ -1296,7 +1299,9 @@ class DB_common extends PEAR
                 $params = array();
             }
         }
-
+        if ($this->features['limit'] == 'alter') {
+            $query = $this->modifyLimitQuery($query, 0, 1, $params);
+        }
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
             if (DB::isError($sth)) {

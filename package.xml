@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.154 2005-02-02 02:52:31 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.155 2005-02-02 16:53:58 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -164,6 +164,9 @@ all:
   DB_ERROR_VALUE_COUNT_ON_ROW error code.
 * Resolve tableInfo() issue caused by PHP 5.0.3.
   Bug 2988.
+* When using getOne() and getRow(), if the DBMS
+  supports LIMIT queries, limit the output to
+  one row.  Request 1771.
 
 tests:
 * setup.inc now uses an array for the DSN's
