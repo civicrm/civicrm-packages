@@ -64,6 +64,13 @@ class DB_common extends PEAR
     var $fetchmode_object_class = 'stdClass';
 
     /**
+     * Was a connection present when the object was serialized()?
+     * @var bool
+     * @see DB_common::__sleep(), DB_common::__wake()
+     */
+    var $was_connected = null;
+
+    /**
      * The most recently executed query
      * @var string
      */
@@ -132,37 +139,37 @@ class DB_common extends PEAR
     // {{{ __sleep()
 
     /**
-     * Automatically disconnects from the database and indicates which
-     * properties should be saved When PHP's serialize() function is called
+     * Automatically indicates which properties should be saved
+     * when PHP's serialize() function is called
      *
      * @return array  the array of properties names that should be saved
      */
     function __sleep()
     {
         if ($this->connection) {
-            $this->disconnect();
-            $this->connection = true;
+            // Don't disconnect(), people use serialize() for many reasons
+            $this->was_connected = true;
         } else {
-            $this->connection = false;
+            $this->was_connected = false;
         }
         if (isset($this->autocommit)) {
             return array('autocommit',
-                         'connection',
                          'dbsyntax',
                          'dsn',
                          'features',
                          'fetchmode',
                          'fetchmode_object_class',
                          'options',
+                         'was_connected',
                    );
         } else {
-            return array('connection',
-                         'dbsyntax',
+            return array('dbsyntax',
                          'dsn',
                          'features',
                          'fetchmode',
                          'fetchmode_object_class',
                          'options',
+                         'was_connected',
                    );
         }
     }
@@ -181,7 +188,7 @@ class DB_common extends PEAR
      */
     function __wakeup()
     {
-        if ($this->connection) {
+        if ($this->was_connected) {
             $this->connect($this->dsn, $this->options);
         }
     }
