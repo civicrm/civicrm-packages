@@ -237,7 +237,8 @@ class DB_common extends PEAR
      *   + odbc(db2)
      *   + pgsql
      *   + sqlite
-     *   + sybase
+     *   + sybase (must execute <kbd>set quoted_identifier on</kbd> sometime
+     *     prior to use)
      *
      * InterBase doesn't seem to be able to use delimited identifiers
      * via PHP 4.  They work fine under PHP 5.

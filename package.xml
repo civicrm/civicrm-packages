@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.165 2005-02-09 00:19:17 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.166 2005-02-09 19:16:06 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -205,6 +205,9 @@ sybase:
   + insert column count doesn't match value count
   + create duplicate index
   + drop non-existant index
+* Change identifier delimiting from [] to "".
+  Note: "SET QUOTED_IDENTIFIER ON" must be executed
+  sometime prior to using quoteIdentifier().
 
 tests:
 * setup.inc now uses an array for the DSN's

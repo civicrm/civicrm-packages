@@ -104,6 +104,15 @@ drop_table($dbh, 'pearquote');
 
 
 if ($identifier) {
+    switch ($dbh->phptype) {
+        case 'sybase':
+            $res = $dbh->query('set quoted_identifier on');
+            if (DB::isError($res) ) {
+                pe($res);
+            }
+            break;
+        default:
+    }
     $create = $dbh->query("
         CREATE TABLE pearquote (
           n $decimal $null,
