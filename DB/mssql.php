@@ -753,7 +753,7 @@ class DB_mssql extends DB_common
                 // We only support flags for table
                 'flags' => $got_string
                            ? $this->_mssql_field_flags($result,
-                                                       $case_func($result))
+                                                       @mssql_field_name($id, $i))
                            : '',
             );
             if ($mode & DB_TABLEINFO_ORDER) {
