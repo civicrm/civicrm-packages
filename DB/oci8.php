@@ -469,14 +469,12 @@ class DB_oci8 extends DB_common
         for ($i = 0; $i < $size; $i++) {
             $pdata[$i] = &$data[$i];
             if ($types[$i] == DB_PARAM_OPAQUE) {
-                $fp = fopen($pdata[$i], "r");
-                $pdata[$i] = '';
-                if ($fp) {
-                    while (($buf = fread($fp, 4096)) != false) {
-                        $pdata[$i] .= $buf;
-                    }
-                    fclose($fp);
+                $fp = @fopen($pdata[$i], 'rb');
+                if (!$fp) {
+                    return $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
                 }
+                $pdata[$i] = fread($fp, filesize($data[$i]));
+                fclose($fp);
             }
             if (!@OCIBindByName($stmt, ':bind' . $i, $pdata[$i], -1)) {
                 $tmp = $this->oci8RaiseError($stmt);
