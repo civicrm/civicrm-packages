@@ -41,7 +41,7 @@ scripts.
 
  mkdir d:/peartest
  cd d:/peartest
- cvs -d :pserver:cvsread@cvs.php.net:/repository co pear/DB
+ cvs -d :pserver:cvsread@cvs.php.net:/repository co -P pear/DB
 
 We assume you already have the PEAR base package installed.  If you
 don't, you will need to do so, but the instructions for doing that
