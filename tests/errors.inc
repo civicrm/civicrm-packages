@@ -204,7 +204,7 @@ switch ($dbh->phptype) {
         $res = $dbh->query('CREATE TABLE b (b INTEGER REFERENCES a (a))');
         if (DB::isError($res)) {
             print "matches expected outcome\n";
-            print "Trying to provoke DB_ERROR_CONSTRAINT for foreign key on delete:  matches expected outcome\n";
+            print "DB_ERROR_CONSTRAINT for foreign key on delete:  matches expected outcome\n";
         } else {
             print "WOW, it seems mSQL now supports references\n";
             print "WOW, it seems mSQL now supports references\n";
@@ -260,6 +260,32 @@ switch ($dbh->phptype) {
         break;
     default:
         check_error($res, DB_ERROR_CONSTRAINT_NOT_NULL);
+}
+
+
+print 'Trying to provoke DB_ERROR_NOSUCHFIELD joining ON bogus column:  ';
+$res = $dbh->query('SELECT * FROM phptest JOIN a ON (phptest.a = a.b)');
+switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'odbc:access':
+        check_error($res, DB_ERROR_SYNTAX);
+        break;
+    default:
+        check_error($res, DB_ERROR_NOSUCHFIELD);
+}
+
+
+print 'Trying to provoke DB_ERROR_NOSUCHFIELD joining USING bogus column:  ';
+$res = $dbh->query('SELECT * FROM phptest JOIN a USING (b)');
+switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'ibase:ibase':
+    case 'ibase:firebird':
+    case 'odbc:access':
+    case 'odbc:db2':
+    case 'sybase:sybase':
+        check_error($res, DB_ERROR_SYNTAX);
+        break;
+    default:
+        check_error($res, DB_ERROR_NOSUCHFIELD);
 }
 
 
@@ -328,6 +354,27 @@ switch ($dbh->phptype) {
 }
 
 
+print 'Trying to provoke DB_ERROR_INVALID_NUMBER putting excessive int in INT column:  ';
+$res = $dbh->query("UPDATE phptest SET a = 18446744073709551616 WHERE a = 42");
+switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'ibase:ibase':
+    case 'ibase:firebird':
+        check_error($res, DB_ERROR_SYNTAX);
+        break;
+    case 'fbsql:fbsql':
+    case 'mssql:mssql':
+    case 'mysql:mysql':
+    case 'mysqli:mysqli':
+    case 'oci8:oci8':
+    case 'odbc:access':
+    case 'sqlite:sqlite':
+        check_error($res, DB_ERROR_INVALID_NUMBER, false);
+        break;
+    default:
+        check_error($res, DB_ERROR_INVALID_NUMBER);
+}
+
+
 print 'Trying to provoke DB_ERROR_INVALID_NUMBER putting int in CHAR column:  ';
 $res = $dbh->query("UPDATE phptest SET b = 8 WHERE a = 42");
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
@@ -367,6 +414,45 @@ switch ($dbh->phptype) {
     default:
         check_error($res, DB_ERROR_VALUE_COUNT_ON_ROW);
 }
+
+
+print 'Trying to provoke DB_ERROR_INVALID on CHAR column data too long:  ';
+$res = $dbh->query("INSERT INTO phptest (b) VALUES ('123456789.123456789.123456789.123456789.1')");
+switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'mssql:mssql':
+    case 'mysql:mysql':
+    case 'mysqli:mysqli':
+    case 'odbc:access':
+    case 'sqlite:sqlite':
+    case 'sybase:sybase':
+        check_error($res, DB_ERROR_INVALID, false);
+        break;
+    case 'fbsql:fbsql':
+        check_error($res, DB_ERROR_TRUNCATED);
+        break;
+    default:
+        check_error($res, DB_ERROR_INVALID);
+}
+
+
+print 'Trying to provoke DB_ERROR_INVALID on VARCHAR column data too long:  ';
+$res = $dbh->query("INSERT INTO phptest (d) VALUES ('123456789.123456789.1')");
+switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'mssql:mssql':
+    case 'mysql:mysql':
+    case 'mysqli:mysqli':
+    case 'odbc:access':
+    case 'sqlite:sqlite':
+    case 'sybase:sybase':
+        check_error($res, DB_ERROR_INVALID, false);
+        break;
+    case 'fbsql:fbsql':
+        check_error($res, DB_ERROR_TRUNCATED);
+        break;
+    default:
+        check_error($res, DB_ERROR_INVALID);
+}
+
 
 
 drop_table($dbh, 'phptest');

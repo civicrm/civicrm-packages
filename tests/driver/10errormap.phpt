@@ -23,10 +23,15 @@ Trying to provoke DB_ERROR_CONSTRAINT for foreign key on insert:  matches expect
 Trying to provoke DB_ERROR_CONSTRAINT for foreign key on delete:  matches expected outcome
 Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on insert:  matches expected outcome
 Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on update:  matches expected outcome
+Trying to provoke DB_ERROR_NOSUCHFIELD joining ON bogus column:  matches expected outcome
+Trying to provoke DB_ERROR_NOSUCHFIELD joining USING bogus column:  matches expected outcome
 Trying to provoke DB_ERROR_DIVZERO:  matches expected outcome
 Trying to provoke DB_ERROR_INVALID_NUMBER putting chars in INT column:  matches expected outcome
 Trying to provoke DB_ERROR_INVALID_NUMBER putting float in INT column:  matches expected outcome
+Trying to provoke DB_ERROR_INVALID_NUMBER putting excessive int in INT column:  matches expected outcome
 Trying to provoke DB_ERROR_INVALID_NUMBER putting int in CHAR column:  matches expected outcome
 Trying to provoke DB_ERROR_NOSUCHFIELD:  matches expected outcome
 Trying to provoke DB_ERROR_SYNTAX:  matches expected outcome
 Trying to provoke DB_ERROR_VALUE_COUNT_ON_ROW:  matches expected outcome
+Trying to provoke DB_ERROR_INVALID on CHAR column data too long:  matches expected outcome
+Trying to provoke DB_ERROR_INVALID on VARCHAR column data too long:  matches expected outcome
