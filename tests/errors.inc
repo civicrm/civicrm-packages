@@ -63,6 +63,7 @@ $dbh->query('INSERT INTO a values (1)');
 $dbh->query('INSERT INTO b values (2)');
 switch ($dbh->phptype) {
     case 'mysql':
+    case 'mysqli':
     case 'sqlite':
         print "            OK  $dbh->phptype doesn't consider this an error\n";
         break;
@@ -81,6 +82,7 @@ $dbh->query("INSERT INTO peartestnull VALUES ('one')");
 $dbh->query("UPDATE peartestnull SET a = NULL WHERE a = 'one'");
 switch ($dbh->phptype) {
     case 'mysql':
+    case 'mysqli':
         print "            OK  $dbh->phptype doesn't consider this an error\n";
         break;
 }
@@ -103,6 +105,7 @@ switch ($dbh->phptype) {
         break;
     case 'ifx':
     case 'mysql':
+    case 'mysqli':
     case 'sqlite':
         print "            OK  $dbh->phptype doesn't consider this an error\n";
         break;
@@ -112,6 +115,7 @@ print "Trying to provoke DB_ERROR_INVALID_NUMBER\n";
 $dbh->query("UPDATE phptest SET a = 'abc' WHERE a = 42");
 switch ($dbh->phptype) {
     case 'mysql':
+    case 'mysqli':
     case 'sqlite':
         print "            OK  $dbh->phptype doesn't consider this an error\n";
         break;
