@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.38 2004-01-18 02:06:40 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.39 2004-01-22 19:04:31 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -147,6 +147,9 @@ Minor API Change:
         </dir>
       </dir>
     </filelist>
-    <provides type="function" name="array_change_key_case" />
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0" />
+      <dep type="pkg" rel="ge" version="1.0b1">PEAR</dep>
+    </deps>
   </release>
 </package>

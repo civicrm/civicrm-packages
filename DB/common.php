@@ -1785,20 +1785,6 @@ class DB_common extends PEAR
     // }}}
 }
 
-// Used by many drivers
-if (!function_exists('array_change_key_case')) {
-    define('CASE_UPPER', 1);
-    define('CASE_LOWER', 0);
-    function &array_change_key_case(&$array, $case) {
-        $casefunc = ($case == CASE_LOWER) ? 'strtolower' : 'strtoupper';
-        $ret = array();
-        foreach ($array as $key => $value) {
-            $ret[$casefunc($key)] = $value;
-        }
-        return $ret;
-    }
-}
-
 /*
  * Local variables:
  * tab-width: 4
