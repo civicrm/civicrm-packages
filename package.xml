@@ -79,93 +79,93 @@ Bugs fixed:
         <file name="storage.php"/>
       </dir>
       <dir name="doc" role="doc">
-	<file name="IDEAS"/>
-	<file name="MAINTAINERS"/>
-	<file name="STATUS"/>
-	<file name="TESTERS"/>
+    <file name="IDEAS"/>
+    <file name="MAINTAINERS"/>
+    <file name="STATUS"/>
+    <file name="TESTERS"/>
       </dir>
       <dir name="tests" role="test">
-	<file name="db_error.phpt"/>
-	<file name="db_parsedsn.phpt"/>
-	<file name="db_factory.phpt"/>
-	<file name="db_ismanip.phpt"/>
-	<file name="db_error2.phpt"/>
-	<dir name="oci8" role="test">
-	  <file name="01connect.phpt"/>
-	  <file name="02fetch.phpt"/>
-	  <file name="03simplequery.phpt"/>
-	  <file name="04numcols.phpt"/>
-	  <file name="05sequences.phpt"/>
-	  <file name="06prepexec.phpt"/>
-	  <file name="07errornative.phpt"/>
-	  <file name="08affectedrows.phpt"/>
-	  <file name="09numrows.phpt"/>
-	  <file name="10errormap.phpt"/>
-	  <file name="13limit.phpt"/>
-	</dir>
-	<dir name="odbc" role="test">
-	  <file name="01connect.phpt"/>
-	  <file name="02fetch.phpt"/>
-	  <file name="03simplequery.phpt"/>
-	  <file name="04numcols.phpt"/>
-	  <file name="06prepexec.phpt"/>
-	  <file name="07errornative.phpt"/>
-	  <file name="09numrows.phpt"/>
-	  <file name="10errormap.phpt"/>
-	</dir>
-	<dir name="ibase" role="test">
-	  <file name="01connect.phpt"/>
-	  <file name="02fetch.phpt"/>
-	  <file name="03simplequery.phpt"/>
-	  <file name="04numcols.phpt"/>
-	  <file name="05sequences.phpt"/>
-	  <file name="06prepexec.phpt"/>
-	  <file name="10errormap.phpt"/>
-	</dir>
-	<dir name="mysql" role="test">
-	  <file name="01connect.phpt"/>
-	  <file name="02fetch.phpt"/>
-	  <file name="03simplequery.phpt"/>
-	  <file name="04numcols.phpt"/>
-	  <file name="05sequences.phpt"/>
-	  <file name="06prepexec.phpt"/>
-	  <file name="07errornative.phpt"/>
-	  <file name="08affectedrows.phpt"/>
-	  <file name="09numrows.phpt"/>
-	  <file name="10errormap.phpt"/>
-	  <file name="12tableinfo.phpt"/>
-	  <file name="13limit.phpt"/>
-	  <file name="14fetchmode_object.phpt"/>
-	</dir>
-	<dir name="pgsql" role="test">
-	  <file name="01connect.phpt"/>
-	  <file name="02fetch.phpt"/>
-	  <file name="03simplequery.phpt"/>
-	  <file name="04numcols.phpt"/>
-	  <file name="05sequences.phpt"/>
-	  <file name="06prepexec.phpt"/>
-	  <file name="07errornative.phpt"/>
-	  <file name="08affectedrows.phpt"/>
-	  <file name="09numrows.phpt"/>
-	  <file name="10errormap.phpt"/>
-	  <file name="11transact.phpt"/>
-	  <file name="13limit.phpt"/>
-	  <file name="14fetchmode_object.phpt"/>
-	</dir>
-	<dir name="driver" role="test">
-	  <file name="01connect.phpt"/>
-	  <file name="02fetch.phpt"/>
-	  <file name="03simplequery.phpt"/>
-	  <file name="04numcols.phpt"/>
-	  <file name="05sequences.phpt"/>
-	  <file name="06prepexec.phpt"/>
-	  <file name="08affectedrows.phpt"/>
-	  <file name="09numrows.phpt"/>
-	  <file name="10errormap.phpt"/>
-	  <file name="13limit.phpt"/>
-	  <file name="14fetchmode_object.phpt"/>
-	  <file name="15quote.phpt"/>
-	</dir>
+    <file name="db_error.phpt"/>
+    <file name="db_parsedsn.phpt"/>
+    <file name="db_factory.phpt"/>
+    <file name="db_ismanip.phpt"/>
+    <file name="db_error2.phpt"/>
+    <dir name="oci8" role="test">
+      <file name="01connect.phpt"/>
+      <file name="02fetch.phpt"/>
+      <file name="03simplequery.phpt"/>
+      <file name="04numcols.phpt"/>
+      <file name="05sequences.phpt"/>
+      <file name="06prepexec.phpt"/>
+      <file name="07errornative.phpt"/>
+      <file name="08affectedrows.phpt"/>
+      <file name="09numrows.phpt"/>
+      <file name="10errormap.phpt"/>
+      <file name="13limit.phpt"/>
+    </dir>
+    <dir name="odbc" role="test">
+      <file name="01connect.phpt"/>
+      <file name="02fetch.phpt"/>
+      <file name="03simplequery.phpt"/>
+      <file name="04numcols.phpt"/>
+      <file name="06prepexec.phpt"/>
+      <file name="07errornative.phpt"/>
+      <file name="09numrows.phpt"/>
+      <file name="10errormap.phpt"/>
+    </dir>
+    <dir name="ibase" role="test">
+      <file name="01connect.phpt"/>
+      <file name="02fetch.phpt"/>
+      <file name="03simplequery.phpt"/>
+      <file name="04numcols.phpt"/>
+      <file name="05sequences.phpt"/>
+      <file name="06prepexec.phpt"/>
+      <file name="10errormap.phpt"/>
+    </dir>
+    <dir name="mysql" role="test">
+      <file name="01connect.phpt"/>
+      <file name="02fetch.phpt"/>
+      <file name="03simplequery.phpt"/>
+      <file name="04numcols.phpt"/>
+      <file name="05sequences.phpt"/>
+      <file name="06prepexec.phpt"/>
+      <file name="07errornative.phpt"/>
+      <file name="08affectedrows.phpt"/>
+      <file name="09numrows.phpt"/>
+      <file name="10errormap.phpt"/>
+      <file name="12tableinfo.phpt"/>
+      <file name="13limit.phpt"/>
+      <file name="14fetchmode_object.phpt"/>
+    </dir>
+    <dir name="pgsql" role="test">
+      <file name="01connect.phpt"/>
+      <file name="02fetch.phpt"/>
+      <file name="03simplequery.phpt"/>
+      <file name="04numcols.phpt"/>
+      <file name="05sequences.phpt"/>
+      <file name="06prepexec.phpt"/>
+      <file name="07errornative.phpt"/>
+      <file name="08affectedrows.phpt"/>
+      <file name="09numrows.phpt"/>
+      <file name="10errormap.phpt"/>
+      <file name="11transact.phpt"/>
+      <file name="13limit.phpt"/>
+      <file name="14fetchmode_object.phpt"/>
+    </dir>
+    <dir name="driver" role="test">
+      <file name="01connect.phpt"/>
+      <file name="02fetch.phpt"/>
+      <file name="03simplequery.phpt"/>
+      <file name="04numcols.phpt"/>
+      <file name="05sequences.phpt"/>
+      <file name="06prepexec.phpt"/>
+      <file name="08affectedrows.phpt"/>
+      <file name="09numrows.phpt"/>
+      <file name="10errormap.phpt"/>
+      <file name="13limit.phpt"/>
+      <file name="14fetchmode_object.phpt"/>
+      <file name="15quote.phpt"/>
+    </dir>
       </dir>
     </filelist>
     <provides type="function" name="array_change_key_case" />
