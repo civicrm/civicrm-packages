@@ -547,62 +547,62 @@ class DB_sqlite extends DB_common
             return $this->raiseError('no key specified', null, null, null,
                                      'Argument has to be an array.');
         switch (strtolower($type)) {
-        case 'master':
-            return 'SELECT * FROM sqlite_master;';
-        case 'tables':
-            return "SELECT name FROM sqlite_master WHERE type='table' "
-                   . 'UNION ALL SELECT name FROM sqlite_temp_master '
-                   . "WHERE type='table' ORDER BY name;";
-        case 'schema':
-            return 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL '
-                   . 'SELECT * FROM sqlite_temp_master) '
-                   . "WHERE type!='meta' ORDER BY tbl_name, type DESC, name;";
-        case 'schemax':
-        case 'schema_x':
-            /*
-             * Use like:
-             * $res = $db->query($db->getSpecialQuery('schema_x', array('table' => 'table3')));
-             */
-            return 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL '
-                   . 'SELECT * FROM sqlite_temp_master) '
-                   . sprintf("WHERE tbl_name LIKE '%s' AND type!='meta' ", $args['table'])
-                   . ' ORDER BY type DESC, name;';
-        case 'alter':
-            /*
-             * SQLite does not support ALTER TABLE; this is a helper query
-             * to handle this. 'table' represents the table name, 'rows'
-             * the news rows to create, 'save' the row(s) to keep _with_
-             * the data.
-             *
-             * Use like:
-             * $args = array(
-             *     'table' => $table,
-             *     'rows'  => "id INTEGER PRIMARY KEY, firstname TEXT, surname TEXT, datetime TEXT",
-             *     'save'  => "NULL, titel, content, datetime"
-             * );
-             * $res = $db->query( $db->getSpecialQuery('alter', $args));
-             */
-            $rows = strtr($args['rows'], $this->keywords);
+            case 'master':
+                return 'SELECT * FROM sqlite_master;';
+            case 'tables':
+                return "SELECT name FROM sqlite_master WHERE type='table' "
+                       . 'UNION ALL SELECT name FROM sqlite_temp_master '
+                       . "WHERE type='table' ORDER BY name;";
+            case 'schema':
+                return 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL '
+                       . 'SELECT * FROM sqlite_temp_master) '
+                       . "WHERE type!='meta' ORDER BY tbl_name, type DESC, name;";
+            case 'schemax':
+            case 'schema_x':
+                /*
+                 * Use like:
+                 * $res = $db->query($db->getSpecialQuery('schema_x', array('table' => 'table3')));
+                 */
+                return 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL '
+                       . 'SELECT * FROM sqlite_temp_master) '
+                       . sprintf("WHERE tbl_name LIKE '%s' AND type!='meta' ", $args['table'])
+                       . ' ORDER BY type DESC, name;';
+            case 'alter':
+                /*
+                 * SQLite does not support ALTER TABLE; this is a helper query
+                 * to handle this. 'table' represents the table name, 'rows'
+                 * the news rows to create, 'save' the row(s) to keep _with_
+                 * the data.
+                 *
+                 * Use like:
+                 * $args = array(
+                 *     'table' => $table,
+                 *     'rows'  => "id INTEGER PRIMARY KEY, firstname TEXT, surname TEXT, datetime TEXT",
+                 *     'save'  => "NULL, titel, content, datetime"
+                 * );
+                 * $res = $db->query( $db->getSpecialQuery('alter', $args));
+                 */
+                $rows = strtr($args['rows'], $this->keywords);
 
-            $q = array(
-                'BEGIN TRANSACTION',
-                "CREATE TEMPORARY TABLE {$args['table']}_backup ({$args['rows']})",
-                "INSERT INTO {$args['table']}_backup SELECT {$args['save']} FROM {$args['table']}",
-                "DROP TABLE {$args['table']}",
-                "CREATE TABLE {$args['table']} ({$args['rows']})",
-                "INSERT INTO {$args['table']} SELECT {$rows} FROM {$args['table']}_backup",
-                "DROP TABLE {$args['table']}_backup",
-                'COMMIT',
-            );
+                $q = array(
+                    'BEGIN TRANSACTION',
+                    "CREATE TEMPORARY TABLE {$args['table']}_backup ({$args['rows']})",
+                    "INSERT INTO {$args['table']}_backup SELECT {$args['save']} FROM {$args['table']}",
+                    "DROP TABLE {$args['table']}",
+                    "CREATE TABLE {$args['table']} ({$args['rows']})",
+                    "INSERT INTO {$args['table']} SELECT {$rows} FROM {$args['table']}_backup",
+                    "DROP TABLE {$args['table']}_backup",
+                    'COMMIT',
+                );
 
-            // This is a dirty hack, since the above query will no get executed with a single
-            // query call; so here the query method will be called directly and return a select instead.
-            foreach($q as $query) {
-                $this->query($query);
-            }
-            return "SELECT * FROM {$args['table']};";
-        default:
-            return null;
+                // This is a dirty hack, since the above query will no get executed with a single
+                // query call; so here the query method will be called directly and return a select instead.
+                foreach($q as $query) {
+                    $this->query($query);
+                }
+                return "SELECT * FROM {$args['table']};";
+            default:
+                return null;
         }
     }
 
