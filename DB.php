@@ -332,11 +332,7 @@ class DB
      */
     function &connect($dsn, $options = array())
     {
-        if (is_array($dsn)) {
-            $dsninfo = $dsn;
-        } else {
-            $dsninfo = DB::parseDSN($dsn);
-        }
+        $dsninfo = DB::parseDSN($dsn);
         $type = $dsninfo['phptype'];
 
         if (!is_array($options)) {
