@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.135 2004-11-15 08:29:25 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.136 2004-11-19 18:44:43 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -86,6 +86,7 @@ oci8:
   (PEAR Bug #2622)  (danielc)
 
 sqlite:
+* Add tableInfo().  Request #1317.
 * Capture $php_errormsg on connection errors to make
   debugging easier.
 

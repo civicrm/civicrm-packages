@@ -67,17 +67,24 @@ require_once './mktable.inc';
 /**
  * Local error callback handler.
  *
- * Prints out an error message and kills the process.
+ * In general, it prints out an error message and kills the process.
+ * But some errors are expected and allowed to exist.
  *
  * @param object  $o  PEAR error object automatically passed to this method
  * @return void
  * @see PEAR::setErrorHandling()
  */
 function pe($o){
-    global $dbh;
+    global $dbh, $quirks;
 
     if ($o->getMessage() == "DB Error: can't distinguish duplicate field names") {
         print "NOTICE: $dbh->phptype can't distinguish duplicate field names";
+        return;
+    }
+
+    if ($o->getCode() == DB_ERROR_NOT_CAPABLE &&
+        !$quirks[$dbh->phptype]['handles_results'])
+    {
         return;
     }
 
@@ -90,22 +97,34 @@ function pe($o){
 
 /**
  * Loop through an array returned from tableInfo(), compare the actual
- * contents to the expected contents and print out what is found.
+ * contents to the expected contents.  If the actual results match the
+ * expectations, say so.  If not, say so and show the information.
  *
- * @param array   $array  the array to be examined
- * @param string  $field  field index number of $quriks and table
- * @param boolean $query  true if array is from a query or false if array
- *                        is tableInfo()
+ * @param array   $array     the array to be examined
+ * @param string  $expected  the expected contents of the array
+ * @param string  $field     field index number of $quriks and table
+ * @param boolean $query     true if array is from a query or false if array
+ *                           is tableInfo()
  * @return void
  */
-function examineArrayData($array, $field = false, $query = true) {
+function examineArrayData($array, $expected, $field = false, $query = true) {
     global $dbh, $quirks;
 
-    if (!is_array($array)) {
-        print "This DMBS didn't produce proper results\n\n\n\n\n";
+    if (DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE) {
+        print "matched expected result\n";
         return;
     }
 
+    if (!is_array($array)) {
+        print "This DMBS didn't produce proper results\n";
+        return;
+    }
+
+    if (is_int($field)) {
+        $array = $array[$field];
+    }
+
+    $actual = '';
     foreach ($array as $key => $value) {
         if ($field !== false &&
             isset($quirks[$dbh->phptype][$field][$key]))
@@ -113,46 +132,53 @@ function examineArrayData($array, $field = false, $query = true) {
             if ($key == 'flags' && $value == '' && $query &&
                 !$quirks[$dbh->phptype]['finds_table'])
             {
-                print "$key ... matched expected value\n";
+                $actual .= "$key ... matched expected value\n";
             } else {
                 if ($quirks[$dbh->phptype][$field][$key] == $value) {
-                    print "$key ... matched expected value\n";
+                    $actual .= "$key ... matched expected value\n";
                 } else {
-                    print "$key ... was '$value' but we expected ";
-                    print "'{$quirks[$dbh->phptype][$field][$key]}'\n";
+                    $actual .= "$key ... was '$value' but we expected ";
+                    $actual .= "'{$quirks[$dbh->phptype][$field][$key]}'\n";
                 }
             }
         } else {
             if ($key == 'table') {
                 if ($field <= 5) {
                     if ($value == 'phptest_fk') {
-                        print "$key ... matched expected value\n";
+                        $actual .= "$key ... matched expected value\n";
                     } else {
                         if ($value == '' && $query &&
                             !$quirks[$dbh->phptype]['finds_table'])
                         {
-                            print "$key ... matched expected value\n";
+                            $actual .= "$key ... matched expected value\n";
                         } else {
-                            print "$key ... was '$value' but we expected 'phptest_fk'\n";
+                            $actual .= "$key ... was '$value' but we expected 'phptest_fk'\n";
                         }
                     }
                 } else {
                     if ($value == 'phptest') {
-                        print "$key ... matched expected value\n";
+                        $actual .= "$key ... matched expected value\n";
                     } else {
                         if ($value == '' && $query &&
                             !$quirks[$dbh->phptype]['finds_table'])
                         {
-                            print "$key ... matched expected value\n";
+                            $actual .= "$key ... matched expected value\n";
                         } else {
-                            print "$key ... was '$value' but we expected 'phptest_fk'\n";
+                            $actual .= "$key ... was '$value' but we expected 'phptest_fk'\n";
                         }
                     }
                 }
             } else {
-                print "$key => $value\n";
+                $actual .= "$key => $value\n";
             }
         }
+    }
+    if ($actual == $expected) {
+        print "matched expected result\n";
+    } else {
+        print "DIDN'T match expected values...\n";
+        print "~~~~~~~~\nExpected:\n$expected\n";
+        print "~~~~\nActual:\n$actual\n~~~~~~~~\n\n";
     }
 }
 
@@ -163,6 +189,12 @@ function examineArrayData($array, $field = false, $query = true) {
  * @return string
  */
 function returnArrayData($array) {
+    global $dbh, $quirks;
+
+    if (!$quirks[$dbh->phptype]['handles_results']) {
+        return "\n";
+    }
+
     $out = '';
     foreach ($array as $key => $value) {
         $out .= "$key => $value\n";
@@ -180,6 +212,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => ' DATE ',
         'finds_table' => false,
+        'handles_results' => true,
         'commands' => array(
         ),
         0 => array(
@@ -224,6 +257,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => false,
+        'handles_results' => true,
         'commands' => array(
         ),
         0 => array(
@@ -268,6 +302,7 @@ $quirks = array(
         'date' => 'CHAR(10)',
         'dateliteral' => '',
         'finds_table' => false,
+        'handles_results' => true,
         'commands' => array(
         ),
         0 => array(
@@ -312,6 +347,7 @@ $quirks = array(
         'date' => 'SMALLDATETIME',
         'dateliteral' => '',
         'finds_table' => false,
+        'handles_results' => true,
         'commands' => array(
             'ini_set("mssql.datetimeconvert", "Off");',
             '$dbh->query("SET DATEFORMAT ymd");',
@@ -358,6 +394,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => true,
+        'handles_results' => true,
         'commands' => array(
         ),
         0 => array(
@@ -402,6 +439,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => true,
+        'handles_results' => true,
         'commands' => array(
         ),
         0 => array(
@@ -446,6 +484,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => false,
+        'handles_results' => true,
         'commands' => array(
             '$dbh->query("ALTER SESSION SET NLS_DATE_FORMAT = \'YYYY-MM-DD\'");',
         ),
@@ -491,6 +530,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => false,
+        'handles_results' => true,
         'commands' => array(
             '$dbh->query("SET DATESTYLE = ISO");',
         ),
@@ -531,11 +571,57 @@ $quirks = array(
         ),
     ),
 
+    'sqlite' => array(
+        'clob' => 'CLOB',
+        'date' => 'DATE',
+        'dateliteral' => '',
+        'finds_table' => false,
+        'handles_results' => false,
+        'commands' => array(
+        ),
+        0 => array(
+            'type' => 'INTEGER',
+            'len' => 0,
+            'flags' => 'not_null',
+        ),
+        1 => array(
+            'type' => 'INTEGER',
+            'len' => 0,
+            'flags' => 'primary_key not_null',
+        ),
+        2 => array(
+            'type' => 'CLOB',
+            'len' => 0,
+            'flags' => '',
+        ),
+        3 => array(
+            'type' => 'DATE',
+            'len' => 0,
+            'flags' => 'not_null',
+        ),
+        4 => array(
+            'type' => 'CHAR',
+            'len' => 2,
+            'flags' => 'not_null default_%20e',
+        ),
+        5 => array(
+            'type' => 'DECIMAL',
+            'len' => 2,
+            'flags' => '',
+        ),
+        9 => array(
+            'type' => 'VARCHAR',
+            'len' => 20,
+            'flags' => '',
+        ),
+    ),
+
     'sybase' => array(
         'clob' => 'TEXT',
         'date' => 'SMALLDATETIME',
         'dateliteral' => '',
         'finds_table' => false,
+        'handles_results' => true,
         'commands' => array(
             '$dbh->query("SET DATEFORMAT ymd");',
         ),
@@ -632,6 +718,57 @@ function &runQuery() {
 }
 
 
+$expected01 = 'table ... matched expected value
+name => a
+type ... matched expected value
+len ... matched expected value
+flags ... matched expected value
+';
+
+$expected02 = 'table ... matched expected value
+name => fk
+type ... matched expected value
+len ... matched expected value
+flags ... matched expected value
+';
+
+$expected03 = 'table ... matched expected value
+name => c
+type ... matched expected value
+len ... matched expected value
+flags ... matched expected value
+';
+
+$expected04 = 'table ... matched expected value
+name => d
+type ... matched expected value
+len ... matched expected value
+flags ... matched expected value
+';
+
+$expected05 = 'table ... matched expected value
+name => e
+type ... matched expected value
+len ... matched expected value
+flags ... matched expected value
+';
+
+$expected06 = 'table ... matched expected value
+name => f
+type ... matched expected value
+len ... matched expected value
+flags ... matched expected value
+';
+
+$expected10 = 'table ... matched expected value
+name => d
+type ... matched expected value
+len ... matched expected value
+flags ... matched expected value
+';
+
+
+
 print "\n==========================================\n";
 print "Passing result OBJECT to method in DB_<type>.\n";
 print "Output = default.\n";
@@ -640,11 +777,10 @@ $resultobj =& runQuery();
 $array = $dbh->tableInfo($resultobj);
 
 print "\nfirst field:\n";
-examineArrayData($array[0], 0);
+examineArrayData($array, $expected01, 0);
 
 print "\ntenth field:\n";
-examineArrayData($array[9], 9);
-
+examineArrayData($array, $expected10, 9);
 
 
 print "\n==========================================\n";
@@ -655,20 +791,36 @@ $resultobj =& runQuery();
 $array = $dbh->tableInfo($resultobj->result, DB_TABLEINFO_ORDER);
 
 print "\nfirst field:\n";
-examineArrayData($array[0], 0);
+examineArrayData($array, $expected01, 0);
 
 print "\nfourth field:\n";
-examineArrayData($array[3], 3);
+examineArrayData($array, $expected04, 3);
 
-print "\nnum_fields:\n";
-print "{$array['num_fields']}\n";
+print "\nnum_fields: ";
+if ($quirks[$dbh->phptype]['handles_results'] && $array['num_fields'] == 10) {
+    print "matched expected result\n";
+} elseif (DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE) {
+    print "matched expected result\n";
+} else {
+    print "This DMBS didn't produce proper results\n";
+}
 
 print "\norder:\n";
-if (is_array($array['order'])) {
+if ($quirks[$dbh->phptype]['handles_results'] && is_array($array['order'])) {
+    $expected = 'a => 6
+b => 7
+c => 8
+d => 9
+e => 4
+f => 5
+fk => 1
+';
     ksort($array['order']);
-    examineArrayData($array['order']);
+    examineArrayData($array['order'], $expected);
+} elseif (DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE) {
+    print "matched expected result\n";
 } else {
-    print "This DMBS didn't produce proper results\n\n\n\n\n\n\n";
+    print "This DMBS didn't produce proper results\n";
 }
 
 
@@ -683,31 +835,40 @@ $array = $resultobj->tableInfo(DB_TABLEINFO_ORDERTABLE);
 $resultobj->free();
 
 print "\nfirst field:\n";
-examineArrayData($array[0], 0);
+examineArrayData($array, $expected01, 0);
 
 print "\nfourth field:\n";
-examineArrayData($array[3], 3);
+examineArrayData($array, $expected04, 3);
 
-print "\nnum_fields:\n";
-print "{$array['num_fields']}\n";
+print "\nnum_fields: ";
+if ($quirks[$dbh->phptype]['handles_results'] && $array['num_fields'] == 10) {
+    print "matched expected result\n";
+} elseif (DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE) {
+    print "matched expected result\n";
+} else {
+    print "This DMBS didn't produce proper results\n";
+}
 
 
-print "\nordertable[phptest]:\n";
+print 'ordertable[phptest]: ';
 $expected = 'a => 6
 b => 7
 c => 8
 d => 9
 ';
-if (isset($array['ordertable']['phptest'])) {
+if ($quirks[$dbh->phptype]['handles_results']
+    && isset($array['ordertable']['phptest'])) {
     $actual = returnArrayData($array['ordertable']['phptest']);
 } else {
     $actual = '';
 }
 if ($actual == $expected) {
-    print "matched expected values\n";
+    print "matched expected result\n";
 } else {
-    if ($quirks[$dbh->phptype]['finds_table'] === false && $actual == '') {
-        print "matched expected values\n";
+    if (($quirks[$dbh->phptype]['finds_table'] === false 
+        || DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE)
+        && $actual == '') {
+        print "matched expected result\n";
     } else {
         print "DIDN'T match expected values...\n";
         print "~~~~~~~~\nExpected:\n$expected\n";
@@ -716,7 +877,7 @@ if ($actual == $expected) {
 }
 
 
-print "\nordertable[phptest_fk]:\n";
+print 'ordertable[phptest_fk]: ';
 $expected = 'a => 0
 fk => 1
 c => 2
@@ -724,16 +885,19 @@ d => 3
 e => 4
 f => 5
 ';
-if (isset($array['ordertable']['phptest_fk'])) {
+if ($quirks[$dbh->phptype]['handles_results']
+    && isset($array['ordertable']['phptest_fk'])) {
     $actual = returnArrayData($array['ordertable']['phptest_fk']);
 } else {
     $actual = '';
 }
 if ($actual == $expected) {
-    print "matched expected values\n";
+    print "matched expected result\n";
 } else {
-    if ($quirks[$dbh->phptype]['finds_table'] === false && $actual == '') {
-        print "matched expected values\n";
+    if (($quirks[$dbh->phptype]['finds_table'] === false 
+        || DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE)
+        && $actual == '') {
+        print "matched expected result\n";
     } else {
         print "DIDN'T match expected values...\n";
         print "~~~~~~~~\nExpected:\n$expected\n";
@@ -749,22 +913,22 @@ print "------------------------------------------\n";
 $array = $dbh->tableInfo('phptest_fk');
 
 print "\nfirst field:\n";
-examineArrayData($array[0], 0, false);
+examineArrayData($array, $expected01, 0, false);
 
 print "\nsecond field:\n";
-examineArrayData($array[1], 1, false);
+examineArrayData($array, $expected02, 1, false);
 
 print "\nthird field:\n";
-examineArrayData($array[2], 2, false);
+examineArrayData($array, $expected03, 2, false);
 
 print "\nfourth field:\n";
-examineArrayData($array[3], 3, false);
+examineArrayData($array, $expected04, 3, false);
 
 print "\nfifth field:\n";
-examineArrayData($array[4], 4, false);
+examineArrayData($array, $expected05, 4, false);
 
 print "\nsixth field:\n";
-examineArrayData($array[5], 5, false);
+examineArrayData($array, $expected06, 5, false);
 
 
 print "\n==========================================\n";
@@ -774,13 +938,27 @@ print "------------------------------------------\n";
 $array = $dbh->tableInfo('phptest_fk', DB_TABLEINFO_FULL);
 
 print "\nfirst field:\n";
-examineArrayData($array[0], 0, false);
+examineArrayData($array, $expected01, 0, false);
 
 print "\norder:\n";
-examineArrayData($array['order'], false);
+$expect ='a => 0
+fk => 1
+c => 2
+d => 3
+e => 4
+f => 5
+';
+examineArrayData($array['order'], $expect, false, false);
 
 print "\nordertable[phptest_fk]:\n";
-examineArrayData($array['ordertable']['phptest_fk']);
+$expect ='a => 0
+fk => 1
+c => 2
+d => 3
+e => 4
+f => 5
+';
+examineArrayData($array['ordertable']['phptest_fk'], $expect);
 
 
 
@@ -797,7 +975,7 @@ $array[0]['table'] = strtolower($array[0]['table']);
 $array[0]['name'] = strtolower($array[0]['name']);
 
 print "\nfirst field:\n";
-examineArrayData($array[0], 0, false);
+examineArrayData($array, 0, false);
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
@@ -812,18 +990,10 @@ Output = default.
 ------------------------------------------
 
 first field:
-table ... matched expected value
-name => a
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 tenth field:
-table ... matched expected value
-name => d
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 ==========================================
 Passing result ID to method in DB_<type>.
@@ -831,30 +1001,15 @@ Output = DB_TABLEINFO_ORDER.
 ------------------------------------------
 
 first field:
-table ... matched expected value
-name => a
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 fourth field:
-table ... matched expected value
-name => d
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
-num_fields:
-10
+num_fields: matched expected result
 
 order:
-a => 6
-b => 7
-c => 8
-d => 9
-e => 4
-f => 5
-fk => 1
+matched expected result
 
 ==========================================
 Passing DB_TABLEINFO_ORDERTABLE to method in DB_result.
@@ -862,27 +1017,14 @@ Output = DB_TABLEINFO_ORDERTABLE.
 ------------------------------------------
 
 first field:
-table ... matched expected value
-name => a
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 fourth field:
-table ... matched expected value
-name => d
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
-num_fields:
-10
-
-ordertable[phptest]:
-matched expected values
-
-ordertable[phptest_fk]:
-matched expected values
+num_fields: matched expected result
+ordertable[phptest]: matched expected result
+ordertable[phptest_fk]: matched expected result
 
 ==========================================
 Passing TABLE NAME 'phptest_fk' to method in DB_<driver>.
@@ -890,46 +1032,22 @@ Output = default.
 ------------------------------------------
 
 first field:
-table ... matched expected value
-name => a
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 second field:
-table ... matched expected value
-name => fk
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 third field:
-table ... matched expected value
-name => c
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 fourth field:
-table ... matched expected value
-name => d
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 fifth field:
-table ... matched expected value
-name => e
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 sixth field:
-table ... matched expected value
-name => f
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 ==========================================
 Passing TABLE NAME 'phptest_fk' to method in DB_<driver>.
@@ -937,27 +1055,13 @@ Output = DB_TABLEINFO_FULL.
 ------------------------------------------
 
 first field:
-table ... matched expected value
-name => a
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result
 
 order:
-a => 0
-fk => 1
-c => 2
-d => 3
-e => 4
-f => 5
+matched expected result
 
 ordertable[phptest_fk]:
-a => 0
-fk => 1
-c => 2
-d => 3
-e => 4
-f => 5
+matched expected result
 
 ==========================================
 Passing TABLE NAME 'phptest_fk' to method in DB_<driver> AGAIN.
@@ -965,8 +1069,4 @@ Output = DB_TABLEINFO_FULL, lowercasing turned off.
 ------------------------------------------
 
 first field:
-table ... matched expected value
-name => a
-type ... matched expected value
-len ... matched expected value
-flags ... matched expected value
+matched expected result

@@ -501,6 +501,170 @@ class DB_sqlite extends DB_common
     }
 
     // }}}
+    // {{{ tableInfo()
+
+    /**
+     * Returns information about a table or a result set.
+     *
+     * NOTE: only supports 'table' and 'flags' if <var>$result</var>
+     * is a table name.
+     *
+     * @param object|string  $result  DB_result object from a query or a
+     *                                string containing the name of a table
+     * @param int            $mode    a valid tableInfo mode
+     * @return array  an associative array with the information requested
+     *                or an error object if something is wrong
+     * @access public
+     * @internal
+     * @see DB_common::tableInfo()
+     */
+    function tableInfo($result, $mode = null)
+    {
+        if (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $this->last_query = '';
+            return $this->raiseError(DB_ERROR_NOT_CAPABLE, null, null, null,
+                                     'This DBMS can not obtain tableInfo' .
+                                     ' from result sets');
+        } elseif (is_string($result)) {
+            /*
+             * Probably received a table name.
+             * Create a result resource identifier.
+             */
+            $id = @sqlite_array_query($this->connection,
+                                      "PRAGMA table_info('$result');",
+                                      SQLITE_ASSOC);
+            $got_string = true;
+        } else {
+            /*
+             * Probably received a result resource identifier.
+             * Copy it.
+             * Deprecated.  Here for compatibility only.
+             */
+            $this->last_query = '';
+            return $this->raiseError(DB_ERROR_NOT_CAPABLE, null, null, null,
+                                     'This DBMS can not obtain tableInfo' .
+                                     ' from result sets');
+        }
+
+        if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+            $case_func = 'strtolower';
+        } else {
+            $case_func = 'strval';
+        }
+
+//        for($i = 0; $i < count($id); $i++) {
+//            $id[$i]['flags'] = '';
+//            $id[$i]['len'] = '';
+//
+//            //primary key
+//            if($id[$i]['pk'] == 1) {
+//                $id[$i]['flags'] .= 'primary_key,';
+//
+//                //integer primary key, it will auto increment
+//                if($id[$i]['type'] == 'INTEGER') {
+//                    $id[$i]['flags'] .= 'auto_increment,';
+//                }
+//            }
+//        }
+
+
+        $count = count($id);
+
+//  array(8) {
+//    ["cid"]=>
+//    string(1) "2"
+//    ["name"]=>
+//    string(3) "Def"
+//    ["type"]=>
+//    string(12) "decimal(4,2)"
+//    ["notnull"]=>
+//    string(1) "0"
+//    ["dflt_value"]=>
+//    string(4) "0.12"
+//    ["pk"]=>
+//    string(1) "0"
+//    ["flags"]=>
+//    string(0) ""
+//    ["len"]=>
+//    string(0) ""
+//  }
+//var_dump($id);
+//return;
+        // made this IF due to performance (one if is faster than $count if's)
+        if (!$mode) {
+            // partial
+            for ($i=0; $i<$count; $i++) {
+                $res[$i]['table'] = $case_func($result);
+                $res[$i]['name']  = $case_func($id[$i]['name']);
+                if (strpos($id[$i]['type'], '(') !== false) {
+                    $bits = explode('(', $id[$i]['type']);
+                    $res[$i]['type'] = $bits[0];
+                    $res[$i]['len'] = rtrim($bits[1],')');
+                } else {
+                    $res[$i]['type'] = $id[$i]['type'];
+                    $res[$i]['len'] = 0;
+                }
+
+                $res[$i]['flags'] = '';
+                if ($id[$i]['pk']) {
+                    $res[$i]['flags'] .= 'primary_key ';
+                }
+                if ($id[$i]['notnull']) {
+                    $res[$i]['flags'] .= 'not_null ';
+                }
+                if ($id[$i]['dflt_value'] !== null) {
+                    $res[$i]['flags'] .= 'default_'
+                                      . rawurlencode($id[$i]['dflt_value']);
+                }
+                $res[$i]['flags'] = trim($res[$i]['flags']);
+            }
+
+        } else {
+            // full
+            $res['num_fields'] = $count;
+
+            for ($i=0; $i<$count; $i++) {
+                $res[$i]['table'] = $case_func($result);
+                $res[$i]['name']  = $case_func($id[$i]['name']);
+                if (strpos($id[$i]['type'], '(') !== false) {
+                    $bits = explode('(', $id[$i]['type']);
+                    $res[$i]['type'] = $bits[0];
+                    $res[$i]['len'] = rtrim($bits[1],')');
+                } else {
+                    $res[$i]['type'] = $id[$i]['type'];
+                    $res[$i]['len'] = 0;
+                }
+
+                $res[$i]['flags'] = '';
+                if ($id[$i]['pk']) {
+                    $res[$i]['flags'] .= 'primary_key ';
+                }
+                if ($id[$i]['notnull']) {
+                    $res[$i]['flags'] .= 'not_null ';
+                }
+                if ($id[$i]['dflt_value'] !== null) {
+                    $res[$i]['flags'] .= 'default_'
+                                      . rawurlencode($id[$i]['dflt_value']);
+                }
+                $res[$i]['flags'] = trim($res[$i]['flags']);
+
+                if ($mode & DB_TABLEINFO_ORDER) {
+                    $res['order'][$res[$i]['name']] = $i;
+                }
+                if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
+                }
+            }
+        }
+
+        return $res;
+    }
+
+    // }}}
     // {{{ getSpecialQuery()
 
     /**

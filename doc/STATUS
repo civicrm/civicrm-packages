@@ -30,7 +30,7 @@ fetch row by no  x    x    n    T    x    T    T    T    n    x    T    T    T
 transactions     -    x    T    n    n    T    T    T    T    T    T    -    T
 auto-commit      -    x    x    n    n    n    E    E    x    x    x    -    n
 error mapping    -    x    T    t    -    t    t    t    T    T    E    l    l
-tableInfo        n    x    T    t    n    T    T    t    T    n    T    -    T
+tableInfo        n    x    T    t    n    T    T    t    T    n    T    T    T
 
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
 
@@ -66,7 +66,7 @@ Symbols:
 13limit          -    -    o    o    -    o    o    o    o    o    o    o    o
 14fetchmode_obje -    -    o    o    -    o    o    o    o    o    o    o    o
 15quote          -    -    o    X    -    o    o    o    o    o    o    o    o
-16tableinfo      -    -    o    X    -    o    o    X    o    -    o    -    o
+16tableinfo      -    -    o    X    -    o    o    X    o    -    o    o    o
 17query          -    -    X    o    -    o    o    o    o    o    o    o    o
 18get            -    -    X    o    -    o    o    o    o    o    o    o    o
 
