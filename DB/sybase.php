@@ -22,6 +22,10 @@
 // Database independent query interface definition for PHP's Sybase
 // extension.
 //
+//
+// TODO
+//    - This driver may fail with multiple connections under the same
+//      user/pass/host and different databases
 
 require_once 'DB/common.php';
 
@@ -100,6 +104,13 @@ class DB_sybase extends DB_common
 
         if (!$conn) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED);
+        }
+
+        if ($dsninfo['database']) {
+            if (!@sybase_select_db($dsninfo['database'], $conn)) {
+                return $this->raiseError(DB_ERROR_NODBSELECTED, null,
+                                         null, null, sybase_get_last_message());
+            }
         }
 
         $this->connection = $conn;
