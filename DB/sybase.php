@@ -69,15 +69,6 @@ class DB_sybase extends DB_common
             'limit' => 'emulate'
         );
         $this->errorcode_map = array(
-            102   => DB_ERROR_SYNTAX,
-            105   => DB_ERROR_SYNTAX,
-            156   => DB_ERROR_SYNTAX,
-            208   => DB_ERROR_NOSUCHTABLE,
-            257   => DB_ERROR_INVALID_NUMBER,
-            3701  => DB_ERROR_NOSUCHTABLE,
-            10304 => DB_ERROR_ACCESS_VIOLATION,
-            10330 => DB_ERROR_ACCESS_VIOLATION,
-            10331 => DB_ERROR_ACCESS_VIOLATION
         );
     }
 
@@ -160,54 +151,73 @@ class DB_sybase extends DB_common
     // }}}
     // {{{ errorCode()
 
-    function errorCode($errormsg = '')
+    /**
+     * Determine PEAR::DB error code from the database's text error message.
+     *
+     * @param  string  $errormsg  error message returned from the database
+     * @return integer  an error number from a DB error constant
+     */
+    function errorCode($errormsg)
     {
         static $error_regexps;
         if (empty($error_regexps)) {
             $error_regexps = array(
-                '/Incorrect syntax near [\"\'].+[\"\']\./'
-                    => 102,
+                '/Incorrect syntax near/'
+                    => DB_ERROR_SYNTAX,
                 '/^Unclosed quote before the character string [\"\'].*[\"\']\./'
-                    => 105,
-                '/Incorrect syntax near the keyword [\"\'].+[\"\']\./'
-                    => 156,
+                    => DB_ERROR_SYNTAX,
                 '/Implicit conversion from datatype [\"\'].+[\"\'] to [\"\'].+[\"\'] is not allowed\./'
-                    => 257,
+                    => DB_ERROR_INVALID_NUMBER,
                 '/Cannot drop the table [\"\'].+[\"\'], because it doesn\'t exist in the system catalogs\./'
-                    => 3701,
+                    => DB_ERROR_NOSUCHTABLE,
                 '/Only the owner of object [\"\'].+[\"\'] or a user with System Administrator \(SA\) role can run this command\./'
-                    => 10304,
+                    => DB_ERROR_ACCESS_VIOLATION,
                 '/^.+ permission denied on object .+, database .+, owner .+/'
-                    => 10330,
+                    => DB_ERROR_ACCESS_VIOLATION,
                 '/^.* permission denied, database .+, owner .+/'
-                    => 10331,
+                    => DB_ERROR_ACCESS_VIOLATION,
                 '/[^.*] not found\./'
-                    => 208
+                    => DB_ERROR_NOSUCHTABLE,
+                '/There is already an object named/'
+                    => DB_ERROR_ALREADY_EXISTS,
+                '/Invalid column name/'
+                    => DB_ERROR_NOSUCHFIELD,
+                '/Command has been aborted/'
+                    => DB_ERROR_CONSTRAINT,
             );
         }
-        while (list($regexp, $code) = each($error_regexps)) {
+
+        foreach ($error_regexps as $regexp => $code) {
             if (preg_match($regexp, $errormsg)) {
-                $error['code'] = $code;
+                return $code;
             }
         }
-        $error['userinfo'] = $errormsg;
-        if (isset($error['code']) && isset($this->errorcode_map[$error['code']])) {
-            $error['message'] = $this->errorcode_map[$error['code']];
-        } else {
-            return DB_ERROR;
-        }
-        return $error;
+        return DB_ERROR;
     }
 
     // }}}
     // {{{ sybaseRaiseError()
 
+    /**
+     * Gather information about an error, then use that info to create a
+     * DB error object and finally return that object.
+     *
+     * @param  integer  $errno  error number (often a DB constant) if
+     *                          manually raising an error
+     * @return object  DB error object
+     * @see errorNative()
+     * @see errorCode()
+     * @see DB_common::raiseError()
+     */
     function sybaseRaiseError($errno = null)
     {
         $native = $this->errorNative();
-        $error = $this->errorCode($native);
-        return $this->raiseError($error['code'], null, null, $error['userinfo'], $error['message']);
+        if ($errno === null) {
+            $errno = $this->errorCode($native);
+        }
+        return $this->raiseError($errno, null, null, null, $native);
     }
+
     // }}}
     // {{{ simpleQuery()
 
