@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.108 2004-07-01 23:40:45 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.109 2004-07-08 21:15:10 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -60,6 +60,10 @@ DB is compatible with both PHP 4 and PHP 5.
     <notes>
 =============
 BUGS FIXED:
+
+* DB.php
+Add rawurldecode() to database portion of DSN.  Bug 1826.
+(danielc)
 
 * common, dbase, fbsql, ibase, oic8, pgsql:
 When using resources as array index, convert to int first.

@@ -665,10 +665,10 @@ class DB
         if ($dsn) {
             // /database
             if (($pos = strpos($dsn, '?')) === false) {
-                $parsed['database'] = $dsn;
+                $parsed['database'] = rawurldecode($dsn);
             // /database?param1=value1&param2=value2
             } else {
-                $parsed['database'] = substr($dsn, 0, $pos);
+                $parsed['database'] = rawurldecode(substr($dsn, 0, $pos));
                 $dsn = substr($dsn, $pos + 1);
                 if (strpos($dsn, '&') !== false) {
                     $opts = explode('&', $dsn);
