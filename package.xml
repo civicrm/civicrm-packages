@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.72 2004-02-18 19:26:52 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.73 2004-02-19 16:45:08 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -61,78 +61,71 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.0RC6</version>
+    <version>1.6.0</version>
     <state>stable</state>
-    <date>2004-02-11</date>
+    <date>2004-02-19</date>
     <notes>
+=============
+API CHANGE:
+
+mysql4 was renamed mysqli.  Change your DSN info
+accordingly.  (danielc)
+
+
 =============
 ENHANCEMENTS:
 
+- test suite:
+The test suite now includes a shell script for
+jump starting the process.  Also, the version
+of setup.inc stored in CVS was renamed so you
+don't have to worry about CVS touching or
+committing your locally modified copy.  (danielc)
+
 - all:
-When connecting with an array as the DSN and the
-'dbsyntax' element is not set, parseDSN() now
-sets it to 'phptype', just like what happens when
-parsing a DSN string.  (danielc)
+Added DB_PORTABILITY_NULL_TO_EMPTY portability
+mode.  Converts null values to empty strings in
+data output by * get*() and fetch*().  Helpful
+because Oracle doesn't know the difference
+between null and empty.  (danielc)
 
 - ifx:
-Add tableInfo().  (peterwb@iafrica.com, danielc)
+Several new error code mappings:
+'Identifier too long' = DB_ERROR_SYNTAX
+'Table already exists' = DB_ERROR_ALREADY_EXISTS
+'duplicate value' = DB_ERROR_CONSTRAINT
+'Could not update a row in the table'
+&#160;&#160; = DB_ERROR_CONSTRAINT
+'Missing key in referenced table for referential
+&#160;&#160; constraint' = DB_ERROR_CONSTRAINT
+'Character to numeric conversion error'
+&#160;&#160; = DB_ERROR_INVALID_NUMBER
+'Syntax disallowed in this database server'
+&#160;&#160; = DB_ERROR_SYNTAX
+(danielc)
 
-- mysql, odbc(access):
-Added DB_PORTABILITY_ERRORS portability option
-to ensure consistent mapping of errors between
-DBMS's. In mysql this changes duplicate key
-constraints from DB_ERROR_ALREADY_EXISTS to
-DB_ERROR_CONSTRAINT. In access MS's ODBC
-driver mistakenly reports 'no such field' as
-'too few parameters' so this option maps the
-error back to the standard
-DB_ERROR_NOSUCHFIELD.  (danielc)
+-ibase, ifx, mssql, oci8, odbc, pgsql,
+sqlite, sybase:
+Map not null constraint errors to
+DB_ERROR_CONSTRAINT_NOT_NULL.  (danielc) 
 
-- ibase, mssql, odbc, pgsql, sqlite:
-Duplicate key constraint violations mapped to
-DB_ERROR_CONSTRAINT.  (danielc)
+-mysql, mysqli:
+Map not null constraint error (1048) from
+DB_ERROR_CONSTRAINT to
+DB_ERROR_CONSTRAINT_NOT_NULL when
+portability is on. (danielc)
 
 
 =============
 BUGS FIXED:
 
-- oci8:
-Change duplicate key constraint mapping from 
-DB_ERROR_ALREADY_EXISTS to DB_ERROR_CONSTRAINT
-for portability with other DBMS's.  Since the
-initial mapping was added in 1.6.0RC1, this
-isn't a backwards compatibility issue.  (danielc)
+- ifx:
+fetchRow() now adds 1 to the requested $rownum
+because ifx_fetch_row() starts at 1.  (peterwb)
 
-- oci8:
-Have modifyLimitQuery() quote all identifiers in
-order to avoid problems when certain queries with
-quoted identifiers are passed to limitQuery().
-Bug 679. (danielc)
-
-- all:
-In modifyLimitQuery(), if errors, put bad query
-into last_query to help debugging.  (danielc)
-
-- all:
-In limitQuery(), check if return from
-modifyLimitQuery() is an error and return that
-error if problems.  (danielc)
-
-- all:
-All drivers with tableInfo() methods had bug
-introduced in 1.6.0RC5 that caused
-'undefined function' errors when lowercasing
-portability was off.  Bug 724.  (danielc)
-
-- ibase:
-Resolve 'undefined variable flags' notice when
-using tableInfo() under certain conditions.
-(danielc)
-
-- ibase:
-Use upper case for RELATION_NAME in
-_ibaseFieldFlags() query to make tableInfo() work.
-(danielc)
+- ifx:
+affectedRows() now returns 0 for SELECT
+queries, just like the other DBMS's.  (danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
