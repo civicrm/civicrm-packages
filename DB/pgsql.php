@@ -182,12 +182,12 @@ class DB_pgsql extends DB_common
                REVOKE, ROLLBACK, SELECT, SELECT INTO, SET, SHOW,
                UNLISTEN, UPDATE, VACUUM
             */
-            $this->row[$result] = 0; // reset the row counter.
+            $this->row[(int)$result] = 0; // reset the row counter.
             $numrows = $this->numrows($result);
             if (is_object($numrows)) {
                 return $numrows;
             }
-            $this->num_rows[$result] = $numrows;
+            $this->num_rows[(int)$result] = $numrows;
             $this->affected = 0;
             return $result;
         } else {
@@ -300,17 +300,12 @@ class DB_pgsql extends DB_common
     function freeResult($result)
     {
         if (is_resource($result)) {
+            unset($this->row[(int)$result]);
+            unset($this->num_rows[(int)$result]);
+            $this->affected = 0;
             return @pg_freeresult($result);
         }
-        if (!isset($this->prepare_tokens[(int)$result])) {
-            return false;
-        }
-        unset($this->prepare_tokens[(int)$result]);
-        unset($this->prepare_types[(int)$result]);
-        unset($this->row[(int)$result]);
-        unset($this->num_rows[(int)$result]);
-        $this->affected = 0;
-        return true;
+        return $this->freePrepared((int)$result);
     }
 
     // }}}
