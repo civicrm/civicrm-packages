@@ -23,13 +23,6 @@
 // extension.
 //
 
-//
-// XXX legend:
-//
-// XXX ERRORMSG: The error message from the pgsql function should
-//               be registered here.
-//
-
 require_once 'DB/common.php';
 
 class DB_pgsql extends DB_common
@@ -136,7 +129,7 @@ class DB_pgsql extends DB_common
      */
     function disconnect()
     {
-        $ret = @pg_close($this->connection); // XXX ERRORMSG
+        $ret = @pg_close($this->connection);
         $this->connection = null;
         return $ret;
     }
