@@ -17,21 +17,27 @@
 // +----------------------------------------------------------------------+
 //
 // $Id$
-//
-// Database independent query interface definition for PHP's ODBC
-// extension.
-//
 
-//
+
 // XXX legend:
 //  More info on ODBC errors could be found here:
 //  http://msdn.microsoft.com/library/default.asp?url=/library/en-us/trblsql/tr_err_odbc_5stz.asp
 //
 // XXX ERRORMSG: The error message from the odbc function should
 //                 be registered here.
-//
+
 
 require_once 'DB/common.php';
+
+/**
+ * Database independent query interface definition for PHP's ODBC
+ * extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Stig Bakken <ssb@php.net>
+ */
 
 class DB_odbc extends DB_common
 {

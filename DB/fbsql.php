@@ -17,19 +17,25 @@
 // +----------------------------------------------------------------------+
 //
 // $Id$
-//
-// Database independent query interface definition for PHP's FrontBase
-// extension.
-//
 
-//
+
 // XXX legend:
 //
 // XXX ERRORMSG: The error message from the fbsql function should
 //               be registered here.
-//
+
 
 require_once "DB/common.php";
+
+/**
+ * Database independent query interface definition for PHP's FrontBase
+ * extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Frank M. Kromann <frank@frontbase.com>
+ */
 
 class DB_fbsql extends DB_common
 {

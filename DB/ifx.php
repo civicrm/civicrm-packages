@@ -17,10 +17,7 @@
 // +----------------------------------------------------------------------+
 //
 // $Id$
-//
-// Database independent query interface definition for PHP's Informix
-// extension.
-//
+
 
 // Legend:
 // For more info on Informix errors see:
@@ -30,7 +27,18 @@
 //  - set needed env Informix vars on connect
 //  - implement native prepare/execute
 
+
 require_once 'DB/common.php';
+
+/**
+ * Database independent query interface definition for PHP's Informix
+ * extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Tomas V.V.Cox <cox@idecnet.com>
+ */
 
 class DB_ifx extends DB_common
 {
