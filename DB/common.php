@@ -401,21 +401,21 @@ class DB_common extends PEAR
      *
      * With some database backends, this is emulated.
      *
-     * prepare() requires a generic query as string like <samp>
+     * prepare() requires a generic query as string like <code>
      *    INSERT INTO numbers VALUES (?, ?, ?)
-     * </samp>.  The <samp>?</samp> characters are placeholders.
+     * </code>.  The <kbd>?</kbd> characters are placeholders.
      *
      * Three types of placeholders can be used:
-     *   + <samp>?</samp>  a quoted scalar value, i.e. strings, integers
-     *   + <samp>!</samp>  value is inserted 'as is'
-     *   + <samp>&</samp>  requires a file name.  The file's contents get
+     *   + <kbd>?</kbd>  a quoted scalar value, i.e. strings, integers
+     *   + <kbd>!</kbd>  value is inserted 'as is'
+     *   + <kbd>&</kbd>  requires a file name.  The file's contents get
      *                     inserted into the query (i.e. saving binary
      *                     data in a db)
      *
      * Use backslashes to escape placeholder characters if you don't want
-     * them to be interpreted as placeholders.  Example: <samp>
-     * "UPDATE foo SET col=? WHERE col='over \& under'"
-     * </samp>
+     * them to be interpreted as placeholders.  Example: <code>
+     *    "UPDATE foo SET col=? WHERE col='over \& under'"
+     * </code>
      *
      * @param string $query query to be prepared
      * @return mixed DB statement resource on success. DB_Error on failure.
