@@ -104,8 +104,9 @@ class DB_odbc extends DB_common
      */
     function connect($dsninfo, $persistent = false)
     {
-        if (!DB::assertExtension('odbc'))
+        if (!DB::assertExtension('odbc')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
+        }
 
         $this->dsn = $dsninfo;
         if (isset($dsninfo['dbsyntax'])) {

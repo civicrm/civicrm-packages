@@ -59,8 +59,9 @@ class DB_msql extends DB_common
 
     function connect($dsninfo, $persistent = false)
     {
-        if (!DB::assertExtension('msql'))
+        if (!DB::assertExtension('msql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
+        }
 
         $this->dsn = $dsninfo;
         $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
