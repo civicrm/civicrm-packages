@@ -43,6 +43,7 @@ require_once 'DB/common.php';
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
+ * @since      Class not fully functional until Release 1.7.0
  */
 class DB_msql extends DB_common
 {
@@ -193,7 +194,7 @@ class DB_msql extends DB_common
         $query = $this->modifyQuery($query);
         $result = @msql_query($query, $this->connection);
         if (!$result) {
-            return $this->raiseError();
+            return $this->msqlRaiseError();
         }
         // Determine which queries that should return data, and which
         // should return an error code only.
@@ -256,7 +257,7 @@ class DB_msql extends DB_common
         }
         if (!$arr) {
             if ($error = @msql_error()) {
-                return $this->raiseError($error);
+                return $this->msqlRaiseError();
             } else {
                 return null;
             }
@@ -285,7 +286,7 @@ class DB_msql extends DB_common
     {
         $cols = @msql_num_fields($result);
         if (!$cols) {
-            return $this->raiseError();
+            return $this->msqlRaiseError();
         }
         return $cols;
     }
@@ -297,7 +298,7 @@ class DB_msql extends DB_common
     {
         $rows = @msql_num_rows($result);
         if (!$rows) {
-            return $this->raiseError();
+            return $this->msqlRaiseError();
         }
         return $rows;
     }
@@ -391,7 +392,6 @@ class DB_msql extends DB_common
      *                 A DB_Error object on failure.
      *
      * @see DB_common::setOption()
-     * @since Method available since Release 1.7.0
      */
     function tableInfo($result, $mode = null) {
         if (is_string($result)) {
