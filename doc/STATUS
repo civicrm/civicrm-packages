@@ -23,7 +23,7 @@ numCols          x    T    x    x    T    T    x    T    x    T    T    T
 numRows          x    n    n    x    T    T    x    E    x    T    n    T 
 errorNative      x    n    x    n    T    T    x    T    x    T    T    E
 prepare/execute  e    T    e    e    E    E    e    T    e    E    e    E
-sequences        e    t¹   n    n    E    E    e    T    n    T    E    E
+sequences        e    T    n    n    E    E    e    T    n    T    E    E
 affectedRows     x    n    x    x    n    T    x    T    x    T    T    T
 fetch modes      x    T    x    x    T    T    x    T    x    T    T    T
 fetch row by no  x    n    x    x    T    T    x    n    x    T    T    T
@@ -57,7 +57,7 @@ Symbols:
 02fetch          -    o    -    -    o    o    -    o    o    o    o    o
 03simplequery    -    o    -    -    o    o    -    o    o    o    o    o
 04numcols        -    o    -    -    o    o    -    o    o    o    o    o
-05sequences      -    X¹   -    -    o    o    -    o    o    o    o    o
+05sequences      -    o    -    -    o    o    -    o    o    o    o    o
 06prepexec       -    o    -    -    o    o    -    o    o    o    o    o
 08affectedrows   -    X    -    -    o    o    -    o    o    o    o    o
 09numrows        -    X    -    -    o    o    -    o    o    o    o    o
