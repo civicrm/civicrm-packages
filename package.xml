@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.88 2004-03-13 16:17:19 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.89 2004-03-13 17:06:13 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -37,13 +37,13 @@ DB is compatible with both PHP 4 and PHP 5.
   <maintainers>
     <maintainer>
       <user>ssb</user>
-      <role>emeritus</role>
+      <role>developer</role>
       <name>Stig Sæther Bakken</name>
       <email>stig@php.net</email>
     </maintainer>
     <maintainer>
       <user>cox</user>
-      <role>emeritus</role>
+      <role>developer</role>
       <name>Tomas V.V.Cox</name>
       <email>cox@idecnet.com</email>
     </maintainer>
@@ -63,7 +63,7 @@ DB is compatible with both PHP 4 and PHP 5.
   <release>
     <version>1.6.1</version>
     <state>stable</state>
-    <date>2004-03-12</date>
+    <date>2004-03-13</date>
     <notes>
 =============
 ENHANCEMENTS:
