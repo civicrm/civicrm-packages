@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.164 2005-02-08 20:38:51 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.165 2005-02-09 00:19:17 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -312,7 +312,6 @@ tests:
           <file name="17query.phpt"/>
           <file name="18get.phpt"/>
           <file name="19getlistof.phpt"/>
-          <file name="bug22328.phpt"/>
           <file name="connect.inc"/>
           <file name="mktable.inc"/>
           <file name="multitest.php"/>
