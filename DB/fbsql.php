@@ -481,14 +481,6 @@ class DB_fbsql extends DB_common
 
     function modifyQuery($query)
     {
-        if ($this->options['portability'] & DB_PORTABILITY_DELETE_COUNT) {
-            // "DELETE FROM table" gives 0 affected rows in fbsql.
-            // This little hack lets you know how many rows were deleted.
-            if (preg_match('/^\s*DELETE\s+FROM\s+(\S+)\s*$/i', $query)) {
-                $query = preg_replace('/^\s*DELETE\s+FROM\s+(\S+)\s*$/',
-                                      'DELETE FROM \1 WHERE 1=1', $query);
-            }
-        }
         return $query;
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.131 2004-11-02 15:14:35 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.132 2004-11-02 21:30:22 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -57,8 +57,11 @@ NOTICE!  fbsql has undergone major changes:
 
 * Error mapping now works.  $errorcode_map was using
   MySQL's codes by mistake.  (danielc)
-
 * Sequences now work.
+* Removed WHERE 1=1 affected rows hack for DELETE
+  queries from the modifyQuery() method.  Probably
+  was inadvertently left when copying driver from
+  mysql.php.
 = - = - = - = - = - = - = - = - = - = - = - = - =
 
 ibase:
