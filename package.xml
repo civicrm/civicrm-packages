@@ -43,7 +43,7 @@ to LDAP servers and MS ADO (using COM) are also avaible from a separate package)
   <release>
     <version>1.4.0</version>
     <state>stable</state>
-    <date>2003-02-08</date>
+    <date>2003-05-12</date>
     <notes>
 New Features:
 - params support in limitQuery()
