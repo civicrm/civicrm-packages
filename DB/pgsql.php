@@ -28,7 +28,7 @@ require_once 'DB/common.php';
  * @package  DB
  * @version  $Id$
  * @category Database
- * @author   Rui Hirokawa <rui_hirokawa@ybb.ne.jp>
+ * @author   Rui Hirokawa <hirokawa@php.net>
  * @author   Stig Bakken <ssb@php.net>
  */
 class DB_pgsql extends DB_common
