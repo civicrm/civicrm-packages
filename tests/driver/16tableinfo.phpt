@@ -18,6 +18,7 @@ error_reporting = 2047
  *     'clob' => DBMS's column type for creating CLOB fields
  *     'date' => DBMS's column type for creating DATE fields
  *     'finds_table' => Can this DBMS determine table names from queries?
+ *     'size_from_table' => Does this DBMS know the column size via table name?
  *     'commands' => array(
  *         Extra commands to be passed to PHP's eval() function
  *     )
@@ -137,8 +138,14 @@ function examineArrayData($array, $expected, $field = false, $query = true) {
                 if ($quirks[$dbh->phptype][$field][$key] == $value) {
                     $actual .= "$key ... matched expected value\n";
                 } else {
-                    $actual .= "$key ... was '$value' but we expected ";
-                    $actual .= "'{$quirks[$dbh->phptype][$field][$key]}'\n";
+                    if ($value == 0
+                        && !$quirks[$dbh->phptype]['size_from_table'])
+                    {
+                        $actual .= "$key ... matched expected value\n";
+                    } else {
+                        $actual .= "$key ... was '$value' but we expected ";
+                        $actual .= "'{$quirks[$dbh->phptype][$field][$key]}'\n";
+                    }
                 }
             }
         } else {
@@ -212,6 +219,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => ' DATE ',
         'finds_table' => false,
+        'size_from_table' => false,
         'handles_results' => true,
         'commands' => array(
         ),
@@ -257,6 +265,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => false,
+        'size_from_table' => false,
         'handles_results' => true,
         'commands' => array(
         ),
@@ -302,6 +311,7 @@ $quirks = array(
         'date' => 'CHAR(10)',
         'dateliteral' => '',
         'finds_table' => false,
+        'size_from_table' => false,
         'handles_results' => true,
         'commands' => array(
         ),
@@ -347,6 +357,7 @@ $quirks = array(
         'date' => 'SMALLDATETIME',
         'dateliteral' => '',
         'finds_table' => false,
+        'size_from_table' => false,
         'handles_results' => true,
         'commands' => array(
             'ini_set("mssql.datetimeconvert", "Off");',
@@ -394,6 +405,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => true,
+        'size_from_table' => true,
         'handles_results' => true,
         'commands' => array(
         ),
@@ -439,18 +451,19 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => true,
+        'size_from_table' => false,
         'handles_results' => true,
         'commands' => array(
         ),
         0 => array(
             'type' => 'int',
-            'len' => 0,
-            'flags' => 'not_null unique_key multiple_key group_by',
+            'len' => 2,
+            'flags' => 'not_null multiple_key group_by',
         ),
         1 => array(
             'type' => 'int',
             'len' => 0,
-            'flags' => 'not_null primary_key',
+            'flags' => 'not_null primary_key group_by',
         ),
         2 => array(
             'type' => 'blob',
@@ -459,8 +472,8 @@ $quirks = array(
         ),
         3 => array(
             'type' => 'date',
-            'len' => 0,
-            'flags' => 'not_null unique_key multiple_key',
+            'len' => 10,
+            'flags' => 'not_null multiple_key',
         ),
         4 => array(
             'type' => 'char',
@@ -474,7 +487,7 @@ $quirks = array(
         ),
         9 => array(
             'type' => 'varchar',
-            'len' => 0,
+            'len' => 10,
             'flags' => '',
         ),
     ),
@@ -484,6 +497,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => false,
+        'size_from_table' => false,
         'handles_results' => true,
         'commands' => array(
             '$dbh->query("ALTER SESSION SET NLS_DATE_FORMAT = \'YYYY-MM-DD\'");',
@@ -530,6 +544,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => false,
+        'size_from_table' => false,
         'handles_results' => true,
         'commands' => array(
             '$dbh->query("SET DATESTYLE = ISO");',
@@ -576,6 +591,7 @@ $quirks = array(
         'date' => 'DATE',
         'dateliteral' => '',
         'finds_table' => false,
+        'size_from_table' => false,
         'handles_results' => false,
         'commands' => array(
         ),
@@ -621,6 +637,7 @@ $quirks = array(
         'date' => 'SMALLDATETIME',
         'dateliteral' => '',
         'finds_table' => false,
+        'size_from_table' => false,
         'handles_results' => true,
         'commands' => array(
             '$dbh->query("SET DATEFORMAT ymd");',
