@@ -920,12 +920,18 @@ class DB_pgsql extends DB_common
     }
 
     // }}}
-    // {{{ getTablesQuery()
+    // {{{ getSpecialQuery()
 
     /**
-     * Returns the query needed to get some backend info
-     * @param string $type What kind of info you want to retrieve
-     * @return string The SQL query string
+     * Obtain the query string needed for listing a given type of objects
+     *
+     * @param string $type  the kind of objects you want to retrieve
+     *
+     * @return string  the SQL query string or null if the driver doesn't
+     *                  support the object type requested
+     *
+     * @access private
+     * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)
     {

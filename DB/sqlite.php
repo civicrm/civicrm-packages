@@ -694,22 +694,27 @@ class DB_sqlite extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Returns the query needed to get some backend info
+     * Obtain the query string needed for listing a given type of objects
      *
-     * Refer to the online manual at http://sqlite.org/sqlite.html.
+     * @param string $type  the kind of objects you want to retrieve
+     * @param array  $args  SQLITE DRIVER ONLY: a private array of arguments
+     *                       used by the getSpecialQuery().  Do not use
+     *                       this directly.
      *
-     * @param string $type  what kind of info you want to retrieve
+     * @return string  the SQL query string or null if the driver doesn't
+     *                  support the object type requested
      *
-     * @return string  the SQL query string
+     * @access private
+     * @see DB_common::getListOf()
      */
-    function getSpecialQuery($type, $args=array())
+    function getSpecialQuery($type, $args = array())
     {
         if (!is_array($args)) {
             return $this->raiseError('no key specified', null, null, null,
                                      'Argument has to be an array.');
         }
 
-        switch (strtolower($type)) {
+        switch ($type) {
             case 'master':
                 return 'SELECT * FROM sqlite_master;';
             case 'tables':
@@ -717,18 +722,21 @@ class DB_sqlite extends DB_common
                        . 'UNION ALL SELECT name FROM sqlite_temp_master '
                        . "WHERE type='table' ORDER BY name;";
             case 'schema':
-                return 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL '
-                       . 'SELECT * FROM sqlite_temp_master) '
-                       . "WHERE type!='meta' ORDER BY tbl_name, type DESC, name;";
+                return 'SELECT sql FROM (SELECT * FROM sqlite_master '
+                       . 'UNION ALL SELECT * FROM sqlite_temp_master) '
+                       . "WHERE type!='meta' "
+                       . 'ORDER BY tbl_name, type DESC, name;';
             case 'schemax':
             case 'schema_x':
                 /*
                  * Use like:
-                 * $res = $db->query($db->getSpecialQuery('schema_x', array('table' => 'table3')));
+                 * $res = $db->query($db->getSpecialQuery('schema_x',
+                 *                   array('table' => 'table3')));
                  */
-                return 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL '
-                       . 'SELECT * FROM sqlite_temp_master) '
-                       . "WHERE tbl_name LIKE '{$args['table']}' AND type!='meta' "
+                return 'SELECT sql FROM (SELECT * FROM sqlite_master '
+                       . 'UNION ALL SELECT * FROM sqlite_temp_master) '
+                       . "WHERE tbl_name LIKE '{$args['table']}' "
+                       . "AND type!='meta' "
                        . 'ORDER BY type DESC, name;';
             case 'alter':
                 /*
@@ -758,8 +766,11 @@ class DB_sqlite extends DB_common
                     'COMMIT',
                 );
 
-                // This is a dirty hack, since the above query will no get executed with a single
-                // query call; so here the query method will be called directly and return a select instead.
+                /*
+                 * This is a dirty hack, since the above query will not get
+                 * executed with a single query call so here the query method
+                 * will be called directly and return a select instead.
+                 */
                 foreach ($q as $query) {
                     $this->query($query);
                 }

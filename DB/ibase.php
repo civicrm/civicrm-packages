@@ -894,6 +894,17 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ getSpecialQuery()
 
+    /**
+     * Obtain the query string needed for listing a given type of objects
+     *
+     * @param string $type  the kind of objects you want to retrieve
+     *
+     * @return string  the SQL query string or null if the driver doesn't
+     *                  support the object type requested
+     *
+     * @access private
+     * @see DB_common::getListOf()
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {
@@ -905,7 +916,7 @@ class DB_ibase extends DB_common
             case 'users':
                 return 'SELECT DISTINCT RDB$USER FROM RDB$USER_PRIVILEGES';
             default:
-                return $this->raiseError(DB_ERROR_UNSUPPORTED);
+                return null;
         }
     }
 

@@ -1987,14 +1987,12 @@ class DB_common extends PEAR
      *
      * @return array  an array listing the items sought or a DB_Error
      *                if the request fails
-     *
-     * @access public
      */
     function getListOf($type)
     {
         $sql = $this->getSpecialQuery($type);
         if ($sql === null) {
-            // No support
+            $this->last_query = '';
             return $this->raiseError(DB_ERROR_UNSUPPORTED);
         } elseif (is_int($sql) || DB::isError($sql)) {
             // Previous error
@@ -2011,13 +2009,15 @@ class DB_common extends PEAR
     // {{{ getSpecialQuery()
 
     /**
-     * Returns the query needed to get some backend info
+     * Obtain the query string needed for listing a given type of objects
      *
-     * @param string $type What kind of info you want to retrieve
+     * @param string $type  the kind of objects you want to retrieve
      *
-     * @return string The SQL query string
+     * @return string  the SQL query string or null if the driver doesn't
+     *                  support the object type requested
      *
-     * @access public
+     * @access private
+     * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)
     {

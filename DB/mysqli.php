@@ -1012,20 +1012,26 @@ class DB_mysqli extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Returns the query needed to get some backend info.
+     * Obtain the query string needed for listing a given type of objects
      *
-     * @param string $type What kind of info you want to retrieve
-     * @return string The SQL query string
+     * @param string $type  the kind of objects you want to retrieve
+     *
+     * @return string  the SQL query string or null if the driver doesn't
+     *                  support the object type requested
+     *                  MySQL driver tweaks: When seeking users, this method
+     *                  figures it out and returns the array or a DB_Error
+     *                  object on failure.
+     *
+     * @access private
+     * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)
     {
         switch ($type) {
             case 'tables':
                 return 'SHOW TABLES';
-            case 'views':
-                return DB_ERROR_NOT_CAPABLE;
             case 'users':
-                $sql = 'select distinct User from user';
+                $sql = 'SELECT DISTINCT User FROM user';
                 if ($this->dsn['database'] != 'mysql') {
                     $dsn = $this->dsn;
                     $dsn['database'] = 'mysql';
@@ -1035,7 +1041,9 @@ class DB_mysqli extends DB_common
                     $sql = $db->getCol($sql);
                     $db->disconnect();
                     // XXX Fixme the mysql driver should take care of this
-                    if (!@mysqli_select_db($this->connection, $this->dsn['database'])) {
+                    if (!@mysqli_select_db($this->connection,
+                                           $this->dsn['database']))
+                    {
                         return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
                     }
                 }

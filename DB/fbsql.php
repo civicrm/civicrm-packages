@@ -685,9 +685,15 @@ class DB_fbsql extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Returns the query needed to get some backend info
-     * @param string $type What kind of info you want to retrieve
-     * @return string The SQL query string
+     * Obtain the query string needed for listing a given type of objects
+     *
+     * @param string $type  the kind of objects you want to retrieve
+     *
+     * @return string  the SQL query string or null if the driver doesn't
+     *                  support the object type requested
+     *
+     * @access private
+     * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)
     {
@@ -707,13 +713,15 @@ class DB_fbsql extends DB_common
             case 'users':
                 return 'SELECT "user_name" from information_schema.users'; 
             case 'functions':
-                return 'SELECT "table_name" FROM information_schema.psm_routines'
+                return 'SELECT "table_name" FROM'
+                       . ' information_schema.psm_routines'
                        . ' t0, information_schema.schemata t1'
                        . ' WHERE t0.schema_pk=t1.schema_pk AND'
                        . ' AND "routine_kind"=\'FUNCTION\''
                        . ' AND "schema_name" = current_schema';
             case 'procedures':
-                return 'SELECT "table_name" FROM information_schema.psm_routines'
+                return 'SELECT "table_name" FROM'
+                       . ' information_schema.psm_routines'
                        . ' t0, information_schema.schemata t1'
                        . ' WHERE t0.schema_pk=t1.schema_pk AND'
                        . ' AND "routine_kind"=\'PROCEDURE\''
