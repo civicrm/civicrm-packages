@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.147 2005-01-28 21:02:07 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.148 2005-01-29 04:47:30 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -81,11 +81,18 @@ ibase:
   -303 => DB_ERROR_INVALID
   -904 => DB_ERROR_CONNECT_FAILED
 
+ifx:
+* Add $this->DB_common() call to the constructor,
+  just like is done in all the other drivers.
+
 mssql:
 * Use "," to delimit port only for Windows.  Use ":"
   for other OS's.  This bug was introduced when
   resolving Bug #2140.  (Bug #2731)
 * Add 1913 (duplicate index creation) to errorcode_map.
+* When trying to DROP an index that doesn't exist,
+  use the DB_ERROR_NOT_FOUND error code, not
+  DB_ERROR_NOSUCHTABLE.
 
 mysql & mysqli:
 * Added 1061 => DB_ERROR_ALREADY_EXISTS to error map.
@@ -99,12 +106,18 @@ oci8:
   Works around crashes caused by PHP bug
   http://bugs.php.net/bug.php?id=28924
   (PEAR Bug #2622)
+* The autoCommit property was renamed autocommit to be
+  in line with the other drivers.
 
 odbc:
 * Add '23504' => DB_ERROR_CONSTRAINT to error map.
 * Deal with MS Access' excessive use of the
   S1000 ("General Error") code by trying to
   pin down a more specific error.
+* Remove the $row property because it's not used.
+* Rename the $manip_result property $affected because
+  it's more descriptive and is the name used in other
+  drivers.
 
 pgsql:
 * Allow multiple open parentheses in query strings
