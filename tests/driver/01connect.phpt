@@ -13,6 +13,14 @@ if (is_resource($dbh->connection)) {
 }
 
 
+$test_array_dsn = DB::parseDSN(DRIVER_DSN);
+
+foreach ($test_array_dsn as $key => $value) {
+    if ($value === false) {
+        unset($test_array_dsn[$key]);
+    }
+}
+
 $dbha =& DB::connect($test_array_dsn, $options);
 if (DB::isError($dbha)) {
     die("connect.inc: ".$dbha->toString());

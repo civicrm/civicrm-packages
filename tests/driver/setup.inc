@@ -31,15 +31,4 @@ define('DRIVER_DSN', '');
 //define('DRIVER_DSN', 'odbc(db2)://db2inst1:XXXX@/SAMPLE');
 //define('DRIVER_DSN', 'sqlite://dummy:@localhost/' . getcwd() . DIRECTORY_SEPARATOR . 'test.db?mode=0644');
 
-/*
- * This test array is used only for one test in 01connect.phpt.
- * ALL tests require setting the DRIVER_DSN constant.
- */
-$test_array_dsn = array(
-    'phptype'  => 'mysql',
-    'username' => 'root',
-    'password' => 'pass',
-    'database' => 'test',
-);
-
 ?>
