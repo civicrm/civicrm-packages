@@ -657,7 +657,7 @@ class DB_common extends PEAR
         $types     = array();
         $newtokens = array();
 
-        foreach ($tokens as $key => $val) {
+        foreach ($tokens as $val) {
             switch ($val) {
                 case '?':
                     $types[$token++] = DB_PARAM_SCALAR;
