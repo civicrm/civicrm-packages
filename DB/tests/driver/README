@@ -1,0 +1,3 @@
+Driver portability tests. To run it edit the "setup.inc" file and choose
+the appropiate DSN for your database. You need to have grant access to
+create and drop tables.
