@@ -64,7 +64,7 @@ $dbh->query('INSERT INTO b values (2)');
 switch ($dbh->phptype) {
     case 'mysql':
     case 'sqlite':
-        print "            v--  $dbh->phptype doesn't consider this an error\n";
+        print "            OK  $dbh->phptype doesn't consider this an error\n";
         break;
 }
 
@@ -81,7 +81,7 @@ $dbh->query("INSERT INTO peartestnull VALUES ('one')");
 $dbh->query("UPDATE peartestnull SET a = NULL WHERE a = 'one'");
 switch ($dbh->phptype) {
     case 'mysql':
-        print "            v--  $dbh->phptype doesn't consider this an error\n";
+        print "            OK  $dbh->phptype doesn't consider this an error\n";
         break;
 }
 
@@ -92,19 +92,19 @@ $dbh->getAll('SELECT 0/0 FROM phptest');
 switch ($dbh->phptype) {
     case 'mssql':
     case 'sybase':
-        print "            v--  PHP's $dbh->phptype extension doesn't report this error\n";
+        print "            OK  PHP's $dbh->phptype extension doesn't report this error\n";
         break;
     case 'odbc':
         switch ($dbh->dbsyntax) {
             case 'access':
-                print "            v--  odbc($dbh->dbsyntax) doesn't report this error\n";
+                print "            OK  odbc($dbh->dbsyntax) doesn't report this error\n";
                 break;
         }
         break;
     case 'ifx':
     case 'mysql':
     case 'sqlite':
-        print "            v--  $dbh->phptype doesn't consider this an error\n";
+        print "            OK  $dbh->phptype doesn't consider this an error\n";
         break;
 }
 
@@ -113,7 +113,7 @@ $dbh->query("UPDATE phptest SET a = 'abc' WHERE a = 42");
 switch ($dbh->phptype) {
     case 'mysql':
     case 'sqlite':
-        print "            v--  $dbh->phptype doesn't consider this an error\n";
+        print "            OK  $dbh->phptype doesn't consider this an error\n";
         break;
 }
 
