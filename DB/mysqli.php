@@ -806,21 +806,57 @@ class DB_mysqli extends DB_common
         // made this IF due to performance (one if is faster than $count if's)
         if (!$mode) {
             for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = $case_func(@mysqli_field_table($id, $i));
-                $res[$i]['name']  = $case_func(@mysqli_field_name($id, $i));
-                $res[$i]['type']  = @mysqli_field_type($id, $i);
-                $res[$i]['len']   = @mysqli_field_len($id, $i);
-                $res[$i]['flags'] = @mysqli_field_flags($id, $i);
+                $tmp = @mysqli_fetch_field($id);
+                $res[$i]['table'] = $case_func($tmp->table);
+                $res[$i]['name']  = $case_func($tmp->name);
+                $res[$i]['type']  = $tmp->type;
+                $res[$i]['len']   = $tmp->max_length;
+
+                $res[$i]['flags'] = '';
+                if ($tmp->flags & MYSQLI_NOT_NULL_FLAG) {
+                    $res[$i]['flags'] .= 'not_null ';
+                }
+                if ($tmp->flags & MYSQLI_PRI_KEY_FLAG) {
+                    $res[$i]['flags'] .= 'primary_key ';
+                }
+                if ($tmp->flags & MYSQLI_UNIQUE_KEY_FLAG) {
+                    $res[$i]['flags'] .= 'unique_key ';
+                }
+                if ($tmp->flags & MYSQLI_MULTIPLE_KEY_FLAG) {
+                    $res[$i]['flags'] .= 'multiple_key ';
+                }
+                if ($tmp->def) {
+                    $res[$i]['flags'] .= 'default_' . rawurlencode($tmp->def);
+                }
+                $res[$i]['flags'] = trim($res[$i]['flags']);
             }
         } else { // full
             $res['num_fields']= $count;
 
             for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = $case_func(@mysqli_field_table($id, $i));
-                $res[$i]['name']  = $case_func(@mysqli_field_name($id, $i));
-                $res[$i]['type']  = @mysqli_field_type($id, $i);
-                $res[$i]['len']   = @mysqli_field_len($id, $i);
-                $res[$i]['flags'] = @mysqli_field_flags($id, $i);
+                $tmp = @mysqli_fetch_field($id);
+                $res[$i]['table'] = $case_func($tmp->table);
+                $res[$i]['name']  = $case_func($tmp->name);
+                $res[$i]['type']  = $tmp->type;
+                $res[$i]['len']   = $tmp->max_length;
+
+                $res[$i]['flags'] = '';
+                if ($tmp->flags & MYSQLI_NOT_NULL_FLAG) {
+                    $res[$i]['flags'] .= 'not_null ';
+                }
+                if ($tmp->flags & MYSQLI_PRI_KEY_FLAG) {
+                    $res[$i]['flags'] .= 'primary_key ';
+                }
+                if ($tmp->flags & MYSQLI_UNIQUE_KEY_FLAG) {
+                    $res[$i]['flags'] .= 'unique_key ';
+                }
+                if ($tmp->flags & MYSQLI_MULTIPLE_KEY_FLAG) {
+                    $res[$i]['flags'] .= 'multiple_key ';
+                }
+                if ($tmp->def) {
+                    $res[$i]['flags'] .= 'default_' . rawurlencode($tmp->def);
+                }
+                $res[$i]['flags'] = trim($res[$i]['flags']);
 
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
