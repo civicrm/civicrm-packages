@@ -46,6 +46,16 @@ for ($i = 0; $i <= 3; $i++) {
 }
 
 
+$from  = 11;
+$count = 3;
+
+echo "======= Passing \$params || From: $from || Number of rows to fetch: $count =======\n";
+$res = $dbh->limitQuery('SELECT * FROM php_limit WHERE a < ?', $from, $count, array('result 99'));
+while ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
+    echo $res->getRowCounter() . '.- ' . $row['a'] . "\n";
+}
+
+
 switch ($dbh->phptype) {
     case 'ibase':
         /*

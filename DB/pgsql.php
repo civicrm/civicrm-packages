@@ -595,7 +595,7 @@ class DB_pgsql extends DB_common
     // }}}
     // {{{ modifyLimitQuery()
 
-    function modifyLimitQuery($query, $from, $count)
+    function modifyLimitQuery($query, $from, $count, $params)
     {
         $query = $query . " LIMIT $count OFFSET $from";
         return $query;

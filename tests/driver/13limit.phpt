@@ -45,3 +45,7 @@ require_once '../limit.inc';
 31.- result 30
 32.- result 31
 33.- result 32
+======= Passing $params || From: 11 || Number of rows to fetch: 3 =======
+12.- result 11
+13.- result 12
+14.- result 13

@@ -600,19 +600,28 @@ class DB_oci8 extends DB_common
      *
      * @author Tomas V.V.Cox <cox@idecnet.com>
      */
-    function modifyLimitQuery($query, $from, $count)
+    function modifyLimitQuery($query, $from, $count, $params)
     {
         // Let Oracle return the name of the columns instead of
         // coding a "home" SQL parser
-        $q_fields = "SELECT * FROM ($query) WHERE NULL = NULL";
-        if (!$result = @OCIParse($this->connection, $q_fields)) {
-            $this->last_query = $q_fields;
-            return $this->oci8RaiseError();
+
+        if (count($params)) {
+            $result = $this->prepare("SELECT * FROM ($query) "
+                                     . 'WHERE NULL = NULL');
+            $tmp =& $this->execute($result, $params);
+        } else {
+            $q_fields = "SELECT * FROM ($query) WHERE NULL = NULL";
+
+            if (!$result = @OCIParse($this->connection, $q_fields)) {
+                $this->last_query = $q_fields;
+                return $this->oci8RaiseError();
+            }
+            if (!@OCIExecute($result, OCI_DEFAULT)) {
+                $this->last_query = $q_fields;
+                return $this->oci8RaiseError($result);
+            }
         }
-        if (!@OCIExecute($result, OCI_DEFAULT)) {
-            $this->last_query = $q_fields;
-            return $this->oci8RaiseError($result);
-        }
+
         $ncols = OCINumCols($result);
         $cols  = array();
         for ( $i = 1; $i <= $ncols; $i++ ) {

@@ -1101,7 +1101,7 @@ class DB_common extends PEAR
      *
      * @access private
      */
-    function modifyLimitQuery($query, $from, $count)
+    function modifyLimitQuery($query, $from, $count, $params)
     {
         return $query;
     }
@@ -1168,7 +1168,7 @@ class DB_common extends PEAR
      */
     function &limitQuery($query, $from, $count, $params = array())
     {
-        $query = $this->modifyLimitQuery($query, $from, $count);
+        $query = $this->modifyLimitQuery($query, $from, $count, $params);
         if (DB::isError($query)){
             return $query;
         }

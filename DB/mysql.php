@@ -733,7 +733,7 @@ class DB_mysql extends DB_common
     // }}}
     // {{{ modifyLimitQuery()
 
-    function modifyLimitQuery($query, $from, $count)
+    function modifyLimitQuery($query, $from, $count, $params)
     {
         if (DB::isManip($query)) {
             return $query . " LIMIT $count";

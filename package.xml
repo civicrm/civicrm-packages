@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.90 2004-03-15 07:27:25 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.91 2004-03-15 07:34:16 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -73,6 +73,11 @@ ENHANCEMENTS:
 
 =============
 BUGS FIXED:
+
+- oci8:
+Pass $params from limitQuery() to
+modifyLimitQuery() so can limit prepared queries.
+(danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
