@@ -648,7 +648,7 @@ class DB_sybase extends DB_common
                     => DB_ERROR_SYNTAX,
                 '/^Unclosed quote before the character string [\"\'].*[\"\']\./'
                     => DB_ERROR_SYNTAX,
-                '/Implicit conversion from datatype [\"\'].+[\"\'] to [\"\'].+[\"\'] is not allowed\./'
+                '/Implicit conversion (from datatype|of NUMERIC value)/i'
                     => DB_ERROR_INVALID_NUMBER,
                 '/Cannot drop the table [\"\'].+[\"\'], because it doesn\'t exist in the system catalogs\./'
                     => DB_ERROR_NOSUCHTABLE,
