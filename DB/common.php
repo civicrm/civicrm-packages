@@ -290,7 +290,8 @@ class DB_common extends PEAR
                 $mode    = $this->_default_error_mode;
                 $options = $this->_default_error_options;
             }
-            return PEAR::raiseError($code, null, $mode, $options, null, null, true);
+            $tmp =& PEAR::raiseError($code, null, $mode, $options, null, null, true);
+            return $tmp;
         }
 
         if ($userinfo === null) {
@@ -301,8 +302,9 @@ class DB_common extends PEAR
             $userinfo .= " [nativecode=$nativecode]";
         }
 
-        return PEAR::raiseError(null, $code, $mode, $options, $userinfo,
+        $tmp =& PEAR::raiseError(null, $code, $mode, $options, $userinfo,
                                 'DB_Error', true);
+        return $tmp;
     }
 
     // }}}
@@ -475,7 +477,7 @@ class DB_common extends PEAR
     function autoExecute($table, $fields_values, $mode = DB_AUTOQUERY_INSERT, $where = false)
     {
         $sth = $this->autoPrepare($table, array_keys($fields_values), $mode, $where);
-        $ret = $this->execute($sth, array_values($fields_values));
+        $ret =& $this->execute($sth, array_values($fields_values));
         $this->freePrepared($sth);
         return $ret;
 
@@ -563,7 +565,7 @@ class DB_common extends PEAR
     */
     function &execute($stmt, $data = false)
     {
-        $realquery = $this->executeEmulateQuery($stmt, $data);
+        $realquery =& $this->executeEmulateQuery($stmt, $data);
         if (DB::isError($realquery)) {
             return $realquery;
         }
@@ -572,7 +574,8 @@ class DB_common extends PEAR
         if (DB::isError($result) || $result === DB_OK) {
             return $result;
         } else {
-            return new DB_result($this, $result);
+            $tmp =& new DB_result($this, $result);
+            return $tmp;
         }
     }
 
@@ -672,7 +675,7 @@ class DB_common extends PEAR
     function executeMultiple( $stmt, &$data )
     {
         for($i = 0; $i < sizeof( $data ); $i++) {
-            $res = $this->execute($stmt, $data[$i]);
+            $res =& $this->execute($stmt, $data[$i]);
             if (DB::isError($res)) {
                 return $res;
             }
@@ -762,7 +765,7 @@ class DB_common extends PEAR
             if (DB::isError($sth)) {
                 return $sth;
             }
-            $ret = $this->execute($sth, $params);
+            $ret =& $this->execute($sth, $params);
             $this->freePrepared($sth);
             return $ret;
         } else {
@@ -770,7 +773,8 @@ class DB_common extends PEAR
             if (DB::isError($result) || $result === DB_OK) {
                 return $result;
             } else {
-                return new DB_result($this, $result);
+                $tmp =& new DB_result($this, $result);
+                return $tmp;
             }
         }
     }
@@ -792,7 +796,7 @@ class DB_common extends PEAR
     function &limitQuery($query, $from, $count, $params = array())
     {
         $query  = $this->modifyLimitQuery($query, $from, $count);
-        $result = $this->query($query, $params);
+        $result =& $this->query($query, $params);
         if (get_class($result) == 'db_result') {
             $result->setOption('limit_from', $from);
             $result->setOption('limit_count', $count);
@@ -825,10 +829,10 @@ class DB_common extends PEAR
             if (DB::isError($sth)) {
                 return $sth;
             }
-            $res = $this->execute($sth, $params);
+            $res =& $this->execute($sth, $params);
             $this->freePrepared($sth);
         } else {
-            $res = $this->query($query);
+            $res =& $this->query($query);
         }
 
         if (DB::isError($res)) {
@@ -886,10 +890,10 @@ class DB_common extends PEAR
             if (DB::isError($sth)) {
                 return $sth;
             }
-            $res = $this->execute($sth, $params);
+            $res =& $this->execute($sth, $params);
             $this->freePrepared($sth);
         } else {
-            $res = $this->query($query);
+            $res =& $this->query($query);
         }
 
         if (DB::isError($res)) {
@@ -937,10 +941,10 @@ class DB_common extends PEAR
                 return $sth;
             }
 
-            $res = $this->execute($sth, $params);
+            $res =& $this->execute($sth, $params);
             $this->freePrepared($sth);
         } else {
-            $res = $this->query($query);
+            $res =& $this->query($query);
         }
 
         if (DB::isError($res)) {
@@ -1051,10 +1055,10 @@ class DB_common extends PEAR
                 return $sth;
             }
 
-            $res = $this->execute($sth, $params);
+            $res =& $this->execute($sth, $params);
             $this->freePrepared($sth);
         } else {
-            $res = $this->query($query);
+            $res =& $this->query($query);
         }
 
         if (DB::isError($res)) {
@@ -1066,7 +1070,8 @@ class DB_common extends PEAR
         $cols = $res->numCols();
 
         if ($cols < 2) {
-            return $this->raiseError(DB_ERROR_TRUNCATED);
+            $tmp =& $this->raiseError(DB_ERROR_TRUNCATED);
+            return $tmp;
         }
 
         $results = array();
@@ -1161,10 +1166,10 @@ class DB_common extends PEAR
                 return $sth;
             }
 
-            $res = $this->execute($sth, $params);
+            $res =& $this->execute($sth, $params);
             $this->freePrepared($sth);
         } else {
-            $res = $this->query($query);
+            $res =& $this->query($query);
         }
 
         if (DB::isError($res) || $res == DB_OK) {
@@ -1185,7 +1190,8 @@ class DB_common extends PEAR
         $res->free();
 
         if (DB::isError($row)) {
-            return $this->raiseError($row);
+            $tmp =& $this->raiseError($row);
+            return $tmp;
         }
         return $results;
     }

@@ -287,7 +287,7 @@ class DB_storage extends PEAR
     function &create($table, &$data)
     {
         $classname = get_class($this);
-        $obj = new $classname($table);
+        $obj =& new $classname($table);
         reset($data);
         while (list($name, $value) = each($data)) {
             $obj->_properties[$name] = true;
@@ -409,7 +409,8 @@ class DB_storage extends PEAR
         if (isset($this->_properties[$property])) {
             return $this->$property;
         }
-        return null;
+        $tmp = null;
+        return $tmp;
     }
 
     // }}}

@@ -324,7 +324,8 @@ class DB_ibase extends DB_common
     {
         $types=&$this->prepare_types[$stmt];
         if (($size = sizeof($types)) != sizeof($data)) {
-            return $this->raiseError(DB_ERROR_MISMATCH);
+            $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
+            return $tmp;
         }
         $pdata[0] = $stmt;
         for ($j = 0; $j < $size; $j++) {
@@ -347,17 +348,19 @@ class DB_ibase extends DB_common
         }
         $res = call_user_func_array('ibase_execute', $pdata);
         if (!$res) {
-            return $this->ibaseRaiseError();
+            $tmp =& $this->ibaseRaiseError();
+            return $tmp;
         }
         /* XXX need this?
         if ($this->autocommit && $this->manip_query[(int)$stmt]) {
             ibase_commit($this->connection);
         }*/
         if ($this->manip_query[(int)$stmt]) {
-            return DB_OK;
+            $tmp = DB_OK;
         } else {
-            return new DB_result($this, $res);
+            $tmp =& new DB_result($this, $res);
         }
+        return $tmp;
     }
 
     /**
@@ -432,7 +435,7 @@ class DB_ibase extends DB_common
         $repeat = 0;
         do {
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
-            $result = $this->query("SELECT GEN_ID(${sqn}_SEQ, 1) FROM RDB\$GENERATORS"
+            $result =& $this->query("SELECT GEN_ID(${sqn}_SEQ, 1) FROM RDB\$GENERATORS"
                                    ." WHERE RDB\$GENERATOR_NAME='${sqn}_SEQ'");
             $this->popErrorHandling();
             if ($ondemand && DB::isError($result)) {

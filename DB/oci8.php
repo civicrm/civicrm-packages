@@ -259,7 +259,7 @@ class DB_oci8 extends DB_common
             $countquery = "SELECT COUNT(*) FROM (".$this->last_query.")";
             $save_query = $this->last_query;
             $save_stmt = $this->last_stmt;
-            $count = $this->query($countquery);
+            $count =& $this->query($countquery);
             if (DB::isError($count) ||
                 DB::isError($row = $count->fetchRow(DB_FETCHMODE_ORDERED)))
             {
@@ -374,7 +374,8 @@ class DB_oci8 extends DB_common
     {
         $types=&$this->prepare_types[$stmt];
         if (($size = sizeof($types)) != sizeof($data)) {
-            return $this->raiseError(DB_ERROR_MISMATCH);
+            $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
+            return $tmp;
         }
         for ($i = 0; $i < $size; $i++) {
             if (is_array($data)) {
@@ -394,7 +395,8 @@ class DB_oci8 extends DB_common
                 }
             }
             if (!@OCIBindByName($stmt, ":bind" . $i, $pdata[$i], -1)) {
-                return $this->oci8RaiseError($stmt);
+                $tmp =& $this->oci8RaiseError($stmt);
+                return $tmp;
             }
         }
         if ($this->autoCommit) {
@@ -403,14 +405,16 @@ class DB_oci8 extends DB_common
             $success = @OCIExecute($stmt, OCI_DEFAULT);
         }
         if (!$success) {
-            return $this->oci8RaiseError($stmt);
+            $tmp =& $this->oci8RaiseError($stmt);
+            return $tmp;
         }
         $this->last_stmt = $stmt;
         if ($this->manip_query[(int)$stmt]) {
-            return DB_OK;
+            $tmp = DB_OK;
         } else {
-            return new DB_result($this, $stmt);
+            $tmp =& new DB_result($this, $stmt);
         }
+        return $tmp;
     }
 
     // }}}
@@ -566,7 +570,7 @@ class DB_oci8 extends DB_common
         $repeat = 0;
         do {
             $this->expectError(DB_ERROR_NOSUCHTABLE);
-            $result = $this->query("SELECT ${seqname}.nextval FROM dual");
+            $result =& $this->query("SELECT ${seqname}.nextval FROM dual");
             $this->popExpect();
             if ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE) {

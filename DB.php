@@ -219,8 +219,9 @@ class DB
         $classname = "DB_${type}";
 
         if (!class_exists($classname)) {
-            return PEAR::raiseError(null, DB_ERROR_NOT_FOUND,
+            $tmp =& PEAR::raiseError(null, DB_ERROR_NOT_FOUND,
                                     null, null, null, 'DB_Error', true);
+            return $tmp;
         }
 
         @$obj =& new $classname;
@@ -270,9 +271,10 @@ class DB
 
         $classname = "DB_${type}";
         if (!class_exists($classname)) {
-            return PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
+            $tmp =& PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
                                     "Unable to include the DB/{$type}.php file for `$dsn'",
                                     'DB_Error', true);
+            return $tmp;
         }
 
         @$obj =& new $classname;
@@ -734,7 +736,8 @@ class DB_result
                 if ($this->autofree) {
                     $this->free();
                 }
-                return null;
+                $tmp = null;
+                return $tmp;
             }
             if ($this->limit_type == 'emulate') {
                 $rownum = $this->row_counter;
