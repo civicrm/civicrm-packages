@@ -275,11 +275,6 @@ class DB_sybase extends DB_common
             return $this->sybaseRaiseError();
         }
         if (is_resource($result)) {
-            $numrows = $this->numRows($result);
-            if (is_object($numrows)) {
-                return $numrows;
-            }
-            $this->num_rows[(int)$result] = $numrows;
             return $result;
         }
         // Determine which queries that should return data, and which
@@ -382,7 +377,6 @@ class DB_sybase extends DB_common
      */
     function freeResult($result)
     {
-        unset($this->num_rows[(int)$result]);
         return @sybase_free_result($result);
     }
 
