@@ -32,6 +32,7 @@ class DB_mssql extends DB_common
     var $prepare_types = array();
     var $transaction_opcount = 0;
     var $autocommit = true;
+    var $_db = null;
 
     function DB_mssql()
     {
@@ -80,6 +81,7 @@ class DB_mssql extends DB_common
                 return $this->raiseError(DB_ERROR_NODBSELECTED, null, null,
                                          null, mssql_get_last_message());
             }
+            $this->_db = $dsninfo['database'];
         }
         $this->connection = $conn;
         return DB_OK;
@@ -96,6 +98,9 @@ class DB_mssql extends DB_common
     {
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
+        if (!@mssql_select_db($this->_db, $this->connection)) {
+            return $this->mssqlRaiseError(DB_ERROR_NODBSELECTED);
+        }
         $query = $this->modifyQuery($query);
         if (!$this->autocommit && $ismanip) {
             if ($this->transaction_opcount == 0) {
@@ -220,6 +225,9 @@ class DB_mssql extends DB_common
     function commit()
     {
         if ($this->transaction_opcount > 0) {
+            if (!@mssql_select_db($this->_db, $this->connection)) {
+                return $this->mssqlRaiseError(DB_ERROR_NODBSELECTED);
+            }
             $result = @mssql_query('COMMIT TRAN', $this->connection);
             $this->transaction_opcount = 0;
             if (!$result) {
@@ -238,6 +246,9 @@ class DB_mssql extends DB_common
     function rollback()
     {
         if ($this->transaction_opcount > 0) {
+            if (!@mssql_select_db($this->_db, $this->connection)) {
+                return $this->mssqlRaiseError(DB_ERROR_NODBSELECTED);
+            }
             $result = @mssql_query('ROLLBACK TRAN', $this->connection);
             $this->transaction_opcount = 0;
             if (!$result) {
@@ -293,6 +304,9 @@ class DB_mssql extends DB_common
     function nextId($seq_name, $ondemand = true)
     {
         $seqname = $this->getSequenceName($seq_name);
+        if (!@mssql_select_db($this->_db, $this->connection)) {
+            return $this->mssqlRaiseError(DB_ERROR_NODBSELECTED);
+        }
         $repeat = 0;
         do {
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
@@ -358,8 +372,7 @@ class DB_mssql extends DB_common
                 return $this->raiseError($code);
             }
         }
-        return $this->raiseError($code, null, null, null,
-                        mssql_get_last_message());
+        return $this->raiseError($code, null, null, null, mssql_get_last_message());
     }
 
   /**
@@ -423,6 +436,9 @@ class DB_mssql extends DB_common
         // table without a resultset
 
         if (is_string($result)) {
+            if (!@mssql_select_db($this->_db, $this->connection)) {
+                return $this->mssqlRaiseError(DB_ERROR_NODBSELECTED);
+            }
             $id = mssql_query("SELECT * FROM $result", $this->connection);
             if (empty($id)) {
                 return $this->mssqlRaiseError();
