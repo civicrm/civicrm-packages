@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.63 2004-02-10 19:06:49 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.64 2004-02-10 22:26:54 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -77,8 +77,8 @@ parsing a DSN string.  (danielc)
 - ifx:
 Add tableInfo().
 
-- mssql, odbc, pgsql, sqlite:
-Duplicate key constraint mapped to
+- ibase, mssql, odbc, pgsql, sqlite:
+Duplicate key constraint violations mapped to
 DB_ERROR_CONSTRAINT.  (danielc)
 
 - mysql:
@@ -104,12 +104,6 @@ quoted identifiers are passed to limitQuery().
 Bug 679. (danielc)
 
 - all:
-All drivers with tableInfo() methods had bug
-introduced in 1.6.0RC5 that caused
-'undefined function' errors when lowercasing
-portability was off.  Bug 724.  (danielc)
-
-- all:
 In modifyLimitQuery(), if errors, put bad query
 into last_query to help debugging.  (danielc)
 
@@ -117,6 +111,21 @@ into last_query to help debugging.  (danielc)
 In limitQuery(), check if return from
 modifyLimitQuery() is an error and return that
 error if problems.  (danielc)
+
+- all:
+All drivers with tableInfo() methods had bug
+introduced in 1.6.0RC5 that caused
+'undefined function' errors when lowercasing
+portability was off.  Bug 724.  (danielc)
+
+- ibase:
+Resolve 'undefined variable flags' notice when
+using tableInfo() under certain conditions.
+
+- ibase:
+Use upper case for RELATION_NAME in
+_ibaseFieldFlags() query to make tableInfo() work.
+(danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
