@@ -115,21 +115,21 @@ class DB_mysql extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
         $this->dsn = $dsninfo;
-        if (isset($dsninfo['protocol']) && $dsninfo['protocol'] == 'unix') {
+        if ($dsninfo['protocol'] && $dsninfo['protocol'] == 'unix') {
             $dbhost = ':' . $dsninfo['socket'];
         } else {
-            $dbhost = isset($dsninfo['hostspec']) ? $dsninfo['hostspec'] : 'localhost';
-            if (isset($dsninfo['port'])) {
+            $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
+            if ($dsninfo['port']) {
                 $dbhost .= ':' . $dsninfo['port'];
             }
         }
         
         $connect_function = $persistent ? 'mysql_pconnect' : 'mysql_connect';
 
-        if ($dbhost && isset($dsninfo['username']) && isset($dsninfo['password'])) {
+        if ($dbhost && $dsninfo['username'] && isset($dsninfo['password'])) {
             $conn = @$connect_function($dbhost, $dsninfo['username'],
                                        $dsninfo['password']);
-        } elseif ($dbhost && isset($dsninfo['username'])) {
+        } elseif ($dbhost && $dsninfo['username']) {
             $conn = @$connect_function($dbhost, $dsninfo['username']);
         } elseif ($dbhost) {
             $conn = @$connect_function($dbhost);

@@ -109,7 +109,7 @@ class DB_odbc extends DB_common
         }
 
         $this->dsn = $dsninfo;
-        if (isset($dsninfo['dbsyntax'])) {
+        if ($dsninfo['dbsyntax']) {
             $this->dbsyntax = $dsninfo['dbsyntax'];
         }
         switch ($this->dbsyntax) {

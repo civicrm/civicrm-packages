@@ -84,30 +84,30 @@ class DB_pgsql extends DB_common
         }
 
         $this->dsn = $dsninfo;
-        $protocol = (isset($dsninfo['protocol'])) ? $dsninfo['protocol'] : 'tcp';
+        $protocol = $dsninfo['protocol'] ? $dsninfo['protocol'] : 'tcp';
         $connstr = '';
 
         if ($protocol == 'tcp') {
-            if (isset($dsninfo['hostspec'])) {
+            if ($dsninfo['hostspec']) {
                 $connstr .= 'host=' . $dsninfo['hostspec'];
             }
-            if (isset($dsninfo['port'])) {
+            if ($dsninfo['port']) {
                 $connstr .= ' port=' . $dsninfo['port'];
             }
         } elseif ($protocol == 'unix') {
             // Allow for pg socket in non-standard locations.
-            if (isset($dsninfo['socket'])) {
+            if ($dsninfo['socket']) {
                 $connstr .= 'host=' . $dsninfo['socket'];
             }
         }
 
-        if (isset($dsninfo['database'])) {
+        if ($dsninfo['database']) {
             $connstr .= ' dbname=\'' . addslashes($dsninfo['database']) . '\'';
         }
-        if (isset($dsninfo['username'])) {
+        if ($dsninfo['username']) {
             $connstr .= ' user=\'' . addslashes($dsninfo['username']) . '\'';
         }
-        if (isset($dsninfo['password'])) {
+        if ($dsninfo['password']) {
             $connstr .= ' password=\'' . addslashes($dsninfo['password']) . '\'';
         }
         if (isset($dsninfo['options'])) {

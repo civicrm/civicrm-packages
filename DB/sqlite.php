@@ -161,7 +161,7 @@ class DB_sqlite extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        if (isset($dsninfo['database'])) {
+        if ($dsninfo['database']) {
             if (!file_exists($dsninfo['database'])) {
                 if (!touch($dsninfo['database'])) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);

@@ -549,10 +549,6 @@ class DB
      */
     function parseDSN($dsn)
     {
-        if (is_array($dsn)) {
-            return $dsn;
-        }
-
         $parsed = array(
             'phptype'  => false,
             'dbsyntax' => false,
@@ -562,8 +558,12 @@ class DB
             'hostspec' => false,
             'port'     => false,
             'socket'   => false,
-            'database' => false
+            'database' => false,
         );
+
+        if (is_array($dsn)) {
+            return array_merge($parsed, $dsn);
+        }
 
         // Find phptype and dbsyntax
         if (($pos = strpos($dsn, '://')) !== false) {

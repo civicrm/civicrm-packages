@@ -112,11 +112,11 @@ class DB_mysql4 extends DB_common
         }
 
         $this->dsn = $dsninfo;
-        if (isset($dsninfo['protocol']) && $dsninfo['protocol'] == 'unix') {
+        if ($dsninfo['protocol'] && $dsninfo['protocol'] == 'unix') {
             $dbhost = ':' . $dsninfo['socket'];
         } else {
-            $dbhost = isset($dsninfo['hostspec']) ? $dsninfo['hostspec'] : 'localhost';
-            if (isset($dsninfo['port'])) {
+            $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
+            if ($dsninfo['port']) {
                 $dbhost .= ':' . $dsninfo['port'];
             }
         }
@@ -125,7 +125,7 @@ class DB_mysql4 extends DB_common
 
         @ini_set('track_errors', true);
 
-        if ($dbhost && isset($dsninfo['username']) && isset($dsninfo['password'])) {
+        if ($dbhost && $dsninfo['username'] && $dsninfo['password']) {
             // Need to verify if arguments are okay
             $conn = @mysqli_connect($dbhost, $dsninfo['username'],
                                     $dsninfo['password'], $ssl_mode);
