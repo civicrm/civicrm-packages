@@ -303,6 +303,9 @@ class DB_pgsql extends DB_common
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
             $this->_rtrimArrayValues($arr);
         }
+        if ($this->options['portability'] & DB_PORTABILITY_NULL_TO_EMPTY) {
+            $this->_convertNullArrayValuesToEmpty($arr);
+        }
         $this->row[$result] = ++$rownum;
         return DB_OK;
     }

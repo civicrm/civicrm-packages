@@ -638,6 +638,12 @@ class DB_common extends PEAR
      *   DB_ERROR_MISMATCH -> DB_ERROR_NOSUCHFIELD
      *
      *
+     * <samp>DB_PORTABILITY_NULL_TO_EMPTY</samp>
+     * convert null values to empty strings in data output by get*() and
+     * fetch*().  Needed because Oracle considers empty strings to be null,
+     * while most other DBMS's know the difference between empty and null.
+     *
+     *
      * <samp>DB_PORTABILITY_ALL</samp>
      * turn on all portability features
      *
@@ -1981,6 +1987,24 @@ class DB_common extends PEAR
         foreach ($array as $key => $value) {
             if (is_string($value)) {
                 $array[$key] = rtrim($value);
+            }
+        }
+    }
+
+    // }}}
+    // {{{ _convertNullArrayValuesToEmpty()
+
+    /**
+     * Convert all null values in an array to empty strings
+     *
+     * @param array  $array  the array to be de-nullified (passed by reference)
+     * @return void
+     * @access private
+     */
+    function _convertNullArrayValuesToEmpty(&$array) {
+        foreach ($array as $key => $value) {
+            if (is_null($value)) {
+                $array[$key] = '';
             }
         }
     }

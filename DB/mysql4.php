@@ -314,6 +314,9 @@ class DB_mysql4 extends DB_common
              */
             $this->_rtrimArrayValues($arr);
         }
+        if ($this->options['portability'] & DB_PORTABILITY_NULL_TO_EMPTY) {
+            $this->_convertNullArrayValuesToEmpty($arr);
+        }
         return DB_OK;
     }
 
