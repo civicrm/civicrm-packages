@@ -394,7 +394,8 @@ class DB
                 DB_ERROR_NEED_MORE_DATA     => 'insufficient data supplied',
                 DB_ERROR_EXTENSION_NOT_FOUND=> 'extension not found',
                 DB_ERROR_NOSUCHDB           => 'no such database',
-                DB_ERROR_ACCESS_VIOLATION   => 'insufficient permissions'
+                DB_ERROR_ACCESS_VIOLATION   => 'insufficient permissions',
+                DB_ERROR_TRUNCATED          => 'truncated'
             );
         }
 
