@@ -57,7 +57,6 @@ class DB_sqlite extends DB_common
      */
     function DB_sqlite()
     {
-
         $this->DB_common();
         $this->phptype = 'sqlite';
         $this->dbsyntax = 'sqlite';
@@ -145,10 +144,18 @@ class DB_sqlite extends DB_common
         }
 
         $connect_function = $persistent ? 'sqlite_popen' : 'sqlite_open';
+
+        $php_errormsg = '';
         if (!($conn = @$connect_function($dsninfo['database']))) {
-            return $this->sqliteRaiseError(DB_ERROR_NODBSELECTED);
+            if (empty($php_errormsg)) {
+                return $this->sqliteRaiseError(DB_ERROR_NODBSELECTED);
+            } else {
+                return $this->raiseError(DB_ERROR_NODBSELECTED, null,
+                                         null, null, $php_errormsg);
+            }
         }
         $this->connection = $conn;
+
 
         return DB_OK;
     }
@@ -506,9 +513,11 @@ class DB_sqlite extends DB_common
      */
     function getSpecialQuery($type, $args=array())
     {
-        if (!is_array($args))
+        if (!is_array($args)) {
             return $this->raiseError('no key specified', null, null, null,
                                      'Argument has to be an array.');
+        }
+
         switch (strtolower($type)) {
             case 'master':
                 return 'SELECT * FROM sqlite_master;';
@@ -673,7 +682,6 @@ class DB_sqlite extends DB_common
      */
     function sqliteRaiseError($errno = null)
     {
-
         $native = $this->errorNative();
         if ($errno === null) {
             $errno = $this->errorCode($native);

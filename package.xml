@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.130 2004-10-31 22:15:40 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.131 2004-11-02 15:14:35 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -69,6 +69,10 @@ ibase:
 mysql & mysqli:
 * Added 1061 => DB_ERROR_ALREADY_EXISTS to error map.
   (danielc)
+
+sqlite:
+* Capture $php_errormsg on connection errors to make
+  debugging easier.
 
 sybase:
 * Provide debugging information to raiseError() when
