@@ -118,6 +118,7 @@ Minor API Change:
         <file name="sequences.inc"/>
         <file name="simplequery.inc"/>
         <file name="tableinfo.inc"/>
+        <file name="tableinfo_driver.inc"/>
         <file name="transactions.inc"/>
         <dir name="driver" role="test">
           <file name="01connect.phpt"/>
@@ -132,6 +133,8 @@ Minor API Change:
           <file name="13limit.phpt"/>
           <file name="14fetchmode_object.phpt"/>
           <file name="15quote.phpt"/>
+          <file name="16tableinfo.phpt"/>
+          <file name="17query.phpt"/>
           <file name="bug22328.phpt"/>
           <file name="connect.inc"/>
           <file name="mktable.inc"/>
