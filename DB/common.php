@@ -216,7 +216,6 @@ class DB_common extends PEAR
      *                  for DBMS's with <kbd>BOOLEAN</kbd> handling:
      *                 # fbsql
      *                 # ibase
-     *                 # odbc
      *                 # pgsql
      *                - int <samp>1</samp> if true, <samp>0</samp> if false
      *                  for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
@@ -226,6 +225,7 @@ class DB_common extends PEAR
      *                 # mysql   <kbd>TINYINT(1)</kbd>
      *                 # mysql4  <kbd>TINYINT(1)</kbd>
      *                 # oci8    <kbd>NUMBER(1)</kbd>
+     *                 # odbc    <kbd>SMALLINT</kbd> [1]
      *                 # sqlite  <kbd>INTEGER</kbd>
      *                 # sybase  <kbd>TINYINT(1)</kbd>
      *                - string <samp>T</samp> if true, <samp>F</samp> if false
