@@ -758,15 +758,12 @@ class DB_common extends PEAR
     function &limitQuery($query, $from, $count, $params = array())
     {
         $query  = $this->modifyLimitQuery($query, $from, $count);
-        $result = $this->query($query, $params);
-        if (DB::isError($result) || get_class($result) == 'db_result' ||
-            $result === DB_OK) {
-            return $result;
-        } else {
-            $options['limit_from']  = $from;
-            $options['limit_count'] = $count;
-            return new DB_result($this, $result, $options);
+        $result  = $this->query($query, $params);
+        if (get_class($result) == 'db_result') {
+            $result->setOption('limit_from', $from);
+            $result->setOption('limit_count', $count);
         }
+        return $result;
     }
 
     // }}}
