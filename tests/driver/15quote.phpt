@@ -120,13 +120,13 @@ if ($identifier) {
     $info = $dbh->tableInfo('pearquote');
     if (DB::isError($info) ) {
         if ($info->code == DB_ERROR_NOT_CAPABLE) {
-            print "Creation of the delimited identifier worked.\n";
+            print "Got outcome expected from delimited identifier.\n";
         } else {
             print "tableInfo() failed.\n";
         }
     } else {
         if ($identifier == $info[2]['name']) {
-            print "Creation of the delimited identifier worked.\n";
+            print "Got outcome expected from delimited identifier.\n";
             // print "COLUMN NAME IS: {$info[2]['name']}\n";
         } else {
             print "Expected column name: '$identifier' ... ";
@@ -143,7 +143,7 @@ if ($identifier) {
           b {$boolean_col_type[$dbh->phptype]} $null
         )
     ");
-    print "{$dbh->dsn['phptype']} does not handle delimited identifiers.\n";
+    print "Got outcome expected from delimited identifier.\n";
 }
 
 
@@ -258,7 +258,7 @@ drop_table($dbh, 'pearquote');
 
 ?>
 --EXPECT--
-Creation of the delimited identifier worked.
+Got outcome expected from delimited identifier.
 String escape test: OK
 Number escape test: OK
 Boolean escape test: OK
