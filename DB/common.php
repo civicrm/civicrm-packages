@@ -767,7 +767,6 @@ class DB_common extends PEAR
                     $values .= '?';
                 }
                 return "INSERT INTO $table ($names) VALUES ($values)";
-                break;
             case DB_AUTOQUERY_UPDATE:
                 $set = '';
                 while (list(, $value) = each($table_fields)) {
@@ -783,7 +782,6 @@ class DB_common extends PEAR
                     $sql .= " WHERE $where";
                 }
                 return $sql;
-                break;
             default:
                 $this->raiseError(DB_ERROR_SYNTAX);
         }
