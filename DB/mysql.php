@@ -887,7 +887,7 @@ class DB_mysql extends DB_common
                     if (DB::isError($db = DB::connect($dsn))) {
                         return $db;
                     }
-                    return $db->getCol($sql);
+                    $sql = $db->getCol($sql);
                     $db->disconnect();
                     // XXX Fixme the mysql driver should take care of this
                     if (!@mysql_select_db($this->dsn['database'], $this->connection)) {
