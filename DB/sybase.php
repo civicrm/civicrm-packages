@@ -614,6 +614,7 @@ class DB_sybase extends DB_common
      *                or an error object if something is wrong
      * @access public
      * @internal
+     * @since 1.6.0
      * @see DB_common::tableInfo()
      */
     function tableInfo($result, $mode = null)
