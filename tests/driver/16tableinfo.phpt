@@ -99,7 +99,7 @@ function examineArrayData($array, $field = false, $query = true) {
     global $dbh, $quirks;
 
     if (!is_array($array)) {
-        print "This DMBS didn't produce proper results\n
+        print "This DMBS didn't produce proper results\n";
         if ($key == 'table') {
             print "\n\n\n\n";
         } else {
