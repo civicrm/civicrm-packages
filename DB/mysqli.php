@@ -156,7 +156,7 @@ class DB_mysqli extends DB_common
         }
 
         if ($dsninfo['database']) {
-            if (!@mysqli_select_db($dsninfo['database'], $conn)) {
+            if (!@mysqli_select_db($conn, $dsninfo['database'])) {
                 switch(mysqli_errno($conn)) {
                     case 1049:
                         return $this->raiseError(DB_ERROR_NOSUCHDB, null, null,
@@ -212,25 +212,25 @@ class DB_mysqli extends DB_common
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
         if ($this->_db) {
-            if (!@mysqli_select_db($this->_db, $this->connection)) {
+            if (!@mysqli_select_db($this->connection, $this->_db)) {
                 return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
             }
         }
         if (!$this->autocommit && $ismanip) {
             if ($this->transaction_opcount == 0) {
-                $result = @mysqli_query('SET AUTOCOMMIT=0', $this->connection);
-                $result = @mysqli_query('BEGIN', $this->connection);
+                $result = @mysqli_query($this->connection, 'SET AUTOCOMMIT=0');
+                $result = @mysqli_query($this->connection, 'BEGIN');
                 if (!$result) {
                     return $this->mysqlRaiseError();
                 }
             }
             $this->transaction_opcount++;
         }
-        $result = @mysqli_query($query, $this->connection);
+        $result = @mysqli_query($this->connection, $query);
         if (!$result) {
             return $this->mysqlRaiseError();
         }
-        if (is_resource($result)) {
+        if (is_object($result)) {
             $numrows = $this->numrows($result);
             if (is_object($numrows)) {
                 return $numrows;
@@ -901,7 +901,7 @@ class DB_mysqli extends DB_common
                     $sql = $db->getCol($sql);
                     $db->disconnect();
                     // XXX Fixme the mysql driver should take care of this
-                    if (!@mysqli_select_db($this->dsn['database'], $this->connection)) {
+                    if (!@mysqli_select_db($this->connection, $this->dsn['database'])) {
                         return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
                     }
                 }
