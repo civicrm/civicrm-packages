@@ -37,6 +37,26 @@ print 'Trying to provoke DB_ERROR_NOSUCHTABLE for drop:  ';
 $res = drop_table($dbh, 'tableThatsBogus');
 check_error($res, DB_ERROR_NOSUCHTABLE);
 
+print 'Trying to provoke DB_ERROR_NOT_FOUND for drop index:  ';
+switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'fbsql:fbsql':
+    case 'ibase:firebird':
+    case 'ibase:ibase':
+    case 'odbc:db2':
+    case 'oci8:oci8':
+    case 'pgsql:pgsql':
+    case 'sqlite:sqlite':
+        $res = $dbh->query('DROP INDEX fakeindex');
+        break;
+    case 'mssql:mssql':
+    case 'sybase:sybase':
+        $res = $dbh->query('DROP INDEX phptest.fakeindex');
+        break;
+    default:
+        $res = $dbh->query('DROP INDEX fakeindex ON phptest');
+}
+check_error($res, DB_ERROR_NOT_FOUND);
+
 
 print 'Trying to provoke DB_ERROR_ALREADY_EXISTS for create table:  ';
 $res = $dbh->query($test_mktable_query);

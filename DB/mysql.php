@@ -91,6 +91,7 @@ class DB_mysql extends DB_common
             1061 => DB_ERROR_ALREADY_EXISTS,
             1062 => DB_ERROR_ALREADY_EXISTS,
             1064 => DB_ERROR_SYNTAX,
+            1091 => DB_ERROR_NOT_FOUND,
             1100 => DB_ERROR_NOT_LOCKED,
             1136 => DB_ERROR_VALUE_COUNT_ON_ROW,
             1146 => DB_ERROR_NOSUCHTABLE,

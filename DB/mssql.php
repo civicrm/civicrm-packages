@@ -479,12 +479,17 @@ class DB_mssql extends DB_common
      * @return integer  an error number from a DB error constant
      * @see errorNative()
      */
-    function errorCode($nativecode = null)
+    function errorCode($nativecode = null, $msg = '')
     {
         if (!$nativecode) {
             $nativecode = $this->errorNative();
         }
         if (isset($this->errorcode_map[$nativecode])) {
+            if ($nativecode == 3701
+                && preg_match('/Cannot drop the index/i', $msg))
+            {
+                return DB_ERROR_NOT_FOUND;
+            }
             return $this->errorcode_map[$nativecode];
         } else {
             return DB_ERROR;
@@ -511,8 +516,8 @@ class DB_mssql extends DB_common
         if (!$code) {
             $code = $this->errorNative();
         }
-        return $this->raiseError($this->errorCode($code), null, null, null,
-                                 "$code - $message");
+        return $this->raiseError($this->errorCode($code, $message),
+                                 null, null, null, "$code - $message");
     }
 
     // }}}

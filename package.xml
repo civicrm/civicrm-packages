@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.146 2005-01-28 19:46:33 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.147 2005-01-28 21:02:07 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -131,6 +131,8 @@ sybase:
 all:
 * If DSN contains "dbsyntax", always use that for
   $this->dbsyntax.  Used to only be done for odbc.
+* When trying to DROP an index that doesn't exist,
+  use the DB_ERROR_NOT_FOUND error code.
 
 tests:
 * Reworked 10errormap.phpt so it passes when all

@@ -98,6 +98,7 @@ class DB_oci8 extends DB_common
             955 => DB_ERROR_ALREADY_EXISTS,
             1400 => DB_ERROR_CONSTRAINT_NOT_NULL,
             1407 => DB_ERROR_CONSTRAINT_NOT_NULL,
+            1418 => DB_ERROR_NOT_FOUND,
             1476 => DB_ERROR_DIVZERO,
             1722 => DB_ERROR_INVALID_NUMBER,
             2289 => DB_ERROR_NOSUCHTABLE,

@@ -408,6 +408,7 @@ class DB_sqlite extends DB_common
         if (!isset($error_regexps)) {
             $error_regexps = array(
                 '/^no such table:/' => DB_ERROR_NOSUCHTABLE,
+                '/^no such index:/' => DB_ERROR_NOT_FOUND,
                 '/^(table|index) .* already exists$/' => DB_ERROR_ALREADY_EXISTS,
                 '/PRIMARY KEY must be unique/i' => DB_ERROR_CONSTRAINT,
                 '/is not unique/' => DB_ERROR_CONSTRAINT,
