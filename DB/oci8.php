@@ -692,6 +692,7 @@ class DB_oci8 extends DB_common
          *      DB_TABLEINFO_ORDERTABLE * or with DB_TABLEINFO_FULL
          */
 
+        $port = ($this->options['optimize'] == 'portability') ? true : false;
         // if $result is a string, we collect info for a table only
         if (is_string($result)) {
             $result = strtoupper($result);
@@ -705,9 +706,11 @@ class DB_oci8 extends DB_common
                 return $this->oci8RaiseError($stmt);
             }
             while (OCIFetch($stmt)) {
-                $res[$count]['table']       = $result;
-                $res[$count]['name']        = @OCIResult($stmt, 1);
-                $res[$count]['type']        = @OCIResult($stmt, 2);
+                $res[$count]['table']       = ($port) ? strtolower($result) : $result;
+                $val = @OCIResult($stmt, 1);
+                $res[$count]['name']        = ($port) ? strtolower($val) : $val;
+                $val = @OCIResult($stmt, 2);
+                $res[$count]['type']        = ($port) ? strtolower($val) : $val;
                 $res[$count]['len']         = @OCIResult($stmt, 3);
                 $res[$count]['format']      = @OCIResult($stmt, 4);
                 $res[$count]['nullable']    = (@OCIResult($stmt, 5) == 'Y') ? true : false;
@@ -726,11 +729,13 @@ class DB_oci8 extends DB_common
             if ($result === $this->last_stmt) {
                 $count = @OCINumCols($result);
                 for ($i=0; $i<$count; $i++) {
-                    $res[$i]['name']  = @OCIColumnName($result, $i+1);
-                    $res[$i]['type']  = @OCIColumnType($result, $i+1);
+                    $name = @OCIColumnName($result, $i+1);
+                    $res[$i]['name']  = ($port) ? strtolower($name) : $name;
+                    $val = @OCIColumnName($result, $i+1);
+                    $res[$i]['type']  = ($port) ? strtolower($val) : $val;
                     $res[$i]['len']   = @OCIColumnSize($result, $i+1);
 
-                    $q_fields = "select table_name, data_precision, nullable, data_default from user_tab_columns where column_name='".$res[$i]['name']."'";
+                    $q_fields = "select table_name, data_precision, nullable, data_default from user_tab_columns where column_name='$name'";
                     if (!$stmt = OCIParse($this->connection, $q_fields)) {
                         return $this->oci8RaiseError();
                     }
@@ -738,7 +743,8 @@ class DB_oci8 extends DB_common
                         return $this->oci8RaiseError($stmt);
                     }
                     OCIFetch($stmt);
-                    $res[$i]['table']       = OCIResult($stmt, 1);
+                    $val = OCIResult($stmt, 1);
+                    $res[$i]['table']       = ($port) ? strtolower($val) : $val;
                     $res[$i]['format']      = OCIResult($stmt, 2);
                     $res[$i]['nullable']    = (OCIResult($stmt, 3) == 'Y') ? true : false;
                     $res[$i]['default']     = OCIResult($stmt, 4);
