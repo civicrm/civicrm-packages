@@ -29,8 +29,12 @@ function check_error($e, $expected_db_code, $should_be_error = true) {
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 
 
-print 'Trying to provoke DB_ERROR_NOSUCHTABLE:  ';
+print 'Trying to provoke DB_ERROR_NOSUCHTABLE for select:  ';
 $res = $dbh->query('SELECT * FROM tableThatsBogus');
+check_error($res, DB_ERROR_NOSUCHTABLE);
+
+print 'Trying to provoke DB_ERROR_NOSUCHTABLE for drop:  ';
+$res = drop_table($dbh, 'tableThatsBogus');
 check_error($res, DB_ERROR_NOSUCHTABLE);
 
 
@@ -52,11 +56,6 @@ switch ($dbh->phptype) {
         check_error($res, DB_ERROR_ALREADY_EXISTS);
 }
 $res = drop_table($dbh, 'a');
-
-
-print 'Trying to provoke DB_ERROR_NOSUCHTABLE:  ';
-$res = drop_table($dbh, 'tableThatsBogus');
-check_error($res, DB_ERROR_NOSUCHTABLE);
 
 
 print 'Trying to provoke DB_ERROR_CONSTRAINT for primary key insert duplicate:  ';
@@ -162,6 +161,7 @@ switch ($dbh->phptype) {
                 break;
         }
         break;
+    case 'ibase':
     case 'ifx':
     case 'fbsql':
     case 'mssql':
