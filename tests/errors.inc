@@ -45,6 +45,6 @@ print "Trying to provoke DB_ERROR_NOSUCHFIELD\n";
 $dbh->query("SELECT e FROM phptest");
 
 print "Trying to provoke DB_ERROR_SYNTAX\n";
-$dbh->query("SYNTAX TERROR");
+$dbh->query("CREATE");
 
 ?>
