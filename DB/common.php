@@ -221,6 +221,7 @@ class DB_common extends PEAR
      *                  for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
      *                  Such drivers and the data types expected:
      *                 # ifx     <kbd>SMALLINT</kbd> [1]
+     *                 # msql    <kbd>INTEGER</kbd>
      *                 # mssql   <kbd>BIT</kbd>
      *                 # mysql   <kbd>TINYINT(1)</kbd>
      *                 # mysql4  <kbd>TINYINT(1)</kbd>
