@@ -45,10 +45,8 @@ printf("%d after delete\n", $dbh->affectedRows());
 // Affected rows by DELETE statement
 $dbh->query("INSERT INTO phptest (a,b) VALUES(1, 'test')");
 $dbh->query("INSERT INTO phptest (a,b) VALUES(2, 'test')");
-$dbh->setOption("optimize", "portability");
 $dbh->query("DELETE FROM phptest");
-printf("%d after delete all (optimize=%s)\n", $dbh->affectedRows(),
-       $dbh->getOption("optimize"));
+printf("%d after delete all\n", $dbh->affectedRows());
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
@@ -59,4 +57,4 @@ $dbh->query('DROP TABLE phptest');
 1 after insert
 0 after select
 2 after delete
-2 after delete all (optimize=portability)
+2 after delete all
