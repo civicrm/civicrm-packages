@@ -188,8 +188,9 @@ class DB_mysql extends DB_common
      */
     function disconnect()
     {
+        $ret = mysql_close($this->connection);
         $this->connection = null;
-        return mysql_close($this->connection);
+        return $ret;
     }
 
     // }}}
