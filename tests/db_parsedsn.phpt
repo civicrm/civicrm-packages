@@ -15,6 +15,11 @@ function test($dsn) {
     print_r(DB::parseDSN($dsn));
 }
 
+function testArray($dsn) {
+    echo "DSN: array\n";
+    print_r(DB::parseDSN($dsn));
+}
+
 print "testing DB::parseDSN...\n\n";
 
 test("mysql");
@@ -43,6 +48,14 @@ test("pgsql://user:pass@word@tcp(somehost:7777)/pear");
 test('ibase://user:pass@localhost//var/lib/dbase.dbf?role=foo');
 test('dbase://@/?role=foo&dialect=bar');
 test('sqlite:///database?option=value&anotheroption=anothervalue');
+
+// array tests
+$array = array(
+    'phptype'  => 'mysql',
+    'dbsyntax' => 'mysql',
+);
+testArray($array);
+
 ?>
 --GET--
 --POST--
@@ -339,4 +352,17 @@ Array
     [database] => database
     [option] => value
     [anotheroption] => anothervalue
+)
+DSN: array
+Array
+(
+    [phptype] => mysql
+    [dbsyntax] => mysql
+    [username] => 
+    [password] => 
+    [protocol] => 
+    [hostspec] => 
+    [port] => 
+    [socket] => 
+    [database] => 
 )
