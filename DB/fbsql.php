@@ -713,17 +713,17 @@ class DB_fbsql extends DB_common
             case 'users':
                 return 'SELECT "user_name" from information_schema.users'; 
             case 'functions':
-                return 'SELECT "table_name" FROM'
+                return 'SELECT "routine_name" FROM'
                        . ' information_schema.psm_routines'
                        . ' t0, information_schema.schemata t1'
-                       . ' WHERE t0.schema_pk=t1.schema_pk AND'
+                       . ' WHERE t0.schema_pk=t1.schema_pk'
                        . ' AND "routine_kind"=\'FUNCTION\''
                        . ' AND "schema_name" = current_schema';
             case 'procedures':
-                return 'SELECT "table_name" FROM'
+                return 'SELECT "routine_name" FROM'
                        . ' information_schema.psm_routines'
                        . ' t0, information_schema.schemata t1'
-                       . ' WHERE t0.schema_pk=t1.schema_pk AND'
+                       . ' WHERE t0.schema_pk=t1.schema_pk'
                        . ' AND "routine_kind"=\'PROCEDURE\''
                        . ' AND "schema_name" = current_schema';
             default:
