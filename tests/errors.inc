@@ -313,6 +313,7 @@ $res = $dbh->query("UPDATE phptest SET a = 8.9 WHERE a = 42");
 switch ($dbh->phptype) {
     case 'fbsql':
     case 'ibase':
+    case 'ifx':
     case 'mssql':
     case 'mysql':
     case 'mysqli':
@@ -332,6 +333,7 @@ $res = $dbh->query("UPDATE phptest SET b = 8 WHERE a = 42");
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'ibase:ibase':
     case 'ibase:firebird':
+    case 'ifx:ifx':
     case 'mssql:mssql':
     case 'mysql:mysql':
     case 'mysqli:mysqli':
