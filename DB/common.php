@@ -865,9 +865,9 @@ class DB_common extends PEAR
      * of doing the query and freeing the results when finished.
      *
      * @param string $query the SQL query
-     * @param integer $fetchmode the fetch mode to use
      * @param array $params array if supplied, prepare/execute will be used
      *        with this array as execute parameters
+     * @param integer $fetchmode the fetch mode to use
      * @access public
      * @return array the first row of results as an array indexed from
      * 0, or a DB error code.
@@ -880,17 +880,19 @@ class DB_common extends PEAR
         // have the opposite order
         if (!is_array($params)) {
             if (is_array($fetchmode)) {
-                $tmp = $params;
+                if ($params === null) {
+                    $tmp = DB_FETCHMODE_DEFAULT;
+                } else {
+                    $tmp = $params;
+                }
                 $params = $fetchmode;
                 $fetchmode = $tmp;
             } elseif ($params !== null) {
                 $fetchmode = $params;
-                $params = null;
+                $params = array();
             }
         }
-        $params = (empty($params)) ? array() : $params;
-        $fetchmode = (empty($fetchmode)) ? DB_FETCHMODE_DEFAULT : $fetchmode;
-        settype($params, 'array');
+
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
             if (DB::isError($sth)) {
