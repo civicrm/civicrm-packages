@@ -384,7 +384,8 @@ class DB_ibase extends DB_common
             } elseif ($types[$i] == DB_PARAM_OPAQUE) {
                 $fp = @fopen($data[$key], 'rb');
                 if (!$fp) {
-                    return $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
+                    $tmp =& $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
+                    return $tmp;
                 }
                 $data[$key] = fread($fp, filesize($data[$key]));
                 fclose($fp);
