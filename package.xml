@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.129 2004-10-31 20:38:53 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.130 2004-10-31 22:15:40 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -57,6 +57,8 @@ NOTICE!  fbsql has undergone major changes:
 
 * Error mapping now works.  $errorcode_map was using
   MySQL's codes by mistake.  (danielc)
+
+* Sequences now work.
 = - = - = - = - = - = - = - = - = - = - = - = - =
 
 ibase:

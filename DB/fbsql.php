@@ -408,9 +408,11 @@ class DB_fbsql extends DB_common
     function nextId($seq_name, $ondemand = true)
     {
         $seqname = $this->getSequenceName($seq_name);
-        $repeat = 0;
         do {
-            $result = $this->query("INSERT INTO ${seqname} (id) VALUES (NULL)");
+            $repeat = 0;
+            $this->pushErrorHandling(PEAR_ERROR_RETURN);
+            $result = $this->getOne('SELECT UNIQUE FROM ' . $seqname);
+            $this->popErrorHandling();
             if ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE) {
                 $repeat = 1;
@@ -423,9 +425,10 @@ class DB_fbsql extends DB_common
             }
         } while ($repeat);
         if (DB::isError($result)) {
+            $this->raiseError($result);
             return $result;
         }
-        return @fbsql_insert_id($this->connection);
+        return $result;
     }
 
     /**
@@ -443,9 +446,13 @@ class DB_fbsql extends DB_common
     function createSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
-        return $this->query("CREATE TABLE ${seqname} ".
-                            '(id INTEGER UNSIGNED AUTO_INCREMENT NOT NULL,'.
-                            ' PRIMARY KEY(id))');
+        $res = $this->query('CREATE TABLE ' . $seqname
+                            . ' (id INTEGER NOT NULL,'
+                            . ' PRIMARY KEY(id))');
+        if ($res) {
+            $res = $this->query('SET UNIQUE = 0 FOR ' . $seqname);
+        }
+        return $res;
     }
 
     // }}}
