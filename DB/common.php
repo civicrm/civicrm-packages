@@ -523,7 +523,7 @@ class DB_common extends PEAR
                 }
                 $sql = "UPDATE $table SET $set";
                 if ($where) {
-                    $sql .= " WHERE $sql";
+                    $sql .= " WHERE $where";
                 }
                 return $sql;
                 break;
