@@ -658,9 +658,10 @@ class DB_sqlite extends DB_common {
             $native = $this->errorNative();
             $errno = $this->errorCode($native);
         }
+        $error_code = @sqlite_last_error($this->connection);
         return $this->raiseError($errno, null, null, null,
-                                 @sqlite_last_error($this->connection) . " ** " .
-                                 @sqlite_error_string($this->connection));
+                                 $error_code . " ** " .
+                                 @sqlite_error_string($error_code));
     }
 
     // }}}
