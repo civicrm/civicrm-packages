@@ -38,8 +38,18 @@ function pe($o) {
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
     drop_table($dbh, 'phptest');
 
+    print "\n------------\n";
     if ($o->getCode() == DB_ERROR_UNSUPPORTED) {
         print "This DBMS does not support numRows().";
+    } elseif ($o->getCode() == DB_ERROR_MISMATCH) {
+        print "Mismatch between the number of placeholders and parameters.\n";
+        foreach ($o->backtrace as $item => $detail) {
+            if ($detail['function'] == 'query') {
+                echo 'QUERY: ' . $detail['args'][0] . "\n";
+                echo "PARAMETERS:\n";
+                print_r($detail['args'][1]);
+            }
+        }
     } else {
         print $o->getDebugInfo() . "\n";
     }
