@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.111 2004-07-12 19:07:34 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.112 2004-07-14 00:35:28 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -56,8 +56,8 @@ DB is compatible with both PHP 4 and PHP 5.
   <release>
     <version>1.6.5</version>
     <state>stable</state>
-    <date>pending</date>
-    <notes>
+    <date>2004-07-13</date>
+    <notes><![CDATA[
 =============
 BUGS FIXED:
 
@@ -88,7 +88,7 @@ Bug 1812.  (danielc)
 
 Simplify connect by setting $dsninfo['password'] to false if
 it's empty.  Reworks hack for PEAR bug 631.  (danielc)
-    </notes>
+    ]]></notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
       <dir name="DB" role="php">
