@@ -282,7 +282,7 @@ class DB_sqlite extends DB_common
     {
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
-        $query = $this->_modifyQuery($query);
+        $query = $this->modifyQuery($query);
 
         $php_errormsg = '';
 
@@ -646,17 +646,20 @@ class DB_sqlite extends DB_common
     // {{{ modifyQuery()
 
     /**
-     * "DELETE FROM table" gives 0 affected rows in SQLite
+     * Changes a query string for various DBMS specific reasons
      *
-     * This little hack lets you know how many rows were deleted.
+     * This little hack lets you know how many rows were deleted
+     * when running a "DELETE FROM table" query.  Only implemented
+     * if the DB_PORTABILITY_DELETE_COUNT portability option is on.
      *
-     * @param string $query  the SQL query string
+     * @param string $query  the query string to modify
      *
-     * @return string  the SQL query string
+     * @return string  the modified query string
      *
-     * @access private
+     * @access protected
+     * @see DB_common::setOption()
      */
-    function _modifyQuery($query)
+    function modifyQuery($query)
     {
         if ($this->options['portability'] & DB_PORTABILITY_DELETE_COUNT) {
             if (preg_match('/^\s*DELETE\s+FROM\s+(\S+)\s*$/i', $query)) {
