@@ -166,7 +166,7 @@ class DB_ibase extends DB_common
         }
         // Determine which queries that should return data, and which
         // should return an error code only.
-        return DB::isManip($query) ? DB_OK : $result;
+        return $ismanip ? DB_OK : $result;
     }
 
     // }}}
