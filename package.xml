@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.106 2004-06-24 15:26:54 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.107 2004-06-25 18:51:43 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -56,13 +56,18 @@ DB is compatible with both PHP 4 and PHP 5.
   <release>
     <version>1.6.5</version>
     <state>stable</state>
-    <date>2004-06-24</date>
+    <date>pending</date>
     <notes>
 =============
 BUGS FIXED:
 
+* common, dbase, fbsql, ibase, oic8, pgsql:
 When using resources as array index, convert to int first.
 http://bugs.php.net/28879  (danielc)
+
+* pgsql:
+Adjust getListOf('tables') to accommodate the addition of
+sql_* core tables in PostgreSQL 7.4.2.  Bug 1549.
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>

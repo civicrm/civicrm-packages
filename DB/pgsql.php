@@ -802,7 +802,7 @@ class DB_pgsql extends DB_common
                         FROM pg_class c, pg_user u
                         WHERE c.relowner = u.usesysid AND c.relkind = 'r'
                         AND not exists (select 1 from pg_views where viewname = c.relname)
-                        AND c.relname !~ '^pg_'
+                        AND c.relname !~ '^(pg_|sql_)'
                         UNION
                         SELECT c.relname as \"Name\"
                         FROM pg_class c
