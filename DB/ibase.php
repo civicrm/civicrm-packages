@@ -197,8 +197,6 @@ class DB_ibase extends DB_common
     }
 
     // }}}
-
-
     // {{{ nextResult()
 
     /**
@@ -331,7 +329,6 @@ class DB_ibase extends DB_common
 
     // }}}
     // {{{ prepare()
-
 
     /**
      * Prepares a query for multiple execution with execute().
@@ -467,7 +464,6 @@ class DB_ibase extends DB_common
         unset($this->manip_query[(int)$stmt]);
         return true;
     }
-
 
     // }}}
     // {{{ autoCommit()
