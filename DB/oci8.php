@@ -374,7 +374,7 @@ class DB_oci8 extends DB_common
     {
         $types=&$this->prepare_types[$stmt];
         if (($size = sizeof($types)) != sizeof($data)) {
-            $tmp = $this->raiseError(DB_ERROR_MISMATCH);
+            $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
             return $tmp;
         }
         for ($i = 0; $i < $size; $i++) {

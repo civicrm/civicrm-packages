@@ -324,7 +324,7 @@ class DB_ibase extends DB_common
     {
         $types=&$this->prepare_types[$stmt];
         if (($size = sizeof($types)) != sizeof($data)) {
-            $tmp = $this->raiseError(DB_ERROR_MISMATCH);
+            $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
             return $tmp;
         }
         $pdata[0] = $stmt;

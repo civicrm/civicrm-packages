@@ -1070,7 +1070,7 @@ class DB_common extends PEAR
         $cols = $res->numCols();
 
         if ($cols < 2) {
-            $tmp = $this->raiseError(DB_ERROR_TRUNCATED);
+            $tmp =& $this->raiseError(DB_ERROR_TRUNCATED);
             return $tmp;
         }
 
@@ -1190,7 +1190,7 @@ class DB_common extends PEAR
         $res->free();
 
         if (DB::isError($row)) {
-            $tmp = $this->raiseError($row);
+            $tmp =& $this->raiseError($row);
             return $tmp;
         }
         return $results;
