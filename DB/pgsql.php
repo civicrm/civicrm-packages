@@ -698,7 +698,7 @@ class DB_pgsql extends DB_common
         // table without a resultset
 
         if (is_string($result)) {
-            $id = @pg_exec($this->connection,"SELECT * FROM $result");
+            $id = @pg_exec($this->connection,"SELECT * FROM $result LIMIT 0");
             if (empty($id)) {
                 return $this->pgsqlRaiseError();
             }
