@@ -19,18 +19,18 @@ Symbols:
                     fbsql      ifx      mssql     mysqli     odbc     sqlite
 FEATURE        dbase  |  ibase  |  msql   |   mysql |   oci8  |   pgsql |  sybase
 simpleQuery      -    x    T    T    x    T    T    x    T    T    T    T    T
-numCols          -    x    T    x    x    T    T    x    T    T    T    T    T
-numRows          -    x    n    n    x    T    T    x    E    T    T    T    n 
-errorNative      -    x    n    t    n    T    T    x    T    T    T    E    T
-prepare/execute  -    e    T    E    e    E    E    e    T    E    E    E    e
+numCols          x    x    T    x    x    T    T    x    T    T    T    T    T
+numRows          x    x    n    n    x    T    T    x    E    T    T    T    n 
+errorNative      n    x    n    t    n    T    T    x    T    T    T    E    T
+prepare/execute  e    e    T    E    e    E    E    e    T    E    E    E    e
 sequences        -    e    T    E    n    E    E    e    T    E    T    E    E
-affectedRows     -    x    n    T    x    n    T    x    T    T    T    T    T
-fetch modes      -    x    T    T    x    T    T    x    T    T    T    T    T
-fetch row by no  -    x    n    T    x    T    T    x    n    x    T    T    T
+affectedRows     n    x    n    T    x    n    T    x    T    T    T    T    T
+fetch modes      x    x    T    T    x    T    T    x    T    T    T    T    T
+fetch row by no  x    x    n    T    x    T    T    x    n    x    T    T    T
 transactions     -    x    x    n    n    x    x    -    x    x    x    -    n
 auto-commit      -    x    x    n    n    n    n    -    x    x    x    -    n
 error mapping    -    x    T    t    -    t    t    -    T    T    E    l    l
-tableInfo        -    x    T    t    n    T    T    -    T    n    T    -    T
+tableInfo        n    x    T    t    n    T    T    -    T    n    T    -    T
 
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
 
