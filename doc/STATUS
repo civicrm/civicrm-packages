@@ -71,6 +71,3 @@ Symbols:
 18get            -    -    X    o    -    o    o    -    o    o    o    o    o
 
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
-
-NOTE: getAll() and getAssoc() crashes PHP 5 when using DB_FETCHMODE_OBJECT.
-      See http://bugs.php.net/?id=27123
