@@ -39,6 +39,15 @@ to LDAP servers and MS ADO (using COM) are also avaible from a separate package)
     </maintainer>
   </maintainers>
   <release>
+   <version>1.2.2</version>
+   <state>stable</state>
+   <date>2002-XX-YY</date>
+   <notes>
+Bugs fixed:
+- Fix numRows() in Oracle driver, that was failing when using "DISTINCT" in query. (Bug #17989, Martin)
+   </notes>
+  </release>
+  <release>
     <version>1.2.1</version>
     <state>stable</state>
     <date>2002-06-18</date>
