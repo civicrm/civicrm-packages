@@ -688,7 +688,7 @@ class DB_mysql4 extends DB_common
             $errno = $this->errorCode(mysqli_errno($this->connection));
         }
         return $this->raiseError($errno, null, null, null,
-                                 @mysqli_errno($this->connection) . " ** " .
+                                 @mysqli_errno($this->connection) . ' ** ' .
                                  @mysqli_error($this->connection));
     }
 
@@ -801,12 +801,12 @@ class DB_mysql4 extends DB_common
     {
         switch ($type) {
             case 'tables':
-                $sql = "SHOW TABLES";
+                $sql = 'SHOW TABLES';
                 break;
             case 'views':
                 return DB_ERROR_NOT_CAPABLE;
             case 'users':
-                $sql = "select distinct User from user";
+                $sql = 'select distinct User from user';
                 if($this->dsn['database'] != 'mysql') {
                     $dsn = $this->dsn;
                     $dsn['database'] = 'mysql';
@@ -823,7 +823,7 @@ class DB_mysql4 extends DB_common
                 return $sql;
                 break;
             case 'databases':
-                $sql = "SHOW DATABASES";
+                $sql = 'SHOW DATABASES';
                 break;
             default:
                 return null;

@@ -642,19 +642,19 @@ class DB_mssql extends DB_common
 
             foreach ($res as $val) {
 
-                $keys = explode(", ", $val['index_keys']);
+                $keys = explode(', ', $val['index_keys']);
 
                 if (sizeof($keys) > 1) {
-                    $this->_add_flag($flags[$keys[0]], "multiple_key");
+                    $this->_add_flag($flags[$keys[0]], 'multiple_key');
                 }
 
-                if (strpos($val['index_description'], "primary key")) {
+                if (strpos($val['index_description'], 'primary key')) {
                     foreach ($keys as $key) {
-                        $this->_add_flag($flags[$key], "primary_key");
+                        $this->_add_flag($flags[$key], 'primary_key');
                     }
-                } elseif (strpos($val['index_description'], "unique")) {
+                } elseif (strpos($val['index_description'], 'unique')) {
                     foreach ($keys as $key) {
-                        $this->_add_flag($flags[$key], "unique_key");
+                        $this->_add_flag($flags[$key], 'unique_key');
                     }
                 }
             }
@@ -663,22 +663,22 @@ class DB_mssql extends DB_common
             $res = $this->getAll("EXEC SP_COLUMNS[$table]", DB_FETCHMODE_ASSOC);
 
             foreach ($res as $val) {
-                if ($val['NULLABLE'] == "0") {
-                    $this->_add_flag($flags[$val['COLUMN_NAME']], "not_null");
+                if ($val['NULLABLE'] == '0') {
+                    $this->_add_flag($flags[$val['COLUMN_NAME']], 'not_null');
                 }
-                if (strpos($val['TYPE_NAME'], "identity")) {
-                    $this->_add_flag($flags[$val['COLUMN_NAME']], "auto_increment");
+                if (strpos($val['TYPE_NAME'], 'identity')) {
+                    $this->_add_flag($flags[$val['COLUMN_NAME']], 'auto_increment');
                 }
-                if (strpos($val['TYPE_NAME'], "timestamp")) {
-                    $this->_add_flag($flags[$val['COLUMN_NAME']], "timestamp");
+                if (strpos($val['TYPE_NAME'], 'timestamp')) {
+                    $this->_add_flag($flags[$val['COLUMN_NAME']], 'timestamp');
                 }
             }
         }
 
         if (array_key_exists($column, $flags)) {
-            return(implode(", ", $flags[$column]));
+            return(implode(', ', $flags[$column]));
         }
-        return("");
+        return('');
     }
 
     // }}}

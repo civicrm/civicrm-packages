@@ -305,7 +305,7 @@ class DB_oci8 extends DB_common
         // emulate numRows for Oracle.  yuck.
         if ($this->options['optimize'] == 'portability' &&
             $result === $this->last_stmt) {
-            $countquery = "SELECT COUNT(*) FROM (".$this->last_query.")";
+            $countquery = 'SELECT COUNT(*) FROM ('.$this->last_query.')';
             $save_query = $this->last_query;
             $save_stmt = $this->last_stmt;
             $count =& $this->query($countquery);
@@ -393,7 +393,7 @@ class DB_oci8 extends DB_common
         $binds = sizeof($tokens) - 1;
         $newquery = '';
         for ($i = 0; $i < $binds; $i++) {
-            $newquery .= $tokens[$i] . ":bind" . $i;
+            $newquery .= $tokens[$i] . ':bind' . $i;
         }
         $newquery .= $tokens[$i];
         $this->last_query = $query;
@@ -443,7 +443,7 @@ class DB_oci8 extends DB_common
                     fclose($fp);
                 }
             }
-            if (!@OCIBindByName($stmt, ":bind" . $i, $pdata[$i], -1)) {
+            if (!@OCIBindByName($stmt, ':bind' . $i, $pdata[$i], -1)) {
                 $tmp = $this->oci8RaiseError($stmt);
                 return $tmp;
             }
@@ -543,7 +543,7 @@ class DB_oci8 extends DB_common
         // "SELECT 2+2" must be "SELECT 2+2 FROM dual" in Oracle
         if (preg_match('/^\s*SELECT/i', $query) &&
             !preg_match('/\sFROM\s/i', $query)) {
-            $query .= " FROM dual";
+            $query .= ' FROM dual';
         }
         return $query;
     }
@@ -592,7 +592,7 @@ class DB_oci8 extends DB_common
         $query = "SELECT $fields FROM".
                  "  (SELECT rownum as linenum, $fields FROM".
                  "      ($query)".
-                 "  WHERE rownum <= ". ($from + $count) .
+                 '  WHERE rownum <= '. ($from + $count) .
                  ") WHERE linenum >= $from";
         return $query;
     }
@@ -686,7 +686,7 @@ class DB_oci8 extends DB_common
     {
         switch ($type) {
             case 'tables':
-                $sql = "SELECT table_name FROM user_tables";
+                $sql = 'SELECT table_name FROM user_tables';
                 break;
             default:
                 return null;

@@ -127,12 +127,12 @@ class DB_common extends PEAR
     function toString()
     {
         $info = get_class($this);
-        $info .=  ": (phptype=" . $this->phptype .
-                  ", dbsyntax=" . $this->dbsyntax .
-                  ")";
+        $info .=  ': (phptype=' . $this->phptype .
+                  ', dbsyntax=' . $this->dbsyntax .
+                  ')';
 
         if ($this->connection) {
-            $info .= " [connected]";
+            $info .= ' [connected]';
         }
 
         return $info;
@@ -830,7 +830,7 @@ class DB_common extends PEAR
 
     function &getOne($query, $params = array())
     {
-        settype($params, "array");
+        settype($params, 'array');
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
             if (DB::isError($sth)) {
@@ -940,7 +940,7 @@ class DB_common extends PEAR
 
     function &getCol($query, $col = 0, $params = array())
     {
-        settype($params, "array");
+        settype($params, 'array');
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
 
@@ -1054,7 +1054,7 @@ class DB_common extends PEAR
     function &getAssoc($query, $force_array = false, $params = array(),
                        $fetchmode = DB_FETCHMODE_DEFAULT, $group = false)
     {
-        settype($params, "array");
+        settype($params, 'array');
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
 
@@ -1396,7 +1396,7 @@ class DB_common extends PEAR
 
     function getSequenceName($sqn)
     {
-        return sprintf($this->getOption("seqname_format"),
+        return sprintf($this->getOption('seqname_format'),
                        preg_replace('/[^a-z0-9_]/i', '_', $sqn));
     }
 

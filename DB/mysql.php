@@ -26,7 +26,7 @@
 //               be registered here.
 //
 
-require_once "DB/common.php";
+require_once 'DB/common.php';
 
 /**
  * Database independent query interface definition for PHP's MySQL
@@ -716,7 +716,7 @@ class DB_mysql extends DB_common
             $errno = $this->errorCode(mysql_errno($this->connection));
         }
         return $this->raiseError($errno, null, null, null,
-                                 @mysql_errno($this->connection) . " ** " .
+                                 @mysql_errno($this->connection) . ' ** ' .
                                  @mysql_error($this->connection));
     }
 
@@ -828,12 +828,12 @@ class DB_mysql extends DB_common
     {
         switch ($type) {
             case 'tables':
-                $sql = "SHOW TABLES";
+                $sql = 'SHOW TABLES';
                 break;
             case 'views':
                 return DB_ERROR_NOT_CAPABLE;
             case 'users':
-                $sql = "select distinct User from user";
+                $sql = 'select distinct User from user';
                 if($this->dsn['database'] != 'mysql') {
                     $dsn = $this->dsn;
                     $dsn['database'] = 'mysql';
@@ -850,7 +850,7 @@ class DB_mysql extends DB_common
                 return $sql;
                 break;
             case 'databases':
-                $sql = "SHOW DATABASES";
+                $sql = 'SHOW DATABASES';
                 break;
             default:
                 return null;

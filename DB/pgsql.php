@@ -167,7 +167,7 @@ class DB_pgsql extends DB_common
         $query = $this->modifyQuery($query);
         if (!$this->autocommit && $ismanip) {
             if ($this->transaction_opcount == 0) {
-                $result = @pg_exec($this->connection, "begin;");
+                $result = @pg_exec($this->connection, 'begin;');
                 if (!$result) {
                     return $this->pgsqlRaiseError();
                 }
@@ -455,7 +455,7 @@ class DB_pgsql extends DB_common
         if ($this->transaction_opcount > 0) {
             // (disabled) hack to shut up error messages from libpq.a
             //@fclose(@fopen("php://stderr", "w"));
-            $result = @pg_exec($this->connection, "end;");
+            $result = @pg_exec($this->connection, 'end;');
             $this->transaction_opcount = 0;
             if (!$result) {
                 return $this->pgsqlRaiseError();
@@ -473,7 +473,7 @@ class DB_pgsql extends DB_common
     function rollback()
     {
         if ($this->transaction_opcount > 0) {
-            $result = @pg_exec($this->connection, "abort;");
+            $result = @pg_exec($this->connection, 'abort;');
             $this->transaction_opcount = 0;
             if (!$result) {
                 return $this->pgsqlRaiseError();
@@ -644,7 +644,7 @@ class DB_pgsql extends DB_common
 
         for ($i = 0; $i < $count ; $i++) {
             $row = @pg_fetch_row($result, $i);
-            $keys = explode(" ", $row[2]);
+            $keys = explode(' ', $row[2]);
 
             if (in_array($num_field + 1, $keys)) {
                 $flags .= ($row[0] == 't') ? 'unique ' : '';
@@ -743,7 +743,7 @@ class DB_pgsql extends DB_common
             }
 
         } else { // full
-            $res["num_fields"]= $count;
+            $res['num_fields']= $count;
 
             for ($i=0; $i<$count; $i++) {
                 $res[$i]['table'] = (is_string($result)) ? $result : '';
@@ -795,7 +795,7 @@ class DB_pgsql extends DB_common
             }
             case 'views': {
                 // Table cols: viewname | viewowner | definition
-                $sql = "SELECT viewname FROM pg_views";
+                $sql = 'SELECT viewname FROM pg_views';
                 break;
             }
             case 'users': {

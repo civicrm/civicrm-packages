@@ -122,7 +122,7 @@ class DB_ibase extends DB_common
         } elseif ($dbhost) {
             $conn = $connect_function($dbhost);
         } else {
-            return $this->raiseError("no host, user or password");
+            return $this->raiseError('no host, user or password');
         }
         */
         $conn = @call_user_func_array($connect_function, $params);
@@ -703,7 +703,7 @@ class DB_ibase extends DB_common
              }
 
          } else { // full
-             $res["num_fields"]= $count;
+             $res['num_fields']= $count;
 
              for ($i=0; $i<$count; $i++) {
                  $info = @ibase_field_info($id, $i);
