@@ -1342,10 +1342,16 @@ class DB_common extends PEAR
         }
 
         $fetchmode = is_int($col) ? DB_FETCHMODE_ORDERED : DB_FETCHMODE_ASSOC;
-        $ret = array();
 
-        while (is_array($row = $res->fetchRow($fetchmode))) {
-            $ret[] = $row[$col];
+        if (!is_array($row = $res->fetchRow($fetchmode)) ||
+            !array_key_exists($col, $row))
+        {
+            $ret =& $this->raiseError(DB_ERROR_TRUNCATED);
+        } else {
+            $ret = array($row[$col]);
+            while (is_array($row = $res->fetchRow($fetchmode))) {
+                $ret[] = $row[$col];
+            }
         }
 
         $res->free();
