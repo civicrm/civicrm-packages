@@ -146,9 +146,9 @@ Kevin Henrikson               -   -   -   -   -   -   -   -   X   -   -   -   -
 Stig Bakken                   -   -   -   -   -   -   X   -   -   -   X   -   -
 Chuck Hagenbuch               -   -   -   -   -   X   -   -   -   -   -   -   -
 Ludovico Magnocavallo         -   -   X   -   -   -   -   -   -   -   -   -   -
-Daniel Convissor              -   -   X   -   -   X   X   X   X   X²  X   X   X
+Daniel Convissor              X   X   X   -   X   X   X   X   X   X²  X   X   X
 
-MISSING TESTERS               -   X   -   -   X   -   -   -   -   -   -   -   -
+MISSING TESTERS               -   -   -   -   -   -   -   -   -   -   -   -   -
 
 Comments:
 
