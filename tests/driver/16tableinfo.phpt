@@ -447,14 +447,16 @@ $dbh->query('DROP TABLE phptest_fk');
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
 
+// $null is set in mktable.inc
+
 $dbh->query("
     CREATE TABLE phptest_fk (
         a INTEGER NOT NULL,
         fk INTEGER NOT NULL,
-        c {$quirks[$dbh->phptype]['clob']} NULL,
+        c {$quirks[$dbh->phptype]['clob']} $null,
         d {$quirks[$dbh->phptype]['date']} NOT NULL,
         e CHAR(4) DEFAULT 'df t' NOT NULL,
-        f DECIMAL(2,1) NULL,
+        f DECIMAL(2,1) $null,
         PRIMARY KEY (fk),
         UNIQUE (a, d)
     )
@@ -465,8 +467,8 @@ $dbh->query("INSERT INTO phptest_fk VALUES (20, 2, 'Two', '2001-02-15', 'c2', 2.
 $dbh->query("INSERT INTO phptest_fk VALUES (30, 3, 'Three', '2001-02-14', 'c3', 3.3)");
 
 
-$resultobj =& $dbh->query('SELECT * FROM phptest_fk ' .
-                          'JOIN phptest on phptest.a = phptest_fk.fk');
+$resultobj =& $dbh->query('SELECT * FROM phptest_fk, ' .
+                          'phptest WHERE phptest.a = phptest_fk.fk');
 
 
 
