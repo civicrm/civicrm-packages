@@ -42,6 +42,7 @@ test("pgsql://user:pass@word@tcp(somehost:7777)/pear");
 // special backend options
 test('ibase://user:pass@localhost//var/lib/dbase.dbf?role=foo');
 test('dbase://@/?role=foo&dialect=bar');
+test('sqlite:///database?option=value&anotheroption=anothervalue');
 ?>
 --GET--
 --POST--
@@ -323,4 +324,19 @@ Array
     [database] => 
     [role] => foo
     [dialect] => bar
+)
+DSN: sqlite:///database?option=value&anotheroption=anothervalue
+Array
+(
+    [phptype] => sqlite
+    [dbsyntax] => sqlite
+    [username] => 
+    [password] => 
+    [protocol] => tcp
+    [hostspec] => 
+    [port] => 
+    [socket] => 
+    [database] => database
+    [option] => value
+    [anotheroption] => anothervalue
 )
