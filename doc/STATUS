@@ -23,14 +23,17 @@ numCols          x    T    x    x    T    T    x    T    x    T    T    T
 numRows          x    n    n    x    T    T    x    E    x    T    n    T 
 errorNative      x    n    x    n    T    T    x    T    x    T    T    E
 prepare/execute  e    t    e    e    E    E    e    T    e    E    e    E
-sequences        e    t    n    n    E    E    e    T    n    T    E    E
+sequences        e    t¹   n    n    E    E    e    T    n    T    E    E
 affectedRows     x    n    x    x    n    T    x    T    x    T    T    T
 fetch modes      x    T    x    x    T    T    x    T    x    T    T    T
 fetch row by no  x    n    x    x    T    T    x    n    x    T    T    T
 transactions     x    x    n    n    x    x    -    x    x    x    n    -
 auto-commit      x    x    n    n    n    n    -    x    x    x    n    -
-error mapping    x    x    e    -    t    t    -    T    x    E    l    l
+error mapping    x    T    e    -    t    t    -    T    x    E    l    l
 tableInfo        x    n    n    n    T    T    -    T    n    T    T    -
+
+[1]:  Works on firebird but not interbase -- on PHP 5.
+NOTE: ibase under PHP 4 is unstable on Windows.
 
 TYPE (getListOf)
 tables           x    -    -    -    x    x    -    x    -    x    x    -
@@ -65,4 +68,5 @@ Symbols:
 16tableinfo      -    -    -    -    o    o    -    o    -    o    o    -
 17query          -    X    -    -    o    o    -    o    -    o    o    o
 
-[1]: Works on firebird but not interbase.
+[1]:  Works on firebird but not interbase -- on PHP 5.
+NOTE: ibase under PHP 4 is unstable on Windows.
