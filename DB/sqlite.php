@@ -504,19 +504,16 @@ class DB_sqlite extends DB_common
     // {{{ tableInfo()
 
     /**
-     * Returns information about a table or a result set.
+     * Returns information about a table.
      *
-     * NOTE: only supports 'table' and 'flags' if <var>$result</var>
-     * is a table name.
-     *
-     * @param object|string  $result  DB_result object from a query or a
-     *                                string containing the name of a table
+     * @param string         $result  a string containing the name of a table
      * @param int            $mode    a valid tableInfo mode
      * @return array  an associative array with the information requested
      *                or an error object if something is wrong
      * @access public
      * @internal
      * @see DB_common::tableInfo()
+     * @since Method available since Release 1.7.0
      */
     function tableInfo($result, $mode = null)
     {
@@ -556,44 +553,8 @@ class DB_sqlite extends DB_common
             $case_func = 'strval';
         }
 
-//        for($i = 0; $i < count($id); $i++) {
-//            $id[$i]['flags'] = '';
-//            $id[$i]['len'] = '';
-//
-//            //primary key
-//            if($id[$i]['pk'] == 1) {
-//                $id[$i]['flags'] .= 'primary_key,';
-//
-//                //integer primary key, it will auto increment
-//                if($id[$i]['type'] == 'INTEGER') {
-//                    $id[$i]['flags'] .= 'auto_increment,';
-//                }
-//            }
-//        }
-
-
         $count = count($id);
 
-//  array(8) {
-//    ["cid"]=>
-//    string(1) "2"
-//    ["name"]=>
-//    string(3) "Def"
-//    ["type"]=>
-//    string(12) "decimal(4,2)"
-//    ["notnull"]=>
-//    string(1) "0"
-//    ["dflt_value"]=>
-//    string(4) "0.12"
-//    ["pk"]=>
-//    string(1) "0"
-//    ["flags"]=>
-//    string(0) ""
-//    ["len"]=>
-//    string(0) ""
-//  }
-//var_dump($id);
-//return;
         // made this IF due to performance (one if is faster than $count if's)
         if (!$mode) {
             // partial
