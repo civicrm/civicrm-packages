@@ -110,6 +110,7 @@ class DB_fbsql extends DB_common
         $this->dsn = $dsninfo;
         $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
 
+        $php_errormsg = '';
         $connect_function = $persistent ? 'fbsql_pconnect' : 'fbsql_connect';
 
         if ($dbhost && $dsninfo['username'] && $dsninfo['password']) {
