@@ -770,8 +770,8 @@ class DB_mysqli extends DB_common
              * Probably received a table name.
              * Create a result resource identifier.
              */
-            $id = @mysqli_list_fields($this->dsn['database'],
-                                     $result, $this->connection);
+            $id = @mysqli_query($this->connection,
+                                "SELECT * FROM $result LIMIT 0");
             $got_string = true;
         } else {
             /*
@@ -783,7 +783,7 @@ class DB_mysqli extends DB_common
             $got_string = false;
         }
 
-        if (!is_resource($id)) {
+        if (!is_a($id, 'mysqli_result')) {
             return $this->mysqlRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
 
