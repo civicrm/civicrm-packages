@@ -42,13 +42,13 @@ class DB_common extends PEAR
      *                        false     => skip rows
      * @var array
      */
-    var $features;
+    var $features = array();
 
     /**
      * assoc mapping native error codes to DB ones
      * @var array
      */
-    var $errorcode_map;
+    var $errorcode_map = array();
 
     /**
      * DB type (mysql, oci8, odbc etc.)
@@ -145,9 +145,6 @@ class DB_common extends PEAR
     function DB_common()
     {
         $this->PEAR('DB_Error');
-        $this->features = array();
-        $this->errorcode_map = array();
-        $this->fetchmode = DB_FETCHMODE_ORDERED;
     }
 
     // }}}
