@@ -386,11 +386,9 @@ class DB_fbsql extends DB_common
     function numCols($result)
     {
         $cols = @fbsql_num_fields($result);
-
         if (!$cols) {
             return $this->fbsqlRaiseError();
         }
-
         return $cols;
     }
 
@@ -472,7 +470,7 @@ class DB_fbsql extends DB_common
         do {
             $repeat = 0;
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
-            $result = $this->getOne('SELECT UNIQUE FROM ' . $seqname);
+            $result = $this->query('SELECT UNIQUE FROM ' . $seqname);
             $this->popErrorHandling();
             if ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE) {
@@ -486,10 +484,10 @@ class DB_fbsql extends DB_common
             }
         } while ($repeat);
         if (DB::isError($result)) {
-            $this->raiseError($result);
-            return $result;
+            return $this->fbsqlRaiseError();
         }
-        return $result;
+        $result->fetchInto($tmp, DB_FETCHMODE_ORDERED);
+        return $tmp[0];
     }
 
     /**
