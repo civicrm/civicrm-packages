@@ -294,17 +294,22 @@ class DB_ibase extends DB_common
     // {{{ modifyLimitQuery()
 
     /**
-     * This method is used by backends to alter limited queries
-     * Uses the new FIRST n SKIP n Firebird 1.0 syntax, so it is
-     * only compatible with Firebird 1.x
+     * Adds LIMIT clauses to a query string according to current DBMS standards
      *
-     * @param string  $query query to modify
-     * @param integer $from  the row to start to fetching
-     * @param integer $count the numbers of rows to fetch
+     * Only works with Firebird.
      *
-     * @return the new (modified) query
-     * @author Ludovico Magnocavallo <ludo@sumatrasolutions.com>
-     * @access private
+     * @param string $query   the query to modify
+     * @param int    $from    the row to start to fetching (0 = the first row)
+     * @param int    $count   the numbers of rows to fetch
+     * @param mixed  $params  array, string or numeric data to be used in
+     *                         execution of the statement.  Quantity of items
+     *                         passed must match quantity of placeholders in
+     *                         query:  meaning 1 placeholder for non-array
+     *                         parameters or 1 placeholder per array element.
+     *
+     * @return string  the query string with LIMIT clauses added
+     *
+     * @access protected
      */
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
@@ -663,7 +668,9 @@ class DB_ibase extends DB_common
 
     function transactionInit($trans_args = 0)
     {
-        return $trans_args ? @ibase_trans($trans_args, $this->connection) : @ibase_trans();
+        return $trans_args
+                ? @ibase_trans($trans_args, $this->connection)
+                : @ibase_trans();
     }
 
     // }}}
@@ -748,9 +755,10 @@ class DB_ibase extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $sqn = strtoupper($this->getSequenceName($seq_name));
         return $this->query('DELETE FROM RDB$GENERATORS '
-                            . "WHERE RDB\$GENERATOR_NAME='${sqn}'");
+                            . "WHERE RDB\$GENERATOR_NAME='"
+                            . strtoupper($this->getSequenceName($seq_name))
+                            . "'");
     }
 
     // }}}

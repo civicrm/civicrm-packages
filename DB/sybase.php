@@ -504,10 +504,10 @@ class DB_sybase extends DB_common
      */
     function createSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("CREATE TABLE $seqname ".
-                            '(id numeric(10,0) IDENTITY NOT NULL ,' .
-                            'vapor int NULL)');
+        return $this->query('CREATE TABLE '
+                            . $this->getSequenceName($seq_name)
+                            . ' (id numeric(10, 0) IDENTITY NOT NULL,'
+                            . ' vapor int NULL)');
     }
 
     // }}}
@@ -525,8 +525,7 @@ class DB_sybase extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("DROP TABLE $seqname");
+        return $this->query('DROP TABLE ' . $this->getSequenceName($seq_name));
     }
 
     // }}}

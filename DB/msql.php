@@ -499,8 +499,7 @@ class DB_msql extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("DROP TABLE ${seqname}");
+        return $this->query('DROP TABLE ' . $this->getSequenceName($seq_name));
     }
 
     // }}}

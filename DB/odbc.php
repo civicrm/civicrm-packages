@@ -556,10 +556,10 @@ class DB_odbc extends DB_common
      */
     function createSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("CREATE TABLE ${seqname} ".
-                            '(id integer NOT NULL,'.
-                            ' PRIMARY KEY(id))');
+        return $this->query('CREATE TABLE '
+                            . $this->getSequenceName($seq_name)
+                            . ' (id integer NOT NULL,'
+                            . ' PRIMARY KEY(id))');
     }
 
     // }}}
@@ -577,8 +577,7 @@ class DB_odbc extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("DROP TABLE ${seqname}");
+        return $this->query('DROP TABLE ' . $this->getSequenceName($seq_name));
     }
 
     // }}}

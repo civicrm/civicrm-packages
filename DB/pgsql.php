@@ -473,6 +473,7 @@ class DB_pgsql extends DB_common
     // }}}
     // {{{ quoteSmart()
 
+    /**
      * Formats input so it can be safely used in a query
      *
      * @param mixed $in  the data to be formatted
@@ -748,17 +749,32 @@ class DB_pgsql extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("DROP SEQUENCE ${seqname}");
+        return $this->query('DROP SEQUENCE '
+                            . $this->getSequenceName($seq_name));
     }
 
     // }}}
     // {{{ modifyLimitQuery()
 
+    /**
+     * Adds LIMIT clauses to a query string according to current DBMS standards
+     *
+     * @param string $query   the query to modify
+     * @param int    $from    the row to start to fetching (0 = the first row)
+     * @param int    $count   the numbers of rows to fetch
+     * @param mixed  $params  array, string or numeric data to be used in
+     *                         execution of the statement.  Quantity of items
+     *                         passed must match quantity of placeholders in
+     *                         query:  meaning 1 placeholder for non-array
+     *                         parameters or 1 placeholder per array element.
+     *
+     * @return string  the query string with LIMIT clauses added
+     *
+     * @access protected
+     */
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
-        $query = $query . " LIMIT $count OFFSET $from";
-        return $query;
+        return "$query LIMIT $count OFFSET $from";
     }
 
     // }}}
@@ -780,11 +796,9 @@ class DB_pgsql extends DB_common
     {
         $native = $this->errorNative();
         if ($errno === null) {
-            $err = $this->errorCode($native);
-        } else {
-            $err = $errno;
+            $errno = $this->errorCode($native);
         }
-        return $this->raiseError($err, null, null, null, $native);
+        return $this->raiseError($errno, null, null, null, $native);
     }
 
     // }}}

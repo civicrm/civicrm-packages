@@ -561,10 +561,10 @@ class DB_mssql extends DB_common
      */
     function createSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("CREATE TABLE $seqname ".
-                            '([id] [int] IDENTITY (1, 1) NOT NULL ,' .
-                            '[vapor] [int] NULL)');
+        return $this->query('CREATE TABLE '
+                            . $this->getSequenceName($seq_name)
+                            . ' ([id] [int] IDENTITY (1, 1) NOT NULL,'
+                            . ' [vapor] [int] NULL)');
     }
 
     // }}}
@@ -582,8 +582,7 @@ class DB_mssql extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("DROP TABLE $seqname");
+        return $this->query('DROP TABLE ' . $this->getSequenceName($seq_name));
     }
 
     // }}}
@@ -772,33 +771,6 @@ class DB_mssql extends DB_common
     }
 
     // }}}
-    // {{{ getSpecialQuery()
-
-    /**
-     * Obtain the query string needed for listing a given type of objects
-     *
-     * @param string $type  the kind of objects you want to retrieve
-     *
-     * @return string  the SQL query string or null if the driver doesn't
-     *                  support the object type requested
-     *
-     * @access protected
-     * @see DB_common::getListOf()
-     */
-    function getSpecialQuery($type)
-    {
-        switch ($type) {
-            case 'tables':
-                return "SELECT name FROM sysobjects WHERE type = 'U'"
-                       . ' ORDER BY name';
-            case 'views':
-                return "SELECT name FROM sysobjects WHERE type = 'V'";
-            default:
-                return null;
-        }
-    }
-
-    // }}}
     // {{{ _mssql_field_flags()
 
     /**
@@ -898,6 +870,33 @@ class DB_mssql extends DB_common
             $array = array($value);
         } elseif (!in_array($value, $array)) {
             array_push($array, $value);
+        }
+    }
+
+    // }}}
+    // {{{ getSpecialQuery()
+
+    /**
+     * Obtain the query string needed for listing a given type of objects
+     *
+     * @param string $type  the kind of objects you want to retrieve
+     *
+     * @return string  the SQL query string or null if the driver doesn't
+     *                  support the object type requested
+     *
+     * @access protected
+     * @see DB_common::getListOf()
+     */
+    function getSpecialQuery($type)
+    {
+        switch ($type) {
+            case 'tables':
+                return "SELECT name FROM sysobjects WHERE type = 'U'"
+                       . ' ORDER BY name';
+            case 'views':
+                return "SELECT name FROM sysobjects WHERE type = 'V'";
+            default:
+                return null;
         }
     }
 

@@ -867,8 +867,8 @@ class DB_oci8 extends DB_common
      */
     function createSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("CREATE SEQUENCE ${seqname}");
+        return $this->query('CREATE SEQUENCE '
+                            . $this->getSequenceName($seq_name));
     }
 
     // }}}
@@ -886,8 +886,8 @@ class DB_oci8 extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("DROP SEQUENCE ${seqname}");
+        return $this->query('DROP SEQUENCE '
+                            . $this->getSequenceName($seq_name));
     }
 
     // }}}

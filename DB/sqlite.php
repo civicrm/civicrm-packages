@@ -487,8 +487,7 @@ class DB_sqlite extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $seqname = $this->getSequenceName($seq_name);
-        return $this->query("DROP TABLE $seqname");
+        return $this->query('DROP TABLE ' . $this->getSequenceName($seq_name));
     }
 
     /**
@@ -626,10 +625,25 @@ class DB_sqlite extends DB_common
     // }}}
     // {{{ modifyLimitQuery()
 
+    /**
+     * Adds LIMIT clauses to a query string according to current DBMS standards
+     *
+     * @param string $query   the query to modify
+     * @param int    $from    the row to start to fetching (0 = the first row)
+     * @param int    $count   the numbers of rows to fetch
+     * @param mixed  $params  array, string or numeric data to be used in
+     *                         execution of the statement.  Quantity of items
+     *                         passed must match quantity of placeholders in
+     *                         query:  meaning 1 placeholder for non-array
+     *                         parameters or 1 placeholder per array element.
+     *
+     * @return string  the query string with LIMIT clauses added
+     *
+     * @access protected
+     */
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
-        $query = $query . " LIMIT $count OFFSET $from";
-        return $query;
+        return "$query LIMIT $count OFFSET $from";
     }
 
     // }}}
@@ -698,7 +712,7 @@ class DB_sqlite extends DB_common
      */
     function errorNative()
     {
-        return($this->_lasterror);
+        return $this->_lasterror;
     }
 
     // }}}
