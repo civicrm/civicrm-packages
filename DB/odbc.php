@@ -127,14 +127,6 @@ class DB_odbc extends DB_common
             case 'navision':
                 // the Navision driver doesn't support fetch row by number
                 $this->features['limit'] = false;
-                break;
-            case 'access':
-                if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
-                    $this->errorcode_map['07001'] = DB_ERROR_NOSUCHFIELD;
-                }
-                break;
-            default:
-                break;
         }
 
         /*
@@ -556,6 +548,12 @@ class DB_odbc extends DB_common
     function odbcRaiseError($errno = null)
     {
         if ($errno === null) {
+            switch ($this->dbsyntax) {
+                case 'access':
+                    if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
+                        $this->errorcode_map['07001'] = DB_ERROR_NOSUCHFIELD;
+                    }
+            }
             $errno = $this->errorCode(odbc_error($this->connection));
         }
         return $this->raiseError($errno, null, null, null,
