@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.77 2004-02-19 19:39:29 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.78 2004-02-19 20:27:46 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -178,6 +178,7 @@ Set $dsn property when connecting.  (danielc)
         <file name="sequences.inc"/>
         <file name="simplequery.inc"/>
         <file name="transactions.inc"/>
+        <file name="skipif.inc"/>
         <dir name="driver" role="test">
           <file name="01connect.phpt"/>
           <file name="02fetch.phpt"/>
