@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.166 2005-02-09 19:16:06 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.167 2005-02-14 17:11:18 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -27,13 +27,14 @@ the complete test suite and provide
 interchangeability when all of DB's
 portability options are enabled:
 
-  fbsql, mssql, mysql, mysqli, oci8,
-  odbc, pgsql, sqlite and sybase.
+  fbsql, ibase, informix, msql, mssql,
+  mysql, mysqli, oci8, odbc, pgsql,
+  sqlite and sybase.
 
-Drivers for these extensions exist but
-haven't been thoroughly tested:
-
-  dbase, ibase, informix, and msql.
+There is also a driver for the dbase
+extension, but it can't be used
+interchangeably because dbase doesn't
+support many standard DBMS features.
 
 DB is compatible with both PHP 4 and PHP 5.
 </description>
@@ -75,9 +76,7 @@ all:
   PEAR::loadExtension().  Request 1337.
 * Resolve tableInfo() issue caused by PHP 5.0.3.
   Bug 2988.
-* Add __wakeup() to each driver so connections
-  will automatically be reestablished when PHP's
-  unserialize() function is called.  Request 928.
+* Add __sleep() and __wakeup().  Request 928.
 * Added __toString() and deprecated toString().
   Request 1209.
 * Added DB_result::getQuery() method for
@@ -96,14 +95,16 @@ all:
   one row.  Request 1771.
 * Consider SELECT INTO and COPY data manipulation
   queries in isManip().  Bug 2883.
+* Add $free_resource argument to freePrepared().
 
 dbase:
 * Provide tableInfo().  Request 2142.
 
 fbsql:
-* FrontBase driver now works and passes all tests.
+* The FrontBase driver now works and passes all tests.
 
 ibase:
+* It now passes all tests so seems to be stable.
 * Add getListOf() support.
 * Add affectedRows() support.
 * Add numRows() support (Note:
@@ -122,6 +123,9 @@ ifx:
   + -316: create duplicate index
   + -319: drop non-existant index
   + -692: delete record with foreign key constraint
+
+msql:
+* The mSQL driver now works and passes most tests.
 
 mssql:
 * Use "," to delimit port only for Windows.  Use ":"
