@@ -1,10 +1,10 @@
 --TEST--
 DB_driver::bug22328
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require "skipif.inc"; ?>
+<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
 --FILE--
 <?php
-require './connect.inc';
+require_once 'connect.inc';
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 $res = $dbh->query('select * from php_limit');
 $error = 0;

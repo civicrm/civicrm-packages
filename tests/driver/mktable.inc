@@ -1,5 +1,5 @@
 <?php
-require_once "./connect.inc";
+require_once 'connect.inc';
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 $dbh->query("DROP TABLE phptest");

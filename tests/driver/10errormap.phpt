@@ -1,12 +1,12 @@
 --TEST--
 DB_driver::error mapping
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require "skipif.inc"; ?>
+<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
 --FILE--
 <?php
-require "connect.inc";
-require "mktable.inc";
-require "../errors.inc";
+require_once 'connect.inc';
+require_once 'mktable.inc';
+require_once '../errors.inc';
 ?>
 --EXPECT--
 Trying to provoke DB_ERROR_NOSUCHTABLE

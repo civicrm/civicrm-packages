@@ -1,10 +1,10 @@
 --TEST--
 DB_driver::escape data test
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); include("skipif.inc"); ?>
+<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
 --FILE--
 <?php
-include './connect.inc';
+require_once 'connect.inc';
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'debug_die');
 
 $dbh->expectError(DB_ERROR_ALREADY_EXISTS);

@@ -1,11 +1,11 @@
 --TEST--
 DB_driver::row limit
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require "skipif.inc"; ?>
+<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
 --FILE--
 <?php
-require 'connect.inc';
-include '../limit.inc';
+require_once 'connect.inc';
+require_once '../limit.inc';
 ?>
 --EXPECT--
 ======= From: 0 || Number of rows to fetch: 10 =======

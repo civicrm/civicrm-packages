@@ -1,10 +1,10 @@
 --TEST--
 DB_driver::connect test
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require "skipif.inc"; ?>
+<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
 --FILE--
 <?php
-require "connect.inc";
+require_once 'connect.inc';
 if (is_object($dbh)) {
     print "\$dbh is an object\n";
 }

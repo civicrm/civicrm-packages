@@ -1,12 +1,12 @@
 --TEST--
 DB_driver::numRows test
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require "skipif.inc"; ?>
+<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
 --FILE--
 <?php
-require "connect.inc";
-require "mktable.inc";
-require "../numrows.inc";
+require_once 'connect.inc';
+require_once 'mktable.inc';
+require_once '../numrows.inc';
 ?>
 --EXPECT--
 1

@@ -5,7 +5,7 @@
 //   with no username/password, AND
 // * we have create/drop privileges on the entire "test"
 //   database
-include './setup.inc';
+require_once 'setup.inc';
 require_once 'DB.php';
 if (!defined('DRIVER_DSN') || DRIVER_DSN == '') {
     die("skip\n");
