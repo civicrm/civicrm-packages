@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.56 2004-02-07 18:13:02 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.57 2004-02-07 18:15:29 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -23,13 +23,14 @@ DB is a database abstraction layer providing:
 * transactions support
 * table information interface
 * DocBook and PHPDoc API documentation
-* compatible with PHP 4 and PHP 5
 
 DB layers itself on top of PHP's existing
 database extensions.  The currently supported
 extensions are: dbase, fbsql, interbase,
 informix, msql, mssql, mysql, mysqli, oci8,
 odbc, pgsql, sqlite and sybase.
+
+DB is compatible with both PHP 4 and PHP 5.
 </description>
   <license>PHP License</license>
   <maintainers>
