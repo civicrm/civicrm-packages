@@ -49,10 +49,15 @@ if (DB::isError($drop) &&
 // 1) test that sequences are not created if "ondemand" is false
 
 $e = $dbh->nextId("test", false);
-if (DB::isError($e)) {
-    print $e->getDebugInfo() . "\n\n";
+if (DB::isError($e) && $e->getCode() == DB_ERROR_NOSUCHTABLE) {
+    print $e->getMessage() . "\n";
 } else {
-    print "test 1) failed!\n";
+    print "test 1) we expected to get back 'DB Error: no such table'.\n";
+    if (DB::isError($e)) {
+        print "Here is the error we got:\n" . $e->getDebugInfo() . "\n\n";
+    } else {
+        print "But an error wasn't generated\n\n";
+    }
 }
 
 // 2) test that the sequence is not created but the error is
