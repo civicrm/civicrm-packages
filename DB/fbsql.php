@@ -69,7 +69,7 @@ class DB_fbsql extends DB_common
             'prepare' => false,
             'pconnect' => true,
             'transactions' => true,
-            'limit' => 'emulate'
+            'limit' => 'alter'
         );
         $this->errorcode_map = array(
              22 => DB_ERROR_SYNTAX,
@@ -482,6 +482,18 @@ class DB_fbsql extends DB_common
     function modifyQuery($query)
     {
         return $query;
+    }
+
+    // }}}
+    // {{{ modifyLimitQuery()
+
+    function modifyLimitQuery($query, $from, $count, $params = array())
+    {
+        if (DB::isManip($query)) {
+            return str_ireplace("SELECT", "SELECT TOP($count)", $query);
+        } else {
+            return str_ireplace("SELECT", "SELECT TOP($from, $count)", $query);
+        }
     }
 
     // }}}
