@@ -19,7 +19,7 @@
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -34,7 +34,7 @@ require_once 'PEAR.php';
 // {{{ error codes
 
 /**#@+
- * One of PEAR DB's portable error codes
+ * One of PEAR DB's portable error codes.
  * @see DB_common::errorCode(), DB::errorMessage()
  *
  * {@internal If you add an error code here, make sure you also add a textual
@@ -226,7 +226,7 @@ define('DB_PARAM_MISC',   3);
 
 
 /**#@+
- * The different ways of returning binary data from queries
+ * The different ways of returning binary data from queries.
  */
 
 /**
@@ -253,7 +253,7 @@ define('DB_BINMODE_CONVERT', 3);
 
 
 /**#@+
- * Fetch Modes
+ * Fetch Modes.
  * @see DB_common::setFetchMode()
  */
 
@@ -302,7 +302,7 @@ define('DB_GETMODE_FLIPPED', DB_FETCHMODE_FLIPPED);
 
 
 /**#@+
- * The type of information to return from the tableInfo() method
+ * The type of information to return from the tableInfo() method.
  *
  * Bitwised constants, so they can be combined using <kbd>|</kbd>
  * and removed using <kbd>^</kbd>.
@@ -319,7 +319,7 @@ define('DB_TABLEINFO_FULL', 3);
 
 
 /**#@+
- * The type of query to create with the automatic query building methods
+ * The type of query to create with the automatic query building methods.
  * @see DB_common::autoPrepare(), DB_common::autoExecute()
  */
 define('DB_AUTOQUERY_INSERT', 1);
@@ -332,7 +332,7 @@ define('DB_AUTOQUERY_UPDATE', 2);
 
 
 /**#@+
- * Portability Modes
+ * Portability Modes.
  *
  * Bitwised constants, so they can be combined using <kbd>|</kbd>
  * and removed using <kbd>^</kbd>.
@@ -430,7 +430,7 @@ define('DB_PORTABILITY_ALL', 63);
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -439,7 +439,7 @@ class DB
     // {{{ &factory()
 
     /**
-     * Create a new DB object for the specified database type.
+     * Create a new DB object for the specified database type
      *
      * Allows creation of a DB_<driver> object from which the object's
      * methods can be utilized without actually connecting to a database.
@@ -503,9 +503,9 @@ class DB
      *     'portability' => DB_PORTABILITY_ALL,
      * );
      *
-     * $dbh =& DB::connect($dsn, $options);
-     * if (DB::isError($dbh)) {
-     *     die($dbh->getMessage());
+     * $db =& DB::connect($dsn, $options);
+     * if (DB::isError($db)) {
+     *     die($db->getMessage());
      * }
      * ?></code>
      *
@@ -623,15 +623,17 @@ class DB
     // {{{ isManip()
 
     /**
-     * Tell whether a query is a data manipulation query (insert,
-     * update or delete) or a data definition query (create, drop,
-     * alter, grant, revoke).
+     * Tell whether a query is a data manipulation or data definition query
+     *
+     * Examples of data manipulation queries are INSERT, UPDATE and DELETE.
+     * Examples of data definition queries are CREATE, DROP, ALTER, GRANT,
+     * REVOKE.
+     *
+     * @param string $query  the query
+     *
+     * @return boolean  whether $query is a data manipulation query
      *
      * @access public
-     *
-     * @param string $query the query
-     *
-     * @return boolean whether $query is a data manipulation query
      */
     function isManip($query)
     {
@@ -640,7 +642,7 @@ class DB
                 . 'LOAD DATA|SELECT .* INTO|COPY|'
                 . 'ALTER|GRANT|REVOKE|'
                 . 'LOCK|UNLOCK';
-        if (preg_match('/^\s*"?('.$manips.')\s+/i', $query)) {
+        if (preg_match('/^\s*"?(' . $manips . ')\s+/i', $query)) {
             return true;
         }
         return false;
@@ -652,10 +654,12 @@ class DB
     /**
      * Return a textual error message for a DB error code
      *
-     * @param integer $value error code
+     * @param integer $value  the DB error code
      *
-     * @return string error message, or false if the error code was
-     * not recognized
+     * @return string  the error message or false if the error code was
+     *                  not recognized
+     *
+     * @access public
      */
     function errorMessage($value)
     {
@@ -706,7 +710,7 @@ class DB
     // {{{ parseDSN()
 
     /**
-     * Parse a data source name.
+     * Parse a data source name
      *
      * Additional keys can be added by appending a URI query string to the
      * end of the DSN.
@@ -739,7 +743,7 @@ class DB
      *  + username: User name for login
      *  + password: Password for login
      *
-     * @author Tomas V.V.Cox <cox@idecnet.com>
+     * @access public
      */
     function parseDSN($dsn)
     {
@@ -801,14 +805,14 @@ class DB
 
         // Find protocol and hostspec
 
-        // $dsn => proto(proto_opts)/database
         if (preg_match('|^([^(]+)\((.*?)\)/?(.*?)$|', $dsn, $match)) {
+            // $dsn => proto(proto_opts)/database
             $proto       = $match[1];
             $proto_opts  = $match[2] ? $match[2] : false;
             $dsn         = $match[3];
 
-        // $dsn => protocol+hostspec/database (old format)
         } else {
+            // $dsn => protocol+hostspec/database (old format)
             if (strpos($dsn, '+') !== false) {
                 list($proto, $dsn) = explode('+', $dsn, 2);
             }
@@ -837,11 +841,11 @@ class DB
         // Get dabase if any
         // $dsn => database
         if ($dsn) {
-            // /database
             if (($pos = strpos($dsn, '?')) === false) {
+                // /database
                 $parsed['database'] = rawurldecode($dsn);
-            // /database?param1=value1&param2=value2
             } else {
+                // /database?param1=value1&param2=value2
                 $parsed['database'] = rawurldecode(substr($dsn, 0, $pos));
                 $dsn = substr($dsn, $pos + 1);
                 if (strpos($dsn, '&') !== false) {
@@ -866,15 +870,15 @@ class DB
     // {{{ assertExtension()
 
     /**
-     * Load a PHP database extension if it is not loaded already.
-     *
-     * @access public
+     * Load a PHP database extension if it is not loaded already
      *
      * @param string $name the base name of the extension (without the .so or
      *                     .dll suffix)
      *
-     * @return boolean true if the extension was already or successfully
-     *                 loaded, false if it could not be loaded
+     * @return boolean  true if the extension was already or successfully
+     *                  loaded, false if it could not be loaded
+     *
+     * @access public
      */
     function assertExtension($name)
     {
@@ -900,7 +904,7 @@ class DB
  * @package    DB
  * @author     Stig Bakken <ssb@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -909,7 +913,7 @@ class DB_Error extends PEAR_Error
     // {{{ constructor
 
     /**
-     * DB_Error constructor.
+     * DB_Error constructor
      *
      * @param mixed $code       DB error code, or string with error message
      * @param int   $mode       what "error mode" to operate in
@@ -918,7 +922,6 @@ class DB_Error extends PEAR_Error
      * @param mixed $debuginfo  additional debug info, such as the last query
      *
      * @access public
-     *
      * @see PEAR_Error
      */
     function DB_Error($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
@@ -948,7 +951,7 @@ class DB_Error extends PEAR_Error
  * @package    DB
  * @author     Stig Bakken <ssb@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -1000,10 +1003,13 @@ class DB_result
     // {{{ constructor
 
     /**
-     * DB_result constructor.
+     * DB_result constructor
+     *
      * @param object   &$dbh    DB object reference
      * @param resource $result  result resource id
      * @param array    $options assoc array with optional result options
+     *
+     * @access public
      */
     function DB_result(&$dbh, $result, $options = array())
     {
@@ -1018,6 +1024,14 @@ class DB_result
         $this->fetchmode_object_class = $dbh->fetchmode_object_class;
     }
 
+    /**
+     * Set options for the DB_result object
+     *
+     * @param string $key    the option to set
+     * @param mixed  $value  the value to set the option to
+     *
+     * @access public
+     */
     function setOption($key, $value = null)
     {
         switch ($key) {
@@ -1033,7 +1047,7 @@ class DB_result
     // {{{ fetchRow()
 
     /**
-     * Fetch a row of data and return it by reference into an array.
+     * Fetch a row of data and return it by reference into an array
      *
      * The type of array returned can be controlled either by setting this
      * method's <var>$fetchmode</var> parameter or by changing the default
@@ -1056,10 +1070,10 @@ class DB_result
      * @return array  a row of data, null on no more rows or PEAR_Error
      *                object on error
      *
-     * @see DB_common::setOption(), DB_common::setFetchMode()
      * @access public
+     * @see DB_common::setOption(), DB_common::setFetchMode()
      */
-    function &fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
+    function &fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
     {
         if ($fetchmode === DB_FETCHMODE_DEFAULT) {
             $fetchmode = $this->fetchmode;
@@ -1079,8 +1093,7 @@ class DB_result
                     }
                 }
             }
-            if ($this->row_counter >= (
-                    $this->limit_from + $this->limit_count))
+            if ($this->row_counter >= ($this->limit_from + $this->limit_count))
             {
                 if ($this->autofree) {
                     $this->free();
@@ -1096,7 +1109,8 @@ class DB_result
         $res = $this->dbh->fetchInto($this->result, $arr, $fetchmode, $rownum);
         if ($res === DB_OK) {
             if (isset($object_class)) {
-                // default mode specified in DB_common::fetchmode_object_class property
+                // The default mode is specified in the
+                // DB_common::fetchmode_object_class property
                 if ($object_class == 'stdClass') {
                     $arr = (object) $arr;
                 } else {
@@ -1143,7 +1157,7 @@ class DB_result
      * @see DB_common::setOption(), DB_common::setFetchMode()
      * @access public
      */
-    function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
+    function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
     {
         if ($fetchmode === DB_FETCHMODE_DEFAULT) {
             $fetchmode = $this->fetchmode;
@@ -1180,7 +1194,8 @@ class DB_result
         $res = $this->dbh->fetchInto($this->result, $arr, $fetchmode, $rownum);
         if ($res === DB_OK) {
             if (isset($object_class)) {
-                // default mode specified in DB_common::fetchmode_object_class property
+                // default mode specified in the
+                // DB_common::fetchmode_object_class property
                 if ($object_class == 'stdClass') {
                     $arr = (object) $arr;
                 } else {
@@ -1199,7 +1214,7 @@ class DB_result
     // {{{ numCols()
 
     /**
-     * Get the the number of columns in a result set.
+     * Get the the number of columns in a result set
      *
      * @return int the number of columns, or a DB error
      *
@@ -1214,7 +1229,7 @@ class DB_result
     // {{{ numRows()
 
     /**
-     * Get the number of rows in a result set.
+     * Get the number of rows in a result set
      *
      * @return int the number of rows, or a DB error
      *
@@ -1229,9 +1244,9 @@ class DB_result
     // {{{ nextResult()
 
     /**
-     * Get the next result if a batch of queries was executed.
+     * Get the next result if a batch of queries was executed
      *
-     * @return bool true if a new result is available or false if not.
+     * @return bool  true if a new result is available or false if not
      *
      * @access public
      */
@@ -1244,8 +1259,9 @@ class DB_result
     // {{{ free()
 
     /**
-     * Frees the resources allocated for this result set.
-     * @return  int error code
+     * Frees the resources allocated for this result set
+     *
+     * @return bool  true on success or a DB_Error object if problems
      *
      * @access public
      */
@@ -1279,8 +1295,11 @@ class DB_result
     // {{{ getRowCounter()
 
     /**
-     * returns the actual row number
-     * @return integer
+     * Tells which row number is currently being processed
+     *
+     * @return integer  the current row being looked at.  Starts at 1.
+     *
+     * @access public
      */
     function getRowCounter()
     {
@@ -1293,13 +1312,13 @@ class DB_result
 // {{{ class DB_row
 
 /**
- * Pear DB Row Object
+ * PEAR DB Row Object
  *
  * @category   Database
  * @package    DB
  * @author     Stig Bakken <ssb@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  * @see        DB_common::setFetchMode()
@@ -1309,9 +1328,13 @@ class DB_row
     // {{{ constructor
 
     /**
-     * constructor
+     * The DB_row constructor
      *
-     * @param resource row data as array
+     * @param array  row data as an associative array
+     *
+     * @return void
+     *
+     * @access public
      */
     function DB_row(&$arr)
     {
