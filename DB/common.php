@@ -128,6 +128,64 @@ class DB_common extends PEAR
     }
 
     // }}}
+    // {{{ __sleep()
+
+    /**
+     * When PHP's serialize() function is called, automatically disconnect
+     * from the database and indicate which properties should be saved
+     *
+     * @return array  the array of properties names that should be saved
+     */
+    function __sleep()
+    {
+        if ($this->connection) {
+            $this->disconnect();
+            $this->connection = true;
+        } else {
+            $this->connection = false;
+        }
+        if (isset($this->autocommit)) {
+            return array('autocommit',
+                         'connection',
+                         'dbsyntax',
+                         'dsn',
+                         'features',
+                         'fetchmode',
+                         'fetchmode_object_class',
+                         'options',
+                   );
+        } else {
+            return array('connection',
+                         'dbsyntax',
+                         'dsn',
+                         'features',
+                         'fetchmode',
+                         'fetchmode_object_class',
+                         'options',
+                   );
+        }
+    }
+
+    // }}}
+    // {{{ __wakeup()
+
+    /**
+     * Automatically reconnect to the database when PHP's unserialize()
+     * function is called
+     *
+     * The reconnection attempt is only performed if the object was connected
+     * at the time PHP's serialize() function was run.
+     *
+     * @return void
+     */
+    function __wakeup()
+    {
+        if ($this->connection) {
+            $this->connect($this->dsn, $this->options);
+        }
+    }
+
+    // }}}
     // {{{ __toString()
 
     /**
@@ -388,7 +446,8 @@ class DB_common extends PEAR
      * @see DB_common::quoteSmart()
      * @since Method available since Release 1.6.0
      */
-    function escapeSimple($str) {
+    function escapeSimple($str)
+    {
         return str_replace("'", "''", $str);
     }
 
@@ -1111,7 +1170,8 @@ class DB_common extends PEAR
      *
      * @access protected
      */
-    function modifyQuery($query) {
+    function modifyQuery($query)
+    {
         return $query;
     }
 
