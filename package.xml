@@ -40,17 +40,26 @@ to LDAP servers and MS ADO (using COM) are also avaible from a separate package)
     </maintainer>
   </maintainers>
   <release>
-    <version>1.5.0RC2</version>
+    <version>1.5.0RC3</version>
     <state>stable</state>
     <date>2003-09-14</date>
     <notes>
-New Features:
-- Added "isnullable" and "primary_key" field flags for tableInfo() (only avaible when passed a table name)
-- Added transactions support for the Informix driver
-
 Bugs fixed:
-- SQLite driver now passes all the tests
-- Various others bugfixes
+- Fixed few mem leaks in some drivers
+
+Minor API Change:
+
+- Now $db_object->freeResult() can't be used for freeing
+  a prepared query. Use $db_object->freePrepared() instead:
+
+     // Create resources
+     $prep = $db_object->prepare($sql);
+     $res  = $db_object->execute($prep, $params);
+
+     // Free resources
+     $db_object->freePrepared($prep);
+     $res->free();
+
 </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
