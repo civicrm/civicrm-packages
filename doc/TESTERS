@@ -37,16 +37,39 @@ CVS command as appropriate for your present version of PHP.
 
 Obtain DB and its Test Framework
 --------------------------------
-Create a location to store the test installation of DB and its test
-scripts.
+* IF PEAR DB IS ALREADY INSTALLED:
 
- mkdir d:/peartest
- cd d:/peartest
- cvs -d :pserver:cvsread@cvs.php.net:/repository co -P pear/DB
+  If you have PEAR DB installed already, good.  The test suite
+  is in place.  Open up a command/shell prompt and move into
+  the test directory.
 
-We assume you already have the PEAR base package installed.  If you
-don't, you will need to do so, but the instructions for doing that
-are beyond the scope of this document.
+   cd <path to pear insall>/tests/DB/tests
+
+* VIA A NEW INSTALLATION USING THE PEAR INSTALLER:
+
+  Installing PEAR has gotten fairly easy.  Follow the instructions
+  from the manual:  http://pear.php.net/manual/en/installation.php
+  Once PEAR and DB are installed, move to the test directory.
+
+   cd pear/tests/DB/tests
+
+* VIA CVS:
+
+  Create a location to store the test installation of DB and its
+  test scripts.
+
+   mkdir d:/peartest
+   cd d:/peartest
+   cvs -d :pserver:cvsread@cvs.php.net:/repository co -P pear/DB
+
+  We assume you already have the PEAR base package installed.  If
+  you don't, you will need to do so, but the instructions for
+  doing that are beyond the scope of this document.  See
+  http://pear.php.net/manual/en/installation.php for more info.
+
+  Move to the test directory.
+
+   cd pear/DB/tests
 
 
 Copy the Starter Shell Script and Edit the Paths
@@ -57,7 +80,6 @@ renamed to "run" so CVS won't bother you with tracking them.  Then,
 the paths and file names in them need to be set to those used by
 your system.
 
- cd pear/DB/tests
  cp run.cvs run
  chmod 755 run
  vi run
@@ -125,7 +147,7 @@ Stig Bakken                   -   -   -   -   -   -   X   -   -   -   X   -   -
 Chuck Hagenbuch               -   -   -   -   -   X   -   -   -   -   -   -   -
 Ludovico Magnocavallo         -   -   X   -   -   -   -   -   -   -   -   -   -
 Daniel Convissor              -   -   X   -   -   X   X   X   X   X²  X   X   X
-                                                                           
+
 MISSING TESTERS               -   X   -   -   X   -   -   -   -   -   -   -   -
 
 Comments:

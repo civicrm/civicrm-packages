@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.100 2004-04-29 23:45:04 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.101 2004-04-30 02:45:15 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -88,6 +88,10 @@ due to foreign key constraint.  (danielc)
 IT NOW WORKS!  (danielc)
 
 - tests:
+Make test suite work for installed packages.
+Already worked for CVS checkouts.  (danielc)
+
+- tests:
 Made adjustments so mysql and mysqli pass
 transactions and foreign key tests.
 (danielc)
@@ -126,7 +130,10 @@ transactions and foreign key tests.
         <file name="errors.inc"/>
         <file name="fetchmode_object.inc"/>
         <file name="fetchmodes.inc"/>
-        <file name="include.inc"/>
+        <file name="include.inc">
+          <replace from="@include_path@" to="php_dir"
+            type="pear-config"/>
+        </file>
         <file name="limit.inc"/>
         <file name="numcols.inc"/>
         <file name="numrows.inc"/>
@@ -157,7 +164,10 @@ transactions and foreign key tests.
           <file name="connect.inc"/>
           <file name="mktable.inc"/>
           <file name="run.cvs"/>
-          <file name="setup.inc.cvs"/>
+          <file name="setup.inc.cvs">
+            <replace from="@include_path@" to="php_dir"
+              type="pear-config"/>
+          </file>
           <file name="skipif.inc"/>
         </dir>
       </dir>
