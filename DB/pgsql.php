@@ -13,7 +13,7 @@
 // | obtain it through the world-wide-web, please send a note to          |
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
-// | Authors: Rui Hirokawa <rui_hirokawa@ybb.ne.jp>                       |
+// | Authors: Rui Hirokawa <hirokawa@php.net>                             |
 // |          Stig Bakken <ssb@php.net>                                   |
 // +----------------------------------------------------------------------+
 //
