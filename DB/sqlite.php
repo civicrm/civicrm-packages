@@ -553,8 +553,9 @@ class DB_sqlite extends DB_common {
             // This is a dirty hack, since the above query will no get executed with a single
             // query call; so here the query method will be called directly and return a select instead.
             $q = explode(";", $query );
-            for($i=0; $i<8; $i++)
+            for($i=0; $i<8; $i++) {
                 $result = $this->query( $q[$i] );
+            }
             $query = "SELECT * FROM {$args['table']};";
             break;
         default:
