@@ -256,6 +256,8 @@ class DB_pgsql extends DB_common
     }
 
     // }}}
+    // {{{ fetchRow()
+
     /**
      * Fetch and return a row of data (it uses fetchInto for that)
      * @param $result PostgreSQL result identifier
@@ -276,6 +278,7 @@ class DB_pgsql extends DB_common
         return $arr;
     }
 
+    // }}}
     // {{{ fetchInto()
 
     /**
