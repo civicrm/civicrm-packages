@@ -126,11 +126,6 @@ class DB_sqlite extends DB_common {
                               'transactions' => false,
                               'limit' => 'alter'
                           );
-/*
-        $this->options = array (
-                             'optimize' => 'portability'
-                         );
-*/
 
         // SQLite data types, http://www.sqlite.org/datatypes.html
         $this->keywords = array (
@@ -262,11 +257,11 @@ class DB_sqlite extends DB_common {
         }
         
         /* sqlite_query() seems to allways return a resource */
-        /* so cant use that                                  */
+        /* so cant use that. Using $ismanip instead          */
         if (!$ismanip) {
             $numRows = $this->numRows($result);
 
-            /* if numRows() returnet PEAR_Error */
+            /* if numRows() returned PEAR_Error */
             if (is_object($numRows )) {
                 return $numRows;
             }
@@ -453,6 +448,21 @@ class DB_sqlite extends DB_common {
             return($result);
         } 
     }
+
+
+    /**
+     * Get the next value in a sequence.  We emulate sequences
+     * for SQLite.  Will create the sequence if it does not exist.
+     *
+     * @access public
+     *
+     * @param string $seq_name the name of the sequence
+     *
+     * @param bool $ondemand whether to create the sequence table on demand
+     * (default is true)
+     *
+     * @return mixed a sequence integer, or a DB error
+     */
 
     function nextId($seq_name, $ondemand = true)
     { 
