@@ -88,7 +88,7 @@ class DB_pgsql extends DB_common
         $connstr = '';
 
         if ($protocol == 'tcp') {
-            if ($dsninfo['hostspec']) {
+            if (!empty($dsninfo['hostspec'])) {
                 $connstr = 'host=' . $dsninfo['hostspec'];
             }
             if (!empty($dsninfo['port'])) {
