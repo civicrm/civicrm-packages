@@ -32,6 +32,8 @@
 // Formatting: 
 //   # astyle --style=kr < sqlite.php > out.php
 //
+// Status:
+//   EXPERIMENTAL
 
 /**
 * Example:  
