@@ -53,7 +53,7 @@ class DB_ifx extends DB_common
         $this->features = array(
             'prepare' => false,
             'pconnect' => true,
-            'transactions' => false,
+            'transactions' => true,
             'limit' => 'emulate'
         );
         $this->errorcode_map = array(
@@ -151,11 +151,14 @@ class DB_ifx extends DB_common
             return $this->ifxraiseError();
         }
         $this->affected = ifx_affected_rows ($result);
-        // Determine which queries that should return data, and which
+        // Determine which queries should return data, and which
         // should return an error code only.
         if (preg_match('/(SELECT)/i', $query)) {
             return $result;
         }
+        // XXX Testme: free results inside a transaction
+        // may cause to stop it and commit the work?
+
         // Result has to be freed even with a insert or update
         ifx_free_result($result);
 
