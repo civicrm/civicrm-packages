@@ -285,12 +285,7 @@ class DB_mysqli extends DB_common
         if (!$result) {
             return $this->mysqliRaiseError();
         }
-# this next block is still sketchy..
         if (is_object($result)) {
-            $numrows = $this->numRows($result);
-            if (is_object($numrows)) {
-                return $numrows;
-            }
             return $result;
         }
         return DB_OK;
