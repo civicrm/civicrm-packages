@@ -169,6 +169,7 @@ class DB_mysql extends DB_common
 
         if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
             $this->errorcode_map[1022] = DB_ERROR_CONSTRAINT;
+            $this->errorcode_map[1048] = DB_ERROR_CONSTRAINT_NOT_NULL;
             $this->errorcode_map[1062] = DB_ERROR_CONSTRAINT;
         }
 
