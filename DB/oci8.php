@@ -270,9 +270,7 @@ class DB_oci8 extends DB_common
         // emulate numRows for Oracle.  yuck.
         if ($this->options['optimize'] == 'portability' &&
             $result === $this->last_stmt) {
-            $countquery = preg_replace('/^\s*SELECT\s+(.*?)\s+FROM\s+/is',
-                                       'SELECT COUNT(*) FROM ',
-                                       $this->last_query);
+            $countquery = "SELECT COUNT(*) FROM (".$this->last_query.")";
             $save_query = $this->last_query;
             $save_stmt = $this->last_stmt;
             $count = $this->query($countquery);
