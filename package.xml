@@ -45,7 +45,9 @@ to LDAP servers and MS ADO (using COM) are also avaible from a separate package)
     <date>2003-09-14</date>
     <notes>
 Bugs fixed:
+
 - Fixed few mem leaks in some drivers
+- Fixed wrong splitting by \ in prepare() (bug #45)
 
 Minor API Change:
 
