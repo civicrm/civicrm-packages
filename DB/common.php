@@ -468,7 +468,9 @@ class DB_common extends PEAR
     function autoExecute($table, $fields_values, $mode = DB_AUTOQUERY_INSERT, $where = false)
     {
         $sth = $this->autoPrepare($table, array_keys($fields_values), $mode, $where);
-        return $this->execute($sth, array_values($fields_values));
+        $ret = $this->execute($sth, array_values($fields_values));
+        $this->freePrepared($sth);
+        return $ret;
 
     }
 
@@ -559,10 +561,6 @@ class DB_common extends PEAR
             return $realquery;
         }
         $result = $this->simpleQuery($realquery);
-        // Free the internal prepared vars
-        unset($this->prepare_tokens[$stmt]);
-        unset($this->prepare_types[$stmt]);
-        unset($this->prepared_queries[$stmt]);
 
         if (DB::isError($result) || $result === DB_OK) {
             return $result;
@@ -676,6 +674,27 @@ class DB_common extends PEAR
     }
 
     // }}}
+    // {{{ freePrepared()
+
+    /*
+    * Free the resource used in a prepared query
+    *
+    * @param $stmt The resurce returned by the prepare() function
+    * @see prepare()
+    */
+    function freePrepared($stmt)
+    {
+        // Free the internal prepared vars
+        if (isset($this->prepare_tokens[$stmt])) {
+            unset($this->prepare_tokens[$stmt]);
+            unset($this->prepare_types[$stmt]);
+            unset($this->prepared_queries[$stmt]);
+            return true;
+        }
+        return false;
+    }
+
+    // }}}
     // {{{ modifyQuery()
 
     /**
@@ -736,7 +755,9 @@ class DB_common extends PEAR
             if (DB::isError($sth)) {
                 return $sth;
             }
-            return $this->execute($sth, $params);
+            $ret = $this->execute($sth, $params);
+            $this->freePrepared($sth);
+            return $ret;
         } else {
             $result = $this->simpleQuery($query);
             if (DB::isError($result) || $result === DB_OK) {
@@ -764,7 +785,7 @@ class DB_common extends PEAR
     function &limitQuery($query, $from, $count, $params = array())
     {
         $query  = $this->modifyLimitQuery($query, $from, $count);
-        $result  = $this->query($query, $params);
+        $result = $this->query($query, $params);
         if (get_class($result) == 'db_result') {
             $result->setOption('limit_from', $from);
             $result->setOption('limit_count', $count);
@@ -798,6 +819,7 @@ class DB_common extends PEAR
                 return $sth;
             }
             $res = $this->execute($sth, $params);
+            $this->freePrepared($sth);
         } else {
             $res = $this->query($query);
         }
@@ -807,14 +829,11 @@ class DB_common extends PEAR
         }
 
         $err = $res->fetchInto($row, DB_FETCHMODE_ORDERED);
-        if ($err !== DB_OK) {
-            return $err;
-        }
 
         $res->free();
 
-        if (isset($sth)) {
-            $this->freeResult($sth);
+        if ($err !== DB_OK) {
+            return $err;
         }
 
         return $row[0];
@@ -861,6 +880,7 @@ class DB_common extends PEAR
                 return $sth;
             }
             $res = $this->execute($sth, $params);
+            $this->freePrepared($sth);
         } else {
             $res = $this->query($query);
         }
@@ -871,13 +891,10 @@ class DB_common extends PEAR
 
         $err = $res->fetchInto($row, $fetchmode);
 
-        if ($err !== DB_OK) {
-            return $err;
-        }
         $res->free();
 
-        if (isset($sth)) {
-            $this->freeResult($sth);
+        if ($err !== DB_OK) {
+            return $err;
         }
 
         return $row;
@@ -914,6 +931,7 @@ class DB_common extends PEAR
             }
 
             $res = $this->execute($sth, $params);
+            $this->freePrepared($sth);
         } else {
             $res = $this->query($query);
         }
@@ -928,13 +946,11 @@ class DB_common extends PEAR
         while (is_array($row = $res->fetchRow($fetchmode))) {
             $ret[] = $row[$col];
         }
-        if (DB::isError($row)) {
-            $ret = $row;
-        }
+
         $res->free();
 
-        if (isset($sth)) {
-            $this->freeResult($sth);
+        if (DB::isError($row)) {
+            $ret = $row;
         }
 
         return $ret;
@@ -1029,6 +1045,7 @@ class DB_common extends PEAR
             }
 
             $res = $this->execute($sth, $params);
+            $this->freePrepared($sth);
         } else {
             $res = $this->query($query);
         }
@@ -1090,10 +1107,6 @@ class DB_common extends PEAR
 
         $res->free();
 
-        if (isset($sth)) {
-            $this->freeResult($sth);
-        }
-
         return $results;
     }
 
@@ -1140,6 +1153,7 @@ class DB_common extends PEAR
             }
 
             $res = $this->execute($sth, $params);
+            $this->freePrepared($sth);
         } else {
             $res = $this->query($query);
         }
@@ -1163,9 +1177,6 @@ class DB_common extends PEAR
 
         $res->free();
 
-        if (isset($sth)) {
-            $this->freeResult($sth);
-        }
         if (DB::isError($row)) {
             return $this->raiseError($row);
         }
