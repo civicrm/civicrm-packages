@@ -26,6 +26,8 @@
  * inherited by all such.
  */
 
+require_once "PEAR.php";
+
 class DB_common extends PEAR
 {
     // {{{ properties
