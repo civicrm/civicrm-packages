@@ -52,30 +52,24 @@ of the test suite.  Make sure only one line is uncommented at a time.
  vi setup.inc &
  cp setup.inc tests/driver
 
+Edit Paths and File Names in the Starter Script
+-----------------------------------------------
+There are two shell scripts named "run" used to jump start the testing
+process.  One is in the tests directory and the other is in the
+tests/driver directory.  These files contain the commands necessary to
+run the tests on your system.  Since each computer system's settings
+are different, you will need to edit that file.  Instructions for that
+are contained in the "run" files themselves.
+
 
 RUN THE TESTS
 =============
 
-Set the Environment Variable
-----------------------------
-Set the path and file name of your PHP CLI executable.
-
- TEST_PHP_EXECUTABLE=c:/progra~1/php/cli/php.exe
- export TEST_PHP_EXECUTABLE
-
-Execute Tests
--------------
-Use complete paths to ensure the correct files are being accessed.  Use
-the CLI version of PHP.  To run all of the tests in the directory:
-
  cd tests/driver
- c:/progra~1/php/cli/php.exe c:/progra~1/php/run-tests.php \
-     c:/dbtests/tests/driver
+ ./run
 
-To run one test, name the .phpt file specifically:
-
- c:/progra~1/php/cli/php.exe c:/progra~1/php/run-tests.php \
-     c:/dbtests/tests/driver/02fetch.phpt
+To run one test: ./run <test name>.phpt
+Example:         ./run db_parsedsn.phpt
 
 Test Types and Locations
 ------------------------
