@@ -966,23 +966,7 @@ class DB_mysql extends DB_common
             case 'tables':
                 return 'SHOW TABLES';
             case 'users':
-                $sql = 'SELECT DISTINCT User FROM user';
-                if ($this->dsn['database'] != 'mysql') {
-                    $dsn = $this->dsn;
-                    $dsn['database'] = 'mysql';
-                    if (DB::isError($db = DB::connect($dsn))) {
-                        return $db;
-                    }
-                    $sql = $db->getCol($sql);
-                    $db->disconnect();
-                    // XXX Fixme the mysql driver should take care of this
-                    if (!@mysql_select_db($this->dsn['database'],
-                                          $this->connection))
-                    {
-                        return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
-                    }
-                }
-                return $sql;
+                return 'SELECT DISTINCT User FROM mysql.user';
             case 'databases':
                 return 'SHOW DATABASES';
             default:
