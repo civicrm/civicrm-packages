@@ -667,6 +667,42 @@ class DB_msql extends DB_common
     }
 
     // }}}
+    // {{{ getSpecialQuery()
+
+    /**
+     * Obtain a list of a given type of objects
+     *
+     * @param string $type  the kind of objects you want to retrieve
+     *
+     * @return array  the array containing the list of objects requested
+     *
+     * @access protected
+     * @see DB_common::getListOf()
+     */
+    function getSpecialQuery($type)
+    {
+        switch ($type) {
+            case 'databases':
+                $id = @msql_list_dbs($this->connection);
+                break;
+            case 'tables':
+                $id = @msql_list_tables($this->dsn['database'],
+                                        $this->connection);
+                break;
+            default:
+                return null;
+        }
+        if (!$id) {
+            return $this->msqlRaiseError();
+        }
+        $out = array();
+        while ($row = @msql_fetch_row($id)) {
+            $out[] = $row[0];
+        }
+        return $out;
+    }
+
+    // }}}
 
 }
 
