@@ -246,7 +246,7 @@ class DB_fbsql extends DB_common
     /**
      * Free the internal resources associated with $result.
      *
-     * @param $result fbsql result identifier or DB statement identifier
+     * @param $result fbsql result identifier
      *
      * @access public
      *
@@ -254,18 +254,7 @@ class DB_fbsql extends DB_common
      */
     function freeResult($result)
     {
-        if (is_resource($result)) {
-            return fbsql_free_result($result);
-        }
-
-        if (!isset($this->prepare_tokens[(int)$result])) {
-            return false;
-        }
-
-        unset($this->prepare_tokens[(int)$result]);
-        unset($this->prepare_types[(int)$result]);
-
-        return true;
+        return @fbsql_free_result($result);
     }
 
     // }}}
@@ -273,11 +262,11 @@ class DB_fbsql extends DB_common
 
     function autoCommit($onoff=false)
     {
-    	if ($onoff) {
+        if ($onoff) {
             $this->query("SET COMMIT TRUE");
-    	} else {
+        } else {
             $this->query("SET COMMIT FALSE");
-    	}
+        }
     }
 
     // }}}

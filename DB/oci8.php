@@ -216,22 +216,13 @@ class DB_oci8 extends DB_common
     /**
      * Free the internal resources associated with $result.
      *
-     * @param $result oci8 result identifier or DB statement identifier
+     * @param $result oci8 result identifier
      *
      * @return bool TRUE on success, FALSE if $result is invalid
      */
     function freeResult($result)
     {
-        if (is_resource($result)) {
-            return @OCIFreeStatement($result);
-        }
-        if (!isset($this->prepare_tokens[(int)$result])) {
-            return false;
-        }
-        unset($this->prepare_tokens[(int)$result]);
-        unset($this->prepare_types[(int)$result]);
-        unset($this->manip_query[(int)$result]);
-        return true;
+        return @OCIFreeStatement($result);
     }
 
     /**
@@ -243,14 +234,18 @@ class DB_oci8 extends DB_common
      */
     function freePrepared($stmt)
     {
-        if (!is_resource($stmt)) {
-            return false;
+        if (is_resource($stmt)) {
+            $ret = ocifreestatement($stmt);
+        } else {
+            $ret = false;
         }
-        ocifreestatement($stmt);
-        unset($this->prepare_tokens[(int)$stmt]);
-        unset($this->prepare_types[(int)$stmt]);
-        unset($this->manip_query[(int)$stmt]);
-        return true;
+        if (isset($this->prepare_types[(int)$stmt])) {
+            unset($this->prepare_types[(int)$stmt]);
+            unset($this->manip_query[(int)$stmt]);
+        } else {
+            $ret = false;
+        }
+        return $ret;
     }
 
     // }}}

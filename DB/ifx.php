@@ -150,7 +150,7 @@ class DB_ifx extends DB_common
         if (!$result) {
             return $this->ifxraiseError();
         }
-        $this->affected = ifx_affected_rows ($result);
+        $this->affected = ifx_affected_rows($result);
         // Determine which queries should return data, and which
         // should return an error code only.
         if (preg_match('/(SELECT)/i', $query)) {
@@ -260,22 +260,11 @@ class DB_ifx extends DB_common
      *
      * @param $result Informix result identifier
      *
-     * @return bool TRUE on success, DB_error on error
+     * @return bool TRUE on success, FALSE if $result is invalid
      */
     function freeResult($result)
     {
-        if (is_resource($result)) {
-            if (!@ifx_free_result($result)) {
-                return $this->ifxraiseError();
-            }
-            return true;
-        }
-        if (!isset($this->prepare_tokens[(int)$result])) {
-            return false;
-        }
-        unset($this->prepare_tokens[(int)$result]);
-        unset($this->prepare_types[(int)$result]);
-        return true;
+        return @ifx_free_result($result);
     }
 
     // }}}

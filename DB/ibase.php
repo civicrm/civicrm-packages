@@ -241,15 +241,7 @@ class DB_ibase extends DB_common
 
     function freeResult($result)
     {
-        if (is_resource($result)) {
-            return ibase_free_result($result);
-        }
-        if (!isset($this->prepare_tokens[(int)$result])) {
-            return false;
-        }
-        unset($this->prepare_tokens[(int)$result]);
-        unset($this->prepare_types[(int)$result]);
-        return true;
+        return @ibase_free_result($result);
     }
 
     // }}}

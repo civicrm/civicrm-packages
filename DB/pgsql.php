@@ -293,7 +293,7 @@ class DB_pgsql extends DB_common
     /**
      * Free the internal resources associated with $result.
      *
-     * @param $result int PostgreSQL result identifier or DB statement identifier
+     * @param $result int PostgreSQL result identifier
      *
      * @return bool TRUE on success, FALSE if $result is invalid
      */
@@ -305,7 +305,7 @@ class DB_pgsql extends DB_common
             $this->affected = 0;
             return @pg_freeresult($result);
         }
-        return $this->freePrepared((int)$result);
+        return false;
     }
 
     // }}}

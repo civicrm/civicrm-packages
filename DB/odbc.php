@@ -176,7 +176,7 @@ class DB_odbc extends DB_common
             $this->manip_result = $result; // For affectedRows()
             return DB_OK;
         }
-        $this->row[$result] = 0;
+        $this->row[(int)$result] = 0;
         $this->manip_result = 0;
         return $result;
     }
@@ -241,16 +241,8 @@ class DB_odbc extends DB_common
 
     function freeResult($result)
     {
-        if (is_resource($result)) {
-            // Always return true
-            return odbc_free_result($result);
-        }
-        if (!isset($this->prepare_tokens[(int)$result])) {
-            return false;
-        }
-        unset($this->prepare_tokens[(int)$result]);
-        unset($this->prepare_types[(int)$result]);
-        return true;
+        unset($this->row[(int)$result]);
+        return @odbc_free_result($result);
     }
 
     // }}}

@@ -239,7 +239,7 @@ class DB_sybase extends DB_common
             if (is_object($numrows)) {
                 return $numrows;
             }
-            $this->num_rows[$result] = $numrows;
+            $this->num_rows[(int)$result] = $numrows;
             return $result;
         }
         // Determine which queries that should return data, and which
@@ -304,7 +304,7 @@ class DB_sybase extends DB_common
     /**
      * Free the internal resources associated with $result.
      *
-     * @param $result Sybase result identifier or DB statement identifier
+     * @param $result Sybase result identifier
      *
      * @access public
      *
@@ -312,15 +312,8 @@ class DB_sybase extends DB_common
      */
     function freeResult($result)
     {
-        if (is_resource($result)) {
-            return @sybase_free_result($result);
-        }
-        if (!isset($this->prepare_tokens[(int)$result])) {
-            return false;
-        }
-        unset($this->prepare_tokens[(int)$result]);
-        unset($this->prepare_types[(int)$result]);
-        return true;
+        unset($this->num_rows[(int)$result]);
+        return @sybase_free_result($result);
     }
 
     // }}}

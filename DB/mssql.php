@@ -192,15 +192,7 @@ class DB_mssql extends DB_common
 
     function freeResult($result)
     {
-        if (is_resource($result)) {
-            return @mssql_free_result($result);
-        }
-        if (!isset($this->prepare_tokens[$result])) {
-            return false;
-        }
-        unset($this->prepare_tokens[$result]);
-        unset($this->prepare_types[$result]);
-        return true;
+        return @mssql_free_result($result);
     }
 
     // }}}

@@ -225,7 +225,7 @@ class DB_mysql4 extends DB_common
             if (is_object($numrows)) {
                 return $numrows;
             }
-            $this->num_rows[$result] = $numrows;
+            $this->num_rows[(int)$result] = $numrows;
             return $result;
         }
         return DB_OK;
@@ -292,7 +292,7 @@ class DB_mysql4 extends DB_common
     /**
      * Free the internal resources associated with $result.
      *
-     * @param $result MySQL result identifier or DB statement identifier
+     * @param $result MySQL result identifier
      *
      * @access public
      *
@@ -300,19 +300,8 @@ class DB_mysql4 extends DB_common
      */
     function freeResult($result)
     {
-        if (is_resource($result)) {
-            return mysql_free_result($result);
-        }
-
-        $result = (int)$result; // $result is a prepared query handle
-        if (!isset($this->prepare_tokens[$result])) {
-            return false;
-        }
-
-        $this->prepare_types = array();
-        $this->prepare_tokens = array();
-
-        return true;
+        unset($this->num_rows[(int)$result]);
+        return @mysql_free_result($result);
     }
 
     // }}}

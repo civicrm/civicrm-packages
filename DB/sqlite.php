@@ -346,22 +346,14 @@ class DB_sqlite extends DB_common {
     /**
      * Free the internal resources associated with $result.
      *
-     * @param $result SQLite result identifier or DB statement identifier
+     * @param $result SQLite result identifier
      * @access public
      * @return bool TRUE on success, FALSE if $result is invalid
      */
-    function freeResult($result) {
-        if(is_resource($result)) {
-            unset($result);
-            return true;
-        }
-        // $result is a prepared query handle
-        $result = (int)$result;
-        if (!isset($this->prepare_tokens[$result])) {
-            return false;
-        }
-        $this->prepare_types = array();
-        $this->prepare_tokens = array();
+    function freeResult($result)
+    {
+        // XXX No native free?
+        unset($result);
         return true;
     }
 
