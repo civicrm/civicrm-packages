@@ -28,7 +28,7 @@ switch ($dbh->phptype) {
 }
 
 
-$test_array_dsn = DB::parseDSN(DRIVER_DSN);
+$test_array_dsn = DB::parseDSN($dsn);
 
 foreach ($test_array_dsn as $key => $value) {
     if ($value === false) {
