@@ -197,6 +197,8 @@ class DB_odbc extends DB_common
             $this->dbsyntax = $dsn['dbsyntax'];
         }
         switch ($this->dbsyntax) {
+            case 'access':
+            case 'db2':
             case 'solid':
                 $this->features['transactions'] = true;
                 break;
