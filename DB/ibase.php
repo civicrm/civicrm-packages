@@ -523,7 +523,7 @@ class DB_ibase extends DB_common
          }
 
          // free the result only if we were called on a table
-         if (is_resource($id)) {
+         if (is_string($result)) {
              ibase_free_result($id);
          }
          return $res;
