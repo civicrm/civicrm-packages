@@ -97,6 +97,8 @@ class DB_sybase extends DB_common
 
         if ($interface && $user && $pw) {
             $conn = @$connect_function($interface, $user, $pw);
+        } elseif ($interface && $user) {
+            $conn = @$connect_function($interface, $user);
         } else {
             $conn = FALSE;
         }
