@@ -28,7 +28,7 @@ DB_driver::tableInfo
  *     1 => array()  Info expected to be reported for phptest_fk.fk
  *     2 => array()  Info expected to be reported for phptest_fk.c
  *     3 => array()  Info expected to be reported for phptest_fk.d
- *     7 => array()  Info expected to be reported for phptest.d
+ *     9 => array()  Info expected to be reported for phptest.d
  * )
  * </pre>
  *
@@ -109,7 +109,7 @@ function examineArrayData($array, $field = false, $query = true) {
             }
         } else {
             if ($key == 'table') {
-                if ($field <= 3) {
+                if ($field <= 5) {
                     if ($value == 'phptest_fk') {
                         print "$key ... matched expected value\n";
                     } else {
@@ -186,8 +186,18 @@ $quirks = array(
             'len' => 4,
             'flags' => 'not_null',
         ),
-        7 => array(
-            'type' => 'SQLDATE',
+        4 => array(
+            'type' => 'SQLCHAR',
+            'len' => 4,
+            'flags' => 'not_null',
+        ),
+        5 => array(
+            'type' => 'SQLREAL',
+            'len' => 4,
+            'flags' => '',
+        ),
+        9 => array(
+            'type' => 'SQLCHAR',
             'len' => 20,
             'flags' => '',
         ),
@@ -221,7 +231,17 @@ $quirks = array(
             'len' => 4,
             'flags' => 'multiple_key unique_key not_null',
         ),
-        7 => array(
+        4 => array(
+            'type' => 'char',
+            'len' => 4,
+            'flags' => 'not_null',
+        ),
+        5 => array(
+            'type' => 'real',
+            'len' => 19,
+            'flags' => '',
+        ),
+        9 => array(
             'type' => 'char',
             'len' => 20,
             'flags' => '',
@@ -254,7 +274,17 @@ $quirks = array(
             'len' => 10,
             'flags' => 'not_null multiple_key',
         ),
-        7 => array(
+        4 => array(
+            'type' => 'string',
+            'len' => 4,
+            'flags' => 'not_null',
+        ),
+        5 => array(
+            'type' => 'real',
+            'len' => 4,
+            'flags' => '',
+        ),
+        9 => array(
             'type' => 'string',
             'len' => 20,
             'flags' => '',
@@ -288,7 +318,17 @@ $quirks = array(
             'len' => 7,
             'flags' => 'not_null',
         ),
-        7 => array(
+        4 => array(
+            'type' => 'CHAR',
+            'len' => 4,
+            'flags' => 'not_null',
+        ),
+        5 => array(
+            'type' => 'NUMBER',
+            'len' => 22,
+            'flags' => '',
+        ),
+        9 => array(
             'type' => 'VARCHAR',
             'len' => 20,
             'flags' => '',
@@ -322,7 +362,17 @@ $quirks = array(
             'len' => 4,
             'flags' => 'not_null unique_key multiple_key',
         ),
-        7 => array(
+        4 => array(
+            'type' => 'bpchar',
+            'len' => -1,
+            'flags' => 'not_null default_dflt::bpchar',
+        ),
+        5 => array(
+            'type' => 'numeric',
+            'len' => -1,
+            'flags' => '',
+        ),
+        9 => array(
             'type' => 'varchar',
             'len' => -1,
             'flags' => '',
@@ -356,7 +406,17 @@ $quirks = array(
             'len' => 29,
             'flags' => 'multiple_key unique_key',
         ),
-        7 => array(
+        4 => array(
+            'type' => 'string',
+            'len' => 4,
+            'flags' => '',
+        ),
+        5 => array(
+            'type' => 'real',
+            'len' => 4,
+            'flags' => '',
+        ),
+        9 => array(
             'type' => 'string',
             'len' => 20,
             'flags' => '',
@@ -393,15 +453,16 @@ $dbh->query("
         fk INTEGER NOT NULL,
         c {$quirks[$dbh->phptype]['clob']} NULL,
         d {$quirks[$dbh->phptype]['date']} NOT NULL,
+        e CHAR(4) DEFAULT 'dflt' NOT NULL,
+        f DECIMAL(2,1) NULL,
         PRIMARY KEY (fk),
         UNIQUE (a, d)
     )
 ");
 $dbh->query("CREATE INDEX thedidx ON phptest_fk (d)");
-$dbh->query("INSERT INTO phptest_fk VALUES (10, 1, 'One', '2001-02-16')");
-$dbh->query("INSERT INTO phptest_fk VALUES (20, 2, 'Two', '2001-02-15')");
-$dbh->query("INSERT INTO phptest_fk VALUES (30, 3, 'Three', '2001-02-14')");
-
+$dbh->query("INSERT INTO phptest_fk VALUES (10, 1, 'One', '2001-02-16',  'c1', 1.1)");
+$dbh->query("INSERT INTO phptest_fk VALUES (20, 2, 'Two', '2001-02-15', 'c2', 2.2)");
+$dbh->query("INSERT INTO phptest_fk VALUES (30, 3, 'Three', '2001-02-14', 'c3', 3.3)");
 
 
 $resultobj =& $dbh->query('SELECT * FROM phptest_fk ' .
@@ -418,8 +479,8 @@ $array = $dbh->tableInfo($resultobj);
 print "\nfirst field:\n";
 examineArrayData($array[0], 0);
 
-print "\neight field:\n";
-examineArrayData($array[7], 7);
+print "\ntenth field:\n";
+examineArrayData($array[9], 9);
 
 
 
@@ -461,10 +522,10 @@ print "{$array['num_fields']}\n";
 
 
 print "\nordertable[phptest]:\n";
-$expected = 'a => 4
-b => 5
-c => 6
-d => 7
+$expected = 'a => 6
+b => 7
+c => 8
+d => 9
 ';
 if (isset($array['ordertable']['phptest'])) {
     $actual = returnArrayData($array['ordertable']['phptest']);
@@ -489,6 +550,8 @@ $expected = 'a => 0
 fk => 1
 c => 2
 d => 3
+e => 4
+f => 5
 ';
 if (isset($array['ordertable']['phptest_fk'])) {
     $actual = returnArrayData($array['ordertable']['phptest_fk']);
@@ -526,6 +589,11 @@ examineArrayData($array[2], 2, false);
 print "\nfourth field:\n";
 examineArrayData($array[3], 3, false);
 
+print "\nfifth field:\n";
+examineArrayData($array[4], 4, false);
+
+print "\nsixth field:\n";
+examineArrayData($array[5], 5, false);
 
 
 print "\n==========================================\n";
@@ -573,7 +641,7 @@ type ... matched expected value
 len ... matched expected value
 flags ... matched expected value
 
-eight field:
+tenth field:
 table ... matched expected value
 name => d
 type ... matched expected value
@@ -600,13 +668,15 @@ len ... matched expected value
 flags ... matched expected value
 
 num_fields:
-8
+10
 
 order:
-a => 4
-b => 5
-c => 6
-d => 7
+a => 6
+b => 7
+c => 8
+d => 9
+e => 4
+f => 5
 fk => 1
 
 ==========================================
@@ -629,7 +699,7 @@ len ... matched expected value
 flags ... matched expected value
 
 num_fields:
-8
+10
 
 ordertable[phptest]:
 matched expected values
@@ -670,6 +740,20 @@ type ... matched expected value
 len ... matched expected value
 flags ... matched expected value
 
+fifth field:
+table ... matched expected value
+name => e
+type ... matched expected value
+len ... matched expected value
+flags ... matched expected value
+
+sixth field:
+table ... matched expected value
+name => f
+type ... matched expected value
+len ... matched expected value
+flags ... matched expected value
+
 ==========================================
 Passing TABLE NAME 'phptest_fk' to method in DB_<driver>.
 Output = DB_TABLEINFO_FULL.
@@ -687,12 +771,16 @@ a => 0
 fk => 1
 c => 2
 d => 3
+e => 4
+f => 5
 
 ordertable[phptest_fk]:
 a => 0
 fk => 1
 c => 2
 d => 3
+e => 4
+f => 5
 
 ==========================================
 Passing TABLE NAME 'phptest_fk' to method in DB_<driver> AGAIN.
