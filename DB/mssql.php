@@ -52,7 +52,12 @@ class DB_mssql extends DB_common
         );
         // XXX Add here error codes ie: 'S100E' => DB_ERROR_SYNTAX
         $this->errorcode_map = array(
+            170   => DB_ERROR_SYNTAX,
+            207   => DB_ERROR_NOSUCHFIELD,
             208   => DB_ERROR_NOSUCHTABLE,
+            245   => DB_ERROR_INVALID_NUMBER,
+            547   => DB_ERROR_CONSTRAINT,
+            2714  => DB_ERROR_ALREADY_EXISTS,
             3701  => DB_ERROR_NOSUCHTABLE
         );
     }
