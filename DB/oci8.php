@@ -472,10 +472,12 @@ class DB_oci8 extends DB_common
                 /*
                  * Oracle doesn't seem to have the ability to pass a
                  * parameter along unchanged, so strip off quotes from start
-                 * and end in order to avoid the quotes getting escaped by
+                 * and end, plus turn two single quotes to one single quote,
+                 * in order to avoid the quotes getting escaped by
                  * Oracle and ending up in the database.
                  */
                 $pdata[$i] = preg_replace("/^'(.*)'$/", "\\1", $pdata[$i]);
+                $pdata[$i] = str_replace("''", "'", $pdata[$i]);
             } elseif ($types[$i] == DB_PARAM_OPAQUE) {
                 $fp = @fopen($pdata[$i], 'rb');
                 if (!$fp) {
