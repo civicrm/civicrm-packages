@@ -83,7 +83,7 @@ RUN THE TESTS
 =============
 
 To run all tests:  ./run
-To run one test:   ./run <test name>.phpt
+To run one test:   ./run <test file name>
 Example:           ./run db_parsedsn.phpt
 
 
