@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.95 2004-04-07 16:27:41 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.96 2004-04-17 19:43:39 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -61,35 +61,16 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.2</version>
+    <version>1.6.3</version>
     <state>stable</state>
-    <date>2004-04-07</date>
+    <date>pending</date>
     <notes>
 =============
 BUGS FIXED:
 
-- mysql, mysqli, sqlite, tests:
-Eliminate object to integer conversion notices in
-PHP5.  Issue arose due to change in PHP between
-2004-03-21 and 2004-03-28.  Bug 1088.  (danielc)
-
 - mysqli:
 Move connection id to first argument in
-mysqli_*() functions.  (Mark Reidenbach)
-
-- mysqli:
-Bring tableInfo() closer to working by using
-mysqli_fetch_field().  (danielc)
-
-- oci8:
-Pass $params from limitQuery() to
-modifyLimitQuery() so can limit prepared queries.
-(danielc)
-
-- pgsql:
-Change isset() to !empty() for 'options' and 'tty'
-elements of $dsninfo to keep empty strings from
-being used in pg_connect() arguments.  (danielc)
+mysqli_*() functions.  (danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
