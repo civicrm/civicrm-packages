@@ -151,6 +151,7 @@ class DB_ifx extends DB_common
     {
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
+        $this->affected   = null;
         if (preg_match('/(SELECT)/i', $query)) {    //TESTME: Use !DB::isManip()?
             // the scroll is needed for fetching absolute row numbers
             // in a select query result
