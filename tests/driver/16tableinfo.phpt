@@ -564,18 +564,21 @@ $dbh->query("INSERT INTO phptest_fk VALUES (10, 1, 'One', '2001-02-16',  'c1', 1
 $dbh->query("INSERT INTO phptest_fk VALUES (20, 2, 'Two', '2001-02-15', 'c2', 2.2)");
 $dbh->query("INSERT INTO phptest_fk VALUES (30, 3, 'Three', '2001-02-14', 'c3', 3.3)");
 
-
-$resultobj =& $dbh->query('SELECT phptest_fk.a, phptest_fk.fk,
-        phptest_fk.c, phptest_fk.d, phptest_fk.e, phptest_fk.f,
-        phptest.a, phptest.b, phptest.c, phptest.d
-        FROM phptest_fk, phptest WHERE phptest.a = phptest_fk.fk');
-
+function &runQuery() {
+    global $dbh, $resultobj;
+    $resultobj =& $dbh->query('SELECT phptest_fk.a, phptest_fk.fk,
+            phptest_fk.c, phptest_fk.d, phptest_fk.e, phptest_fk.f,
+            phptest.a, phptest.b, phptest.c, phptest.d
+            FROM phptest_fk, phptest WHERE phptest.a = phptest_fk.fk');
+    return $resultobj;
+}
 
 
 print "\n==========================================\n";
 print "Passing result OBJECT to method in DB_<type>.\n";
 print "Output = default.\n";
 print "------------------------------------------\n";
+$resultobj =& runQuery();
 $array = $dbh->tableInfo($resultobj);
 
 print "\nfirst field:\n";
@@ -590,6 +593,7 @@ print "\n==========================================\n";
 print "Passing result ID to method in DB_<type>.\n";
 print "Output = DB_TABLEINFO_ORDER.\n";
 print "------------------------------------------\n";
+$resultobj =& runQuery();
 $array = $dbh->tableInfo($resultobj->result, DB_TABLEINFO_ORDER);
 
 print "\nfirst field:\n";
@@ -615,6 +619,7 @@ print "\n==========================================\n";
 print "Passing DB_TABLEINFO_ORDERTABLE to method in DB_result.\n";
 print "Output = DB_TABLEINFO_ORDERTABLE.\n";
 print "------------------------------------------\n";
+$resultobj =& runQuery();
 $array = $resultobj->tableInfo(DB_TABLEINFO_ORDERTABLE);
 // Free this to keep interbase happy.
 $resultobj->free();
