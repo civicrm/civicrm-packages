@@ -715,7 +715,7 @@ class DB_mysql extends DB_common
         /*
          * depending on $mode, metadata returns the following values:
          *
-         * - mode is false (default):
+         * - mode is null (default):
          * $result[]:
          *   [0]["table"]  table name
          *   [0]["name"]   field name
@@ -801,7 +801,7 @@ class DB_mysql extends DB_common
     }
 
     // }}}
-    // {{{ getTablesQuery()
+    // {{{ getSpecialQuery()
 
     /**
     * Returns the query needed to get some backend info
