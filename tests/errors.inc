@@ -83,6 +83,7 @@ switch ($dbh->phptype) {
                 break;
         }
         break;
+    case 'ifx':
     case 'mysql':
     case 'sqlite':
         print "  $dbh->phptype doesn't consider this an error\n";
