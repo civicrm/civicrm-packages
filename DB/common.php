@@ -204,40 +204,97 @@ class DB_common extends PEAR
      *
      * @param mixed $in  data to be quoted
      *
-     * @return mixed Submitted variable's type = returned value:
-     *               + null = the string <samp>NULL</samp>
-     *               + integer or double = the unquoted number
-     *               + other (including strings and numeric strings) =
-     *                 the data with single quotes escaped by preceeding
-     *                 single quotes, backslashes are escaped by preceeding
-     *                 backslashes, then the whole string is encapsulated
-     *                 between single quotes
-     *               + boolean = output depends on the driver in use:
-     *                - int <samp>1</samp> if true, <samp>0</samp> if false
-     *                  for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
-     *                  Such drivers and the data types expected:
-     *                 # ibase   <kbd>SMALLINT</kbd> [1]
-     *                 # ifx     <kbd>SMALLINT</kbd> [1]
-     *                 # msql    <kbd>INTEGER</kbd>
-     *                 # mssql   <kbd>BIT</kbd>
-     *                 # mysql   <kbd>TINYINT(1)</kbd>
-     *                 # mysql4  <kbd>TINYINT(1)</kbd>
-     *                 # oci8    <kbd>NUMBER(1)</kbd>
-     *                 # odbc    <kbd>SMALLINT</kbd> [1]
-     *                 # sqlite  <kbd>INTEGER</kbd>
-     *                 # sybase  <kbd>TINYINT(1)</kbd>
-     *                - string <samp>T</samp> if true, <samp>F</samp> if false
-     *                  for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
-     *                  Such drivers and the data types expected:
-     *                 # dbase   <kbd>Logical</kbd>
-     *                - string <samp>TRUE</samp> or <samp>FALSE</samp>
-     *                  for DBMS's with <kbd>BOOLEAN</kbd> handling:
-     *                 # fbsql
-     *                 # pgsql
+     * @return mixed  the format of the results depends on the input's
+     *                PHP type:
      *
-     * [1] Accommodate the lowest common denominator because not all versions
-     * of have <kbd>BOOLEAN</kbd>.
-     *
+     * <ul>
+     *  <li>
+     *    <kbd>input</kbd> -> <samp>returns</samp>
+     *  </li>
+     *  <li>
+     *    <kbd>null</kbd> -> the string <samp>NULL</samp>
+     *  </li>
+     *  <li>
+     *    <kbd>integer</kbd> or <kbd>double</kbd> -> the unquoted number
+     *  </li>
+     *  <li>
+     *    &type.bool; -> output depends on the driver in use
+     *    Most drivers return integers: <samp>1</samp> if
+     *    <kbd>true</kbd> or <samp>0</samp> if 
+     *    <kbd>false</kbd>.
+     *    Some return strings: <samp>TRUE</samp> if
+     *    <kbd>true</kbd> or <samp>FALSE</samp> if 
+     *    <kbd>false</kbd>.
+     *    Finally one returns strings: <samp>T</samp> if
+     *    <kbd>true</kbd> or <samp>F</samp> if 
+     *    <kbd>false</kbd>. Here is a list of each DBMS,
+     *    the values returned and the suggested column type:
+     *    <ul>
+     *      <li>
+     *        <kbd>dbase</kbd> -> <samp>T/F</samp>
+     *        (<kbd>Logical</kbd>)
+     *      </li>
+     *      <li>
+     *        <kbd>fbase</kbd> -> <samp>TRUE/FALSE</samp>
+     *        (<kbd>BOOLEAN</kbd>)
+     *      </li>
+     *      <li>
+     *        <kbd>ibase</kbd> -> <samp>1/0</samp>
+     *        (<kbd>SMALLINT</kbd>) [1]
+     *      </li>
+     *      <li>
+     *        <kbd>ifx</kbd> -> <samp>1/0</samp>
+     *        (<kbd>SMALLINT</kbd>) [1]
+     *      </li>
+     *      <li>
+     *        <kbd>msql</kbd> -> <samp>1/0</samp>
+     *        (<kbd>INTEGER</kbd>)
+     *      </li>
+     *      <li>
+     *        <kbd>mssql</kbd> -> <samp>1/0</samp>
+     *        (<kbd>BIT</kbd>)
+     *      </li>
+     *      <li>
+     *        <kbd>mysql</kbd> -> <samp>1/0</samp>
+     *        (<kbd>TINYINT(1)</kbd>)
+     *      </li>
+     *      <li>
+     *        <kbd>mysql4</kbd> -> <samp>1/0</samp>
+     *        (<kbd>TINYINT(1)</kbd>)
+     *      </li>
+     *      <li>
+     *        <kbd>oci8</kbd> -> <samp>1/0</samp>
+     *        (<kbd>NUMBER(1)</kbd>)
+     *      </li>
+     *      <li>
+     *        <kbd>odbc</kbd> -> <samp>1/0</samp>
+     *        (<kbd>SMALLINT</kbd>) [1]
+     *      </li>
+     *      <li>
+     *        <kbd>pgsql</kbd> -> <samp>TRUE/FALSE</samp>
+     *        (<kbd>BOOLEAN</kbd>)
+     *      </li>
+     *      <li>
+     *        <kbd>sqlite</kbd> -> <samp>1/0</samp>
+     *        (<kbd>INTEGER</kbd>)
+     *      </li>
+     *      <li>
+     *        <kbd>sybase</kbd> -> <samp>1/0</samp>
+     *        (<kbd>TINYINT(1)</kbd>)
+     *      </li>
+     *    </ul>
+     *    [1] Accommodate the lowest common denominator because not all
+     *    versions of have <kbd>BOOLEAN</kbd>.
+     *  </li>
+     *  <li>
+     *    other (including strings and numeric strings) ->
+     *    the data with single quotes escaped by preceeding
+     *    single quotes, backslashes are escaped by preceeding
+     *    backslashes, then the whole string is encapsulated
+     *    between single quotes
+     *  </li>
+     * </ul>
+     *      
      * @since 1.6.0
      * @see DB_common::escapeSimple()
      * @access public
