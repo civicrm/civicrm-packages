@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.68 2004-02-11 05:49:26 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.69 2004-02-11 05:55:08 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -82,11 +82,11 @@ Added DB_PORTABILITY_ERRORS portability option
 to ensure consistent mapping of errors between
 DBMS's. In mysql this changes duplicate key
 constraints from DB_ERROR_ALREADY_EXISTS to
-DB_ERROR_CONSTRAINT. In access MS's ODBC driver
-mistakenly reports 'no such field' as
+DB_ERROR_CONSTRAINT. In access MS's ODBC
+driver mistakenly reports 'no such field' as
 'too few parameters' so this option maps the
-error back to the standard DB_ERROR_NOSUCHFIELD.
-(danielc)
+error back to the standard
+DB_ERROR_NOSUCHFIELD.  (danielc)
 
 - ibase, mssql, odbc, pgsql, sqlite:
 Duplicate key constraint violations mapped to
@@ -127,6 +127,7 @@ portability was off.  Bug 724.  (danielc)
 - ibase:
 Resolve 'undefined variable flags' notice when
 using tableInfo() under certain conditions.
+(danielc)
 
 - ibase:
 Use upper case for RELATION_NAME in
