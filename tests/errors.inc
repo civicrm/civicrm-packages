@@ -1,5 +1,41 @@
 <?php
 
+/**
+ * Tests the drivers' error mapping
+ *
+ * Executed by driver/10errormap.phpt
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.0 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category   Database
+ * @package    DB
+ * @author     Daniel Convissor <danielc@php.net>
+ * @copyright  1997-2005 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    $Id$
+ * @link       http://pear.php.net/package/DB
+ */
+
+/**
+ * Determine if the error from the driver matches the error we expect
+ *
+ * If things are as we expect, print out "matches expected outcome"
+ *
+ * If things go wrong, print "UNEXPECTED OUTCOME" and display the
+ * error's information.
+ *
+ * @param object  $e                 the DB_Error object from the query
+ * @param int     $expected_db_code  the DB_ERROR* constant to expect
+ * @param boolean $should_be_error   does the DBMS consider this an error?
+ *
+ * @return void
+ */
 function check_error($e, $expected_db_code, $should_be_error = true) {
     if ($should_be_error) {
         if (DB::isError($e)) {
@@ -228,5 +264,3 @@ drop_table($dbh, 'phptest');
 drop_table($dbh, 'b');
 drop_table($dbh, 'a');
 drop_table($dbh, 'peartestnull');
-
-?>

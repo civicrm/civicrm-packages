@@ -18,6 +18,7 @@
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    $Id$
  * @link       http://pear.php.net/package/DB
+ * @since      File available since Release 1.7.0
  */
 
 /**

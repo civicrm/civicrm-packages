@@ -1,5 +1,27 @@
 <?php
 
+/**
+ * Tests the drivers' prepare and execute methods
+ *
+ * Executed by driver/06prepexec.phpt
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.0 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category   Database
+ * @package    DB
+ * @author     Daniel Convissor <danielc@php.net>
+ * @copyright  1997-2005 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    $Id$
+ * @link       http://pear.php.net/package/DB
+ */
+
 $tmpfile = tempnam("/tmp", "phptmp");
 register_shutdown_function("my_shutdown");
 $fp = fopen($tmpfile, "w");
@@ -9,7 +31,7 @@ fclose($fp);
 
 
 /**
- * Local error callback handler.
+ * Local error callback handler
  *
  * Prints out an error message and kills the process.
  *
@@ -120,7 +142,12 @@ $row = $res->fetchRow(DB_FETCHMODE_ASSOC);
 print "a = {$row['a']}, b = {$row['b']}, d = " . gettype($row['d']) . "\n";
 
 
-
+/**
+ * Automatically free the prepared statements and results when the script
+ * terminates
+ *
+ * @return void
+ */
 function my_shutdown() {
     global $tmpfile, $dbh, $sth1, $sth2, $sth3, $sth4, $sth5, $sth6, $res;
 
@@ -146,6 +173,11 @@ function my_shutdown() {
     unlink($tmpfile);
 }
 
+/**
+ * Print out the data in test table
+ *
+ * @return void
+ */
 function print_results() {
     global $dbh;
     print "results:\n";
@@ -160,6 +192,14 @@ function print_results() {
     }
 }
 
+/**
+ * Execute the prepared statement and print out the data in the result
+ *
+ * @param resource     $sth   the statement handle to process
+ * @param string|array $bind  the data that will replace the placeholders
+ *
+ * @return void
+ */
 function print_4($sth, $bind) {
     global $dbh;
     $res = $dbh->execute($sth, $bind);
@@ -168,5 +208,3 @@ function print_4($sth, $bind) {
     }
     echo "~~\n";
 }
-
-?>
