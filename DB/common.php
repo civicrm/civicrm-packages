@@ -1426,17 +1426,39 @@ class DB_common extends PEAR
     }
 
     // }}}
+    // {{{ getSequenceName()
+
+    /**
+     * Generate the name used inside the database for a sequence.
+     *
+     * The createSequence() docblock contains notes about storing sequence
+     * names.
+     *
+     * @param string $sqn  the sequence's public name
+     *
+     * @return string  the sequence's name in the backend
+     *
+     * @see DB_common::createSequence(), DB_common::setOption()
+     * @access private
+     */
+    function getSequenceName($sqn)
+    {
+        return sprintf($this->getOption('seqname_format'),
+                       preg_replace('/[^a-z0-9_.]/i', '_', $sqn));
+    }
+
+    // }}}
     // {{{ nextId()
 
     /**
-     * returns the next free id of a sequence
+     * Returns the next free id in a sequence
      *
-     * @param string  $seq_name name of the sequence
-     * @param boolean $ondemand when true the seqence is
-     *                          automatic created, if it
-     *                          not exists
+     * @param string  $seq_name  name of the sequence
+     * @param boolean $ondemand  when true, the seqence is automatically
+     *                           created if it does not exist
      *
-     * @return mixed DB_Error or id
+     * @return int  the next id number in the sequence.  DB_Error if problem.
+     * @access public
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -1447,12 +1469,21 @@ class DB_common extends PEAR
     // {{{ createSequence()
 
     /**
-     * creates a new sequence
+     * Creates a new sequence
      *
-     * @param string $seq_name name of the new sequence
+     * The name of a given sequence is determined by passing the string
+     * provided in the <var>$seq_name</var> argument through PHP's sprintf()
+     * function using the value from the <var>seqname_format</var> option as
+     * the sprintf()'s format argument.
      *
-     * @return mixed DB_Error
+     * <var>seqname_format</var> is set via setOption().
      *
+     * @param string $seq_name  name of the new sequence
+     *
+     * @return int  DB_OK on success.  A DB_Error object is returned if
+     *              problems arise.
+     *
+     * @see DB_common::getSequenceName()
      * @access public
      */
     function createSequence($seq_name)
@@ -1464,11 +1495,11 @@ class DB_common extends PEAR
     // {{{ dropSequence()
 
     /**
-     * deletes a sequence
+     * Deletes a sequence
      *
-     * @param string $seq_name name of the sequence
+     * @param string $seq_name  name of the sequence to be deleted
      *
-     * @return mixed DB_Error
+     * @return int  DB_OK on success.  DB_Error if problems.
      *
      * @access public
      */
@@ -1646,15 +1677,6 @@ class DB_common extends PEAR
             return $sql;
         }
         return $this->getCol($sql);                         // Launch this query
-    }
-
-    // }}}
-    // {{{ getSequenceName()
-
-    function getSequenceName($sqn)
-    {
-        return sprintf($this->getOption('seqname_format'),
-                       preg_replace('/[^a-z0-9_.]/i', '_', $sqn));
     }
 
     // }}}

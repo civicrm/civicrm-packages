@@ -482,19 +482,22 @@ class DB_pgsql extends DB_common
     {
         return $this->affected;
     }
-     // }}}
+
+    // }}}
     // {{{ nextId()
 
     /**
-     * Get the next value in a sequence.
+     * Returns the next free id in a sequence
      *
-     * We are using native PostgreSQL sequences. If a sequence does
-     * not exist, it will be created, unless $ondemand is false.
+     * @param string  $seq_name  name of the sequence
+     * @param boolean $ondemand  when true, the seqence is automatically
+     *                           created if it does not exist
      *
+     * @return int  the next id number in the sequence.  DB_Error if problem.
+     *
+     * @internal
+     * @see DB_common::nextID()
      * @access public
-     * @param string $seq_name the name of the sequence
-     * @param bool $ondemand whether to create the sequence on demand
-     * @return a sequence integer, or a DB error
      */
     function nextId($seq_name, $ondemand = true)
     {

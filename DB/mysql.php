@@ -484,17 +484,17 @@ class DB_mysql extends DB_common
     // {{{ nextId()
 
     /**
-     * Get the next value in a sequence.  We emulate sequences
-     * for MySQL.  Will create the sequence if it does not exist.
+     * Returns the next free id in a sequence
      *
+     * @param string  $seq_name  name of the sequence
+     * @param boolean $ondemand  when true, the seqence is automatically
+     *                           created if it does not exist
+     *
+     * @return int  the next id number in the sequence.  DB_Error if problem.
+     *
+     * @internal
+     * @see DB_common::nextID()
      * @access public
-     *
-     * @param string $seq_name the name of the sequence
-     *
-     * @param bool $ondemand whether to create the sequence table on demand
-     * (default is true)
-     *
-     * @return mixed a sequence integer, or a DB error
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -567,6 +567,18 @@ class DB_mysql extends DB_common
     // }}}
     // {{{ createSequence()
 
+    /**
+     * Creates a new sequence
+     *
+     * @param string $seq_name  name of the new sequence
+     *
+     * @return int  DB_OK on success.  A DB_Error object is returned if
+     *              problems arise.
+     *
+     * @internal
+     * @see DB_common::createSequence()
+     * @access public
+     */
     function createSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
@@ -588,6 +600,17 @@ class DB_mysql extends DB_common
     // }}}
     // {{{ dropSequence()
 
+    /**
+     * Deletes a sequence
+     *
+     * @param string $seq_name  name of the sequence to be deleted
+     *
+     * @return int  DB_OK on success.  DB_Error if problems.
+     *
+     * @internal
+     * @see DB_common::dropSequence()
+     * @access public
+     */
     function dropSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
