@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.142 2004-12-17 01:51:51 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.143 2004-12-17 16:52:41 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -122,23 +122,55 @@ tests:
   to make it work under fbsql.
     ]]></notes>
     <filelist>
-      <file role="php" baseinstalldir="/">DB.php</file>
+      <file name="DB.php" role="php" baseinstalldir="/">
+        <replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <dir name="DB" role="php">
-        <file name="common.php"/>
-        <file name="dbase.php"/>
-        <file name="fbsql.php"/>
-        <file name="ibase.php"/>
-        <file name="ifx.php"/>
-        <file name="msql.php"/>
-        <file name="mssql.php"/>
-        <file name="mysql.php"/>
-        <file name="mysqli.php"/>
-        <file name="oci8.php"/>
-        <file name="odbc.php"/>
-        <file name="pgsql.php"/>
-        <file name="sybase.php"/>
-        <file name="storage.php"/>
-        <file name="sqlite.php"/>
+        <file name="common.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="dbase.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="fbsql.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="ibase.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="ifx.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="msql.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="mssql.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="mysql.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="mysqli.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="oci8.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="odbc.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="pgsql.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="sybase.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="storage.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file name="sqlite.php">
+          <replace from="@package_version@" to="version" type="package-info" />
+        </file>
       </dir>
       <dir name="doc" role="doc">
         <file name="IDEAS"/>

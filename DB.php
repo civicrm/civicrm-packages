@@ -1,4 +1,32 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+/**
+ * Database independent query interface
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.0 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category   Database
+ * @package    DB
+ * @author     Stig Bakken <ssb@php.net>
+ * @author     Tomas V.V.Cox <cox@idecnet.com>
+ * @author     Daniel Convissor <danielc@php.net>
+ * @copyright  1997-2004 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @version    CVS: $Id$
+ * @link       http://pear.php.net/package/DB
+ */
+
+/**
+ * Obtain the PEAR class so it can be extended from
+ */
+require_once 'PEAR.php';
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
 // +----------------------------------------------------------------------+
 // | PHP Version 4                                                        |
@@ -240,12 +268,14 @@ define('DB_PORTABILITY_ALL', 63);
 // {{{ class DB
 
 /**
+ * Database independent query interface
+ *
  * The main "DB" class is simply a container class with some static
  * methods for creating DB objects as well as some utility functions
  * common to all parts of DB.
  *
  * The object model of DB is as follows (indentation means inheritance):
- *
+ * <pre>
  * DB           The main DB class.  This is simply a utility class
  *              with some "static" methods for creating DB objects as
  *              well as common utility functions for other DB classes.
@@ -259,13 +289,15 @@ define('DB_PORTABILITY_ALL', 63);
  *              When calling DB::factory or DB::connect for MySQL
  *              connections, the object returned is an instance of this
  *              class.
+ * </pre>
  *
- * @package  DB
- * @author   Stig Bakken <ssb@php.net>
- * @author   Tomas V.V.Cox <cox@idecnet.com>
- * @since    PHP 4.0
- * @version  $Id$
- * @category Database
+ * @author     Stig Bakken <ssb@php.net>
+ * @author     Tomas V.V.Cox <cox@idecnet.com>
+ * @author     Daniel Convissor <danielc@php.net>
+ * @copyright  1997-2004 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @version    Release: @package_version@
+ * @link       http://pear.php.net/package/DB
  */
 class DB
 {
@@ -723,10 +755,13 @@ class DB
 
 /**
  * DB_Error implements a class for reporting portable database error
- * messages.
+ * messages
  *
- * @package  DB
- * @author Stig Bakken <ssb@php.net>
+ * @author     Stig Bakken <ssb@php.net>
+ * @copyright  1997-2004 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @version    Release: @package_version@
+ * @link       http://pear.php.net/package/DB
  */
 class DB_Error extends PEAR_Error
 {
@@ -760,12 +795,16 @@ class DB_Error extends PEAR_Error
 // {{{ class DB_result
 
 /**
- * This class implements a wrapper for a DB result set.
+ * This class implements a wrapper for a DB result set
+ *
  * A new instance of this class will be returned by the DB implementation
  * after processing a query that returns data.
  *
- * @package  DB
- * @author Stig Bakken <ssb@php.net>
+ * @author     Stig Bakken <ssb@php.net>
+ * @copyright  1997-2004 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @version    Release: @package_version@
+ * @link       http://pear.php.net/package/DB
  */
 class DB_result
 {
@@ -1084,7 +1123,13 @@ class DB_result
 
 /**
  * Pear DB Row Object
- * @see DB_common::setFetchMode()
+ *
+ * @author     Stig Bakken <ssb@php.net>
+ * @copyright  1997-2004 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @version    Release: @package_version@
+ * @link       http://pear.php.net/package/DB
+ * @see        DB_common::setFetchMode()
  */
 class DB_row
 {

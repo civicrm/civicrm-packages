@@ -1,36 +1,46 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
-// +----------------------------------------------------------------------+
-// | PHP Version 4                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2004 The PHP Group                                |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.02 of the PHP license,      |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/2_02.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Rui Hirokawa <hirokawa@php.net>                             |
-// |          Stig Bakken <ssb@php.net>                                   |
-// | Maintainer: Daniel Convissor <danielc@php.net>                       |
-// +----------------------------------------------------------------------+
-//
-// $Id$
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+/**
+ * The PEAR DB driver for PHP's pgsql extension
+ * for interacting with PostgreSQL databases
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.0 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category   Database
+ * @package    DB
+ * @author     Rui Hirokawa <hirokawa@php.net>
+ * @author     Stig Bakken <ssb@php.net>
+ * @author     Daniel Convissor <danielc@php.net>
+ * @copyright  1997-2004 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @version    CVS: $Id$
+ * @link       http://pear.php.net/package/DB
+ */
 
+/**
+ * Obtain the DB_common class so it can be extended from
+ */
 require_once 'DB/common.php';
 
 /**
- * Database independent query interface definition for PHP's PostgreSQL
- * extension.
+ * The methods PEAR DB uses to interact with PHP's pgsql extension
+ * for interacting with PostgreSQL databases
  *
- * @package  DB
- * @version  $Id$
- * @category Database
- * @author   Rui Hirokawa <hirokawa@php.net>
- * @author   Stig Bakken <ssb@php.net>
+ * These methods overload the ones declared in DB_common.
+ *
+ * @author     Rui Hirokawa <hirokawa@php.net>
+ * @author     Stig Bakken <ssb@php.net>
+ * @author     Daniel Convissor <danielc@php.net>
+ * @copyright  1997-2004 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @version    Release: @package_version@
+ * @link       http://pear.php.net/package/DB
  */
 class DB_pgsql extends DB_common
 {
