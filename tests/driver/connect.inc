@@ -9,9 +9,7 @@ if (substr(DRIVER_DSN, 0, 5) == 'mssql') {
     ini_set('mssql.textsize', 4096);
 }
 
-require_once 'DB.php';
-
-// $options is set in setup.inc
+// Setting of $options and requiring DB are done in setup.inc
 
 $dbh =& DB::connect(DRIVER_DSN, $options);
 if (DB::isError($dbh)) {
