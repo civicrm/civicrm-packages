@@ -395,37 +395,43 @@ class DB_ibase extends DB_common
     /**
      * Executes a DB statement prepared with prepare().
      *
-     * @param $stmt a DB statement resource (returned from prepare())
-     * @param $data data to be used in execution of the statement
-     *
-     * @return int returns an oci8 result resource for successful
-     * SELECT queries, DB_OK for other successful queries.  A DB error
-     * code is returned on failure.
+     * @param resource  $stmt  a DB statement resource returned from prepare()
+     * @param mixed  $data  array, string or numeric data to be used in
+     *                      execution of the statement.  Quantity of items
+     *                      passed must match quantity of placeholders in
+     *                      query:  meaning 1 for non-array items or the
+     *                      quantity of elements in the array.
+     * @return object  a new DB_Result or a DB_Error when fail
+     * @see DB_ibase::prepare()
+     * @access public
      */
-    function &execute($stmt, $data = false)
+    function &execute($stmt, $data = array())
     {
-        $types=&$this->prepare_types[$stmt];
-        if (($size = sizeof($types)) != sizeof($data)) {
+        if (!is_array($data)) {
+            $data = array($data);
+        }
+
+        $types =& $this->prepare_types[$stmt];
+        if (count($types) != count($data)) {
             $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
             return $tmp;
         }
-        $pdata[0] = $stmt;
-        for ($j = 0; $j < $size; $j++) {
-            $i = $j + 1;
-            if (is_array($data)) {
-                $pdata[$i] = &$data[$j];
-            } else {
-                $pdata[$i] = &$data;
-            }
-            if ($types[$j] == DB_PARAM_OPAQUE) {
-                $fp = @fopen($pdata[$i], 'rb');
+
+        $i = 0;
+        foreach ($data as $key => $value) {
+            if ($types[$i] == DB_PARAM_OPAQUE) {
+                $fp = @fopen($data[$key], 'rb');
                 if (!$fp) {
                     return $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
                 }
-                $pdata[$i] = fread($fp, filesize($pdata[$i]));
+                $data[$key] = fread($fp, filesize($data[$key]));
                 fclose($fp);
             }
+            $i++;
         }
+
+        array_unshift($data, $stmt);
+
         $res = call_user_func_array('ibase_execute', $pdata);
         if (!$res) {
             $tmp =& $this->ibaseRaiseError();
