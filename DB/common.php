@@ -434,18 +434,62 @@ class DB_common extends PEAR
     /**
     * Make automaticaly an insert or update query and call prepare() with it
     *
+    * @param string $table name of the table
+    * @param array $table_fields ordered array containing the fields names
+    * @param int $mode type of query to make (DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE)
+    * @param string $where in case of update queries, this string will be put after the sql WHERE statement
+    * @return resource handle for the query
+    * @see buildManipSQL
+    * @access public
+    */
+    function autoPrepare($table, $table_fields, $mode = DB_AUTOQUERY_INSERT, $where = false)
+    {
+        $query = $this->buildManipSQL($table, $table_fields, $mode, $where);
+        return $this->prepare($query);
+    }
+
+    // {{{
+    // }}} autoExecute()
+
+    /**
+    * Make automaticaly an insert or update query and call prepare() and execute() with it
+    *
+    * @param string $table name of the table
+    * @param array $fields_values assoc ($key=>$value) where $key is a field name and $value its value
+    * @param int $mode type of query to make (DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE)
+    * @param string $where in case of update queries, this string will be put after the sql WHERE statement
+    * @return mixed  a new DB_Result or a DB_Error when fail
+    * @see buildManipSQL
+    * @see autoPrepare
+    * @access public
+    */
+    function autoExecute($table, $fields_values, $mode = DB_AUTOQUERY_INSERT, $where = false)
+    {
+        $sth = $this->autoPrepare($table, array_keys($fields_values), $mode, $where);
+        return $this->execute($sth, array_values($fields_values));
+
+    }
+
+    // {{{
+    // }}} buildManipSQL()
+
+    /**
+    * Make automaticaly an sql query for prepare()
+    *
+    * Example : buildManipSQL('table_sql', array('field1', 'field2', 'field3'), DB_AUTOQUERY_INSERT)
+    *           will return the string : INSERT INTO table_sql (field1,field2,field3) VALUES (?,?,?)
     * NB : This belongs more to a SQL Builder class, but this is a simple facility
     *
     * @param string $table name of the table
-    * @param array $array assoc ($key=>$value), $key are fields names, $value are not used
-    * @param int $mode type of queries to make (DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE)
+    * @param array $table_fields ordered array containing the fields names
+    * @param int $mode type of query to make (DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE)
     * @param string $where in case of update queries, this string will be put after the sql WHERE statement
-    * @return resource handle for the query
+    * @return string sql query for prepare()
     * @access public
     */
-    function autoPrepare($table, $array, $mode = DB_AUTOQUERY_INSERT, $where = NULL)
+    function buildManipSQL($table, $table_fields, $mode, $where = false)
     {
-        if (count($array)==0) {
+        if (count($table_fields)==0) {
             $this->raiseError(DB_ERROR_NEED_MORE_DATA);
         }
         $first = true;
@@ -453,29 +497,32 @@ class DB_common extends PEAR
         case DB_AUTOQUERY_INSERT:
             $values = '';
             $names = '';
-            while (list($key, $value) = each($array)) {
+            while (list(, $value) = each($table_fields)) {
                 if ($first) {
                     $first = false;
                 } else {
                     $names .= ',';
                     $values .= ',';
                 }
-                $names .= $key;
+                $names .= $value;
                 $values .= '?';
             }
-            return $this->prepare("INSERT INTO $table ($names) VALUES ($values)");
+            return "INSERT INTO $table ($names) VALUES ($values)";
             break;
         case DB_AUTOQUERY_UPDATE:
+            if (!$where) { // We need a WHERE statement (if you don't, use a stupid one like 1=1)
+                $this->raiseError(DB_ERROR_NEED_MORE_DATA);
+            }
             $set = '';
-            while (list($key, $value) = each($array)) {
+            while (list(, $value) = each($table_fields)) {
                 if ($first) {
                     $first = false;
                 } else {
                     $set .= ',';
                 }
-                $set .= "$key = ?";
+                $set .= "$value = ?";
             }
-            return $this->prepare("UPDATE $table SET $set WHERE $where");
+            return "UPDATE $table SET $set WHERE $where";
             break;
         default:
             $this->raiseError(DB_ERROR_SYNTAX);
