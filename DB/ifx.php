@@ -488,7 +488,7 @@ class DB_ifx extends DB_common
         $flds = @ifx_fieldproperties($id);
         $count = @ifx_num_fields($id);
 
-        if ($flds != $count) {
+        if (count($flds) != $count) {
             return $this->raiseError("can't distinguish duplicate field names");
         }
 
