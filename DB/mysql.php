@@ -251,31 +251,18 @@ class DB_mysql extends DB_common
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED,
                                          null, null, null, 
                                          $err);
-            } elseif (empty($php_errormsg)) {
-                return $this->raiseError(DB_ERROR_CONNECT_FAILED);
-            } else {
+            } elseif ($php_errormsg) {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED,
                                          null, null, null,
                                          $php_errormsg);
+            } else {
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED);
             }
         }
 
         if ($dsn['database']) {
             if (!@mysql_select_db($dsn['database'], $this->connection)) {
-                switch(mysql_errno($this->connection)) {
-                    case 1049:
-                        return $this->raiseError(DB_ERROR_NOSUCHDB,
-                                                 null, null, null,
-                                                 @mysql_error($this->connection));
-                    case 1044:
-                        return $this->raiseError(DB_ERROR_ACCESS_VIOLATION,
-                                                 null, null, null,
-                                                 @mysql_error($this->connection));
-                    default:
-                        return $this->raiseError(DB_ERROR,
-                                                 null, null, null,
-                                                 @mysql_error($this->connection));
-                }
+                return $this->mysqlRaiseError();
             }
             $this->_db = $dsn['database'];
         }

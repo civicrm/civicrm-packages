@@ -273,7 +273,7 @@ class DB_pgsql extends DB_common
         if (!$this->connection) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED,
                                      null, null, null,
-                                     strip_tags($php_errormsg));
+                                     $php_errormsg);
         }
         return DB_OK;
     }

@@ -163,11 +163,13 @@ class DB_msql extends DB_common
         } else {
             $this->connection = $connect_function($dbhost);
         }
+
         if (!$this->connection) {
             $this->raiseError(DB_ERROR_CONNECT_FAILED);
         }
+
         if (!@msql_select_db($dsn['database'], $this->connection)){
-            return $this->raiseError(DB_ERROR_NODBSELECTED);
+            return $this->msqlRaiseError();
         }
         return DB_OK;
     }

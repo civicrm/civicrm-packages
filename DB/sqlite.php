@@ -236,12 +236,12 @@ class DB_sqlite extends DB_common
         $php_errormsg = '';
 
         if (!$this->connection = @$connect_function($dsn['database'])) {
-            if (empty($php_errormsg)) {
-                return $this->sqliteRaiseError(DB_ERROR_NODBSELECTED);
-            } else {
+            if ($php_errormsg) {
                 return $this->raiseError(DB_ERROR_NODBSELECTED,
                                          null, null, null,
                                          $php_errormsg);
+            } else {
+                return $this->sqliteRaiseError(DB_ERROR_NODBSELECTED);
             }
         }
         return DB_OK;
