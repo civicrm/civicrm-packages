@@ -63,6 +63,7 @@ class DB_oci8 extends DB_common
             'limit' => 'alter'
         );
         $this->errorcode_map = array(
+            1 => DB_ERROR_ALREADY_EXISTS,
             900 => DB_ERROR_SYNTAX,
             904 => DB_ERROR_NOSUCHFIELD,
             921 => DB_ERROR_SYNTAX,
