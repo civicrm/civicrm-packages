@@ -462,13 +462,13 @@ class DB_oci8 extends DB_common
         }
 
         $types =& $this->prepare_types[$stmt];
-        if (($size = sizeof($types)) != sizeof($data)) {
+        if (count($types) != count($data)) {
             $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
             return $tmp;
         }
 
-        for ($i = 0; $i < $size; $i++) {
-            $pdata[$i] = &$data[$i];
+        $i = 0;
+        foreach ($data as $key => $value) {
             if ($types[$i] == DB_PARAM_MISC) {
                 /*
                  * Oracle doesn't seem to have the ability to pass a
@@ -477,20 +477,21 @@ class DB_oci8 extends DB_common
                  * in order to avoid the quotes getting escaped by
                  * Oracle and ending up in the database.
                  */
-                $pdata[$i] = preg_replace("/^'(.*)'$/", "\\1", $pdata[$i]);
-                $pdata[$i] = str_replace("''", "'", $pdata[$i]);
+                $data[$key] = preg_replace("/^'(.*)'$/", "\\1", $data[$key]);
+                $data[$key] = str_replace("''", "'", $data[$key]);
             } elseif ($types[$i] == DB_PARAM_OPAQUE) {
-                $fp = @fopen($pdata[$i], 'rb');
+                $fp = @fopen($data[$key], 'rb');
                 if (!$fp) {
                     return $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
                 }
-                $pdata[$i] = fread($fp, filesize($data[$i]));
+                $data[$key] = fread($fp, filesize($data[$key]));
                 fclose($fp);
             }
-            if (!@OCIBindByName($stmt, ':bind' . $i, $pdata[$i], -1)) {
+            if (!@OCIBindByName($stmt, ':bind' . $i, $data[$key], -1)) {
                 $tmp = $this->oci8RaiseError($stmt);
                 return $tmp;
             }
+            $i++;
         }
         if ($this->autoCommit) {
             $success = @OCIExecute($stmt, OCI_COMMIT_ON_SUCCESS);

@@ -624,28 +624,29 @@ class DB_common extends PEAR
             $data = array($data);
         }
 
-        if (($qp = count($this->prepare_types[$stmt])) != count($data)) {
+        if (count($this->prepare_types[$stmt]) != count($data)) {
             $this->last_query = $this->prepared_queries[$stmt];
             return $this->raiseError(DB_ERROR_MISMATCH);
         }
 
         $realquery = $this->prepare_tokens[$stmt][0];
 
-        for ($i = 0; $i < $qp; $i++) {
+        $i = 0;
+        foreach ($data as $value) {
             if ($this->prepare_types[$stmt][$i] == DB_PARAM_SCALAR) {
-                $realquery .= $this->quote($data[$i]);
+                $realquery .= $this->quote($value);
             } elseif ($this->prepare_types[$stmt][$i] == DB_PARAM_OPAQUE) {
-                $fp = @fopen($data[$i], 'rb');
+                $fp = @fopen($value, 'rb');
                 if (!$fp) {
                     return $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
                 }
-                $realquery .= $this->quote(fread($fp, filesize($data[$i])));
+                $realquery .= $this->quote(fread($fp, filesize($value)));
                 fclose($fp);
             } else {
-                $realquery .= $data[$i];
+                $realquery .= $value;
             }
 
-            $realquery .= $this->prepare_tokens[$stmt][$i + 1];
+            $realquery .= $this->prepare_tokens[$stmt][++$i];
         }
 
         return $realquery;
