@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.127 2004-10-23 15:24:27 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.128 2004-10-29 02:30:18 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -21,8 +21,8 @@ DB is a database abstraction layer providing:
 
 DB layers itself on top of PHP's existing database
 extensions.  The currently supported extensions are:
-dbase, fbsql, interbase, informix, msql, mssql, mysql,
-mysqli, oci8, odbc, pgsql, sqlite and sybase.
+dbase, fbsql, interbase, informix, msql, mssql,
+mysql, mysqli, oci8, odbc, pgsql, sqlite and sybase.
 
 DB is compatible with both PHP 4 and PHP 5.
 </description>
@@ -31,7 +31,7 @@ DB is compatible with both PHP 4 and PHP 5.
     <maintainer>
       <user>ssb</user>
       <role>developer</role>
-      <name>Stig Sæther Bakken</name>
+      <name>Stig Bakken</name>
       <email>stig@php.net</email>
     </maintainer>
     <maintainer>
@@ -55,6 +55,11 @@ DB is compatible with both PHP 4 and PHP 5.
 ibase:
 * Add -904 => DB_ERROR_CONNECT_FAILED to errorcode_map.
 (from MDB2)
+
+sybase:
+* Provide debugging information to raiseError() when
+connections fail so getUserInfo() and getDebugInfo()
+provide useful information.  (danielc)
 
 all:
 * If DSN contains "dbsyntax", always use that for
