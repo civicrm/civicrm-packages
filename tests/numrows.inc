@@ -16,7 +16,12 @@ function pe($o) {
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
     drop_table($dbh, 'phptest');
 
-    die($o->toString());
+    if ($o->getCode() == DB_ERROR_UNSUPPORTED) {
+        print "This DBMS does not support numRows().";
+    } else {
+        print $o->getDebugInfo() . "\n";
+    }
+    exit;
 }
 
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
