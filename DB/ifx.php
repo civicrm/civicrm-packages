@@ -419,6 +419,7 @@ class DB_ifx extends DB_common
     {
         switch ($type) {
             case 'tables':
+                return 'select tabname from systables where tabid >= 100';
             default:
                 return null;
         }
