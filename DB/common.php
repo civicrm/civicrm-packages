@@ -429,6 +429,60 @@ class DB_common extends PEAR
     }
 
     // }}}
+    // {{{ autoPrepare()
+
+    /**
+    * Make automaticaly an insert or update query and call prepare() with it
+    *
+    * NB : This belongs more to a SQL Builder class, but this is a simple facility
+    *
+    * @param string $table name of the table
+    * @param array $array assoc ($key=>$value), $key are fields names, $value are not used
+    * @param int $mode type of queries to make (DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE)
+    * @param string $where in case of update queries, this string will be put after the sql WHERE statement
+    * @return resource handle for the query
+    * @access public
+    */
+    function autoPrepare($table, $array, $mode = DB_AUTOQUERY_INSERT, $where = NULL)
+    {
+        if (count($array)==0) {
+            $this->raiseError(DB_ERROR_NEED_MORE_DATA);
+        }
+        $first = true;
+        switch($mode) {
+        case DB_AUTOQUERY_INSERT:
+            $values = '';
+            $names = '';
+            while (list($key, $value) = each($array)) {
+                if ($first) {
+                    $first = false;
+                } else {
+                    $names .= ',';
+                    $values .= ',';
+                }
+                $names .= $key;
+                $values .= '?';
+            }
+            return $this->prepare("INSERT INTO $table ($names) VALUES ($values)");
+            break;
+        case DB_AUTOQUERY_UPDATE:
+            $set = '';
+            while (list($key, $value) = each($array)) {
+                if ($first) {
+                    $first = false;
+                } else {
+                    $set .= ',';
+                }
+                $set .= "$key = ?";
+            }
+            return $this->prepare("UPDATE $table SET $set WHERE $where");
+            break;
+        default:
+            $this->raiseError(DB_ERROR_SYNTAX);
+        }
+    }
+
+    // }}}
     // {{{ execute()
     /**
     * Executes a prepared SQL query
