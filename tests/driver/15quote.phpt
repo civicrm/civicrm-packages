@@ -139,6 +139,7 @@ if ($identifier) {
           b {$boolean_col_type[$dbh->phptype]} $null
         )
     ");
+    print "{$dbh->dsn['phptype']} does not handle delimited identifiers.\n";
 }
 
 

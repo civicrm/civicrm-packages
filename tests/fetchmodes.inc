@@ -57,6 +57,9 @@ switch ($dbh->phptype) {
     case 'sqlite':
         $expected = '42 bing This is a test 1999-11-21';
         break;
+    case 'ifx':
+        $expected = '42 bing                                     This is a test                                                                                                                                                                                                                                                  1999-11-21          ';
+        break;
     default:
         $expected = '42 bing                                     This is a test 1999-11-21';
 }
