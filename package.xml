@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.169 2005-02-18 23:25:42 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.170 2005-02-21 20:31:07 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -110,7 +110,7 @@ fbsql:
 * The FrontBase driver now works and passes all tests.
 
 ibase:
-* It now passes all tests so seems to be stable.
+* The InterBase driver now passes all tests (using PHP 5).
 * Add getListOf() support.
 * Add affectedRows() support.
 * Add numRows() support (Note:
@@ -170,10 +170,18 @@ mysql & mysqli:
 mysql:
 * Add new_link and client_flags support to connect().
   Request 1905.
+* If you want to use mysql_unbuffered_query() set
+  the "result_buffering" option to 0 using setOptions().
+  Request 2813.
 
 oci8:
 * Allow use of oci_new_connect() via the new_link DSN
   option.
+* Add ocisetprefetch() calls in query() and execute().
+  This determines how many rows of a result set get
+  buffered.  To adjust the quantity, see the
+  "result_buffering" option in setOptions().
+  Request 3241.
 * When running PHP5, use the new oci_connect() and
   oci_close() functions instead of the old ones.
   Works around crashes caused by PHP bug
@@ -198,6 +206,7 @@ odbc:
 * Rename the $manip_result property $affected because
   it's more descriptive and is the name used in other
   drivers.
+* Raise error on problems in numRows().
 
 pgsql:
 * Add connect_timeout (Request 3228), new_link, sslmode,
@@ -212,6 +221,8 @@ pgsql:
   functions, only show non-system items.
 * getListOf() now supports listing the schema and table
   by using the 'schema.tables' type.  Request 682.
+* Rename _modifyQuery() to modifyQuery() as it is in
+  the other drivers.
 
 sqlite:
 * Add tableInfo().  Request 1317.
