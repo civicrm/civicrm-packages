@@ -19,7 +19,7 @@ $backends = array(
     'msql',
     'mssql',
     'mysql',
-    'mysql4',
+    'mysqli',
     'oci8',
     'odbc',
     'pgsql',
@@ -49,7 +49,7 @@ testing ifx: object: db_ifx: (phptype=ifx, dbsyntax=ifx)
 testing msql: object: db_msql: (phptype=msql, dbsyntax=msql)
 testing mssql: object: db_mssql: (phptype=mssql, dbsyntax=mssql)
 testing mysql: object: db_mysql: (phptype=mysql, dbsyntax=mysql)
-testing mysql4: object: db_mysql4: (phptype=mysql4, dbsyntax=mysql4)
+testing mysqli: object: db_mysqli: (phptype=mysqli, dbsyntax=mysqli)
 testing oci8: object: db_oci8: (phptype=oci8, dbsyntax=oci8)
 testing odbc: object: db_odbc: (phptype=odbc, dbsyntax=sql92)
 testing pgsql: object: db_pgsql: (phptype=pgsql, dbsyntax=pgsql)

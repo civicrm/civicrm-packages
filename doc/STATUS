@@ -16,7 +16,7 @@ Symbols:
   n  =  returns "not capable"
   -  =  no implementation of this feature or status unknown
 
-               fbsql      ifx      mssql     mysql4     odbc     sybase
+               fbsql      ifx      mssql     mysqli     odbc     sybase
 FEATURE          |  ibase  |  msql   |   mysql |   oci8  |   pgsql |  sqlite
 simpleQuery      x    T    x    x    T    T    x    T    T    T    T    T
 numCols          x    T    x    x    T    T    x    T    T    T    T    T
@@ -51,7 +51,7 @@ Symbols:
     N  =  Test failed due to DBMS not considering something an error
     E  =  Test failed due to problem with PHP extension
 
-               fbsql      ifx      mssql     mysql4     odbc     sybase
+               fbsql      ifx      mssql     mysqli     odbc     sybase
                  |  ibase  |  msql   |   mysql |   oci8  |   pgsql |  sqlite
 01connect        -    o    -    -    o    o    -    o    o    o    o    o 
 02fetch          -    o    -    -    o    o    -    o    o    o    o    o

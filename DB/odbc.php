@@ -371,7 +371,7 @@ class DB_odbc extends DB_common
             case 'sybase':
                 return '[' . str_replace(']', ']]', $str) . ']';
             case 'mysql':
-            case 'mysql4':
+            case 'mysqli':
                 return '`' . $str . '`';
             default:
                 return '"' . str_replace('"', '""', $str) . '"';

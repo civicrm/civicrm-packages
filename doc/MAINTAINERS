@@ -4,7 +4,7 @@ ibase     : Ludovico Magnocavallo <ludo@sumatrasolutions.com>
 msql      : 
 mssql     : Frank M. Kromann <frank@kromann.info>
 mysql     : Stig Bakken <ssb@php.net>
-mysql4	  : Chaillan Nicolas <nicos@php.net>
+mysqli	  : Chaillan Nicolas <nicos@php.net>
 oci8      : Tomas V.V.Cox <cox@idecnet.com>
 odbc      : Tomas V.V.Cox <cox@idecnet.com>
 pgsql     : Rui Hirokawa <rui_hirokawa@ybb.ne.jp>

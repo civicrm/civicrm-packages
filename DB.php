@@ -208,7 +208,7 @@ define('DB_PORTABILITY_NUMROWS', 8);
  * Portability: makes certain error messages in certain drivers compatible
  * with those from other DBMS's.
  *
- * + mysql, mysql4:  change unique/primary key constraints
+ * + mysql, mysqli:  change unique/primary key constraints
  *   DB_ERROR_ALREADY_EXISTS -> DB_ERROR_CONSTRAINT
  *
  * + odbc(access):  MS's ODBC driver reports 'no such field' as code

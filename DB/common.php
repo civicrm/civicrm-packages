@@ -215,7 +215,7 @@ class DB_common extends PEAR
      * the following drivers:
      *   + mssql
      *   + mysql
-     *   + mysql4
+     *   + mysqli
      *   + oci8
      *   + odbc(access)
      *   + odbc(db2)
@@ -304,7 +304,7 @@ class DB_common extends PEAR
      *        (<kbd>TINYINT(1)</kbd>)
      *      </li>
      *      <li>
-     *        <kbd>mysql4</kbd> -> <samp>1/0</samp>
+     *        <kbd>mysqli</kbd> -> <samp>1/0</samp>
      *        (<kbd>TINYINT(1)</kbd>)
      *      </li>
      *      <li>
@@ -612,7 +612,7 @@ class DB_common extends PEAR
      * <samp>portability</samp>:
      * + fbsql
      * + mysql
-     * + mysql4
+     * + mysqli
      * + sqlite
      *
      *
@@ -629,7 +629,7 @@ class DB_common extends PEAR
      * makes certain error messages in certain drivers compatible
      * with those from other DBMS's
      *
-     * + mysql, mysql4:  change unique/primary key constraints
+     * + mysql, mysqli:  change unique/primary key constraints
      *   DB_ERROR_ALREADY_EXISTS -> DB_ERROR_CONSTRAINT
      *
      * + odbc(access):  MS's ODBC driver reports 'no such field' as code
@@ -692,7 +692,7 @@ class DB_common extends PEAR
                             break;
                         case 'fbsql':
                         case 'mysql':
-                        case 'mysql4':
+                        case 'mysqli':
                         case 'sqlite':
                             $this->options['portability'] =
                                     DB_PORTABILITY_DELETE_COUNT;

@@ -42,7 +42,7 @@ require_once 'DB/common.php';
  * @category Database
  * @author   Chaillan Nicolas <nicos@php.net>
  */
-class DB_mysql4 extends DB_common
+class DB_mysqli extends DB_common
 {
     // {{{ properties
 
@@ -64,11 +64,11 @@ class DB_mysql4 extends DB_common
      *
      * @access public
      */
-    function DB_mysql4()
+    function DB_mysqli()
     {
         $this->DB_common();
-        $this->phptype = 'mysql4';
-        $this->dbsyntax = 'mysql4';
+        $this->phptype = 'mysqli';
+        $this->dbsyntax = 'mysqli';
         $this->features = array(
             'prepare' => false,
             'ssl' => true,

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.71 2004-02-12 17:33:56 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.72 2004-02-18 19:26:52 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -145,7 +145,7 @@ _ibaseFieldFlags() query to make tableInfo() work.
         <file name="msql.php"/>
         <file name="mssql.php"/>
         <file name="mysql.php"/>
-        <file name="mysql4.php"/>
+        <file name="mysqli.php"/>
         <file name="oci8.php"/>
         <file name="odbc.php"/>
         <file name="pgsql.php"/>

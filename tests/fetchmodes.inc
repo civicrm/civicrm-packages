@@ -53,7 +53,7 @@ print implode(" ", array_keys($row))."\n";
 $actual = implode(' ', array_values($row));
 switch ($dbh->phptype) {
     case 'mysql':
-    case 'mysql4':
+    case 'mysqli':
     case 'sqlite':
         $expected = '42 bing This is a test 1999-11-21';
         break;
