@@ -147,22 +147,10 @@ class DB_sqlite extends DB_common {
                               "VARYING"   => ""
                           );
         $this->errorcode_map = array(
-                                   1    => DB_ERROR_SYNTAX,
-                                   
-                                   1004 => DB_ERROR_CANNOT_CREATE,
-                                   1006 => DB_ERROR_CANNOT_CREATE,
-                                   1007 => DB_ERROR_ALREADY_EXISTS,
-                                   1008 => DB_ERROR_CANNOT_DROP,
-                                   1046 => DB_ERROR_NODBSELECTED,
-                                   1050 => DB_ERROR_ALREADY_EXISTS,
-                                   1051 => DB_ERROR_NOSUCHTABLE,
-                                   1054 => DB_ERROR_NOSUCHFIELD,
-                                   1062 => DB_ERROR_ALREADY_EXISTS,
-                                   1064 => DB_ERROR_SYNTAX,
-                                   1100 => DB_ERROR_NOT_LOCKED,
-                                   1136 => DB_ERROR_VALUE_COUNT_ON_ROW,
-                                   1146 => DB_ERROR_NOSUCHTABLE,
-                                   1048 => DB_ERROR_CONSTRAINT,
+                                   1  => DB_ERROR_SYNTAX,
+                                   19 => DB_ERROR_CONSTRAINT,
+                                   20 => DB_ERROR_MISMATCH,
+                                   23 => DB_ERROR_ACCESS_VIOLATION
                                );
     }
 
