@@ -426,28 +426,20 @@ class DB
 
     // }}}
     // {{{ parseDSN()
+
     /**
-     * Parse a data source name
-     *
-     * A array with the following keys will be returned:
-     *  phptype: Database backend used in PHP (mysql, odbc etc.)
-     *  dbsyntax: Database used with regards to SQL syntax etc.
-     *  protocol: Communication protocol to use (tcp, unix etc.)
-     *  hostspec: Host specification (hostname[:port])
-     *  database: Database to use on the DBMS server
-     *  username: User name for login
-     *  password: Password for login
-     *  mode:     chmod mode for SQLite databases
+     * Parse a data source name.
      *
      * Additional keys can be added by appending a URI query string to the
      * end of the DSN.
      *
      * The format of the supplied DSN is in its fullest form:
-     *
+     * <code>
      *  phptype(dbsyntax)://username:password@protocol+hostspec/database?option=8&another=true
+     * </code>
      *
      * Most variations are allowed:
-     *
+     * <code>
      *  phptype://username:password@protocol+hostspec:110//usr/db_file.db?mode=0644
      *  phptype://username:password@hostspec/database_name
      *  phptype://username:password@hostspec
@@ -456,10 +448,19 @@ class DB
      *  phptype://hostspec
      *  phptype(dbsyntax)
      *  phptype
+     * </code>
      *
      * @param string $dsn Data Source Name to be parsed
      *
-     * @return array an associative array
+     * @return array an associative array with the following keys:
+     *  + phptype:  Database backend used in PHP (mysql, odbc etc.)
+     *  + dbsyntax: Database used with regards to SQL syntax etc.
+     *  + protocol: Communication protocol to use (tcp, unix etc.)
+     *  + hostspec: Host specification (hostname[:port])
+     *  + database: Database to use on the DBMS server
+     *  + username: User name for login
+     *  + password: Password for login
+     *  + mode:     chmod mode for SQLite databases
      *
      * @author Tomas V.V.Cox <cox@idecnet.com>
      */
