@@ -109,6 +109,7 @@ class DB_msql extends DB_common
      * data manipulation queries.  Contains false for other queries.
      *
      * @var resource
+     * @access private
      */
     var $_result;
 
@@ -152,7 +153,7 @@ class DB_msql extends DB_common
 
         $params = array();
         if ($dsn['hostspec']) {
-            $params[] = $dsn['port'] 
+            $params[] = $dsn['port']
                         ? $dsn['hostspec'] . ',' . $dsn['port']
                         : $dsn['hostspec'];
         }
@@ -337,6 +338,126 @@ class DB_msql extends DB_common
         return msql_affected_rows($this->_result);
     }
 
+    // }}}
+    // {{{ nextId()
+
+    /**
+     * Returns the next free id in a sequence
+     *
+     * @param string $seq_name  the sequence's name
+     * @param bool   $ondemand  when true, the seqence is automatically
+     *                           created if it does not exist
+     *
+     * @return int  the next id number in the sequence.
+     *               A DB_Error object on failure.
+     *
+     * @uses DB_msql::createSequence()
+     * @see DB_msql::dropSequence(), DB_common::getSequenceName()
+     */
+    function nextId($seq_name, $ondemand = true)
+    {
+        $seqname = $this->getSequenceName($seq_name);
+        $repeat = false;
+        do {
+            $this->pushErrorHandling(PEAR_ERROR_RETURN);
+            $result =& $this->query("SELECT _seq FROM ${seqname}");
+            $this->popErrorHandling();
+            if ($ondemand && DB::isError($result) &&
+                $result->getCode() == DB_ERROR_NOSUCHTABLE) {
+                $repeat = true;
+                $this->pushErrorHandling(PEAR_ERROR_RETURN);
+                $result = $this->createSequence($seq_name);
+                $this->popErrorHandling();
+                if (DB::isError($result)) {
+                    return $this->raiseError($result);
+                }
+            } else {
+                $repeat = false;
+            }
+        } while ($repeat);
+        if (DB::isError($result)) {
+            return $this->raiseError($result);
+        }
+        $arr = $result->fetchRow(DB_FETCHMODE_ORDERED);
+        $result->free();
+        return $arr[0];
+    }
+
+    // }}}
+    // {{{ createSequence()
+
+    /**
+     * Create the sequence
+     *
+     * Also creates a new table to associate the sequence with.  Uses
+     * a separate table to ensure portability with other drivers.
+     *
+     * @param string $seq_name  the sequence's name
+     *
+     * @return int  DB_OK on success.  A DB_Error on failure.
+     *
+     * @see DB_msql::dropSequence()
+     */
+    function createSequence($seq_name)
+    {
+        $seqname = $this->getSequenceName($seq_name);
+        $res = $this->query('CREATE TABLE ' . $seqname
+                            . ' (id INTEGER NOT NULL)');
+        if (DB::isError($res)) {
+            return $res;
+        }
+        $res = $this->query("CREATE SEQUENCE ON ${seqname}");
+        return $res;
+    }
+
+    // }}}
+    // {{{ dropSequence()
+
+    /**
+     * Drop a sequence
+     *
+     * @param string $seq_name  the sequence's name
+     *
+     * @return int  DB_OK on success.  A DB_Error on failure.
+     *
+     * @see DB_msql::createSequence(), DB_msql::nextId()
+     */
+    function dropSequence($seq_name)
+    {
+        $seqname = $this->getSequenceName($seq_name);
+        return $this->query("DROP TABLE ${seqname}");
+    }
+
+    // }}}
+    // {{{ quoteIdentifier()
+
+    /**
+     * mSQL does not support delimited identifiers
+     *
+     * @param string $str  the identifier name to be quoted
+     *
+     * @return object  DB_Error object because mSQL doesn't permit these
+     */
+    function quoteIdentifier($str)
+    {
+        return $this->raiseError(DB_ERROR_UNSUPPORTED);
+    }
+
+    // }}}
+    // {{{ escapeSimple()
+
+    /**
+     * Escape a string according to the current DBMS's standards
+     *
+     * @param string $str  the string to be escaped
+     *
+     * @return string  the escaped string
+     */
+    function escapeSimple($str)
+    {
+        return addslashes($str);
+    }
+
     /**
      * Get the last server error messge (if any)
      *
@@ -404,11 +525,11 @@ class DB_msql extends DB_common
                     => DB_ERROR_SYNTAX,
                 '/^Table .* exists$/i'
                     => DB_ERROR_ALREADY_EXISTS,
-                '/^Unknown database/i'  
+                '/^Unknown database/i'
                     => DB_ERROR_NOSUCHDB,
-                '/^Unknown field/i'  
+                '/^Unknown field/i'
                     => DB_ERROR_NOSUCHFIELD,
-                '/^Unknown (index|system variable)/i' 
+                '/^Unknown (index|system variable)/i'
                     => DB_ERROR_NOT_FOUND,
                 '/^Unknown table/i'
                     => DB_ERROR_NOSUCHTABLE,
@@ -473,7 +594,7 @@ class DB_msql extends DB_common
              * Probably received a table name.
              * Create a result resource identifier.
              */
-            $id = @msql_query("SELECT * FROM $result WHERE 1=0",
+            $id = @msql_query("SELECT * FROM $result",
                               $this->connection);
             $got_string = true;
         } elseif (isset($result->result)) {
@@ -514,9 +635,6 @@ class DB_msql extends DB_common
             $tmp = @msql_fetch_field($id);
 
             $flags = '';
-            if ($tmp->primary_key) {
-                $flags .= 'primary_key ';
-            }
             if ($tmp->not_null) {
                 $flags .= 'not_null ';
             }
