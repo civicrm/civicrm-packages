@@ -181,21 +181,23 @@ class DB_mssql extends DB_common
      *
      * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
-     * @param $result    PostgreSQL result identifier
-     * @param $ar        (reference) array where data from the row is stored
-     * @param $fetchmode how the resulting array should be indexed
-     * @param $rownum    the row number to fetch
+     * @param resource $result    query result identifier
+     * @param array    $arr       (reference) array where data from the row
+     *                            should be placed
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
-     *               reached or on failure
+     *               reached, DB error on failure
      *
      * @see DB::connect()
      * @see DB_common::setOption
      * @see DB_common::$options
      * @see DB_common::setFetchMode()
-     * @access public
+     * @see DB_result::fetchInto()
+     * @access private
      */
-    function fetchInto($result, &$ar, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
         if ($rownum !== null) {
             if (!@mssql_data_seek($result, $rownum)) {
@@ -203,14 +205,14 @@ class DB_mssql extends DB_common
             }
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $ar = @mssql_fetch_array($result, MSSQL_ASSOC);
-            if ($this->options['optimize'] == 'portability' && $ar) {
-                $ar = array_change_key_case($ar, CASE_LOWER);
+            $arr = @mssql_fetch_array($result, MSSQL_ASSOC);
+            if ($this->options['optimize'] == 'portability' && $arr) {
+                $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
-            $ar = @mssql_fetch_row($result);
+            $arr = @mssql_fetch_row($result);
         }
-        if (!$ar) {
+        if (!$arr) {
             /* This throws informative error messages,
                don't use it for now
             if ($msg = mssql_get_last_message()) {

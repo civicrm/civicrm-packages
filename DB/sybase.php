@@ -299,21 +299,23 @@ class DB_sybase extends DB_common
      *
      * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
-     * @param $result    Sybase result identifier
-     * @param $ar        (reference) array where data from the row is stored
-     * @param $fetchmode how the resulting array should be indexed
-     * @param $rownum    the row number to fetch
+     * @param resource $result    query result identifier
+     * @param array    $arr       (reference) array where data from the row
+     *                            should be placed
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
-     *               reached or on failure
+     *               reached, DB error on failure
      *
      * @see DB::connect()
      * @see DB_common::setOption
      * @see DB_common::$options
      * @see DB_common::setFetchMode()
-     * @access public
+     * @see DB_result::fetchInto()
+     * @access private
      */
-    function fetchInto($result, &$ar, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
         if ($rownum !== null) {
             if (!@sybase_data_seek($result, $rownum)) {
@@ -322,23 +324,23 @@ class DB_sybase extends DB_common
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             if (function_exists('sybase_fetch_assoc')) {
-                $ar = @sybase_fetch_assoc($result);
+                $arr = @sybase_fetch_assoc($result);
             } else {
-                if ($ar = @sybase_fetch_array($result)) {
-                    foreach ($ar as $key => $value) {
+                if ($arr = @sybase_fetch_array($result)) {
+                    foreach ($arr as $key => $value) {
                         if (is_int($key)) {
-                            unset($ar[$key]);
+                            unset($arr[$key]);
                         }
                     }
                 }
             }
-            if ($this->options['optimize'] == 'portability' && $ar) {
-                $ar = array_change_key_case($ar, CASE_LOWER);
+            if ($this->options['optimize'] == 'portability' && $arr) {
+                $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
-            $ar = @sybase_fetch_row($result);
+            $arr = @sybase_fetch_row($result);
         }
-        if (!$ar) {
+        if (!$arr) {
             // reported not work as seems that sybase_get_last_message()
             // always return a message here
             //if ($errmsg = sybase_get_last_message()) {

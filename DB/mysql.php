@@ -278,19 +278,21 @@ class DB_mysql extends DB_common
      *
      * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
-     * @param $result    MySQL result identifier
-     * @param $arr       (reference) array where data from the row is stored
-     * @param $fetchmode how the resulting array should be indexed
-     * @param $rownum    the row number to fetch
+     * @param resource $result    query result identifier
+     * @param array    $arr       (reference) array where data from the row
+     *                            should be placed
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
-     *               reached or on failure
+     *               reached, DB error on failure
      *
      * @see DB::connect()
      * @see DB_common::setOption
      * @see DB_common::$options
      * @see DB_common::setFetchMode()
-     * @access public
+     * @see DB_result::fetchInto()
+     * @access private
      */
     function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {

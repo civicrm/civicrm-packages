@@ -126,10 +126,11 @@ class DB_dbase extends DB_common
      *
      * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
-     * @param $result    PostgreSQL result identifier
-     * @param $row       (reference) array where data from the row is stored
-     * @param $fetchmode how the resulting array should be indexed
-     * @param $rownum    the row number to fetch
+     * @param resource $result    query result identifier
+     * @param array    $arr       (reference) array where data from the row
+     *                            should be placed
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
      *               reached or on failure
@@ -138,22 +139,23 @@ class DB_dbase extends DB_common
      * @see DB_common::setOption
      * @see DB_common::$options
      * @see DB_common::setFetchMode()
-     * @access public
+     * @see DB_result::fetchInto()
+     * @access private
      */
-    function fetchInto($res, &$row, $fetchmode, $rownum = null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
         if ($rownum === null) {
-            $rownum = $this->res_row[$res]++;
+            $rownum = $this->res_row[$result]++;
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $row = @dbase_get_record_with_names($this->connection, $rownum);
-            if ($this->options['optimize'] == 'portability' && $row) {
-                $row = array_change_key_case($row, CASE_LOWER);
+            $arr = @dbase_get_record_with_names($this->connection, $rownum);
+            if ($this->options['optimize'] == 'portability' && $arr) {
+                $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
-            $row = @dbase_get_record($this->connection, $rownum);
+            $arr = @dbase_get_record($this->connection, $rownum);
         }
-        if (!$row) {
+        if (!$arr) {
             return null;
         }
         return DB_OK;

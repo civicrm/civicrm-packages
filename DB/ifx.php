@@ -222,39 +222,41 @@ class DB_ifx extends DB_common
      *
      * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
-     * @param $result    Informix result identifier
-     * @param $row       (reference) array where data from the row is stored
-     * @param $fetchmode how the resulting array should be indexed
-     * @param $rownum    the row number to fetch
+     * @param resource $result    query result identifier
+     * @param array    $arr       (reference) array where data from the row
+     *                            should be placed
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
-     *               reached or on failure
+     *               reached, DB error on failure
      *
      * @see DB::connect()
      * @see DB_common::setOption
      * @see DB_common::$options
      * @see DB_common::setFetchMode()
-     * @access public
+     * @see DB_result::fetchInto()
+     * @access private
      */
-    function fetchInto($result, &$row, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
         if (($rownum !== null) && ($rownum < 0)) {
             return null;
         }
         // if $rownum is null, fetch row will return the next row
-        if (!$row = @ifx_fetch_row($result, $rownum)) {
+        if (!$arr = @ifx_fetch_row($result, $rownum)) {
             return null;
         }
         if ($fetchmode !== DB_FETCHMODE_ASSOC) {
             $i=0;
             $order = array();
-            foreach ($row as $key => $val) {
+            foreach ($arr as $key => $val) {
                 $order[$i++] = $val;
             }
-            $row = $order;
+            $arr = $order;
         } elseif ($fetchmode == DB_FETCHMODE_ASSOC
                     && $this->options['optimize'] == 'portability') {
-            $row = array_change_key_case($row, CASE_LOWER);
+            $arr = array_change_key_case($arr, CASE_LOWER);
         }
         return DB_OK;
     }

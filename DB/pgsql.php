@@ -280,10 +280,11 @@ class DB_pgsql extends DB_common
      *
      * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
-     * @param $result    PostgreSQL result identifier
-     * @param $row       (reference) array where data from the row is stored
-     * @param $fetchmode how the resulting array should be indexed
-     * @param $rownum    the row number to fetch
+     * @param resource $result    query result identifier
+     * @param array    $arr       (reference) array where data from the row
+     *                            should be placed
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
      *               reached, DB error on failure
@@ -292,23 +293,24 @@ class DB_pgsql extends DB_common
      * @see DB_common::setOption
      * @see DB_common::$options
      * @see DB_common::setFetchMode()
-     * @access public
+     * @see DB_result::fetchInto()
+     * @access private
      */
-    function fetchInto($result, &$row, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
         $rownum = ($rownum !== null) ? $rownum : $this->row[$result];
         if ($rownum >= $this->num_rows[$result]) {
             return null;
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $row = @pg_fetch_array($result, $rownum, PGSQL_ASSOC);
-            if ($this->options['optimize'] == 'portability' && $row) {
-                $row = array_change_key_case($row, CASE_LOWER);
+            $arr = @pg_fetch_array($result, $rownum, PGSQL_ASSOC);
+            if ($this->options['optimize'] == 'portability' && $arr) {
+                $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
-            $row = @pg_fetch_row($result, $rownum);
+            $arr = @pg_fetch_row($result, $rownum);
         }
-        if (!$row) {
+        if (!$arr) {
             $err = pg_errormessage($this->connection);
             if (!$err) {
                 return null;

@@ -201,10 +201,11 @@ class DB_oci8 extends DB_common
      *
      * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
-     * @param $result    oci8 result identifier
-     * @param $arr       (reference) array where data from the row is stored
-     * @param $fetchmode how the resulting array should be indexed
-     * @param $rownum    the row number to fetch (not yet supported)
+     * @param resource $result    query result identifier
+     * @param array    $arr       (reference) array where data from the row
+     *                            should be placed
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
      *               reached, DB error on failure
@@ -213,9 +214,10 @@ class DB_oci8 extends DB_common
      * @see DB_common::setOption
      * @see DB_common::$options
      * @see DB_common::setFetchMode()
-     * @access public
+     * @see DB_result::fetchInto()
+     * @access private
      */
-    function fetchInto($result, &$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=NULL)
+    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
         if ($rownum !== NULL) {
             return $this->raiseError(DB_ERROR_NOT_CAPABLE);

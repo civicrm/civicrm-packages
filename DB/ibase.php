@@ -231,10 +231,11 @@ class DB_ibase extends DB_common
      *
      * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
-     * @param $result    PostgreSQL result identifier
-     * @param $ar        (reference) array where data from the row is stored
-     * @param $fetchmode how the resulting array should be indexed
-     * @param $rownum    the row number to fetch
+     * @param resource $result    query result identifier
+     * @param array    $arr       (reference) array where data from the row
+     *                            should be placed
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
      *               reached, DB error on failure
@@ -243,9 +244,10 @@ class DB_ibase extends DB_common
      * @see DB_common::setOption
      * @see DB_common::$options
      * @see DB_common::setFetchMode()
-     * @access public
+     * @see DB_result::fetchInto()
+     * @access private
      */
-    function fetchInto($result, &$ar, $fetchmode, $rownum = null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
         if ($rownum !== NULL) {
             $tmp =& $this->ibaseRaiseError(DB_ERROR_NOT_CAPABLE);
@@ -253,17 +255,17 @@ class DB_ibase extends DB_common
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             if (function_exists('ibase_fetch_assoc')) {
-                $ar = @ibase_fetch_assoc($result);
+                $arr = @ibase_fetch_assoc($result);
             } else {
-                $ar = get_object_vars(ibase_fetch_object($result));
+                $arr = get_object_vars(ibase_fetch_object($result));
             }
-            if ($this->options['optimize'] == 'portability' && $ar) {
-                $ar = array_change_key_case($ar, CASE_LOWER);
+            if ($this->options['optimize'] == 'portability' && $arr) {
+                $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
-            $ar = @ibase_fetch_row($result);
+            $arr = @ibase_fetch_row($result);
         }
-        if (!$ar) {
+        if (!$arr) {
             if ($errmsg = ibase_errmsg()) {
                 $tmp =& $this->ibaseRaiseError(null, $errmsg);
                 return $tmp;

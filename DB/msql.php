@@ -146,21 +146,23 @@ class DB_msql extends DB_common
      *
      * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
-     * @param $result    PostgreSQL result identifier
-     * @param $ar        (reference) array where data from the row is stored
-     * @param $fetchmode how the resulting array should be indexed
-     * @param $rownum    the row number to fetch
+     * @param resource $result    query result identifier
+     * @param array    $arr       (reference) array where data from the row
+     *                            should be placed
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
-     *               reached or on failure
+     *               reached, DB error on failure
      *
      * @see DB::connect()
      * @see DB_common::setOption
      * @see DB_common::$options
      * @see DB_common::setFetchMode()
-     * @access public
+     * @see DB_result::fetchInto()
+     * @access private
      */
-    function fetchInto($result, &$ar, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
         if ($rownum !== null) {
             if (!@msql_data_seek($result, $rownum)) {
@@ -168,14 +170,14 @@ class DB_msql extends DB_common
             }
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $ar = @msql_fetch_array($result, MSQL_ASSOC);
-            if ($this->options['optimize'] == 'portability' && $ar) {
-                $ar = array_change_key_case($ar, CASE_LOWER);
+            $arr = @msql_fetch_array($result, MSQL_ASSOC);
+            if ($this->options['optimize'] == 'portability' && $arr) {
+                $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
-            $ar = @msql_fetch_row($result);
+            $arr = @msql_fetch_row($result);
         }
-        if (!$ar) {
+        if (!$arr) {
             if ($error = msql_error()) {
                 return $this->raiseError($error);
             } else {

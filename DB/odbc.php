@@ -219,32 +219,34 @@ class DB_odbc extends DB_common
      *
      * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
-     * @param $result    PostgreSQL result identifier
-     * @param $row       (reference) array where data from the row is stored
-     * @param $fetchmode how the resulting array should be indexed
-     * @param $rownum    the row number to fetch
+     * @param resource $result    query result identifier
+     * @param array    $arr       (reference) array where data from the row
+     *                            should be placed
+     * @param int      $fetchmode how the resulting array should be indexed
+     * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
-     *               reached or on failure
+     *               reached, DB error on failure
      *
      * @see DB::connect()
      * @see DB_common::setOption
      * @see DB_common::$options
      * @see DB_common::setFetchMode()
-     * @access public
+     * @see DB_result::fetchInto()
+     * @access private
      */
-    function fetchInto($result, &$row, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
-        $row = array();
+        $arr = array();
         if ($rownum !== null) {
             $rownum++; // ODBC first row is 1
             if (version_compare(phpversion(), '4.2.0', 'ge')) {
-                $cols = odbc_fetch_into($result, $row, $rownum);
+                $cols = odbc_fetch_into($result, $arr, $rownum);
             } else {
-                $cols = odbc_fetch_into($result, $rownum, $row);
+                $cols = odbc_fetch_into($result, $rownum, $arr);
             }
         } else {
-            $cols = odbc_fetch_into($result, $row);
+            $cols = odbc_fetch_into($result, $arr);
         }
 
         if (!$cols) {
@@ -256,14 +258,14 @@ class DB_odbc extends DB_common
             return null;
         }
         if ($fetchmode !== DB_FETCHMODE_ORDERED) {
-            for ($i = 0; $i < count($row); $i++) {
+            for ($i = 0; $i < count($arr); $i++) {
                 $colName = odbc_field_name($result, $i+1);
-                $a[$colName] = $row[$i];
+                $a[$colName] = $arr[$i];
             }
             if ($this->options['optimize'] == 'portability') {
                 $a = array_change_key_case($a, CASE_LOWER);
             }
-            $row = $a;
+            $arr = $a;
         }
         return DB_OK;
     }
