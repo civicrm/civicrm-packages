@@ -136,10 +136,6 @@ class DB_sqlite extends DB_common
             'VARYING'   => ''
         );
         $this->errorcode_map = array(
-            1  => DB_ERROR_SYNTAX,
-            19 => DB_ERROR_CONSTRAINT,
-            20 => DB_ERROR_MISMATCH,
-            23 => DB_ERROR_ACCESS_VIOLATION
         );
     }
 
