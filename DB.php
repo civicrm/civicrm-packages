@@ -504,7 +504,7 @@ class DB
         // Find protocol and hostspec
 
         // $dsn => proto(proto_opts)/database
-        if (preg_match('|^(.+?)\((.*?)\)/?(.*?)$|', $dsn, $match)) {
+        if (preg_match('|^([^(]+)\((.*?)\)/?(.*?)$|', $dsn, $match)) {
             $proto       = $match[1];
             $proto_opts  = (!empty($match[2])) ? $match[2] : false;
             $dsn         = $match[3];

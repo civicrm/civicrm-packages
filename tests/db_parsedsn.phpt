@@ -28,6 +28,7 @@ test("ibase://user%40domain:password@host");
 test("ibase://user@domain:pass@word@/database");   // also supported
 test("ifx://user@domain:pass@word@host.com//usr/db/general.db");
 test('ifx://remote.host.com/c:\windows\my.db');
+test('oci8://SHOOTOUT:******@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.101.161)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=TIS)))');
 
 // new formats
 test("odbc(solid)://foo:bar@localhost:1313");
@@ -201,6 +202,19 @@ Array
     [port] =>
     [socket] =>
     [database] => c:\windows\my.db
+)
+DSN: oci8://SHOOTOUT:******@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.101.161)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=TIS)))
+Array
+(
+    [phptype] => oci8
+    [dbsyntax] => oci8
+    [username] => SHOOTOUT
+    [password] => ******
+    [protocol] => tcp
+    [hostspec] => (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.101.161)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=TIS)))
+    [port] =>
+    [socket] =>
+    [database] =>
 )
 DSN: odbc(solid)://foo:bar@localhost:1313
 Array
