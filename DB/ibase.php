@@ -385,7 +385,17 @@ class DB_ibase extends DB_common
 
         $i = 0;
         foreach ($data as $key => $value) {
-            if ($types[$i] == DB_PARAM_OPAQUE) {
+            if ($types[$i] == DB_PARAM_MISC) {
+                /*
+                 * ibase doesn't seem to have the ability to pass a
+                 * parameter along unchanged, so strip off quotes from start
+                 * and end, plus turn two single quotes to one single quote,
+                 * in order to avoid the quotes getting escaped by
+                 * ibase and ending up in the database.
+                 */
+                $data[$key] = preg_replace("/^'(.*)'$/", "\\1", $data[$key]);
+                $data[$key] = str_replace("''", "'", $data[$key]);
+            } elseif ($types[$i] == DB_PARAM_OPAQUE) {
                 $fp = @fopen($data[$key], 'rb');
                 if (!$fp) {
                     return $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
