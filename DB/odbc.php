@@ -552,24 +552,6 @@ class DB_odbc extends DB_common
     }
 
     // }}}
-    // {{{ getSpecialQuery()
-
-    /**
-     * Returns the query needed to get some backend info
-     * @param string $type What kind of info you want to retrieve
-     * @return string The SQL query string
-     */
-    function getSpecialQuery($type)
-    {
-        switch ($type) {
-            case 'tables':
-            default:
-                return null;
-        }
-        return $sql;
-    }
-
-    // }}}
 
 }
 

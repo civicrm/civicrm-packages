@@ -1830,6 +1830,23 @@ class DB_common extends PEAR
     }
 
     // }}}
+    // {{{ getSpecialQuery()
+
+    /**
+     * Returns the query needed to get some backend info
+     *
+     * @param string $type What kind of info you want to retrieve
+     *
+     * @return string The SQL query string
+     *
+     * @access public
+     */
+    function getSpecialQuery($type)
+    {
+        return $this->raiseError(DB_ERROR_UNSUPPORTED);
+    }
+
+    // }}}
     // {{{ _rtrimArrayValues()
 
     /**
