@@ -1,5 +1,7 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
 /**
  * The PEAR DB driver for PHP's odbc extension
  * for interacting with databases via ODBC connections

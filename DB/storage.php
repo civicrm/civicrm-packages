@@ -1,5 +1,7 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
 /**
  * Provides an object interface to a table row
  *

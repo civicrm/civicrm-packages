@@ -1,5 +1,7 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
 /**
  * The PEAR DB driver for PHP's interbase extension
  * for interacting with Interbase and Firebird databases

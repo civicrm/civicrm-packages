@@ -1,5 +1,7 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
 /**
  * The PEAR DB driver for PHP's mysqli extension
  * for interacting with MySQL databases
@@ -543,12 +545,12 @@ class DB_mysqli extends DB_common
                                    'SET id=LAST_INSERT_ID(id+1)');
             $this->popErrorHandling();
             if ($result === DB_OK) {
-                /** COMMON CASE **/
+                // COMMON CASE
                 $id = @mysqli_insert_id($this->connection);
                 if ($id != 0) {
                     return $id;
                 }
-                /** EMPTY SEQ TABLE **/
+                // EMPTY SEQ TABLE
                 // Sequence table must be empty for some reason, so fill it and return 1
                 // Obtain a user-level lock
                 $result = $this->getOne("SELECT GET_LOCK('${seqname}_lock',10)");
@@ -574,10 +576,10 @@ class DB_mysqli extends DB_common
                 // We know what the result will be, so no need to try again
                 return 1;
 
-            /** ONDEMAND TABLE CREATION **/
             } elseif ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE)
             {
+                // ONDEMAND TABLE CREATION
                 $result = $this->createSequence($seq_name);
                 // Since createSequence initializes the ID to be 1,
                 // we do not need to retrieve the ID again (or we will get 2)
@@ -588,10 +590,10 @@ class DB_mysqli extends DB_common
                     return 1;
                 }
 
-            /** BACKWARDS COMPAT **/
             } elseif (DB::isError($result) &&
                       $result->getCode() == DB_ERROR_ALREADY_EXISTS)
             {
+                // BACKWARDS COMPAT
                 // see _BCsequence() comment
                 $result = $this->_BCsequence($seqname);
                 if (DB::isError($result)) {
