@@ -6,7 +6,7 @@ DB_Error
 <?php // -*- C++ -*-
 
 // Test for: DB.php
-// Parts tested: DB_Error, DB_Warning
+// Parts tested: DB_Error
 
 function test_error_handler($errno, $errmsg, $file, $line, $vars) {
         $errortype = array (
