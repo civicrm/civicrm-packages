@@ -89,7 +89,7 @@ class DB_ifx extends DB_common
      *
      * @return int DB_OK on success, a DB error code on failure
      */
-    function connect(&$dsninfo, $persistent = false)
+    function connect($dsninfo, $persistent = false)
     {
         if (!DB::assertExtension('informix') && !DB::assertExtension('Informix')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
