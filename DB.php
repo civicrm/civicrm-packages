@@ -969,6 +969,21 @@ class DB_result
     var $row_counter = null;
 
     /**
+     * The prepared statement resource id created by PHP
+     *
+     * This resource is only available when the result set was created using
+     * a driver's native execute() method, not PEAR DB's emulated one.
+     *
+     * {@internal  Mainly here because the InterBase/Firebird API is only
+     * able to retrieve data from result sets if the statemnt handle is
+     * still in scope.}}
+     *
+     * @var resource
+     * @since Property available since Release 1.7.0
+     */
+    var $statement;
+
+    /**
      * The query string that created this result
      * @var string
      * @since Property available since Release 1.7.0
@@ -1000,6 +1015,7 @@ class DB_result
         $this->dbh         = &$dbh;
         $this->result      = $result;
         $this->query       = $dbh->last_query;
+        $this->statement   = empty($dbh->last_stmt) ? null : $dbh->last_stmt;
         $this->parameters  = $dbh->last_parameters;
         $this->limit_type  = $dbh->features['limit'];
         $this->autofree    = $dbh->options['autofree'];
@@ -1276,6 +1292,7 @@ class DB_result
             return $err;
         }
         $this->result = false;
+        $this->statement = false;
         return true;
     }
 

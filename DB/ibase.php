@@ -35,6 +35,8 @@ require_once 'DB/common.php';
  *
  * These methods overload the ones declared in DB_common.
  *
+ * InterBase/Firebird are not stable under PHP 4.
+ *
  * BUG:  limitQuery() only works for Firebird.
  *
  * @category   Database
@@ -45,10 +47,10 @@ require_once 'DB/common.php';
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
+ * @since      Class not stable until Release 1.7.0
  */
 class DB_ibase extends DB_common
 {
-
     // {{{ properties
 
     /**
@@ -139,6 +141,18 @@ class DB_ibase extends DB_common
      * @var bool
      */
     var $autocommit = true;
+
+    /**
+     * The prepared statement handle from the most recently executed statement
+     *
+     * {@internal  Mainly here because the InterBase/Firebird API is only
+     * able to retrieve data from result sets if the statemnt handle is
+     * still in scope.}}
+     *
+     * @var resource
+     * @access protected
+     */
+    var $last_stmt;
 
     /**
      * Is the given prepared statement a data manipulation query?
@@ -533,6 +547,7 @@ class DB_ibase extends DB_common
         if ($this->autocommit && $this->manip_query[(int)$stmt]) {
             @ibase_commit($this->connection);
         }*/
+        $this->last_stmt = $stmt;
         if ($this->manip_query[(int)$stmt]) {
             $tmp = DB_OK;
         } else {
@@ -542,18 +557,25 @@ class DB_ibase extends DB_common
     }
 
     /**
-     * Free the internal resources associated with a prepared query.
+     * Free the internal resources associated with a prepared query
      *
-     * @param $stmt The interbase_query resource type
+     * @param resource $stmt           the prepared statement's PHP resource
+     * @param bool     $free_resource  should the PHP resource be freed too?
+     *                                  Use false if you need to get data
+     *                                  from the result set later.
      *
-     * @return bool true on success, false if $result is invalid
+     * @return bool  true on success, false if $result is invalid
+     *
+     * @see DB_ibase::prepare()
      */
-    function freePrepared($stmt)
+    function freePrepared($stmt, $free_resource = true)
     {
         if (!is_resource($stmt)) {
             return false;
         }
-        @ibase_free_query($stmt);
+        if ($free_resource) {
+            @ibase_free_query($stmt);
+        }
         unset($this->prepare_tokens[(int)$stmt]);
         unset($this->prepare_types[(int)$stmt]);
         unset($this->manip_query[(int)$stmt]);

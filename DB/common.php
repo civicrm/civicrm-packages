@@ -1075,18 +1075,20 @@ class DB_common extends PEAR
     // {{{ freePrepared()
 
     /**
-     * Free the resource used in a prepared query
+     * Free the internal resources associated with a prepared query
      *
-     * @param resource $stmt  the resurce returned by prepare()
+     * @param resource $stmt           the prepared statement's PHP resource
+     * @param bool     $free_resource  should the PHP resource be freed too?
+     *                                  Use false if you need to get data
+     *                                  from the result set later.
      *
-     * @return bool  true on success or false on failure
+     * @return bool  true on success, false if $result is invalid
      *
      * @see DB_common::prepare()
      */
-    function freePrepared($stmt)
+    function freePrepared($stmt, $free_resource = true)
     {
         $stmt = (int)$stmt;
-        // Free the internal prepared vars
         if (isset($this->prepare_tokens[$stmt])) {
             unset($this->prepare_tokens[$stmt]);
             unset($this->prepare_types[$stmt]);
@@ -1170,7 +1172,7 @@ class DB_common extends PEAR
                 return $sth;
             }
             $ret =& $this->execute($sth, $params);
-            $this->freePrepared($sth);
+            $this->freePrepared($sth, false);
             return $ret;
         } else {
             $this->last_parameters = array();

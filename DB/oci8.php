@@ -145,7 +145,7 @@ class DB_oci8 extends DB_common
     var $_data = array();
 
     /**
-     * The result handle from the most recently executed prepared statement
+     * The result or statement handle from the most recently executed query
      * @var resource
      */
     var $last_stmt;
@@ -317,7 +317,7 @@ class DB_oci8 extends DB_common
         if (!$success) {
             return $this->oci8RaiseError($result);
         }
-        $this->last_stmt=$result;
+        $this->last_stmt = $result;
         // Determine which queries that should return data, and which
         // should return an error code only.
         return DB::isManip($query) ? DB_OK : $result;
@@ -404,14 +404,25 @@ class DB_oci8 extends DB_common
     }
 
     /**
-     * Free the internal resources associated with a prepared query.
+     * Free the internal resources associated with a prepared query
      *
-     * @param $stmt oci8 statement identifier
+     * @param resource $stmt           the prepared statement's resource
+     * @param bool     $free_resource  should the PHP resource be freed too?
+     *                                  Use false if you need to get data
+     *                                  from the result set later.
      *
-     * @return bool true on success, false if $result is invalid
+     * @return bool  true on success, false if $result is invalid
+     *
+     * @see DB_oci8::prepare()
      */
-    function freePrepared($stmt)
+    function freePrepared($stmt, $free_resource = true)
     {
+        if (!is_resource($stmt)) {
+            return false;
+        }
+        if ($free_resource) {
+            @ocifreestatement($stmt);
+        }
         if (isset($this->prepare_types[(int)$stmt])) {
             unset($this->prepare_types[(int)$stmt]);
             unset($this->manip_query[(int)$stmt]);
