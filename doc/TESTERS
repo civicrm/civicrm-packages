@@ -1,4 +1,6 @@
+===================
 HOW TO TEST PEAR DB
+===================
 
 $Id$
 
@@ -31,51 +33,65 @@ CVS command as appropriate for your present version of PHP.
      -d test php-src/run-tests.php
  cp test/run-tests.php .
 
-Obtain DB's Test Framework
---------------------------
-Create a location to store the test scripts and your notes.  A location
-separate from your CVS working directory for DB is desirable because
-you don't want to inadvertently commit a file with your passwords in it.
-Then obtain the test suite via CVS.
 
- mkdir c:/dbtests
- cd c:/dbtests
- cvs -d :pserver:cvsread@cvs.php.net:/repository co -d tests pear/DB/tests
+Obtain DB and its Test Framework
+--------------------------------
+Create a location to store the test installation of DB and its test
+scripts.
 
-Copy and Edit DSN's
--------------------
-setup.inc contains the DSN's for connecting to your test databases.
-Creating a copy of it is helpful in case you download an updated version
-of the test suite.  Make sure only one line is uncommented at a time.
+ mkdir d:/peartest
+ cd d:/peartest
+ cvs -d :pserver:cvsread@cvs.php.net:/repository co pear/DB
 
- cp tests/driver/setup.inc .
- vi setup.inc &
- cp setup.inc tests/driver
+We assume you already have the PEAR base package installed.  If you
+don't, you will need to do so, but the instructions for doing that
+are beyond the scope of this document.
 
-Edit Paths and File Names in the Starter Script
------------------------------------------------
-There are two shell scripts named "run" used to jump start the testing
-process.  One is in the tests directory and the other is in the
-tests/driver directory.  These files contain the commands necessary to
-run the tests on your system.  Since each computer system's settings
-are different, you will need to edit that file.  Instructions for that
-are contained in the "run" files themselves.
+
+Copy the Starter Shell Script and Edit the Paths
+------------------------------------------------
+To make starting up each test run easier, we have included two shell
+scripts.  The original files are named "run.cvs".  They need to be
+renamed to "run" so CVS won't bother you with tracking them.  Then,
+the paths and file names in them need to be set to those used by
+your system.
+
+ cd pear/DB/tests
+ cp run.cvs run
+ chmod 755 run
+ vi run
+
+ cd driver
+ cp run.cvs run
+ chmod 755 run
+ vi run
+
+
+Copy the Setup File and Edit the DSN's
+--------------------------------------
+The test suite contains a file that stores the DSN's needed to
+connect to your database.  The original file is "setup.inc.cvs"
+and it needs to be renamed "setup.inc" so CVS won't track it.
+Then you'll need to edit the DSN's in it.
+
+ cp setup.inc.cvs setup.inc
+ vi setup.inc
 
 
 RUN THE TESTS
 =============
 
- cd tests/driver
- ./run
+To run all tests:  ./run
+To run one test:   ./run <test name>.phpt
+Example:           ./run db_parsedsn.phpt
 
-To run one test: ./run <test name>.phpt
-Example:         ./run db_parsedsn.phpt
 
 Test Types and Locations
 ------------------------
 tests             Common PEAR DB tests
 tests/driver      Common tests for all the drivers
 tests/<backend>   Specific backend tests (old tests, don't used them)
+
 
 Results and What To Do With Them
 --------------------------------

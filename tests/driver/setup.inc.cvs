@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This is the original "setup.inc.cvs" file from CVS.
+ *
+ * PREPARATION:
+ *   1) make a copy of this file named "setup.inc"
+ *   2) edit the DRIVER_DSN's as appropriate for your environment
+ *   3) comment out the blank DRIVER_DSN
+ *   4) before each run, uncomment the one DRIVER_DSN you want
+ *      to use during that run
+ */
+
 if (!defined('PATH_SEPARATOR')) {
     if (stristr(PHP_OS, 'WIN')) {
         define('PATH_SEPARATOR', ';');
