@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.174 2005-02-28 18:37:30 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.175 2005-03-01 04:34:09 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -68,7 +68,7 @@ DB is compatible with both PHP 4 and PHP 5.
   <release>
     <version>1.7.0</version>
     <state>stable</state>
-    <date>pending</date>
+    <date>2005-03-01</date>
     <notes><![CDATA[
 To view the majority of changes since 1.6.8,
 see the changelog for Release 1.7.0RC1.
