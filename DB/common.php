@@ -108,30 +108,7 @@ class DB_common extends PEAR
 
 
     // }}}
-    // {{{ toString()
-
-    /**
-     * String conversation
-     *
-     * @return string
-     * @access private
-     */
-    function toString()
-    {
-        $info = strtolower(get_class($this));
-        $info .=  ': (phptype=' . $this->phptype .
-                  ', dbsyntax=' . $this->dbsyntax .
-                  ')';
-
-        if ($this->connection) {
-            $info .= ' [connected]';
-        }
-
-        return $info;
-    }
-
-    // }}}
-    // {{{ constructor
+    // {{{ DB_common
 
     /**
      * Constructor
@@ -139,6 +116,41 @@ class DB_common extends PEAR
     function DB_common()
     {
         $this->PEAR('DB_Error');
+    }
+
+    // }}}
+    // {{{ __toString()
+
+    /**
+     * Automatic string conversion for PHP 5
+     *
+     * @return string
+     */
+    function __toString()
+    {
+        $info = strtolower(get_class($this));
+        $info .=  ': (phptype=' . $this->phptype .
+                  ', dbsyntax=' . $this->dbsyntax .
+                  ')';
+        if ($this->connection) {
+            $info .= ' [connected]';
+        }
+        return $info;
+    }
+
+    // }}}
+    // {{{ toString()
+
+    /**
+     * DEPRECATED:  String conversion method
+     *
+     * @return string
+     *
+     * @deprecated  Method deprecated in Release 1.7.0
+     */
+    function toString()
+    {
+        return $this->__toString();
     }
 
     // }}}
