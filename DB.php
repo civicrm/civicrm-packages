@@ -786,7 +786,7 @@ class DB_result
         switch ($key) {
             case 'limit_from':
                 $this->limit_from = $value; break;
-            case 'limit_count';
+            case 'limit_count':
                 $this->limit_count = $value; break;
         }
     }
