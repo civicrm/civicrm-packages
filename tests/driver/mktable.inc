@@ -51,7 +51,9 @@ switch ($dbh->phptype) {
         $chrc = 'VARCHAR(255)';
         $chrd = 'VARCHAR(20)';
         break;
+    case 'msql':
     case 'ifx':
+        // doing this for ifx to keep certain versions happy
         $null = '';
         $chrc = 'CHAR(255)';
         $chrd = 'CHAR(20)';
@@ -69,6 +71,7 @@ $test_mktable_query = "
       c $chrc $null,
       d $chrd $null)
 ";
+
 
 $dbh->query($test_mktable_query);
 $dbh->query("INSERT INTO phptest VALUES(42, 'bing', 'This is a test', '1999-11-21')");
