@@ -173,6 +173,21 @@ class DB_sqlite extends DB_common
      *   + mode  The permissions for the database file, in four digit
      *            chmod octal format (eg "0600").
      *
+     * Example of connecting to a database in read-only mode:
+     * <code>
+     * require_once 'DB.php';
+     * 
+     * $dsn = 'sqlite:///path/and/name/of/db/file?mode=0400';
+     * $options = array(
+     *     'portability' => DB_PORTABILITY_ALL,
+     * );
+     * 
+     * $db =& DB::connect($dsn, $options);
+     * if (PEAR::isError($db)) {
+     *     die($db->getMessage());
+     * }
+     * </code>
+     *
      * @param array $dsn         the data source name
      * @param bool  $persistent  should the connection be persistent?
      *

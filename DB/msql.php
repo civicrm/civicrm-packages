@@ -135,6 +135,22 @@ class DB_msql extends DB_common
      *
      * Don't call this method directly.  Use DB::connect() instead.
      *
+     * Example of how to connect:
+     * <code>
+     * require_once 'DB.php';
+     * 
+     * // $dsn = 'msql://hostname/dbname';  // use a TCP connection
+     * $dsn = 'msql:///dbname';             // use a socket
+     * $options = array(
+     *     'portability' => DB_PORTABILITY_ALL,
+     * );
+     * 
+     * $db =& DB::connect($dsn, $options);
+     * if (PEAR::isError($db)) {
+     *     die($db->getMessage());
+     * }
+     * </code>
+     *
      * @param array $dsn         the data source name
      * @param bool  $persistent  should the connection be persistent?
      *

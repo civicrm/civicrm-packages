@@ -184,7 +184,7 @@ class DB_pgsql extends DB_common
      *   + tty              This was used to specify where to send server
      *                       debug output.  Available since PEAR DB 1.6.4.
      *
-     * Example of how to connect to a new link via sockets:
+     * Example of connecting to a new link via a socket:
      * <code>
      * require_once 'DB.php';
      * 
