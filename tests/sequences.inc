@@ -1,10 +1,22 @@
 <?php // -*- PHP -*-
 
 function error_handler(&$obj) {
-    print "sequences.inc error_handler\n";
+    print "sequences.inc error_handler:\n    ";
+    print $obj->getMessage();
 }
 ob_implicit_flush(true);
-$dbh->dropSequence("test");
+
+$drop = $dbh->dropSequence('test');
+if (DB::isError($drop)) {
+    print 'Could not drop sequence... ' . $drop->getMessage() . "\n";
+    if ($dbh->phptype == 'ibase' &&
+        $drop->getMessage() == 'DB Error: insufficient permissions')
+    {
+        print "Use this query to provide the permissions needed:\n";
+        print '   grant all on RDB$GENERATORS to <USERNAME>';
+    }
+    exit;
+}
 
 // 1) test that sequences are not created if "ondemand" is false
 
@@ -43,6 +55,7 @@ print "b-a=".($b-$a)."\n";
 // 4) test that the user-specified error handler is really disabled
 // during nextId, with per-object handler as well as global handler
 $dbh->dropSequence("test");
+
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 $c = $dbh->nextId("test");
 if (DB::isError($c)) {
