@@ -228,7 +228,7 @@ class DB_common extends PEAR
      *                 # oci8    <kbd>NUMBER(1)</kbd>
      *                 # odbc    <kbd>SMALLINT</kbd> [1]
      *                 # sqlite  <kbd>INTEGER</kbd>
-     *                 # sybase  <kbd>TINYINT(1)</kbd>
+     *                 # sybase  <kbd>TINYINT</kbd>
      *                - string <samp>T</samp> if true, <samp>F</samp> if false
      *                  for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
      *                  Such drivers and the data types expected:

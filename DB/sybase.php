@@ -380,7 +380,7 @@ class DB_sybase extends DB_common
      *               + null = the string <samp>NULL</samp>
      *               + integer or double = the unquoted number
      *               + boolean = <samp>1</samp> if true or
-     *                 <samp>0</samp> if false.  Use the TINYINT(1) data type.
+     *                 <samp>0</samp> if false.  Use the TINYINT data type.
      *                 Sybase doesn't have BOOLEAN and BIT can't be null.
      *               + other (including strings and numeric strings) =
      *                 the data with single quotes escaped by preceeding
