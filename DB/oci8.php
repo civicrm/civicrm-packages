@@ -747,108 +747,97 @@ class DB_oci8 extends DB_common
     // }}}
     // {{{ tableInfo()
 
+    /**
+     * Returns information about a table or a result set.
+     *
+     * NOTE: only supports 'table' and 'flags' if <var>$result</var>
+     * is a table name.
+     *
+     * NOTE: flags won't contain index information.
+     *
+     * @param object|string  $result  DB_result object from a query or a
+     *                                string containing the name of a table
+     * @param int            $mode    a valid tableInfo mode
+     * @return array  an associative array with the information requested
+     *                or an error object if something is wrong
+     * @access public
+     * @internal
+     * @see DB_common::tableInfo()
+     */
     function tableInfo($result, $mode = null)
     {
-        $count = 0;
-        $res   = array();
-        /*
-         * depending on $mode, metadata returns the following values:
-         *
-         * - mode is false (default):
-         * $res[]:
-         *   [0]["table"]       table name
-         *   [0]["name"]        field name
-         *   [0]["type"]        field type
-         *   [0]["len"]         field length
-         *   [0]["nullable"]    field can be null (boolean)
-         *   [0]["format"]      field precision if NUMBER
-         *   [0]["default"]     field default value
-         *
-         * - mode is DB_TABLEINFO_ORDER
-         * $res[]:
-         *   ["num_fields"]     number of fields
-         *   [0]["table"]       table name
-         *   [0]["name"]        field name
-         *   [0]["type"]        field type
-         *   [0]["len"]         field length
-         *   [0]["nullable"]    field can be null (boolean)
-         *   [0]["format"]      field precision if NUMBER
-         *   [0]["default"]     field default value
-         *   ['order'][field name] index of field named "field name"
-         *   The last one is used, if you have a field name, but no index.
-         *   Test:  if (isset($result['order']['myfield'])) { ...
-         *
-         * - mode is DB_TABLEINFO_ORDERTABLE
-         *    the same as above. but additionally
-         *   ["ordertable"][table name][field name] index of field
-         *      named "field name"
-         *
-         *      this is, because if you have fields from different
-         *      tables with the same field name * they override each
-         *      other with DB_TABLEINFO_ORDER
-         *
-         *      you can combine DB_TABLEINFO_ORDER and
-         *      DB_TABLEINFO_ORDERTABLE with DB_TABLEINFO_ORDER |
-         *      DB_TABLEINFO_ORDERTABLE * or with DB_TABLEINFO_FULL
-         */
-
-        $port = ($this->options['optimize'] == 'portability') ? true : false;
-        // if $result is a string, we collect info for a table only
         if (is_string($result)) {
+            /*
+             * Probably received a table name.
+             * Create a result resource identifier.
+             */
             $result = strtoupper($result);
-            $q_fields = "select column_name, data_type, data_length, data_precision,
-                         nullable, data_default from user_tab_columns
-                         where table_name='$result' order by column_id";
+            $q_fields = 'SELECT column_name, data_type, data_length, '
+                        . 'nullable '
+                        . 'FROM user_tab_columns '
+                        . "WHERE table_name='$result' ORDER BY column_id";
+
+            $this->last_query = $q_fields;
+
             if (!$stmt = @OCIParse($this->connection, $q_fields)) {
-                return $this->oci8RaiseError();
+                return $this->oci8RaiseError(DB_ERROR_NEED_MORE_DATA);
             }
             if (!@OCIExecute($stmt, OCI_DEFAULT)) {
                 return $this->oci8RaiseError($stmt);
             }
-            while (OCIFetch($stmt)) {
-                $res[$count]['table']       = ($port) ? strtolower($result) : $result;
-                $val = @OCIResult($stmt, 1);
-                $res[$count]['name']        = ($port) ? strtolower($val) : $val;
-                $val = @OCIResult($stmt, 2);
-                $res[$count]['type']        = ($port) ? strtolower($val) : $val;
-                $res[$count]['len']         = @OCIResult($stmt, 3);
-                $res[$count]['format']      = @OCIResult($stmt, 4);
-                $res[$count]['nullable']    = (@OCIResult($stmt, 5) == 'Y') ? true : false;
-                $res[$count]['default']     = @OCIResult($stmt, 6);
+
+            $i = 0;
+            while (@OCIFetch($stmt)) {
+                if ($this->options['optimize'] == 'portability') {
+                    $res[$i]['table'] = strtolower($result);
+                    $res[$i]['name']  = strtolower(@OCIResult($stmt, 1));
+                } else {
+                    $res[$i]['table'] = $result;
+                    $res[$i]['name']  = @OCIResult($stmt, 1);
+                }
+                $res[$i]['type']  = @OCIResult($stmt, 2);
+                $res[$i]['len']   = @OCIResult($stmt, 3);
+                $res[$i]['flags'] = (@OCIResult($stmt, 5) == 'N') ? 'not_null' : '';
+
                 if ($mode & DB_TABLEINFO_ORDER) {
-                    $res['order'][$res[$count]['name']] = $count;
+                    $res['order'][$res[$i]['name']] = $i;
                 }
                 if ($mode & DB_TABLEINFO_ORDERTABLE) {
-                    $res['ordertable'][$res[$count]['table']][$res[$count]['name']] = $count;
+                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
                 }
-                $count++;
+                $i++;
             }
-            $res['num_fields'] = $count;
+
+            $res['num_fields'] = $i;
             @OCIFreeStatement($stmt);
-        } else { // else we want information about a resultset
+
+        } else {
+            if (isset($result->result)) {
+                /*
+                 * Probably received a result object.
+                 * Extract the result resource identifier.
+                 */
+                $result = $result->result;
+            } else {
+                /*
+                 * ELSE, probably received a result resource identifier.
+                 * Depricated.  Here for compatibility only.
+                 */
+            }
+
             if ($result === $this->last_stmt) {
                 $count = @OCINumCols($result);
-                for ($i=0; $i<$count; $i++) {
-                    $name = @OCIColumnName($result, $i+1);
-                    $res[$i]['name']  = ($port) ? strtolower($name) : $name;
-                    $val = @OCIColumnName($result, $i+1);
-                    $res[$i]['type']  = ($port) ? strtolower($val) : $val;
-                    $res[$i]['len']   = @OCIColumnSize($result, $i+1);
 
-                    $q_fields = "select table_name, data_precision, nullable, data_default from user_tab_columns where column_name='$name'";
-                    if (!$stmt = @OCIParse($this->connection, $q_fields)) {
-                        return $this->oci8RaiseError();
+                for ($i=0; $i<$count; $i++) {
+                    $res[$i]['table'] = '';
+                    if ($this->options['optimize'] == 'portability') {
+                        $res[$i]['name'] = strtolower(@OCIColumnName($result, $i+1));
+                    } else {
+                        $res[$i]['name'] = @OCIColumnName($result, $i+1);
                     }
-                    if (!@OCIExecute($stmt, OCI_DEFAULT)) {
-                        return $this->oci8RaiseError($stmt);
-                    }
-                    OCIFetch($stmt);
-                    $val = OCIResult($stmt, 1);
-                    $res[$i]['table']       = ($port) ? strtolower($val) : $val;
-                    $res[$i]['format']      = OCIResult($stmt, 2);
-                    $res[$i]['nullable']    = (OCIResult($stmt, 3) == 'Y') ? true : false;
-                    $res[$i]['default']     = OCIResult($stmt, 4);
-                    OCIFreeStatement($stmt);
+                    $res[$i]['type']  = @OCIColumnType($result, $i+1);
+                    $res[$i]['len']   = @OCIColumnSize($result, $i+1);
+                    $res[$i]['flags'] = '';
 
                     if ($mode & DB_TABLEINFO_ORDER) {
                         $res['order'][$res[$i]['name']] = $i;
@@ -857,6 +846,7 @@ class DB_oci8 extends DB_common
                         $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
                     }
                 }
+
                 $res['num_fields'] = $count;
 
             } else {
