@@ -437,7 +437,7 @@ class DB_odbc extends DB_common
     {
         $seqname = $this->getSequenceName($seq_name);
         return $this->query("CREATE TABLE ${seqname} ".
-                            '(id bigint NOT NULL,'.
+                            '(id integer NOT NULL,'.
                             ' PRIMARY KEY(id))');
     }
 
