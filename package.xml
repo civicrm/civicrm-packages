@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.46 2004-01-29 03:41:30 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.47 2004-01-31 01:29:20 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -58,32 +58,46 @@ also avaible from a separate package).
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.0RC2</version>
+    <version>1.6.0RC3</version>
     <state>beta</state>
-    <date>2004-01-27</date>
+    <date>2004-01-30</date>
     <notes>
 =============
-NEW FEATURES:
+GENERAL:
 
-- An **experimental** driver for mysql4 has been
-added.  (nicos, Roman, et al)
+Loads of small code optimizations implemented, many of
+which were found using Zend Studio's Code Analyzer.
+
+Since most DBMS's need 1/0 for boolean support, use
+1/0 in common.php and only put quoteSimple() methods
+in the few drivers that use true booleans or other
+formats (dbase, fbase, pgsql).
+
 
 =============
 BUGS FIXED:
 
-- ibase:  Add error mapping for 'no permission for...'
+- odbc:
+Fix connect() so uses 'database' from DSN instead of
+having to use 'hostspec' as a workaround.  Correct
+DSN syntax is: odbc(db2)://user:password@/database
 
-- ifx:    Use NEXT for fetch_row() instead of null.  Bug 598.
+- pgsql:
+Refine DB_ERROR_NOSUCHTABLE error_regexp.
 
-- sybase: Use false for password when password is empty in
-order to workaround a PHP bug.  Bug 631.
+- sqlite:
+Make freeResult() do what it says it does.
 
-- dbase, ifx, mssql, mysql, oci8, sqlite, sybase:
-Changed $str to $in for boolean test in smartQuote().
+- ibase, msql, odbc:
+quoteSmart() now uses 1/0 for booleans.
 
-- fbsql, ibase:
-Use getSequenceName() in createSequence(), nextID() and
-dropSequence() for uniformity between drivers.
+- ibase, msql, odbc:
+getSpecialQuery() doesn't return anything in these
+drivers. Put one in common.php that raises
+DB_ERROR_UNSUPPORTED.
+
+- mysql, mysql4:
+Removed unused argument "$subject" from modifyQuery().
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
