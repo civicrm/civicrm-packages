@@ -623,9 +623,9 @@ class DB_common extends PEAR
             $type = $this->prepare_types[$stmt][$i];
             if ($type == DB_PARAM_OPAQUE) {
                 if (is_array($data)) {
-                    $fp = fopen($data[$i], 'r');
+                    $fp = fopen($data[$i], 'rb');
                 } else {
-                    $fp = fopen($data, 'r');
+                    $fp = fopen($data, 'rb');
                 }
 
                 $pdata = '';
