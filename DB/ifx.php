@@ -73,6 +73,7 @@ class DB_ifx extends DB_common
             '-310'    => DB_ERROR_ALREADY_EXISTS,
             '-329'    => DB_ERROR_NODBSELECTED,
             '-346'    => DB_ERROR_CONSTRAINT,
+            '-554'    => DB_ERROR_SYNTAX,
             '-691'    => DB_ERROR_CONSTRAINT,
             '-1204'   => DB_ERROR_INVALID_DATE,
             '-1205'   => DB_ERROR_INVALID_DATE,
