@@ -26,10 +26,16 @@ require_once 'DB/common.php';
 
 class DB_ibase extends DB_common
 {
+
+    // {{{ properties
+
     var $connection;
     var $phptype, $dbsyntax;
     var $autocommit = 1;
     var $manip_query = array();
+
+    // }}}
+    // {{{ constructor
 
     function DB_ibase()
     {
@@ -69,6 +75,9 @@ class DB_ibase extends DB_common
             -924 => DB_ERROR_CONNECT_FAILED
         );
     }
+
+    // }}}
+    // {{{ connect()
 
     function connect($dsninfo, $persistent = false)
     {
@@ -112,12 +121,18 @@ class DB_ibase extends DB_common
         return DB_OK;
     }
 
+    // }}}
+    // {{{ disconnect()
+
     function disconnect()
     {
         $ret = @ibase_close($this->connection);
         $this->connection = null;
         return $ret;
     }
+
+    // }}}
+    // {{{ simpleQuery()
 
     function simpleQuery($query)
     {
@@ -136,6 +151,7 @@ class DB_ibase extends DB_common
         return DB::isManip($query) ? DB_OK : $result;
     }
 
+    // }}}
     // {{{ modifyLimitQuery()
 
     /**
@@ -182,6 +198,7 @@ class DB_ibase extends DB_common
     }
 
     // }}}
+    // {{{ fetchInto()
 
     function fetchInto($result, &$ar, $fetchmode, $rownum = null)
     {
@@ -206,6 +223,9 @@ class DB_ibase extends DB_common
         return DB_OK;
     }
 
+    // }}}
+    // {{{ freeResult()
+
     function freeResult($result)
     {
         if (is_resource($result)) {
@@ -219,11 +239,17 @@ class DB_ibase extends DB_common
         return true;
     }
 
+    // }}}
+    // {{{ freeQuery()
+
     function freeQuery($query)
     {
         ibase_free_query($query);
         return true;
     }
+
+    // }}}
+    // {{{ numCols()
 
     function numCols($result)
     {
@@ -234,6 +260,9 @@ class DB_ibase extends DB_common
         return $cols;
     }
 
+    // }}}
+    // {{{ prepare()
+
     function prepare($query)
     {
         $this->last_query = $query;
@@ -242,6 +271,9 @@ class DB_ibase extends DB_common
         $this->manip_query[(int)$stmt] = DB::isManip($query);
         return $stmt;
     }
+
+    // }}}
+    // {{{ execute()
 
     function execute($stmt, $data = false)
     {
@@ -255,27 +287,40 @@ class DB_ibase extends DB_common
         return DB::isManip($this->manip_query[(int)$stmt]) ? DB_OK : new DB_result($this, $result);
     }
 
+    // }}}
+    // {{{ autoCommit()
+
     function autoCommit($onoff = false)
     {
         $this->autocommit = $onoff ? 1 : 0;
         return DB_OK;
     }
 
+    // }}}
+    // {{{ commit()
+
     function commit()
     {
         return ibase_commit($this->connection);
     }
+
+    // }}}
+    // {{{ rollback()
 
     function rollback($trans_number)
     {
         return ibase_rollback($this->connection, $trans_number);
     }
 
+    // }}}
+    // {{{ transactionInit()
+
     function transactionInit($trans_args = 0)
     {
         return $trans_args ? ibase_trans($trans_args, $this->connection) : ibase_trans();
     }
 
+    // }}}
     // {{{ nextId()
     /**
      * Get the next value in a sequence.

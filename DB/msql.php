@@ -26,10 +26,15 @@ require_once 'DB/common.php';
 
 class DB_msql extends DB_common
 {
+    // {{{ properties
+
     var $connection;
     var $phptype, $dbsyntax;
     var $prepare_tokens = array();
     var $prepare_types = array();
+
+    // }}}
+    // {{{ constructor
 
     function DB_msql()
     {
@@ -43,6 +48,9 @@ class DB_msql extends DB_common
             'limit' => 'emulate'
         );
     }
+
+    // }}}
+    // {{{ connect()
 
     function connect($dsninfo, $persistent = false)
     {
@@ -73,12 +81,18 @@ class DB_msql extends DB_common
         return DB_OK;
     }
 
+    // }}}
+    // {{{ disconnect()
+
     function disconnect()
     {
         $ret = @msql_close($this->connection);
         $this->connection = null;
         return $ret;
     }
+
+    // }}}
+    // {{{ simpleQuery()
 
     function simpleQuery($query)
     {
@@ -93,6 +107,8 @@ class DB_msql extends DB_common
         return DB::isManip($query) ? DB_OK : $result;
     }
 
+
+    // }}}
     // {{{ nextResult()
 
     /**
@@ -110,6 +126,7 @@ class DB_msql extends DB_common
     }
 
     // }}}
+    // {{{ fetchRow()
 
     function fetchRow($result, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
     {
@@ -122,6 +139,9 @@ class DB_msql extends DB_common
         }
         return $arr;
     }
+
+    // }}}
+    // {{{ fetchInto()
 
     function fetchInto($result, &$ar, $fetchmode, $rownum=null)
     {
@@ -145,6 +165,9 @@ class DB_msql extends DB_common
         return DB_OK;
     }
 
+    // }}}
+    // {{{ freeResult()
+
     function freeResult($result)
     {
         if (is_resource($result)) {
@@ -158,6 +181,9 @@ class DB_msql extends DB_common
         return true;
     }
 
+    // }}}
+    // {{{ numCols()
+
     function numCols($result)
     {
         $cols = @msql_num_fields($result);
@@ -167,6 +193,9 @@ class DB_msql extends DB_common
         return $cols;
     }
 
+    // }}}
+    // {{{ numRows()
+
     function numRows($result)
     {
         $rows = @msql_num_rows($result);
@@ -175,6 +204,9 @@ class DB_msql extends DB_common
         }
         return $rows;
     }
+
+    // }}}
+    // {{{ affected()
 
     /**
      * Gets the number of rows affected by a query.
@@ -187,6 +219,7 @@ class DB_msql extends DB_common
         return @msql_affected_rows($this->connection);
     }
 
+    // }}}
     // {{{ getSpecialQuery()
 
     /**

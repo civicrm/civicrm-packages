@@ -653,6 +653,7 @@ class DB_oci8 extends DB_common
     }
 
     // }}}
+    // {{{ tableInfo()
 
     function tableInfo($result, $mode = null)
     {
@@ -766,6 +767,9 @@ class DB_oci8 extends DB_common
         }
         return $res;
     }
+
+    // }}}
+
 }
 // Local variables:
 // tab-width: 4

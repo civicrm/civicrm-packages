@@ -35,6 +35,8 @@ require_once "DB.php";
  */
 class DB_storage extends PEAR
 {
+    // {{{ properties
+
     /** the name of the table (or view, if the backend database supports
         updates in views) we hold data from */
     var $_table = null;
@@ -65,6 +67,9 @@ class DB_storage extends PEAR
         valid, false if not */
     var $_validator = null;
 
+    // }}}
+    // {{{ constructor
+
     /**
      * Constructor
      *
@@ -90,6 +95,9 @@ class DB_storage extends PEAR
         $this->_readonly = false;
         $this->_validator = $validator;
     }
+
+    // }}}
+    // {{{ _makeWhere()
 
     /**
      * Utility method to build a "WHERE" clause to locate ourselves in
@@ -137,6 +145,9 @@ class DB_storage extends PEAR
         return $whereclause;
     }
 
+    // }}}
+    // {{{ setup()
+
     /**
      * Method used to initialize a DB_storage object from the
      * configured table.
@@ -169,6 +180,9 @@ class DB_storage extends PEAR
         return DB_OK;
     }
 
+    // }}}
+    // {{{ insert()
+
     /**
      * Create a new (empty) row in the configured table for this
      * object.
@@ -196,6 +210,9 @@ class DB_storage extends PEAR
         }
         $this->setup($newpk);
     }
+
+    // }}}
+    // {{{ toString()
 
     /**
      * Output a simple description of this DB_storage object.
@@ -242,6 +259,9 @@ class DB_storage extends PEAR
         return $info;
     }
 
+    // }}}
+    // {{{ dump()
+
     /**
      * Dump the contents of this object to "standard output".
      */
@@ -254,6 +274,9 @@ class DB_storage extends PEAR
             print "<BR>\n";
         }
     }
+
+    // }}}
+    // {{{ &create()
 
     /**
      * Static method used to create new DB storage objects.
@@ -272,6 +295,9 @@ class DB_storage extends PEAR
         }
         return $obj;
     }
+
+    // }}}
+    // {{{ loadFromQuery()
 
     /**
      * Loads data into this object from the given query.  If this
@@ -322,6 +348,9 @@ class DB_storage extends PEAR
     }
 */
 
+    // }}}
+    // {{{ set()
+
     /**
      * Modify an attriute value.
      */
@@ -359,6 +388,9 @@ class DB_storage extends PEAR
                                  null, true);
     }
 
+    // }}}
+    // {{{ &get()
+
     /**
      * Fetch an attribute value.
      *
@@ -376,6 +408,9 @@ class DB_storage extends PEAR
         return null;
     }
 
+    // }}}
+    // {{{ _DB_storage()
+
     /**
      * Destructor, calls DB_storage::store() if there are changes
      * that are to be kept.
@@ -389,6 +424,9 @@ class DB_storage extends PEAR
         $this->_changes = array();
         $this->_table = null;
     }
+
+    // }}}
+    // {{{ store()
 
     /**
      * Stores changes to this object in the database.
@@ -415,6 +453,9 @@ class DB_storage extends PEAR
         return DB_OK;
     }
 
+    // }}}
+    // {{{ remove()
+
     /**
      * Remove the row represented by this object from the database.
      *
@@ -439,6 +480,8 @@ class DB_storage extends PEAR
         $this->_changes = array();
         return DB_OK;
     }
+
+    // }}}
 }
 
 ?>

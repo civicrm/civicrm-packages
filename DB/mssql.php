@@ -26,6 +26,8 @@ require_once 'DB/common.php';
 
 class DB_mssql extends DB_common
 {
+    // {{{ properties
+
     var $connection;
     var $phptype, $dbsyntax;
     var $prepare_tokens = array();
@@ -33,6 +35,9 @@ class DB_mssql extends DB_common
     var $transaction_opcount = 0;
     var $autocommit = true;
     var $_db = null;
+
+    // }}}
+    // {{{ constructor
 
     function DB_mssql()
     {
@@ -50,6 +55,9 @@ class DB_mssql extends DB_common
 
         );
     }
+
+    // }}}
+    // {{{ connect()
 
     function connect($dsninfo, $persistent = false)
     {
@@ -87,12 +95,18 @@ class DB_mssql extends DB_common
         return DB_OK;
     }
 
+    // }}}
+    // {{{ disconnect()
+
     function disconnect()
     {
         $ret = @mssql_close($this->connection);
         $this->connection = null;
         return $ret;
     }
+
+    // }}}
+    // {{{ simpleQuery()
 
     function simpleQuery($query)
     {
@@ -120,6 +134,8 @@ class DB_mssql extends DB_common
         return $ismanip ? DB_OK : $result;
     }
 
+    // }}}
+
     // {{{ nextResult()
 
     /**
@@ -137,6 +153,7 @@ class DB_mssql extends DB_common
     }
 
     // }}}
+    // {{{ &fetchRow()
 
     function &fetchRow($result, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
     {
@@ -149,6 +166,9 @@ class DB_mssql extends DB_common
         }
         return $arr;
     }
+
+    // }}}
+    // {{{ fetchInto()
 
     function fetchInto($result, &$ar, $fetchmode, $rownum=null)
     {
@@ -174,6 +194,9 @@ class DB_mssql extends DB_common
         return DB_OK;
     }
 
+    // }}}
+    // {{{ freeResult()
+
     function freeResult($result)
     {
         if (is_resource($result)) {
@@ -187,6 +210,9 @@ class DB_mssql extends DB_common
         return true;
     }
 
+    // }}}
+    // {{{ numCols()
+
     function numCols($result)
     {
         $cols = @mssql_num_fields($result);
@@ -196,6 +222,9 @@ class DB_mssql extends DB_common
         return $cols;
     }
 
+    // }}}
+    // {{{ numRows()
+
     function numRows($result)
     {
         $rows = @mssql_num_rows($result);
@@ -204,6 +233,9 @@ class DB_mssql extends DB_common
         }
         return $rows;
     }
+
+    // }}}
+    // {{{ autoCommit()
 
     /**
      * Enable/disable automatic commits
@@ -286,6 +318,8 @@ class DB_mssql extends DB_common
         }
         return $result;
     }
+
+    // }}}
     // {{{ nextId()
 
     /**
@@ -351,6 +385,7 @@ class DB_mssql extends DB_common
         return $this->query("DROP TABLE $seqname");
     }
     // }}}
+    // {{{ errorCode()
 
     function errorCode()
     {
@@ -364,6 +399,9 @@ class DB_mssql extends DB_common
         return $error_code;
     }
 
+    // }}}
+    // {{{ mssqlRaiseError()
+
     function mssqlRaiseError($code = null)
     {
         if ($code !== null) {
@@ -374,6 +412,9 @@ class DB_mssql extends DB_common
         }
         return $this->raiseError($code, null, null, null, mssql_get_last_message());
     }
+
+    // }}}
+    // {{{ tableInfo()
 
   /**
 
@@ -488,6 +529,7 @@ class DB_mssql extends DB_common
         return $res;
     }
 
+    // }}}
     // {{{ getSpecialQuery()
 
     /**

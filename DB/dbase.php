@@ -62,6 +62,9 @@ class DB_dbase extends DB_common
         $this->errorcode_map = array();
     }
 
+    // }}}
+    // {{{ connect()
+
     function connect($dsninfo, $persistent = false)
     {
         if (!DB::assertExtension('dbase')) {
@@ -80,6 +83,9 @@ class DB_dbase extends DB_common
         return DB_OK;
     }
 
+    // }}}
+    // {{{ disconnect()
+
     function disconnect()
     {
         $ret = dbase_close($this->connection);
@@ -87,12 +93,18 @@ class DB_dbase extends DB_common
         return $ret;
     }
 
+    // }}}
+    // {{{ &query()
+
     function &query($query = null)
     {
         // emulate result resources
         $this->res_row[$this->result] = 0;
         return new DB_result($this, $this->result++);
     }
+
+    // }}}
+    // {{{ fetchInto()
 
     function fetchInto($res, &$row, $fetchmode, $rownum = null)
     {
@@ -110,14 +122,23 @@ class DB_dbase extends DB_common
         return DB_OK;
     }
 
+    // }}}
+    // {{{ numCols()
+
     function numCols($foo)
     {
         return dbase_numfields($this->connection);
     }
 
+    // }}}
+    // {{{ numRows()
+
     function numRows($foo)
     {
         return dbase_numrecords($this->connection);
     }
+
+    // }}}
+
 }
 ?>

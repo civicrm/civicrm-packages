@@ -34,10 +34,15 @@ require_once 'DB/common.php';
 
 class DB_ifx extends DB_common
 {
+    // {{{ properties
+
     var $connection;
     var $affected = 0;
     var $dsn = array();
     var $fetchmode = DB_FETCHMODE_ORDERED; /* Default fetch mode */
+
+    // }}}
+    // {{{ constructor
 
     function DB_ifx()
     {
@@ -63,6 +68,8 @@ class DB_ifx extends DB_common
        );
     }
 
+    // }}}
+    // {{{ connect()
     /**
      * Connect to a database and log in as the specified user.
      *
@@ -92,6 +99,8 @@ class DB_ifx extends DB_common
         return DB_OK;
     }
 
+    // }}}
+    // {{{ disconnect()
     /**
      * Log out and disconnect from the database.
      *
@@ -104,6 +113,8 @@ class DB_ifx extends DB_common
         return $ret;
     }
 
+    // }}}
+    // {{{ simpleQuery()
     /**
      * Send a query to Informix and return the results as a
      * Informix resource identifier.
@@ -139,6 +150,7 @@ class DB_ifx extends DB_common
         return DB_OK;
     }
 
+    // }}}
     // {{{ nextResult()
 
     /**
@@ -156,7 +168,7 @@ class DB_ifx extends DB_common
     }
 
     // }}}
-
+    // {{{ affectedRows()
     /**
      * Gets the number of rows affected by the last query.
      * if the last query was a select, returns an _estimate_ value.
@@ -168,6 +180,8 @@ class DB_ifx extends DB_common
         return $this->affected;
     }
 
+    // }}}
+    // {{{ fetchRow()
     /**
      * Fetch and return a row of data (it uses fetchInto for that)
      * @param   $result             Informix result identifier
@@ -188,6 +202,8 @@ class DB_ifx extends DB_common
         return $arr;
     }
 
+    // }}}
+    // {{{ fetchInto()
     /**
      * Fetch a row and return as array.
      *
@@ -219,11 +235,16 @@ class DB_ifx extends DB_common
         return DB_OK;
     }
 
+    // }}}
+    // {{{ numRows()
+
     function numRows($result)
     {
         return $this->raiseError(DB_ERROR_NOT_CAPABLE);
     }
 
+    // }}}
+    // {{{ numCols()
     /**
      * Get the number of columns in a result set.
      *
@@ -239,6 +260,8 @@ class DB_ifx extends DB_common
         return $cols;
     }
 
+    // }}}
+    // {{{ freeResult()
     /**
      * Free the internal resources associated with $result.
      *
@@ -262,6 +285,9 @@ class DB_ifx extends DB_common
         return true;
     }
 
+    // }}}
+    // {{{ ifxraiseError()
+
     function ifxraiseError($errno = null)
     {
         if ($errno === null) {
@@ -272,6 +298,8 @@ class DB_ifx extends DB_common
                             $this->errorNative());
     }
 
+    // }}}
+    // {{{ errorCode()
     /**
      * Map native error codes to DB's portable ones.  Requires that
      * the DB implementation's constructor fills in the $errorcode_map
@@ -292,6 +320,8 @@ class DB_ifx extends DB_common
         return DB_ERROR;
     }
 
+    // }}}
+    // {{{ errorNative()
     /**
      * Get the native error message of the last error (if any) that
      * occured on the current connection.
@@ -303,6 +333,7 @@ class DB_ifx extends DB_common
         return ifx_error() . ' ' . ifx_errormsg();
     }
 
+    // }}}
     // {{{ getSpecialQuery()
 
     /**
