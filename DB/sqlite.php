@@ -434,7 +434,10 @@ class DB_sqlite extends DB_common {
         static $error_regexps;
         if (empty($error_regexps)) {
             $error_regexps = array(
-                '/^no such table:/' => DB_ERROR_NOSUCHTABLE
+                '/^no such table:/' => DB_ERROR_NOSUCHTABLE,
+                '/^table .* already exists$/' => DB_ERROR_ALREADY_EXISTS,
+                '/^no such column:/' => DB_ERROR_NOSUCHFIELD,
+                '/^near ".*": syntax error$/' => DB_ERROR_SYNTAX
              );
         }
         foreach ($error_regexps as $regexp => $code) {
@@ -661,9 +664,9 @@ class DB_sqlite extends DB_common {
     * @return object  a PEAR error object
     */
     function sqliteRaiseError($errno = null) {
- 
-        $native = $this->errorNative();
+
         if ($errno === null) {
+            $native = $this->errorNative();
             $errno = $this->errorCode($native);
         }
         return $this->raiseError($errno, null, null, null,
