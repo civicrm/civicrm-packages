@@ -116,6 +116,23 @@ class DB_dbase extends DB_common
      */
     var $result = 0;
 
+    /**
+     * Maps dbase data type id's to human readable strings
+     *
+     * The human readable values are based on the output of PHP's
+     * dbase_get_header_info() function.
+     *
+     * @var array
+     * @since Property available since Release 1.7.0
+     */
+    var $types = array(
+        'C' => 'character',
+        'D' => 'date',
+        'L' => 'boolean',
+        'M' => 'memo',
+        'N' => 'number',
+    );
+
 
     // }}}
     // {{{ constructor
@@ -306,7 +323,112 @@ class DB_dbase extends DB_common
     }
 
     // }}}
+    // {{{ tableInfo()
 
+    /**
+     * Returns information about the current database
+     *
+     * @param mixed $result  THIS IS UNUSED IN DBASE.  The current database
+     *                       is examined regardless of what is provided here.
+     * @param int   $mode    a valid tableInfo mode
+     *
+     * @return array  an associative array with the information requested
+     *                or an error object if something is wrong
+     *
+     * @see DB_common::tableInfo()
+     * @since Method available since Release 1.7.0
+     */
+    function tableInfo($result = null, $mode = null)
+    {
+        $ini = ini_get('track_errors');
+        $php_errormsg = '';
+        if (!$ini) {
+            ini_set('track_errors', 1);
+        }
+
+        if (version_compare(phpversion(), '5.0.0', '>=')) {
+            $id = @dbase_get_header_info($this->connection);
+            if (!$ini) {
+                ini_set('track_errors', 0);
+            }
+            if (!$id && $php_errormsg) {
+                return $this->raiseError(DB_ERROR,
+                                         null, null, null,
+                                         $php_errormsg);
+            }
+        } else {
+            /*
+             * This segment for PHP 4 is loosely based on code by
+             * Hadi Rusiah <deegos@yahoo.com> in the comments on
+             * the dBase reference page in the PHP manual.
+             */
+            $db = @fopen($this->dsn['database'], 'r');
+            if (!$ini) {
+                ini_set('track_errors', 0);
+            }
+            if (!$db) {
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                         null, null, null,
+                                         $php_errormsg);
+            }
+
+            $id = array();
+            $i  = 0;
+
+            $line = fread($db, 32);
+            while (!feof($db)) {
+                $line = fread($db, 32);
+                if (substr($line, 0, 1) == chr(13)) {
+                    break;
+                } else {
+                    $pos = strpos(substr($line, 0, 10), chr(0));
+                    $pos = ($pos == 0 ? 10 : $pos);
+                    $id[$i] = array(
+                        'name'   => substr($line, 0, $pos),
+                        'type'   => $this->types[substr($line, 11, 1)],
+                        'length' => ord(substr($line, 16, 1)),
+                        'precision' => ord(substr($line, 17, 1)),
+                    );
+                }
+                $i++;
+            }
+
+            fclose($db);
+        }
+
+        if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+            $case_func = 'strtolower';
+        } else {
+            $case_func = 'strval';
+        }
+
+        $res   = array();
+        $count = count($id);
+
+        if ($mode) {
+            $res['num_fields'] = $count;
+        }
+
+        for ($i = 0; $i < $count; $i++) {
+            $res[$i] = array(
+                'table' => $result,
+                'name'  => $case_func($id[$i]['name']),
+                'type'  => $id[$i]['type'],
+                'len'   => $id[$i]['length'],
+                'flags' => ''
+            );
+            if ($mode & DB_TABLEINFO_ORDER) {
+                $res['order'][$res[$i]['name']] = $i;
+            }
+            if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
+            }
+        }
+
+        return $res;
+    }
+
+    // }}}
 }
 
 /*
