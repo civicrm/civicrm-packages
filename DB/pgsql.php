@@ -601,7 +601,7 @@ class DB_pgsql extends DB_common
      * @param int $num_field the field number
      *
      * @return string The flags of the field ("not_null", "default_xx", "primary_key",
-     *                "unique" and "multiple_key" are supported)
+     *                "unique_key" and "multiple_key" are supported)
      * @access private
      */
     function _pgFieldFlags($resource, $num_field, $table_name)
