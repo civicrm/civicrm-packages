@@ -615,7 +615,7 @@ class DB_msql extends DB_common
                 '/^Invalid time format/i'
                     => DB_ERROR_INVALID,
                 '/^Literal value for .* is wrong type$/i'
-                    => DB_ERROR_INVALID,
+                    => DB_ERROR_INVALID_NUMBER,
                 '/^No Database Selected/i'
                     => DB_ERROR_NODBSELECTED,
                 '/^No value specified for field/i'

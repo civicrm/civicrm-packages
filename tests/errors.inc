@@ -303,9 +303,6 @@ switch ($dbh->phptype) {
     case 'sqlite':
         check_error($res, DB_ERROR_INVALID_NUMBER, false);
         break;
-    case 'msql':
-        check_error($res, DB_ERROR_INVALID);
-        break;
     default:
         check_error($res, DB_ERROR_INVALID_NUMBER);
 }
@@ -325,9 +322,6 @@ switch ($dbh->phptype) {
     case 'sqlite':
         check_error($res, DB_ERROR_INVALID_NUMBER, false);
         break;
-    case 'msql':
-        check_error($res, DB_ERROR_INVALID);
-        break;
     default:
         check_error($res, DB_ERROR_INVALID_NUMBER);
 }
@@ -346,9 +340,6 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'pgsql:pgsql':
     case 'sqlite:sqlite':
         check_error($res, DB_ERROR_INVALID_NUMBER, false);
-        break;
-    case 'msql:msql':
-        check_error($res, DB_ERROR_INVALID);
         break;
     default:
         check_error($res, DB_ERROR_INVALID_NUMBER);
