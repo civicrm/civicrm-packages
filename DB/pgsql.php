@@ -235,11 +235,11 @@ class DB_pgsql extends DB_common
         static $error_regexps;
         if (empty($error_regexps)) {
             $error_regexps = array(
-                '/(Table does not exist\.|Relation \'.*\' does not exist|sequence does not exist|class ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
-                '/Relation \'.*\' already exists|Cannot insert a duplicate key into (a )?unique index.*/'      => DB_ERROR_ALREADY_EXISTS,
+                '/(Table does not exist\.|Relation [\"\'].*[\"\'] does not exist|sequence does not exist|class ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
+                '/Relation [\"\'].*[\"\'] already exists|Cannot insert a duplicate key into (a )?unique index.*/'      => DB_ERROR_ALREADY_EXISTS,
                 '/divide by zero$/'                     => DB_ERROR_DIVZERO,
                 '/pg_atoi: error in .*: can\'t parse /' => DB_ERROR_INVALID_NUMBER,
-                '/ttribute \'.*\' not found$|Relation \'.*\' does not have attribute \'.*\'/' => DB_ERROR_NOSUCHFIELD,
+                '/ttribute [\"\'].*[\"\'] not found$|Relation [\"\'].*[\"\'] does not have attribute [\"\'].*[\"\']/' => DB_ERROR_NOSUCHFIELD,
                 '/parser: parse error at or near \"/'   => DB_ERROR_SYNTAX,
                 '/referential integrity violation/'     => DB_ERROR_CONSTRAINT
             );
