@@ -668,7 +668,7 @@ class DB_mysql extends DB_common
     // {{{ quote()
 
     /**
-     * @depricated  Depricated in release 1.6.0
+     * @deprecated  Deprecated in release 1.6.0
      * @internal
      */
     function quote($str) {
@@ -814,7 +814,7 @@ class DB_mysql extends DB_common
             /*
              * Probably received a result resource identifier.
              * Copy it.
-             * Depricated.  Here for compatibility only.
+             * Deprecated.  Here for compatibility only.
              */
             $id = $result;
             $got_string = false;

@@ -327,7 +327,7 @@ class DB_odbc extends DB_common
     // {{{ quote()
 
     /**
-     * @depricated  Depricated in release 1.6.0
+     * @deprecated  Deprecated in release 1.6.0
      * @internal
      */
     function quote($str) {

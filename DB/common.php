@@ -94,7 +94,7 @@ class DB_common extends PEAR
     /**
      * Run-time configuration options.
      *
-     * The 'optimize' option has been depricated.  Use the 'portability'
+     * The 'optimize' option has been deprecated.  Use the 'portability'
      * option instead.
      *
      * @see DB_common::setOption()
@@ -107,7 +107,7 @@ class DB_common extends PEAR
         'seqname_format' => '%s_seq',
         'autofree' => false,
         'portability' => DB_PORTABILITY_NONE,
-        'optimize' => 'performance',  // Depricated.  Use 'portability'.
+        'optimize' => 'performance',  // Deprecated.  Use 'portability'.
     );
 
     /**
@@ -159,7 +159,7 @@ class DB_common extends PEAR
      *
      * @return string quoted string
      *
-     * @depricated  Depricated in release 1.2 or lower
+     * @deprecated  Deprecated in release 1.2 or lower
      * @internal
      */
     function quoteString($string)
@@ -188,7 +188,7 @@ class DB_common extends PEAR
      * @return string The NULL string or the string quotes
      *                in magic_quote_sybase style
      *
-     * @depricated  Depricated in release 1.6.0
+     * @deprecated  Deprecated in release 1.6.0
      * @internal
      */
     function quote($string = null)
@@ -478,7 +478,7 @@ class DB_common extends PEAR
      * <samp>DB_PORTABILITY_NONE</samp>
      * turn off all portability features
      *
-     * This mode gets automatically turned on if the depricated
+     * This mode gets automatically turned on if the deprecated
      * <var>optimize</var> option gets set to <samp>performance</samp>.
      *
      *
@@ -487,7 +487,7 @@ class DB_common extends PEAR
      * <kbd>get*()</kbd>, <kbd>fetch*()</kbd> and <kbd>tableInfo()</kbd>
      *
      * This mode gets automatically turned on in the following databases
-     * if the depricated option <var>optimize</var> gets set to
+     * if the deprecated option <var>optimize</var> gets set to
      * <samp>portability</samp>:
      * + oci8
      *
@@ -505,7 +505,7 @@ class DB_common extends PEAR
      * <samp>WHERE 1=1</samp> to the end of <kbd>DELETE</kbd> queries.
      *
      * This mode gets automatically turned on in the following databases
-     * if the depricated option <var>optimize</var> gets set to
+     * if the deprecated option <var>optimize</var> gets set to
      * <samp>portability</samp>:
      * + fbsql
      * + mysql
@@ -517,7 +517,7 @@ class DB_common extends PEAR
      * enable hack that makes <kbd>numRows()</kbd> work in Oracle
      *
      * This mode gets automatically turned on in the following databases
-     * if the depricated option <var>optimize</var> gets set to
+     * if the deprecated option <var>optimize</var> gets set to
      * <samp>portability</samp>:
      * + oci8
      *
@@ -557,7 +557,7 @@ class DB_common extends PEAR
             $this->options[$option] = $value;
 
             /*
-             * Backwards compatibility check for the depricated 'optimize'
+             * Backwards compatibility check for the deprecated 'optimize'
              * option.  Done here in case settings change after connecting.
              */
             if ($option == 'optimize') {
@@ -1710,7 +1710,7 @@ class DB_common extends PEAR
      *                                string containing the name of a table.
      *                                While this also accepts a query result
      *                                resource identifier, this behavior is
-     *                                depricated.
+     *                                deprecated.
      * @param int  $mode   either unused or one of the tableInfo modes:
      *                     <kbd>DB_TABLEINFO_ORDERTABLE</kbd>,
      *                     <kbd>DB_TABLEINFO_ORDER</kbd> or
