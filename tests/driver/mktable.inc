@@ -45,6 +45,7 @@ $dbh->query("DROP TABLE phptest");
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'debug_die');
 
 switch ($dbh->phptype) {
+    case 'odbc':
     case 'ibase':
         $null = '';
         $chrc = 'VARCHAR(255)';

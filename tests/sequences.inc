@@ -1,3 +1,4 @@
+
 <?php // -*- PHP -*-
 
 function error_handler(&$obj) {
@@ -7,7 +8,9 @@ function error_handler(&$obj) {
 ob_implicit_flush(true);
 
 $drop = $dbh->dropSequence('test');
-if (DB::isError($drop)) {
+if (DB::isError($drop) &&
+    $drop->getMessage() != 'DB Error: no such table')
+{
     print 'Could not drop sequence... ' . $drop->getMessage() . "\n";
     if ($dbh->phptype == 'ibase' &&
         $drop->getMessage() == 'DB Error: insufficient permissions')
