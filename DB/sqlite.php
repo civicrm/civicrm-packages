@@ -70,22 +70,6 @@
 
 require_once 'DB/common.php';
 
-// {{{ constants
-// {{{ fetch modes
-/**
- * This is a special constant that tells DB the user hasn't specified
- * any particular get mode, so the default should be used.
- */
-
-define('DB_FETCHMODE_BOTH', SQLITE_ASSOC | SQLITE_NUM );
-
-/* for compatibility */
-
-define('DB_GETMODE_BOTH', DB_FETCHMODE_BOTH);
-
-// }}}
-// }}}
-
 // {{{ class DB_sqlite
 
 class DB_sqlite extends DB_common {
