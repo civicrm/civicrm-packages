@@ -12,18 +12,17 @@ require_once './include.inc';
 require_once 'DB.php';
 
 $backends = array(
-    "ibase",
-    "msql",
-    "mssql",
-    "mysql",
-    "oci8",
-    "odbc",
-    "pgsql",
-    "sybase"
+    'ibase',
+    'msql',
+    'mssql',
+    'mysql',
+    'oci8',
+    'odbc',
+    'pgsql',
+    'sybase',
 );
 
-reset($backends);
-while (list($i, $name) = each($backends)) {
+foreach ($backends as $name) {
     $obj = DB::factory($name);
 
     print "testing $name: ";
