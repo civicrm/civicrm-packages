@@ -219,6 +219,11 @@ $res = $dbh->query('CREATE');
 check_error($res, DB_ERROR_SYNTAX);
 
 
+print 'Trying to provoke DB_ERROR_VALUE_COUNT_ON_ROW:  ';
+$res = $dbh->query('INSERT INTO phptest (a) VALUES (678, 2)');
+check_error($res, DB_ERROR_VALUE_COUNT_ON_ROW);
+
+
 drop_table($dbh, 'phptest');
 drop_table($dbh, 'b');
 drop_table($dbh, 'a');

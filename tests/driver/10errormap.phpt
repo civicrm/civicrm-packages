@@ -27,3 +27,4 @@ Trying to provoke DB_ERROR_DIVZERO:  matches expected outcome
 Trying to provoke DB_ERROR_INVALID_NUMBER:  matches expected outcome
 Trying to provoke DB_ERROR_NOSUCHFIELD:  matches expected outcome
 Trying to provoke DB_ERROR_SYNTAX:  matches expected outcome
+Trying to provoke DB_ERROR_VALUE_COUNT_ON_ROW:  matches expected outcome
