@@ -213,12 +213,15 @@ class DB_mysql extends DB_common
         }
         $params[] = $dsn['username'] ? $dsn['username'] : null;
         $params[] = $dsn['password'] ? $dsn['password'] : null;
-        if (isset($dsn['new_link']) && !$persistent
-            && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true))
-        {
-            $params[] = true;
-        } else {
-            $params[] = false;
+
+        if (!$persistent) {
+            if (isset($dsn['new_link'])
+                && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true))
+            {
+                $params[] = true;
+            } else {
+                $params[] = false;
+            }
         }
         if (version_compare(phpversion(), '4.3.0', '>=')) {
             $params[] = isset($dsn['client_flags'])
