@@ -289,15 +289,8 @@ class DB_sybase extends DB_common
     /**
      * Fetch a row and insert the data into an existing array.
      *
-     * The array's keys will be converted to lower case if
-     * <var>$options['optimize']</var> is set to <samp>portability</samp>
-     * AND <var>$fetchmode</var> is set to <samp>DB_FETCHMODE_ASSOC</samp>.
-     *
-     * <var>$options['optimize']</var> can be set when instantiating the
-     * DB class via DB::connect(), but can be changed using
-     * DB_common::setOption.
-     *
-     * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
+     * Formating of the array and the data therein are configurable.
+     * See DB_result::fetchInto() for more information.
      *
      * @param resource $result    query result identifier
      * @param array    $arr       (reference) array where data from the row
@@ -306,12 +299,8 @@ class DB_sybase extends DB_common
      * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
-     *               reached, DB error on failure
+     *               reached or on failure
      *
-     * @see DB::connect()
-     * @see DB_common::setOption
-     * @see DB_common::$options
-     * @see DB_common::setFetchMode()
      * @see DB_result::fetchInto()
      * @access private
      */
@@ -334,7 +323,7 @@ class DB_sybase extends DB_common
                     }
                 }
             }
-            if ($this->options['optimize'] == 'portability' && $arr) {
+            if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE && $arr) {
                 $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
@@ -348,6 +337,9 @@ class DB_sybase extends DB_common
             //} else {
                 return null;
             //}
+        }
+        if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
+            $this->_rtrimArrayValues($arr);
         }
         return DB_OK;
     }
@@ -680,12 +672,16 @@ class DB_sybase extends DB_common
                 $res[$i]['name']  = $f->name;
                 $res[$i]['type']  = $f->type;
                 $res[$i]['len']   = $f->max_length;
-
                 if ($res[$i]['table']) {
                     $res[$i]['flags'] = $this->_sybase_field_flags(
                             $res[$i]['table'], $res[$i]['name']);
                 } else {
                     $res[$i]['flags'] = '';
+                }
+
+                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+                    $res[$i]['table'] = strtolower($res[$i]['table']);
+                    $res[$i]['name']  = strtolower($res[$i]['name']);
                 }
             }
 
@@ -706,7 +702,6 @@ class DB_sybase extends DB_common
                 $res[$i]['name']  = $f->name;
                 $res[$i]['type']  = $f->type;
                 $res[$i]['len']   = $f->max_length;
-
                 if ($res[$i]['table']) {
                     $res[$i]['flags'] = $this->_sybase_field_flags(
                             $res[$i]['table'], $res[$i]['name']);
@@ -714,6 +709,10 @@ class DB_sybase extends DB_common
                     $res[$i]['flags'] = '';
                 }
 
+                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+                    $res[$i]['table'] = strtolower($res[$i]['table']);
+                    $res[$i]['name']  = strtolower($res[$i]['name']);
+                }
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }

@@ -268,15 +268,8 @@ class DB_mysql extends DB_common
     /**
      * Fetch a row and insert the data into an existing array.
      *
-     * The array's keys will be converted to lower case if
-     * <var>$options['optimize']</var> is set to <samp>portability</samp>
-     * AND <var>$fetchmode</var> is set to <samp>DB_FETCHMODE_ASSOC</samp>.
-     *
-     * <var>$options['optimize']</var> can be set when instantiating the
-     * DB class via DB::connect(), but can be changed using
-     * DB_common::setOption.
-     *
-     * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
+     * Formating of the array and the data therein are configurable.
+     * See DB_result::fetchInto() for more information.
      *
      * @param resource $result    query result identifier
      * @param array    $arr       (reference) array where data from the row
@@ -285,12 +278,8 @@ class DB_mysql extends DB_common
      * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
-     *               reached, DB error on failure
+     *               reached or on failure
      *
-     * @see DB::connect()
-     * @see DB_common::setOption
-     * @see DB_common::$options
-     * @see DB_common::setFetchMode()
      * @see DB_result::fetchInto()
      * @access private
      */
@@ -303,7 +292,7 @@ class DB_mysql extends DB_common
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $arr = @mysql_fetch_array($result, MYSQL_ASSOC);
-            if ($this->options['optimize'] == 'portability' && $arr) {
+            if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE && $arr) {
                 $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
@@ -320,6 +309,14 @@ class DB_mysql extends DB_common
             }
             return $this->mysqlRaiseError($errno);
             */
+        }
+        if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
+            /*
+             * Even though this DBMS already trims output, we do this because
+             * a field might have intentional whitespace at the end that
+             * gets removed by DB_PORTABILITY_RTRIM under another driver.
+             */
+            $this->_rtrimArrayValues($arr);
         }
         return DB_OK;
     }
@@ -684,7 +681,7 @@ class DB_mysql extends DB_common
 
     function modifyQuery($query, $subject = null)
     {
-        if ($this->options['optimize'] == 'portability') {
+        if ($this->options['portability'] & DB_PORTABILITY_DELETE_COUNT) {
             // "DELETE FROM table" gives 0 affected rows in MySQL.
             // This little hack lets you know how many rows were deleted.
             if (preg_match('/^\s*DELETE\s+FROM\s+(\S+)\s*$/i', $query)) {
@@ -785,6 +782,11 @@ class DB_mysql extends DB_common
                 $res[$i]['type']  = @mysql_field_type  ($id, $i);
                 $res[$i]['len']   = @mysql_field_len   ($id, $i);
                 $res[$i]['flags'] = @mysql_field_flags ($id, $i);
+
+                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+                    $res[$i]['table'] = strtolower($res[$i]['table']);
+                    $res[$i]['name']  = strtolower($res[$i]['name']);
+                }
             }
         } else { // full
             $res['num_fields']= $count;
@@ -795,6 +797,11 @@ class DB_mysql extends DB_common
                 $res[$i]['type']  = @mysql_field_type  ($id, $i);
                 $res[$i]['len']   = @mysql_field_len   ($id, $i);
                 $res[$i]['flags'] = @mysql_field_flags ($id, $i);
+
+                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+                    $res[$i]['table'] = strtolower($res[$i]['table']);
+                    $res[$i]['name']  = strtolower($res[$i]['name']);
+                }
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }

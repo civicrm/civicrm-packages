@@ -10,7 +10,13 @@ if (substr(DRIVER_DSN, 0, 5) == 'mssql') {
 }
 
 require_once 'DB.php';
-$dbh =& DB::connect(DRIVER_DSN, array('optimize' => 'portability'));
+
+$options = array(
+    //'optimize' => 'portability',
+    'portability' => DB_PORTABILITY_ALL,
+);
+
+$dbh =& DB::connect(DRIVER_DSN, $options);
 if (DB::isError($dbh)) {
     die("connect.inc: ".$dbh->toString());
 }

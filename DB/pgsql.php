@@ -267,18 +267,8 @@ class DB_pgsql extends DB_common
     /**
      * Fetch a row and insert the data into an existing array.
      *
-     * The array's keys will be converted to lower case if
-     * <var>$options['optimize']</var> is set to <samp>portability</samp>
-     * AND <var>$fetchmode</var> is set to <samp>DB_FETCHMODE_ASSOC</samp>.
-     * This is implemented even though PostgreSQL already converts
-     * identifiers to lower case because this behavior could change and
-     * to handle queries where quoted identifiers are used.
-     *
-     * <var>$options['optimize']</var> can be set when instantiating the
-     * DB class via DB::connect(), but can be changed using
-     * DB_common::setOption.
-     *
-     * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
+     * Formating of the array and the data therein are configurable.
+     * See DB_result::fetchInto() for more information.
      *
      * @param resource $result    query result identifier
      * @param array    $arr       (reference) array where data from the row
@@ -287,12 +277,8 @@ class DB_pgsql extends DB_common
      * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
-     *               reached, DB error on failure
+     *               reached or on failure
      *
-     * @see DB::connect()
-     * @see DB_common::setOption
-     * @see DB_common::$options
-     * @see DB_common::setFetchMode()
      * @see DB_result::fetchInto()
      * @access private
      */
@@ -304,7 +290,7 @@ class DB_pgsql extends DB_common
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $arr = @pg_fetch_array($result, $rownum, PGSQL_ASSOC);
-            if ($this->options['optimize'] == 'portability' && $arr) {
+            if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE && $arr) {
                 $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
@@ -316,6 +302,9 @@ class DB_pgsql extends DB_common
                 return null;
             }
             return $this->pgsqlRaiseError();
+        }
+        if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
+            $this->_rtrimArrayValues($arr);
         }
         $this->row[$result] = ++$rownum;
         return DB_OK;
@@ -727,6 +716,11 @@ class DB_pgsql extends DB_common
                 $res[$i]['type']  = @pg_fieldtype ($id, $i);
                 $res[$i]['len']   = @pg_fieldsize ($id, $i);
                 $res[$i]['flags'] = ($got_string) ? $this->_pgFieldflags($id, $i, $result) : '';
+
+                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+                    $res[$i]['table'] = strtolower($res[$i]['table']);
+                    $res[$i]['name']  = strtolower($res[$i]['name']);
+                }
             }
 
         } else { // full
@@ -738,6 +732,11 @@ class DB_pgsql extends DB_common
                 $res[$i]['type']  = @pg_fieldtype ($id, $i);
                 $res[$i]['len']   = @pg_fieldsize ($id, $i);
                 $res[$i]['flags'] = ($got_string) ? $this->_pgFieldFlags($id, $i, $result) : '';
+
+                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+                    $res[$i]['table'] = strtolower($res[$i]['table']);
+                    $res[$i]['name']  = strtolower($res[$i]['name']);
+                }
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }

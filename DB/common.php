@@ -92,19 +92,22 @@ class DB_common extends PEAR
     var $fetchmode_object_class = 'stdClass';
 
     /**
-     * $options["persistent"] -> boolean persistent connection true|false?
-     * $options["ssl"] -> boolean use ssl to connect true|false?
-     * $options["optimize"] -> string 'performance' or 'portability'
-     * $options["debug"] -> integer numeric debug level
+     * Run-time configuration options.
+     *
+     * The 'optimize' option has been depricated.  Use the 'portability'
+     * option instead.
+     *
+     * @see DB_common::setOption()
      * @var array
      */
     var $options = array(
         'persistent' => false,
         'ssl' => false,
-        'optimize' => 'performance',
         'debug' => 0,
         'seqname_format' => '%s_seq',
-        'autofree' => false
+        'autofree' => false,
+        'portability' => DB_PORTABILITY_NONE,
+        'optimize' => 'performance',  // Depricated.  Use 'portability'.
     );
 
     /**
@@ -354,17 +357,148 @@ class DB_common extends PEAR
     // {{{ setOption()
 
     /**
-     * set the option for the db class
+     * Set run-time configuration options for the db class.
+     *
+     * Options, their data types, default values and description:
+     * <ul>
+     * <li>
+     * <var>autofree</var> <kbd>boolean</kbd> = <samp>false</samp>
+     *      <br />should results be freed automatically when there are no
+     *            more rows?
+     * </li><li>
+     * <var>debug</var> <kbd>integer</kbd> = <samp>0</samp>
+     *      <br />debug level
+     * </li><li>
+     * <var>persistent</var> <kbd>boolean</kbd> = <samp>false</samp>
+     *      <br />should the connection be persistent?
+     * </li><li>
+     * <var>portability</var> <kbd>integer</kbd> = <samp>DB_PORTABILITY_NONE</samp>
+     *      <br />portability mode constant (see below)
+     * </li><li>
+     * <var>seqname_format</var> <kbd>string</kbd> = <samp>%s_seq</samp>
+     *      <br />the sprintf() format string used on sequence names.  This
+     *            format is applied to sequence names passed to
+     *            createSequence(), nextID() and dropSequence().
+     * </li><li>
+     * <var>ssl</var> <kbd>boolean</kbd> = <samp>false</samp>
+     *      <br />use ssl to connect?
+     * </li>
+     * </ul>
+     *
+     * -----------------------------------------
+     *
+     * PORTABILITY MODES
+     *
+     * These modes are bitwised, so they can be combined using <kbd>|</kbd>
+     * and removed using <kbd>^</kbd>.  See the examples section below on how
+     * to do this.
+     *
+     * <samp>DB_PORTABILITY_NONE</samp>
+     * turn off all portability features
+     *
+     * This mode gets automatically turned on if the depricated
+     * <var>optimize</var> option gets set to <samp>performance</samp>.
+     *
+     *
+     * <samp>DB_PORTABILITY_LOWERCASE</samp>
+     * convert names of tables and fields to lower case when using
+     * <kbd>get*()</kbd>, <kbd>fetch*()</kbd> and <kbd>tableInfo()</kbd>
+     *
+     * This mode gets automatically turned on in the following databases
+     * if the depricated option <var>optimize</var> gets set to
+     * <samp>portability</samp>:
+     * + oci8
+     *
+     *
+     * <samp>DB_PORTABILITY_RTRIM</samp>
+     * right trim the data output by <kbd>get*()</kbd> <kbd>fetch*()</kbd>
+     *
+     *
+     * <samp>DB_PORTABILITY_DELETE_COUNT</samp>
+     * force reporting the number of rows deleted
+     *
+     * Some DBMS's don't count the number of rows deleted when performing
+     * simple <kbd>DELETE FROM tablename</kbd> queries.  This portability
+     * mode tricks such DBMS's into telling the count by adding
+     * <samp>WHERE 1=1</samp> to the end of <kbd>DELETE</kbd> queries.
+     *
+     * This mode gets automatically turned on in the following databases
+     * if the depricated option <var>optimize</var> gets set to
+     * <samp>portability</samp>:
+     * + fbsql
+     * + mysql
+     * + mysql4
+     * + sqlite
+     *
+     *
+     * <samp>DB_PORTABILITY_NUMROWS</samp>
+     * enable hack that makes <kbd>numRows()</kbd> work in Oracle
+     *
+     * This mode gets automatically turned on in the following databases
+     * if the depricated option <var>optimize</var> gets set to
+     * <samp>portability</samp>:
+     * + oci8
+     *
+     *
+     * <samp>DB_PORTABILITY_ALL</samp>
+     * turn on all portability features
+     *
+     * -----------------------------------------
+     *
+     * Example 1. Simple setOption() example
+     * <code> <?php
+     * $dbh->setOption('autofree', true);
+     * ?></code>
+     *
+     * Example 2. Portability for lowercasing and trimming
+     * <code> <?php
+     * $dbh->setOption('portability',
+     *                  DB_PORTABILITY_LOWERCASE | DB_PORTABILITY_RTRIM);
+     * ?></code>
+     *
+     * Example 3. All portability options except trimming
+     * <code> <?php
+     * $dbh->setOption('portability',
+     *                  DB_PORTABILITY_ALL ^ DB_PORTABILITY_RTRIM);
+     * ?></code>
      *
      * @param string $option option name
      * @param mixed  $value value for the option
      *
      * @return mixed DB_OK or DB_Error
+     *
+     * @see DB_common::$options
      */
     function setOption($option, $value)
     {
         if (isset($this->options[$option])) {
             $this->options[$option] = $value;
+
+            /*
+             * Backwards compatibility check for the depricated 'optimize'
+             * option.  Done here in case settings change after connecting.
+             */
+            if ($option == 'optimize') {
+                if ($value == 'portability') {
+                    switch ($this->phptype) {
+                        case 'oci8':
+                            $this->options['portability'] =
+                                    DB_PORTABILITY_LOWERCASE |
+                                    DB_PORTABILITY_NUMROWS;
+                            break;
+                        case 'fbsql':
+                        case 'mysql':
+                        case 'mysql4':
+                        case 'sqlite':
+                            $this->options['portability'] =
+                                    DB_PORTABILITY_DELETE_COUNT;
+                            break;
+                    }
+                } else {
+                    $this->options['portability'] = DB_PORTABILITY_NONE;
+                }
+            }
+
             return DB_OK;
         }
         return $this->raiseError("unknown option $option");
@@ -845,7 +979,6 @@ class DB_common extends PEAR
         }
 
         $err = $res->fetchInto($row, DB_FETCHMODE_ORDERED);
-
         $res->free();
 
         if ($err !== DB_OK) {
@@ -1447,6 +1580,9 @@ class DB_common extends PEAR
      *   + fbsql
      *   + mysql
      *
+     * If the 'portability' option has <samp>DB_PORTABILITY_LOWERCASE</samp>
+     * turned on, the names of tables and fields will be lowercased.
+     *
      * @param object|string  $result  DB_result object from a query or a
      *                                string containing the name of a table.
      *                                While this also accepts a query result
@@ -1460,6 +1596,8 @@ class DB_common extends PEAR
      *                     combined using <kbd>|</kbd>.
      * @return array  an associative array with the information requested.
      *                If something goes wrong an error object is returned.
+     *
+     * @see DB_common::setOption()
      * @access public
      */
     function tableInfo($result, $mode = null)
@@ -1517,6 +1655,24 @@ class DB_common extends PEAR
     {
         return sprintf($this->getOption('seqname_format'),
                        preg_replace('/[^a-z0-9_.]/i', '_', $sqn));
+    }
+
+    // }}}
+    // {{{ _rtrimArrayValues()
+
+    /**
+     * Right trim all strings in an array.
+     *
+     * @param array  $array  the array to be trimmed (passed by reference)
+     * @return void
+     * @access private
+     */
+    function _rtrimArrayValues(&$array) {
+        foreach ($array as $key => $value) {
+            if (is_string($value)) {
+                $array[$key] = rtrim($value);
+            }
+        }
     }
 
     // }}}

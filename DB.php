@@ -63,8 +63,10 @@ define('DB_ERROR_EXTENSION_NOT_FOUND',-25);
 define('DB_ERROR_ACCESS_VIOLATION',   -26);
 define('DB_ERROR_NOSUCHDB',           -27);
 
+
 // }}}
 // {{{ prepared statement-related
+
 
 /*
  * These constants are used when storing information about prepared
@@ -86,8 +88,10 @@ define('DB_PARAM_SCALAR', 1);
 define('DB_PARAM_OPAQUE', 2);
 define('DB_PARAM_MISC',   3);
 
+
 // }}}
 // {{{ binary data-related
+
 
 /*
  * These constants define different ways of returning binary data
@@ -104,8 +108,10 @@ define('DB_BINMODE_PASSTHRU', 1);
 define('DB_BINMODE_RETURN',   2);
 define('DB_BINMODE_CONVERT',  3);
 
+
 // }}}
 // {{{ fetch modes
+
 
 /**
  * This is a special constant that tells DB the user hasn't specified
@@ -141,8 +147,10 @@ define('DB_GETMODE_ORDERED', DB_FETCHMODE_ORDERED);
 define('DB_GETMODE_ASSOC',   DB_FETCHMODE_ASSOC);
 define('DB_GETMODE_FLIPPED', DB_FETCHMODE_FLIPPED);
 
+
 // }}}
 // {{{ tableInfo() && autoPrepare()-related
+
 
 /**
  * these are constants for the tableInfo-function
@@ -159,7 +167,50 @@ define('DB_TABLEINFO_FULL', 3);
 define('DB_AUTOQUERY_INSERT', 1);
 define('DB_AUTOQUERY_UPDATE', 2);
 
+
 // }}}
+// {{{ portability modes
+
+
+/**
+ * Portability: turn off all portability features.
+ * @see DB_common::setOption()
+ */
+define('DB_PORTABILITY_NONE', 0);
+
+/**
+ * Portability: convert names of tables and fields to lower case
+ * when using the get*(), fetch*() and tableInfo() methods.
+ * @see DB_common::setOption()
+ */
+define('DB_PORTABILITY_LOWERCASE', 1);
+
+/**
+ * Portability: right trim the data output by get*() and fetch*().
+ * @see DB_common::setOption()
+ */
+define('DB_PORTABILITY_RTRIM', 2);
+
+/**
+ * Portability: force reporting the number of rows deleted.
+ * @see DB_common::setOption()
+ */
+define('DB_PORTABILITY_DELETE_COUNT', 4);
+
+/**
+ * Portability: enable hack that makes numRows() work in Oracle.
+ * @see DB_common::setOption()
+ */
+define('DB_PORTABILITY_NUMROWS', 8);
+
+/**
+ * Portability: turn on all portability features.
+ * @see DB_common::setOption()
+ */
+define('DB_PORTABILITY_ALL', 15);
+
+// }}}
+
 
 // }}}
 // {{{ class DB
@@ -258,15 +309,13 @@ class DB
      * @param mixed $options An associative array of option names and
      * their values.  For backwards compatibility, this parameter may
      * also be a boolean that tells whether the connection should be
-     * persistent.  See DB_common::setOption for more information on
+     * persistent.  See DB_common::setOption() for more information on
      * connection options.
      *
      * @return mixed a newly created DB connection object, or a DB
      * error object on error
      *
-     * @see DB::parseDSN
-     * @see DB::isError
-     * @see DB_common::setOption
+     * @see DB_common::setOption(), DB::parseDSN(), DB::isError()
      */
     function &connect($dsn, $options = false)
     {
@@ -732,12 +781,30 @@ class DB_result
     // {{{ fetchRow()
 
     /**
-     * Fetch and return a row of data (it uses driver->fetchInto for that)
-     * @param int $fetchmode format of fetched row
-     * @param int $rownum    the row number to fetch
+     * Fetch a row of data and return it by reference into an array.
      *
-     * @return  array a row of data, NULL on no more rows or PEAR_Error on error
+     * The type of array returned can be controlled either by setting this
+     * method's <var>$fetchmode</var> parameter or by changing the default
+     * fetch mode setFetchMode() before calling this method.
      *
+     * There are two options for standardizing the information returned
+     * from databases, ensuring their values are consistent when changing
+     * DBMS's.  These portability options can be turned on when creating a
+     * new DB object or by using setOption().
+     *
+     *   + <samp>DB_PORTABILITY_LOWERCASE</samp>
+     *     convert names of fields to lower case
+     *
+     *   + <samp>DB_PORTABILITY_RTRIM</samp>
+     *     right trim the data
+     *
+     * @param int $fetchmode  how the resulting array should be indexed
+     * @param int $rownum     the row number to fetch
+     *
+     * @return array  a row of data, NULL on no more rows or PEAR_Error
+     *                object on error
+     *
+     * @see DB_common::setOption(), DB_common::setFetchMode()
      * @access public
      */
     function &fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
@@ -796,15 +863,32 @@ class DB_result
     // {{{ fetchInto()
 
     /**
-     * Fetch a row of data into an existing variable.
+     * Fetch a row of data into an array which is passed by reference.
      *
-     * @param  mixed   &$arr     reference to data containing the row
-     * @param  integer $fetchmod format of fetched row
-     * @param  integer $rownum   the row number to fetch
+     * The type of array returned can be controlled either by setting this
+     * method's <var>$fetchmode</var> parameter or by changing the default
+     * fetch mode setFetchMode() before calling this method.
      *
-     * @return  mixed  DB_OK on success, NULL on no more rows or
-     *                 a DB_Error object on error
+     * There are two options for standardizing the information returned
+     * from databases, ensuring their values are consistent when changing
+     * DBMS's.  These portability options can be turned on when creating a
+     * new DB object or by using setOption().
      *
+     *   + <samp>DB_PORTABILITY_LOWERCASE</samp>
+     *     convert names of fields to lower case
+     *
+     *   + <samp>DB_PORTABILITY_RTRIM</samp>
+     *     right trim the data
+     *
+     * @param array &$arr       (reference) array where data from the row
+     *                          should be placed
+     * @param int   $fetchmode  how the resulting array should be indexed
+     * @param int   $rownum     the row number to fetch
+     *
+     * @return mixed  DB_OK on success, NULL on no more rows or
+     *                a DB_Error object on error
+     *
+     * @see DB_common::setOption(), DB_common::setFetchMode()
      * @access public
      */
     function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)

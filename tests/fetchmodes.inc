@@ -45,16 +45,34 @@ for ($i = 1; $i <= 5; $i++) {
 $dbh->query('DELETE FROM phptest WHERE a <> 42');
 
 
-print "testing fetchmodes: fetchrow default default\n";
+print "testing fetchmodes: fetchrow default default, portability mode DB_PORTABILITY_ALL ^ DB_PORTABILITY_RTRIM\n";
+$dbh->setOption('portability', DB_PORTABILITY_ALL ^ DB_PORTABILITY_RTRIM);
 $sth = $dbh->query("SELECT * FROM phptest");
 $row = $sth->fetchRow();
 print implode(" ", array_keys($row))."\n";
+$actual = implode(' ', array_values($row));
+switch ($dbh->phptype) {
+    case 'mysql':
+    case 'mysql4':
+    case 'sqlite':
+        $expected = '42 bing This is a test 1999-11-21';
+        break;
+    default:
+        $expected = '42 bing                                     This is a test 1999-11-21';
+}
+if ($actual == $expected) {
+    echo "output matched expected format\n";
+} else {
+    echo "DIDN'T MATCH!  Expected output: '$expected'.  Actual output: '$actual'.\n";
+}
 
 print "testing fetchmodes: fetchinto default default\n";
+$dbh->setOption('portability', DB_PORTABILITY_ALL);
 $sth = $dbh->query("SELECT * FROM phptest");
 $row = array();
 $sth->fetchInto($row);
 print implode(" ", array_keys($row))."\n";
+print implode(' ', array_values($row))."\n";
 
 print "testing fetchmodes: fetchrow ordered default\n";
 $dbh->setFetchMode(DB_FETCHMODE_ORDERED);

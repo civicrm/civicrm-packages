@@ -36,19 +36,12 @@ $numrows = 30;
 for ($i=0; $i<=$numrows+2; $i++) {
     $dbh->query("INSERT INTO php_limit VALUES('result $i')");
 }
-// Hack for upper case col returned by Oracle
-if ($dbh->dsn['phptype'] == 'oci8' &&
-    $dbh->options['optimize'] != 'portability') {
-    $key = 'A';
-} else {
-    $key = 'a';
-}
 for ($i = 0; $i <= 3; $i++) {
     $from = 10 * $i;
     $res = $dbh->limitQuery("select * from php_limit", $from, $count);
     echo "======= From: $from || Number of rows to fetch: $count =======\n";
     while ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
-        echo $res->getRowCounter() . '.- ' . $row[$key] . "\n";
+        echo $res->getRowCounter() . '.- ' . $row['a'] . "\n";
     }
 }
 

@@ -191,15 +191,8 @@ class DB_oci8 extends DB_common
     /**
      * Fetch a row and insert the data into an existing array.
      *
-     * The array's keys will be converted to lower case if
-     * <var>$options['optimize']</var> is set to <kbd>portability</kbd>
-     * AND <var>$fetchmode</var> is set to <kbd>DB_FETCHMODE_ASSOC</kbd>.
-     *
-     * <var>$options['optimize']</var> can be set when instantiating the
-     * DB class via DB::connect(), but can be changed using
-     * DB_common::setOption.
-     *
-     * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
+     * Formating of the array and the data therein are configurable.
+     * See DB_result::fetchInto() for more information.
      *
      * @param resource $result    query result identifier
      * @param array    $arr       (reference) array where data from the row
@@ -208,12 +201,8 @@ class DB_oci8 extends DB_common
      * @param int      $rownum    the row number to fetch
      *
      * @return mixed DB_OK on success, NULL when end of result set is
-     *               reached, DB error on failure
+     *               reached or on failure
      *
-     * @see DB::connect()
-     * @see DB_common::setOption
-     * @see DB_common::$options
-     * @see DB_common::setFetchMode()
      * @see DB_result::fetchInto()
      * @access private
      */
@@ -224,14 +213,19 @@ class DB_oci8 extends DB_common
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $moredata = @OCIFetchInto($result,$arr,OCI_ASSOC+OCI_RETURN_NULLS+OCI_RETURN_LOBS);
-            if ($this->options['optimize'] == 'portability' && $moredata) {
+            if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE &&
+                $moredata)
+            {
                 $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
-            $moredata = @OCIFetchInto($result,$arr,OCI_RETURN_NULLS+OCI_RETURN_LOBS);
+            $moredata = OCIFetchInto($result,$arr,OCI_RETURN_NULLS+OCI_RETURN_LOBS);
         }
         if (!$moredata) {
             return NULL;
+        }
+        if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
+            $this->_rtrimArrayValues($arr);
         }
         return DB_OK;
     }
@@ -307,8 +301,9 @@ class DB_oci8 extends DB_common
     function numRows($result)
     {
         // emulate numRows for Oracle.  yuck.
-        if ($this->options['optimize'] == 'portability' &&
-            $result === $this->last_stmt) {
+        if ($this->options['portability'] & DB_PORTABILITY_NUMROWS &&
+            $result === $this->last_stmt)
+        {
             $countquery = 'SELECT COUNT(*) FROM ('.$this->last_query.')';
             $save_query = $this->last_query;
             $save_stmt = $this->last_stmt;
@@ -792,17 +787,16 @@ class DB_oci8 extends DB_common
 
             $i = 0;
             while (@OCIFetch($stmt)) {
-                if ($this->options['optimize'] == 'portability') {
-                    $res[$i]['table'] = strtolower($result);
-                    $res[$i]['name']  = strtolower(@OCIResult($stmt, 1));
-                } else {
-                    $res[$i]['table'] = $result;
-                    $res[$i]['name']  = @OCIResult($stmt, 1);
-                }
+                $res[$i]['table'] = $result;
+                $res[$i]['name']  = @OCIResult($stmt, 1);
                 $res[$i]['type']  = @OCIResult($stmt, 2);
                 $res[$i]['len']   = @OCIResult($stmt, 3);
                 $res[$i]['flags'] = (@OCIResult($stmt, 4) == 'N') ? 'not_null' : '';
 
+                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+                    $res[$i]['table'] = strtolower($res[$i]['table']);
+                    $res[$i]['name']  = strtolower($res[$i]['name']);
+                }
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }
@@ -834,15 +828,14 @@ class DB_oci8 extends DB_common
 
                 for ($i=0; $i<$count; $i++) {
                     $res[$i]['table'] = '';
-                    if ($this->options['optimize'] == 'portability') {
-                        $res[$i]['name'] = strtolower(@OCIColumnName($result, $i+1));
-                    } else {
-                        $res[$i]['name'] = @OCIColumnName($result, $i+1);
-                    }
+                    $res[$i]['name']  = @OCIColumnName($result, $i+1);
                     $res[$i]['type']  = @OCIColumnType($result, $i+1);
                     $res[$i]['len']   = @OCIColumnSize($result, $i+1);
                     $res[$i]['flags'] = '';
 
+                    if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+                        $res[$i]['name'] = strtolower($res[$i]['name']);
+                    }
                     if ($mode & DB_TABLEINFO_ORDER) {
                         $res['order'][$res[$i]['name']] = $i;
                     }

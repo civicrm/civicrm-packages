@@ -14,10 +14,12 @@ row 2: 1, one, One, 2001-02-16
 row 3: 2, two, Two, 2001-02-15
 row 4: 3, three, Three, 2001-02-14
 row 5: NULL
-testing fetchmodes: fetchrow default default
+testing fetchmodes: fetchrow default default, portability mode DB_PORTABILITY_ALL ^ DB_PORTABILITY_RTRIM
 0 1 2 3
+output matched expected format
 testing fetchmodes: fetchinto default default
 0 1 2 3
+42 bing This is a test 1999-11-21
 testing fetchmodes: fetchrow ordered default
 0 1 2 3
 testing fetchmodes: fetchrow assoc default
