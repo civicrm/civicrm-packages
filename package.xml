@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.158 2005-02-03 00:35:12 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.159 2005-02-03 06:27:27 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -17,7 +17,7 @@ DB is a database abstraction layer providing:
 * row limit support
 * transactions support
 * table information interface
-* DocBook and PHPDoc API documentation
+* DocBook and phpDocumentor API documentation
 
 DB layers itself on top of PHP's existing
 database extensions.
@@ -27,13 +27,13 @@ the complete test suite and provide
 interchangeability when all of DB's
 portability options are enabled:
 
-  fbsql, ibase, mssql, mysql, mysqli,
-  oci8, odbc, pgsql, sqlite and sybase.
+  fbsql, mssql, mysql, mysqli, oci8,
+  odbc, pgsql, sqlite and sybase.
 
 Drivers for these extensions exist but
 haven't been thoroughly tested:
 
-  dbase, informix, and msql.
+  dbase, ibase, informix, and msql.
 
 DB is compatible with both PHP 4 and PHP 5.
 </description>
@@ -73,6 +73,16 @@ all:
 * PEAR DB can now be used on more OS's due to
   switching from DB::assertExtension() to
   PEAR::loadExtension().  Request 1337.
+* Resolve tableInfo() issue caused by PHP 5.0.3.
+  Bug 2988.
+* Add __wakeup() to each driver so connections
+  will automatically be reestablished when PHP's
+  unserialize() function is called.  Request 928.
+* Added __toString() and deprecated toString().
+  Request 1209.
+* Added DB_result::getQuery() method for
+  determining what query created the present
+  result.  Request 1677.
 * If DSN contains "dbsyntax", always use that for
   $this->dbsyntax.  Used to only be done for odbc.
 * When trying to DROP an index that doesn't exist,
@@ -80,19 +90,12 @@ all:
 * When the number of values in an INSERT query
   doesn't match the number columns, use the
   DB_ERROR_VALUE_COUNT_ON_ROW error code.
-* Resolve tableInfo() issue caused by PHP 5.0.3.
-  Bug 2988.
+* Removed the unused DB_ERROR_CANNOT_DELETE constant.
 * When using getOne() and getRow(), if the DBMS
   supports LIMIT queries, limit the output to
   one row.  Request 1771.
 * Consider SELECT INTO and COPY data manipulation
   queries in isManip().  Bug 2883.
-* Added DB_result::getQuery() method for
-  determining what query created the present
-  result.  Request 1677.
-* Add __wakeup() to each driver so connections
-  will automatically be reestablished when PHP's
-  unserialize() function is called.  Request 928.
 
 fbsql:
 * FrontBase driver now works and passes all tests.
@@ -111,7 +114,7 @@ ifx:
 mssql:
 * Use "," to delimit port only for Windows.  Use ":"
   for other OS's.  This bug was introduced when
-  resolving Bug #2140.  (Bug #2731)
+  resolving Bug 2140.  (Bug 2731)
 * Add 1913 (duplicate index creation) to errorcode_map.
 * Changed error code: When trying to DROP an index that
   doesn't exist, use DB_ERROR_NOT_FOUND instead of
