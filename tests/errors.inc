@@ -266,6 +266,7 @@ switch ($dbh->phptype) {
 print 'Trying to provoke DB_ERROR_NOSUCHFIELD joining ON bogus column:  ';
 $res = $dbh->query('SELECT * FROM phptest JOIN a ON (phptest.a = a.b)');
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'msql:msql':
     case 'odbc:access':
         check_error($res, DB_ERROR_SYNTAX);
         break;
@@ -279,6 +280,7 @@ $res = $dbh->query('SELECT * FROM phptest JOIN a USING (b)');
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'ibase:ibase':
     case 'ibase:firebird':
+    case 'msql:msql':
     case 'odbc:access':
     case 'odbc:db2':
     case 'sybase:sybase':
@@ -362,6 +364,7 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
         check_error($res, DB_ERROR_SYNTAX);
         break;
     case 'fbsql:fbsql':
+    case 'msql:msql':
     case 'mssql:mssql':
     case 'mysql:mysql':
     case 'mysqli:mysqli':
@@ -419,6 +422,7 @@ switch ($dbh->phptype) {
 print 'Trying to provoke DB_ERROR_INVALID on CHAR column data too long:  ';
 $res = $dbh->query("INSERT INTO phptest (b) VALUES ('123456789.123456789.123456789.123456789.1')");
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'msql:msql':
     case 'mssql:mssql':
     case 'mysql:mysql':
     case 'mysqli:mysqli':
@@ -438,6 +442,7 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
 print 'Trying to provoke DB_ERROR_INVALID on VARCHAR column data too long:  ';
 $res = $dbh->query("INSERT INTO phptest (d) VALUES ('123456789.123456789.1')");
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'msql:msql':
     case 'mssql:mssql':
     case 'mysql:mysql':
     case 'mysqli:mysqli':
