@@ -548,48 +548,100 @@ class DB_mssql extends DB_common
         }
         return $sql;
     }
-
     // }}}
     // {{{ _mssql_field_flags()
     /**
-    * Get the flags for a field, currently only supports "isnullable" and "primary_key"
+    * Get the flags for a field, currently supports "not_null", "primary_key",
+    * "auto_increment" (mssql identity), "timestamp" (mssql timestamp),
+    * "unique_key" (mssql unique index, unique check or primary_key) and
+    * "multiple_key" (multikey index)
+    *
+    * mssql timestamp is NOT similar to the mysql timestamp so this is maybe
+    * not useful at all - is the behaviour of mysql_field_flags that primary
+    * keys are alway unique? is the interpretation of multiple_key correct?
     *
     * @param string The table name
     * @param string The field
+    * @author Joern Barthel <j_barthel@web.de>
     * @access private
     */
     function _mssql_field_flags($table, $column)
     {
-        static $current_table = null;
-        static $flags;
-        // At the first call we discover the flags for all fields
-        if ($table != $current_table) {
+        static $tableName = null;
+        static $flags = array();
+
+        if ($table != $tableName) {
+
             $flags = array();
-            // find nullable fields
-            $q_nulls = "SELECT syscolumns.name, syscolumns.isnullable
-                        FROM sysobjects
-                        INNER JOIN syscolumns ON sysobjects.id = syscolumns.id
-                        WHERE sysobjects.name ='$table' AND syscolumns.isnullable = 1";
-            $res = $this->getAll($q_nulls, DB_FETCHMODE_ASSOC);
-            foreach ($res as $data) {
-                if ($data['isnullable'] == 1) {
-                    $flags[$data['name']][] = 'isnullable';
+            $tableName = $table;
+
+            // get unique and primary keys
+            $res = $this->getAll("EXEC SP_HELPINDEX[$table]", DB_FETCHMODE_ASSOC);
+
+            foreach ($res as $val) {
+
+                $keys = explode(", ", $val['index_keys']);
+
+                if (sizeof($keys) > 1) {
+                    $this->_add_flag($flags[$keys[0]], "multiple_key");
+                }
+
+                if (strpos($val['index_description'], "primary key")) {
+                    foreach ($keys as $key) {
+                        $this->_add_flag($flags[$key], "primary_key");
+                    }
+                } elseif (strpos($val['index_description'], "unique")) {
+                    foreach ($keys as $key) {
+                        $this->_add_flag($flags[$key], "unique_key");
+                    }
                 }
             }
-            // find primary keys
-            $res2 = $this->getAll("EXEC SP_PKEYS[$table]", DB_FETCHMODE_ASSOC);
-            foreach ($res2 as $data) {
-                if (!empty($data['COLUMN_NAME'])) {
-                    $flags[$data['COLUMN_NAME']][] = 'primary_key';
+
+            // get auto_increment, not_null and timestamp
+            $res = $this->getAll("EXEC SP_COLUMNS[$table]", DB_FETCHMODE_ASSOC);
+
+            foreach ($res as $val) {
+                if ($val['NULLABLE'] == "0") {
+                    $this->_add_flag($flags[$val['COLUMN_NAME']], "not_null");
+                }
+                if (strpos($val['TYPE_NAME'], "identity")) {
+                    $this->_add_flag($flags[$val['COLUMN_NAME']], "auto_increment");
+                }
+                if (strpos($val['TYPE_NAME'], "timestamp")) {
+                    $this->_add_flag($flags[$val['COLUMN_NAME']], "timestamp");
                 }
             }
-            $current_table = $table;
         }
-        if (isset($flags[$column])) {
-            return implode(',', $flags[$column]);
+
+        if (array_key_exists($column, $flags)) {
+            return(implode(", ", $flags[$column]));
         }
-        return '';
+        return("");
+    }
+
+    // }}}
+    // {{{ _mssql_field_flags()
+
+    // }}}
+    // {{{ _add_flag()
+    /**
+    * adds a string to the flags array if the flag is not yet in there - if there is no
+    * flag present the array is created
+    *
+    * @param reference  Reference to the flag-array
+    * @param value      The flag value
+    * @access private
+    * @author Joern Barthel <j_barthel@web.de>
+    */
+    function _add_flag (&$array, $value)
+    {
+        if (!is_array($array))
+            $array = array($value);
+
+        else if (!in_array($value, $array))
+            array_push($array, $value);
     }
     // }}}
+    // {{{ _add_flag()
 }
 ?>
