@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.61 2004-02-10 16:04:22 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.62 2004-02-10 17:22:57 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -102,6 +102,11 @@ All drivers with tableInfo() methods had bug
 introduced in 1.6.0RC5 that caused
 'undefined function' errors when lowercasing
 portability was off.  Bug 724.  (danielc)
+
+- all:
+In limitQuery(), check if return from
+modifyLimitQuery() is an error and return that
+error if problems.  (danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
