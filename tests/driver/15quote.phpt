@@ -83,7 +83,6 @@ switch ($type) {
         $decimal = 'REAL';
         $null = '';
         $chr  = 'CHAR(8)';
-        $identifier = 'q\ut] "dn[t';
         $identifier = '';
         break;
     case 'fbsql':

@@ -7,7 +7,7 @@ error_reporting = 2047
 --FILE--
 <?php
 
-require_once './connect.inc';
+require_once './mktable.inc';
 
 /*
  * An array with keys containing the $type to be passed to the getListOf()
@@ -22,7 +22,7 @@ $tests = array(
         'ibase:ibase' => 'array',
         'ibase:firebird' => 'array',
         'ifx:ifx' => 'array',
-        'msql:msql' => DB_ERROR_UNSUPPORTED,
+        'msql:msql' => 'array',
         'mssql:mssql' => 'array',
         'mysql:mysql' => 'array',
         'mysqli:mysqli' => 'array',
@@ -73,7 +73,7 @@ $tests = array(
         'ibase:ibase' => DB_ERROR_UNSUPPORTED,
         'ibase:firebird' => DB_ERROR_UNSUPPORTED,
         'ifx:ifx' => DB_ERROR_UNSUPPORTED,
-        'msql:msql' => DB_ERROR_UNSUPPORTED,
+        'msql:msql' => 'array',
         'mssql:mssql' => DB_ERROR_UNSUPPORTED,
         'mysql:mysql' => 'array',
         'mysqli:mysqli' => 'array',
@@ -200,6 +200,9 @@ foreach ($tests as $test => $dbms) {
                  $dbms[$dbh->phptype . ':' . $dbh->dbsyntax],
                  $test);
 }
+
+
+drop_table($dbh, 'phptest');
 
 ?>
 --EXPECT--
