@@ -52,6 +52,19 @@ $row = $res->fetchRow();
 print "a = {$row['a']}, b = {$row['b']}\n";
 
 
+$array = array(
+    'foo' => 11,
+    'bar' => 'three',
+    'baz' => null,
+);
+$res =& $dbh->query('INSERT INTO phptest (a, b, d) VALUES (?, ?, ?)', $array);
+print 'insert: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
+
+$res =& $dbh->query('SELECT a, b, d FROM phptest WHERE a = ?', 11);
+$row = $res->fetchRow();
+print "a = {$row['a']}, b = {$row['b']}, d = " . gettype($row['d']) . "\n";
+
+
 $res =& $dbh->query('DELETE FROM phptest WHERE a = ?', array(17));
 print 'delete: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
 
@@ -62,4 +75,6 @@ insert: okay
 insert: okay
 a = 17, b = one
 a = 17, b = two
+insert: okay
+a = 11, b = three, d = NULL
 delete: okay

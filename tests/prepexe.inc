@@ -71,6 +71,26 @@ print_4($sth2, 'set1');
 $sth3 = $dbh->prepare("SELECT * FROM phptest WHERE c = & ORDER BY b");
 print_4($sth3, $tmpfile);
 
+
+// 5) ASSOCIATIVE ARRAY queries
+echo "\n------------5------------\n";
+
+$sth5 = $dbh->prepare('INSERT INTO phptest (a, b, d) VALUES (?, ?, ?)');
+$array = array(
+    'foo' => 11,
+    'bar' => 'three',
+    'baz' => null,
+);
+$res = $dbh->execute($sth5, $array);
+print 'insert: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
+
+$sth6 = $dbh->prepare('SELECT a, b, d FROM phptest WHERE a = ?');
+$res = $dbh->execute($sth6, array(11));
+$row = $res->fetchRow(DB_FETCHMODE_ASSOC);
+print "a = {$row['a']}, b = {$row['b']}, d = " . gettype($row['d']) . "\n";
+
+
+
 function my_shutdown() {
     global $tmpfile;
     unlink($tmpfile);

@@ -64,3 +64,7 @@ test - |
 placeholder
 test - |
 ~~
+
+------------5------------
+insert: okay
+a = 11, b = three, d = NULL
