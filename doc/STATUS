@@ -37,18 +37,18 @@ functions            -    -    -    -    -    -    -    -    -    x    -
                      |  ibase  |  msql   |   mysql |   obi8  |   pgsql |
 
 TESTS CONFORMANCE
-01connect            -    o    -    -    -    o    -    -    -    o    -
-02fetch              -    o    -    -    -    o    -    -    -    o    -
-03simplequery        -    o    -    -    -    o    -    -    -    o    -
-04numcols            -    o    -    -    -    o    -    -    -    o    -
-05sequences          -    X    -    -    -    o    -    -    -    o    -
-06prepexec           -    X    -    -    -    o    -    -    -    o    -
-08affectedrows       -    X    -    -    -    o    -    -    -    o    -
-09numrows            -    X    -    -    -    o    -    -    -    o    -
-10errormap           -    X    -    -    -    X    -    -    -    X    -
-13limit              -    o    -    -    -    o    -    -    -    o    -
-14fetchmode_object   -    o    -    -    -    o    -    -    -    o    -
-15quote              -    X    -    -    -    o    -    -    -    o    -
+01connect            -    o    -    -    o    o    -    -    -    o    -
+02fetch              -    o    -    -    o    o    -    -    -    o    -
+03simplequery        -    o    -    -    o    o    -    -    -    o    -
+04numcols            -    o    -    -    o    o    -    -    -    o    -
+05sequences          -    X    -    -    o    o    -    -    -    o    -
+06prepexec           -    X    -    -    o    o    -    -    -    o    -
+08affectedrows       -    X    -    -    o    o    -    -    -    o    -
+09numrows            -    X    -    -    o    o    -    -    -    o    -
+10errormap           -    X    -    -    X    X    -    -    -    X    -
+13limit              -    o    -    -    o    o    -    -    -    o    -
+14fetchmode_object   -    o    -    -    o    o    -    -    -    o    -
+15quote              -    X    -    -    X    o    -    -    -    o    -
 
                                                          o -> Test passed
                                                          X -> Test failed
