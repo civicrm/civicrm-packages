@@ -46,6 +46,15 @@ for ($i = 0; $i <= 3; $i++) {
 }
 
 
+switch ($dbh->phptype) {
+    case 'ibase':
+        /*
+         * Interbase doesn't allow dropping tables that have result
+         * sets still open.
+         */
+        $dbh->freeResult($res->result);
+        break;
+}
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 $dbh->query('DROP TABLE php_limit');
 

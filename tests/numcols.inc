@@ -32,6 +32,15 @@ $sth = $dbh->query("SELECT * FROM phptest");
 printf("%d\n", $sth->numCols());
 
 
+switch ($dbh->phptype) {
+    case 'ibase':
+        /*
+         * Interbase doesn't allow dropping tables that have result
+         * sets still open.
+         */
+        $dbh->freeResult($sth->result);
+        break;
+}
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 $dbh->query('DROP TABLE phptest');
 

@@ -126,8 +126,15 @@ $row = array();
 $sth->fetchInto($row, DB_FETCHMODE_ORDERED);
 print implode(" ", array_keys($row))."\n";
 
-
-
+switch ($dbh->phptype) {
+    case 'ibase':
+        /*
+         * Interbase doesn't allow dropping tables that have result
+         * sets still open.
+         */
+        $dbh->freeResult($sth->result);
+        break;
+}
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 $dbh->query('DROP TABLE phptest');
 
