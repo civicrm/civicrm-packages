@@ -259,18 +259,13 @@ class DB_oci8 extends DB_common
      */
     function freePrepared($stmt)
     {
-        if (is_resource($stmt)) {
-            $ret = ocifreestatement($stmt);
-        } else {
-            $ret = false;
-        }
         if (isset($this->prepare_types[(int)$stmt])) {
             unset($this->prepare_types[(int)$stmt]);
             unset($this->manip_query[(int)$stmt]);
         } else {
-            $ret = false;
+            return false;
         }
-        return $ret;
+        return true;
     }
 
     // }}}
