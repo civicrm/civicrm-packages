@@ -17,22 +17,22 @@
 // +----------------------------------------------------------------------+
 //
 // $Id$
-//
-// DB_storage: a class that lets you return SQL data as objects that
-// can be manipulated and that updates the database accordingly.
-//
 
-require_once "PEAR.php";
-require_once "DB.php";
+require_once 'PEAR.php';
+require_once 'DB.php';
 
 /**
- * DB_storage provides an object interface to a table row.  It lets
- * you add, delete and change rows without using SQL.
+ * Provides an object interface to a table row.
  *
- * @author Stig Bakken <stig@php.net>
+ * It lets you add, delete and change rows using objects rather than SQL
+ * statements.
  *
- * @package DB
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Stig Bakken <stig@php.net>
  */
+
 class DB_storage extends PEAR
 {
     // {{{ properties
