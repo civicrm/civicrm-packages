@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.36 2004-01-17 16:11:54 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.37 2004-01-18 01:18:59 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -61,7 +61,22 @@ also avaible from a separate package).
     <state>stable</state>
     <date>2003-09-14</date>
     <notes>
-    </notes>
+Bugs fixed:
+- Fixed few mem leaks in some drivers
+
+Minor API Change:
+
+- Now $db_object->freeResult() can't be used for freeing
+  a prepared query. Use $db_object->freePrepared() instead:
+
+     // Create resources
+     $prep = $db_object->prepare($sql);
+     $res  = $db_object->execute($prep, $params);
+
+     // Free resources
+     $db_object->freePrepared($prep);
+     $res->free();
+	</notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
       <dir name="DB" role="php">
