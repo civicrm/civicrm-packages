@@ -926,7 +926,7 @@ class DB_ibase extends DB_common
                 '/no permission for/i'
                     => DB_ERROR_ACCESS_VIOLATION,
                 '/arithmetic exception, numeric overflow, or string truncation/i'
-                    => DB_ERROR_DIVZERO,
+                    => DB_ERROR_INVALID,
             );
         }
 
