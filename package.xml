@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.42 2004-01-25 19:33:13 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.43 2004-01-25 19:36:29 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -309,7 +309,6 @@ also avaible from a separate package).
         <file name="errors.inc"/>
         <file name="fetchmode_object.inc"/>
         <file name="fetchmodes.inc"/>
-        <file name="fetchrow.inc"/>
         <file name="include.inc"/>
         <file name="limit.inc"/>
         <file name="numcols.inc"/>
