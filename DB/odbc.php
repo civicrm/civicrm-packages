@@ -126,6 +126,9 @@ class DB_odbc extends DB_common
                 // the Navision driver doesn't support fetch row by number
                 $this->features['limit'] = false;
                 break;
+            case 'access':
+                $this->errorcode_map['07001'] = DB_ERROR_NOSUCHFIELD;
+                break;
             default:
                 break;
         }
