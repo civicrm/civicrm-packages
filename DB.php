@@ -159,6 +159,12 @@ define('DB_TABLEINFO_ORDER', 1);
 define('DB_TABLEINFO_ORDERTABLE', 2);
 define('DB_TABLEINFO_FULL', 3);
 
+/*
+ * Used by autoPrepare()
+ */
+define('DB_AUTOQUERY_INSERT', 1);
+define('DB_AUTOQUERY_UPDATE', 2);
+
 
 /**
  * The main "DB" class is simply a container class with some static
