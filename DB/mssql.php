@@ -699,14 +699,15 @@ class DB_mssql extends DB_common
             $res = $this->getAll("EXEC SP_COLUMNS[$table]", DB_FETCHMODE_ASSOC);
 
             foreach ($res as $val) {
-                if ($val['NULLABLE'] == '0') {
-                    $this->_add_flag($flags[$val['COLUMN_NAME']], 'not_null');
+                $val = array_change_key_case($val, CASE_LOWER);
+                if ($val['nullable'] == '0') {
+                    $this->_add_flag($flags[$val['column_name']], 'not_null');
                 }
-                if (strpos($val['TYPE_NAME'], 'identity')) {
-                    $this->_add_flag($flags[$val['COLUMN_NAME']], 'auto_increment');
+                if (strpos($val['type_name'], 'identity')) {
+                    $this->_add_flag($flags[$val['column_name']], 'auto_increment');
                 }
-                if (strpos($val['TYPE_NAME'], 'timestamp')) {
-                    $this->_add_flag($flags[$val['COLUMN_NAME']], 'timestamp');
+                if (strpos($val['type_name'], 'timestamp')) {
+                    $this->_add_flag($flags[$val['column_name']], 'timestamp');
                 }
             }
         }
