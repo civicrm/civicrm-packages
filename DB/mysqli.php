@@ -109,8 +109,9 @@ class DB_mysqli extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
+        $this->dsn = $dsninfo;
+        $conn      = false;
         @ini_set('track_errors', true);
-        $conn = false;
 
         if ($this->getOption('ssl') === true) {
             $init = mysqli_init();
