@@ -13,17 +13,21 @@ fclose($fp);
 echo "------------1------------\n";
 
 $sth1 = $dbh->prepare("INSERT INTO phptest (a, b) VALUES (?, 'a')");
-$sth2 = $dbh->prepare("INSERT INTO phptest (a,b) VALUES (?,?)");
-$sth3 = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES (?,?,&)");
-print "sth1,sth2,sth3 created\n";
+$sth2 = $dbh->prepare("INSERT INTO phptest (a,b) VALUES (!,?)");
+$sth3 = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES (?,!,&)");
+$sth4 = $dbh->prepare("INSERT INTO phptest (a, b) VALUES (72, 'direct')");
+print "sth1,sth2,sth3,sth4 created\n";
 if (($res = $dbh->execute($sth1, array(72))) == DB_OK) {
     print "sth1 executed\n";
 }
 if (($res = $dbh->execute($sth2, array(72,'bing'))) == DB_OK) {
     print "sth2 executed\n";
 }
-if (($res = $dbh->execute($sth3, array(72,'gazonk',$tmpfile))) == DB_OK) {
+if (($res = $dbh->execute($sth3, array(72,"'gazonk'",$tmpfile))) == DB_OK) {
     print "sth3 executed\n";
+}
+if (($res = $dbh->execute($sth4)) == DB_OK) {
+    print "sth4 executed\n";
 }
 print_results();
 

@@ -9,13 +9,15 @@ require_once '../prepexe.inc';
 ?>
 --EXPECT--
 ------------1------------
-sth1,sth2,sth3 created
+sth1,sth2,sth3,sth4 created
 sth1 executed
 sth2 executed
 sth3 executed
+sth4 executed
 results:
 |72 - a -  - |
 |72 - bing -  - |
+|72 - direct -  - |
 |72 - gazonk - opaque
 placeholder
 test - |
