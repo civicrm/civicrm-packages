@@ -49,6 +49,19 @@ class DB_oci8 extends DB_common
     var $autoCommit = 1;
     var $last_stmt = false;
 
+    /**
+     * stores the $data passed to execute() in the oci8 driver
+     *
+     * Gets reset to array() when simpleQuery() is run.
+     *
+     * Needed in case user wants to call numRows() after prepare/execute
+     * was used.
+     *
+     * @var array
+     * @access private
+     */
+    var $_data = array();
+
     // }}}
     // {{{ constructor
 
@@ -152,6 +165,7 @@ class DB_oci8 extends DB_common
      */
     function simpleQuery($query)
     {
+        $this->_data = array();
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
         $result = @OCIParse($this->connection, $query);
@@ -282,7 +296,14 @@ class DB_oci8 extends DB_common
             $countquery = 'SELECT COUNT(*) FROM ('.$this->last_query.')';
             $save_query = $this->last_query;
             $save_stmt = $this->last_stmt;
-            $count =& $this->query($countquery);
+
+            if (count($this->_data)) {
+                $smt = $this->prepare('SELECT COUNT(*) FROM ('.$this->last_query.')');
+                $count = $this->execute($smt, $this->_data);
+            } else {
+                $count =& $this->query($countquery);
+            }
+
             if (DB::isError($count) ||
                 DB::isError($row = $count->fetchRow(DB_FETCHMODE_ORDERED)))
             {
@@ -430,6 +451,8 @@ class DB_oci8 extends DB_common
         if (!is_array($data)) {
             $data = array($data);
         }
+
+        $this->_data = $data;
 
         $types =& $this->prepare_types[$stmt];
         if (count($types) != count($data)) {

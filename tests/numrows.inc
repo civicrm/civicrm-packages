@@ -33,7 +33,7 @@ switch ($dbh->phptype) {
         break;
 }
 if (!DB::isError($rows = $sth->numRows())) {
-    print "$rows\n";
+    print "$rows from first\n";
 } else {
     print "\n";
 }
@@ -41,22 +41,37 @@ for ($i = 0; $i < 5; $i++) {
     $sth = $dbh->query("INSERT INTO phptest (a) VALUES ($i)");
     $sth = $dbh->query("SELECT a FROM phptest");
     if (!DB::isError($rows = $sth->numRows())) {
-        print "$rows\n";
+        print "$rows from $i\n";
     } else {
         print "\n";
     }
 }
 
+$sth = $dbh->query('SELECT a FROM phptest WHERE a > ?', 0);
+if (!DB::isError($rows = $sth->numRows())) {
+    print "$rows from > 0\n";
+} else {
+    print "\n";
+}
+
+$sth = $dbh->prepare('SELECT a FROM phptest WHERE a < ?');
+$res = $dbh->execute($sth, array(4));
+if (!DB::isError($rows = $res->numRows())) {
+    print "$rows from < 4\n";
+} else {
+    print "\n";
+}
+
 $dbh->query("DELETE FROM phptest WHERE a < 4");
 $sth = $dbh->query("SELECT a FROM phptest");
 if (!DB::isError($rows = $sth->numRows())) {
-    print "$rows\n";
+    print "$rows from 5 and 6 not deleted\n";
 } else {
     print "\n";
 }
 $sth = $dbh->query("SELECT a FROM phptest where a < 0");
 if (!DB::isError($rows = $sth->numRows())) {
-    print "$rows\n";
+    print "$rows from < 0\n";
 } else {
     print "\n";
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.85 2004-03-11 03:48:47 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.86 2004-03-12 01:15:54 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -96,9 +96,13 @@ Move error code portability mapping from connect()
 to mysqlRaiseError() so the feature can be turned
 on/off during runtime.  (danielc)
 
-- oci8
+- oci8:
 In tableInfo() only return num_fields key if $mode
 is set.  (lsmith)
+
+- oci8:
+numRows() now works if called after execute().
+Bug 930.  (danielc)
 
 - sqlite:
 Now uses sqlite_escape_string() to escape strings
