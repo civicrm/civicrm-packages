@@ -1235,10 +1235,10 @@ class DB_result
         if ($this->dbh->features['numrows'] === 'emulate'
             && $this->dbh->options['portability'] & DB_PORTABILITY_NUMROWS)
         {
-            if (!$this->dbh->features['prepare']) {
-                $res = $this->dbh->query($this->query);
-            } else {
+            if ($this->dbh->features['prepare']) {
                 $res = $this->dbh->query($this->query, $this->parameters);
+            } else {
+                $res = $this->dbh->query($this->query);
             }
             if (DB::isError($res)) {
                 return $res;
