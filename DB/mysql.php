@@ -156,16 +156,12 @@ class DB_mysql extends DB_common
                         case 1049:
                             return $this->raiseError(DB_ERROR_NOSUCHDB, null, null,
                                                      null, mysql_error($conn));
-                            break;
                         case 1044:
                              return $this->raiseError(DB_ERROR_ACCESS_VIOLATION, null, null,
                                                       null, mysql_error($conn));
-                            break;
                         default:
                             return $this->raiseError(DB_ERROR, null, null,
                                                      null, mysql_error($conn));
-                            break;
-
                     }
             }
             // fix to allow calls to different databases in the same script
@@ -902,7 +898,6 @@ class DB_mysql extends DB_common
                     }
                 }
                 return $sql;
-                break;
             case 'databases':
                 $sql = 'SHOW DATABASES';
                 break;
