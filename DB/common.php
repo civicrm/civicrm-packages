@@ -219,6 +219,7 @@ class DB_common extends PEAR
      *                 - string <samp>TRUE</samp> or <samp>FALSE</samp>
      *                   for DBMS's with <kbd>BOOLEAN</kbd> handling:
      *                     + dbase
+     *                     + fbsql
      *                     + ifx
      *                     + ibase
      *                     + odbc
