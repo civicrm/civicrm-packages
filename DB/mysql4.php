@@ -107,7 +107,7 @@ class DB_mysql4 extends DB_common
      */
     function connect($dsninfo, $persistent = false)
     {
-        if (!DB::assertExtension('mysql')) {
+        if (!DB::assertExtension('mysqli')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
