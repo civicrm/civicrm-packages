@@ -665,7 +665,7 @@ class DB_ibase extends DB_common
         $count = @ibase_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
-        if (is_null($mode)) {
+        if (!$mode) {
             for ($i=0; $i<$count; $i++) {
                 $info = @ibase_field_info($id, $i);
                 $res[$i]['table'] = $got_string ? $case_func($result) : '';

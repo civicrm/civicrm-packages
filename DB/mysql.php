@@ -819,7 +819,7 @@ class DB_mysql extends DB_common
         $count = @mysql_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
-        if (is_null($mode)) {
+        if (!$mode) {
             for ($i=0; $i<$count; $i++) {
                 $res[$i]['table'] = $case_func(@mysql_field_table($id, $i));
                 $res[$i]['name']  = $case_func(@mysql_field_name($id, $i));

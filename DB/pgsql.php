@@ -745,7 +745,7 @@ class DB_pgsql extends DB_common
         $count = @pg_numfields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
-        if (is_null($mode)) {
+        if (!$mode) {
 
             for ($i=0; $i<$count; $i++) {
                 $res[$i]['table'] = $got_string ? $case_func($result) : '';

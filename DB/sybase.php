@@ -659,7 +659,7 @@ class DB_sybase extends DB_common
         $count = @sybase_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
-        if (is_null($mode)) {
+        if (!$mode) {
 
             for ($i=0; $i<$count; $i++) {
                 $f = @sybase_fetch_field($id, $i);

@@ -548,7 +548,7 @@ class DB_mssql extends DB_common
         $count = @mssql_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
-        if (is_null($mode)) {
+        if (!$mode) {
             for ($i=0; $i<$count; $i++) {
                 $res[$i]['table'] = $got_string ? $case_func($result) : '';
                 $res[$i]['name']  = $case_func(@mssql_field_name($id, $i));

@@ -586,7 +586,7 @@ class DB_fbsql extends DB_common
         $count = @fbsql_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
-        if (is_null($mode)) {
+        if (!$mode) {
             for ($i=0; $i<$count; $i++) {
                 $res[$i]['table'] = $case_func(@fbsql_field_table($id, $i));
                 $res[$i]['name']  = $case_func(@fbsql_field_name($id, $i));
