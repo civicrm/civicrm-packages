@@ -2,6 +2,7 @@
 DB_driver::sequences
 --SKIPIF--
 <?php
+error_reporting(E_ALL);
 chdir(dirname(__FILE__));
 require_once './skipif.inc';
 $tableInfo = $db->dropSequence('ajkdslfajoijkadie');
