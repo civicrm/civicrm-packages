@@ -374,7 +374,7 @@ class DB_oci8 extends DB_common
     {
         $types=&$this->prepare_types[$stmt];
         if (($size = sizeof($types)) != sizeof($data)) {
-            $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
+            $tmp = $this->raiseError(DB_ERROR_MISMATCH);
             return $tmp;
         }
         for ($i = 0; $i < $size; $i++) {
@@ -395,7 +395,7 @@ class DB_oci8 extends DB_common
                 }
             }
             if (!@OCIBindByName($stmt, ":bind" . $i, $pdata[$i], -1)) {
-                $tmp =& $this->oci8RaiseError($stmt);
+                $tmp = $this->oci8RaiseError($stmt);
                 return $tmp;
             }
         }
@@ -405,7 +405,7 @@ class DB_oci8 extends DB_common
             $success = @OCIExecute($stmt, OCI_DEFAULT);
         }
         if (!$success) {
-            $tmp =& $this->oci8RaiseError($stmt);
+            $tmp = $this->oci8RaiseError($stmt);
             return $tmp;
         }
         $this->last_stmt = $stmt;

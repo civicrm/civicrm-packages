@@ -324,7 +324,7 @@ class DB_ibase extends DB_common
     {
         $types=&$this->prepare_types[$stmt];
         if (($size = sizeof($types)) != sizeof($data)) {
-            $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
+            $tmp = $this->raiseError(DB_ERROR_MISMATCH);
             return $tmp;
         }
         $pdata[0] = $stmt;
@@ -348,7 +348,7 @@ class DB_ibase extends DB_common
         }
         $res = call_user_func_array('ibase_execute', $pdata);
         if (!$res) {
-            $tmp =& $this->ibaseRaiseError();
+            $tmp = $this->ibaseRaiseError();
             return $tmp;
         }
         /* XXX need this?
