@@ -79,7 +79,7 @@ class DB_oci8 extends DB_common
         $this->phptype = 'oci8';
         $this->dbsyntax = 'oci8';
         $this->features = array(
-            'prepare' => false,
+            'prepare' => true,
             'pconnect' => true,
             'transactions' => true,
             'limit' => 'alter'

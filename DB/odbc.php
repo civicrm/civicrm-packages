@@ -60,7 +60,7 @@ class DB_odbc extends DB_common
         $this->phptype = 'odbc';
         $this->dbsyntax = 'sql92';
         $this->features = array(
-            'prepare' => true,
+            'prepare' => false,
             'pconnect' => true,
             'transactions' => false,
             'limit' => 'emulate'
@@ -123,7 +123,7 @@ class DB_odbc extends DB_common
         switch ($this->dbsyntax) {
             case 'solid':
                 $this->features = array(
-                    'prepare' => true,
+                    'prepare' => false,
                     'pconnect' => true,
                     'transactions' => true
                 );
