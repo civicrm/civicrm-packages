@@ -429,7 +429,7 @@ class DB_ibase extends DB_common
 
         array_unshift($data, $stmt);
 
-        $res = call_user_func_array('ibase_execute', $pdata);
+        $res = call_user_func_array('ibase_execute', $data);
         if (!$res) {
             $tmp =& $this->ibaseRaiseError();
             return $tmp;
