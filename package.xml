@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.121 2004-09-24 14:21:00 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.122 2004-09-25 21:57:59 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -50,9 +50,13 @@ DB is compatible with both PHP 4 and PHP 5.
   <release>
     <version>1.6.7</version>
     <state>stable</state>
-    <date>pending</date>
+    <date>2004-09-25</date>
     <notes><![CDATA[
-* Add --INI-- section with error_reporting = 2047 to
+* pgsql:
+Don't anchor start of error regex.  Bug 2399.  (danielc)
+
+* tests:
+Add --INI-- section with error_reporting = 2047 to
 test files ensuring they pass under recent versions of
 PHP 5.  (danielc)
     ]]></notes>

@@ -243,7 +243,7 @@ class DB_pgsql extends DB_common
         static $error_regexps;
         if (!isset($error_regexps)) {
             $error_regexps = array(
-                '/^(([Rr]elation|[Ss]equence|[Tt]able)( [\"\'].*[\"\'])? does not exist|[Cc]lass ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
+                '/(([Rr]elation|[Ss]equence|[Tt]able)( [\"\'].*[\"\'])? does not exist|[Cc]lass ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
                 '/[Cc]olumn [\"\'].*[\"\'] .*does not exist/' => DB_ERROR_NOSUCHFIELD,
                 '/[Rr]elation [\"\'].*[\"\'] already exists|[Cc]annot insert a duplicate key into (a )?unique index.*/' => DB_ERROR_ALREADY_EXISTS,
                 '/(divide|division) by zero$/'          => DB_ERROR_DIVZERO,
