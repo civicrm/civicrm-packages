@@ -164,14 +164,18 @@ class DB_sqlite extends DB_common {
 
         if (isset($file)) {
             if (!file_exists($file)) {
-                touch($file );
+                if (!touch($file)) {
+                    return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
+                }
                 if (!isset($dsninfo['mode'])
                         || !is_numeric($dsninfo['mode'])) {
                     $mode = 0644;
                 } else {
                     $mode = octdec($dsninfo['mode']);
                 }
-                chmod($file, $mode);
+                if (!chmod($file, $mode)) {
+                    return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
+                }
                 if (!file_exists($file)) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
                 }
