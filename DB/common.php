@@ -936,7 +936,7 @@ class DB_common extends PEAR
         }
         $result = $this->simpleQuery($realquery);
 
-        if (DB::isError($result) || $result === DB_OK) {
+        if ($result === DB_OK || DB::isError($result)) {
             return $result;
         } else {
             $tmp =& new DB_result($this, $result);
@@ -1138,7 +1138,7 @@ class DB_common extends PEAR
         } else {
             $this->last_parameters = array();
             $result = $this->simpleQuery($query);
-            if (DB::isError($result) || $result === DB_OK) {
+            if ($result === DB_OK || DB::isError($result)) {
                 return $result;
             } else {
                 $tmp =& new DB_result($this, $result);
@@ -1587,7 +1587,7 @@ class DB_common extends PEAR
             $res =& $this->query($query);
         }
 
-        if (DB::isError($res) || $res === DB_OK) {
+        if ($res === DB_OK || DB::isError($res)) {
             return $res;
         }
 
