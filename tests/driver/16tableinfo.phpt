@@ -74,7 +74,7 @@ function pe($o){
     global $dbh;
 
     if ($o->getMessage() == "DB Error: can't distinguish duplicate field names") {
-        print "NOTICE: $dbh->phptype can't distinguish duplicate field names\n";
+        print "NOTICE: $dbh->phptype can't distinguish duplicate field names";
         return;
     }
 
@@ -99,7 +99,7 @@ function examineArrayData($array, $field = false, $query = true) {
     global $dbh, $quirks;
 
     if (!is_array($array)) {
-        print "This DMBS didn't produce proper results\n\n\n";
+        print "This DMBS didn't produce proper results\n\n\n\n";
         return;
     }
 
