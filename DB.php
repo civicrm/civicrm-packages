@@ -1,3 +1,4 @@
+
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
 // +----------------------------------------------------------------------+
@@ -219,7 +220,7 @@ class DB
         $classname = "DB_${type}";
 
         if (!class_exists($classname)) {
-            $tmp =& PEAR::raiseError(null, DB_ERROR_NOT_FOUND,
+            $tmp = PEAR::raiseError(null, DB_ERROR_NOT_FOUND,
                                     null, null, null, 'DB_Error', true);
             return $tmp;
         }
@@ -271,7 +272,7 @@ class DB
 
         $classname = "DB_${type}";
         if (!class_exists($classname)) {
-            $tmp =& PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
+            $tmp = PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
                                     "Unable to include the DB/{$type}.php file for `$dsn'",
                                     'DB_Error', true);
             return $tmp;

@@ -290,7 +290,7 @@ class DB_common extends PEAR
                 $mode    = $this->_default_error_mode;
                 $options = $this->_default_error_options;
             }
-            $tmp =& PEAR::raiseError($code, null, $mode, $options, null, null, true);
+            $tmp = PEAR::raiseError($code, null, $mode, $options, null, null, true);
             return $tmp;
         }
 
@@ -302,7 +302,7 @@ class DB_common extends PEAR
             $userinfo .= " [nativecode=$nativecode]";
         }
 
-        $tmp =& PEAR::raiseError(null, $code, $mode, $options, $userinfo,
+        $tmp = PEAR::raiseError(null, $code, $mode, $options, $userinfo,
                                 'DB_Error', true);
         return $tmp;
     }
