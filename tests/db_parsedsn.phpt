@@ -26,6 +26,7 @@ test("mysql");
 test("odbc(mssql)");
 test('odbc(db2)://user:password@/database');
 test('odbc(access):///database');
+test('odbc://admin@/datasourceName');
 test("mysql://localhost");
 test("mysql://remote.host.com/db");
 test("oci8://system:manager@");
@@ -115,6 +116,19 @@ Array
     [port] => 
     [socket] => 
     [database] => database
+)
+DSN: odbc://admin@/datasourceName
+Array
+(
+    [phptype] => odbc
+    [dbsyntax] => odbc
+    [username] => admin
+    [password] => 
+    [protocol] => tcp
+    [hostspec] => 
+    [port] => 
+    [socket] => 
+    [database] => datasourceName
 )
 DSN: mysql://localhost
 Array
