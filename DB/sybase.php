@@ -800,6 +800,28 @@ class DB_sybase extends DB_common
         }
     }
 
+    // }}}
+    // {{{ quoteIdentifier()
+
+    /**
+     * Quote a string so it can be safely used as a table / column name
+     *
+     * Quoting style depends on which database driver is being used.
+     *
+     * @param string $str  identifier name to be quoted
+     *
+     * @return string  quoted identifier string
+     *
+     * @since 1.6.0
+     * @access public
+     */
+    function quoteIdentifier($str)
+    {
+        return '[' . str_replace(']', ']]', $str) . ']';
+    }
+
+    // }}}
+
 }
 
 /*

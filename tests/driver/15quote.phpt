@@ -49,31 +49,75 @@ switch ($dbh->phptype) {
     case 'ibase':
         $null = '';
         $chr  = 'VARCHAR(8)';
+        $identifier = 'q\ut] "dn[t';
         break;
     case 'msql':
     case 'ifx':
         // doing this for ifx to keep certain versions happy
         $null = '';
-        $chrc = 'CHAR(255)';
         $chr  = 'CHAR(8)';
+        $identifier = 'q\ut] "dn[t';
+        break;
+    case 'oci8':
+        $null = '';
+        $chr  = 'VARCHAR(8)';
+        $identifier = 'q\ut] dn[t';
         break;
     default:
         $null = 'NULL';
         $chr  = 'VARCHAR(8)';
+        $identifier = 'q\ut] "dn[t';
 }
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 $dbh->query('DROP TABLE pearquote');
 
+
+if ($identifier) {
+    $create = $dbh->query("
+        CREATE TABLE pearquote (
+          n DECIMAL(3,1) $null,
+          s $chr $null,
+          " . $dbh->quoteIdentifier($identifier) . " DECIMAL(3,1) $null,
+          b {$boolean_col_type[$dbh->phptype]} $null
+        )
+    ");
+
+    if (DB::isError($create) ) {
+        pe($create);
+    }
+
+    $info = $dbh->tableInfo('pearquote');
+    if (DB::isError($info) ) {
+        if ($info->code == DB_ERROR_NOT_CAPABLE) {
+            print "Creation of the delimited identifier worked.\n";
+        } else {
+            print "tableInfo() failed.\n";
+        }
+    } else {
+        if ($identifier == $info[2]['name']) {
+            print "Creation of the delimited identifier worked.\n";
+            // print "COLUMN NAME IS: {$info[2]['name']}\n";
+        } else {
+            print "Expected column name: '$identifier' ... ";
+            print "Actual column name: '{$info[2]['name']}'\n";
+        }
+    }
+
+} else {
+    $dbh->query("
+        CREATE TABLE pearquote (
+          n DECIMAL(3,1) $null,
+          s $chr $null,
+          plainidentifier DECIMAL(3,1) $null,
+          b {$boolean_col_type[$dbh->phptype]} $null
+        )
+    ");
+}
+
+
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
-$dbh->query("
-    CREATE TABLE pearquote (
-      n DECIMAL(3,1) $null,
-      s $chr $null,
-      b {$boolean_col_type[$dbh->phptype]} $null
-    )
-");
 
 $strings = array(
     "'",
@@ -183,6 +227,7 @@ $dbh->query('DROP TABLE pearquote');
 
 ?>
 --EXPECT--
+Creation of the delimited identifier worked.
 String escape test: OK
 Number escape test: OK
 Boolean escape test: OK

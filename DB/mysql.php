@@ -660,6 +660,30 @@ class DB_mysql extends DB_common
     }
 
     // }}}
+    // {{{ quoteIdentifier()
+
+    /**
+     * Quote a string so it can be safely used as a table or column name
+     *
+     * Quoting style depends on which database driver is being used.
+     *
+     * MySQL can't handle the backtick character (<kbd>`</kbd>) in
+     * table or column names.
+     *
+     * @param string $str  identifier name to be quoted
+     *
+     * @return string  quoted identifier string
+     *
+     * @since 1.6.0
+     * @access public
+     * @internal
+     */
+    function quoteIdentifier($str)
+    {
+        return '`' . $str . '`';
+    }
+
+    // }}}
     // {{{ quote()
 
     /**

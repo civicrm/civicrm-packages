@@ -194,6 +194,38 @@ class DB_common extends PEAR
     }
 
     // }}}
+    // {{{ quoteIdentifier()
+
+    /**
+     * Quote a string so it can be safely used as a table or column name
+     *
+     * Delimiting style depends on which database driver is being used.
+     *
+     * NOTE: just because you CAN use delimited identifiers doesn't mean
+     * you SHOULD use them.  In general, they end up causing way more
+     * problems than they solve.
+     *
+     * Portability is broken by using the following characters in
+     * delimited identifiers:
+     *   + backtick (<kbd>`</kbd>) -- due to MySQL
+     *   + double quote (<kbd>"</kbd>) -- due to Oracle
+     *
+     * InterBase doesn't seem to be ability to use delimited identifiers
+     * via PHP.
+     *
+     * @param string $str  identifier name to be quoted
+     *
+     * @return string  quoted identifier string
+     *
+     * @since 1.6.0
+     * @access public
+     */
+    function quoteIdentifier($str)
+    {
+        return '"' . str_replace('"', '""', $str) . '"';
+    }
+
+    // }}}
     // {{{ quoteSmart()
 
     /**
