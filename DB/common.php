@@ -478,7 +478,9 @@ class DB_common extends PEAR
     *
     * Example : buildManipSQL('table_sql', array('field1', 'field2', 'field3'), DB_AUTOQUERY_INSERT)
     *           will return the string : INSERT INTO table_sql (field1,field2,field3) VALUES (?,?,?)
-    * NB : This belongs more to a SQL Builder class, but this is a simple facility
+    * NB : - This belongs more to a SQL Builder class, but this is a simple facility
+    *      - Be carefull ! If you don't give a $where param with an UPDATE query, all
+    *        the records of the table will be updated !
     *
     * @param string $table name of the table
     * @param array $table_fields ordered array containing the fields names
@@ -510,9 +512,6 @@ class DB_common extends PEAR
             return "INSERT INTO $table ($names) VALUES ($values)";
             break;
         case DB_AUTOQUERY_UPDATE:
-            if (!$where) { // We need a WHERE statement (if you don't, use a stupid one like 1=1)
-                $this->raiseError(DB_ERROR_NEED_MORE_DATA);
-            }
             $set = '';
             while (list(, $value) = each($table_fields)) {
                 if ($first) {
@@ -522,7 +521,11 @@ class DB_common extends PEAR
                 }
                 $set .= "$value = ?";
             }
-            return "UPDATE $table SET $set WHERE $where";
+            $sql = "UPDATE $table SET $set";
+            if ($where) {
+                $sql .= " WHERE $sql";
+            }
+            return $sql;
             break;
         default:
             $this->raiseError(DB_ERROR_SYNTAX);
