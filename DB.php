@@ -1077,7 +1077,7 @@ class DB_result
 }
 
 // }}}
-// {{{ class DB_Row
+// {{{ class DB_row
 
 /**
  * Pear DB Row Object

@@ -49,8 +49,8 @@ $sth = $dbh->query("SELECT * FROM phptest");
 $sth->fetchInto($row);
 print_obj($row);
 
-echo "--- fetch with default fetchmode DB_FETCHMODE_OBJECT and class DB_Row ---\n";
-$dbh->setFetchMode(DB_FETCHMODE_OBJECT, 'DB_Row');
+echo "--- fetch with default fetchmode DB_FETCHMODE_OBJECT and class DB_row ---\n";
+$dbh->setFetchMode(DB_FETCHMODE_OBJECT, 'DB_row');
 $sth = $dbh->query("SELECT * FROM phptest");
 $row = $sth->fetchRow();
 print_obj($row);

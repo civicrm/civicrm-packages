@@ -513,13 +513,13 @@ class DB_common extends PEAR
      *                      If no class is specified by default a cast
      *                      to object from the assoc array row will be done.
      *                      There is also the posibility to use and extend the
-     *                      'DB_Row' class.
+     *                      'DB_row' class.
      *
      * @see DB_FETCHMODE_ORDERED
      * @see DB_FETCHMODE_ASSOC
      * @see DB_FETCHMODE_FLIPPED
      * @see DB_FETCHMODE_OBJECT
-     * @see DB_Row::DB_Row()
+     * @see DB_row::DB_row()
      * @access public
      */
     function setFetchMode($fetchmode, $object_class = null)

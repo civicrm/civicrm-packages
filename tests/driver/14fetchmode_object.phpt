@@ -14,6 +14,6 @@ stdclass -> a b c d
 --- fetch with default fetchmode DB_FETCHMODE_OBJECT ---
 stdclass -> a b c d
 stdclass -> a b c d
---- fetch with default fetchmode DB_FETCHMODE_OBJECT and class DB_Row ---
+--- fetch with default fetchmode DB_FETCHMODE_OBJECT and class DB_row ---
 db_row -> a b c d
 db_row -> a b c d
