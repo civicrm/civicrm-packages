@@ -285,17 +285,31 @@ class DB_sqlite extends DB_common {
     // {{{ fetchInto()
 
     /**
-     * Fetch a row and insert the data into an existing array. Availabe modes
-     * are SQLITE_ASSOC, SQLITE_NUM and SQLITE_BOTH. An object type is not
-     * available.
+     * Fetch a row and insert the data into an existing array.
+     *
+     * The array's keys will be converted to lower case if
+     * <var>$options['optimize']</var> is set to <samp>portability</samp>
+     * AND <var>$fetchmode</var> is set to <samp>DB_FETCHMODE_ASSOC</samp>.
+     *
+     * <var>$options['optimize']</var> can be set when instantiating the
+     * DB class via DB::connect(), but can be changed using
+     * DB_common::setOption.
+     *
+     * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
      *
      * @param $result    SQLite result identifier
      * @param $arr       (reference) array where data from the row is stored
-     * @param $fetchmode how the array data should be indexed
+     * @param $fetchmode how the resulting array should be indexed
      * @param $rownum    the row number to fetch
-     * @access public
      *
-     * @return int DB_OK on success, a DB error on failure
+     * @return mixed DB_OK on success, NULL when end of result set is
+     *               reached or on failure
+     *
+     * @see DB::connect()
+     * @see DB_common::setOption
+     * @see DB_common::$options
+     * @see DB_common::setFetchMode()
+     * @access public
      */
     function fetchInto($result, &$arr, $fetchmode, $rownum=null) {
         if ($rownum !== null) {
@@ -303,8 +317,11 @@ class DB_sqlite extends DB_common {
                 return null;
             }
         }
-        if ($fetchmode & DB_FETCHMODE_ASSOC ) {
+        if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $arr = sqlite_fetch_array($result, SQLITE_ASSOC);
+            if ($this->options['optimize'] == 'portability' && $arr) {
+                $arr = array_change_key_case($arr, CASE_LOWER);
+            }
         } else {
             $arr = sqlite_fetch_array($result, SQLITE_NUM);
         }

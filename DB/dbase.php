@@ -114,6 +114,33 @@ class DB_dbase extends DB_common
     // }}}
     // {{{ fetchInto()
 
+    /**
+     * Fetch a row and insert the data into an existing array.
+     *
+     * The array's keys will be converted to lower case if
+     * <var>$options['optimize']</var> is set to <samp>portability</samp>
+     * AND <var>$fetchmode</var> is set to <samp>DB_FETCHMODE_ASSOC</samp>.
+     *
+     * <var>$options['optimize']</var> can be set when instantiating the
+     * DB class via DB::connect(), but can be changed using
+     * DB_common::setOption.
+     *
+     * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
+     *
+     * @param $result    PostgreSQL result identifier
+     * @param $row       (reference) array where data from the row is stored
+     * @param $fetchmode how the resulting array should be indexed
+     * @param $rownum    the row number to fetch
+     *
+     * @return mixed DB_OK on success, NULL when end of result set is
+     *               reached or on failure
+     *
+     * @see DB::connect()
+     * @see DB_common::setOption
+     * @see DB_common::$options
+     * @see DB_common::setFetchMode()
+     * @access public
+     */
     function fetchInto($res, &$row, $fetchmode, $rownum = null)
     {
         if ($rownum === null) {
@@ -121,6 +148,9 @@ class DB_dbase extends DB_common
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $row = @dbase_get_record_with_names($this->connection, $rownum);
+            if ($this->options['optimize'] == 'portability' && $row) {
+                $row = array_change_key_case($row, CASE_LOWER);
+            }
         } else {
             $row = @dbase_get_record($this->connection, $rownum);
         }

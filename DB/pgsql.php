@@ -271,12 +271,32 @@ class DB_pgsql extends DB_common
     /**
      * Fetch a row and insert the data into an existing array.
      *
-     * @param $result PostgreSQL result identifier
-     * @param $row (reference) array where data from the row is stored
-     * @param $fetchmode how the array data should be indexed
-     * @param $rownum the row number to fetch
+     * The array's keys will be converted to lower case if
+     * <var>$options['optimize']</var> is set to <samp>portability</samp>
+     * AND <var>$fetchmode</var> is set to <samp>DB_FETCHMODE_ASSOC</samp>.
+     * This is implemented even though PostgreSQL already converts
+     * identifiers to lower case because this behavior could change and
+     * to handle queries where quoted identifiers are used.
      *
-     * @return int DB_OK on success, a DB error code on failure
+     * <var>$options['optimize']</var> can be set when instantiating the
+     * DB class via DB::connect(), but can be changed using
+     * DB_common::setOption.
+     *
+     * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
+     *
+     * @param $result    PostgreSQL result identifier
+     * @param $row       (reference) array where data from the row is stored
+     * @param $fetchmode how the resulting array should be indexed
+     * @param $rownum    the row number to fetch
+     *
+     * @return mixed DB_OK on success, NULL when end of result set is
+     *               reached, DB error on failure
+     *
+     * @see DB::connect()
+     * @see DB_common::setOption
+     * @see DB_common::$options
+     * @see DB_common::setFetchMode()
+     * @access public
      */
     function fetchInto($result, &$row, $fetchmode, $rownum=null)
     {
@@ -286,6 +306,9 @@ class DB_pgsql extends DB_common
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $row = @pg_fetch_array($result, $rownum, PGSQL_ASSOC);
+            if ($this->options['optimize'] == 'portability' && $row) {
+                $row = array_change_key_case($row, CASE_LOWER);
+            }
         } else {
             $row = @pg_fetch_row($result, $rownum);
         }

@@ -184,12 +184,29 @@ class DB_oci8 extends DB_common
     /**
      * Fetch a row and insert the data into an existing array.
      *
-     * @param $result oci8 result identifier
-     * @param $arr (reference) array where data from the row is stored
-     * @param $fetchmode how the array data should be indexed
-     * @param $rownum the row number to fetch (not yet supported)
+     * The array's keys will be converted to lower case if
+     * <var>$options['optimize']</var> is set to <samp>portability</samp>
+     * AND <var>$fetchmode</var> is set to <samp>DB_FETCHMODE_ASSOC</samp>.
      *
-     * @return int DB_OK on success, a DB error code on failure
+     * <var>$options['optimize']</var> can be set when instantiating the
+     * DB class via DB::connect(), but can be changed using
+     * DB_common::setOption.
+     *
+     * <var>$fetchmode</var> is usually set via DB_common::setFetchMode().
+     *
+     * @param $result    oci8 result identifier
+     * @param $arr       (reference) array where data from the row is stored
+     * @param $fetchmode how the resulting array should be indexed
+     * @param $rownum    the row number to fetch (not yet supported)
+     *
+     * @return mixed DB_OK on success, NULL when end of result set is
+     *               reached, DB error on failure
+     *
+     * @see DB::connect()
+     * @see DB_common::setOption
+     * @see DB_common::$options
+     * @see DB_common::setFetchMode()
+     * @access public
      */
     function fetchInto($result, &$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=NULL)
     {
@@ -198,7 +215,7 @@ class DB_oci8 extends DB_common
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $moredata = @OCIFetchInto($result,$arr,OCI_ASSOC+OCI_RETURN_NULLS+OCI_RETURN_LOBS);
-            if ($moredata && $this->options['optimize'] == 'portability') {
+            if ($this->options['optimize'] == 'portability' && $moredata) {
                 $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
