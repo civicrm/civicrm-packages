@@ -851,7 +851,7 @@ class DB_oci8 extends DB_common
             } else {
                 /*
                  * ELSE, probably received a result resource identifier.
-                 * Depricated.  Here for compatibility only.
+                 * Deprecated.  Here for compatibility only.
                  */
             }
 
