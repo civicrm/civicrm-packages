@@ -79,6 +79,7 @@ class DB_common extends PEAR
      * @see DB_common::setOption()
      */
     var $options = array(
+        'buffer' => 1000,
         'persistent' => false,
         'ssl' => false,
         'debug' => 0,
@@ -512,6 +513,10 @@ class DB_common extends PEAR
      * <var>autofree</var> <kbd>boolean</kbd> = <samp>false</samp>
      *      <br />should results be freed automatically when there are no
      *            more rows?
+     * </li><li>
+     * <var>buffer</var> <kbd>integer</kbd> = <samp>1000</samp>
+     *      <br />how many rows of the result set should be buffered?
+     *            This is only used by the oci8 driver at this point.
      * </li><li>
      * <var>debug</var> <kbd>integer</kbd> = <samp>0</samp>
      *      <br />debug level
