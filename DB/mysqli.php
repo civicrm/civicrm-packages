@@ -734,6 +734,11 @@ class DB_mysqli extends DB_common
                 $this->errorcode_map[1022] = DB_ERROR_CONSTRAINT;
                 $this->errorcode_map[1048] = DB_ERROR_CONSTRAINT_NOT_NULL;
                 $this->errorcode_map[1062] = DB_ERROR_CONSTRAINT;
+            } else {
+                // Doing this in case mode changes during runtime.
+                $this->errorcode_map[1022] = DB_ERROR_ALREADY_EXISTS;
+                $this->errorcode_map[1048] = DB_ERROR_CONSTRAINT;
+                $this->errorcode_map[1062] = DB_ERROR_ALREADY_EXISTS;
             }
             $errno = $this->errorCode(mysqli_errno($this->connection));
         }

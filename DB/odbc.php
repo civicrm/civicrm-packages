@@ -552,6 +552,9 @@ class DB_odbc extends DB_common
                 case 'access':
                     if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
                         $this->errorcode_map['07001'] = DB_ERROR_NOSUCHFIELD;
+                    } else {
+                        // Doing this in case mode changes during runtime.
+                        $this->errorcode_map['07001'] = DB_ERROR_MISMATCH;
                     }
             }
             $errno = $this->errorCode(odbc_error($this->connection));
