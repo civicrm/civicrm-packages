@@ -93,6 +93,18 @@ class DB_sqlite extends DB_common
     );
 
     /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
+    var $connection;
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
+    var $dsn = array();
+
+    /**
      * SQLite data types
      *
      * @link http://www.sqlite.org/datatypes.html
