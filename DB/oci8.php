@@ -949,6 +949,8 @@ class DB_oci8 extends DB_common
             $case_func = 'strval';
         }
 
+        $res = array();
+
         if (is_string($result)) {
             /*
              * Probably received a table name.
@@ -971,12 +973,13 @@ class DB_oci8 extends DB_common
 
             $i = 0;
             while (@OCIFetch($stmt)) {
-                $res[$i]['table'] = $case_func($result);
-                $res[$i]['name']  = $case_func(@OCIResult($stmt, 1));
-                $res[$i]['type']  = @OCIResult($stmt, 2);
-                $res[$i]['len']   = @OCIResult($stmt, 3);
-                $res[$i]['flags'] = (@OCIResult($stmt, 4) == 'N') ? 'not_null' : '';
-
+                $res[$i] = array(
+                    'table' => $case_func($result),
+                    'name'  => $case_func(@OCIResult($stmt, 1)),
+                    'type'  => @OCIResult($stmt, 2),
+                    'len'   => @OCIResult($stmt, 3),
+                    'flags' => (@OCIResult($stmt, 4) == 'N') ? 'not_null' : '',
+                );
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }
@@ -1007,14 +1010,14 @@ class DB_oci8 extends DB_common
 
             if ($result === $this->last_stmt) {
                 $count = @OCINumCols($result);
-
-                for ($i=0; $i<$count; $i++) {
-                    $res[$i]['table'] = '';
-                    $res[$i]['name']  = $case_func(@OCIColumnName($result, $i+1));
-                    $res[$i]['type']  = @OCIColumnType($result, $i+1);
-                    $res[$i]['len']   = @OCIColumnSize($result, $i+1);
-                    $res[$i]['flags'] = '';
-
+                for ($i = 0; $i < $count; $i++) {
+                    $res[$i] = array(
+                        'table' => '',
+                        'name'  => $case_func(@OCIColumnName($result, $i+1)),
+                        'type'  => @OCIColumnType($result, $i+1),
+                        'len'   => @OCIColumnSize($result, $i+1),
+                        'flags' => '',
+                    );
                     if ($mode & DB_TABLEINFO_ORDER) {
                         $res['order'][$res[$i]['name']] = $i;
                     }
@@ -1022,7 +1025,6 @@ class DB_oci8 extends DB_common
                         $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
                     }
                 }
-
                 if ($mode) {
                     $res['num_fields'] = $count;
                 }

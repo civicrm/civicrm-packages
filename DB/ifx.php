@@ -609,40 +609,29 @@ class DB_ifx extends DB_common
             $case_func = 'strval';
         }
 
-        $i = 0;
-        // made this IF due to performance (one if is faster than $count if's)
-        if (!$mode) {
-            foreach ($flds as $key => $value) {
-                $props = explode(';', $value);
+        $i   = 0;
+        $res = array();
 
-                $res[$i]['table'] = $got_string ? $case_func($result) : '';
-                $res[$i]['name']  = $case_func($key);
-                $res[$i]['type']  = $props[0];
-                $res[$i]['len']   = $props[1];
-                $res[$i]['flags'] = $props[4] == 'N' ? 'not_null' : '';
-                $i++;
-            }
-
-        } else { // full
+        if ($mode) {
             $res['num_fields'] = $count;
+        }
 
-            foreach ($flds as $key => $value) {
-                $props = explode(';', $value);
-
-                $res[$i]['table'] = $got_string ? $case_func($result) : '';
-                $res[$i]['name']  = $case_func($key);
-                $res[$i]['type']  = $props[0];
-                $res[$i]['len']   = $props[1];
-                $res[$i]['flags'] = $props[4] == 'N' ? 'not_null' : '';
-
-                if ($mode & DB_TABLEINFO_ORDER) {
-                    $res['order'][$res[$i]['name']] = $i;
-                }
-                if ($mode & DB_TABLEINFO_ORDERTABLE) {
-                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
-                }
-                $i++;
+        foreach ($flds as $key => $value) {
+            $props = explode(';', $value);
+            $res[$i] = array(
+                'table' => $got_string ? $case_func($result) : '',
+                'name'  => $case_func($key),
+                'type'  => $props[0],
+                'len'   => $props[1],
+                'flags' => $props[4] == 'N' ? 'not_null' : '',
+            );
+            if ($mode & DB_TABLEINFO_ORDER) {
+                $res['order'][$res[$i]['name']] = $i;
             }
+            if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
+            }
+            $i++;
         }
 
         // free the result only if we were called on a table

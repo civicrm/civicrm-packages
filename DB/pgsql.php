@@ -897,34 +897,27 @@ class DB_pgsql extends DB_common
         }
 
         $count = @pg_numfields($id);
+        $res   = array();
 
-        // made this IF due to performance (one if is faster than $count if's)
-        if (!$mode) {
+        if ($mode) {
+            $res['num_fields'] = $count;
+        }
 
-            for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = $got_string ? $case_func($result) : '';
-                $res[$i]['name']  = $case_func(@pg_fieldname($id, $i));
-                $res[$i]['type']  = @pg_fieldtype($id, $i);
-                $res[$i]['len']   = @pg_fieldsize($id, $i);
-                $res[$i]['flags'] = $got_string ? $this->_pgFieldflags($id, $i, $result) : '';
+        for ($i = 0; $i < $count; $i++) {
+            $res[$i] = array(
+                'table' => $got_string ? $case_func($result) : '',
+                'name'  => $case_func(@pg_fieldname($id, $i)),
+                'type'  => @pg_fieldtype($id, $i),
+                'len'   => @pg_fieldsize($id, $i),
+                'flags' => $got_string
+                           ? $this->_pgFieldFlags($id, $i, $result)
+                           : '',
+            );
+            if ($mode & DB_TABLEINFO_ORDER) {
+                $res['order'][$res[$i]['name']] = $i;
             }
-
-        } else { // full
-            $res['num_fields']= $count;
-
-            for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = $got_string ? $case_func($result) : '';
-                $res[$i]['name']  = $case_func(@pg_fieldname($id, $i));
-                $res[$i]['type']  = @pg_fieldtype($id, $i);
-                $res[$i]['len']   = @pg_fieldsize($id, $i);
-                $res[$i]['flags'] = $got_string ? $this->_pgFieldFlags($id, $i, $result) : '';
-
-                if ($mode & DB_TABLEINFO_ORDER) {
-                    $res['order'][$res[$i]['name']] = $i;
-                }
-                if ($mode & DB_TABLEINFO_ORDERTABLE) {
-                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
-                }
+            if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
             }
         }
 

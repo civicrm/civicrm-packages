@@ -765,60 +765,33 @@ class DB_sybase extends DB_common
         }
 
         $count = @sybase_num_fields($id);
+        $res   = array();
 
-        // made this IF due to performance (one if is faster than $count if's)
-        if (!$mode) {
-
-            for ($i=0; $i<$count; $i++) {
-                $f = @sybase_fetch_field($id, $i);
-
-                // column_source is often blank
-                if ($got_string) {
-                    $res[$i]['table'] = $case_func($result);
-                } else {
-                    $res[$i]['table'] = $case_func($f->column_source);
-                }
-                $res[$i]['name']  = $case_func($f->name);
-                $res[$i]['type']  = $f->type;
-                $res[$i]['len']   = $f->max_length;
-                if ($res[$i]['table']) {
-                    $res[$i]['flags'] = $this->_sybase_field_flags(
-                            $res[$i]['table'], $res[$i]['name']);
-                } else {
-                    $res[$i]['flags'] = '';
-                }
-            }
-
-        } else {
-            // get full info
-
+        if ($mode) {
             $res['num_fields'] = $count;
+        }
 
-            for ($i=0; $i<$count; $i++) {
-                $f = @sybase_fetch_field($id, $i);
-
-                // column_source is often blank
-                if ($got_string) {
-                    $res[$i]['table'] = $case_func($result);
-                } else {
-                    $res[$i]['table'] = $case_func($f->column_source);
-                }
-                $res[$i]['name']  = $case_func($f->name);
-                $res[$i]['type']  = $f->type;
-                $res[$i]['len']   = $f->max_length;
-                if ($res[$i]['table']) {
-                    $res[$i]['flags'] = $this->_sybase_field_flags(
-                            $res[$i]['table'], $res[$i]['name']);
-                } else {
-                    $res[$i]['flags'] = '';
-                }
-
-                if ($mode & DB_TABLEINFO_ORDER) {
-                    $res['order'][$res[$i]['name']] = $i;
-                }
-                if ($mode & DB_TABLEINFO_ORDERTABLE) {
-                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
-                }
+        for ($i = 0; $i < $count; $i++) {
+            $f = @sybase_fetch_field($id, $i);
+            // column_source is often blank
+            $res[$i] = array(
+                'table' => $got_string
+                           ? $case_func($result)
+                           : $case_func($f->column_source),
+                'name'  => $case_func($f->name),
+                'type'  => $f->type,
+                'len'   => $f->max_length,
+                'flags' => '',
+            );
+            if ($res[$i]['table']) {
+                $res[$i]['flags'] = $this->_sybase_field_flags(
+                        $res[$i]['table'], $res[$i]['name']);
+            }
+            if ($mode & DB_TABLEINFO_ORDER) {
+                $res['order'][$res[$i]['name']] = $i;
+            }
+            if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
             }
         }
 

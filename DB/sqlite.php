@@ -635,71 +635,42 @@ class DB_sqlite extends DB_common
         }
 
         $count = count($id);
+        $res   = array();
 
-        // made this IF due to performance (one if is faster than $count if's)
-        if (!$mode) {
-            // partial
-            for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = $case_func($result);
-                $res[$i]['name']  = $case_func($id[$i]['name']);
-                if (strpos($id[$i]['type'], '(') !== false) {
-                    $bits = explode('(', $id[$i]['type']);
-                    $res[$i]['type'] = $bits[0];
-                    $res[$i]['len'] = rtrim($bits[1],')');
-                } else {
-                    $res[$i]['type'] = $id[$i]['type'];
-                    $res[$i]['len'] = 0;
-                }
+        if ($mode) {
+            $res['num_fields'] = $count;
+        }
 
-                $res[$i]['flags'] = '';
-                if ($id[$i]['pk']) {
-                    $res[$i]['flags'] .= 'primary_key ';
-                }
-                if ($id[$i]['notnull']) {
-                    $res[$i]['flags'] .= 'not_null ';
-                }
-                if ($id[$i]['dflt_value'] !== null) {
-                    $res[$i]['flags'] .= 'default_'
-                                      . rawurlencode($id[$i]['dflt_value']);
-                }
-                $res[$i]['flags'] = trim($res[$i]['flags']);
+        for ($i = 0; $i < $count; $i++) {
+            $res[$i]['table'] = $case_func($result);
+            $res[$i]['name']  = $case_func($id[$i]['name']);
+            if (strpos($id[$i]['type'], '(') !== false) {
+                $bits = explode('(', $id[$i]['type']);
+                $res[$i]['type'] = $bits[0];
+                $res[$i]['len'] = rtrim($bits[1],')');
+            } else {
+                $res[$i]['type'] = $id[$i]['type'];
+                $res[$i]['len'] = 0;
             }
 
-        } else {
-            // full
-            $res['num_fields'] = $count;
+            $res[$i]['flags'] = '';
+            if ($id[$i]['pk']) {
+                $res[$i]['flags'] .= 'primary_key ';
+            }
+            if ($id[$i]['notnull']) {
+                $res[$i]['flags'] .= 'not_null ';
+            }
+            if ($id[$i]['dflt_value'] !== null) {
+                $res[$i]['flags'] .= 'default_'
+                                  . rawurlencode($id[$i]['dflt_value']);
+            }
+            $res[$i]['flags'] = trim($res[$i]['flags']);
 
-            for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = $case_func($result);
-                $res[$i]['name']  = $case_func($id[$i]['name']);
-                if (strpos($id[$i]['type'], '(') !== false) {
-                    $bits = explode('(', $id[$i]['type']);
-                    $res[$i]['type'] = $bits[0];
-                    $res[$i]['len'] = rtrim($bits[1],')');
-                } else {
-                    $res[$i]['type'] = $id[$i]['type'];
-                    $res[$i]['len'] = 0;
-                }
-
-                $res[$i]['flags'] = '';
-                if ($id[$i]['pk']) {
-                    $res[$i]['flags'] .= 'primary_key ';
-                }
-                if ($id[$i]['notnull']) {
-                    $res[$i]['flags'] .= 'not_null ';
-                }
-                if ($id[$i]['dflt_value'] !== null) {
-                    $res[$i]['flags'] .= 'default_'
-                                      . rawurlencode($id[$i]['dflt_value']);
-                }
-                $res[$i]['flags'] = trim($res[$i]['flags']);
-
-                if ($mode & DB_TABLEINFO_ORDER) {
-                    $res['order'][$res[$i]['name']] = $i;
-                }
-                if ($mode & DB_TABLEINFO_ORDERTABLE) {
-                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
-                }
+            if ($mode & DB_TABLEINFO_ORDER) {
+                $res['order'][$res[$i]['name']] = $i;
+            }
+            if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
             }
         }
 

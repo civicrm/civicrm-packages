@@ -965,58 +965,39 @@ class DB_mysqli extends DB_common
         }
 
         $count = @mysqli_num_fields($id);
+        $res   = array();
 
-        // made this IF due to performance (one if is faster than $count if's)
-        if (!$mode) {
-            for ($i=0; $i<$count; $i++) {
-                $tmp = @mysqli_fetch_field($id);
-                $res[$i]['table'] = $case_func($tmp->table);
-                $res[$i]['name']  = $case_func($tmp->name);
-                $res[$i]['type']  = isset($this->mysqli_types[$tmp->type]) ?
-                                          $this->mysqli_types[$tmp->type] :
-                                          'unknown';
-                $res[$i]['len']   = $tmp->max_length;
+        if ($mode) {
+            $res['num_fields'] = $count;
+        }
 
-                $res[$i]['flags'] = '';
-                foreach ($this->mysqli_flags as $const => $means) {
-                    if ($tmp->flags & $const) {
-                        $res[$i]['flags'] .= $means . ' ';
-                    }
+        for ($i = 0; $i < $count; $i++) {
+            $tmp = @mysqli_fetch_field($id);
+            $res[$i] = array(
+                'table' => $case_func($tmp->table),
+                'name'  => $case_func($tmp->name),
+                'type'  => isset($this->mysqli_types[$tmp->type]) ?
+                                      $this->mysqli_types[$tmp->type] :
+                                      'unknown',
+                'len'   => $tmp->max_length,
+                'flags' => '',
+            );
+
+            foreach ($this->mysqli_flags as $const => $means) {
+                if ($tmp->flags & $const) {
+                    $res[$i]['flags'] .= $means . ' ';
                 }
-                if ($tmp->def) {
-                    $res[$i]['flags'] .= 'default_' . rawurlencode($tmp->def);
-                }
-                $res[$i]['flags'] = trim($res[$i]['flags']);
             }
-        } else { // full
-            $res['num_fields']= $count;
+            if ($tmp->def) {
+                $res[$i]['flags'] .= 'default_' . rawurlencode($tmp->def);
+            }
+            $res[$i]['flags'] = trim($res[$i]['flags']);
 
-            for ($i=0; $i<$count; $i++) {
-                $tmp = @mysqli_fetch_field($id);
-                $res[$i]['table'] = $case_func($tmp->table);
-                $res[$i]['name']  = $case_func($tmp->name);
-                $res[$i]['type']  = isset($this->mysqli_types[$tmp->type]) ?
-                                          $this->mysqli_types[$tmp->type] :
-                                          'unknown';
-                $res[$i]['len']   = $tmp->max_length;
-
-                $res[$i]['flags'] = '';
-                foreach ($this->mysqli_flags as $const => $means) {
-                    if ($tmp->flags & $const) {
-                        $res[$i]['flags'] .= $means . ' ';
-                    }
-                }
-                if ($tmp->def) {
-                    $res[$i]['flags'] .= 'default_' . rawurlencode($tmp->def);
-                }
-                $res[$i]['flags'] = trim($res[$i]['flags']);
-
-                if ($mode & DB_TABLEINFO_ORDER) {
-                    $res['order'][$res[$i]['name']] = $i;
-                }
-                if ($mode & DB_TABLEINFO_ORDERTABLE) {
-                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
-                }
+            if ($mode & DB_TABLEINFO_ORDER) {
+                $res['order'][$res[$i]['name']] = $i;
+            }
+            if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
             }
         }
 

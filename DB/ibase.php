@@ -805,34 +805,26 @@ class DB_ibase extends DB_common
         }
 
         $count = @ibase_num_fields($id);
+        $res   = array();
 
-        // made this IF due to performance (one if is faster than $count if's)
-        if (!$mode) {
-            for ($i=0; $i<$count; $i++) {
-                $info = @ibase_field_info($id, $i);
-                $res[$i]['table'] = $got_string ? $case_func($result) : '';
-                $res[$i]['name']  = $case_func($info['name']);
-                $res[$i]['type']  = $info['type'];
-                $res[$i]['len']   = $info['length'];
-                $res[$i]['flags'] = ($got_string) ? $this->_ibaseFieldFlags($info['name'], $result) : '';
+        if ($mode) {
+            $res['num_fields'] = $count;
+        }
+
+        for ($i = 0; $i < $count; $i++) {
+            $info = @ibase_field_info($id, $i);
+            $res[$i] = array(
+                'table' => $got_string ? $case_func($result) : '',
+                'name'  => $case_func($info['name']),
+                'type'  => $info['type'],
+                'len'   => $info['length'],
+                'flags' => ($got_string) ? $this->_ibaseFieldFlags($info['name'], $result) : '',
+            );
+            if ($mode & DB_TABLEINFO_ORDER) {
+                $res['order'][$res[$i]['name']] = $i;
             }
-        } else { // full
-            $res['num_fields']= $count;
-
-            for ($i=0; $i<$count; $i++) {
-                $info = @ibase_field_info($id, $i);
-                $res[$i]['table'] = $got_string ? $case_func($result) : '';
-                $res[$i]['name']  = $case_func($info['name']);
-                $res[$i]['type']  = $info['type'];
-                $res[$i]['len']   = $info['length'];
-                $res[$i]['flags'] = ($got_string) ? $this->_ibaseFieldFlags($info['name'], $result) : '';
-
-                if ($mode & DB_TABLEINFO_ORDER) {
-                    $res['order'][$res[$i]['name']] = $i;
-                }
-                if ($mode & DB_TABLEINFO_ORDERTABLE) {
-                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
-                }
+            if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
             }
         }
 

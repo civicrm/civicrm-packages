@@ -666,35 +666,29 @@ class DB_mssql extends DB_common
         }
 
         $count = @mssql_num_fields($id);
+        $res   = array();
 
-        // made this IF due to performance (one if is faster than $count if's)
-        if (!$mode) {
-            for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = $got_string ? $case_func($result) : '';
-                $res[$i]['name']  = $case_func(@mssql_field_name($id, $i));
-                $res[$i]['type']  = @mssql_field_type($id, $i);
-                $res[$i]['len']   = @mssql_field_length($id, $i);
-                // We only support flags for tables
-                $res[$i]['flags'] = $got_string ? $this->_mssql_field_flags($result, $res[$i]['name']) : '';
+        if ($mode) {
+            $res['num_fields'] = $count;
+        }
+
+        for ($i = 0; $i < $count; $i++) {
+            $res[$i] = array(
+                'table' => $got_string ? $case_func($result) : '',
+                'name'  => $case_func(@mssql_field_name($id, $i)),
+                'type'  => @mssql_field_type($id, $i),
+                'len'   => @mssql_field_length($id, $i),
+                // We only support flags for table
+                'flags' => $got_string
+                           ? $this->_mssql_field_flags($result,
+                                                       $case_func($result))
+                           : '',
+            );
+            if ($mode & DB_TABLEINFO_ORDER) {
+                $res['order'][$res[$i]['name']] = $i;
             }
-
-        } else { // full
-            $res['num_fields']= $count;
-
-            for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = $got_string ? $case_func($result) : '';
-                $res[$i]['name']  = $case_func(@mssql_field_name($id, $i));
-                $res[$i]['type']  = @mssql_field_type($id, $i);
-                $res[$i]['len']   = @mssql_field_length($id, $i);
-                // We only support flags for tables
-                $res[$i]['flags'] = $got_string ? $this->_mssql_field_flags($result, $res[$i]['name']) : '';
-
-                if ($mode & DB_TABLEINFO_ORDER) {
-                    $res['order'][$res[$i]['name']] = $i;
-                }
-                if ($mode & DB_TABLEINFO_ORDERTABLE) {
-                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
-                }
+            if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
             }
         }
 
