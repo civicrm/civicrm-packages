@@ -489,14 +489,14 @@ class DB
      * <code>
      * require_once 'DB.php';
      *
-     * $dsn = 'mysql://user:password@host/database';
+     * $dsn = 'pgsql://user:password@host/database';
      * $options = array(
      *     'debug'       => 2,
      *     'portability' => DB_PORTABILITY_ALL,
      * );
      *
      * $db =& DB::connect($dsn, $options);
-     * if (DB::isError($db)) {
+     * if (PEAR::isError($db)) {
      *     die($db->getMessage());
      * }
      * </code>
@@ -507,7 +507,13 @@ class DB
      *
      * @return object  a new DB object.  A DB_Error object on failure.
      *
-     * @see DB::parseDSN(), DB_common::setOption(), DB::isError()
+     * @uses DB_dbase::connect(), DB_fbsql::connect(), DB_ibase::connect(),
+     *       DB_ifx::connect(), DB_msql::connect(), DB_mssql::connect(),
+     *       DB_mysql::connect(), DB_mysqli::connect(), DB_oci8::connect(),
+     *       DB_odbc::connect(), DB_pgsql::connect(), DB_sqlite::connect(),
+     *       DB_sybase::connect()
+     *
+     * @uses DB::parseDSN(), DB_common::setOption(), PEAR::isError()
      */
     function &connect($dsn, $options = array())
     {

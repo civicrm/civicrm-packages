@@ -232,6 +232,8 @@ class DB_mysqli extends DB_common
     /**
      * Connect to the database server, log in and open the database
      *
+     * Don't call this method directly.  Use DB::connect() instead.
+     *
      * PEAR DB's mysqli driver supports the following extra DSN options:
      *   + When the 'ssl' $option passed to DB::connect() is true:
      *     + key      The path to the key file.
@@ -263,7 +265,7 @@ class DB_mysqli extends DB_common
      * );
      * 
      * $db =& DB::connect($dsn, $options);
-     * if (DB::isError($db)) {
+     * if (PEAR::isError($db)) {
      *     die($db->getMessage());
      * }
      * </code>
@@ -271,9 +273,7 @@ class DB_mysqli extends DB_common
      * @param array $dsn         the data source name
      * @param bool  $persistent  should the connection be persistent?
      *
-     * @return int  DB_OK on success. A DB_error object on failure.
-     *
-     * @see DB::connect(), DB::parseDSN()
+     * @return int  DB_OK on success. A DB_Error object on failure.
      */
     function connect($dsn, $persistent = false)
     {

@@ -163,6 +163,8 @@ class DB_pgsql extends DB_common
     /**
      * Connect to the database server, log in and open the database
      *
+     * Don't call this method directly.  Use DB::connect() instead.
+     *
      * PEAR DB's pgsql driver supports the following extra DSN options:
      *   + connect_timeout  How many seconds to wait for a connection to
      *                       be established.  Available since PEAR DB 1.7.0.
@@ -182,12 +184,26 @@ class DB_pgsql extends DB_common
      *   + tty              This was used to specify where to send server
      *                       debug output.  Available since PEAR DB 1.6.4.
      *
+     * Example of how to connect to a new link via sockets:
+     * <code>
+     * require_once 'DB.php';
+     * 
+     * $dsn = 'pgsql://user:pass@unix(/tmp)/dbname?new_link=true';
+     * $options = array(
+     *     'portability' => DB_PORTABILITY_ALL,
+     * );
+     * 
+     * $db =& DB::connect($dsn, $options);
+     * if (PEAR::isError($db)) {
+     *     die($db->getMessage());
+     * }
+     * </code>
+     *
      * @param array $dsn         the data source name
      * @param bool  $persistent  should the connection be persistent?
      *
-     * @return int  DB_OK on success. A DB_error object on failure.
+     * @return int  DB_OK on success. A DB_Error object on failure.
      *
-     * @see DB::connect(), DB::parseDSN()
      * @link http://www.postgresql.org/docs/current/static/libpq.html#LIBPQ-CONNECT
      */
     function connect($dsn, $persistent = false)

@@ -137,12 +137,12 @@ class DB_fbsql extends DB_common
     /**
      * Connect to the database server, log in and open the database
      *
+     * Don't call this method directly.  Use DB::connect() instead.
+     *
      * @param array $dsn         the data source name
      * @param bool  $persistent  should the connection be persistent?
      *
-     * @return int  DB_OK on success. A DB_error object on failure.
-     *
-     * @see DB::connect(), DB::parseDSN()
+     * @return int  DB_OK on success. A DB_Error object on failure.
      */
     function connect($dsn, $persistent = false)
     {
@@ -155,10 +155,11 @@ class DB_fbsql extends DB_common
             $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        $params = array();
-        $params[] = $dsn['hostspec'] ? $dsn['hostspec'] : 'localhost';
-        $params[] = $dsn['username'] ? $dsn['username'] : null;
-        $params[] = $dsn['password'] ? $dsn['password'] : null;
+        $params = array(
+            $dsn['hostspec'] ? $dsn['hostspec'] : 'localhost',
+            $dsn['username'] ? $dsn['username'] : null,
+            $dsn['password'] ? $dsn['password'] : null,
+        );
 
         $connect_function = $persistent ? 'fbsql_pconnect' : 'fbsql_connect';
 

@@ -189,6 +189,8 @@ class DB_ibase extends DB_common
     /**
      * Connect to the database server, log in and open the database
      *
+     * Don't call this method directly.  Use DB::connect() instead.
+     *
      * PEAR DB's ibase driver supports the following extra DSN options:
      *   + buffers    The number of database buffers to allocate for the
      *                 server-side cache.
@@ -202,9 +204,7 @@ class DB_ibase extends DB_common
      * @param array $dsn         the data source name
      * @param bool  $persistent  should the connection be persistent?
      *
-     * @return int  DB_OK on success. A DB_error object on failure.
-     *
-     * @see DB::connect(), DB::parseDSN()
+     * @return int  DB_OK on success. A DB_Error object on failure.
      */
     function connect($dsn, $persistent = false)
     {
@@ -220,16 +220,17 @@ class DB_ibase extends DB_common
             $this->features['limit'] = 'alter';
         }
 
-        $params = array();
-        $params[] = $dsn['hostspec']
+        $params = array(
+            $dsn['hostspec']
                     ? ($dsn['hostspec'] . ':' . $dsn['database'])
-                    : $dsn['database'];
-        $params[] = $dsn['username'] ? $dsn['username'] : null;
-        $params[] = $dsn['password'] ? $dsn['password'] : null;
-        $params[] = isset($dsn['charset']) ? $dsn['charset'] : null;
-        $params[] = isset($dsn['buffers']) ? $dsn['buffers'] : null;
-        $params[] = isset($dsn['dialect']) ? $dsn['dialect'] : null;
-        $params[] = isset($dsn['role'])    ? $dsn['role'] : null;
+                    : $dsn['database'],
+            $dsn['username'] ? $dsn['username'] : null,
+            $dsn['password'] ? $dsn['password'] : null,
+            isset($dsn['charset']) ? $dsn['charset'] : null,
+            isset($dsn['buffers']) ? $dsn['buffers'] : null,
+            isset($dsn['dialect']) ? $dsn['dialect'] : null,
+            isset($dsn['role'])    ? $dsn['role'] : null,
+        );
 
         $connect_function = $persistent ? 'ibase_pconnect' : 'ibase_connect';
 

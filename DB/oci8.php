@@ -179,6 +179,8 @@ class DB_oci8 extends DB_common
     /**
      * Connect to the database server, log in and open the database
      *
+     * Don't call this method directly.  Use DB::connect() instead.
+     *
      * If PHP is at version 5.0.0 or greater:
      *   + Generally, oci_connect() or oci_pconnect() are used.
      *   + But if the new_link DSN option is set to true, oci_new_connect()
@@ -200,9 +202,7 @@ class DB_oci8 extends DB_common
      * @param array $dsn         the data source name
      * @param bool  $persistent  should the connection be persistent?
      *
-     * @return int  DB_OK on success. A DB_error object on failure.
-     *
-     * @see DB::connect(), DB::parseDSN()
+     * @return int  DB_OK on success. A DB_Error object on failure.
      */
     function connect($dsn, $persistent = false)
     {

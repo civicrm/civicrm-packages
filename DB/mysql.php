@@ -174,6 +174,8 @@ class DB_mysql extends DB_common
     /**
      * Connect to the database server, log in and open the database
      *
+     * Don't call this method directly.  Use DB::connect() instead.
+     *
      * PEAR DB's mysql driver supports the following extra DSN options:
      *   + new_link      If set to true, causes subsequent calls to connect()
      *                    to return a new connection link instead of the
@@ -186,9 +188,7 @@ class DB_mysql extends DB_common
      * @param array $dsn         the data source name
      * @param bool  $persistent  should the connection be persistent?
      *
-     * @return int  DB_OK on success. A DB_error object on failure.
-     *
-     * @see DB::connect(), DB::parseDSN()
+     * @return int  DB_OK on success. A DB_Error object on failure.
      */
     function connect($dsn, $persistent = false)
     {

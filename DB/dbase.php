@@ -102,6 +102,7 @@ class DB_dbase extends DB_common
      */
     var $dsn = array();
 
+
     /**
      * A means of emulating result resources
      * @var array
@@ -154,6 +155,20 @@ class DB_dbase extends DB_common
     /**
      * Connect to the database and create it if it doesn't exist
      *
+     * Don't call this method directly.  Use DB::connect() instead.
+     *
+     * PEAR DB's dbase driver supports the following extra DSN options:
+     *   + mode    An integer specifying the read/write mode to use
+     *              (0 = read only, 1 = write only, 2 = read/write).
+     *              Available since PEAR DB 1.7.0.
+     *   + fields  An array of arrays that PHP's dbase_create() function needs
+     *              to create a new database.  This information is used if the
+     *              dBase file specified in the "database" segment of the DSN
+     *              does not exist.  For more info, see the PHP manual's
+     *              {@link http://php.net/dbase_create dbase_create()} page.
+     *              Available since PEAR DB 1.7.0.
+     *
+     * Example of how to connect and establish a new dBase file if necessary:
      * <code>
      * require_once 'DB.php';
      *
@@ -174,7 +189,7 @@ class DB_dbase extends DB_common
      * );
      *
      * $db =& DB::connect($dsn, $options);
-     * if (DB::isError($db)) {
+     * if (PEAR::isError($db)) {
      *     die($db->getMessage());
      * }
      * </code>
@@ -183,8 +198,6 @@ class DB_dbase extends DB_common
      * @param bool  $persistent  should the connection be persistent?
      *
      * @return int  DB_OK on success. A DB_Error object on failure.
-     *
-     * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)
     {
