@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.64 2004-02-10 22:26:54 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.65 2004-02-10 23:15:18 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -96,6 +96,11 @@ DB_ERROR_ALREADY_EXISTS to DB_ERROR_CONSTRAINT
 for portability with other DBMS's.  Since the
 initial mapping was added in 1.6.0RC1, this
 isn't a backwards compatibility issue.  (danielc)
+
+-odbc(access):
+MS's ODBC driver reports 'no such field' as
+'too few parameters.'  Make custom mapping back
+to DB_ERROR_NOSUCHFIELD.  (danielc)
 
 - oci8:
 Have modifyLimitQuery() quote all identifiers in
