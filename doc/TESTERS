@@ -100,21 +100,21 @@ Look at the DB/tests/driver/skipif.inc to see what's the problem
 
 DB TESTER MATRIX
 ================
-                                   B - A - C - K - E - N - D - S
-TESTER                   ibase ifx   msql  mssql mysql mysql4 oci8  odbc  pgsql sybase  fbsql
-John Horton               -     X     -     -     -      -     -     -     -      -       -
-Tim Zickus                -     -     -     -     -      -     X     -     -      -       -
-Tim Parkin                -     -     -     -     -      -     X     -     -      -       -
-Paul Gardiner             -     X     -     -     -      -     -     -     -      -       -
-Daniel, Adam              -     -     -     -     -      -     X     -     -      -       -
-szii@sziisoft.com         -     -     -     -     -      -     -     X¹    -      -       -
-jmh3@linuxfreak.com       -     -     -     -     -      -     -     -     X      -       -
-Kevin Henrikson           -     -     -     -     -      -     X     -     -      -       -
-Stig Bakken               -     -     -     -     X      -     -     -     X      -       -
-Chuck Hagenbuch           -     -     -     X     -      -     -     -     -      -       -
-Ludovico Magnocavallo     X     -     -     -     -      -     -     -     -      -       -
+                            fbsql    ifx    mssql   mysql4   odbc   sybase
+TESTER                        | ibase |  msql | mysql | oci8  | pgsql | sqlite
+John Horton                   -   -   X   -   -   -   -   -   -   -   -   -
+Tim Zickus                    -   -   -   -   -   -   -   X   -   -   -   -
+Tim Parkin                    -   -   -   -   -   -   -   X   -   -   -   -
+Paul Gardiner                 -   -   X   -   -   -   -   -   -   -   -   -
+Daniel, Adam                  -   -   -   -   -   -   -   X   -   -   -   -
+szii@sziisoft.com             -   -   -   -   -   -   -   -   X¹  -   -   -
+jmh3@linuxfreak.com           -   -   -   -   -   -   -   -   -   X   -   -
+Kevin Henrikson               -   -   -   -   -   -   -   X   -   -   -   -
+Stig Bakken                   -   -   -   -   -   X   -   -   -   X   -   -
+Chuck Hagenbuch               -   -   -   -   X   -   -   -   -   -   -   -
+Ludovico Magnocavallo         -   X   -   -   -   -   -   -   -   -   -   -
 
-MISSING TESTERS           -     -     X     -     -      X     -     -     -      X       X
+MISSING TESTERS               X   -   -   X   -   -   X   -   -   -   X   X
 
 Comments:
 
