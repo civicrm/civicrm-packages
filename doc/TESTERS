@@ -32,6 +32,7 @@ CVS command as appropriate for your present version of PHP.
  cvs -d :pserver:cvsread@cvs.php.net:/repository co -r PHP_4_3 \
      -d test php-src/run-tests.php
  cp test/run-tests.php .
+ rm -rf test
 
 
 Obtain DB and its Test Framework
