@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.70 2004-02-11 21:12:36 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.71 2004-02-12 17:33:56 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -173,7 +173,7 @@ _ibaseFieldFlags() query to make tableInfo() work.
         <file name="numcols.inc"/>
         <file name="numrows.inc"/>
         <file name="prepexe.inc"/>
-        <file name="run"/>
+        <file name="run.cvs"/>
         <file name="sequences.inc"/>
         <file name="simplequery.inc"/>
         <file name="tableinfo.inc"/>
@@ -197,8 +197,8 @@ _ibaseFieldFlags() query to make tableInfo() work.
           <file name="bug22328.phpt"/>
           <file name="connect.inc"/>
           <file name="mktable.inc"/>
-          <file name="run"/>
-          <file name="setup.inc"/>
+          <file name="run.cvs"/>
+          <file name="setup.inc.cvs"/>
           <file name="skipif.inc"/>
         </dir>
       </dir>
