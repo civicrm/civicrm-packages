@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.171 2005-02-22 06:21:07 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.172 2005-02-22 06:24:55 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -354,7 +354,7 @@ tests:
           <file name="19getlistof.phpt"/>
           <file name="connect.inc"/>
           <file name="mktable.inc"/>
-          <file name="multitest.php"/>
+          <file name="multiconnect.php"/>
           <file name="run.cvs"/>
           <file name="setup.inc.cvs">
             <replace from="@include_path@" to="php_dir"
