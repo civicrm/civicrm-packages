@@ -303,7 +303,7 @@ class DB_common extends PEAR
         }
 
         if ($nativecode) {
-            $userinfo .= " [nativecode=$nativecode]";
+            $userinfo .= ' [nativecode=' . trim($nativecode) . ']';
         }
 
         $tmp = PEAR::raiseError(null, $code, $mode, $options, $userinfo,
