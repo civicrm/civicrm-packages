@@ -130,8 +130,7 @@ class DB_mysqli extends DB_common
                                              $dsninfo['password'],
                                              $dsninfo['database'],
                                              $dsninfo['port'],
-                                             $dsninfo['socket'],
-                                             MYSQLI_CLIENT_SSL))
+                                             $dsninfo['socket']))
             {
                 $conn = $init;
             }
