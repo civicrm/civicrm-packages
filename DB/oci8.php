@@ -586,7 +586,12 @@ class DB_oci8 extends DB_common
         $ncols = OCINumCols($result);
         $cols  = array();
         for ( $i = 1; $i <= $ncols; $i++ ) {
-            $cols[] = OCIColumnName($result, $i);
+            $tmp = OCIColumnName($result, $i);
+            if (strpos($tmp, ' ') === false) {
+                $cols[] = $tmp;
+            } else {
+                $cols[] = '"' . $tmp . '"';
+            }
         }
         $fields = implode(', ', $cols);
         // XXX Test that (tip by John Lim)
