@@ -50,6 +50,7 @@ dumptable(2);
 $dbh->rollback();
 print '5) after rollback: ';
 dumptable(0);
+$dbh->rollback();
 
 $dbh->autoCommit(true);
 $dbh->query("INSERT INTO phptest VALUES(6, 'six', 'Six', '2001-02-24')");
