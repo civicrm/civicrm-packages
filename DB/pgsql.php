@@ -987,6 +987,7 @@ class DB_pgsql extends DB_common
             case 'databases':
                 return 'SELECT datname FROM pg_database';
             case 'functions':
+            case 'procedures':
                 return 'SELECT proname FROM pg_proc WHERE proowner <> 1';
             default:
                 return null;
