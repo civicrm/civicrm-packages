@@ -700,7 +700,7 @@ class DB_odbc extends DB_common
      */
     function errorNative()
     {
-        if (!isset($this->connection) || !is_resource($this->connection)) {
+        if (!is_resource($this->connection)) {
             return @odbc_error() . ' ' . @odbc_errormsg();
         }
         return @odbc_error($this->connection) . ' ' . @odbc_errormsg($this->connection);
