@@ -1012,7 +1012,7 @@ class DB_common extends PEAR
     {
         $query  = $this->modifyLimitQuery($query, $from, $count);
         $result =& $this->query($query, $params);
-        if (strtolower(get_class($result)) == 'db_result') {
+        if (is_a($result, 'DB_result')) {
             $result->setOption('limit_from', $from);
             $result->setOption('limit_count', $count);
         }

@@ -408,9 +408,7 @@ class DB
      */
     function isError($value)
     {
-        return (is_object($value) &&
-                (strtolower(get_class($value)) == 'db_error' ||
-                 is_subclass_of($value, 'db_error')));
+        return is_a($value, 'DB_Error');
     }
 
     // }}}
