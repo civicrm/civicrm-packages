@@ -27,21 +27,27 @@
     <date>2002-01-29</date>
     <notes>First independent release of DB</notes>
     <filelist>
-      <file role="php" baseinstalldir="/">DB.php</file>
-      <file role="php" baseinstalldir="/DB">common.php</file>
-      <file role="php" baseinstalldir="/DB">storage.php</file>
-      <dir name="drivers" baseinstalldir="/DB">
-        <file role="php">drivers/fbsql.php</file>
-        <file role="php">drivers/ibase.php</file>
-        <file role="php">drivers/ifx.php</file>
-        <file role="php">drivers/msql.php</file>
-        <file role="php">drivers/mssql.php</file>
-        <file role="php">drivers/mysql.php</file>
-        <file role="php">drivers/oci8.php</file>
-        <file role="php">drivers/odbc.php</file>
-        <file role="php">drivers/pgsql.php</file>
-        <file role="php">drivers/sybase.php</file>
-      </dir>
+      <dir name="/">
+          <file>DB.php</file>
+          <dir name="DB" role="php">
+            <file>common.php</file>
+            <file>storage.php</file>
+            <file>fbsql.php</file>
+            <file>ibase.php</file>
+            <file>ifx.php</file>
+            <file>msql.php</file>
+            <file>mssql.php</file>
+            <file>mysql.php</file>
+            <file>oci8.php</file>
+            <file>odbc.php</file>
+            <file>pgsql.php</file>
+            <file>sybase.php</file>
+            </dir>
+            <dir name="tests" role="test">
+                <file>db_error.phpt</file>
+                <file>db_ismanip.phpt</file>
+            </dir>
+        </dir>
     </filelist>
     <deps>
       <dep type="php" rel="ge" version="4.0.4pl1" />
