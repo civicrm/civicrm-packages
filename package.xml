@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.81 2004-03-05 01:52:45 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.82 2004-03-05 01:56:06 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -65,7 +65,9 @@ DB is compatible with both PHP 4 and PHP 5.
     <state>stable</state>
     <date>pending</date>
     <notes>
-changelog notes for pending 1.6.1 release
+
+
+changelog notes for pending 1.6.1 release 
 
 =============
 API CHANGE:
@@ -73,17 +75,20 @@ API CHANGE:
 =============
 ENHANCEMENTS:
 
-- several minor CS fixes (lsmith)
+- all:
+Minor coding standards fixes.  (lsmith)
 
 =============
 BUGS FIXED:
 
--mysql, mysqli, odbc:
+- mysql, mysqli, odbc:
 Move error code portability mapping from connect()
 to mysqlRaiseError() so the feature can be turned
 on/off during runtime.  (danielc)
+
 - oci8
-only return num_fields if $mode is set in tableInfo() (lsmith)
+In tableInfo() only return num_fields key if $mode
+is set.  (lsmith)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
