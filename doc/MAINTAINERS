@@ -3,12 +3,12 @@ Maintainers for DB database backends/drivers:
 ibase     : Ludovico Magnocavallo <ludo@sumatrasolutions.com>
 msql      : 
 mssql     : Frank M. Kromann <frank@frontbase.com>
-mysql     : Stig Bakken <ssb@fast.no>
+mysql     : Stig Bakken <ssb@php.net>
 mysql4	  : Chaillan Nicolas <nicos@php.net>
 oci8      : Tomas V.V.Cox <cox@idecnet.com>
 odbc      : Tomas V.V.Cox <cox@idecnet.com>
 pgsql     : Rui Hirokawa <rui_hirokawa@ybb.ne.jp>
-            Stig Bakken <ssb@fast.no>
+            Stig Bakken <ssb@php.net>
 sybase    : 
 ifx       : Tomas V.V.Cox <cox@idecnet.com>
 fbsql     : Frank M. Kromann <frank@frontbase.com>

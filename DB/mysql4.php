@@ -14,7 +14,7 @@
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
 // | Author: Chaillan Nicolas <nicos@php.net>							  |
-// | Based on mysql.php by Stig Bakken <ssb@fast.no>					  |
+// | Based on mysql.php by Stig Bakken <ssb@php.net>					  |
 // +----------------------------------------------------------------------+
 //
 

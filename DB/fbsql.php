@@ -106,7 +106,6 @@ class DB_fbsql extends DB_common
 
         $connect_function = $persistent ? 'fbsql_pconnect' : 'fbsql_connect';
 
-        ini_set('track_errors', true);
         if ($dbhost && $user && $pw) {
             $conn = @$connect_function($dbhost, $user, $pw);
         } elseif ($dbhost && $user) {
@@ -116,7 +115,6 @@ class DB_fbsql extends DB_common
         } else {
             $conn = false;
         }
-        ini_restore("track_errors");
         if (empty($conn)) {
             if (empty($php_errormsg)) {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED);

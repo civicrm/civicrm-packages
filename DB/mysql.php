@@ -13,7 +13,7 @@
 // | obtain it through the world-wide-web, please send a note to          |
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
-// | Author: Stig Bakken <ssb@fast.no>                                    |
+// | Author: Stig Bakken <ssb@php.net>                                    |
 // +----------------------------------------------------------------------+
 //
 // $Id$
@@ -117,7 +117,6 @@ class DB_mysql extends DB_common
 
         $connect_function = $persistent ? 'mysql_pconnect' : 'mysql_connect';
 
-        @ini_set('track_errors', true);
         if ($dbhost && $user && $pw) {
             $conn = @$connect_function($dbhost, $user, $pw);
         } elseif ($dbhost && $user) {
@@ -127,7 +126,6 @@ class DB_mysql extends DB_common
         } else {
             $conn = false;
         }
-        @ini_restore('track_errors');
         if (empty($conn)) {
             if (($err = @mysql_error()) != '') {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,

@@ -13,7 +13,7 @@
 // | obtain it through the world-wide-web, please send a note to          |
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
-// | Authors: Stig Bakken <ssb@fast.no>                                   |
+// | Authors: Stig Bakken <ssb@php.net>                                   |
 // |          Tomas V.V.Cox <cox@idecnet.com>                             |
 // +----------------------------------------------------------------------+
 //
@@ -188,7 +188,7 @@ define('DB_AUTOQUERY_UPDATE', 2);
  *              class.
  *
  * @package  DB
- * @author   Stig Bakken <ssb@fast.no>
+ * @author   Stig Bakken <ssb@php.net>
  * @since    PHP 4.0
  */
 
@@ -581,7 +581,7 @@ class DB
  * messages.
  *
  * @package  DB
- * @author Stig Bakken <ssb@fast.no>
+ * @author Stig Bakken <ssb@php.net>
  */
 class DB_Error extends PEAR_Error
 {
@@ -615,7 +615,7 @@ class DB_Error extends PEAR_Error
  * after processing a query that returns data.
  *
  * @package  DB
- * @author Stig Bakken <ssb@fast.no>
+ * @author Stig Bakken <ssb@php.net>
  */
 
 class DB_result

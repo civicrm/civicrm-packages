@@ -14,7 +14,7 @@
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
 // | Authors: Rui Hirokawa <rui_hirokawa@ybb.ne.jp>                       |
-// |          Stig Bakken <ssb@fast.no>                                   |
+// |          Stig Bakken <ssb@php.net>                                   |
 // +----------------------------------------------------------------------+
 //
 // $Id$
