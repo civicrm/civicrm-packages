@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.153 2005-01-31 19:43:48 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.154 2005-02-02 02:52:31 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -106,7 +106,9 @@ mysql:
   Request 1905.
 
 oci8:
-* When running PHP5, use the new oci_new_connect() and
+* Allow use of oci_new_connect() via the new_link DSN
+  option.
+* When running PHP5, use the new oci_connect() and
   oci_close() functions instead of the old ones.
   Works around crashes caused by PHP bug
   http://bugs.php.net/bug.php?id=28924
@@ -164,6 +166,9 @@ all:
   Bug 2988.
 
 tests:
+* setup.inc now uses an array for the DSN's
+  instead of defining constants.
+* Added the multiconnect.php test.
 * Reworked 10errormap.phpt so it passes when all
   expected conditions are met.  Also tweaked it
   to make it work under fbsql.
@@ -267,6 +272,7 @@ tests:
           <file name="bug22328.phpt"/>
           <file name="connect.inc"/>
           <file name="mktable.inc"/>
+          <file name="multitest.php"/>
           <file name="run.cvs"/>
           <file name="setup.inc.cvs">
             <replace from="@include_path@" to="php_dir"
