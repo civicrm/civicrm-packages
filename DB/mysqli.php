@@ -403,8 +403,7 @@ class DB_mysqli extends DB_common
                     return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
                 }
             }
-            $result = @mysqli_query($this->connection, 'COMMIT');
-            $result = @mysqli_query($this->connection, 'SET AUTOCOMMIT=1');
+            $result = @mysqli_commit($this->connection);
             $this->transaction_opcount = 0;
             if (!$result) {
                 return $this->mysqlRaiseError();
@@ -427,8 +426,7 @@ class DB_mysqli extends DB_common
                     return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
                 }
             }
-            $result = @mysqli_query($this->connection, 'ROLLBACK');
-            $result = @mysqli_query($this->connection, 'SET AUTOCOMMIT=1');
+            $result = @mysqli_rollback($this->connection);
             $this->transaction_opcount = 0;
             if (!$result) {
                 return $this->mysqlRaiseError();
