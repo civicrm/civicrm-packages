@@ -815,31 +815,44 @@ class DB_pgsql extends DB_common
         static $error_regexps;
         if (!isset($error_regexps)) {
             $error_regexps = array(
-                '/(([Rr]elation|[Ss]equence|[Tt]able)( [\"\'].*[\"\'])? does not exist|[Cc]lass ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
-                '/index .* does not exist/' => DB_ERROR_NOT_FOUND,
-                '/^column .* does not exist/i'
+                '/(relation|sequence|table).*does not exist|class .* not found/i'
+                    => DB_ERROR_NOSUCHTABLE,
+                '/index .* does not exist/'
+                    => DB_ERROR_NOT_FOUND,
+                '/column .* does not exist/i'
                     => DB_ERROR_NOSUCHFIELD,
-                '/[Rr]elation [\"\'].*[\"\'] already exists|[Cc]annot insert a duplicate key into (a )?unique index.*/' => DB_ERROR_ALREADY_EXISTS,
-                '/(divide|division) by zero$/'          => DB_ERROR_DIVZERO,
-                '/pg_atoi: error in .*: can\'t parse /' => DB_ERROR_INVALID_NUMBER,
-                '/^invalid input syntax for( type)? (integer|numeric)/i'
+                '/relation .* already exists/i'
+                    => DB_ERROR_ALREADY_EXISTS,
+                '/(divide|division) by zero$/i'
+                    => DB_ERROR_DIVZERO,
+                '/pg_atoi: error in .*: can\'t parse /i'
                     => DB_ERROR_INVALID_NUMBER,
-                '/^value .* is out of range for type \w*int/i'
+                '/invalid input syntax for( type)? (integer|numeric)/i'
                     => DB_ERROR_INVALID_NUMBER,
-                '/^value too long for type character/i'
+                '/value .* is out of range for type \w*int/i'
+                    => DB_ERROR_INVALID_NUMBER,
+                '/value too long for type character/i'
                     => DB_ERROR_INVALID,
-                '/ttribute [\"\'].*[\"\'] not found$|[Rr]elation [\"\'].*[\"\'] does not have attribute [\"\'].*[\"\']/' => DB_ERROR_NOSUCHFIELD,
-                '/^column .* specified in USING clause does not exist in (left|right) table/i'
+                '/attribute .* not found|relation .* does not have attribute/i'
                     => DB_ERROR_NOSUCHFIELD,
-                '/parser: parse error at or near \"/'   => DB_ERROR_SYNTAX,
-                '/syntax error at/'                     => DB_ERROR_SYNTAX,
-                '/^column reference .* is ambiguous/i'
+                '/column .* specified in USING clause does not exist in (left|right) table/i'
+                    => DB_ERROR_NOSUCHFIELD,
+                '/parser: parse error at or near/i'
                     => DB_ERROR_SYNTAX,
-                '/permission denied/'                   => DB_ERROR_ACCESS_VIOLATION,
-                '/violates not-null constraint/'        => DB_ERROR_CONSTRAINT_NOT_NULL,
-                '/violates [\w ]+ constraint/'          => DB_ERROR_CONSTRAINT,
-                '/referential integrity violation/'     => DB_ERROR_CONSTRAINT,
-                '/more expressions than target columns/i' => DB_ERROR_VALUE_COUNT_ON_ROW,
+                '/syntax error at/'
+                    => DB_ERROR_SYNTAX,
+                '/column reference .* is ambiguous/i'
+                    => DB_ERROR_SYNTAX,
+                '/permission denied/'
+                    => DB_ERROR_ACCESS_VIOLATION,
+                '/violates not-null constraint/'
+                    => DB_ERROR_CONSTRAINT_NOT_NULL,
+                '/violates [\w ]+ constraint/'
+                    => DB_ERROR_CONSTRAINT,
+                '/referential integrity violation/'
+                    => DB_ERROR_CONSTRAINT,
+                '/more expressions than target columns/i'
+                    => DB_ERROR_VALUE_COUNT_ON_ROW,
             );
         }
         foreach ($error_regexps as $regexp => $code) {
