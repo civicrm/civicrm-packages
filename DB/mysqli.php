@@ -13,9 +13,7 @@
 // | obtain it through the world-wide-web, please send a note to          |
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
-// | Author: Chaillan Nicolas <nicos@php.net>                             |
-// | Based on mysql.php by Stig Bakken <ssb@php.net>                      |
-// | Maintainer: Daniel Convissor <danielc@php.net>                       |
+// | Author: Daniel Convissor <danielc@php.net>                           |
 // +----------------------------------------------------------------------+
 //
 // $Id$
@@ -37,7 +35,7 @@ require_once 'DB/common.php';
  * @package  DB
  * @version  $Id$
  * @category Database
- * @author   Chaillan Nicolas <nicos@php.net>
+ * @author   Daniel Convissor <danielc@php.net>
  */
 class DB_mysqli extends DB_common
 {
@@ -111,31 +109,39 @@ class DB_mysqli extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        $this->dsn = $dsninfo;
-        if ($dsninfo['protocol'] && $dsninfo['protocol'] == 'unix') {
-            $dbhost = ':' . $dsninfo['socket'];
-        } else {
-            $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
-            if ($dsninfo['port']) {
-                $dbhost .= ':' . $dsninfo['port'];
-            }
-        }
-
-        $ssl_mode = $this->getOption('ssl') === true ? 'CLIENT_SSL' : NULL;
-
         @ini_set('track_errors', true);
+        $conn = false;
 
-        if ($dbhost && $dsninfo['username'] && $dsninfo['password']) {
-            // Need to verify if arguments are okay
-            $conn = @mysqli_connect($dbhost, $dsninfo['username'],
-                                    $dsninfo['password'], $ssl_mode);
-        } elseif ($dbhost && isset($dsninfo['username'])) {
-            $conn = @mysqli_connect($dbhost, $dsninfo['username'], null,
-                                    $ssl_mode);
-        } elseif ($dbhost) {
-            $conn = @mysqli_connect($dbhost, null, null, $ssl_mode);
+        if ($this->getOption('ssl') === true) {
+            $init = mysqli_init();
+            mysqli_ssl_set(
+                $init,
+                empty($dsninfo['key'])    ? null : $dsninfo['key'],
+                empty($dsninfo['cert'])   ? null : $dsninfo['cert'],
+                empty($dsninfo['ca'])     ? null : $dsninfo['ca'],
+                empty($dsninfo['capath']) ? null : $dsninfo['capath'],
+                empty($dsninfo['cipher']) ? null : $dsninfo['cipher']
+            );
+            if ($conn = @mysqli_real_connect($init,
+                                             $dsninfo['hostspec'],
+                                             $dsninfo['username'],
+                                             $dsninfo['password'],
+                                             $dsninfo['database'],
+                                             $dsninfo['port'],
+                                             $dsninfo['socket'],
+                                             MYSQLI_CLIENT_SSL))
+            {
+                $conn = $init;
+            }
         } else {
-            $conn = false;
+            $conn = @mysqli_connect(
+                $dsninfo['hostspec'],
+                $dsninfo['username'],
+                $dsninfo['password'],
+                $dsninfo['database'],
+                $dsninfo['port'],
+                $dsninfo['socket']
+            );
         }
 
         @ini_restore('track_errors');
@@ -153,20 +159,6 @@ class DB_mysqli extends DB_common
         }
 
         if ($dsninfo['database']) {
-            if (!@mysqli_select_db($conn, $dsninfo['database'])) {
-                switch(mysqli_errno($conn)) {
-                    case 1049:
-                        return $this->raiseError(DB_ERROR_NOSUCHDB, null, null,
-                                                 null, @mysqli_error($conn));
-                    case 1044:
-                         return $this->raiseError(DB_ERROR_ACCESS_VIOLATION, null, null,
-                                                  null, @mysqli_error($conn));
-                    default:
-                        return $this->raiseError(DB_ERROR, null, null,
-                                                 null, @mysqli_error($conn));
-                }
-            }
-            // fix to allow calls to different databases in the same script
             $this->_db = $dsninfo['database'];
         }
 
