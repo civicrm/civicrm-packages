@@ -559,6 +559,11 @@ class DB_common extends PEAR
             return $realquery;
         }
         $result = $this->simpleQuery($realquery);
+        // Free the internal prepared vars
+        unset($this->prepare_tokens[$stmt]);
+        unset($this->prepare_types[$stmt]);
+        unset($this->prepared_queries[$stmt]);
+
         if (DB::isError($result) || $result === DB_OK) {
             return $result;
         } else {
