@@ -212,13 +212,18 @@ class DB_ifx extends DB_common
 
     /**
      * Gets the number of rows affected by the last query.
-     * if the last query was a select, returns an _estimate_ value.
+     * if the last query was a select, returns 0.
      *
      * @return number of rows affected by the last query
      */
     function affectedRows()
     {
-        return $this->affected;
+        if (DB::isManip($this->last_query)) {
+            return $this->affected;
+        } else {
+            return 0;
+        }
+        
     }
 
     // }}}
