@@ -126,21 +126,6 @@ class DB_msql extends DB_common
     }
 
     // }}}
-    // {{{ fetchRow()
-
-    function fetchRow($result, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
-    {
-        if ($fetchmode == DB_FETCHMODE_DEFAULT) {
-            $fetchmode = $this->fetchmode;
-        }
-        $res = $this->fetchInto ($result, $arr, $fetchmode, $rownum);
-        if ($res !== DB_OK) {
-            return $res;
-        }
-        return $arr;
-    }
-
-    // }}}
     // {{{ fetchInto()
 
     function fetchInto($result, &$ar, $fetchmode, $rownum=null)

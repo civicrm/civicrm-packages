@@ -181,28 +181,6 @@ class DB_ifx extends DB_common
     }
 
     // }}}
-    // {{{ fetchRow()
-    /**
-     * Fetch and return a row of data (it uses fetchInto for that)
-     * @param   $result             Informix result identifier
-     * @param   $fetchmode     format of fetched row array
-     * @param   $rownum        the absolute row number to fetch
-     *
-     * @return  array   a row of data, or false on error
-     */
-    function fetchRow($result, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
-    {
-        if ($fetchmode == DB_FETCHMODE_DEFAULT) {
-            $fetchmode = $this->fetchmode;
-        }
-        $res = $this->fetchInto ($result, $arr, $fetchmode, $rownum);
-        if ($res !== DB_OK) {
-            return $res;
-        }
-        return $arr;
-    }
-
-    // }}}
     // {{{ fetchInto()
     /**
      * Fetch a row and return as array.

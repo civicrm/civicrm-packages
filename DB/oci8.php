@@ -179,34 +179,6 @@ class DB_oci8 extends DB_common
     }
 
     // }}}
-    // {{{ fetchRow()
-
-    /**
-     * Fetch a row and return as array.
-     *
-     * @param $result oci8 result identifier
-     * @param $fetchmode how the resulting array should be indexed
-     *
-     * @return int an array on success, a DB error code on failure, NULL
-     *             if there is no more data
-     */
-    function &fetchRow($result, $fetchmode = DB_FETCHMODE_DEFAULT)
-    {
-        if ($fetchmode == DB_FETCHMODE_DEFAULT) {
-            $fetchmode = $this->fetchmode;
-        }
-        if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $moredata = @OCIFetchInto($result, $row, OCI_ASSOC + OCI_RETURN_NULLS + OCI_RETURN_LOBS);
-        } else {
-            $moredata = @OCIFetchInto($result, $row, OCI_RETURN_NULLS + OCI_RETURN_LOBS);
-        }
-        if (!$moredata) {
-            return NULL;
-        }
-        return $row;
-    }
-
-    // }}}
     // {{{ fetchInto()
 
     /**
