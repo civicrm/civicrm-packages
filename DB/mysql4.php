@@ -173,6 +173,11 @@ class DB_mysql4 extends DB_common
             $this->_db = $dsninfo['database'];
         }
 
+        if ($this->options['portability'] & DB_PORTABILITY_CONSTRAINT) {
+            $this->errorcode_map[1022] = DB_ERROR_CONSTRAINT;
+            $this->errorcode_map[1062] = DB_ERROR_CONSTRAINT;
+        }
+
         $this->connection = $conn;
         return DB_OK;
     }

@@ -205,10 +205,17 @@ define('DB_PORTABILITY_DELETE_COUNT', 4);
 define('DB_PORTABILITY_NUMROWS', 8);
 
 /**
+ * Portability: makes MySQL error message for unique/primary key
+ * constraints match those in other DBMS's.
+ * @see DB_common::setOption()
+ */
+define('DB_PORTABILITY_CONSTRAINT', 16);
+
+/**
  * Portability: turn on all portability features.
  * @see DB_common::setOption()
  */
-define('DB_PORTABILITY_ALL', 15);
+define('DB_PORTABILITY_ALL', 31);
 
 // }}}
 
