@@ -566,7 +566,11 @@ class DB
         );
 
         if (is_array($dsn)) {
-            return array_merge($parsed, $dsn);
+            $dsn = array_merge($parsed, $dsn);
+            if (!$dsn['dbsyntax']) {
+                $dsn['dbsyntax'] = $dsn['phptype'];
+            }
+            return $dsn;
         }
 
         // Find phptype and dbsyntax
