@@ -82,7 +82,7 @@ class DB_oci8 extends DB_common
     var $features = array(
         'limit'         => 'alter',
         'new_link'      => '5.0.0',
-        'numrows'       => 'alter',
+        'numrows'       => 'subquery',
         'pconnect'      => true,
         'prepare'       => true,
         'ssl'           => false,
