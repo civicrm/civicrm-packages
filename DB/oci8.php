@@ -165,6 +165,21 @@ class DB_oci8 extends DB_common
     }
 
     // }}}
+    // {{{ __wakeup()
+
+    /**
+     * Automatically reconnect to the database when PHP's unserialize()
+     * function is called
+     *
+     * @return void
+     *
+     * @access private
+     */
+    function __wakeup() {
+        DB_oci8::connect($this->dsn, $this->options);
+    }
+
+    // }}}
     // {{{ connect()
 
     /**

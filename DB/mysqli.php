@@ -216,6 +216,21 @@ class DB_mysqli extends DB_common
     }
 
     // }}}
+    // {{{ __wakeup()
+
+    /**
+     * Automatically reconnect to the database when PHP's unserialize()
+     * function is called
+     *
+     * @return void
+     *
+     * @access private
+     */
+    function __wakeup() {
+        DB_mysqli::connect($this->dsn, $this->options);
+    }
+
+    // }}}
     // {{{ connect()
 
     /**

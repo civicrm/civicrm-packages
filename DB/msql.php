@@ -111,6 +111,21 @@ class DB_msql extends DB_common
     }
 
     // }}}
+    // {{{ __wakeup()
+
+    /**
+     * Automatically reconnect to the database when PHP's unserialize()
+     * function is called
+     *
+     * @return void
+     *
+     * @access private
+     */
+    function __wakeup() {
+        DB_msql::connect($this->dsn, $this->options);
+    }
+
+    // }}}
     // {{{ connect()
 
     /**

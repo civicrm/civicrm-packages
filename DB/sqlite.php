@@ -144,6 +144,21 @@ class DB_sqlite extends DB_common
     }
 
     // }}}
+    // {{{ __wakeup()
+
+    /**
+     * Automatically reconnect to the database when PHP's unserialize()
+     * function is called
+     *
+     * @return void
+     *
+     * @access private
+     */
+    function __wakeup() {
+        DB_sqlite::connect($this->dsn, $this->options);
+    }
+
+    // }}}
     // {{{ connect()
 
     /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.157 2005-02-02 22:52:45 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.158 2005-02-03 00:35:12 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -87,6 +87,12 @@ all:
   one row.  Request 1771.
 * Consider SELECT INTO and COPY data manipulation
   queries in isManip().  Bug 2883.
+* Added DB_result::getQuery() method for
+  determining what query created the present
+  result.  Request 1677.
+* Add __wakeup() to each driver so connections
+  will automatically be reestablished when PHP's
+  unserialize() function is called.  Request 928.
 
 fbsql:
 * FrontBase driver now works and passes all tests.
