@@ -7,6 +7,24 @@ $filedata = "opaque\nplaceholder's\ntest";
 fwrite($fp, $filedata);
 fclose($fp);
 
+
+/**
+ * Local error callback handler.
+ *
+ * Prints out an error message and kills the process.
+ *
+ * @param object  $o  PEAR error object automatically passed to this method
+ * @return void
+ * @see PEAR::setErrorHandling()
+ */
+function pe($o) {
+    $o->toString();
+    exit;
+}
+
+$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
+
+
 // 1) Multiple prepare/exec INSERT queries
 echo "------------1------------\n";
 
@@ -52,7 +70,7 @@ $data = array(
     1 => array(72, 'set2', $tmpfile, null),
     2 => array(72, 'set3', $tmpfile, null)
 );
-$dbh->executeMultiple($sth, $data);
+$res = $dbh->executeMultiple($sth, $data);
 print_results();
 
 
@@ -132,9 +150,14 @@ function my_shutdown() {
 function print_results() {
     global $dbh;
     print "results:\n";
-    $sth = $dbh->query("SELECT * FROM phptest WHERE a = 72 ORDER BY b");
-    while ($row = $sth->fetchRow(DB_FETCHMODE_ORDERED)) {
+    $res = $dbh->query("SELECT * FROM phptest WHERE a = 72 ORDER BY b");
+    $i = 0;
+    while ($row = $res->fetchRow(DB_FETCHMODE_ORDERED)) {
         print '|' . implode(" - ", $row) . "|\n";
+        $i++;
+    }
+    if (!$i) {
+        print "The records were not found.  Did they get inserted?\n";
     }
 }
 
