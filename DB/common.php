@@ -626,6 +626,7 @@ class DB_common extends PEAR
                     while (($buf = fread($fp, 4096)) != false) {
                         $pdata .= $buf;
                     }
+                    fclose($fp);
                 }
             } else {
                 if (is_array($data)) {
