@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.172 2005-02-22 06:24:55 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.173 2005-02-28 01:43:24 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,194 +66,61 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.0RC1</version>
-    <state>beta</state>
-    <date>2005-02-22</date>
+    <version>1.7.0</version>
+    <state>stable</state>
+    <date>pending</date>
     <notes><![CDATA[
-all:
-* PEAR DB can now be used on more OS's due to
-  switching from DB::assertExtension() to
-  PEAR::loadExtension().  Request 1337.
-* Resolve tableInfo() issue caused by PHP 5.0.3.
-  Bug 2988.
-* Add __sleep() and __wakeup().  Request 928.
-* Added __toString() and deprecated toString().
-  Request 1209.
-* Added DB_result::getQuery() method for
-  determining what query created the present
-  result.  Request 1677.
-* If DSN contains "dbsyntax", always use that for
-  $this->dbsyntax.  Used to only be done for odbc.
-* When trying to DROP an index that doesn't exist,
-  use the DB_ERROR_NOT_FOUND error code.
-* When the number of values in an INSERT query
-  doesn't match the number columns, use the
-  DB_ERROR_VALUE_COUNT_ON_ROW error code.
-* Removed the unused DB_ERROR_CANNOT_DELETE constant.
-* When using getOne() and getRow(), if the DBMS
-  supports LIMIT queries, limit the output to
-  one row.  Request 1771.
-* Consider SELECT INTO and COPY data manipulation
-  queries in isManip().  Bug 2883.
-* Add $free_resource argument to freePrepared().
-
-dbase:
-* Provide tableInfo().  Request 2142.
-* Add 'mode' option to DSN and connect.
-* When connecting, if the database doesn't exist,
-  use the new 'fields' DSN option to create the
-  database.
-* No longer use strip_tags() on $php_errormsg
-  when reporting connection errors.
+To view the majority of changes since 1.6.8,
+see the changelog for Release 1.7.0RC1.
 
 fbsql:
-* The FrontBase driver now works and passes all tests.
+* Handle more error codes:
+  + 239 => DB_ERROR_TRUNCATED.
+  + 215 => DB_ERROR_NOSUCHFIELD for columns
+    not in both sides of JOIN.
 
 ibase:
-* The InterBase driver now passes all tests (using PHP 5).
-* Add getListOf() support.
-* Add affectedRows() support.
-* Add numRows() support (Note:
-  DB_PORTABILITY_NUMROWS must be enabled).
-* Add items to errorcode_map:
-  -303 => DB_ERROR_INVALID
-  -413 => DB_ERROR_INVALID_NUMBER
-  -625 => DB_ERROR_CONSTRAINT_NOT_NULL
-  -904 => DB_ERROR_CONNECT_FAILED
-* Refactor error handling to be like the other drivers:
-  Moved most code from ibaseRaiseError() into the new
-  errorNative() and errorCode() methods.
-* In errorNative():
-  + If PHP is >= 5.0.0, use ibase_errcode()
-  + Otherwise use a refined error code extraction regex
-    to keep it from catching numbers other than error codes.
-* Drop the bogus, non-standard $native_errmsg parameter
-  in ibaseRaiseError().
-* Remove the bogus error code 88.  It was a hack to catch
-  errors in nextID().  Now, when a generator does not exist,
-  "DB Error: syntax error" is produced instead of
-  "DB Error: no such table".
-
-ifx:
-* Add numRows() support (Note:
-  DB_PORTABILITY_NUMROWS must be enabled).
-* Add $this->DB_common() call to the constructor,
-  just like is done in all the other drivers.
-* Add items to error map:
-  + -236: insert column count doesn't match value count
-  + -316: create duplicate index
-  + -319: drop non-existant index
-  + -692: delete record with foreign key constraint
-
-msql:
-* The mSQL driver now works and passes most tests.
+* Change error mapping of "arithmetic
+  exception, numeric overflow, or string
+  truncation" from DB_ERROR_DIVZERO to
+  DB_ERROR_INVALID because it covers
+  much more than division by zero.
 
 mssql:
-* Use "," to delimit port only for Windows.  Use ":"
-  for other OS's.  This bug was introduced when
-  resolving Bug 2140.  (Bug 2731)
-* Add 1913 (duplicate index creation) to errorcode_map.
-* Changed error code: When trying to DROP an index that
-  doesn't exist, use DB_ERROR_NOT_FOUND instead of
-  DB_ERROR_NOSUCHTABLE.
-
-mysql & mysqli:
-* Added the following items to the error map:
-  1061 => DB_ERROR_ALREADY_EXISTS
-  1044 => DB_ERROR_ACCESS_VIOLATION
-  1049 => DB_ERROR_NOSUCHDB
-  1142 => DB_ERROR_ACCESS_VIOLATION
-* Remove $num_rows property.  Wasn't used in all
-  drivers and numRows() can get the answer
-  directly from the DBMS' API.
-
-mysql:
-* Add new_link and client_flags support to connect().
-  Request 1905.
-* If you want to use mysql_unbuffered_query() set
-  the "result_buffering" option to 0 using setOptions().
-  Request 2813.
+* Handle more error codes:
+  + 155 => DB_ERROR_NOSUCHFIELD for columns
+    not in both sides of JOIN.
 
 oci8:
-* Allow use of oci_new_connect() via the new_link DSN
-  option.
-* Add ocisetprefetch() calls in query() and execute().
-  This determines how many rows of a result set get
-  buffered.  To adjust the quantity, see the
-  "result_buffering" option in setOptions().
-  Request 3241.
-* When running PHP5, use the new oci_connect() and
-  oci_close() functions instead of the old ones.
-  Works around crashes caused by PHP bug
-  http://bugs.php.net/bug.php?id=28924
-  (PEAR Bug #2622)
-* The autoCommit property was renamed autocommit to be
-  in line with the other drivers.
-* getListOf() now supports synonyms.  Request 752.
+* Handle more error codes:
+  + 1401 => DB_ERROR_INVALID for strings
+    exceeding column size.
 
 odbc:
-* Add tableInfo() support.  Request 2669.
-* Add getListOf() support.  Request 2669.
-* Add '23504' => DB_ERROR_CONSTRAINT to error map.
-* Deal with MS Access' excessive use of the
-  S1000 ("General Error") code by trying to
-  pin down a more specific error.
-* Changed error code: when the number values in an
-  INSERT statement doesn't match the number of columns,
-  use DB_ERROR_VALUE_COUNT_ON_ROW instead of
-  DB_ERROR_MISMATCH.
-* Remove the $row property because it's not used.
-* Rename the $manip_result property $affected because
-  it's more descriptive and is the name used in other
-  drivers.
-* Raise error on problems in numRows().
+* Handle more error codes:
+  + '22001' => DB_ERROR_INVALID for strings
+    exceeding column size.
 
 pgsql:
-* Add connect_timeout (Request 3228), new_link, sslmode,
-  and service support to connect().
-* Allow multiple open parentheses in query strings
-  (due to regex in simpleQuery()).  Bug 2586.
-* Use pg_affected_rows() instead of the undocumented
-  pg_cmdtuples() in affectedRows().
-* Make $num_rows property private.
-* Add duplicate index creation to errorcode_map.
-* When doing getListOf() for views (Bug 2085) or
-  functions, only show non-system items.
-* getListOf() now supports listing the schema and table
-  by using the 'schema.tables' type.  Request 682.
-* Rename _modifyQuery() to modifyQuery() as it is in
-  the other drivers.
+* For getListOf('views'), ignore views in system
+  schemas rather than returning views in the
+  public schema.  Request 3595.
+* Handle more error messages:
+  + invalid input syntax for type numeric
+  + column reference "active" is ambiguous
+  + value too long for type character varying(50)
+  + value "50000" is out of range for type shortint
+  + integer out of range
+  + column "p_id" specified in USING clause does
+    not exist in left table
+  + column p.p_name does not exist
+* Silence errors in errorNative() when connection
+  doesn't exist.
 
 sqlite:
-* Add tableInfo().  Request 1317.
-* Capture $php_errormsg on connection errors to make
-  debugging easier.
-* Add duplicate index creation to errorcode_map.
-
-sybase:
-* Provide debugging information to raiseError() when
-  connections fail so getUserInfo() and getDebugInfo()
-  provide useful information.
-* Remove $num_rows property.  Wasn't used in all
-  drivers and numRows() can get the answer
-  directly from the DBMS' API.
-* Add items to error mapping:
-  + insert column count doesn't match value count
-  + create duplicate index
-  + drop non-existant index
-  + illegal float/int conversion
-* Change identifier delimiting from [] to "".
-  Note: "SET QUOTED_IDENTIFIER ON" must be executed
-  sometime prior to using quoteIdentifier().
-
-tests:
-* setup.inc now uses an array for the DSN's
-  instead of defining constants.
-* Added the multiconnect.php test.
-* Added the 19getlistof.phpt test.
-* Reworked 10errormap.phpt so it passes when all
-  expected conditions are met.  Also tweaked it
-  to make it work under fbsql.
+* Handle more error messages:
+  + cannot join using column b - column not
+    present in both tables
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">
