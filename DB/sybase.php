@@ -105,7 +105,7 @@ class DB_sybase extends DB_common
         $connect_function = $persistent ? 'sybase_pconnect' : 'sybase_connect';
 
         if ($interface && $user && $pw) {
-            $conn = $connect_function($interface, $user, $pw);
+            $conn = @$connect_function($interface, $user, $pw);
         } else {
             $conn = FALSE;
         }
