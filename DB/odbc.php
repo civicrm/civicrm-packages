@@ -100,6 +100,7 @@ class DB_odbc extends DB_common
         '07001' => DB_ERROR_MISMATCH,
         '21S01' => DB_ERROR_VALUE_COUNT_ON_ROW,
         '21S02' => DB_ERROR_MISMATCH,
+        '22001' => DB_ERROR_INVALID,
         '22003' => DB_ERROR_INVALID_NUMBER,
         '22005' => DB_ERROR_INVALID_NUMBER,
         '22008' => DB_ERROR_INVALID_DATE,
