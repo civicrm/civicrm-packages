@@ -69,7 +69,6 @@
     
     // Get results
     printf("affectedRows:\t\t%s\n", $db->affectedRows() );
-    printf("getLastInsertId:\t%s\n", $db->getLastInsertId() );
     $result = $db->query("SELECT FROM $table;" );
     $arr = $db->fetchRow($result );
     print_r($arr );
