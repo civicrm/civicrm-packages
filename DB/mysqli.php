@@ -235,7 +235,7 @@ class DB_mysqli extends DB_common
             }
 # need to come up with different means for next line
 # since $result is object (int)$result won't fly...
-            $this->num_rows[(int)$result] = $numrows;
+//            $this->num_rows[(int)$result] = $numrows;
             return $result;
         }
         return DB_OK;
@@ -329,7 +329,7 @@ class DB_mysqli extends DB_common
     {
 # need to come up with different means for next line
 # since $result is object (int)$result won't fly...
-        unset($this->num_rows[(int)$result]);
+//        unset($this->num_rows[(int)$result]);
         return @mysqli_free_result($result);
     }
 
