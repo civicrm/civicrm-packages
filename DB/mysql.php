@@ -201,7 +201,7 @@ class DB_mysql extends DB_common
         $params[] = $dbhost;
         $params[] = $dsninfo['username'] ? $dsninfo['username'] : null;
         $params[] = $dsninfo['password'] ? $dsninfo['password'] : null;
-        $params[] = isset($dsninfo['new_link']) ? $dsninfo['new_link'] : null;
+        $params[] = isset($dsninfo['new_link']) ? true : null;
         if (version_compare(phpversion(), '4.3.0', '>=')) {
             $params[] = isset($dsninfo['client_flags'])
                         ? $dsninfo['client_flags'] : null;
