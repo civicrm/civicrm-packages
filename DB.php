@@ -485,10 +485,10 @@ class DB
             $str = substr($dsn, 0, $at);
             $dsn = substr($dsn, $at + 1);
             if (($pos = strpos($str, ':')) !== false) {
-                $parsed['username'] = urldecode(substr($str, 0, $pos));
-                $parsed['password'] = urldecode(substr($str, $pos + 1));
+                $parsed['username'] = rawurldecode(substr($str, 0, $pos));
+                $parsed['password'] = rawurldecode(substr($str, $pos + 1));
             } else {
-                $parsed['username'] = urldecode($str);
+                $parsed['username'] = rawurldecode($str);
             }
         }
 
@@ -515,7 +515,7 @@ class DB
 
         // process the different protocol options
         $parsed['protocol'] = (!empty($proto)) ? $proto : 'tcp';
-        $proto_opts = urldecode($proto_opts);
+        $proto_opts = rawurldecode($proto_opts);
         if ($parsed['protocol'] == 'tcp') {
             if (strpos($proto_opts, ':') !== false) {
                 list($parsed['hostspec'], $parsed['port']) = explode(':', $proto_opts);
@@ -544,7 +544,7 @@ class DB
                 foreach ($opts as $opt) {
                     list($key, $value) = explode('=', $opt);
                     if (!isset($parsed[$key])) { // don't allow params overwrite
-                        $parsed[$key] = urldecode($value);
+                        $parsed[$key] = rawurldecode($value);
                     }
                 }
             }

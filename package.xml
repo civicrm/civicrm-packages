@@ -49,6 +49,8 @@ New Features:
 - sybase: numRows() errorNative() errorCode() implemented
 
 Bugs fixed:
+- use rawurldecode() instead of urldecode() for
+  DSN usernames and passwords
 - ibase: misc bugfixes
 - ifx: results were not freed
 - mssql: fix DB_FETCHMODE_ASSOC row fetches
