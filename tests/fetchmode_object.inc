@@ -58,6 +58,16 @@ $sth = $dbh->query("SELECT * FROM phptest");
 $sth->fetchInto($row);
 print_obj($row);
 
+echo "--- fetch with default fetchmode DB_FETCHMODE_OBJECT with no class then DB_row ---\n";
+$dbh->setFetchMode(DB_FETCHMODE_OBJECT);
+$sth = $dbh->query('SELECT * FROM phptest');
+$row = $sth->fetchRow();
+print_obj($row);
+$dbh->setFetchMode(DB_FETCHMODE_OBJECT, 'DB_row');
+$sth = $dbh->query('SELECT * FROM phptest');
+$row = $sth->fetchRow();
+print_obj($row);
+
 
 switch ($dbh->phptype) {
     case 'ibase':

@@ -522,13 +522,11 @@ class DB_common extends PEAR
      * @see DB_row::DB_row()
      * @access public
      */
-    function setFetchMode($fetchmode, $object_class = null)
+    function setFetchMode($fetchmode, $object_class = 'stdClass')
     {
         switch ($fetchmode) {
             case DB_FETCHMODE_OBJECT:
-                if ($object_class) {
-                    $this->fetchmode_object_class = $object_class;
-                }
+                $this->fetchmode_object_class = $object_class;
             case DB_FETCHMODE_ORDERED:
             case DB_FETCHMODE_ASSOC:
                 $this->fetchmode = $fetchmode;

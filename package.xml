@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.83 2004-03-05 01:58:28 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.84 2004-03-06 01:46:48 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -84,6 +84,12 @@ BUGS FIXED:
 - all:
 All native function calls now get errors silenced
 via @.  (danielc)
+
+- common:
+Calling setFetchMode(DB_FETCHMODE_OBJECT) after
+using setFetchMode(DB_FETCHMODE_OBJECT, 'DB_row')
+didn't change the object type back to stdClass.
+Now it does.  (danielc)
 
 - mysql, mysqli, odbc:
 Move error code portability mapping from connect()
