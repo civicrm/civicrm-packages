@@ -100,8 +100,9 @@ class DB_mysql extends DB_common
 
     function connect($dsninfo, $persistent = false)
     {
-        if (!DB::assertExtension('mysql'))
+        if (!DB::assertExtension('mysql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
+        }
 
         $this->dsn = $dsninfo;
         if (isset($dsninfo['protocol']) && $dsninfo['protocol'] == 'unix') {
