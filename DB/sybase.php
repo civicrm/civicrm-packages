@@ -36,6 +36,11 @@ class DB_sybase extends DB_common
     // }}}
     // {{{ constructor
 
+    /**
+     * DB_sybase constructor.
+     *
+     * @access public
+     */
     function DB_sybase()
     {
         $this->DB_common();
@@ -47,11 +52,23 @@ class DB_sybase extends DB_common
             'transactions' => false,
             'limit' => 'emulate'
         );
+        $this->errorcode_map = array(
+            102 => DB_ERROR_SYNTAX,
+        );
     }
 
     // }}}
     // {{{ connect()
 
+    /**
+     * Connect to a database and log in as the specified user.
+     *
+     * @param $dsn the data source name (see DB::parseDSN for syntax)
+     * @param $persistent (optional) whether the connection should
+     *        be persistent
+     * @access public
+     * @return int DB_OK on success, a DB error on failure
+     */
     function connect($dsninfo, $persistent = false)
     {
         if (!DB::assertExtension('sybase') && !DB::assertExtension('sybase_ct'))
@@ -90,6 +107,13 @@ class DB_sybase extends DB_common
     // }}}
     // {{{ disconnect()
 
+    /**
+     * Log out and disconnect from the database.
+     *
+     * @access public
+     *
+     * @return bool TRUE on success, FALSE if not connected.
+     */
     function disconnect()
     {
         $ret = @sybase_close($this->connection);
@@ -98,15 +122,78 @@ class DB_sybase extends DB_common
     }
 
     // }}}
+    // {{{ errorNative()
+
+    /**
+     * Get the last server error messge (if any)
+     *
+     * @return string sybase last error message
+     */
+    function errorNative()
+    {
+        return sybase_get_last_message();
+    }
+
+    // }}}
+    // {{{ errorCode()
+
+    function errorCode($errmsg = '')
+    {
+        if (!empty($errmsg)) {
+            if (ereg ('^Incorrect syntax near', $errmsg)) {
+                $error['code'] = 102;
+                $error['userinfo'] = $this->last_query . '<br>';
+            }
+            $error['userinfo'] .= $errmsg;
+            if (isset($this->errorcode_map[$error['code']])) {
+                $error['message'] = $this->errorcode_map[$error['code']];
+            }
+            return $error;
+        }
+
+        // Fall back to DB_ERROR if there was no mapping.
+        return DB_ERROR;
+    }
+
+    // }}}
+    // {{{ sybaseRaiseError()
+
+    function sybaseRaiseError()
+    {
+        $native = $this->errorNative();
+        $error = $this->errorCode($native);
+        return $this->raiseError($error['message'], null, null, $error['userinfo'], $error['code']);
+    }
+    // }}}
     // {{{ simpleQuery()
 
+    /**
+     * Send a query to Sybase and return the results as a Sybase resource
+     * identifier.
+     *
+     * @param the SQL query
+     *
+     * @access public
+     *
+     * @return mixed returns a valid Sybase result for successful SELECT
+     * queries, DB_OK for other successful queries.  A DB error is
+     * returned on failure.
+     */
     function simpleQuery($query)
     {
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
         $result = @sybase_query($query, $this->connection);
         if (!$result) {
-            return $this->raiseError();
+            return $this->sybaseRaiseError();
+        }
+        if (is_resource($result)) {
+            $numrows = $this->numRows($result);
+            if (is_object($numrows)) {
+                return $numrows;
+            }
+            $this->num_rows[$result] = $numrows;
+            return $result;
         }
         // Determine which queries that should return data, and which
         // should return an error code only.
@@ -119,7 +206,7 @@ class DB_sybase extends DB_common
     /**
      * Move the internal sybase result pointer to the next available result
      *
-     * @param a valid fbsql result resource
+     * @param a valid sybase result resource
      *
      * @access public
      *
@@ -132,6 +219,15 @@ class DB_sybase extends DB_common
 
     // }}}
     // {{{ fetchRow()
+
+    /**
+     * Fetch and return a row of data (it uses fetchInto for that)
+     * @param $result Sybase result identifier
+     * @param   $fetchmode  format of fetched row array
+     * @param   $rownum     the absolute row number to fetch
+     *
+     * @return  array   a row of data, or false on error
+     */
     function &fetchRow($result, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
     {
         if ($fetchmode == DB_FETCHMODE_DEFAULT) {
@@ -147,6 +243,17 @@ class DB_sybase extends DB_common
     // }}}
     // {{{ fetchInto()
 
+    /**
+     * Fetch a row and insert the data into an existing array.
+     *
+     * @param $result Sybase result identifier
+     * @param $arr (reference) array where data from the row is stored
+     * @param $fetchmode how the array data should be indexed
+     * @param   $rownum the row number to fetch
+     * @access public
+     *
+     * @return int DB_OK on success, a null on failure
+     */
     function fetchInto($result, &$ar, $fetchmode, $rownum=null)
     {
         if ($rownum !== null) {
@@ -159,7 +266,8 @@ class DB_sybase extends DB_common
             // reported not work as seems that sybase_get_last_message()
             // always return a message here
             //if ($errmsg = sybase_get_last_message()) {
-            //    return $this->raiseError($errmsg);
+            //    echo $errmsg;
+                //return $this->raiseError($errmsg);
             //} else {
                 return null;
             //}
@@ -170,6 +278,15 @@ class DB_sybase extends DB_common
     // }}}
     // {{{ freeResult()
 
+    /**
+     * Free the internal resources associated with $result.
+     *
+     * @param $result Sybase result identifier or DB statement identifier
+     *
+     * @access public
+     *
+     * @return bool TRUE on success, FALSE if $result is invalid
+     */
     function freeResult($result)
     {
         if (is_resource($result)) {
@@ -186,6 +303,15 @@ class DB_sybase extends DB_common
     // }}}
     // {{{ numCols()
 
+    /**
+     * Get the number of columns in a result set.
+     *
+     * @param $result Sybase result identifier
+     *
+     * @access public
+     *
+     * @return int the number of columns per row in $result
+     */
     function numCols($result)
     {
         $cols = @sybase_num_fields($result);
@@ -193,6 +319,27 @@ class DB_sybase extends DB_common
             return $this->raiseError();
         }
         return $cols;
+    }
+
+    // }}}
+    // {{{ numRows()
+
+    /**
+     * Get the number of rows in a result set.
+     *
+     * @param $result Sybase result identifier
+     *
+     * @access public
+     *
+     * @return int the number of rows in $result
+     */
+    function numRows($result)
+    {
+        $rows = @sybase_num_rows($result);
+        if ($rows === null) {
+            return $this->raiseError();
+        }
+        return $rows;
     }
 
     // }}}
@@ -204,7 +351,6 @@ class DB_sybase extends DB_common
      *
      * @return number of rows affected by the last query
      */
-
     function affectedRows()
     {
         if (DB::isManip($this->last_query)) {
