@@ -429,6 +429,7 @@ class DB_sqlite extends DB_common
                 '/PRIMARY KEY must be unique/i' => DB_ERROR_CONSTRAINT,
                 '/is not unique/' => DB_ERROR_CONSTRAINT,
                 '/uniqueness constraint failed/' => DB_ERROR_CONSTRAINT,
+                '/may not be NULL/' => DB_ERROR_CONSTRAINT_NOT_NULL,
                 '/^no such column:/' => DB_ERROR_NOSUCHFIELD,
                 '/^near ".*": syntax error$/' => DB_ERROR_SYNTAX
             );
