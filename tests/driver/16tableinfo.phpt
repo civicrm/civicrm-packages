@@ -189,7 +189,7 @@ $quirks = array(
         4 => array(
             'type' => 'SQLCHAR',
             'len' => 4,
-            'flags' => 'not_null',
+            'flags' => 'not_null default_df%20t',
         ),
         5 => array(
             'type' => 'SQLREAL',
@@ -281,7 +281,7 @@ $quirks = array(
         ),
         5 => array(
             'type' => 'real',
-            'len' => 513,
+            'len' => 4,
             'flags' => '',
         ),
         9 => array(
@@ -484,11 +484,7 @@ print "\nfirst field:\n";
 examineArrayData($array[0], 0);
 
 print "\ntenth field:\n";
-if (!isset($array[9]) && $dbh->dsn['phptype'] == 'ifx') {
-    print "IFX merges duplicate field names, so blows up on this test.\n\n\n\n\n";
-} else {
-    examineArrayData($array[9], 9);
-}
+examineArrayData($array[9], 9);
 
 
 
@@ -623,9 +619,15 @@ examineArrayData($array['ordertable']['phptest_fk']);
 
 print "\n==========================================\n";
 print "Passing TABLE NAME 'phptest_fk' to method in DB_<driver> AGAIN.\n";
-print "Output = DB_TABLEINFO_FULL.\n";
+print "Output = DB_TABLEINFO_FULL, lowercasing turned off.\n";
 print "------------------------------------------\n";
+$dbh->setOption('portability', DB_PORTABILITY_ALL ^ DB_PORTABILITY_LOWERCASE);
 $array = $dbh->tableInfo('phptest_fk', DB_TABLEINFO_FULL);
+
+// testing non-lowercasing above to ensure program doesn't die.
+// lowercase the names here to ensure test uniformity.
+$array[0]['table'] = strtolower($array[0]['table']);
+$array[0]['name'] = strtolower($array[0]['name']);
 
 print "\nfirst field:\n";
 examineArrayData($array[0], 0, false);
@@ -792,7 +794,7 @@ f => 5
 
 ==========================================
 Passing TABLE NAME 'phptest_fk' to method in DB_<driver> AGAIN.
-Output = DB_TABLEINFO_FULL.
+Output = DB_TABLEINFO_FULL, lowercasing turned off.
 ------------------------------------------
 
 first field:
