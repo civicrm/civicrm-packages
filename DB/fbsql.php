@@ -78,6 +78,7 @@ class DB_fbsql extends DB_common
             116 => DB_ERROR_NOSUCHTABLE,
             217 => DB_ERROR_INVALID_NUMBER,
             226 => DB_ERROR_NOSUCHFIELD,
+            231 => DB_ERROR_INVALID,
             251 => DB_ERROR_SYNTAX,
             357 => DB_ERROR_CONSTRAINT_NOT_NULL,
             358 => DB_ERROR_CONSTRAINT,
