@@ -17,19 +17,26 @@
 // +----------------------------------------------------------------------+
 //
 // $Id$
-//
-// Database independent query interface definition for PHP's Oracle 8
-// call-interface extension.
-//
 
-//
+
 // be aware...  OCIError() only appears to return anything when given a
 // statement, so functions return the generic DB_ERROR instead of more
 // useful errors that have to do with feedback from the database.
-//
 
 
 require_once 'DB/common.php';
+
+/**
+ * Database independent query interface definition for PHP's Oracle 8
+ * call-interface extension.
+ * 
+ * Definitely works with versions 8 and 9 of Oracle.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   James L. Pine <jlp@valinux.com>
+ */
 
 class DB_oci8 extends DB_common
 {
