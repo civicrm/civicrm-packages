@@ -1226,7 +1226,7 @@ class DB_result
         if ($this->dbh->features['numrows'] === 'emulate'
             && $this->dbh->options['portability'] & DB_PORTABILITY_NUMROWS)
         {
-            $res = $this->dbh->query($this->query, $this->parameters);
+            $res = $this->dbh->query($this->query);
             if (DB::isError($res)) {
                 return $res;
             }
