@@ -1034,7 +1034,7 @@ class DB_common extends PEAR
      */
 
     function &getAssoc($query, $force_array = false, $params = array(),
-                       $fetchmode = DB_FETCHMODE_ORDERED, $group = false)
+                       $fetchmode = DB_FETCHMODE_DEFAULT, $group = false)
     {
         settype($params, "array");
         if (sizeof($params) > 0) {
@@ -1053,7 +1053,9 @@ class DB_common extends PEAR
         if (DB::isError($res)) {
             return $res;
         }
-
+        if ($fetchmode == DB_FETCHMODE_DEFAULT) {
+            $fetchmode = $this->fetchmode;
+        }
         $cols = $res->numCols();
 
         if ($cols < 2) {
