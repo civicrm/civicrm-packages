@@ -111,13 +111,11 @@ class DB_ibase extends DB_common
         -219 => DB_ERROR_NOSUCHTABLE,
         -297 => DB_ERROR_CONSTRAINT,
         -303 => DB_ERROR_INVALID,
-# ???
         -413 => DB_ERROR_INVALID_NUMBER,
         -530 => DB_ERROR_CONSTRAINT,
         -551 => DB_ERROR_ACCESS_VIOLATION,
         -552 => DB_ERROR_ACCESS_VIOLATION,
         // -607 =>  // Covers too many errors, need to use regex on msg
-# ???
         -625 => DB_ERROR_CONSTRAINT_NOT_NULL,
         -803 => DB_ERROR_CONSTRAINT,
         -804 => DB_ERROR_VALUE_COUNT_ON_ROW,
