@@ -7,7 +7,7 @@ $dbh2 = DB::connect($dbh->dsn);
 function dumptable() {
     global $dbh, $dbh2;
     printf("%s ops=%d\n", implode(" ", $dbh->getCol("SELECT b FROM phptest")),
-           $dbh->transaction_opcount);
+           isset($dbh->transaction_opcount) ? $dbh->transaction_opcount : -9);
 }
 $dbh->setErrorHandling(PEAR_ERROR_DIE);
 $dbh->autoCommit(true);
@@ -43,7 +43,9 @@ $dbh->autoCommit(false);
 $dbh->simpleQuery("SELECT * FROM phptest");
 $dbh->simpleQuery("SELECT a,c FROM phptest");
 $dbh->simpleQuery("SELECT b,d FROM phptest");
-if ($dbh->transaction_opcount == 0) {
+if (!isset($dbh->transaction_opcount)) {
+    print "failed (transaction_opcount not set)\n";
+} elseif ($dbh->transaction_opcount == 0) {
     print "ok\n";
 } else {
     print "failed (count=$dbh->transaction_opcount)\n";
