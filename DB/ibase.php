@@ -206,7 +206,7 @@ class DB_ibase extends DB_common
         return DB_OK;
     }
 
-    function freeResult()
+    function freeResult($result)
     {
         if (is_resource($result)) {
             return ibase_free_result($result);
