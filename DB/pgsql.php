@@ -53,7 +53,7 @@ class DB_pgsql extends DB_common
     var $transaction_opcount = 0;
     var $dsn = array();
     var $row = array();
-    var $num_rows = array();
+    var $_num_rows = array();
     var $affected = 0;
     var $autocommit = true;
     var $fetchmode = DB_FETCHMODE_ORDERED;
@@ -217,7 +217,7 @@ class DB_pgsql extends DB_common
             if (is_object($numrows)) {
                 return $numrows;
             }
-            $this->num_rows[(int)$result] = $numrows;
+            $this->_num_rows[(int)$result] = $numrows;
             $this->affected = 0;
             return $result;
         } else {
@@ -306,7 +306,7 @@ class DB_pgsql extends DB_common
     {
         $result_int = (int)$result;
         $rownum = ($rownum !== null) ? $rownum : $this->row[$result_int];
-        if ($rownum >= $this->num_rows[$result_int]) {
+        if ($rownum >= $this->_num_rows[$result_int]) {
             return null;
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
@@ -348,7 +348,7 @@ class DB_pgsql extends DB_common
     {
         if (is_resource($result)) {
             unset($this->row[(int)$result]);
-            unset($this->num_rows[(int)$result]);
+            unset($this->_num_rows[(int)$result]);
             $this->affected = 0;
             return @pg_freeresult($result);
         }
