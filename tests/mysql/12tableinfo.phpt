@@ -4,7 +4,6 @@ DB_mysql tableInfo test
 <?php include("skipif.inc"); ?>
 --FILE--
 <?php
-require_once "DB.php";
 include("mktable.inc");
 include(dirname(__FILE__)."/../tableinfo.inc");
 ?>

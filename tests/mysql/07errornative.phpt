@@ -4,7 +4,6 @@ DB_mysql::errorNative test
 <?php include("skipif.inc"); ?>
 --FILE--
 <?php
-require_once "DB.php";
 include("mktable.inc");
 $dbh->query("syntax error please");
 print "error code " . $dbh->errorNative() . "\n";

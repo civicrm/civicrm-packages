@@ -4,7 +4,6 @@ DB_mysql error mapping
 <?php require "skipif.inc"; ?>
 --FILE--
 <?php
-require "connect.inc";
 require "mktable.inc";
 require dirname(__FILE__)."/../errors.inc";
 ?>
