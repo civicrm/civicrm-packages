@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.132 2004-11-02 21:30:22 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.133 2004-11-10 16:42:39 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -68,6 +68,11 @@ ibase:
 * Add items to errorcode_map (from MDB2):
   -303 => DB_ERROR_INVALID
   -904 => DB_ERROR_CONNECT_FAILED
+
+mssql:
+* Use "," to delimit port only for Windows.  Use ":"
+for other OS's.  This bug was introduced when
+resolving Bug #2140.  (Bug #2730)
 
 mysql & mysqli:
 * Added 1061 => DB_ERROR_ALREADY_EXISTS to error map.
