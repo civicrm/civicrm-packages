@@ -4,7 +4,7 @@ DB_mysql::fetchmode object
 <?php require "skipif.inc"; ?>
 --FILE--
 <?php
-require 'connect.inc';
+require 'mktable.inc';
 include dirname(__FILE__).'/../fetchmode_object.inc';
 ?>
 --EXPECT--
