@@ -370,7 +370,7 @@ class DB_oci8 extends DB_common
      * SELECT queries, DB_OK for other successful queries.  A DB error
      * code is returned on failure.
      */
-    function &execute($stmt, $data = false)
+    function &execute($stmt, $data = array())
     {
         $types=&$this->prepare_types[$stmt];
         if (($size = sizeof($types)) != sizeof($data)) {
