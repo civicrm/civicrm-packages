@@ -75,14 +75,19 @@ DBMS Versions Tested
 --------------------
 dbase   n/a
 fbsql   4.1.6
-ibase   Firebird 1.5.1 under PHP 5
+ibase   Firebird 1.5.1  (PHP 5 only)
 ifx     7.2 Standard Edtition
-msql    3.6
+msql    3.6  (PHP snapshots dated 2005-02-18)
 mssql   8.0.760
 mysql   4.0.21
-mysqli  4.1.5
+mysqli  4.1.5  (PHP 5 only)
 oci8    9.2
 odbc    DB2 ESE 8.1 and MS Access 2000
 pgsql   7.4.1 and 8.0.1
-sqlite  Bundled with PHP 5.1-dev
+sqlite  PHP 5: extension.  PHP 4: PECL snapshot.
 sybase  ASE 12.5.3
+
+Tests were performed under both of the following PHP versions
+unles otherwise noted:
+    4.3.11-dev dated 2005-02-22
+    5.1.0-dev dated 2005-02-22
