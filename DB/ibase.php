@@ -58,6 +58,7 @@ class DB_ibase extends DB_common
             -150 => DB_ERROR_ACCESS_VIOLATION,
             -151 => DB_ERROR_ACCESS_VIOLATION,
             -155 => DB_ERROR_NOSUCHTABLE,
+            88   => DB_ERROR_NOSUCHTABLE,
             -157 => DB_ERROR_NOSUCHFIELD,
             -158 => DB_ERROR_VALUE_COUNT_ON_ROW,
             -170 => DB_ERROR_MISMATCH,
@@ -70,6 +71,7 @@ class DB_ibase extends DB_common
             -219 => DB_ERROR_NOSUCHTABLE,
             -297 => DB_ERROR_CONSTRAINT,
             -530 => DB_ERROR_CONSTRAINT,
+            -607 => DB_ERROR_NOSUCHTABLE,
             -803 => DB_ERROR_CONSTRAINT,
             -551 => DB_ERROR_ACCESS_VIOLATION,
             -552 => DB_ERROR_ACCESS_VIOLATION,
@@ -145,7 +147,7 @@ class DB_ibase extends DB_common
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
-        $result = ibase_query($this->connection, $query);
+        $result = @ibase_query($this->connection, $query);
         if (!$result) {
             return $this->ibaseRaiseError();
         }
@@ -214,7 +216,7 @@ class DB_ibase extends DB_common
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             if (function_exists('ibase_fetch_assoc')) {
-                $ar = ibase_fetch_assoc($result);
+                $ar = @ibase_fetch_assoc($result);
             } else {
                 $ar = get_object_vars(ibase_fetch_object($result));
             }
@@ -222,7 +224,7 @@ class DB_ibase extends DB_common
                 $ar = array_change_key_case($ar, CASE_LOWER);
             }
         } else {
-            $ar = ibase_fetch_row($result);
+            $ar = @ibase_fetch_row($result);
         }
         if (!$ar) {
             if ($errmsg = ibase_errmsg()) {
@@ -270,6 +272,11 @@ class DB_ibase extends DB_common
         }
         return $cols;
     }
+
+    // }}}
+    // {{{ prepare()
+
+
     /**
      * Prepares a query for multiple execution with execute().
      * @param $query query to be prepared
@@ -682,32 +689,49 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ ibaseRaiseError()
 
-    function ibaseRaiseError($errno = null, $errmsg = null)
+    function ibaseRaiseError($db_errno = null, $native_errmsg = null)
     {
-        if ($errmsg === null)
-            $errmsg = ibase_errmsg();
+        if ($native_errmsg === null) {
+            $native_errmsg = ibase_errmsg();
+        }
         // memo for the interbase php module hackers: we need something similar
         // to mysql_errno() to retrieve error codes instead of this ugly hack
-        if (preg_match('/^([^0-9\-]+)([0-9\-]+)\s+(.*)$/', $errmsg, $m)) {
-            if ($errno === null) {
-                $ibase_errno = (int)$m[2];
+        if (preg_match('/^([^0-9\-]+)([0-9\-]+)\s+(.*)$/', $native_errmsg, $m)) {
+            $native_errno = (int)$m[2];
+        } else {
+            $native_errno = null;
+        }
+        // try to map the native error to the DB one
+        if ($db_errno === null) {
+            if ($native_errno) {
                 // try to interpret Interbase error code (that's why we need ibase_errno()
                 // in the interbase module to return the real error code)
-                switch ($ibase_errno) {
+                switch ($native_errno) {
                     case -204:
                         if (is_int(strpos($m[3], 'Table unknown'))) {
-                            $errno = DB_ERROR_NOSUCHTABLE;
+                            $db_errno = DB_ERROR_NOSUCHTABLE;
                         }
                     break;
                     default:
-                        $errno = $this->errorCode($ibase_errno);
+                        $db_errno = $this->errorCode($native_errno);
+                }
+            } else {
+                $error_regexps = array(
+                    '/[tT]able .* already exists/' => DB_ERROR_ALREADY_EXISTS,
+                    '/violation of FOREIGN KEY constraint/' => DB_ERROR_CONSTRAINT,
+                    '/conversion error from string/' => DB_ERROR_INVALID_NUMBER,
+                    '/arithmetic exception, numeric overflow, or string truncation/' => DB_ERROR_DIVZERO
+                );
+                foreach ($error_regexps as $regexp => $code) {
+                    if (preg_match($regexp, $native_errmsg, $m)) {
+                        $db_errno = $code;
+                        $native_errno = null;
+                        break;
+                    }
                 }
             }
-            $errmsg = $m[2] . ' ' . $m[3];
         }
-
-        return $this->raiseError($errno, null, null, $errmsg,
-                        $this->last_query);
+        return $this->raiseError($db_errno, null, null, null, $native_errmsg);
     }
 
     // }}}
