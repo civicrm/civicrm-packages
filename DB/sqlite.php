@@ -649,7 +649,11 @@ class DB_sqlite extends DB_common {
         if ($errno === null) {
             $errno = $this->errorCode($native);
         }
-        return $this->raiseError($errno, null, null, null, $native);
+
+        $errorcode = @sqlite_last_error($this->connection); 
+        $userinfo = "$errorcode ** $this->last_query";
+
+        return $this->raiseError($errno, null, null, $userinfo, $native);
     }
 
     // }}}
