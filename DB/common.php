@@ -756,7 +756,7 @@ class DB_common extends PEAR
             case DB_AUTOQUERY_INSERT:
                 $values = '';
                 $names = '';
-                while (list(, $value) = each($table_fields)) {
+                foreach ($table_fields as $value) {
                     if ($first) {
                         $first = false;
                     } else {
