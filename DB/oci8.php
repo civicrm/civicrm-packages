@@ -128,7 +128,7 @@ class DB_oci8 extends DB_common
     /**
      * Log out and disconnect from the database.
      *
-     * @return bool TRUE on success, FALSE if not connected.
+     * @return bool true on success, false if not connected.
      */
     function disconnect()
     {
@@ -204,7 +204,7 @@ class DB_oci8 extends DB_common
      * @param int      $fetchmode how the resulting array should be indexed
      * @param int      $rownum    the row number to fetch
      *
-     * @return mixed DB_OK on success, NULL when end of result set is
+     * @return mixed DB_OK on success, null when end of result set is
      *               reached or on failure
      *
      * @see DB_result::fetchInto()
@@ -212,7 +212,7 @@ class DB_oci8 extends DB_common
      */
     function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
-        if ($rownum !== NULL) {
+        if ($rownum !== null) {
             return $this->raiseError(DB_ERROR_NOT_CAPABLE);
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
@@ -226,7 +226,7 @@ class DB_oci8 extends DB_common
             $moredata = OCIFetchInto($result,$arr,OCI_RETURN_NULLS+OCI_RETURN_LOBS);
         }
         if (!$moredata) {
-            return NULL;
+            return null;
         }
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
             $this->_rtrimArrayValues($arr);
@@ -245,7 +245,7 @@ class DB_oci8 extends DB_common
      *
      * @param $result oci8 result identifier
      *
-     * @return bool TRUE on success, FALSE if $result is invalid
+     * @return bool true on success, false if $result is invalid
      */
     function freeResult($result)
     {
@@ -257,7 +257,7 @@ class DB_oci8 extends DB_common
      *
      * @param $stmt oci8 statement identifier
      *
-     * @return bool TRUE on success, FALSE if $result is invalid
+     * @return bool true on success, false if $result is invalid
      */
     function freePrepared($stmt)
     {
@@ -597,7 +597,7 @@ class DB_oci8 extends DB_common
         }
         $fields = implode(', ', $cols);
         // XXX Test that (tip by John Lim)
-        //if(preg_match('/^\s*SELECT\s+/is', $query, $match)) {
+        //if (preg_match('/^\s*SELECT\s+/is', $query, $match)) {
         //    // Introduce the FIRST_ROWS Oracle query optimizer
         //    $query = substr($query, strlen($match[0]), strlen($query));
         //    $query = "SELECT /* +FIRST_ROWS */ " . $query;
@@ -804,7 +804,9 @@ class DB_oci8 extends DB_common
                 $i++;
             }
 
-            $res['num_fields'] = $i;
+            if ($mode) {
+                $res['num_fields'] = $i;
+            }
             @OCIFreeStatement($stmt);
 
         } else {
@@ -839,7 +841,9 @@ class DB_oci8 extends DB_common
                     }
                 }
 
-                $res['num_fields'] = $count;
+                if ($mode) {
+                    $res['num_fields'] = $count;
+                }
 
             } else {
                 return $this->raiseError(DB_ERROR_NOT_CAPABLE);
