@@ -79,8 +79,9 @@ class DB_pgsql extends DB_common
      */
     function connect($dsninfo, $persistent = false)
     {
-        if (!DB::assertExtension('pgsql'))
+        if (!DB::assertExtension('pgsql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
+        }
 
         $this->dsn = $dsninfo;
         $protocol = (isset($dsninfo['protocol'])) ? $dsninfo['protocol'] : 'tcp';
@@ -762,7 +763,7 @@ class DB_pgsql extends DB_common
     function getSpecialQuery($type)
     {
         switch ($type) {
-            case 'tables': {
+            case 'tables':
                 return "SELECT c.relname as \"Name\"
                         FROM pg_class c, pg_user u
                         WHERE c.relowner = u.usesysid AND c.relkind = 'r'
@@ -775,21 +776,16 @@ class DB_pgsql extends DB_common
                         AND not exists (select 1 from pg_views where viewname = c.relname)
                         AND not exists (select 1 from pg_user where usesysid = c.relowner)
                         AND c.relname !~ '^pg_'";
-            }
-            case 'views': {
+            case 'views':
                 // Table cols: viewname | viewowner | definition
                 return 'SELECT viewname FROM pg_views';
-            }
-            case 'users': {
+            case 'users':
                 // cols: usename |usesysid|usecreatedb|usetrace|usesuper|usecatupd|passwd  |valuntil
                 return 'SELECT usename FROM pg_user';
-            }
-            case 'databases': {
+            case 'databases':
                 return 'SELECT datname FROM pg_database';
-            }
-            case 'functions': {
+            case 'functions':
                 return 'SELECT proname FROM pg_proc';
-            }
             default:
                 return null;
         }
