@@ -90,10 +90,15 @@ class DB_pgsql extends DB_common
 
         if ($protocol == 'tcp') {
             if (!empty($dsninfo['hostspec'])) {
-                $connstr = 'host=' . $dsninfo['hostspec'];
+                $connstr .= 'host=' . $dsninfo['hostspec'];
             }
             if (!empty($dsninfo['port'])) {
                 $connstr .= ' port=' . $dsninfo['port'];
+            }
+        } elseif ($protocol == 'unix') {
+            // Allow for pg socket in non-standard locations.
+            if (!empty($dsninfo['socket'])) {
+                $connstr .= 'host=' . $dsninfo['socket'];
             }
         }
 
