@@ -32,6 +32,8 @@ require_once "DB/common.php";
  * Database independent query interface definition for PHP's MySQL
  * extension.
  *
+ * This is for MySQL versions 4.0 and below.
+ *
  * @package  DB
  * @version  $Id$
  * @category Database

@@ -23,9 +23,12 @@
 require_once 'DB/common.php';
 
 /**
- * Database independent query interface definition for PHP's MySQL 4
- * We're still waiting for the new MySQL4 protocol for the PHP extension.
- * Note that pconnect is GONE.
+ * Database independent query interface definition for PHP's mysqli
+ * extension.
+ *
+ * This is for MySQL versions 4.1 and above.  Requires PHP 5.
+ *
+ * Note that persistent connections no longer exist.
  *
  * @package  DB
  * @version  $Id$
