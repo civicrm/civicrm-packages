@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.167 2005-02-14 17:11:18 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.168 2005-02-16 06:45:54 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -99,6 +99,12 @@ all:
 
 dbase:
 * Provide tableInfo().  Request 2142.
+* Add 'mode' option to DSN and connect.
+* When connecting, if the database doesn't exist,
+  use the new 'fields' DSN option to create the
+  database.
+* No longer use strip_tags() on $php_errormsg
+  when reporting connection errors.
 
 fbsql:
 * The FrontBase driver now works and passes all tests.
