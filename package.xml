@@ -115,6 +115,7 @@ Minor API Change:
         <file name="numcols.inc"/>
         <file name="numrows.inc"/>
         <file name="prepexe.inc"/>
+        <file name="query.inc"/>
         <file name="sequences.inc"/>
         <file name="simplequery.inc"/>
         <file name="tableinfo.inc"/>
