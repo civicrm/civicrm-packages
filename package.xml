@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.180 2005-03-07 18:24:51 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.181 2005-03-10 01:22:48 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,12 +66,12 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.4</version>
+    <version>1.7.5</version>
     <state>stable</state>
-    <date>2005-03-07</date>
+    <date>2005-03-10</date>
     <notes><![CDATA[
-mssql:
-* Fix tableInfo() so flags are returned.  Bug 3691.
+pgsql:
+* Map error message for multi-column unique constraints.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">
