@@ -338,7 +338,7 @@ class DB_sqlite extends DB_common
     function freeResult(&$result)
     {
         // XXX No native free?
-        if (is_resource($result)) {
+        if (!is_resource($result)) {
             return false;
         }
         $result = null;
