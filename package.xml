@@ -27,20 +27,20 @@
     <date>2002-01-29</date>
     <notes>First independent release of DB</notes>
     <filelist>
-      <file role="php">DB.php</file>
-      <dir name="DB">
-        <file role="php">DB/storage.php</file>
-        <file role="php">DB/common.php</file>
-        <file role="php">DB/fbsql.php</file>
-        <file role="php">DB/ibase.php</file>
-        <file role="php">DB/ifx.php</file>
-        <file role="php">DB/msql.php</file>
-        <file role="php">DB/mssql.php</file>
-        <file role="php">DB/mysql.php</file>
-        <file role="php">DB/oci8.php</file>
-        <file role="php">DB/odbc.php</file>
-        <file role="php">DB/pgsql.php</file>
-        <file role="php">DB/sybase.php</file>
+      <file role="php" baseinstalldir="/">DB.php</file>
+      <file role="php" baseinstalldir="/DB">common.php</file>
+      <file role="php" baseinstalldir="/DB">storage.php</file>
+      <dir name="drivers" baseinstalldir="/DB">
+        <file role="php">drivers/fbsql.php</file>
+        <file role="php">drivers/ibase.php</file>
+        <file role="php">drivers/ifx.php</file>
+        <file role="php">drivers/msql.php</file>
+        <file role="php">drivers/mssql.php</file>
+        <file role="php">drivers/mysql.php</file>
+        <file role="php">drivers/oci8.php</file>
+        <file role="php">drivers/odbc.php</file>
+        <file role="php">drivers/pgsql.php</file>
+        <file role="php">drivers/sybase.php</file>
       </dir>
     </filelist>
     <deps>
