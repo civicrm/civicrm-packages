@@ -283,7 +283,7 @@ class DB_mysql extends DB_common
      * Sends a query to the database server
      *
      * Generally uses mysql_query().  If you want to use
-     * mysql_unbuffered_query() set the "buffer" option to 1 using
+     * mysql_unbuffered_query() set the "result_buffering" option to 0 using
      * setOptions().
      *
      * @param string  the SQL query string
@@ -312,7 +312,7 @@ class DB_mysql extends DB_common
             }
             $this->transaction_opcount++;
         }
-        if ($this->options['buffer'] == 1) {
+        if (!$this->options['result_buffering']) {
             $result = @mysql_unbuffered_query($query, $this->connection);
         } else {
             $result = @mysql_query($query, $this->connection);

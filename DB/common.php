@@ -79,7 +79,7 @@ class DB_common extends PEAR
      * @see DB_common::setOption()
      */
     var $options = array(
-        'buffer' => 1000,
+        'result_buffering' => 500,
         'persistent' => false,
         'ssl' => false,
         'debug' => 0,
@@ -514,10 +514,10 @@ class DB_common extends PEAR
      *      <br />should results be freed automatically when there are no
      *            more rows?
      * </li><li>
-     * <var>buffer</var> <kbd>integer</kbd> = <samp>1000</samp>
+     * <var>result_buffering</var> <kbd>integer</kbd> = <samp>500</samp>
      *      <br />how many rows of the result set should be buffered?
      *      <br />In mysql: mysql_unbuffered_query() is used instead of
-     *            mysql_query() if this value is 1.
+     *            mysql_query() if this value is 0.
      *      <br />In oci8: this value is passed to ocisetprefetch().
      * </li><li>
      * <var>debug</var> <kbd>integer</kbd> = <samp>0</samp>

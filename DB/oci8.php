@@ -285,7 +285,7 @@ class DB_oci8 extends DB_common
      * Sends a query to the database server
      *
      * To determine how many rows of a result set get buffered using
-     * ocisetprefetch(), see the "buffer" option in setOptions().
+     * ocisetprefetch(), see the "result_buffering" option in setOptions().
      *
      * @param string  the SQL query string
      *
@@ -315,7 +315,7 @@ class DB_oci8 extends DB_common
         if (DB::isManip($query)) {
             return DB_OK;
         } else {
-            @ocisetprefetch($result, $this->options['buffer']);
+            @ocisetprefetch($result, $this->options['result_buffering']);
             return $result;
         }
     }
@@ -590,7 +590,7 @@ class DB_oci8 extends DB_common
      * Executes a DB statement prepared with prepare().
      *
      * To determine how many rows of a result set get buffered using
-     * ocisetprefetch(), see the "buffer" option in setOptions().
+     * ocisetprefetch(), see the "result_buffering" option in setOptions().
      *
      * @param resource  $stmt  a DB statement resource returned from prepare()
      * @param mixed  $data  array, string or numeric data to be used in
@@ -657,7 +657,7 @@ class DB_oci8 extends DB_common
         if ($this->manip_query[(int)$stmt]) {
             $tmp = DB_OK;
         } else {
-            @ocisetprefetch($stmt, $this->options['buffer']);
+            @ocisetprefetch($stmt, $this->options['result_buffering']);
             $tmp =& new DB_result($this, $stmt);
         }
         return $tmp;
