@@ -763,7 +763,7 @@ class DB_pgsql extends DB_common
     {
         switch ($type) {
             case 'tables': {
-                $sql = "SELECT c.relname as \"Name\"
+                return "SELECT c.relname as \"Name\"
                         FROM pg_class c, pg_user u
                         WHERE c.relowner = u.usesysid AND c.relkind = 'r'
                         AND not exists (select 1 from pg_views where viewname = c.relname)
@@ -775,30 +775,24 @@ class DB_pgsql extends DB_common
                         AND not exists (select 1 from pg_views where viewname = c.relname)
                         AND not exists (select 1 from pg_user where usesysid = c.relowner)
                         AND c.relname !~ '^pg_'";
-                break;
             }
             case 'views': {
                 // Table cols: viewname | viewowner | definition
-                $sql = 'SELECT viewname FROM pg_views';
-                break;
+                return 'SELECT viewname FROM pg_views';
             }
             case 'users': {
                 // cols: usename |usesysid|usecreatedb|usetrace|usesuper|usecatupd|passwd  |valuntil
-                $sql = 'SELECT usename FROM pg_user';
-                break;
+                return 'SELECT usename FROM pg_user';
             }
             case 'databases': {
-                $sql = 'SELECT datname FROM pg_database';
-                break;
+                return 'SELECT datname FROM pg_database';
             }
             case 'functions': {
-                $sql = 'SELECT proname FROM pg_proc';
-                break;
+                return 'SELECT proname FROM pg_proc';
             }
             default:
                 return null;
         }
-        return $sql;
     }
 
     // }}}

@@ -635,15 +635,12 @@ class DB_mssql extends DB_common
     {
         switch ($type) {
             case 'tables':
-                $sql = "select name from sysobjects where type = 'U' order by name";
-                break;
+                return "select name from sysobjects where type = 'U' order by name";
             case 'views':
-                $sql = "select name from sysobjects where type = 'V'";
-                break;
+                return "select name from sysobjects where type = 'V'";
             default:
                 return null;
         }
-        return $sql;
     }
 
     // }}}

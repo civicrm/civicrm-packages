@@ -603,12 +603,10 @@ class DB_fbsql extends DB_common
     {
         switch ($type) {
             case 'tables':
-                $sql = 'select "table_name" from information_schema.tables';
-                break;
+                return 'select "table_name" from information_schema.tables';
             default:
                 return null;
         }
-        return $sql;
     }
 
     // }}}

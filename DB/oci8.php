@@ -758,12 +758,10 @@ class DB_oci8 extends DB_common
     {
         switch ($type) {
             case 'tables':
-                $sql = 'SELECT table_name FROM user_tables';
-                break;
+                return 'SELECT table_name FROM user_tables';
             default:
                 return null;
         }
-        return $sql;
     }
 
     // }}}

@@ -849,8 +849,7 @@ class DB_mysql4 extends DB_common
     {
         switch ($type) {
             case 'tables':
-                $sql = 'SHOW TABLES';
-                break;
+                return 'SHOW TABLES';
             case 'views':
                 return DB_ERROR_NOT_CAPABLE;
             case 'users':
@@ -870,12 +869,11 @@ class DB_mysql4 extends DB_common
                 }
                 return $sql;
             case 'databases':
-                $sql = 'SHOW DATABASES';
+                return 'SHOW DATABASES';
                 break;
             default:
                 return null;
         }
-        return $sql;
     }
 
    // }}}

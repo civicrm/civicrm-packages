@@ -878,8 +878,7 @@ class DB_mysql extends DB_common
     {
         switch ($type) {
             case 'tables':
-                $sql = 'SHOW TABLES';
-                break;
+                return 'SHOW TABLES';
             case 'views':
                 return DB_ERROR_NOT_CAPABLE;
             case 'users':
@@ -890,7 +889,7 @@ class DB_mysql extends DB_common
                     if (DB::isError($db = DB::connect($dsn))) {
                         return $db;
                     }
-                    $sql = $db->getCol($sql);
+                    return $db->getCol($sql);
                     $db->disconnect();
                     // XXX Fixme the mysql driver should take care of this
                     if (!@mysql_select_db($this->dsn['database'], $this->connection)) {
@@ -899,12 +898,10 @@ class DB_mysql extends DB_common
                 }
                 return $sql;
             case 'databases':
-                $sql = 'SHOW DATABASES';
-                break;
+                return 'SHOW DATABASES';
             default:
                 return null;
         }
-        return $sql;
     }
 
     // }}}

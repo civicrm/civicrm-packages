@@ -550,29 +550,25 @@ class DB_sqlite extends DB_common
                                      'Argument has to be an array.');
         switch (strtolower($type)) {
         case 'master':
-            $query .= 'SELECT * FROM sqlite_master;';
-            break;
+            return 'SELECT * FROM sqlite_master;';
         case 'tables':
-            $query .= "SELECT name FROM sqlite_master WHERE type='table' ";
-            $query .= 'UNION ALL SELECT name FROM sqlite_temp_master ';
-            $query .= "WHERE type='table' ORDER BY name;";
-            break;
+            return "SELECT name FROM sqlite_master WHERE type='table' "
+                   . 'UNION ALL SELECT name FROM sqlite_temp_master '
+                   . "WHERE type='table' ORDER BY name;";
         case 'schema':
-            $query .= 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL ';
-            $query .= 'SELECT * FROM sqlite_temp_master) ';
-            $query .= "WHERE type!='meta' ORDER BY tbl_name, type DESC, name;";
-            break;
+            return 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL '
+                   . 'SELECT * FROM sqlite_temp_master) '
+                   . "WHERE type!='meta' ORDER BY tbl_name, type DESC, name;";
         case 'schemax':
         case 'schema_x':
             /*
              * Use like:
              * $res = $db->query($db->getSpecialQuery('schema_x', array('table' => 'table3')));
              */
-            $query .= 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL ';
-            $query .= 'SELECT * FROM sqlite_temp_master) ';
-            $query .= sprintf("WHERE tbl_name LIKE '%s' AND type!='meta' ", $args['table']);
-            $query .= 'ORDER BY type DESC, name;';
-            break;
+            return 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL '
+                   . 'SELECT * FROM sqlite_temp_master) '
+                   . sprintf("WHERE tbl_name LIKE '%s' AND type!='meta' ", $args['table'])
+                   . ' ORDER BY type DESC, name;';
         case 'alter':
             /*
              * SQLite does not support ALTER TABLE; this is a helper query
@@ -605,12 +601,10 @@ class DB_sqlite extends DB_common
             for($i=0; $i<8; $i++) {
                 $result = $this->query($q[$i]);
             }
-            $query = "SELECT * FROM {$args['table']};";
-            break;
+            return "SELECT * FROM {$args['table']};";
         default:
             return null;
         }
-        return $query;
     }
 
     // }}}
