@@ -50,6 +50,7 @@
     require_once 'DB/sqlite.php';
     
     // Define a DSN
+    // TODO: mode should be passed id options array, fix example.
     $dsn = array (
         'phptype'   => "sqlite",
         'database'  => getcwd() . "/test1.db",
@@ -120,9 +121,6 @@ class DB_sqlite extends DB_common {
     */
     function DB_sqlite() {
 
-        /* for retrieving meaningfull error messages */
-        /* TODO: set it back to original somewhere   */
-
         $this->DB_common();
         $this->phptype = 'sqlite';
         $this->dbsyntax = 'sqlite';
@@ -177,25 +175,26 @@ class DB_sqlite extends DB_common {
         $ret = DB_OK;
         $file = $dsninfo['database'];
 
-        if (!DB::assertExtension('sqlite'))
+        if (!DB::assertExtension('sqlite')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
+        }
 
         if (isset($file)) {
             if (!file_exists($file)) {
                 touch($file );
-                chmod($file, (is_numeric($dsninfo['mode']) ? $dsninfo['mode'] : 0644 ));
+                chmod($file, (is_numeric($dsninfo['mode']) ? $dsninfo['mode'] : 0644));
                 if (!file_exists($file)) {
-                    return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND );
+                    return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
                 }
             }
             if (!is_file($file)) {
-                return $this->sqliteRaiseError(DB_ERROR_INVALID );
+                return $this->sqliteRaiseError(DB_ERROR_INVALID);
             }
             if (!is_readable($file)) {
-                return $this->sqliteRaiseError(DB_ERROR_ACCESS_VIOLATION );
+                return $this->sqliteRaiseError(DB_ERROR_ACCESS_VIOLATION);
             }
         } else {
-            return $this->sqliteRaiseError(DB_ERROR_ACCESS_VIOLATION );
+            return $this->sqliteRaiseError(DB_ERROR_ACCESS_VIOLATION);
         }
 
         $connect_function = $persistent ? 'sqlite_open' : 'sqlite_popen';
@@ -294,7 +293,7 @@ class DB_sqlite extends DB_common {
         }
         $res = $this->fetchInto($this->result, $arr, $fetchmode, $rownum );
         if (!$res) {
-            $errno = sqlite_last_error($this->connection );
+            $errno = sqlite_last_error($this->connection);
             if (!$errno) {
                 return null;
             }
@@ -329,12 +328,12 @@ class DB_sqlite extends DB_common {
             }
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC ) {
-            $arr = sqlite_fetch_array($this->result, SQLITE_ASSOC );
+            $arr = sqlite_fetch_array($this->result, SQLITE_ASSOC);
         } else {
-            $arr = sqlite_fetch_array($this->result, SQLITE_NUM );
+            $arr = sqlite_fetch_array($this->result, SQLITE_NUM);
         }
         if (!$arr) {
-            $errno = sqlite_last_error($this->connection );
+            $errno = sqlite_last_error($this->connection);
             if (!$errno) {
                 return null;
             }
