@@ -405,8 +405,8 @@ class DB_common extends PEAR
         $tokens = split("[\&\?\!]", $query);
         $token = 0;
         $types = array();
-
-        for ($i = 0; $i < strlen($query); $i++) {
+        $qlen = strlen($query);
+        for ($i = 0; $i < $qlen; $i++) {
             switch ($query[$i]) {
                 case '?':
                     $types[$token++] = DB_PARAM_SCALAR;
