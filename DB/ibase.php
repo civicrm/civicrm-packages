@@ -774,7 +774,7 @@ class DB_ibase extends DB_common
                     '/arithmetic exception, numeric overflow, or string truncation/' => DB_ERROR_DIVZERO
                 );
                 foreach ($error_regexps as $regexp => $code) {
-                    if (preg_match($regexp, $native_errmsg, $m)) {
+                    if (preg_match($regexp, $native_errmsg)) {
                         $db_errno = $code;
                         $native_errno = null;
                         break;
