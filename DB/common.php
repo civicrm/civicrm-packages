@@ -491,44 +491,44 @@ class DB_common extends PEAR
     */
     function buildManipSQL($table, $table_fields, $mode, $where = false)
     {
-        if (count($table_fields)==0) {
+        if (count($table_fields) == 0) {
             $this->raiseError(DB_ERROR_NEED_MORE_DATA);
         }
         $first = true;
-        switch($mode) {
-        case DB_AUTOQUERY_INSERT:
-            $values = '';
-            $names = '';
-            while (list(, $value) = each($table_fields)) {
-                if ($first) {
-                    $first = false;
-                } else {
-                    $names .= ',';
-                    $values .= ',';
+        switch ($mode) {
+            case DB_AUTOQUERY_INSERT:
+                $values = '';
+                $names = '';
+                while (list(, $value) = each($table_fields)) {
+                    if ($first) {
+                        $first = false;
+                    } else {
+                        $names .= ',';
+                        $values .= ',';
+                    }
+                    $names .= $value;
+                    $values .= '?';
                 }
-                $names .= $value;
-                $values .= '?';
-            }
-            return "INSERT INTO $table ($names) VALUES ($values)";
-            break;
-        case DB_AUTOQUERY_UPDATE:
-            $set = '';
-            while (list(, $value) = each($table_fields)) {
-                if ($first) {
-                    $first = false;
-                } else {
-                    $set .= ',';
+                return "INSERT INTO $table ($names) VALUES ($values)";
+                break;
+            case DB_AUTOQUERY_UPDATE:
+                $set = '';
+                while (list(, $value) = each($table_fields)) {
+                    if ($first) {
+                        $first = false;
+                    } else {
+                        $set .= ',';
+                    }
+                    $set .= "$value = ?";
                 }
-                $set .= "$value = ?";
-            }
-            $sql = "UPDATE $table SET $set";
-            if ($where) {
-                $sql .= " WHERE $sql";
-            }
-            return $sql;
-            break;
-        default:
-            $this->raiseError(DB_ERROR_SYNTAX);
+                $sql = "UPDATE $table SET $set";
+                if ($where) {
+                    $sql .= " WHERE $sql";
+                }
+                return $sql;
+                break;
+            default:
+                $this->raiseError(DB_ERROR_SYNTAX);
         }
     }
 
@@ -550,7 +550,7 @@ class DB_common extends PEAR
     * @access public
     * @see prepare()
     */
-    function execute($stmt, $data = false)
+    function &execute($stmt, $data = false)
     {
         $realquery = $this->executeEmulateQuery($stmt, $data);
         if (DB::isError($realquery)) {
