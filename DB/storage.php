@@ -271,7 +271,7 @@ class DB_storage extends PEAR
         while (list($prop, $foo) = each($this->_properties)) {
             print "$prop = ";
             print htmlentities($this->$prop);
-            print "<BR>\n";
+            print "<br />\n";
         }
     }
 
@@ -375,7 +375,11 @@ class DB_storage extends PEAR
             }
             if ($valid) {
                 $this->$property = $newvalue;
-                @$this->_changes[$property]++;
+                if (empty($this->_changes[$property])) {
+                    $this->_changes[$property] = 0;
+                } else {
+                    $this->_changes[$property]++;
+                }
             } else {
                 return $this->raiseError(null, DB_ERROR_INVALID, null,
                                          null, "invalid field: $property",
@@ -417,7 +421,7 @@ class DB_storage extends PEAR
      */
     function _DB_storage()
     {
-        if (empty($this->_discard) && sizeof($this->_changes)) {
+        if (sizeof($this->_changes)) {
             $this->store();
         }
         $this->_properties = array();
