@@ -231,6 +231,26 @@ print_r($ret);
 
 
 print "\n===================================================\n";
+print 'testing getOne with null value in column: ';
+$dbh->query("INSERT INTO phptest VALUES (9, 'nine', '', NULL)");
+
+$ret =& $dbh->getOne('SELECT d FROM phptest WHERE a = 9');
+if ($ret === null) {
+    print "null\n";
+} else {
+    print 'type=' . gettype($ret) . ", value=$ret\n";
+}
+
+print 'testing getOne with empty string in column: ';
+$ret =& $dbh->getOne('SELECT c FROM phptest WHERE a = 9');
+if ($ret === '') {
+    print "empty string\n";
+} else {
+    print 'type=' . gettype($ret) . ", value=$ret\n";
+}
+
+
+print "\n===================================================\n";
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
@@ -602,5 +622,9 @@ Array
         )
 
 )
+
+===================================================
+testing getOne with null value in column: null
+testing getOne with empty string in column: empty string
 
 ===================================================
