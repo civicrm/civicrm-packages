@@ -7,9 +7,17 @@ if (!defined('PATH_SEPARATOR')) {
         define('PATH_SEPARATOR', ':');
     }
 }
+
 ini_set('include_path', realpath(dirname(__FILE__) . '/../..')
         . PATH_SEPARATOR . '.' . PATH_SEPARATOR
         . ini_get('include_path'));
+
+// Options used when connecting
+$options = array(
+    //'optimize' => 'portability',
+    'portability' => DB_PORTABILITY_ALL,
+    'debug' => 2,
+);
 
 define('DRIVER_DSN', '');
 //define('DRIVER_DSN', 'pgsql://postgres@localhost/test');

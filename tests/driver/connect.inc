@@ -11,10 +11,7 @@ if (substr(DRIVER_DSN, 0, 5) == 'mssql') {
 
 require_once 'DB.php';
 
-$options = array(
-    //'optimize' => 'portability',
-    'portability' => DB_PORTABILITY_ALL,
-);
+// $options is set in setup.inc
 
 $dbh =& DB::connect(DRIVER_DSN, $options);
 if (DB::isError($dbh)) {
