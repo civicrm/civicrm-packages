@@ -298,7 +298,7 @@ class DB_msql extends DB_common
     function numRows($result)
     {
         $rows = @msql_num_rows($result);
-        if (!$rows) {
+        if ($rows === false) {
             return $this->msqlRaiseError();
         }
         return $rows;
