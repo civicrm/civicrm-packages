@@ -58,8 +58,8 @@ define("DB_ERROR_VALUE_COUNT_ON_ROW", -22);
 define("DB_ERROR_INVALID_DSN",        -23);
 define("DB_ERROR_CONNECT_FAILED",     -24);
 define("DB_ERROR_EXTENSION_NOT_FOUND",-25);
-define("DB_ERROR_NOSUCHDB",           -25);
 define("DB_ERROR_ACCESS_VIOLATION",   -26);
+define("DB_ERROR_NOSUCHDB",           -27);
 
 /*
  * Warnings are not detected as errors by DB::isError(), and are not
