@@ -566,6 +566,8 @@ class DB_ibase extends DB_common
         if (!$result) {
             return $this->ibaseRaiseError();
         }
+
+        $flags = '';
         if ($obj = @ibase_fetch_object($result)) {
             ibase_free_result($result);
             if (isset($obj->CTYPE)  && trim($obj->CTYPE) == 'PRIMARY KEY') {
