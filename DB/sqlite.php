@@ -328,16 +328,13 @@ class DB_sqlite extends DB_common {
             }
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC ) {
-            $arr = sqlite_fetch_array($this->result, SQLITE_ASSOC);
+            $arr = sqlite_fetch_array($result, SQLITE_ASSOC);
         } else {
-            $arr = sqlite_fetch_array($this->result, SQLITE_NUM);
+            $arr = sqlite_fetch_array($result, SQLITE_NUM);
         }
         if (!$arr) {
-            $errno = sqlite_last_error($this->connection);
-            if (!$errno) {
-                return null;
-            }
-            return $this->sqliteRaiseError($errno);
+            /* See: http://bugs.php.net/bug.php?id=22328 */
+            return null;
         }
         return DB_OK;
     }
