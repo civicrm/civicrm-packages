@@ -113,7 +113,10 @@ class DB_fbsql extends DB_common
 
         $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
 
+        $ini = ini_get('track_errors');
+        ini_set('track_errors', 1);
         $php_errormsg = '';
+
         $connect_function = $persistent ? 'fbsql_pconnect' : 'fbsql_connect';
 
         if ($dbhost && $dsninfo['username'] && $dsninfo['password']) {
@@ -126,6 +129,9 @@ class DB_fbsql extends DB_common
         } else {
             $conn = false;
         }
+
+        ini_set('track_errors', $ini);
+
         if (!$conn) {
             if (empty($php_errormsg)) {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED);
