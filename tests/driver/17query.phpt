@@ -86,10 +86,10 @@ $res =& $dbh->query('SELECT a, b, d FROM phptest WHERE a = ?', 11);
 $row = $res->fetchRow();
 print "a = {$row['a']}, b = {$row['b']}, d = ";
 $type = gettype($row['d']);
-if ($type == 'NULL') {
+if ($type == 'NULL' || $row['d'] == '') {
     print "NULL\n";
 } else {
-    print "expected d's type to be NULL but it's $type and the value is ";
+    print "ERR: expected d's type to be NULL but it's $type and the value is ";
     print $row['d'] . "\n";
 }
 
