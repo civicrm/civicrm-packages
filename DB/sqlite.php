@@ -30,25 +30,25 @@
 //   sqlite_error_string, sqlite_unbuffered_query, sqlite_create_aggregate
 //   sqlite_create_function, sqlite_last_insert_rowid, sqlite_fetch_array
 //
-// Formatting: 
+// Formatting:
 //   # astyle --style=kr < sqlite.php > out.php
 //
 // Status:
 //   EXPERIMENTAL
 
 /**
-* Example:  
+* Example:
 *
 <?php
-    
+
     if (!extension_loaded('sqlite')) {
         if (!dl(stristr(PHP_OS, "WIN") ? "php_sqlite.dll" : "sqlite.so"))
             exit("Could not load the SQLite extension.\n");
     }
-    
+
     require_once 'DB.php';
     require_once 'DB/sqlite.php';
-    
+
     // Define a DSN
     // TODO: mode should be passed id options array, fix example.
     $dsn = array (
@@ -58,17 +58,17 @@
     );
     $db = &new DB_sqlite();
     $db->connect($dsn, array('persistent'=> true) );
-    
+
     // Give a new table name
     $table = "tbl_" .  md5(uniqid(rand()));
     $table = substr($table, 0, 10);
-    
+
     // Create a new table
-    $result = $db->query("CREATE TABLE $table (comment varchar(50), 
+    $result = $db->query("CREATE TABLE $table (comment varchar(50),
       datetime varchar(50));");
-    $result = $db->query("INSERT INTO $table VALUES ('Date and Time', '" . 
+    $result = $db->query("INSERT INTO $table VALUES ('Date and Time', '" .
       date('Y-m-j H:i:s') . "');");
-    
+
     // Get results
     printf("affectedRows:\t\t%s\n", $db->affectedRows() );
     $result = $db->query("SELECT FROM $table;" );
@@ -106,7 +106,7 @@ class DB_sqlite extends DB_common {
     var $phptype, $dbsyntax;
     var $prepare_tokens = array();
     var $prepare_types = array();
-    
+
     var $_lasterror = '';
 
     // }}}
@@ -164,7 +164,7 @@ class DB_sqlite extends DB_common {
     /**
      * Connect to a database represented by a file.
      *
-     * @param $dsn the data source name; the file is taken as 
+     * @param $dsn the data source name; the file is taken as
      *        database; "sqlite://root:@host/test.db"
      * @param $persistent (optional) whether the connection should
      *        be persistent
@@ -248,7 +248,7 @@ class DB_sqlite extends DB_common {
         if (!$this->result ) {
             return $this->sqliteRaiseError(null);
         }
-        
+
         /* sqlite_query() seems to allways return a resource */
         /* so cant use that. Using $ismanip instead          */
         if (!$ismanip) {
@@ -311,8 +311,8 @@ class DB_sqlite extends DB_common {
 
     /**
      * Fetch a row and insert the data into an existing array. Availabe modes
-     * are SQLITE_ASSOC, SQLITE_NUM and SQLITE_BOTH. An object type is not 
-     * available. 
+     * are SQLITE_ASSOC, SQLITE_NUM and SQLITE_BOTH. An object type is not
+     * available.
      *
      * @param $result    SQLite result identifier
      * @param $arr       (reference) array where data from the row is stored
@@ -426,7 +426,7 @@ class DB_sqlite extends DB_common {
         return($this->_lasterror);
     }
 
-    function errorCode($errormsg) 
+    function errorCode($errormsg)
     {
         static $error_regexps;
         if (empty($error_regexps)) {
@@ -452,9 +452,9 @@ class DB_sqlite extends DB_common {
     {
         $seqname = $this->getSequenceName($seq_name);
         return $this->query("DROP TABLE $seqname");
-    } 
-     
-    function createSequence($seq_name) 
+    }
+
+    function createSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
         $query   = 'CREATE TABLE ' . $seqname .
@@ -462,16 +462,16 @@ class DB_sqlite extends DB_common {
         $result  = $this->query($query);
         if (DB::isError($result)) {
             return($result);
-        } 
-        $query   = "CREATE TRIGGER ${seqname}_cleanup AFTER INSERT ON $seqname 
-                    BEGIN         
+        }
+        $query   = "CREATE TRIGGER ${seqname}_cleanup AFTER INSERT ON $seqname
+                    BEGIN
                         DELETE FROM $seqname WHERE id<LAST_INSERT_ROWID();
                     END ";
         $result  = $this->query($query);
         if (DB::isError($result)) {
             return($result);
-        } 
-        
+        }
+
     }
 
     /**
@@ -489,9 +489,9 @@ class DB_sqlite extends DB_common {
      */
 
     function nextId($seq_name, $ondemand = true)
-    { 
+    {
         $seqname = $this->getSequenceName($seq_name);
- 
+
         do {
             $repeat = 0;
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
@@ -509,7 +509,7 @@ class DB_sqlite extends DB_common {
                     return $this->raiseError($result);
                 } else {
                     $repeat = 1;
-                }        
+                }
             }
         } while ($repeat);
 
@@ -565,7 +565,7 @@ class DB_sqlite extends DB_common {
             *
             * Use like:
             * $args = array(
-            *     'table' => $table, 
+            *     'table' => $table,
             *     'rows'  => "id INTEGER PRIMARY KEY, firstname TEXT, surname TEXT, datetime TEXT",
             *     'save'  => "NULL, titel, content, datetime"
             * );
@@ -635,7 +635,7 @@ class DB_sqlite extends DB_common {
     }
 
     /**
-    * "DELETE FROM table" gives 0 affected rows in SQLite. This little hack 
+    * "DELETE FROM table" gives 0 affected rows in SQLite. This little hack
     * lets you know how many rows were deleted.
     *
     * @param string $query The SQL query string
