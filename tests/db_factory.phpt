@@ -4,7 +4,7 @@ DB::factory test
 <?php if (!@include("DB.php")) print "skip"; ?>
 --FILE--
 <?php // -*- C++ -*-
-
+include_once './include.inc';
 // Test for: DB.php
 // Parts tested: DB_Error, DB_Warning
 
