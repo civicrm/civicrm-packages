@@ -29,99 +29,237 @@
  */
 require_once 'PEAR.php';
 
+
 // {{{ constants
 // {{{ error codes
 
-/*
- * The method mapErrorCode in each DB_dbtype implementation maps
- * native error codes to one of these.
+/**#@+
+ * One of PEAR DB's portable error codes
+ * @see DB_common::errorCode(), DB::errorMessage()
  *
- * If you add an error code here, make sure you also add a textual
- * version of it in DB::errorMessage().
+ * {@internal If you add an error code here, make sure you also add a textual
+ * version of it in DB::errorMessage().}}
  */
-define('DB_OK',                         1);
-define('DB_ERROR',                     -1);
-define('DB_ERROR_SYNTAX',              -2);
-define('DB_ERROR_CONSTRAINT',          -3);
-define('DB_ERROR_NOT_FOUND',           -4);
-define('DB_ERROR_ALREADY_EXISTS',      -5);
-define('DB_ERROR_UNSUPPORTED',         -6);
-define('DB_ERROR_MISMATCH',            -7);
-define('DB_ERROR_INVALID',             -8);
-define('DB_ERROR_NOT_CAPABLE',         -9);
-define('DB_ERROR_TRUNCATED',          -10);
-define('DB_ERROR_INVALID_NUMBER',     -11);
-define('DB_ERROR_INVALID_DATE',       -12);
-define('DB_ERROR_DIVZERO',            -13);
-define('DB_ERROR_NODBSELECTED',       -14);
-define('DB_ERROR_CANNOT_CREATE',      -15);
-define('DB_ERROR_CANNOT_DELETE',      -16);
-define('DB_ERROR_CANNOT_DROP',        -17);
-define('DB_ERROR_NOSUCHTABLE',        -18);
-define('DB_ERROR_NOSUCHFIELD',        -19);
-define('DB_ERROR_NEED_MORE_DATA',     -20);
-define('DB_ERROR_NOT_LOCKED',         -21);
+
+/**
+ * The code returned by many methods upon success
+ */
+define('DB_OK', 1);
+
+/**
+ * Unkown error
+ */
+define('DB_ERROR', -1);
+
+/**
+ * Syntax error
+ */
+define('DB_ERROR_SYNTAX', -2);
+
+/**
+ * Tried to insert a duplicate value into a primary or unique index
+ */
+define('DB_ERROR_CONSTRAINT', -3);
+
+/**
+ * An identifier in the query refers to a non-existant object
+ */
+define('DB_ERROR_NOT_FOUND', -4);
+
+/**
+ * Tried to create a duplicate object
+ */
+define('DB_ERROR_ALREADY_EXISTS', -5);
+
+/**
+ * The current driver does not support the action you attempted
+ */
+define('DB_ERROR_UNSUPPORTED', -6);
+
+/**
+ * The number of parameters does not match the number of placeholders
+ */
+define('DB_ERROR_MISMATCH', -7);
+
+/**
+ * A literal submitted did not match the data type expected
+ */
+define('DB_ERROR_INVALID', -8);
+
+/**
+ * The current DBMS does not support the action you attempted
+ */
+define('DB_ERROR_NOT_CAPABLE', -9);
+
+/**
+ * A literal submitted was too long so the end of it was removed
+ */
+define('DB_ERROR_TRUNCATED', -10);
+
+/**
+ * A literal number submitted did not match the data type expected
+ */
+define('DB_ERROR_INVALID_NUMBER', -11);
+
+/**
+ * A literal date submitted did not match the data type expected
+ */
+define('DB_ERROR_INVALID_DATE', -12);
+
+/**
+ * Attempt to divide something by zero
+ */
+define('DB_ERROR_DIVZERO', -13);
+
+/**
+ * A database needs to be selected
+ */
+define('DB_ERROR_NODBSELECTED', -14);
+
+/**
+ * Could not create the object requested
+ */
+define('DB_ERROR_CANNOT_CREATE', -15);
+
+/**
+ * UNUSED
+ */
+define('DB_ERROR_CANNOT_DELETE', -16);
+
+/**
+ * Could not drop the database requested because it does not exist
+ */
+define('DB_ERROR_CANNOT_DROP', -17);
+
+/**
+ * An identifier in the query refers to a non-existant table
+ */
+define('DB_ERROR_NOSUCHTABLE', -18);
+
+/**
+ * An identifier in the query refers to a non-existant column
+ */
+define('DB_ERROR_NOSUCHFIELD', -19);
+
+/**
+ * The data submitted to the method was inappropriate
+ */
+define('DB_ERROR_NEED_MORE_DATA', -20);
+
+/**
+ * The attempt to lock the table failed
+ */
+define('DB_ERROR_NOT_LOCKED', -21);
+
+/**
+ * The number of columns doesn't match the number of values
+ */
 define('DB_ERROR_VALUE_COUNT_ON_ROW', -22);
-define('DB_ERROR_INVALID_DSN',        -23);
-define('DB_ERROR_CONNECT_FAILED',     -24);
+
+/**
+ * The DSN submitted has problems
+ */
+define('DB_ERROR_INVALID_DSN', -23);
+
+/**
+ * Could not connect to the database
+ */
+define('DB_ERROR_CONNECT_FAILED', -24);
+
+/**
+ * The PHP extension needed for this DBMS could not be found
+ */
 define('DB_ERROR_EXTENSION_NOT_FOUND',-25);
-define('DB_ERROR_ACCESS_VIOLATION',   -26);
-define('DB_ERROR_NOSUCHDB',           -27);
+
+/**
+ * The present user has inadequate permissions to perform the task requestd
+ */
+define('DB_ERROR_ACCESS_VIOLATION', -26);
+
+/**
+ * The database requested does not exist
+ */
+define('DB_ERROR_NOSUCHDB', -27);
+
+/**
+ * Tried to insert a null value into a column that doesn't allow nulls
+ */
 define('DB_ERROR_CONSTRAINT_NOT_NULL',-29);
+/**#@-*/
 
 
 // }}}
 // {{{ prepared statement-related
 
 
-/*
- * These constants are used when storing information about prepared
- * statements (using the "prepare" method in DB_dbtype).
+/**#@+
+ * Identifiers for the placeholders used in prepared statements.
+ * @see DB_common::prepare()
+ */
+
+/**
+ * Indicates a scalar (<kbd>?</kbd>) placeholder was used
  *
- * The prepare/execute model in DB is mostly borrowed from the ODBC
- * extension, in a query the "?" character means a scalar parameter.
- * There are two extensions though, a "&" character means an opaque
- * parameter.  An opaque parameter is simply a file name, the real
- * data are in that file (useful for putting uploaded files into your
- * database and such). The "!" char means a parameter that must be
- * left as it is.
- * They modify the quote behavoir:
- * DB_PARAM_SCALAR (?) => 'original string quoted'
- * DB_PARAM_OPAQUE (&) => 'string from file quoted'
- * DB_PARAM_MISC   (!) => original string
+ * Quote and escape the value as necessary.
  */
 define('DB_PARAM_SCALAR', 1);
+
+/**
+ * Indicates an opaque (<kbd>&</kbd>) placeholder was used
+ *
+ * The value presented is a file name.  Extract the contents of that file
+ * and place them in this column.
+ */
 define('DB_PARAM_OPAQUE', 2);
+
+/**
+ * Indicates a misc (<kbd>!</kbd>) placeholder was used
+ *
+ * The value should not be quoted or escaped.
+ */
 define('DB_PARAM_MISC',   3);
+/**#@-*/
 
 
 // }}}
 // {{{ binary data-related
 
 
-/*
- * These constants define different ways of returning binary data
- * from queries.  Again, this model has been borrowed from the ODBC
- * extension.
- *
- * DB_BINMODE_PASSTHRU sends the data directly through to the browser
- * when data is fetched from the database.
- * DB_BINMODE_RETURN lets you return data as usual.
- * DB_BINMODE_CONVERT returns data as well, only it is converted to
- * hex format, for example the string "123" would become "313233".
+/**#@+
+ * The different ways of returning binary data from queries
+ */
+
+/**
+ * Sends the fetched data straight through to output
  */
 define('DB_BINMODE_PASSTHRU', 1);
-define('DB_BINMODE_RETURN',   2);
-define('DB_BINMODE_CONVERT',  3);
+
+/**
+ * Lets you return data as usual
+ */
+define('DB_BINMODE_RETURN', 2);
+
+/**
+ * Converts the data to hex format before returning it
+ *
+ * For example the string "123" would become "313233".
+ */
+define('DB_BINMODE_CONVERT', 3);
+/**#@-*/
 
 
 // }}}
 // {{{ fetch modes
 
 
+/**#@+
+ * Fetch Modes
+ * @see DB_common::setFetchMode()
+ */
+
 /**
- * This is a special constant that tells DB the user hasn't specified
- * any particular get mode, so the default should be used.
+ * Indicates the current default fetch mode should be used
+ * @see DB_common::$fetchmode
  */
 define('DB_FETCHMODE_DEFAULT', 0);
 
@@ -141,77 +279,99 @@ define('DB_FETCHMODE_ASSOC', 2);
 define('DB_FETCHMODE_OBJECT', 3);
 
 /**
- * For multi-dimensional results: normally the first level of arrays
- * is the row number, and the second level indexed by column number or name.
- * DB_FETCHMODE_FLIPPED switches this order, so the first level of arrays
- * is the column name, and the second level the row number.
+ * For multi-dimensional results, make the column name the first level
+ * of the array and put the row number in the second level of the array
+ *
+ * This is flipped from the normal behavior, which puts the row numbers
+ * in the first level of the array and the column names in the second level.
  */
 define('DB_FETCHMODE_FLIPPED', 4);
+/**#@-*/
 
-/* for compatibility */
+/**#@+
+ * Old fetch modes.  Left here for compatibility.
+ */
 define('DB_GETMODE_ORDERED', DB_FETCHMODE_ORDERED);
 define('DB_GETMODE_ASSOC',   DB_FETCHMODE_ASSOC);
 define('DB_GETMODE_FLIPPED', DB_FETCHMODE_FLIPPED);
+/**#@-*/
 
 
 // }}}
 // {{{ tableInfo() && autoPrepare()-related
 
 
-/**
- * these are constants for the tableInfo-function
- * they are bitwised or'ed. so if there are more constants to be defined
- * in the future, adjust DB_TABLEINFO_FULL accordingly
+/**#@+
+ * The type of information to return from the tableInfo() method
+ *
+ * Bitwised constants, so they can be combined using <kbd>|</kbd>
+ * and removed using <kbd>^</kbd>.
+ *
+ * @see DB_common::tableInfo()
+ *
+ * {@internal Since the TABLEINFO constants are bitwised, if more of them are
+ * added in the future, make sure to adjust DB_TABLEINFO_FULL accordingly.}}
  */
 define('DB_TABLEINFO_ORDER', 1);
 define('DB_TABLEINFO_ORDERTABLE', 2);
 define('DB_TABLEINFO_FULL', 3);
+/**#@-*/
 
-/*
- * Used by autoPrepare()
+
+/**#@+
+ * The type of query to create with the automatic query building methods
+ * @see DB_common::autoPrepare(), DB_common::autoExecute()
  */
 define('DB_AUTOQUERY_INSERT', 1);
 define('DB_AUTOQUERY_UPDATE', 2);
+/**#@-*/
 
 
 // }}}
 // {{{ portability modes
 
 
-/**
- * Portability: turn off all portability features.
+/**#@+
+ * Portability Modes
+ *
+ * Bitwised constants, so they can be combined using <kbd>|</kbd>
+ * and removed using <kbd>^</kbd>.
+ *
  * @see DB_common::setOption()
+ *
+ * {@internal Since the PORTABILITY constants are bitwised, if more of them are
+ * added in the future, make sure to adjust DB_PORTABILITY_ALL accordingly.}}
+ */
+
+/**
+ * Turn off all portability features
  */
 define('DB_PORTABILITY_NONE', 0);
 
 /**
- * Portability: convert names of tables and fields to lower case
- * when using the get*(), fetch*() and tableInfo() methods.
- * @see DB_common::setOption()
+ * Convert names of tables and fields to lower case
+ * when using the get*(), fetch*() and tableInfo() methods
  */
 define('DB_PORTABILITY_LOWERCASE', 1);
 
 /**
- * Portability: right trim the data output by get*() and fetch*().
- * @see DB_common::setOption()
+ * Right trim the data output by get*() and fetch*()
  */
 define('DB_PORTABILITY_RTRIM', 2);
 
 /**
- * Portability: force reporting the number of rows deleted.
- * @see DB_common::setOption()
+ * Force reporting the number of rows deleted
  */
 define('DB_PORTABILITY_DELETE_COUNT', 4);
 
 /**
- * Portability: enable hack that makes numRows() work in Oracle.
- * @see DB_common::setOption()
+ * Enable hack that makes numRows() work in Oracle
  */
 define('DB_PORTABILITY_NUMROWS', 8);
 
 /**
- * Portability: makes certain error messages in certain drivers compatible
- * with those from other DBMS's.
+ * Makes certain error messages in certain drivers compatible
+ * with those from other DBMS's
  *
  * + mysql, mysqli:  change unique/primary key constraints
  *   DB_ERROR_ALREADY_EXISTS -> DB_ERROR_CONSTRAINT
@@ -219,23 +379,20 @@ define('DB_PORTABILITY_NUMROWS', 8);
  * + odbc(access):  MS's ODBC driver reports 'no such field' as code
  *   07001, which means 'too few parameters.'  When this option is on
  *   that code gets mapped to DB_ERROR_NOSUCHFIELD.
- *
- * @see DB_common::setOption()
  */
 define('DB_PORTABILITY_ERRORS', 16);
 
 /**
- * Portability: convert null values to empty strings in data output by
- * get*() and fetch*().
- * @see DB_common::setOption()
+ * Convert null values to empty strings in data output by
+ * get*() and fetch*()
  */
 define('DB_PORTABILITY_NULL_TO_EMPTY', 32);
 
 /**
- * Portability: turn on all portability features.
- * @see DB_common::setOption()
+ * Turn on all portability features
  */
 define('DB_PORTABILITY_ALL', 63);
+/**#@-*/
 
 // }}}
 
@@ -312,7 +469,8 @@ class DB
 
         if (!class_exists($classname)) {
             $tmp = PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
-                                    "Unable to include the DB/{$type}.php file",
+                                    "Unable to include the DB/{$type}.php"
+                                    . " file for '$dsn'",
                                     'DB_Error', true);
             return $tmp;
         }
@@ -386,7 +544,8 @@ class DB
         $classname = "DB_${type}";
         if (!class_exists($classname)) {
             $tmp = PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
-                                    "Unable to include the DB/{$type}.php file for `$dsn'",
+                                    "Unable to include the DB/{$type}.php"
+                                    . " file for '$dsn'",
                                     'DB_Error', true);
             return $tmp;
         }
@@ -504,18 +663,24 @@ class DB
         if (!isset($errorMessages)) {
             $errorMessages = array(
                 DB_ERROR                    => 'unknown error',
+                DB_ERROR_ACCESS_VIOLATION   => 'insufficient permissions',
                 DB_ERROR_ALREADY_EXISTS     => 'already exists',
                 DB_ERROR_CANNOT_CREATE      => 'can not create',
                 DB_ERROR_CANNOT_DELETE      => 'can not delete',
                 DB_ERROR_CANNOT_DROP        => 'can not drop',
+                DB_ERROR_CONNECT_FAILED     => 'connect failed',
                 DB_ERROR_CONSTRAINT         => 'constraint violation',
                 DB_ERROR_CONSTRAINT_NOT_NULL=> 'null value violates not-null constraint',
                 DB_ERROR_DIVZERO            => 'division by zero',
+                DB_ERROR_EXTENSION_NOT_FOUND=> 'extension not found',
                 DB_ERROR_INVALID            => 'invalid',
                 DB_ERROR_INVALID_DATE       => 'invalid date or time',
+                DB_ERROR_INVALID_DSN        => 'invalid DSN',
                 DB_ERROR_INVALID_NUMBER     => 'invalid number',
                 DB_ERROR_MISMATCH           => 'mismatch',
+                DB_ERROR_NEED_MORE_DATA     => 'insufficient data supplied',
                 DB_ERROR_NODBSELECTED       => 'no database selected',
+                DB_ERROR_NOSUCHDB           => 'no such database',
                 DB_ERROR_NOSUCHFIELD        => 'no such field',
                 DB_ERROR_NOSUCHTABLE        => 'no such table',
                 DB_ERROR_NOT_CAPABLE        => 'DB backend not capable',
@@ -523,15 +688,9 @@ class DB
                 DB_ERROR_NOT_LOCKED         => 'not locked',
                 DB_ERROR_SYNTAX             => 'syntax error',
                 DB_ERROR_UNSUPPORTED        => 'not supported',
+                DB_ERROR_TRUNCATED          => 'truncated',
                 DB_ERROR_VALUE_COUNT_ON_ROW => 'value count on row',
-                DB_ERROR_INVALID_DSN        => 'invalid DSN',
-                DB_ERROR_CONNECT_FAILED     => 'connect failed',
                 DB_OK                       => 'no error',
-                DB_ERROR_NEED_MORE_DATA     => 'insufficient data supplied',
-                DB_ERROR_EXTENSION_NOT_FOUND=> 'extension not found',
-                DB_ERROR_NOSUCHDB           => 'no such database',
-                DB_ERROR_ACCESS_VIOLATION   => 'insufficient permissions',
-                DB_ERROR_TRUNCATED          => 'truncated'
             );
         }
 
@@ -539,7 +698,8 @@ class DB
             $value = $value->getCode();
         }
 
-        return isset($errorMessages[$value]) ? $errorMessages[$value] : $errorMessages[DB_ERROR];
+        return isset($errorMessages[$value]) ? $errorMessages[$value]
+                     : $errorMessages[DB_ERROR];
     }
 
     // }}}
@@ -665,7 +825,8 @@ class DB
         $proto_opts = rawurldecode($proto_opts);
         if ($parsed['protocol'] == 'tcp') {
             if (strpos($proto_opts, ':') !== false) {
-                list($parsed['hostspec'], $parsed['port']) = explode(':', $proto_opts);
+                list($parsed['hostspec'],
+                     $parsed['port']) = explode(':', $proto_opts);
             } else {
                 $parsed['hostspec'] = $proto_opts;
             }
@@ -750,10 +911,11 @@ class DB_Error extends PEAR_Error
     /**
      * DB_Error constructor.
      *
-     * @param mixed   $code   DB error code, or string with error message.
-     * @param integer $mode   what "error mode" to operate in
-     * @param integer $level  what error level to use for $mode & PEAR_ERROR_TRIGGER
-     * @param mixed   $debuginfo  additional debug info, such as the last query
+     * @param mixed $code       DB error code, or string with error message
+     * @param int   $mode       what "error mode" to operate in
+     * @param int   $level      what error level to use for $mode &
+     *                           PEAR_ERROR_TRIGGER
+     * @param mixed $debuginfo  additional debug info, such as the last query
      *
      * @access public
      *
@@ -763,9 +925,11 @@ class DB_Error extends PEAR_Error
               $level = E_USER_NOTICE, $debuginfo = null)
     {
         if (is_int($code)) {
-            $this->PEAR_Error('DB Error: ' . DB::errorMessage($code), $code, $mode, $level, $debuginfo);
+            $this->PEAR_Error('DB Error: ' . DB::errorMessage($code), $code,
+                              $mode, $level, $debuginfo);
         } else {
-            $this->PEAR_Error("DB Error: $code", DB_ERROR, $mode, $level, $debuginfo);
+            $this->PEAR_Error("DB Error: $code", DB_ERROR,
+                              $mode, $level, $debuginfo);
         }
     }
     // }}}
@@ -807,20 +971,30 @@ class DB_result
      */
     var $fetchmode_object_class = '';
 
+    /**
+     * The query result resource id created by PHP
+     * @var resource
+     */
     var $result;
+
+    /**
+     * The present row being dealt with
+     * @var integer
+     */
     var $row_counter = null;
 
     /**
-     * for limit queries, the row to start fetching
+     * The row to start fetching from in limit queries
      * @var integer
      */
-    var $limit_from  = null;
+    var $limit_from = null;
 
     /**
-     * for limit queries, the number of rows to fetch
+     * The number of rows to fetch from a limit query
      * @var integer
      */
     var $limit_count = null;
+
 
     // }}}
     // {{{ constructor
@@ -848,9 +1022,10 @@ class DB_result
     {
         switch ($key) {
             case 'limit_from':
-                $this->limit_from = $value; break;
+                $this->limit_from = $value;
+                break;
             case 'limit_count':
-                $this->limit_count = $value; break;
+                $this->limit_count = $value;
         }
     }
 

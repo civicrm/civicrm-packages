@@ -392,14 +392,13 @@ class DB_common extends PEAR
     /**
      * Map native error codes to DB's portable ones
      *
-     * Requires that the DB implementation's constructor fills
-     * in the <var>$errorcode_map</var> property.
+     * Uses the <var>$errorcode_map</var> property defined in each driver.
      *
-     * @param mixed  $nativecode  the native error code, as returned by the
-     * backend database extension (string or integer)
+     * @param string|int $nativecode  the error code returned by the DBMS
      *
-     * @return int a portable DB error code, or DB_ERROR if this DB
-     * implementation has no mapping for the given error code.
+     * @return int  the portable DB error code.  Return DB_ERROR if the
+     *              current driver doesn't have a mapping for the
+     *              $nativecode submitted.
      *
      * @access public
      */
@@ -510,11 +509,8 @@ class DB_common extends PEAR
      *                      There is also the posibility to use and extend the
      *                      'DB_row' class.
      *
-     * @see DB_FETCHMODE_ORDERED
-     * @see DB_FETCHMODE_ASSOC
-     * @see DB_FETCHMODE_FLIPPED
-     * @see DB_FETCHMODE_OBJECT
-     * @see DB_row::DB_row()
+     * @see DB_FETCHMODE_ORDERED, DB_FETCHMODE_ASSOC, DB_FETCHMODE_FLIPPED,
+     *      DB_FETCHMODE_OBJECT
      * @access public
      */
     function setFetchMode($fetchmode, $object_class = 'stdClass')
@@ -644,19 +640,19 @@ class DB_common extends PEAR
      *
      * Example 1. Simple setOption() example
      * <code> <?php
-     * $dbh->setOption('autofree', true);
+     * $db->setOption('autofree', true);
      * ?></code>
      *
      * Example 2. Portability for lowercasing and trimming
      * <code> <?php
-     * $dbh->setOption('portability',
-     *                  DB_PORTABILITY_LOWERCASE | DB_PORTABILITY_RTRIM);
+     * $db->setOption('portability',
+     *                 DB_PORTABILITY_LOWERCASE | DB_PORTABILITY_RTRIM);
      * ?></code>
      *
      * Example 3. All portability options except trimming
      * <code> <?php
-     * $dbh->setOption('portability',
-     *                  DB_PORTABILITY_ALL ^ DB_PORTABILITY_RTRIM);
+     * $db->setOption('portability',
+     *                 DB_PORTABILITY_ALL ^ DB_PORTABILITY_RTRIM);
      * ?></code>
      *
      * @param string $option option name
@@ -739,13 +735,13 @@ class DB_common extends PEAR
      *
      * Example 1.
      * <code> <?php
-     * $sth = $dbh->prepare('INSERT INTO tbl (a, b, c) VALUES (?, !, &)');
+     * $sth = $db->prepare('INSERT INTO tbl (a, b, c) VALUES (?, !, &)');
      * $data = array(
      *     "John's text",
      *     "'it''s good'",
      *     'filename.txt'
      * );
-     * $res = $dbh->execute($sth, $data);
+     * $res = $db->execute($sth, $data);
      * ?></code>
      *
      * Use backslashes to escape placeholder characters if you don't want
@@ -803,17 +799,24 @@ class DB_common extends PEAR
     // {{{ autoPrepare()
 
     /**
-     * Automaticaly generate an insert or update query and pass it to prepare()
+     * Automaticaly generate an insert or update query and pass it to
+     * prepare()
      *
-     * @param string $table name of the table
-     * @param array $table_fields ordered array containing the fields names
-     * @param int $mode type of query to make (DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE)
-     * @param string $where in case of update queries, this string will be put after the sql WHERE statement
-     * @return resource handle for the query
+     * @param string $table         the table name
+     * @param array  $table_fields  the array of field names
+     * @param int    $mode          a type of query to make:
+     *                               DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE
+     * @param string $where         for update queries: the WHERE clause to
+     *                               append to the SQL statement.  Don't
+     *                               include the "WHERE" keyword.
+     *
+     * @return resource  the query handle
+     *
      * @see DB_common::prepare(), DB_common::buildManipSQL()
      * @access public
      */
-    function autoPrepare($table, $table_fields, $mode = DB_AUTOQUERY_INSERT, $where = false)
+    function autoPrepare($table, $table_fields, $mode = DB_AUTOQUERY_INSERT,
+                         $where = false)
     {
         $query = $this->buildManipSQL($table, $table_fields, $mode, $where);
         return $this->prepare($query);
@@ -826,17 +829,25 @@ class DB_common extends PEAR
      * Automaticaly generate an insert or update query and call prepare()
      * and execute() with it
      *
-     * @param string $table name of the table
-     * @param array $fields_values assoc ($key=>$value) where $key is a field name and $value its value
-     * @param int $mode type of query to make (DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE)
-     * @param string $where in case of update queries, this string will be put after the sql WHERE statement
-     * @return mixed  a new DB_Result or a DB_Error when fail
+     * @param string $table         the table name
+     * @param array  $fields_values the associative array where $key is a
+     *                               field name and $value its value
+     * @param int    $mode          a type of query to make:
+     *                               DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE
+     * @param string $where         for update queries: the WHERE clause to
+     *                               append to the SQL statement.  Don't
+     *                               include the "WHERE" keyword.
+     *
+     * @return mixed  a new DB_Result or a DB_Error upon failure
+     *
      * @see DB_common::autoPrepare(), DB_common::buildManipSQL()
      * @access public
      */
-    function autoExecute($table, $fields_values, $mode = DB_AUTOQUERY_INSERT, $where = false)
+    function autoExecute($table, $fields_values, $mode = DB_AUTOQUERY_INSERT,
+                         $where = false)
     {
-        $sth = $this->autoPrepare($table, array_keys($fields_values), $mode, $where);
+        $sth = $this->autoPrepare($table, array_keys($fields_values), $mode,
+                                  $where);
         $ret =& $this->execute($sth, array_values($fields_values));
         $this->freePrepared($sth);
         return $ret;
@@ -849,17 +860,34 @@ class DB_common extends PEAR
     /**
      * Make automaticaly an sql query for prepare()
      *
-     * Example : buildManipSQL('table_sql', array('field1', 'field2', 'field3'), DB_AUTOQUERY_INSERT)
-     *           will return the string : INSERT INTO table_sql (field1,field2,field3) VALUES (?,?,?)
-     * NB : - This belongs more to a SQL Builder class, but this is a simple facility
-     *      - Be carefull ! If you don't give a $where param with an UPDATE query, all
-     *        the records of the table will be updated !
+     * Example:
+     * <pre>
+     * buildManipSQL('table_sql', array('field1', 'field2', 'field3'),
+     *               DB_AUTOQUERY_INSERT);
+     * </pre>
      *
-     * @param string $table name of the table
-     * @param array $table_fields ordered array containing the fields names
-     * @param int $mode type of query to make (DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE)
-     * @param string $where in case of update queries, this string will be put after the sql WHERE statement
-     * @return string sql query for prepare()
+     * That returns
+     * <samp>
+     * INSERT INTO table_sql (field1,field2,field3) VALUES (?,?,?)
+     * </samp>
+     *
+     * NOTES:
+     *   - This belongs more to a SQL Builder class, but this is a simple
+     *     facility.
+     *   - Be carefull! If you don't give a $where param with an UPDATE
+     *     query, all the records of the table will be updated!
+     *
+     * @param string $table         the table name
+     * @param array  $table_fields  the array of field names
+     * @param int    $mode          a type of query to make:
+     *                               DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE
+     * @param string $where         for update queries: the WHERE clause to
+     *                               append to the SQL statement.  Don't
+     *                               include the "WHERE" keyword.
+     *
+     * @return string  the sql query for prepare()
+     *
+     * @see DB_common::prepare(), DB_common::autoPrepare()
      * @access public
      */
     function buildManipSQL($table, $table_fields, $mode, $where = false)
@@ -911,13 +939,13 @@ class DB_common extends PEAR
      *
      * Example 1.
      * <code> <?php
-     * $sth = $dbh->prepare('INSERT INTO tbl (a, b, c) VALUES (?, !, &)');
+     * $sth = $db->prepare('INSERT INTO tbl (a, b, c) VALUES (?, !, &)');
      * $data = array(
      *     "John's text",
      *     "'it''s good'",
      *     'filename.txt'
      * );
-     * $res =& $dbh->execute($sth, $data);
+     * $res =& $db->execute($sth, $data);
      * ?></code>
      *
      * @param resource  $stmt  a DB statement resource returned from prepare()
