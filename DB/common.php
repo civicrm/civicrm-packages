@@ -96,6 +96,7 @@ class DB_common extends PEAR
         'optimize' => 'performance',
         'debug' => 0,
         'seqname_format' => '%s_seq',
+        'autofree' => false
     );
 
     /**
@@ -648,17 +649,16 @@ class DB_common extends PEAR
     *
     * @access public
     */
-    function limitQuery($query, $from, $count)
+    function &limitQuery($query, $from, $count)
     {
         $query  = $this->modifyLimitQuery($query, $from, $count);
         $result = $this->simpleQuery($query);
         if (DB::isError($result) || $result === DB_OK) {
             return $result;
         } else {
-            $res_obj =& new DB_result($this, $result);
-            $res_obj->limit_from  = $from;
-            $res_obj->limit_count = $count;
-            return $res_obj;
+            $options['limit_from']  = $from;
+            $options['limit_count'] = $count;
+            return new DB_result($this, $result, $options);
         }
     }
 
