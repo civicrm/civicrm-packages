@@ -109,23 +109,23 @@ Look at the DB/tests/driver/skipif.inc to see what's the problem
 
 DB TESTER MATRIX
 ================
-                            fbsql    ifx    mssql   mysqli   odbc   sybase
-TESTER                        | ibase |  msql | mysql | oci8  | pgsql | sqlite
-John Horton                   -   -   X   -   -   -   -   -   -   -   -   -
-Tim Zickus                    -   -   -   -   -   -   -   X   -   -   -   -
-Tim Parkin                    -   -   -   -   -   -   -   X   -   -   -   -
-Paul Gardiner                 -   -   X   -   -   -   -   -   -   -   -   -
-peterwb@iafrica.com           -   -   X   -   -   -   -   -   -   -   -   -
-Daniel, Adam                  -   -   -   -   -   -   -   X   -   -   -   -
-szii@sziisoft.com             -   -   -   -   -   -   -   -   X¹  -   -   -
-jmh3@linuxfreak.com           -   -   -   -   -   -   -   -   -   X   -   -
-Kevin Henrikson               -   -   -   -   -   -   -   X   -   -   -   -
-Stig Bakken                   -   -   -   -   -   X   -   -   -   X   -   -
-Chuck Hagenbuch               -   -   -   -   X   -   -   -   -   -   -   -
-Ludovico Magnocavallo         -   X   -   -   -   -   -   -   -   -   -   -
-Daniel Convissor              -   X   -   -   X   X   -   X   X²  X   X   X
-
-MISSING TESTERS               X   -   -   X   -   -   X   -   -   -   -   -
+                                fbsql    ifx    mssql   mysqli   odbc   sqlite
+TESTER                      dbase | ibase |  msql | mysql |  oci8 | pgsql | sybase
+John Horton                   -   -   -   X   -   -   -   -   -   -   -   -   -
+Tim Zickus                    -   -   -   -   -   -   -   -   X   -   -   -   -
+Tim Parkin                    -   -   -   -   -   -   -   -   X   -   -   -   -
+Paul Gardiner                 -   -   -   X   -   -   -   -   -   -   -   -   -
+peterwb@iafrica.com           -   -   -   X   -   -   -   -   -   -   -   -   -
+Daniel, Adam                  -   -   -   -   -   -   -   -   X   -   -   -   -
+szii@sziisoft.com             -   -   -   -   -   -   -   -   -   X¹  -   -   -
+jmh3@linuxfreak.com           -   -   -   -   -   -   -   -   -   -   X   -   -
+Kevin Henrikson               -   -   -   -   -   -   -   -   X   -   -   -   -
+Stig Bakken                   -   -   -   -   -   -   X   -   -   -   X   -   -
+Chuck Hagenbuch               -   -   -   -   -   X   -   -   -   -   -   -   -
+Ludovico Magnocavallo         -   -   X   -   -   -   -   -   -   -   -   -   -
+Daniel Convissor              -   -   X   -   -   X   X   -   X   X²  X   X   X
+                                                                           
+MISSING TESTERS               -   X   -   -   X   -   -   X   -   -   -   -   -
 
 Comments:
 
