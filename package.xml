@@ -41,7 +41,7 @@ to LDAP servers and MS ADO (using COM) are also avaible from a separate package)
   <release>
     <version>1.3</version>
     <state>stable</state>
-    <date>2002-07-4</date>
+    <date>2002-07-04</date>
     <notes>
 New Features:
 - Added new option "autofree", which will free the result automatically when there are no more rows.
