@@ -478,7 +478,9 @@ class DB_pgsql extends DB_common
             if ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE) {
                 $repeat = true;
+                $this->pushErrorHandling(PEAR_ERROR_RETURN);
                 $result = $this->createSequence($seq_name);
+                $this->popErrorHandling();
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
                 }
@@ -507,9 +509,7 @@ class DB_pgsql extends DB_common
     function createSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
-        $this->pushErrorHandling(PEAR_ERROR_RETURN);
         $result = $this->query("CREATE SEQUENCE ${seqname}");
-        $this->popErrorHandling();
         return $result;
     }
 
