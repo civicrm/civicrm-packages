@@ -73,6 +73,11 @@ require_once './mktable.inc';
 function pe($o){
     global $dbh;
 
+    if ($o->getMessage() == "DB Error: can't distinguish duplicate field names") {
+        print "NOTICE: $dbh->phptype can't distinguish duplicate field names\n";
+        return;
+    }
+
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
     $dbh->query('DROP TABLE phptest');
     $dbh->query('DROP TABLE phptest_fk');
