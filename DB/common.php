@@ -1101,7 +1101,7 @@ class DB_common extends PEAR
      *
      * @access private
      */
-    function modifyLimitQuery($query, $from, $count, $params)
+    function modifyLimitQuery($query, $from, $count, $params = array())
     {
         return $query;
     }

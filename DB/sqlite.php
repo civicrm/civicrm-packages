@@ -626,7 +626,7 @@ class DB_sqlite extends DB_common
     // }}}
     // {{{ modifyLimitQuery()
 
-    function modifyLimitQuery($query, $from, $count, $params)
+    function modifyLimitQuery($query, $from, $count, $params = array())
     {
         $query = $query . " LIMIT $count OFFSET $from";
         return $query;

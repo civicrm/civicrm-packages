@@ -707,7 +707,7 @@ class DB_mysqli extends DB_common
     // }}}
     // {{{ modifyLimitQuery()
 
-    function modifyLimitQuery($query, $from, $count, $params)
+    function modifyLimitQuery($query, $from, $count, $params = array())
     {
         if (DB::isManip($query)) {
             return $query . " LIMIT $count";

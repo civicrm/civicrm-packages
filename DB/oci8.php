@@ -600,7 +600,7 @@ class DB_oci8 extends DB_common
      *
      * @author Tomas V.V.Cox <cox@idecnet.com>
      */
-    function modifyLimitQuery($query, $from, $count, $params)
+    function modifyLimitQuery($query, $from, $count, $params = array())
     {
         // Let Oracle return the name of the columns instead of
         // coding a "home" SQL parser

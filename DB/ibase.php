@@ -170,7 +170,7 @@ class DB_ibase extends DB_common
      * @author Ludovico Magnocavallo <ludo@sumatrasolutions.com>
      * @access private
      */
-    function modifyLimitQuery($query, $from, $count, $params)
+    function modifyLimitQuery($query, $from, $count, $params = array())
     {
         if ($this->dsn['dbsyntax'] == 'firebird') {
             //$from++; // SKIP starts from 1, ie SKIP 1 starts from the first record
