@@ -177,11 +177,18 @@ function check_output($result, $expected, $name) {
     } else {
         $type = gettype($result);
         if ($type != $expected) {
-            echo "UNEXPECTED OUTCOME FOR $name...\n";
-            echo "  Expected: $expected\n";
-            echo '  Result: ';
-            print_r($result);
-            echo "\n";
+            if ($expected === DB_ERROR_ACCESS_VIOLATION
+                && $type == 'array')
+            {
+                // This user has access to the mysql table.
+                // Not a problem
+            } else {
+                echo "UNEXPECTED OUTCOME FOR $name...\n";
+                echo "  Expected: $expected\n";
+                echo '  Result: ';
+                print_r($result);
+                echo "\n";
+            }
         }
     }
 }
