@@ -22,7 +22,7 @@ DB is a database abstraction layer providing:
 
 DB layers itself on top of PHP's existing database extensions.  The
 currently supported extensions are: dbase, fbsql, interbase, informix,
-msql, mssql, mysql, oci8, odbc, pgsql and sybase (DB style interfaces
+msql, mssql, mysql, oci8, odbc, pgsql, sqlite and sybase (DB style interfaces
 to LDAP servers and MS ADO (using COM) are also avaible from a separate package).
 </description>
   <license>PHP License</license>
@@ -41,25 +41,24 @@ to LDAP servers and MS ADO (using COM) are also avaible from a separate package)
     </maintainer>
   </maintainers>
   <release>
-    <version>1.4.0</version>
+    <version>1.5.0RC1</version>
     <state>stable</state>
-    <date>2003-05-12</date>
+    <date>2003-06-23</date>
     <notes>
 New Features:
-- params support in limitQuery()
-- sybase: error mapping implemented (floripa)
-- sybase: numRows() errorNative() errorCode() implemented
+- Added $dbh->freePrepared(), for explicitily free a prepared result
+- Test suite enhanced
+- Added new *experimental* driver for SQLite
 
 Bugs fixed:
-- use rawurldecode() instead of urldecode() for
-  DSN usernames and passwords
-- ibase: misc bugfixes
-- ifx: results were not freed
-- mssql: fix DB_FETCHMODE_ASSOC row fetches
-- mysql: prefer mysql_real_escape_string if available
-- pgsql: don't specify host on connect if empty
-- pgsql: quote() did not support booleans
-- pgsql: modifyLimitQuery() generated wrong LIMIT clause
+- Fixed memory leaks with methods that did automatic prepare/execute
+- ibase: better error handling and various bugfixes
+- mssql: added port setting to connect and enhancements to the error hanlder
+- mysql: $db->createSequence(); $db->nextID(); now returns 1 and other minor fixes
+- odbc: added native quote() function, better error handling, and other bugfixes
+- pgsql: minor bugfixes
+
+Special thanks for those persons who sent patches and bug reports
 </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
@@ -77,95 +76,52 @@ Bugs fixed:
         <file name="pgsql.php"/>
         <file name="sybase.php"/>
         <file name="storage.php"/>
+        <file name="sqlite.php"/>
       </dir>
       <dir name="doc" role="doc">
-    <file name="IDEAS"/>
-    <file name="MAINTAINERS"/>
-    <file name="STATUS"/>
-    <file name="TESTERS"/>
+        <file name="IDEAS"/>
+        <file name="MAINTAINERS"/>
+        <file name="STATUS"/>
+        <file name="TESTERS"/>
       </dir>
       <dir name="tests" role="test">
-    <file name="db_error.phpt"/>
-    <file name="db_parsedsn.phpt"/>
-    <file name="db_factory.phpt"/>
-    <file name="db_ismanip.phpt"/>
-    <file name="db_error2.phpt"/>
-    <dir name="oci8" role="test">
-      <file name="01connect.phpt"/>
-      <file name="02fetch.phpt"/>
-      <file name="03simplequery.phpt"/>
-      <file name="04numcols.phpt"/>
-      <file name="05sequences.phpt"/>
-      <file name="06prepexec.phpt"/>
-      <file name="07errornative.phpt"/>
-      <file name="08affectedrows.phpt"/>
-      <file name="09numrows.phpt"/>
-      <file name="10errormap.phpt"/>
-      <file name="13limit.phpt"/>
-    </dir>
-    <dir name="odbc" role="test">
-      <file name="01connect.phpt"/>
-      <file name="02fetch.phpt"/>
-      <file name="03simplequery.phpt"/>
-      <file name="04numcols.phpt"/>
-      <file name="06prepexec.phpt"/>
-      <file name="07errornative.phpt"/>
-      <file name="09numrows.phpt"/>
-      <file name="10errormap.phpt"/>
-    </dir>
-    <dir name="ibase" role="test">
-      <file name="01connect.phpt"/>
-      <file name="02fetch.phpt"/>
-      <file name="03simplequery.phpt"/>
-      <file name="04numcols.phpt"/>
-      <file name="05sequences.phpt"/>
-      <file name="06prepexec.phpt"/>
-      <file name="10errormap.phpt"/>
-    </dir>
-    <dir name="mysql" role="test">
-      <file name="01connect.phpt"/>
-      <file name="02fetch.phpt"/>
-      <file name="03simplequery.phpt"/>
-      <file name="04numcols.phpt"/>
-      <file name="05sequences.phpt"/>
-      <file name="06prepexec.phpt"/>
-      <file name="07errornative.phpt"/>
-      <file name="08affectedrows.phpt"/>
-      <file name="09numrows.phpt"/>
-      <file name="10errormap.phpt"/>
-      <file name="12tableinfo.phpt"/>
-      <file name="13limit.phpt"/>
-      <file name="14fetchmode_object.phpt"/>
-    </dir>
-    <dir name="pgsql" role="test">
-      <file name="01connect.phpt"/>
-      <file name="02fetch.phpt"/>
-      <file name="03simplequery.phpt"/>
-      <file name="04numcols.phpt"/>
-      <file name="05sequences.phpt"/>
-      <file name="06prepexec.phpt"/>
-      <file name="07errornative.phpt"/>
-      <file name="08affectedrows.phpt"/>
-      <file name="09numrows.phpt"/>
-      <file name="10errormap.phpt"/>
-      <file name="11transact.phpt"/>
-      <file name="13limit.phpt"/>
-      <file name="14fetchmode_object.phpt"/>
-    </dir>
-    <dir name="driver" role="test">
-      <file name="01connect.phpt"/>
-      <file name="02fetch.phpt"/>
-      <file name="03simplequery.phpt"/>
-      <file name="04numcols.phpt"/>
-      <file name="05sequences.phpt"/>
-      <file name="06prepexec.phpt"/>
-      <file name="08affectedrows.phpt"/>
-      <file name="09numrows.phpt"/>
-      <file name="10errormap.phpt"/>
-      <file name="13limit.phpt"/>
-      <file name="14fetchmode_object.phpt"/>
-      <file name="15quote.phpt"/>
-    </dir>
+        <file name="db_error.phpt"/>
+        <file name="db_parsedsn.phpt"/>
+        <file name="db_factory.phpt"/>
+        <file name="db_ismanip.phpt"/>
+        <file name="db_error2.phpt"/>
+        <file name="errors.inc"/>
+        <file name="fetchmode_object.inc"/>
+        <file name="fetchmodes.inc"/>
+        <file name="fetchrow.inc"/>
+        <file name="include.inc"/>
+        <file name="limit.inc"/>
+        <file name="numcols.inc"/>
+        <file name="numrows.inc"/>
+        <file name="prepexe.inc"/>
+        <file name="sequences.inc"/>
+        <file name="simplequery.inc"/>
+        <file name="tableinfo.inc"/>
+        <file name="transactions.inc"/>
+        <dir name="driver" role="test">
+          <file name="01connect.phpt"/>
+          <file name="02fetch.phpt"/>
+          <file name="03simplequery.phpt"/>
+          <file name="04numcols.phpt"/>
+          <file name="05sequences.phpt"/>
+          <file name="06prepexec.phpt"/>
+          <file name="08affectedrows.phpt"/>
+          <file name="09numrows.phpt"/>
+          <file name="10errormap.phpt"/>
+          <file name="13limit.phpt"/>
+          <file name="14fetchmode_object.phpt"/>
+          <file name="15quote.phpt"/>
+          <file name="bug22328.phpt"/>
+          <file name="connect.inc"/>
+          <file name="mktable.inc"/>
+          <file name="setup.inc"/>
+          <file name="skipif.inc"/>
+        </dir>
       </dir>
     </filelist>
     <provides type="function" name="array_change_key_case" />
