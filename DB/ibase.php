@@ -153,21 +153,6 @@ class DB_ibase extends DB_common
 
     function simpleQuery($query)
     {
-//echo "QUERY... $query\n";
-
-// test transaciton on all
-//        $trans = ibase_trans();
-//        if ($result = @ibase_query($trans, $query)) {
-//            if (!@ibase_commit($trans)) {
-//                $tmp =& $this->ibaseRaiseError();
-//                return $tmp;
-//            }
-//            return DB::isManip($query) ? DB_OK : $result;
-//        } else {
-//            $tmp =& $this->ibaseRaiseError();
-//            return $tmp;
-//        }
-
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
