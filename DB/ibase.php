@@ -79,7 +79,7 @@ class DB_ibase extends DB_common
         $user = $dsninfo['username'];
         $pw   = $dsninfo['password'];
         $dbhost = $dsninfo['hostspec'] ?
-                  ($dsninfo['hostspec'] . ':/' . $dsninfo['database']) :
+                  ($dsninfo['hostspec'] . ':' . $dsninfo['database']) :
                   $dsninfo['database'];
 
         $connect_function = $persistent ? 'ibase_pconnect' : 'ibase_connect';
