@@ -408,16 +408,6 @@ class DB_sqlite extends DB_common {
     }
 
     // }}}
-    // {{{ getLastInsertId()
-
-    /**
-     * Gets the latest inserted row id.
-     *
-     * @return last insert id
-     */
-    function getLastInsertId() {
-        return sqlite_last_insert_rowid($this->connection );
-    }
 
     function dropSequence($seq_name)
     {
@@ -425,7 +415,6 @@ class DB_sqlite extends DB_common {
         return $this->query("DROP TABLE $seqname");
     } 
      
-
     function createSequence($seq_name) 
     {
         $seqname = $this->getSequenceName($seq_name);
@@ -436,7 +425,6 @@ class DB_sqlite extends DB_common {
             return($result);
         } 
     }
-
 
     /**
      * Get the next value in a sequence.  We emulate sequences
