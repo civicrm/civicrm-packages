@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.48 2004-01-31 02:30:13 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.49 2004-01-31 02:33:44 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -72,6 +72,11 @@ Since most DBMS's need 1/0 for boolean support, use
 1/0 in common.php and only put quoteSimple() methods
 in the few drivers that use true booleans or other
 formats (dbase, fbase, pgsql).
+
+Enhanced 15quote.phpt so it tests boolean features
+in quoteSmart() and handles more DBMS types.
+
+Added new 18get.phpt test.
 
 
 =============
