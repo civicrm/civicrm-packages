@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP Version 4                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2003 The PHP Group                                |
+// | Copyright (c) 1997-2004 The PHP Group                                |
 // +----------------------------------------------------------------------+
 // | This source file is subject to version 2.02 of the PHP license,      |
 // | that is bundled with this package in the file LICENSE, and is        |
@@ -104,7 +104,7 @@ class DB_ifx extends DB_common
 
         $this->connection = @$connect_function($dbname, $user, $pw);
         if (!is_resource($this->connection)) {
-            return $this->ifxRaiseError(DB_ERROR_CONNECT_FAILED);
+            return $this->ifxraiseError(DB_ERROR_CONNECT_FAILED);
         }
         return DB_OK;
     }
@@ -148,7 +148,7 @@ class DB_ifx extends DB_common
                 if ($this->transaction_opcount == 0) {
                     $result = @ifx_query('BEGIN WORK', $this->connection);
                     if (!$result) {
-                        return $this->ifxRaiseError();
+                        return $this->ifxraiseError();
                     }
                 }
                 $this->transaction_opcount++;
@@ -156,7 +156,7 @@ class DB_ifx extends DB_common
             $result = @ifx_query($query, $this->connection);
         }
         if (!$result) {
-            return $this->ifxRaiseError();
+            return $this->ifxraiseError();
         }
         $this->affected = ifx_affected_rows($result);
         // Determine which queries should return data, and which
@@ -276,7 +276,7 @@ class DB_ifx extends DB_common
     function numCols($result)
     {
         if (!$cols = @ifx_num_fields($result)) {
-            return $this->ifxRaiseError();
+            return $this->ifxraiseError();
         }
         return $cols;
     }
@@ -346,7 +346,7 @@ class DB_ifx extends DB_common
     }
 
     // }}}
-    // {{{ ifxRaiseError()
+    // {{{ ifxraiseError()
 
     /**
      * Gather information about an error, then use that info to create a
@@ -359,7 +359,7 @@ class DB_ifx extends DB_common
      * @see errorCode()
      * @see DB_common::raiseError()
      */
-    function ifxRaiseError($errno = null)
+    function ifxraiseError($errno = null)
     {
         if ($errno === null) {
             $errno = $this->errorCode(ifx_error());
