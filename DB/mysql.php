@@ -627,26 +627,34 @@ class DB_mysql extends DB_common
     // {{{ quote()
 
     /**
-    * Quote the given string so it can be safely used within string delimiters
-    * in a query.
-    * @param $string mixed Data to be quoted
-    * @return mixed "NULL" string, quoted string or original data
-    */
+     * Quote the given string so it can be safely used in a query.
+     *
+     * @param $str mixed data to be quoted
+     *
+     * @return mixed Submitted variable's type = returned value:
+     *               + null = the string <samp>NULL</samp>
+     *               + boolean = <samp>1</samp> if true or
+     *                 <samp>0</samp> if false.
+     *                 1 and 0 used because MySQL maps BOOL to TINYINT(1).
+     *               + integer or double = the unquoted number
+     *               + other (including strings and numeric strings) =
+     *                 the data escaped according to MySQL's settings
+     *                 then encapsulated between single quotes
+     */
     function quote($str = null)
     {
-        switch (strtolower(gettype($str))) {
-            case 'null':
-                return 'NULL';
-            case 'integer':
-            case 'double':
-                return $str;
-            case 'string':
-            default:
-                if(function_exists('mysql_real_escape_string')) {
-                    return "'".mysql_real_escape_string($str, $this->connection)."'";
-                } else {
-                    return "'".mysql_escape_string($str)."'";
-                }
+        if (is_int($str) || is_double($str)) {
+            return $str;
+        } elseif (is_bool($str)) {
+            return $str ? 1 : 0;
+        } elseif (is_null($str)) {
+            return 'NULL';
+        } else {
+            if(function_exists('mysql_real_escape_string')) {
+                return "'".mysql_real_escape_string($str, $this->connection)."'";
+            } else {
+                return "'".mysql_escape_string($str)."'";
+            }
         }
     }
 

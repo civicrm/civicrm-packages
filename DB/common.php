@@ -170,9 +170,14 @@ class DB_common extends PEAR
     }
 
     /**
-     * Quotes a string so it can be safely used in a query. It will return
-     * the string with single quotes around. Other backend quote styles
-     * should override this method.
+     * Quotes a string so it can be safely used in a query.
+     *
+     * It will return the string with single quotes around.
+     *
+     * This method gets overridden if the DBMS being used has a quote()
+     * method in its sub-class.  Those overriding methods contain notes
+     * about which data types should be used to handle BOOLEAN data in
+     * each DBMS.
      *
      * @param string $string the input string to quote
      *

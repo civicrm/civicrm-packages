@@ -297,27 +297,34 @@ class DB_odbc extends DB_common
         return $nrows;
     }
 
+    // }}}
     // {{{ quote()
+
     /**
-    * Quote the given string so it can be safely used within string delimiters
-    * in a query.
-    * @param $string mixed Data to be quoted
-    * @return mixed "NULL" string, quoted string or original data
-    */
+     * Quote the given string so it can be safely used in a query.
+     *
+     * @param $str mixed data to be quoted
+     *
+     * @return mixed Submitted variable's type = returned value:
+     *               + null = the string <samp>NULL</samp>
+     *               + boolean = the string <samp>TRUE</samp> or
+     *                 <samp>FALSE</samp>
+     *               + integer or double = the unquoted number
+     *               + other (including strings and numeric strings) =
+     *                 the data with single quotes escaped by preceeding
+     *                 single quotes then the whole string is encapsulated
+     *                 between single quotes
+     */
     function quote($str = null)
     {
-        if (is_numeric($str)) {
+        if (is_int($str) || is_double($str)) {
             return $str;
-        }
-        switch (strtolower(gettype($str))) {
-            case 'null':
-                return 'NULL';
-            case 'boolean':
-                return $str ? 'TRUE' : 'FALSE';
-            case 'string':
-            default:
-                $str = str_replace("'", "''", $str);
-                return "'$str'";
+        } elseif (is_bool($str)) {
+            return $str ? 'TRUE' : 'FALSE';
+        } elseif (is_null($str)) {
+            return 'NULL';
+        } else {
+            return "'" . str_replace("'", "''", $str) . "'";
         }
     }
 
