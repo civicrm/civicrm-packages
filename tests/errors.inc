@@ -76,6 +76,13 @@ switch ($dbh->phptype) {
     case 'sybase':
         print "  PHP's $dbh->phptype extension doesn't report this error\n";
         break;
+    case 'odbc':
+        switch ($dbh->dbsyntax) {
+            case 'access':
+                print "  odbc($dbh->dbsyntax) doesn't report this error\n";
+                break;
+        }
+        break;
     case 'mysql':
     case 'sqlite':
         print "  $dbh->phptype doesn't consider this an error\n";
