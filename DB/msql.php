@@ -6,6 +6,10 @@
  * The PEAR DB driver for PHP's msql extension
  * for interacting with Mini SQL databases
  *
+ * PHP's mSQL extension did weird things with NULL values prior to PHP
+ * 4.3.11 and 5.0.4.  Make sure your version of PHP meets or exceeds
+ * those versions.
+ *
  * PHP versions 4 and 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
@@ -33,6 +37,10 @@ require_once 'DB/common.php';
  * for interacting with Mini SQL databases
  *
  * These methods overload the ones declared in DB_common.
+ *
+ * PHP's mSQL extension did weird things with NULL values prior to PHP
+ * 4.3.11 and 5.0.4.  Make sure your version of PHP meets or exceeds
+ * those versions.
  *
  * @category   Database
  * @package    DB
@@ -282,6 +290,10 @@ class DB_msql extends DB_common
      * This method is not meant to be called directly.  Use
      * DB_result::fetchInto() instead.  It can't be declared "protected"
      * because DB_result is a separate object.
+     *
+     * PHP's mSQL extension did weird things with NULL values prior to PHP
+     * 4.3.11 and 5.0.4.  Make sure your version of PHP meets or exceeds
+     * those versions.
      *
      * @param resource $result    the query result resource
      * @param array    $arr       the referenced array to put the data in

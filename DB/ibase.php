@@ -6,6 +6,9 @@
  * The PEAR DB driver for PHP's interbase extension
  * for interacting with Interbase and Firebird databases
  *
+ * While this class works with PHP 4, PHP's InterBase extension is
+ * unstable in PHP 4.  Use PHP 5.
+ *
  * PHP versions 4 and 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
@@ -35,9 +38,10 @@ require_once 'DB/common.php';
  *
  * These methods overload the ones declared in DB_common.
  *
- * InterBase/Firebird are not stable under PHP 4.
+ * While this class works with PHP 4, PHP's InterBase extension is
+ * unstable in PHP 4.  Use PHP 5.
  *
- * BUG:  limitQuery() only works for Firebird.
+ * NOTICE:  limitQuery() only works for Firebird.
  *
  * @category   Database
  * @package    DB
@@ -47,7 +51,7 @@ require_once 'DB/common.php';
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
- * @since      Class not stable until Release 1.7.0
+ * @since      Class became stable in Release 1.7.0
  */
 class DB_ibase extends DB_common
 {
