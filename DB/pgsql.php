@@ -331,34 +331,33 @@ class DB_pgsql extends DB_common
     // {{{ quote()
 
     /**
-     * Quote the given string so it can be safely used in a query.
-     *
-     * @param $str mixed data to be quoted
-     *
-     * @return mixed Submitted variable's type = returned value:
-     *               + null = the string <samp>NULL</samp>
-     *               + boolean = the string <samp>TRUE</samp> or
-     *                 <samp>FALSE</samp>
-     *               + integer or double = the unquoted number
-     *               + other (including strings and numeric strings) =
-     *                 the data with single quotes escaped by preceeding
-     *                 single quotes, backslashes are escaped by preceeding
-     *                 backslashes, then the whole string is encapsulated
-     *                 between single quotes
+     * @depricated  Depricated in release 1.6.0
+     * @internal
      */
-    function quote($str = null)
-    {
-        if (is_int($str) || is_double($str)) {
-            return $str;
-        } elseif (is_bool($str)) {
-            return $str ? 'TRUE' : 'FALSE';
-        } elseif (is_null($str)) {
-            return 'NULL';
-        } else {
-            //PostgreSQL treats a backslash as an escape character.
-            $str = str_replace('\\', '\\\\', $str);
-            return "'" . str_replace("'", "''", $str) . "'";
-        }
+    function quote($str) {
+        return $this->quoteSmart($str);
+    }
+
+    // }}}
+    // {{{ escapeSimple()
+
+    /**
+     * Escape a string according to the current DBMS's standards
+     *
+     * PostgreSQL treats a backslash as an escape character, so they are
+     * removed.
+     *
+     * Not using pg_escape_string() yet because it requires PostgreSQL
+     * to be at version 7.2 or greater.
+     *
+     * @param string $str  the string to be escaped
+     *
+     * @return string  the escaped string
+     *
+     * @internal
+     */
+    function escapeSimple($str) {
+        return str_replace("'", "''", str_replace('\\', '\\\\', $str));
     }
 
     // }}}

@@ -327,31 +327,11 @@ class DB_odbc extends DB_common
     // {{{ quote()
 
     /**
-     * Quote the given string so it can be safely used in a query.
-     *
-     * @param $str mixed data to be quoted
-     *
-     * @return mixed Submitted variable's type = returned value:
-     *               + null = the string <samp>NULL</samp>
-     *               + boolean = the string <samp>TRUE</samp> or
-     *                 <samp>FALSE</samp>
-     *               + integer or double = the unquoted number
-     *               + other (including strings and numeric strings) =
-     *                 the data with single quotes escaped by preceeding
-     *                 single quotes then the whole string is encapsulated
-     *                 between single quotes
+     * @depricated  Depricated in release 1.6.0
+     * @internal
      */
-    function quote($str = null)
-    {
-        if (is_int($str) || is_double($str)) {
-            return $str;
-        } elseif (is_bool($str)) {
-            return $str ? 'TRUE' : 'FALSE';
-        } elseif (is_null($str)) {
-            return 'NULL';
-        } else {
-            return "'" . str_replace("'", "''", $str) . "'";
-        }
+    function quote($str) {
+        return $this->quoteSmart($str);
     }
 
     // }}}

@@ -668,9 +668,20 @@ class DB_mysql extends DB_common
     // {{{ quote()
 
     /**
-     * Quote the given string so it can be safely used in a query.
+     * @depricated  Depricated in release 1.6.0
+     * @internal
+     */
+    function quote($str) {
+        return $this->quoteSmart($str);
+    }
+
+    // }}}
+    // {{{ quoteSmart()
+
+    /**
+     * Format input so it can be safely used in a query
      *
-     * @param $str mixed data to be quoted
+     * @param mixed $in  data to be quoted
      *
      * @return mixed Submitted variable's type = returned value:
      *               + null = the string <samp>NULL</samp>
@@ -681,21 +692,39 @@ class DB_mysql extends DB_common
      *               + other (including strings and numeric strings) =
      *                 the data escaped according to MySQL's settings
      *                 then encapsulated between single quotes
+     *
+     * @internal
      */
-    function quote($str = null)
+    function quoteSmart($in)
     {
-        if (is_int($str) || is_double($str)) {
-            return $str;
-        } elseif (is_bool($str)) {
+        if (is_int($in) || is_double($in)) {
+            return $in;
+        } elseif (is_bool($in)) {
             return $str ? 1 : 0;
-        } elseif (is_null($str)) {
+        } elseif (is_null($in)) {
             return 'NULL';
         } else {
-            if(function_exists('mysql_real_escape_string')) {
-                return "'".mysql_real_escape_string($str, $this->connection)."'";
-            } else {
-                return "'".mysql_escape_string($str)."'";
-            }
+            return "'" . $this->escapeSimple($in) . "'";
+        }
+    }
+
+    // }}}
+    // {{{ escapeSimple()
+
+    /**
+     * Escape a string according to the current DBMS's standards
+     *
+     * @param string $str  the string to be escaped
+     *
+     * @return string  the escaped string
+     *
+     * @internal
+     */
+    function escapeSimple($str) {
+        if(function_exists('mysql_real_escape_string')) {
+            return mysql_real_escape_string($str, $this->connection);
+        } else {
+            return mysql_escape_string($str);
         }
     }
 

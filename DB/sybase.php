@@ -365,12 +365,12 @@ class DB_sybase extends DB_common
     }
 
     // }}}
-    // {{{ quote()
+    // {{{ quoteSmart()
 
     /**
-     * Quote the given string so it can be safely used in a query.
+     * Format input so it can be safely used in a query
      *
-     * @param $str mixed data to be quoted
+     * @param mixed $in  data to be quoted
      *
      * @return mixed Submitted variable's type = returned value:
      *               + null = the string <samp>NULL</samp>
@@ -382,17 +382,19 @@ class DB_sybase extends DB_common
      *                 the data with single quotes escaped by preceeding
      *                 single quotes then the whole string is encapsulated
      *                 between single quotes
+     *
+     * @internal
      */
-    function quote($str = null)
+    function quoteSmart($in)
     {
-        if (is_int($str) || is_double($str)) {
-            return $str;
-        } elseif (is_bool($str)) {
+        if (is_int($in) || is_double($in)) {
+            return $in;
+        } elseif (is_bool($in)) {
             return $str ? 1 : 0;
-        } elseif (is_null($str)) {
+        } elseif (is_null($in)) {
             return 'NULL';
         } else {
-            return "'" . str_replace("'", "''", $str) . "'";
+            return "'" . $this->escapeSimple($in) . "'";
         }
     }
 

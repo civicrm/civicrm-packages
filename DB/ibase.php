@@ -153,6 +153,21 @@ class DB_ibase extends DB_common
 
     function simpleQuery($query)
     {
+//echo "QUERY... $query\n";
+
+// test transaciton on all
+//        $trans = ibase_trans();
+//        if ($result = @ibase_query($trans, $query)) {
+//            if (!@ibase_commit($trans)) {
+//                $tmp =& $this->ibaseRaiseError();
+//                return $tmp;
+//            }
+//            return DB::isManip($query) ? DB_OK : $result;
+//        } else {
+//            $tmp =& $this->ibaseRaiseError();
+//            return $tmp;
+//        }
+
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
@@ -281,37 +296,6 @@ class DB_ibase extends DB_common
     {
         ibase_free_query($query);
         return true;
-    }
-
-    // }}}
-    // {{{ quote()
-
-    /**
-     * Quote the given string so it can be safely used in a query.
-     *
-     * @param $str mixed data to be quoted
-     *
-     * @return mixed Submitted variable's type = returned value:
-     *               + null = the string <samp>NULL</samp>
-     *               + boolean = the string <samp>TRUE</samp> or
-     *                 <samp>FALSE</samp>
-     *               + integer or double = the unquoted number
-     *               + other (including strings and numeric strings) =
-     *                 the data with single quotes escaped by preceeding
-     *                 single quotes then the whole string is encapsulated
-     *                 between single quotes
-     */
-    function quote($str = null)
-    {
-        if (is_int($str) || is_double($str)) {
-            return $str;
-        } elseif (is_bool($str)) {
-            return $str ? 'TRUE' : 'FALSE';
-        } elseif (is_null($str)) {
-            return 'NULL';
-        } else {
-            return "'" . str_replace("'", "''", $str) . "'";
-        }
     }
 
     // }}}
