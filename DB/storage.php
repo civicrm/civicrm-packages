@@ -156,7 +156,6 @@ class DB_storage extends PEAR
      */
     function setup($keyval)
     {
-        $qval = $this->_dbh->quote($keyval);
         $whereclause = $this->_makeWhere($keyval);
         $query = 'SELECT * FROM ' . $this->_table . ' WHERE ' . $whereclause;
         $sth = $this->_dbh->query($query);
