@@ -642,29 +642,34 @@ class DB_sqlite extends DB_common
         }
 
         for ($i = 0; $i < $count; $i++) {
-            $res[$i]['table'] = $case_func($result);
-            $res[$i]['name']  = $case_func($id[$i]['name']);
             if (strpos($id[$i]['type'], '(') !== false) {
                 $bits = explode('(', $id[$i]['type']);
-                $res[$i]['type'] = $bits[0];
-                $res[$i]['len'] = rtrim($bits[1],')');
+                $type = $bits[0];
+                $len = rtrim($bits[1],')');
             } else {
-                $res[$i]['type'] = $id[$i]['type'];
-                $res[$i]['len'] = 0;
+                $type = $id[$i]['type'];
+                $len = 0;
             }
 
-            $res[$i]['flags'] = '';
+            $flags = '';
             if ($id[$i]['pk']) {
-                $res[$i]['flags'] .= 'primary_key ';
+                $flags .= 'primary_key ';
             }
             if ($id[$i]['notnull']) {
-                $res[$i]['flags'] .= 'not_null ';
+                $flags .= 'not_null ';
             }
             if ($id[$i]['dflt_value'] !== null) {
-                $res[$i]['flags'] .= 'default_'
-                                  . rawurlencode($id[$i]['dflt_value']);
+                $flags .= 'default_' . rawurlencode($id[$i]['dflt_value']);
             }
-            $res[$i]['flags'] = trim($res[$i]['flags']);
+            $flags = trim($flags);
+
+            $res[$i] = array(
+                'table' => $case_func($result),
+                'name'  => $case_func($id[$i]['name']),
+                'type'  => $type,
+                'len'   => $len,
+                'flags' => $flags,
+            );
 
             if ($mode & DB_TABLEINFO_ORDER) {
                 $res['order'][$res[$i]['name']] = $i;
