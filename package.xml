@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.161 2005-02-04 18:10:42 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.162 2005-02-05 00:41:48 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -154,6 +154,7 @@ oci8:
 * getListOf() now supports synonyms.  Request 752.
 
 odbc:
+* Add tableInfo() support.  Request 2669.
 * Add '23504' => DB_ERROR_CONSTRAINT to error map.
 * Deal with MS Access' excessive use of the
   S1000 ("General Error") code by trying to

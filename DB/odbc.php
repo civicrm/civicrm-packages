@@ -609,6 +609,91 @@ class DB_odbc extends DB_common
     }
 
     // }}}
+    // {{{ tableInfo()
+
+    /**
+     * Returns information about a table or a result set
+     *
+     * @param object|string  $result  DB_result object from a query or a
+     *                                 string containing the name of a table
+     * @param int            $mode    a valid tableInfo mode
+     *
+     * @return array  an associative array with the information requested.
+     *                 A DB_Error object on failure.
+     *
+     * @see DB_common::tableInfo()
+     * @since Method available since Release 1.7.0
+     */
+    function tableInfo($result, $mode = null) {
+        if (is_string($result)) {
+            /*
+             * Probably received a table name.
+             * Create a result resource identifier.
+             */
+            $id = @odbc_exec($this->connection, "SELECT * FROM $result");
+            if (!$id) {
+                return $this->odbcRaiseError();
+            }
+            $got_string = true;
+        } elseif (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $id = $result->result;
+            $got_string = false;
+        } else {
+            /*
+             * Probably received a result resource identifier.
+             * Copy it.
+             * Deprecated.  Here for compatibility only.
+             */
+            $id = $result;
+            $got_string = false;
+        }
+
+        if (!is_resource($id)) {
+            return $this->odbcRaiseError(DB_ERROR_NEED_MORE_DATA);
+        }
+
+        if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+            $case_func = 'strtolower';
+        } else {
+            $case_func = 'strval';
+        }
+
+        $count = @odbc_num_fields($id);
+        $res   = array();
+
+        if ($mode) {
+            $res['num_fields'] = $count;
+        }
+
+        for ($i = 0; $i < $count; $i++) {
+            $col = $i + 1;
+            $res[$i] = array(
+                'table' => $got_string ? $case_func($result) : '',
+                'name'  => $case_func(@odbc_field_name($id, $col)),
+                'type'  => @odbc_field_type($id, $col),
+                'len'   => @odbc_field_len($id, $col),
+                'flags' => '',
+            );
+            if ($mode & DB_TABLEINFO_ORDER) {
+                $res['order'][$res[$i]['name']] = $i;
+            }
+            if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
+            }
+        }
+
+        // free the result only if we were called on a table
+        if ($got_string) {
+            @odbc_free_result($id);
+        }
+        return $res;
+    }
+
+    // }}}
     // {{{ odbcRaiseError()
 
     /**

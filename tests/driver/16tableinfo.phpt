@@ -26,26 +26,31 @@ error_reporting = 2047
  *     )
  *     0 => array(
  *         //  Info expected to be reported for phptest_fk.a
+ *         //  (INTEGER NOT NULL) (UNIQUE KEY with d)
  *         'type' => Column type reported by the DBMS
  *         'len' => Column size reported by the DBMS
  *         'flags' => Flags reported by the DBMS
  *     )
  *     1 => array()  Info expected to be reported for phptest_fk.fk
+ *                   (INTEGER NOT NULL) (PRIMARY KEY)
  *     2 => array()  Info expected to be reported for phptest_fk.c
+ *                   (CLOB/CHAR/VARCHAR NULL)
  *     3 => array()  Info expected to be reported for phptest_fk.d
+ *                   (DATE NOT NULL) (UNIQUE KEY with a)
  *     4 => array()  Info expected to be reported for phptest_fk.e
+ *                   (CHAR(2) DEFAULT ' e' NOT NULL)
  *     5 => array()  Info expected to be reported for phptest_fk.f
+ *                   (DECIMAL(2,1) NULL)
  *     9 => array()  Info expected to be reported for phptest.d
+ *                   (VARCHAR(20) NULL)
  * )
  * </pre>
  *
- * @see      DB_common::tableInfo()
- * 
+ * @category Database
  * @package  DB
  * @version  $Id$
- * @category Database
  * @author   Daniel Convissor <danielc@analysisandsolutions.com>
- * @internal
+ * @see      DB_common::tableInfo()
  */
 
 error_reporting(E_ALL);
@@ -86,7 +91,7 @@ function pe($o){
     }
 
     if ($o->getCode() == DB_ERROR_NOT_CAPABLE &&
-        !$quirks[$dbh->phptype]['handles_results'])
+        !$quirks[$dbh->phptype . ':' . $dbh->dbsyntax]['handles_results'])
     {
         return;
     }
@@ -113,6 +118,8 @@ function pe($o){
 function examineArrayData($array, $expected, $field = false, $query = true) {
     global $dbh, $quirks;
 
+    $quirk_key = $dbh->phptype . ':' . $dbh->dbsyntax;
+
     if (DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE) {
         print "matched expected result\n";
         return;
@@ -130,23 +137,23 @@ function examineArrayData($array, $expected, $field = false, $query = true) {
     $actual = '';
     foreach ($array as $key => $value) {
         if ($field !== false &&
-            isset($quirks[$dbh->phptype][$field][$key]))
+            isset($quirks[$quirk_key][$field][$key]))
         {
             if ($key == 'flags' && $value == '' && $query &&
-                !$quirks[$dbh->phptype]['finds_table'])
+                !$quirks[$quirk_key]['finds_table'])
             {
                 $actual .= "$key ... matched expected value\n";
             } else {
-                if ($quirks[$dbh->phptype][$field][$key] == $value) {
+                if ($quirks[$quirk_key][$field][$key] == $value) {
                     $actual .= "$key ... matched expected value\n";
                 } else {
                     if ($value == 0
-                        && !$quirks[$dbh->phptype]['size_from_table'])
+                        && !$quirks[$quirk_key]['size_from_table'])
                     {
                         $actual .= "$key ... matched expected value\n";
                     } else {
                         $actual .= "$key ... was '$value' but we expected ";
-                        $actual .= "'{$quirks[$dbh->phptype][$field][$key]}'\n";
+                        $actual .= "'{$quirks[$quirk_key][$field][$key]}'\n";
                     }
                 }
             }
@@ -157,7 +164,7 @@ function examineArrayData($array, $expected, $field = false, $query = true) {
                         $actual .= "$key ... matched expected value\n";
                     } else {
                         if ($value == '' && $query &&
-                            !$quirks[$dbh->phptype]['finds_table'])
+                            !$quirks[$quirk_key]['finds_table'])
                         {
                             $actual .= "$key ... matched expected value\n";
                         } else {
@@ -169,7 +176,7 @@ function examineArrayData($array, $expected, $field = false, $query = true) {
                         $actual .= "$key ... matched expected value\n";
                     } else {
                         if ($value == '' && $query &&
-                            !$quirks[$dbh->phptype]['finds_table'])
+                            !$quirks[$quirk_key]['finds_table'])
                         {
                             $actual .= "$key ... matched expected value\n";
                         } else {
@@ -200,7 +207,9 @@ function examineArrayData($array, $expected, $field = false, $query = true) {
 function returnArrayData($array) {
     global $dbh, $quirks;
 
-    if (!$quirks[$dbh->phptype]['handles_results']) {
+    $quirk_key = $dbh->phptype . ':' . $dbh->dbsyntax;
+
+    if (!$quirks[$quirk_key]['handles_results']) {
         return "\n";
     }
 
@@ -216,7 +225,7 @@ $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
 
 $quirks = array(
-    'fbsql' => array(
+    'fbsql:fbsql' => array(
         'clob' => 'CHAR(29)',
         'date' => 'DATE',
         'dateliteral' => ' DATE ',
@@ -262,7 +271,7 @@ $quirks = array(
         ),
     ),
 
-    'ibase' => array(
+    'ibase:ibase' => array(
         'clob' => 'VARCHAR(50)',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -308,7 +317,53 @@ $quirks = array(
         ),
     ),
 
-    'ifx' => array(
+    'ibase:firebird' => array(
+        'clob' => 'VARCHAR(50)',
+        'date' => 'DATE',
+        'dateliteral' => '',
+        'finds_table' => false,
+        'size_from_table' => false,
+        'handles_results' => true,
+        'commands' => array(
+        ),
+        0 => array(
+            'type' => 'INTEGER',
+            'len' => 4,
+            'flags' => 'unique_key not_null',
+        ),
+        1 => array(
+            'type' => 'INTEGER',
+            'len' => 4,
+            'flags' => 'primary_key not_null',
+        ),
+        2 => array(
+            'type' => 'VARCHAR',
+            'len' => 50,
+            'flags' => '',
+        ),
+        3 => array(
+            'type' => 'DATE',
+            'len' => 4,
+            'flags' => 'unique_key not_null',
+        ),
+        4 => array(
+            'type' => 'CHAR',
+            'len' => 2,
+            'flags' => 'not_null default',
+        ),
+        5 => array(
+            'type' => 'NUMERIC(9,1)',
+            'len' => 4,
+            'flags' => '',
+        ),
+        9 => array(
+            'type' => 'VARCHAR',
+            'len' => 20,
+            'flags' => '',
+        ),
+    ),
+
+    'ifx:ifx' => array(
         'clob' => 'CHAR(29)',
         'date' => 'CHAR(10)',
         'dateliteral' => '',
@@ -354,7 +409,7 @@ $quirks = array(
         ),
     ),
 
-    'mssql' => array(
+    'mssql:mssql' => array(
         'clob' => 'TEXT',
         'date' => 'SMALLDATETIME',
         'dateliteral' => '',
@@ -402,7 +457,7 @@ $quirks = array(
         ),
     ),
 
-    'mysql' => array(
+    'mysql:mysql' => array(
         'clob' => 'TEXT',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -448,7 +503,7 @@ $quirks = array(
         ),
     ),
 
-    'mysqli' => array(
+    'mysqli:mysqli' => array(
         'clob' => 'TEXT',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -494,7 +549,7 @@ $quirks = array(
         ),
     ),
 
-    'oci8' => array(
+    'oci8:oci8' => array(
         'clob' => 'CLOB',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -541,7 +596,99 @@ $quirks = array(
         ),
     ),
 
-    'pgsql' => array(
+    'odbc:access' => array(
+        'clob' => 'TEXT',
+        'date' => 'DATETIME',
+        'dateliteral' => '',
+        'finds_table' => false,
+        'size_from_table' => false,
+        'handles_results' => true,
+        'commands' => array(
+        ),
+        0 => array(
+            'type' => 'INTEGER',
+            'len' => 10,
+            'flags' => 'not_null',
+        ),
+        1 => array(
+            'type' => 'INTEGER',
+            'len' => 10,
+            'flags' => 'not_null',
+        ),
+        2 => array(
+            'type' => 'LONGCHAR',
+            'len' => 255,
+            'flags' => '',
+        ),
+        3 => array(
+            'type' => 'DATETIME',
+            'len' => 19,
+            'flags' => 'not_null',
+        ),
+        4 => array(
+            'type' => 'VARCHAR',
+            'len' => 2,
+            'flags' => 'not_null',
+        ),
+        5 => array(
+            'type' => 'DECIMAL',
+            'len' => 15,
+            'flags' => '',
+        ),
+        9 => array(
+            'type' => 'VARCHAR',
+            'len' => 20,
+            'flags' => '',
+        ),
+    ),
+
+    'odbc:db2' => array(
+        'clob' => 'CLOB',
+        'date' => 'DATE',
+        'dateliteral' => '',
+        'finds_table' => false,
+        'size_from_table' => false,
+        'handles_results' => true,
+        'commands' => array(
+        ),
+        0 => array(
+            'type' => 'INTEGER',
+            'len' => 10,
+            'flags' => 'not_null',
+        ),
+        1 => array(
+            'type' => 'INTEGER',
+            'len' => 10,
+            'flags' => 'not_null',
+        ),
+        2 => array(
+            'type' => 'CLOB',
+            'len' => 1048576,
+            'flags' => '',
+        ),
+        3 => array(
+            'type' => 'DATE',
+            'len' => 10,
+            'flags' => 'not_null',
+        ),
+        4 => array(
+            'type' => 'CHAR',
+            'len' => 2,
+            'flags' => 'not_null',
+        ),
+        5 => array(
+            'type' => 'DECIMAL',
+            'len' => 2,
+            'flags' => '',
+        ),
+        9 => array(
+            'type' => 'VARCHAR',
+            'len' => 20,
+            'flags' => '',
+        ),
+    ),
+
+    'pgsql:pgsql' => array(
         'clob' => 'TEXT',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -588,7 +735,7 @@ $quirks = array(
         ),
     ),
 
-    'sqlite' => array(
+    'sqlite:sqlite' => array(
         'clob' => 'CLOB',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -634,7 +781,7 @@ $quirks = array(
         ),
     ),
 
-    'sybase' => array(
+    'sybase:sybase' => array(
         'clob' => 'TEXT',
         'date' => 'SMALLDATETIME',
         'dateliteral' => '',
@@ -683,12 +830,14 @@ $quirks = array(
 );
 
 
-if (!isset($quirks[$dbh->phptype])) {
-    die("This test does not yet support $dbh->phptype");
+$quirk_key = $dbh->phptype . ':' . $dbh->dbsyntax;
+
+if (!isset($quirks[$quirk_key])) {
+    die("This test does not yet support $quirk_key");
 }
 
-if (count($quirks[$dbh->phptype]['commands'])) {
-    foreach ($quirks[$dbh->phptype]['commands'] as $value) {
+if (count($quirks[$quirk_key]['commands'])) {
+    foreach ($quirks[$quirk_key]['commands'] as $value) {
         eval($value);
     }
 }
@@ -705,34 +854,57 @@ drop_table($dbh, 'phptest_fk');
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
 
+if ($quirk_key == 'odbc:access') {
+    $default_e = '';
+    $decimal   = 'NUMERIC';
+} else {
+    $default_e = "DEFAULT ' e'";
+    $decimal   = 'DECIMAL(2,1)';
+}
+
 // $null is set in mktable.inc
 
 $dbh->query("
     CREATE TABLE phptest_fk (
         a INTEGER NOT NULL,
         fk INTEGER NOT NULL,
-        c {$quirks[$dbh->phptype]['clob']} $null,
-        d {$quirks[$dbh->phptype]['date']} NOT NULL,
-        e CHAR(2) DEFAULT ' e' NOT NULL,
-        f DECIMAL(2,1) $null,
+        c {$quirks[$quirk_key]['clob']} $null,
+        d {$quirks[$quirk_key]['date']} NOT NULL,
+        e CHAR(2) $default_e NOT NULL,
+        f $decimal $null,
         PRIMARY KEY (fk),
         UNIQUE (a, d)
     )
 ");
 $dbh->query("CREATE INDEX thedidx ON phptest_fk (d)");
 $dbh->query("INSERT INTO phptest_fk VALUES (10, 1, 'One',"
-            . $quirks[$dbh->phptype]['dateliteral'] . "'2001-02-16',  'c1', 1.1)");
+            . $quirks[$quirk_key]['dateliteral'] . "'2001-02-16',  'c1', 1.1)");
 $dbh->query("INSERT INTO phptest_fk VALUES (20, 2, 'Two',"
-            . $quirks[$dbh->phptype]['dateliteral'] . "'2001-02-15', 'c2', 2.2)");
+            . $quirks[$quirk_key]['dateliteral'] . "'2001-02-15', 'c2', 2.2)");
 $dbh->query("INSERT INTO phptest_fk VALUES (30, 3, 'Three',"
-            . $quirks[$dbh->phptype]['dateliteral'] . "'2001-02-14', 'c3', 3.3)");
+            . $quirks[$quirk_key]['dateliteral'] . "'2001-02-14', 'c3', 3.3)");
 
 function &runQuery() {
     global $dbh, $resultobj;
-    $resultobj =& $dbh->query('SELECT phptest_fk.a, phptest_fk.fk,
-            phptest_fk.c, phptest_fk.d, phptest_fk.e, phptest_fk.f,
-            phptest.a, phptest.b, phptest.c, phptest.d
-            FROM phptest_fk, phptest WHERE phptest.a = phptest_fk.fk');
+
+    $quirk_key = $dbh->phptype . ':' . $dbh->dbsyntax;
+
+    switch ($quirk_key) {
+        case 'odbc:db2':
+            $query = "SELECT phptest_fk.a, phptest_fk.fk, 'tempxyz' AS c,"
+                   . ' phptest_fk.d, phptest_fk.e, phptest_fk.f,'
+                   . ' phptest.a, phptest.b, phptest.c, phptest.d'
+                   . ' FROM phptest_fk, phptest'
+                   . ' WHERE phptest.a = phptest_fk.fk';
+            break;
+        default:
+            $query = 'SELECT phptest_fk.a, phptest_fk.fk, phptest_fk.c,'
+                   . ' phptest_fk.d, phptest_fk.e, phptest_fk.f,'
+                   . ' phptest.a, phptest.b, phptest.c, phptest.d'
+                   . ' FROM phptest_fk, phptest'
+                   . ' WHERE phptest.a = phptest_fk.fk';
+    }
+    $resultobj =& $dbh->query($query);
     return $resultobj;
 }
 
@@ -795,10 +967,10 @@ print "------------------------------------------\n";
 $resultobj =& runQuery();
 $array = $dbh->tableInfo($resultobj);
 
-print "\nfirst field:\n";
+print "\ncolumn 0:\n";
 examineArrayData($array, $expected01, 0);
 
-print "\ntenth field:\n";
+print "\ncolumn 9:\n";
 examineArrayData($array, $expected10, 9);
 
 
@@ -809,14 +981,14 @@ print "------------------------------------------\n";
 $resultobj =& runQuery();
 $array = $dbh->tableInfo($resultobj->result, DB_TABLEINFO_ORDER);
 
-print "\nfirst field:\n";
+print "\ncolumn 0:\n";
 examineArrayData($array, $expected01, 0);
 
-print "\nfourth field:\n";
+print "\ncolumn 3:\n";
 examineArrayData($array, $expected04, 3);
 
 print "\nnum_fields: ";
-if ($quirks[$dbh->phptype]['handles_results'] && $array['num_fields'] == 10) {
+if ($quirks[$quirk_key]['handles_results'] && $array['num_fields'] == 10) {
     print "matched expected result\n";
 } elseif (DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE) {
     print "matched expected result\n";
@@ -825,7 +997,7 @@ if ($quirks[$dbh->phptype]['handles_results'] && $array['num_fields'] == 10) {
 }
 
 print "\norder:\n";
-if ($quirks[$dbh->phptype]['handles_results'] && is_array($array['order'])) {
+if ($quirks[$quirk_key]['handles_results'] && is_array($array['order'])) {
     $expected = 'a => 6
 b => 7
 c => 8
@@ -853,14 +1025,14 @@ $array = $resultobj->tableInfo(DB_TABLEINFO_ORDERTABLE);
 // Free this to keep interbase happy.
 $resultobj->free();
 
-print "\nfirst field:\n";
+print "\ncolumn 0:\n";
 examineArrayData($array, $expected01, 0);
 
-print "\nfourth field:\n";
+print "\ncolumn 3:\n";
 examineArrayData($array, $expected04, 3);
 
 print "\nnum_fields: ";
-if ($quirks[$dbh->phptype]['handles_results'] && $array['num_fields'] == 10) {
+if ($quirks[$quirk_key]['handles_results'] && $array['num_fields'] == 10) {
     print "matched expected result\n";
 } elseif (DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE) {
     print "matched expected result\n";
@@ -875,7 +1047,7 @@ b => 7
 c => 8
 d => 9
 ';
-if ($quirks[$dbh->phptype]['handles_results']
+if ($quirks[$quirk_key]['handles_results']
     && isset($array['ordertable']['phptest'])) {
     $actual = returnArrayData($array['ordertable']['phptest']);
 } else {
@@ -884,7 +1056,7 @@ if ($quirks[$dbh->phptype]['handles_results']
 if ($actual == $expected) {
     print "matched expected result\n";
 } else {
-    if (($quirks[$dbh->phptype]['finds_table'] === false 
+    if (($quirks[$quirk_key]['finds_table'] === false 
         || DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE)
         && $actual == '') {
         print "matched expected result\n";
@@ -904,7 +1076,7 @@ d => 3
 e => 4
 f => 5
 ';
-if ($quirks[$dbh->phptype]['handles_results']
+if ($quirks[$quirk_key]['handles_results']
     && isset($array['ordertable']['phptest_fk'])) {
     $actual = returnArrayData($array['ordertable']['phptest_fk']);
 } else {
@@ -913,7 +1085,7 @@ if ($quirks[$dbh->phptype]['handles_results']
 if ($actual == $expected) {
     print "matched expected result\n";
 } else {
-    if (($quirks[$dbh->phptype]['finds_table'] === false 
+    if (($quirks[$quirk_key]['finds_table'] === false 
         || DB::isError($array) && $array->getCode() == DB_ERROR_NOT_CAPABLE)
         && $actual == '') {
         print "matched expected result\n";
@@ -931,7 +1103,7 @@ print "Output = default.\n";
 print "------------------------------------------\n";
 $array = $dbh->tableInfo('phptest_fk');
 
-print "\nfirst field:\n";
+print "\ncolumn 0:\n";
 examineArrayData($array, $expected01, 0, false);
 
 print "\nsecond field:\n";
@@ -940,13 +1112,13 @@ examineArrayData($array, $expected02, 1, false);
 print "\nthird field:\n";
 examineArrayData($array, $expected03, 2, false);
 
-print "\nfourth field:\n";
+print "\ncolumn 3:\n";
 examineArrayData($array, $expected04, 3, false);
 
-print "\nfifth field:\n";
+print "\ncolumn 4:\n";
 examineArrayData($array, $expected05, 4, false);
 
-print "\nsixth field:\n";
+print "\ncolumn 5:\n";
 examineArrayData($array, $expected06, 5, false);
 
 
@@ -956,7 +1128,7 @@ print "Output = DB_TABLEINFO_FULL.\n";
 print "------------------------------------------\n";
 $array = $dbh->tableInfo('phptest_fk', DB_TABLEINFO_FULL);
 
-print "\nfirst field:\n";
+print "\ncolumn 0:\n";
 examineArrayData($array, $expected01, 0, false);
 
 print "\norder:\n";
@@ -993,7 +1165,7 @@ $array = $dbh->tableInfo('phptest_fk', DB_TABLEINFO_FULL);
 $array[0]['table'] = strtolower($array[0]['table']);
 $array[0]['name'] = strtolower($array[0]['name']);
 
-print "\nfirst field:\n";
+print "\ncolumn 0:\n";
 examineArrayData($array, 0, false);
 
 
@@ -1008,10 +1180,10 @@ Passing result OBJECT to method in DB_<type>.
 Output = default.
 ------------------------------------------
 
-first field:
+column 0:
 matched expected result
 
-tenth field:
+column 9:
 matched expected result
 
 ==========================================
@@ -1019,10 +1191,10 @@ Passing result ID to method in DB_<type>.
 Output = DB_TABLEINFO_ORDER.
 ------------------------------------------
 
-first field:
+column 0:
 matched expected result
 
-fourth field:
+column 3:
 matched expected result
 
 num_fields: matched expected result
@@ -1035,10 +1207,10 @@ Passing DB_TABLEINFO_ORDERTABLE to method in DB_result.
 Output = DB_TABLEINFO_ORDERTABLE.
 ------------------------------------------
 
-first field:
+column 0:
 matched expected result
 
-fourth field:
+column 3:
 matched expected result
 
 num_fields: matched expected result
@@ -1050,7 +1222,7 @@ Passing TABLE NAME 'phptest_fk' to method in DB_<driver>.
 Output = default.
 ------------------------------------------
 
-first field:
+column 0:
 matched expected result
 
 second field:
@@ -1059,13 +1231,13 @@ matched expected result
 third field:
 matched expected result
 
-fourth field:
+column 3:
 matched expected result
 
-fifth field:
+column 4:
 matched expected result
 
-sixth field:
+column 5:
 matched expected result
 
 ==========================================
@@ -1073,7 +1245,7 @@ Passing TABLE NAME 'phptest_fk' to method in DB_<driver>.
 Output = DB_TABLEINFO_FULL.
 ------------------------------------------
 
-first field:
+column 0:
 matched expected result
 
 order:
@@ -1087,5 +1259,5 @@ Passing TABLE NAME 'phptest_fk' to method in DB_<driver> AGAIN.
 Output = DB_TABLEINFO_FULL, lowercasing turned off.
 ------------------------------------------
 
-first field:
+column 0:
 matched expected result
