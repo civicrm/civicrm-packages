@@ -18,18 +18,18 @@ Symbols:
 
                fbsql      ifx      mssql     mysql4     odbc     sybase
 FEATURE          |  ibase  |  msql   |   mysql |   oci8  |   pgsql |  sqlite
-simpleQuery      x    T    x    x    T    T    x    T    x    T    T    T
-numCols          x    T    x    x    T    T    x    T    x    T    T    T
-numRows          x    n    n    x    T    T    x    E    x    T    n    T 
-errorNative      x    n    x    n    T    T    x    T    x    T    T    E
-prepare/execute  e    T    e    e    E    E    e    T    e    E    e    E
-sequences        e    T    n    n    E    E    e    T    n    T    E    E
-affectedRows     x    n    x    x    n    T    x    T    x    T    T    T
-fetch modes      x    T    x    x    T    T    x    T    x    T    T    T
+simpleQuery      x    T    x    x    T    T    x    T    T    T    T    T
+numCols          x    T    x    x    T    T    x    T    T    T    T    T
+numRows          x    n    n    x    T    T    x    E    T    T    n    T 
+errorNative      x    n    x    n    T    T    x    T    T    T    T    E
+prepare/execute  e    T    e    e    E    E    e    T    E    E    e    E
+sequences        e    T    n    n    E    E    e    T    E    T    E    E
+affectedRows     x    n    x    x    n    T    x    T    T    T    T    T
+fetch modes      x    T    x    x    T    T    x    T    T    T    T    T
 fetch row by no  x    n    x    x    T    T    x    n    x    T    T    T
 transactions     x    x    n    n    x    x    -    x    x    x    n    -
 auto-commit      x    x    n    n    n    n    -    x    x    x    n    -
-error mapping    x    T    e    -    t    t    -    T    x    E    l    l
+error mapping    x    T    e    -    t    t    -    T    T    E    l    l
 tableInfo        x    n    n    n    T    T    -    T    n    T    T    -
 
 [1]:  Works on firebird but not interbase.
@@ -64,9 +64,9 @@ Symbols:
 10errormap       -    o    -    -    E    N    -    o    o    o    E    N
 13limit          -    o    -    -    o    o    -    o    o    o    o    o
 14fetchmode_obje -    o    -    -    o    o    -    o    o    o    o    o
-15quote          -    o    -    -    o    o    -    o    X    o    o    o
+15quote          -    o    -    -    o    o    -    o    o    o    o    o
 16tableinfo      -    -    -    -    o    o    -    o    -    o    o    -
-17query          -    X    -    -    o    o    -    o    -    o    o    o
+17query          -    X    -    -    o    o    -    o    o    o    o    o
 
 [1]:  Works on firebird but not interbase.
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
