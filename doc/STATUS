@@ -32,3 +32,23 @@ views                -    -    -    -    x    n    -    -    -    x    x
 users                -    -    -    -    -    x    -    -    -    x    -
 databases            -    -    -    -    -    x    -    -    -    x    -
 functions            -    -    -    -    -    -    -    -    -    x    -
+
+                   fbsql      ifx      mssql	 mysql4     odbc     sybase
+                     |  ibase  |  msql   |   mysql |   obi8  |   pgsql |
+
+TESTS CONFORMANCE
+01connect            -    o    -    -    -    o    -    -    -    o    -
+02fetch              -    o    -    -    -    o    -    -    -    o    -
+03simplequery        -    o    -    -    -    o    -    -    -    o    -
+04numcols            -    o    -    -    -    o    -    -    -    o    -
+05sequences          -    X    -    -    -    o    -    -    -    o    -
+06prepexec           -    X    -    -    -    o    -    -    -    o    -
+08affectedrows       -    X    -    -    -    o    -    -    -    o    -
+09numrows            -    X    -    -    -    o    -    -    -    o    -
+10errormap           -    X    -    -    -    X    -    -    -    X    -
+13limit              -    o    -    -    -    o    -    -    -    o    -
+14fetchmode_object   -    o    -    -    -    o    -    -    -    o    -
+15quote              -    X    -    -    -    o    -    -    -    o    -
+
+                                                         o -> Test passed
+                                                         X -> Test failed
