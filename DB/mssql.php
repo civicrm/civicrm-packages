@@ -71,6 +71,8 @@ class DB_mssql extends DB_common
         $user = $dsninfo['username'];
         $pw = $dsninfo['password'];
         $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
+        $port   = $dsninfo['port'] ? ':' . $dsninfo['port'] : '';
+        $dbhost .= $port;
 
         $connect_function = $persistent ? 'mssql_pconnect' : 'mssql_connect';
 
