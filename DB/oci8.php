@@ -234,6 +234,25 @@ class DB_oci8 extends DB_common
         return true;
     }
 
+    /**
+     * Free the internal resources associated with a prepared query.
+     *
+     * @param $stmt oci8 statement identifier
+     *
+     * @return bool TRUE on success, FALSE if $result is invalid
+     */
+    function freePrepared($stmt)
+    {
+        if (!is_resource($stmt)) {
+            return false;
+        }
+        ocifreestatement($stmt);
+        unset($this->prepare_tokens[(int)$stmt]);
+        unset($this->prepare_types[(int)$stmt]);
+        unset($this->manip_query[(int)$stmt]);
+        return true;
+    }
+
     // }}}
     // {{{ numRows()
 
@@ -354,7 +373,7 @@ class DB_oci8 extends DB_common
      * SELECT queries, DB_OK for other successful queries.  A DB error
      * code is returned on failure.
      */
-    function execute($stmt, $data = false)
+    function &execute($stmt, $data = false)
     {
         $types=&$this->prepare_types[$stmt];
         if (($size = sizeof($types)) != sizeof($data)) {
@@ -374,6 +393,7 @@ class DB_oci8 extends DB_common
                     while (($buf = fread($fp, 4096)) != false) {
                         $pdata[$i] .= $buf;
                     }
+                    fclose($fp);
                 }
             }
             if (!@OCIBindByName($stmt, ":bind" . $i, $pdata[$i], -1)) {
@@ -382,8 +402,7 @@ class DB_oci8 extends DB_common
         }
         if ($this->autoCommit) {
             $success = @OCIExecute($stmt, OCI_COMMIT_ON_SUCCESS);
-        }
-        else {
+        } else {
             $success = @OCIExecute($stmt, OCI_DEFAULT);
         }
         if (!$success) {
