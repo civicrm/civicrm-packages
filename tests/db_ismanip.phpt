@@ -1,14 +1,15 @@
 --TEST--
 DB::isManip test
 --SKIPIF--
-<?php if (!@include("DB.php")) print "skip"; ?>
+<?php if (!@include 'DB.php') print 'skip could not find DB.php'; ?>
 --FILE--
 <?php // -*- C++ -*-
 include_once './include.inc';
+
 // Test for: DB.php
 // Parts tested: DB::isManip
 
-require_once "DB.php";
+require_once 'DB.php';
 
 function test($query) {
     printf("%s : %d\n", preg_replace('/\s+.*/', '', $query),

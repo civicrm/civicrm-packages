@@ -1,10 +1,11 @@
 --TEST--
 DB_Error
 --SKIPIF--
-<?php if (!@include 'DB.php') print 'skip'; ?>
+<?php if (!@include 'DB.php') print 'skip could not find DB.php'; ?>
 --FILE--
 <?php // -*- C++ -*-
 require_once './include.inc';
+
 // Test for: DB.php
 // Parts tested: DB_Error
 

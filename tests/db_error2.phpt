@@ -4,6 +4,7 @@ DB configurable error handler test
 <?php
 require_once './include.inc';
 require_once 'DB.php';
+
 error_reporting(4095);
 
 function myfunc(&$obj) {
