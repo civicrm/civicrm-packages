@@ -1,5 +1,5 @@
 --TEST--
-DB_Error/DB_Warning test
+DB_Error
 --SKIPIF--
 <?php if (!@include("DB.php")) print "skip"; ?>
 --FILE--
@@ -38,9 +38,6 @@ $e = new DB_Error(DB_OK); print $e->toString()."\n";
 $e = new DB_Error(DB_ERROR); print $e->toString()."\n";
 $e = new DB_Error(DB_ERROR_SYNTAX); print $e->toString()."\n";
 $e = new DB_Error(DB_ERROR_DIVZERO); print $e->toString()."\n";
-$e = new DB_Warning(); print $e->toString()."\n";
-$e = new DB_Warning("test warning"); print $e->toString()."\n";
-$e = new DB_Warning(DB_WARNING_READ_ONLY); print $e->toString()."\n";
 
 print "testing different error modes...\n";
 $e = new DB_Error(DB_ERROR, PEAR_ERROR_PRINT); print $e->toString()."\n";
@@ -62,9 +59,6 @@ testing different error codes...
 [db_error: message="DB Error: unknown error" code=-1 mode=return level=notice prefix="" info=""]
 [db_error: message="DB Error: syntax error" code=-2 mode=return level=notice prefix="" info=""]
 [db_error: message="DB Error: division by zero" code=-13 mode=return level=notice prefix="" info=""]
-[db_warning: message="DB Warning: unknown warning" code=-1000 mode=return level=notice prefix="" info=""]
-[db_warning: message="DB Warning: test warning" code=0 mode=return level=notice prefix="" info=""]
-[db_warning: message="DB Warning: read only" code=-1001 mode=return level=notice prefix="" info=""]
 testing different error modes...
 DB Error: unknown error[db_error: message="DB Error: unknown error" code=-1 mode=print level=notice prefix="" info=""]
 

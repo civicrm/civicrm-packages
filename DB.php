@@ -618,39 +618,6 @@ class DB_Error extends PEAR_Error
 }
 
 /**
- * DB_Warning implements a class for reporting portable database
- * warning messages.
- *
- * @package  DB
- * @author Stig Bakken <ssb@fast.no>
- */
-class DB_Warning extends PEAR_Error
-{
-    /**
-     * DB_Warning constructor.
-     *
-     * @param mixed    DB error code, or string with error message.
-     * @param integer  what "error mode" to operate in
-     * @param integer  what error level to use for $mode == PEAR_ERROR_TRIGGER
-     * @param mmixed   additional debug info, such as the last query
-     *
-     * @access public
-     *
-     * @see PEAR_Error
-     */
-
-    function DB_Warning($code = DB_WARNING, $mode = PEAR_ERROR_RETURN,
-            $level = E_USER_NOTICE, $debuginfo = null)
-    {
-        if (is_int($code)) {
-            $this->PEAR_Error('DB Warning: ' . DB::errorMessage($code), $code, $mode, $level, $debuginfo);
-        } else {
-            $this->PEAR_Error("DB Warning: $code", 0, $mode, $level, $debuginfo);
-        }
-    }
-}
-
-/**
  * This class implements a wrapper for a DB result set.
  * A new instance of this class will be returned by the DB implementation
  * after processing a query that returns data.
