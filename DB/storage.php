@@ -265,8 +265,7 @@ class DB_storage extends PEAR
      */
     function dump()
     {
-        reset($this->_properties);
-        while (list($prop, $foo) = each($this->_properties)) {
+        foreach ($this->_properties as $prop => $foo) {
             print "$prop = ";
             print htmlentities($this->$prop);
             print "<br />\n";
@@ -286,8 +285,7 @@ class DB_storage extends PEAR
     {
         $classname = strtolower(get_class($this));
         $obj =& new $classname($table);
-        reset($data);
-        while (list($name, $value) = each($data)) {
+        foreach ($data as $name => $value) {
             $obj->_properties[$name] = true;
             $obj->$name = &$value;
         }
@@ -438,7 +436,7 @@ class DB_storage extends PEAR
      */
     function store()
     {
-        while (list($name, $changed) = each($this->_changes)) {
+        foreach ($this->_changes as $name => $foo) {
             $params[] = &$this->$name;
             $vars[] = $name . ' = ?';
         }
