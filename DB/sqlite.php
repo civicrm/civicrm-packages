@@ -13,7 +13,8 @@
 // | obtain it through the world-wide-web, please send a note to          |
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
-// | Author: Urs Gehrig <urs@circle.ch>                                   |
+// | Authors: Urs Gehrig <urs@circle.ch>                                  |
+// |          Mika Tuupola <tuupola@appelsiini.net>                       |
 // +----------------------------------------------------------------------+
 //
 // $Id$
