@@ -335,10 +335,13 @@ class DB_sqlite extends DB_common
      * @access public
      * @return bool TRUE on success, FALSE if $result is invalid
      */
-    function freeResult($result)
+    function freeResult(&$result)
     {
         // XXX No native free?
-        unset($result);
+        if (is_resource($result)) {
+            return false;
+        }
+        $result = null;
         return true;
     }
 
