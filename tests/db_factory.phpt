@@ -1,14 +1,14 @@
 --TEST--
 DB::factory test
 --SKIPIF--
-<?php if (!@include("DB.php")) print "skip"; ?>
+<?php if (!@require_once 'DB.php') print 'skip'; ?>
 --FILE--
 <?php // -*- C++ -*-
-include_once './include.inc';
+require_once './include.inc';
 // Test for: DB.php
 // Parts tested: DB_Error, DB_Warning
 
-require_once "DB.php";
+require_once 'DB.php';
 
 $backends = array(
     "ibase",
