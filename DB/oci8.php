@@ -633,12 +633,11 @@ class DB_oci8 extends DB_common
         // Construct the query
         // more at: http://marc.theaimsgroup.com/?l=php-db&m=99831958101212&w=2
         // Perhaps this could be optimized with the use of Unions
-        $from += 1; // in Oracle rownum starts at 1
         $query = "SELECT $fields FROM".
                  "  (SELECT rownum as linenum, $fields FROM".
                  "      ($query)".
                  '  WHERE rownum <= '. ($from + $count) .
-                 ") WHERE linenum >= $from";
+                 ') WHERE linenum >= ' . ++$from;
         return $query;
     }
 
