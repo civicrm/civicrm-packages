@@ -223,7 +223,7 @@ class DB_common extends PEAR
      *   + sqlite
      *   + sybase
      *
-     * InterBase doesn't seem to be ability to use delimited identifiers
+     * InterBase doesn't seem to be able to use delimited identifiers
      * via PHP.
      *
      * @param string $str  identifier name to be quoted
