@@ -96,17 +96,15 @@ class DB_sybase extends DB_common
 
         $interface = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
         $connect_function = $persistent ? 'sybase_pconnect' : 'sybase_connect';
+        $dsninfo['password'] = !empty($dsninfo['password']) ? $dsninfo['password'] : false;
+        $dsninfo['charset'] = isset($dsninfo['charset']) ? $dsninfo['charset'] : false;
+        $dsninfo['appname'] = isset($dsninfo['appname']) ? $dsninfo['appname'] : false;
 
-        if ($interface && $dsninfo['username'] && $dsninfo['password']) {
+        if ($interface && $dsninfo['username']) {
             $conn = @$connect_function($interface, $dsninfo['username'],
-                                       $dsninfo['password']);
-        } elseif ($interface && $dsninfo['username']) {
-            /*
-             * Using false for pw as a workaround to avoid segfault.
-             * See PEAR bug 631
-             */
-            $conn = @$connect_function($interface, $dsninfo['username'],
-                                       false);
+                                       $dsninfo['password'],
+                                       $dsninfo['charset'],
+                                       $dsninfo['appname']);
         } else {
             $conn = false;
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.110 2004-07-12 17:51:24 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.111 2004-07-12 19:07:34 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -75,13 +75,19 @@ mysqli_fetch_field()'s behavior.  Add the $mysqli_flags
 and $mysqli_types properties as part of this effort.
 (danielc)
 
-* mysqli:
-mysql >= 4.0 doesn't need WHERE 1=1 hack for DELETE.
+mysql >= 4.0 doesn't need WHERE 1=1 hack for DELETE.  (danielc)
 
 * pgsql:
 Adjust getListOf('tables') to accommodate the addition of
 sql_* core tables in PostgreSQL 7.4.2.  Bug 1549.
 (Patch by yiwakiri and jpbarrette)
+
+* sybase:
+Use 'charset' and 'appname' from DSN in sybase connect.
+Bug 1812.  (danielc)
+
+Simplify connect by setting $dsninfo['password'] to false if
+it's empty.  Reworks hack for PEAR bug 631.  (danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
