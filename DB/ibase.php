@@ -94,8 +94,7 @@ class DB_ibase extends DB_common
     function connect($dsninfo, $persistent = false)
     {
         if (!DB::assertExtension('interbase')) {
-            $tmp =& $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
-            return $tmp;
+            return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
         $this->dsn = $dsninfo;
         $dbhost = $dsninfo['hostspec'] ?
@@ -144,8 +143,7 @@ class DB_ibase extends DB_common
         $query = $this->modifyQuery($query);
         $result = @ibase_query($this->connection, $query);
         if (!$result) {
-            $tmp =& $this->ibaseRaiseError();
-            return $tmp;
+            return $this->ibaseRaiseError();
         }
         if ($this->autocommit && $ismanip) {
             ibase_commit($this->connection);
@@ -223,8 +221,7 @@ class DB_ibase extends DB_common
     function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
         if ($rownum !== NULL) {
-            $tmp =& $this->ibaseRaiseError(DB_ERROR_NOT_CAPABLE);
-            return $tmp;
+            return $this->ibaseRaiseError(DB_ERROR_NOT_CAPABLE);
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             if (function_exists('ibase_fetch_assoc')) {
@@ -240,8 +237,7 @@ class DB_ibase extends DB_common
         }
         if (!$arr) {
             if ($errmsg = ibase_errmsg()) {
-                $tmp =& $this->ibaseRaiseError(null, $errmsg);
-                return $tmp;
+                return $this->ibaseRaiseError(null, $errmsg);
             } else {
                 return null;
             }
@@ -276,8 +272,7 @@ class DB_ibase extends DB_common
     {
         $cols = ibase_num_fields($result);
         if (!$cols) {
-            $tmp =& $this->ibaseRaiseError();
-            return $tmp;
+            return $this->ibaseRaiseError();
         }
         return $cols;
     }
@@ -501,8 +496,7 @@ class DB_ibase extends DB_common
             }
         } while ($repeat);
         if (DB::isError($result)) {
-            $tmp =& $this->raiseError($result);
-            return $tmp;
+            return $this->raiseError($result);
         }
         $arr = $result->fetchRow(DB_FETCHMODE_ORDERED);
         $result->free();
@@ -569,8 +563,7 @@ class DB_ibase extends DB_common
                  .' AND R.RDB$RELATION_NAME=\''.$table_name.'\'';
         $result = ibase_query($this->connection, $sql);
         if (!$result) {
-            $tmp =& $this->ibaseRaiseError();
-            return $tmp;
+            return $this->ibaseRaiseError();
         }
         if ($obj = @ibase_fetch_object($result)) {
             ibase_free_result($result);
@@ -592,8 +585,7 @@ class DB_ibase extends DB_common
                 .' AND  R.RDB$FIELD_NAME=\''.$field_name.'\'';
         $result = ibase_query($this->connection, $sql);
         if (!$result) {
-            $tmp =& $this->ibaseRaiseError();
-            return $tmp;
+            return $this->ibaseRaiseError();
         }
         if ($obj = @ibase_fetch_object($result)) {
             ibase_free_result($result);
