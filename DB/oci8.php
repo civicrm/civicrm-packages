@@ -417,8 +417,11 @@ class DB_oci8 extends DB_common
      *    "UPDATE foo SET col=? WHERE col='over \& under'"
      * </code>
      *
-     * @param string $query query to be prepared
-     * @return mixed DB statement resource on success. DB_Error on failure.
+     * @param string $query  the query to be prepared
+     *
+     * @return mixed  DB statement resource on success. DB_Error on failure.
+     *
+     * @see DB_oci8::execute()
      */
     function prepare($query)
     {
@@ -475,10 +478,12 @@ class DB_oci8 extends DB_common
      *                      passed must match quantity of placeholders in
      *                      query:  meaning 1 for non-array items or the
      *                      quantity of elements in the array.
-     * @return int returns an oci8 result resource for successful
-     * SELECT queries, DB_OK for other successful queries.  A DB error
-     * code is returned on failure.
-     * @see DB_oci::prepare()
+     *
+     * @return mixed  returns an oic8 result resource for successful SELECT
+     *                queries, DB_OK for other successful queries.
+     *                A DB error object is returned on failure.
+     *
+     * @see DB_oci8::prepare()
      */
     function &execute($stmt, $data = array())
     {
