@@ -18,8 +18,8 @@ require_once './connect.inc';
 require_once '../sequences.inc';
 ?>
 --EXPECT--
-DB Error: no such table
-DB Error: no such table <- good error catched
+an error is the proper response here
+an error cought by the error handler is good
 a=1
 b=2
 b-a=1

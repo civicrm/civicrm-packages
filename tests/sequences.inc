@@ -50,19 +50,28 @@ if (DB::isError($drop) &&
 
 $e = $dbh->nextId("test", false);
 if (DB::isError($e) && $e->getCode() == DB_ERROR_NOSUCHTABLE) {
-    print $e->getMessage() . "\n";
+    print "an error is the proper response here\n";
 } else {
-    print "test 1) we expected to get back 'DB Error: no such table'.\n";
     if (DB::isError($e)) {
-        print "Here is the error we got:\n" . $e->getDebugInfo() . "\n\n";
+        if ($dbh->phptype == 'ibase' && $e->getCode() == DB_ERROR_SYNTAX) {
+            print "an error is the proper response here\n";
+        } else {
+            print "test 1) we expected to get back 'DB Error: no such table'.\n";
+            print "Here is the error we got:\n";
+            print 'Code: ' . $e->getCode() . "\n";
+            print 'Message: ' . $e->getMessage() . "\n";
+            print 'Debug: ' . $e->getDebugInfo() . "\n\n";
+        }
     } else {
+        print "test 1) we expected to get back 'DB Error: no such table'.\n";
         print "But an error wasn't generated\n\n";
     }
 }
 
 // 2) test that the sequence is not created but the error is
 // handled by the class error handler
-$dbh->setErrorHandling(PEAR_ERROR_PRINT, "%s <- good error catched\n");
+$dbh->setErrorHandling(PEAR_ERROR_PRINT,
+                       "an error cought by the error handler is good\n");
 $e = $dbh->nextId("test", false);
 if (!DB::isError($e)) {
     print "test 2) failed!\n";
