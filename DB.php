@@ -720,7 +720,7 @@ class DB_result
      *
      * @access public
      */
-    function fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
+    function &fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum=null)
     {
         if ($fetchmode === DB_FETCHMODE_DEFAULT) {
             $fetchmode = $this->fetchmode;
@@ -754,22 +754,21 @@ class DB_result
             $this->row_counter++;
         }
         $res = $this->dbh->fetchInto($this->result, $arr, $fetchmode, $rownum);
-        if ($res !== DB_OK) {
-            if ($res == null && $this->autofree) {
-                $this->free();
+        if ($res === DB_OK) {
+            if (isset($object_class)) {
+                // default mode specified in DB_common::fetchmode_object_class property
+                if ($object_class == 'stdClass') {
+                    $arr = (object) $arr;
+                } else {
+                    $arr = &new $object_class($arr);
+                }
             }
-            return $res;
+            return $arr;
         }
-        if (isset($object_class)) {
-            // default mode specified in DB_common::fetchmode_object_class property
-            if ($object_class == 'stdClass') {
-                $ret = (object) $arr;
-            } else {
-                $ret =& new $object_class($arr);
-            }
-            return $ret;
+        if ($res == null && $this->autofree) {
+            $this->free();
         }
-        return $arr;
+        return $res;
     }
 
     // }}}
@@ -809,6 +808,9 @@ class DB_result
             if ($this->row_counter >= (
                     $this->limit_from + $this->limit_count))
             {
+                if ($this->autofree) {
+                    $this->free();
+                }
                 return null;
             }
             if ($this->limit_type == 'emulate') {
@@ -818,14 +820,18 @@ class DB_result
             $this->row_counter++;
         }
         $res = $this->dbh->fetchInto($this->result, $arr, $fetchmode, $rownum);
-        if (($res === DB_OK) && isset($object_class)) {
-            // default mode specified in DB_common::fetchmode_object_class property
-            if ($object_class == 'stdClass') {
-                $arr = (object) $arr;
-            } else {
-                $arr = new $object_class($arr);
+        if ($res === DB_OK) {
+            if (isset($object_class)) {
+                // default mode specified in DB_common::fetchmode_object_class property
+                if ($object_class == 'stdClass') {
+                    $arr = (object) $arr;
+                } else {
+                    $arr = new $object_class($arr);
+                }
             }
-        } elseif ($res == null && $this->autofree) {
+            return DB_OK;
+        }
+        if ($res == null && $this->autofree) {
             $this->free();
         }
         return $res;
