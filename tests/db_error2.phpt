@@ -84,9 +84,9 @@ $e = $dbh->raiseError("trigger testing error");
 
 ?>
 --EXPECT--
-default: [db_error: message="db error: return testing error" code=-1 mode=return level=notice prefix="" info=""]
-global default: myfunc2 here, obj=[db_error: message="db error: global default test" code=-1 mode=callback callback=myfunc2 prefix="" info=""]
+default: [db_error: message="db error: return testing error" code=-1 mode=return level=notice prefix="" info=" [db error: unknown error]"]
+global default: myfunc2 here, obj=[db_error: message="db error: global default test" code=-1 mode=callback callback=myfunc2 prefix="" info=" [db error: unknown error]"]
 mode=print: DB Error: print testing error
-mode=function callback: myfunc here, obj=[db_error: message="db error: function callback testing error" code=-1 mode=callback callback=myfunc prefix="" info=""]
-mode=object callback: myclass::myfunc here, obj=[db_error: message="db error: object callback testing error" code=-1 mode=callback callback=myclass::myfunc prefix="" info=""]
+mode=function callback: myfunc here, obj=[db_error: message="db error: function callback testing error" code=-1 mode=callback callback=myfunc prefix="" info=" [db error: unknown error]"]
+mode=object callback: myclass::myfunc here, obj=[db_error: message="db error: object callback testing error" code=-1 mode=callback callback=myclass::myfunc prefix="" info=" [db error: unknown error]"]
 mode=trigger: user notice: db error: trigger testing error in pear.php on line xxx
