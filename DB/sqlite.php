@@ -44,12 +44,9 @@
     require_once 'DB.php';
 
     // Define a DSN
-    $dsn = "sqlite://dummy:@localhost/" . getcwd() . "/test.db";
+    $dsn = "sqlite://dummy:@localhost/" . getcwd() . "/test.db?mode=0644";
 
-    $options['mode'] = 0644;
-    $options['persistent'] = false;
-
-    $db = DB::connect($dsn, $options);
+    $db = DB::connect($dsn, false);
 
     // Give a new table name
     $table = "tbl_" .  md5(uniqid(rand()));
@@ -123,8 +120,6 @@ class DB_sqlite extends DB_common {
                               'limit' => 'alter'
                           );
 
-        $this->options['mode'] = 0644;
-
         // SQLite data types, http://www.sqlite.org/datatypes.html
         $this->keywords = array (
                               "BLOB"      => "",
@@ -176,8 +171,9 @@ class DB_sqlite extends DB_common {
         if (isset($file)) {
             if (!file_exists($file)) {
                 touch($file );
-                chmod($file, (is_numeric($this->options['mode']) ? 
-                                         $this->options['mode']  : 0644));
+                $mode = is_numeric($dsninfo['mode']) ? 
+                                   octdec($dsninfo['mode']) : 0644; 
+                chmod($file, $mode);
                 if (!file_exists($file)) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
                 }
