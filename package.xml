@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.37 2004-01-18 01:18:59 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.38 2004-01-18 02:06:40 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -61,11 +61,15 @@ also avaible from a separate package).
     <state>stable</state>
     <date>2003-09-14</date>
     <notes>
-Bugs fixed:
+New Features:
+
+Bugs Fixed:
 - Fixed few mem leaks in some drivers
+- Fixed wrong splitting by \ in prepare() (bug #45)
 
 Minor API Change:
 
+- Removed deprecated constants DB_WARNING and DB_WARNING_READ_ONLY
 - Now $db_object->freeResult() can't be used for freeing
   a prepared query. Use $db_object->freePrepared() instead:
 
