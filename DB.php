@@ -567,8 +567,8 @@ class DB
      *
      * @access public
      *
-     * @param string the base name of the extension (without the .so or
-     *               .dll suffix)
+     * @param string $name the base name of the extension (without the .so or
+     *                     .dll suffix)
      *
      * @return boolean true if the extension was already or successfully
      *                 loaded, false if it could not be loaded
@@ -578,8 +578,9 @@ class DB
         if (!extension_loaded($name)) {
             $dlext = OS_WINDOWS ? '.dll' : '.so';
             @dl($name . $dlext);
+            return extension_loaded($name);
         }
-        return extension_loaded($name);
+        return true;
     }
 }
 
