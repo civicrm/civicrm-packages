@@ -220,10 +220,17 @@ define('DB_PORTABILITY_NUMROWS', 8);
 define('DB_PORTABILITY_ERRORS', 16);
 
 /**
+ * Portability: convert null values to empty strings in data output by
+ * get*() and fetch*().
+ * @see DB_common::setOption()
+ */
+define('DB_PORTABILITY_NULL_TO_EMPTY', 32);
+
+/**
  * Portability: turn on all portability features.
  * @see DB_common::setOption()
  */
-define('DB_PORTABILITY_ALL', 31);
+define('DB_PORTABILITY_ALL', 63);
 
 // }}}
 

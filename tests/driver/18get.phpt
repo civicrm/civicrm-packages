@@ -235,8 +235,8 @@ print 'testing getOne with null value in column: ';
 $dbh->query("INSERT INTO phptest VALUES (9, 'nine', '', NULL)");
 
 $ret =& $dbh->getOne('SELECT d FROM phptest WHERE a = 9');
-if ($ret === null) {
-    print "null\n";
+if ($ret === '') {
+    print "empty string\n";
 } else {
     print 'type=' . gettype($ret) . ", value=$ret\n";
 }
@@ -624,7 +624,7 @@ Array
 )
 
 ===================================================
-testing getOne with null value in column: null
+testing getOne with null value in column: empty string
 testing getOne with empty string in column: empty string
 
 ===================================================

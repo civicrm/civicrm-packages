@@ -67,4 +67,4 @@ test - |
 
 ------------5------------
 insert: okay
-a = 11, b = three, d = NULL
+a = 11, b = three, d = string
