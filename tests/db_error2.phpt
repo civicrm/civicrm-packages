@@ -7,7 +7,7 @@ DB::Error 2
 require_once './include.inc';
 require_once 'DB.php';
 
-error_reporting(4095);
+error_reporting(E_ALL);
 
 function myfunc(&$obj) {
     print "myfunc here, obj=".$obj->toString()."\n";
