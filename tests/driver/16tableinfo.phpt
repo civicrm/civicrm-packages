@@ -346,6 +346,49 @@ $quirks = array(
         ),
     ),
 
+    'mysqli' => array(
+        'clob' => 'TEXT',
+        'date' => 'DATE',
+        'finds_table' => true,
+        'commands' => array(
+        ),
+        0 => array(
+            'type' => 'int',
+            'len' => 11,
+            'flags' => 'not_null unique_key multiple_key',
+        ),
+        1 => array(
+            'type' => 'int',
+            'len' => 11,
+            'flags' => 'not_null primary_key',
+        ),
+        2 => array(
+            'type' => 'blob',
+            'len' => 65535,
+            'flags' => 'blob',
+        ),
+        3 => array(
+            'type' => 'date',
+            'len' => 10,
+            'flags' => 'not_null unique_key multiple_key',
+        ),
+        4 => array(
+            'type' => 'string',
+            'len' => 4,
+            'flags' => 'not_null',
+        ),
+        5 => array(
+            'type' => 'real',
+            'len' => 4,
+            'flags' => '',
+        ),
+        9 => array(
+            'type' => 'string',
+            'len' => 20,
+            'flags' => '',
+        ),
+    ),
+
     'oci8' => array(
         'clob' => 'CLOB',
         'date' => 'DATE',
