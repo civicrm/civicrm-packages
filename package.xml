@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.80 2004-03-02 15:53:18 lsmith Exp $ -->
+  <!-- $Id: package.xml,v 1.81 2004-03-05 01:52:45 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -37,19 +37,19 @@ DB is compatible with both PHP 4 and PHP 5.
   <maintainers>
     <maintainer>
       <user>ssb</user>
-      <role>lead</role>
+      <role>emeritus</role>
       <name>Stig Sæther Bakken</name>
       <email>stig@php.net</email>
     </maintainer>
     <maintainer>
       <user>cox</user>
-      <role>lead</role>
+      <role>emeritus</role>
       <name>Tomas V.V.Cox</name>
       <email>cox@idecnet.com</email>
     </maintainer>
     <maintainer>
       <user>chagenbu</user>
-      <role>lead</role>
+      <role>helper</role>
       <name>Chuck Hagenbuch</name>
       <email>chuck@horde.org</email>
     </maintainer>
@@ -63,7 +63,7 @@ DB is compatible with both PHP 4 and PHP 5.
   <release>
     <version>1.6.1</version>
     <state>stable</state>
-    <date></date>
+    <date>pending</date>
     <notes>
 changelog notes for pending 1.6.1 release
 
