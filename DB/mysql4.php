@@ -17,6 +17,7 @@
 // | Based on mysql.php by Stig Bakken <ssb@php.net>                      |
 // +----------------------------------------------------------------------+
 //
+// $Id$
 
 // NOTE:  The tableInfo() method must be redone because the functions it
 // relies on no longer exist in the new extension.
@@ -61,7 +62,6 @@ class DB_mysql4 extends DB_common
      *
      * @access public
      */
-
     function DB_mysql4()
     {
         $this->DB_common();
@@ -93,19 +93,17 @@ class DB_mysql4 extends DB_common
     }
 
     // }}}
-
     // {{{ connect()
 
     /**
      * Connect to a database and log in as the specified user.
      *
-     * @param $dsn the data source name (see DB::parseDSN for syntax)
-     * @param $persistent (optional) whether the connection should
-     *        be persistent
+     * @param string $dsn the data source name (see DB::parseDSN for syntax)
+     * @param boolean $persistent (optional) whether the connection should
+     *                            be persistent
+     * @return mixed DB_OK on success, a DB error on failure
      * @access public
-     * @return int DB_OK on success, a DB error on failure
      */
-
     function connect($dsninfo, $persistent = false)
     {
         if (!DB::assertExtension('mysql')) {
@@ -155,21 +153,20 @@ class DB_mysql4 extends DB_common
 
         if ($dsninfo['database']) {
             if (!@mysqli_select_db($dsninfo['database'], $conn)) {
-               switch(mysqli_errno($conn)) {
-                        case 1049:
-                            return $this->raiseError(DB_ERROR_NOSUCHDB, null, null,
-                                                     null, mysqli_error($conn));
-                            break;
-                        case 1044:
-                             return $this->raiseError(DB_ERROR_ACCESS_VIOLATION, null, null,
-                                                      null, mysqli_error($conn));
-                            break;
-                        default:
-                            return $this->raiseError(DB_ERROR, null, null,
-                                                     null, mysqli_error($conn));
-                            break;
-
-                    }
+                switch(mysqli_errno($conn)) {
+                    case 1049:
+                        return $this->raiseError(DB_ERROR_NOSUCHDB, null, null,
+                                                 null, mysqli_error($conn));
+                        break;
+                    case 1044:
+                         return $this->raiseError(DB_ERROR_ACCESS_VIOLATION, null, null,
+                                                  null, mysqli_error($conn));
+                        break;
+                    default:
+                        return $this->raiseError(DB_ERROR, null, null,
+                                                 null, mysqli_error($conn));
+                        break;
+                }
             }
             // fix to allow calls to different databases in the same script
             $this->_db = $dsninfo['database'];
@@ -185,9 +182,8 @@ class DB_mysql4 extends DB_common
     /**
      * Log out and disconnect from the database.
      *
+     * @return boolean TRUE on success, FALSE if not connected
      * @access public
-     *
-     * @return bool TRUE on success, FALSE if not connected.
      */
     function disconnect()
     {
@@ -203,13 +199,11 @@ class DB_mysql4 extends DB_common
      * Send a query to MySQL and return the results as a MySQL resource
      * identifier.
      *
-     * @param the SQL query
-     *
+     * @param string $query the SQL query
+     * @return mixed a valid MySQL result for successful SELECT
+     *               queries, DB_OK for other successful queries.
+     *               A DB error is returned on failure.
      * @access public
-     *
-     * @return mixed returns a valid MySQL result for successful SELECT
-     * queries, DB_OK for other successful queries.  A DB error is
-     * returned on failure.
      */
     function simpleQuery($query)
     {
@@ -250,15 +244,13 @@ class DB_mysql4 extends DB_common
     // {{{ nextResult()
 
     /**
-     * Move the internal mysql result pointer to the next available result
+     * Move the internal mysql result pointer to the next available result.
      *
      * This method has not been implemented yet.
      *
-     * @param a valid sql result resource
-     *
-     * @access public
-     *
+     * @param resource $result a valid sql result resource
      * @return false
+     * @access public
      */
     function nextResult($result)
     {
@@ -326,11 +318,9 @@ class DB_mysql4 extends DB_common
     /**
      * Free the internal resources associated with $result.
      *
-     * @param $result MySQL result identifier
-     *
-     * @access public
-     *
+     * @param resource $result MySQL result identifier
      * @return bool TRUE on success, FALSE if $result is invalid
+     * @access public
      */
     function freeResult($result)
     {
@@ -367,11 +357,9 @@ class DB_mysql4 extends DB_common
     /**
      * Get the number of rows in a result set.
      *
-     * @param $result MySQL result identifier
-     *
-     * @access public
-     *
+     * @param resource $result MySQL result identifier
      * @return int the number of rows in $result
+     * @access public
      */
     function numRows($result)
     {
@@ -386,7 +374,7 @@ class DB_mysql4 extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable/disable automatic commits
+     * Enable/disable automatic commits.
      */
     function autoCommit($onoff = false)
     {
@@ -451,9 +439,8 @@ class DB_mysql4 extends DB_common
      * Gets the number of rows affected by the data manipulation
      * query.  For other queries, this function returns 0.
      *
-     * @return number of rows affected by the last query
+     * @return integer number of rows affected by the last query
      */
-
     function affectedRows()
     {
         if (DB::isManip($this->last_query)) {
@@ -471,11 +458,9 @@ class DB_mysql4 extends DB_common
      * Get the native error code of the last error (if any) that
      * occured on the current connection.
      *
-     * @access public
-     *
      * @return int native MySQL error code
+     * @access public
      */
-
     function errorNative()
     {
         return mysqli_errno($this->connection);
@@ -488,14 +473,11 @@ class DB_mysql4 extends DB_common
      * Get the next value in a sequence.  We emulate sequences
      * for MySQL.  Will create the sequence if it does not exist.
      *
-     * @access public
-     *
      * @param string $seq_name the name of the sequence
-     *
      * @param bool $ondemand whether to create the sequence table on demand
-     * (default is true)
-     *
+     *                       (default is true)
      * @return mixed a sequence integer, or a DB error
+     * @access public
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -594,15 +576,15 @@ class DB_mysql4 extends DB_common
     }
 
     // }}}
-
     // {{{ _BCsequence()
+
     /**
-    * Backwards compatibility with old sequence emulation implementation
-    * (clean up the dupes)
-    *
-    * @param string $seqname The sequence name to clean up
-    * @return mixed DB_Error or true
-    */
+     * Backwards compatibility with old sequence emulation implementation
+     * (clean up the dupes).
+     *
+     * @param string $seqname The sequence name to clean up
+     * @return mixed DB_Error or true
+     */
     function _BCsequence($seqname)
     {
         // Obtain a user-level lock... this will release any previous
@@ -810,10 +792,11 @@ class DB_mysql4 extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info.
+     *
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {
