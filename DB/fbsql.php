@@ -637,7 +637,7 @@ class DB_fbsql extends DB_common
     {
         switch ($type) {
             case 'tables':
-                return 'select "table_name" from information_schema.tables';
+                return "select \"table_name\" from information_schema.tables where \"table_type\"='BASE TABLE' AND \"schema_pk\">1";
             default:
                 return null;
         }
