@@ -1,6 +1,6 @@
 Maintainers for DB database backends/drivers:
 
-ibase     : Ludovico Magnocavallo <ludo@sumatrasolutions.com>
+ibase     : Ludovico Magnocavallo <ludo@asiatica.org>
 msql      : 
 mssql     : Frank M. Kromann <frank@kromann.info>
 mysql     : Stig Bakken <ssb@php.net>
@@ -13,4 +13,4 @@ sybase    :
 ifx       : Tomas V.V.Cox <cox@idecnet.com>
 fbsql     : Frank M. Kromann <frank@kromann.info>
 dbase     : Tomas V.V.Cox <cox@idecnet.com>
-ldap      : Ludovico Magnocavallo <ludo@sumatrasolutions.com>
+ldap      : Ludovico Magnocavallo <ludo@asiatica.org>
