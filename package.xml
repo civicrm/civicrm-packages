@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.82 2004-03-05 01:56:06 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.83 2004-03-05 01:58:28 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -80,6 +80,10 @@ Minor coding standards fixes.  (lsmith)
 
 =============
 BUGS FIXED:
+
+- all:
+All native function calls now get errors silenced
+via @.  (danielc)
 
 - mysql, mysqli, odbc:
 Move error code portability mapping from connect()
