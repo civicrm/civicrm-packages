@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.52 2004-02-04 06:55:11 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.53 2004-02-06 17:48:37 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -58,37 +58,29 @@ are also avaible from a separate package).
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.0RC4</version>
+    <version>1.6.0RC5</version>
     <state>beta</state>
-    <date>2004-02-04</date>
+    <date>2004-02-06</date>
     <notes>
 =============
 ENHANCEMENTS:
 
-Speed up getAll() a tad.  (danielc)
+Added quoteIdentifier() method.  (danielc)
 
 
 =============
 BUGS FIXED:
 
--mysql4
-Change exentsion check from mysql to mysqli.
-(chagenbu)
+tableInfo() $mode can once again be 0.  (danielc)
 
-All normal $dsninfo array elements are now set in
-parseDSN(), eliminating the need to check them in
-each driver's connect() method.  This also eliminates
-a bug introduced in 1.6.0RC3 which caused
-&quot;undefined index&quot; notices when using an
-array for the DSN when connecting.  (danielc, chagenbu)
+-- all
+Finalize the fix for the "undefined index" notices
+bug when using an array for the DSN.  Bugs 693 and
+696.  (danielc)
 
-All methods that return by reference always return
-a variable.  This avoids memory corruption in PHP 4.
-This has been gradually implemented during all of the
-1.6.0 RC's up to this point.  Bug 361.  (danielc)
-
-15quote test now works correctly for boolean types.
-(danielc)
+-- oci8
+Have modifyLimitQuery() deal with columns names
+which have spaces in them.  Bug 679.  (danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
