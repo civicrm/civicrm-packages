@@ -6,5 +6,5 @@ define('DRIVER_DSN', '');
 //define('DRIVER_DSN', 'mysql://root@localhost/test');
 //define('DRIVER_DSN', 'oci8://system:manager@');
 //define('DRIVER_DSN', 'ibase(firebird)://SYSDBA:masterkey@//opt/interbase/examples/employee.gdb?dialect=3');
-define('DRIVER_DSN', 'mssql://sa@somehost/pubs');
+//define('DRIVER_DSN', 'mssql://sa@somehost/pubs');
 ?>
