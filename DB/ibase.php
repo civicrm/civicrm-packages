@@ -21,6 +21,9 @@
 // Database independent query interface definition for PHP's Interbase
 // extension.
 //
+// Bugs:
+//  - If dbsyntax is not firebird, the limitQuery may fail
+//  - The palceholders '&' and '!' don't work here
 
 require_once 'DB/common.php';
 
@@ -118,6 +121,9 @@ class DB_ibase extends DB_common
             return $this->ibaseRaiseError(DB_ERROR_CONNECT_FAILED);
         }
         $this->connection = $conn;
+        if ($this->dsn['dbsyntax'] == 'firebird') {
+            $this->features['limit'] = 'alter';
+        }
         return DB_OK;
     }
 
@@ -139,7 +145,7 @@ class DB_ibase extends DB_common
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
-        $result = @ibase_query($this->connection, $query);
+        $result = ibase_query($this->connection, $query);
         if (!$result) {
             return $this->ibaseRaiseError();
         }
@@ -171,7 +177,8 @@ class DB_ibase extends DB_common
     function modifyLimitQuery($query, $from, $count)
     {
         if ($this->dsn['dbsyntax'] == 'firebird') {
-            $from++; // SKIP starts from 1, ie SKIP 1 starts from the first record
+            //$from++; // SKIP starts from 1, ie SKIP 1 starts from the first record
+                           // (cox) Seems that SKIP starts in 0
             $query = preg_replace('/^\s*select\s(.*)$/is',
                                   "SELECT FIRST $count SKIP $from $1", $query);
         }
@@ -206,7 +213,11 @@ class DB_ibase extends DB_common
             return $this->ibaseRaiseError(DB_ERROR_NOT_CAPABLE);
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $ar = get_object_vars(ibase_fetch_object($result));
+            if (function_exists('ibase_fetch_assoc')) {
+                $ar = ibase_fetch_assoc($result);
+            } else {
+                $ar = get_object_vars(ibase_fetch_object($result));
+            }
             if ($ar && $this->options['optimize'] == 'portability') {
                 $ar = array_change_key_case($ar, CASE_LOWER);
             }
@@ -265,6 +276,9 @@ class DB_ibase extends DB_common
 
     function prepare($query)
     {
+        if (strpos($query, '&') !== false) {
+            return $this->raiseError(null, "Placeholder '&' not supported");
+        }
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
         $stmt = ibase_prepare($query);
@@ -277,7 +291,11 @@ class DB_ibase extends DB_common
 
     function execute($stmt, $data = false)
     {
-        $result = ibase_execute($stmt, $data);
+        if (!sizeof($data)) {
+            return $this->raiseError(DB_ERROR_MISMATCH);
+        }
+        $data = array_merge(array($stmt), $data);
+        $result = call_user_func_array('ibase_execute', $data);
         if (!$result) {
             return $this->ibaseRaiseError();
         }
@@ -353,7 +371,7 @@ class DB_ibase extends DB_common
             }
         } while ($repeat);
         if (DB::isError($result)) {
-            return $result;
+            return $this->raiseError($result);
         }
         $arr = $result->fetchRow(DB_FETCHMODE_ORDERED);
         $result->free();
@@ -618,7 +636,7 @@ class DB_ibase extends DB_common
             }
             $errmsg = $m[2] . ' ' . $m[3];
         }
-        
+
         return $this->raiseError($errno, null, null, $errmsg,
                         $this->last_query);
     }
