@@ -561,9 +561,10 @@ class DB_mssql extends DB_common
     */
     function _mssql_field_flags($table, $column)
     {
-        static $flags = false;
+        static $current_table = null;
+        static $flags;
         // At the first call we discover the flags for all fields
-        if ($flags === false) {
+        if ($table != $current_table) {
             $flags = array();
             // find nullable fields
             $q_nulls = "SELECT syscolumns.name, syscolumns.isnullable
@@ -583,6 +584,7 @@ class DB_mssql extends DB_common
                     $flags[$data['COLUMN_NAME']][] = 'primary_key';
                 }
             }
+            $current_table = $table;
         }
         if (isset($flags[$column])) {
             return implode(',', $flags[$column]);
