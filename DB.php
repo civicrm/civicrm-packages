@@ -64,19 +64,6 @@ define("DB_ERROR_ACCESS_VIOLATION",   -26);
 define("DB_ERROR_NOSUCHDB",           -27);
 
 // }}}
-// {{{ warning codes
-/*
- * Warnings are not detected as errors by DB::isError(), and are not
- * fatal.  You can detect whether an error is in fact a warning with
- * DB::isWarning().
- *
- * @deprecated
- */
-
-define('DB_WARNING',           -1000);
-define('DB_WARNING_READ_ONLY', -1001);
-
-// }}}
 // {{{ prepared statement-related
 /*
  * These constants are used when storing information about prepared
@@ -420,8 +407,6 @@ class DB
                 DB_ERROR_INVALID_DSN        => 'invalid DSN',
                 DB_ERROR_CONNECT_FAILED     => 'connect failed',
                 DB_OK                       => 'no error',
-                DB_WARNING                  => 'unknown warning',
-                DB_WARNING_READ_ONLY        => 'read only',
                 DB_ERROR_NEED_MORE_DATA     => 'insufficient data supplied',
                 DB_ERROR_EXTENSION_NOT_FOUND=> 'extension not found',
                 DB_ERROR_NOSUCHDB           => 'no such database',

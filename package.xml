@@ -51,6 +51,7 @@ Bugs fixed:
 
 Minor API Change:
 
+- Removed deprecated constants DB_WARNING and DB_WARNING_READ_ONLY
 - Now $db_object->freeResult() can't be used for freeing
   a prepared query. Use $db_object->freePrepared() instead:
 
