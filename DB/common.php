@@ -397,33 +397,41 @@ class DB_common extends PEAR
     // {{{ prepare()
 
     /**
-    * Prepares a query for multiple execution with execute().
-    * With some database backends, this is emulated.
-    * prepare() requires a generic query as string like
-    * "INSERT INTO numbers VALUES(?,?,?)". The ? are wildcards.
-    * Types of wildcards:
-    *   ? - a quoted scalar value, i.e. strings, integers
-    *   & - requires a file name, the content of the file
-    *       insert into the query (i.e. saving binary data
-    *       in a db)
-    *   ! - value is inserted 'as is'
-    *
-    * @param string the query to prepare
-    *
-    * @return resource handle for the query
-    *
-    * @access public
-    * @see execute
-    */
-
+     * Prepares a query for multiple execution with execute().
+     *
+     * With some database backends, this is emulated.
+     *
+     * prepare() requires a generic query as string like <samp>
+     *    INSERT INTO numbers VALUES (?, ?, ?)
+     * </samp>.  The <samp>?</samp> characters are placeholders.
+     *
+     * Three types of placeholders can be used:
+     *   + <samp>?</samp>  a quoted scalar value, i.e. strings, integers
+     *   + <samp>!</samp>  value is inserted 'as is'
+     *   + <samp>&</samp>  requires a file name.  The file's contents get
+     *                     inserted into the query (i.e. saving binary
+     *                     data in a db)
+     *
+     * Use backslashes to escape placeholder characters if you don't want
+     * them to be interpreted as placeholders.  Example: <samp>
+     * "UPDATE foo SET col=? WHERE col='over \& under'"
+     * </samp>
+     *
+     * @param string $query query to be prepared
+     * @return mixed DB statement resource on success. DB_Error on failure.
+     * @access public
+     * @see execute()
+     */
     function prepare($query)
     {
-        $tokens = split('[&?!]', $query);
-        $token = 0;
-        $types = array();
-        $qlen = strlen($query);
-        for ($i = 0; $i < $qlen; $i++) {
-            switch ($query[$i]) {
+        $tokens   = preg_split('/((?<!\\\)[&?!])/', $query, -1,
+                               PREG_SPLIT_DELIM_CAPTURE);
+        $token     = 0;
+        $types     = array();
+        $newtokens = array();
+
+        foreach ($tokens as $key => $val) {
+            switch ($val) {
                 case '?':
                     $types[$token++] = DB_PARAM_SCALAR;
                     break;
@@ -433,15 +441,17 @@ class DB_common extends PEAR
                 case '!':
                     $types[$token++] = DB_PARAM_MISC;
                     break;
+                default:
+                    $newtokens[] = preg_replace('/\\\([&?!])/', "\\1", $val);
             }
         }
-
-        $this->prepare_tokens[] = &$tokens;
+        
+        $this->prepare_tokens[] = &$newtokens;
         end($this->prepare_tokens);
 
         $k = key($this->prepare_tokens);
         $this->prepare_types[$k] = $types;
-        $this->prepared_queries[$k] = &$query;
+        $this->prepared_queries[$k] = implode(' ', $newtokens);
 
         return $k;
     }

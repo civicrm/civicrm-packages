@@ -368,37 +368,62 @@ class DB_oci8 extends DB_common
     // {{{ prepare()
 
     /**
-     * Prepares a query for multiple execution with execute().  With
-     * oci8, this is emulated.
-     * @param $query query to be prepared
+     * Prepares a query for multiple execution with execute().
      *
-     * @return DB statement resource
+     * With oci8, this is emulated.
+     *
+     * prepare() requires a generic query as string like <samp>
+     *    INSERT INTO numbers VALUES (?, ?, ?)
+     * </samp>.  The <samp>?</samp> characters are placeholders.
+     *
+     * Three types of placeholders can be used:
+     *   + <samp>?</samp>  a quoted scalar value, i.e. strings, integers
+     *   + <samp>!</samp>  value is inserted 'as is'
+     *   + <samp>&</samp>  requires a file name.  The file's contents get
+     *                     inserted into the query (i.e. saving binary
+     *                     data in a db)
+     *
+     * Use backslashes to escape placeholder characters if you don't want
+     * them to be interpreted as placeholders.  Example: <samp>
+     * "UPDATE foo SET col=? WHERE col='over \& under'"
+     * </samp>
+     *
+     * @param string $query query to be prepared
+     * @return mixed DB statement resource on success. DB_Error on failure.
      */
     function prepare($query)
     {
-        $tokens = split('[&?!]', $query);
-        $token = 0;
-        $types = array();
-        $qlen = strlen($query);
-        for ($i = 0; $i < $qlen; $i++) {
-            switch ($query[$i]) {
+        $tokens   = preg_split('/((?<!\\\)[&?!])/', $query, -1,
+                               PREG_SPLIT_DELIM_CAPTURE);
+        $binds    = count($tokens) - 1;
+        $token    = 0;
+        $types    = array();
+        $newquery = '';
+
+        foreach ($tokens as $key => $val) {
+            switch ($val) {
                 case '?':
                     $types[$token++] = DB_PARAM_SCALAR;
+                    unset($tokens[$key]);
                     break;
                 case '&':
                     $types[$token++] = DB_PARAM_OPAQUE;
+                    unset($tokens[$key]);
                     break;
                 case '!':
                     $types[$token++] = DB_PARAM_MISC;
+                    unset($tokens[$key]);
                     break;
+                default:
+                    $tokens[$key] = preg_replace('/\\\([&?!])/', "\\1", $val);
+                    if ($key != $binds) {
+                        $newquery .= $tokens[$key] . ':bind' . $token;
+                    } else {
+                        $newquery .= $tokens[$key];
+                    }
             }
         }
-        $binds = sizeof($tokens) - 1;
-        $newquery = '';
-        for ($i = 0; $i < $binds; $i++) {
-            $newquery .= $tokens[$i] . ':bind' . $i;
-        }
-        $newquery .= $tokens[$i];
+
         $this->last_query = $query;
         $newquery = $this->modifyQuery($newquery);
         if (!$stmt = @OCIParse($this->connection, $newquery)) {
@@ -446,7 +471,7 @@ class DB_oci8 extends DB_common
                     fclose($fp);
                 }
             }
-            if (!@OCIBindByName($stmt, ':bind' . $i, $pdata[$i], -1)) {
+            if (!OCIBindByName($stmt, ':bind' . $i, $pdata[$i], -1)) {
                 $tmp = $this->oci8RaiseError($stmt);
                 return $tmp;
             }
