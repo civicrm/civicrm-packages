@@ -296,6 +296,12 @@ class DB_sybase extends DB_common
                     => DB_ERROR_CONSTRAINT_NOT_NULL,
                 '/Command has been aborted/'
                     => DB_ERROR_CONSTRAINT,
+                '/^Cannot drop the index .* because it doesn\'t exist/i'
+                    => DB_ERROR_NOT_FOUND,
+                '/^There is already an index/i'
+                    => DB_ERROR_ALREADY_EXISTS,
+                '/^There are fewer columns in the INSERT statement than values specified/i'
+                    => DB_ERROR_VALUE_COUNT_ON_ROW,
             );
         }
 
