@@ -376,7 +376,7 @@ class DB_oci8 extends DB_common
      */
     function prepare($query)
     {
-        $tokens = split('[\&\?]', $query);
+        $tokens = split('[&?!]', $query);
         $token = 0;
         $types = array();
         $qlen = strlen($query);
@@ -387,6 +387,9 @@ class DB_oci8 extends DB_common
                     break;
                 case '&':
                     $types[$token++] = DB_PARAM_OPAQUE;
+                    break;
+                case '!':
+                    $types[$token++] = DB_PARAM_MISC;
                     break;
             }
         }
