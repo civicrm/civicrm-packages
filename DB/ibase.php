@@ -556,12 +556,11 @@ class DB_ibase extends DB_common
      */
     function _ibaseFieldFlags($field_name, $table_name)
     {
-
-        $sql = 'SELECT  R.RDB$CONSTRAINT_TYPE CTYPE'
-               .' FROM  RDB$INDEX_SEGMENTS I'
-               .' JOIN  RDB$RELATION_CONSTRAINTS R ON I.RDB$INDEX_NAME=R.RDB$INDEX_NAME'
-              .' WHERE  I.RDB$FIELD_NAME=\''.$field_name.'\''
-                 .' AND UPPER(R.RDB$RELATION_NAME)=\''.strtoupper($table_name).'\'';
+        $sql = 'SELECT R.RDB$CONSTRAINT_TYPE CTYPE'
+               .' FROM RDB$INDEX_SEGMENTS I'
+               .'  JOIN RDB$RELATION_CONSTRAINTS R ON I.RDB$INDEX_NAME=R.RDB$INDEX_NAME'
+               .' WHERE I.RDB$FIELD_NAME=\'' . $field_name . '\''
+               .'  AND UPPER(R.RDB$RELATION_NAME)=\'' . strtoupper($table_name) . '\'';
 
         $result = ibase_query($this->connection, $sql);
         if (!$result) {
@@ -572,21 +571,22 @@ class DB_ibase extends DB_common
         if ($obj = @ibase_fetch_object($result)) {
             ibase_free_result($result);
             if (isset($obj->CTYPE)  && trim($obj->CTYPE) == 'PRIMARY KEY') {
-                $flags = 'primary_key ';
+                $flags .= 'primary_key ';
             }
             if (isset($obj->CTYPE)  && trim($obj->CTYPE) == 'UNIQUE') {
                 $flags .= 'unique_key ';
             }
         }
 
-        $sql = 'SELECT  R.RDB$NULL_FLAG AS NFLAG,'
-                     .' R.RDB$DEFAULT_SOURCE AS DSOURCE,'
-                     .' F.RDB$FIELD_TYPE AS FTYPE,'
-                     .' F.RDB$COMPUTED_SOURCE AS CSOURCE'
-               .' FROM  RDB$RELATION_FIELDS R '
-               .' JOIN  RDB$FIELDS F ON R.RDB$FIELD_SOURCE=F.RDB$FIELD_NAME'
-              .' WHERE  UPPER(R.RDB$RELATION_NAME)=\''.strtoupper($table_name).'\''
-                .' AND  R.RDB$FIELD_NAME=\''.$field_name.'\'';
+        $sql = 'SELECT R.RDB$NULL_FLAG AS NFLAG,'
+               .'  R.RDB$DEFAULT_SOURCE AS DSOURCE,'
+               .'  F.RDB$FIELD_TYPE AS FTYPE,'
+               .'  F.RDB$COMPUTED_SOURCE AS CSOURCE'
+               .' FROM RDB$RELATION_FIELDS R '
+               .'  JOIN RDB$FIELDS F ON R.RDB$FIELD_SOURCE=F.RDB$FIELD_NAME'
+               .' WHERE UPPER(R.RDB$RELATION_NAME)=\'' . strtoupper($table_name) . '\''
+               .'  AND R.RDB$FIELD_NAME=\'' . $field_name . '\'';
+
         $result = ibase_query($this->connection, $sql);
         if (!$result) {
             return $this->ibaseRaiseError();
