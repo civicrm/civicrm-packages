@@ -88,7 +88,6 @@ class DB_odbc extends DB_common
             'S0012' => DB_ERROR_NOT_FOUND,
             'S0021' => DB_ERROR_ALREADY_EXISTS,
             'S0022' => DB_ERROR_NOSUCHFIELD,
-            'S1000' => DB_ERROR_CONSTRAINT_NOT_NULL,
             'S1009' => DB_ERROR_INVALID,
             'S1090' => DB_ERROR_INVALID,
             'S1C00' => DB_ERROR_NOT_CAPABLE
@@ -565,8 +564,33 @@ class DB_odbc extends DB_common
                         // Doing this in case mode changes during runtime.
                         $this->errorcode_map['07001'] = DB_ERROR_MISMATCH;
                     }
+
+                    $native_code = odbc_error($this->connection);
+
+                    // S1000 is for "General Error."  Let's be more specific.
+                    if ($native_code == 'S1000') {
+                        $errormsg = odbc_errormsg($this->connection);
+                        static $error_regexps;
+                        if (!isset($error_regexps)) {
+                            $error_regexps = array(
+                                '/includes related records.$/i'  => DB_ERROR_CONSTRAINT,
+                                '/cannot contain a Null value/i' => DB_ERROR_CONSTRAINT_NOT_NULL,
+                            );
+                        }
+                        foreach ($error_regexps as $regexp => $code) {
+                            if (preg_match($regexp, $errormsg)) {
+                                return $this->raiseError($code,
+                                        null, null, null,
+                                        $native_code . ' ' . $errormsg);
+                            }
+                        }
+                    } else {
+                        $errno = $this->errorCode($native_code);
+                    }
+                    break;
+                default:
+                    $errno = $this->errorCode(odbc_error($this->connection));
             }
-            $errno = $this->errorCode(odbc_error($this->connection));
         }
         return $this->raiseError($errno, null, null, null,
                         $this->errorNative());

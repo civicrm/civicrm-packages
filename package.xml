@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.138 2004-12-10 20:07:49 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.139 2004-12-10 20:57:53 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -76,17 +76,19 @@ resolving Bug #2140.  (Bug #2731)
 
 mysql & mysqli:
 * Added 1061 => DB_ERROR_ALREADY_EXISTS to error map.
-  (danielc)
 
 oci8:
 * When running PHP5, use the new oci_new_connect() and
   oci_close() functions instead of the old ones.
   Works around crashes caused by PHP bug
   http://bugs.php.net/bug.php?id=28924
-  (PEAR Bug #2622)  (danielc)
+  (PEAR Bug #2622)
 
 odbc:
 * Add '23504' => DB_ERROR_CONSTRAINT to error map.
+* Deal with MS Access' excessive use of the
+  S1000 ("General Error") code by trying to
+  pin down a more specific error.
 
 pgsql:
 * Allow multiple open parentheses in query strings
@@ -100,17 +102,16 @@ sqlite:
 sybase:
 * Provide debugging information to raiseError() when
   connections fail so getUserInfo() and getDebugInfo()
-  provide useful information.  (danielc)
+  provide useful information.
 
 all:
 * If DSN contains "dbsyntax", always use that for
   $this->dbsyntax.  Used to only be done for odbc.
-  (danielc)
 
 tests:
 * Reworked 10errormap.phpt so it passes when all
   expected conditions are met.  Also tweaked it
-  to make it work under fbsql.  (danielc)
+  to make it work under fbsql.
     ]]></notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
