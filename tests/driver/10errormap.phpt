@@ -22,7 +22,9 @@ Trying to provoke DB_ERROR_CONSTRAINT for unique key insert duplicate
   DB Error: constraint violation
 Trying to provoke DB_ERROR_CONSTRAINT for unique key update duplicate
   DB Error: constraint violation
-Trying to provoke DB_ERROR_CONSTRAINT for foreign key
+Trying to provoke DB_ERROR_CONSTRAINT for foreign key on insert
+  DB Error: constraint violation
+Trying to provoke DB_ERROR_CONSTRAINT for foreign key on delete
   DB Error: constraint violation
 Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on insert
   DB Error: null value violates not-null constraint
