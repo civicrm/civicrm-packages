@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.103 2004-04-30 03:20:45 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.104 2004-05-01 02:42:25 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -61,44 +61,17 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.3</version>
+    <version>1.6.4</version>
     <state>stable</state>
     <date>2004-04-30</date>
     <notes>
 =============
 BUGS FIXED:
 
-- fbsql, mysql, mysqli, sqlite:
-Explicitly name 'id' column when performing
-inserts for sequence methods.  (danielc)
-
 - common:
-Fix docblocks for getAssoc() and limitQuery().
-(danielc)
-
-- common:
-Fix notice caused by passing invalid $col to
-getCol().  (danielc)
-
-- mysql, mysqli, oci8:
-Add error maping for failure of update/delete
-due to foreign key constraint.  (danielc)
-
-- mysqli:
-IT NOW WORKS!  (danielc)
-
-- tests:
-Make test suite work for installed packages.
-Already worked for CVS checkouts.  (danielc)
-
-- tests:
-db_error.phpt and db_error2.phpt now pass
-when using PHP 5.  (danielc)
-
-- tests:
-Made adjustments so mysql and mysqli pass
-transactions and foreign key tests.
-(danielc)
+Fix compatibility issue with getCol() introduced
+in version 1.6.3: when query produced no results,
+DB_ERROR_TRUNCATED error was raised.  (danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
