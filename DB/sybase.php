@@ -348,7 +348,7 @@ class DB_sybase extends DB_common
     function numRows($result)
     {
         $rows = @sybase_num_rows($result);
-        if ($rows === null) {
+        if ($rows === false) {
             return $this->sybaseRaiseError();
         }
         return $rows;
