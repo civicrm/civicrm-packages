@@ -77,13 +77,25 @@ $options = array(
     'debug' => 2,
 );
 
+$dbasedsn = array(
+    'phptype'  => 'dbase',
+    'database' => '/path/and/name/of/dbase/file',
+    'mode'     => 2,
+    'fields'   => array(
+        array('a', 'N', 5, 0),
+        array('b', 'C', 40),
+        array('c', 'C', 255),
+        array('d', 'C', 20),
+    ),
+);
+
 /*
  * Uncomment at least one of the following elements.
  * When running the .phpt tests, the first uncommented element is used.
  * When running the multiconnect.php test, all uncommented elements are used.
  */
 $dsns = array(
-    // 'dbase'    => 'dbase:///database',
+    // 'dbase'    => $dbasedsn,
     // 'fbsql'    => 'fbsql://_system:@/db',
     // 'firebird' => 'ibase(firebird)://SYSDBA:masterkey@//opt/interbase/examples/employee.gdb?dialect=3',
     // 'ifx'      => 'ifx://user:pw@localhost/db',

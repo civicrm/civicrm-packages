@@ -24,6 +24,13 @@ function check_dbh($dbh, $name) {
         print "$name is an object\n";
     }
     switch ($dbh->phptype) {
+        case 'dbase':
+            if (is_int($dbh->connection)) {
+                print "$name is connected\n";
+            } else {
+                print "$name NOT connected\n";
+            }
+            break;
         case 'mysqli':
             if (is_a($dbh->connection, 'mysqli')) {
                 print "$name is connected\n";

@@ -140,14 +140,19 @@ switch ($type) {
         $tabletype = '';
 }
 
-
-$test_mktable_query = "
-    CREATE TABLE phptest (
-      a INTEGER $null,
-      b CHAR(40) $default,
-      c $chrc $null,
-      d $chrd $null) $tabletype
-";
+switch ($dbh->phptype) {
+    case 'dbase':
+        // file exists or was created in DB_dbase::connect()
+        break;
+    default:
+        $test_mktable_query = "
+            CREATE TABLE phptest (
+              a INTEGER $null,
+              b CHAR(40) $default,
+              c $chrc $null,
+              d $chrd $null) $tabletype
+        ";
+}
 
 
 $dbh->query($test_mktable_query);
