@@ -52,18 +52,38 @@ $dbh->query('INSERT INTO a VALUES (2)');
 $dbh->query('UPDATE a SET a=1 WHERE a=2');
 
 
-print "Trying to provoke DB_ERROR_CONSTRAINT for foreign key\n";
+print "Trying to provoke DB_ERROR_CONSTRAINT for foreign key on insert\n";
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 $dbh->query('DROP TABLE b');
 $dbh->query('DROP TABLE a');
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'errhandler');
-$dbh->query('CREATE TABLE a (a INTEGER NOT NULL, PRIMARY KEY(a))');
-$dbh->query('CREATE TABLE b (b INTEGER REFERENCES a(a))');
-$dbh->query('INSERT INTO a values (1)');
-$dbh->query('INSERT INTO b values (2)');
 switch ($dbh->phptype) {
     case 'mysql':
     case 'mysqli':
+        $dbh->query('CREATE TABLE a (a INT NOT NULL, '
+                    . 'PRIMARY KEY (a)) '
+                    . 'TYPE=INNODB');
+        $dbh->query('CREATE TABLE b (b INT, '
+                    . 'INDEX par_ind (b), '
+                    . 'FOREIGN KEY (b) REFERENCES a (a)) '
+                    . 'TYPE=INNODB');
+        break;
+    default:
+        $dbh->query('CREATE TABLE a (a INTEGER NOT NULL, PRIMARY KEY (a))');
+        $dbh->query('CREATE TABLE b (b INTEGER REFERENCES a (a))');
+}
+$dbh->query('INSERT INTO a (a) values (1)');
+$dbh->query('INSERT INTO b (b) values (2)');
+switch ($dbh->phptype) {
+    case 'sqlite':
+        print "            OK  $dbh->phptype doesn't consider this an error\n";
+        break;
+}
+
+print "Trying to provoke DB_ERROR_CONSTRAINT for foreign key on delete\n";
+$dbh->query('INSERT INTO b (b) values (1)');
+$dbh->query('DELETE FROM a WHERE a = 1');
+switch ($dbh->phptype) {
     case 'sqlite':
         print "            OK  $dbh->phptype doesn't consider this an error\n";
         break;
