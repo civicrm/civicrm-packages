@@ -239,11 +239,13 @@ class DB_mysql extends DB_common
     /**
      * Move the internal mysql result pointer to the next available result
      *
-     * @param a valid fbsql result resource
+     * This method has not been implemented yet.
+     *
+     * @param a valid sql result resource
      *
      * @access public
      *
-     * @return true if a result is available otherwise return false
+     * @return false
      */
     function nextResult($result)
     {
@@ -606,8 +608,9 @@ class DB_mysql extends DB_common
     // }}}
 
     /**
-    * Bacwards Compatibility with old sequence emulation implementation
+    * Backwards compatibility with old sequence emulation implementation
     * (clean up the dupes)
+    *
     * @param string $seqname The sequence name to clean up
     * @return mixed DB_Error or true
     */
@@ -649,6 +652,7 @@ class DB_mysql extends DB_common
     }
 
     // {{{ quote()
+
     /**
     * Quote the given string so it can be safely used within string delimiters
     * in a query.
@@ -667,6 +671,7 @@ class DB_mysql extends DB_common
                 return "'".mysql_escape_string($str)."'";
         }
     }
+
     // }}}
     // {{{ modifyQuery()
 
