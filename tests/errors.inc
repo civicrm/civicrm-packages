@@ -78,6 +78,7 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'fbsql:fbsql':
     case 'ibase:firebird':
     case 'ibase:ibase':
+    case 'ifx:ifx':
     case 'odbc:db2':
     case 'oci8:oci8':
     case 'pgsql:pgsql':
