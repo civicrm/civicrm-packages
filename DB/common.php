@@ -625,6 +625,11 @@ class DB_common extends PEAR
      * + oci8
      *
      *
+     * <samp>DB_PORTABILITY_CONSTRAINT</samp>
+     * makes MySQL error message for unique/primary key constraints match
+     * those in other DBMS's
+     *
+     *
      * <samp>DB_PORTABILITY_ALL</samp>
      * turn on all portability features
      *
