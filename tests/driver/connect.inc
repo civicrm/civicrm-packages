@@ -4,6 +4,10 @@ error_reporting(E_ALL);
 
 require_once './setup.inc';
 
+if (!defined('DRIVER_DSN')) {
+    die('A DRIVER_DSN constant was not defined in setup.inc');
+}
+
 if (substr(DRIVER_DSN, 0, 5) == 'mssql') {
     ini_set('mssql.textlimit', 4096);
     ini_set('mssql.textsize', 4096);
