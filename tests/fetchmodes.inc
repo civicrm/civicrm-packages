@@ -76,6 +76,7 @@ print implode(" ", array_keys($row))."\n";
 $actual = implode(' ', array_values($row));
 switch ($dbh->phptype) {
     case 'fbsql':
+    case 'msql':
     case 'mysql':
     case 'mysqli':
     case 'sqlite':

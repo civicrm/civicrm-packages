@@ -87,7 +87,7 @@ $dsns = array(
     // 'fbsql'    => 'fbsql://_system:@/db',
     // 'firebird' => 'ibase(firebird)://SYSDBA:masterkey@//opt/interbase/examples/employee.gdb?dialect=3',
     // 'ifx'      => 'ifx://user:pw@localhost/db',
-    // 'msql'     => 'msql://user:pw@localhost/db',
+    // 'msql'     => 'msql:///db',
 
     // It's advisable to use only one of the following at a time:
     // 'mssql'    => 'mssql://sa@somehost/pubs',

@@ -47,4 +47,4 @@ FALSE
 
 ------------5------------
 insert: okay
-a = 11, b = three, d = string
+a = 11, b = three, d = got expected outcome

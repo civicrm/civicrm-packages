@@ -80,10 +80,11 @@ switch ($type) {
         $identifier = '';
         break;
     case 'msql':
-        $decimal = 'DECIMAL(3,1)';
+        $decimal = 'REAL';
         $null = '';
         $chr  = 'CHAR(8)';
         $identifier = 'q\ut] "dn[t';
+        $identifier = '';
         break;
     case 'fbsql':
     case 'oci8':
@@ -146,9 +147,9 @@ if ($identifier) {
 } else {
     $dbh->query("
         CREATE TABLE pearquote (
-          n DECIMAL(3,1) $null,
+          n $decimal $null,
           s $chr $null,
-          plainidentifier DECIMAL(3,1) $null,
+          plainidentifier $decimal $null,
           b {$boolean_col_type[$dbh->phptype]} $null
         )
     ");

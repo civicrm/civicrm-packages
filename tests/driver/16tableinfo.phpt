@@ -411,7 +411,7 @@ $quirks = array(
 
     'msql:msql' => array(
         'clob' => 'TEXT(255)',
-        'date' => 'DATE',
+        'date' => 'CHAR(10)',
         'dateliteral' => '',
         'finds_table' => true,
         'size_from_table' => true,
@@ -420,37 +420,39 @@ $quirks = array(
         ),
         0 => array(
             'type' => 'int',
-            'len' => 2,
+            'len' => 4,
             'flags' => 'not_null',
         ),
         1 => array(
             'type' => 'int',
-            'len' => 0,
-            'flags' => 'primary_key not_null',
+            'len' => 4,
+            // for some reason, the unique property always contains 0
+            // 'flags' => 'unique_key not_null',
+            'flags' => 'not_null',
         ),
         2 => array(
-            'type' => 'char',
-            'len' => 0,
-            'flags' => 'char',
+            'type' => 'text',
+            'len' => 255,
+            'flags' => '',
         ),
         3 => array(
-            'type' => 'date',
+            'type' => 'char',
             'len' => 10,
             'flags' => 'not_null',
         ),
         4 => array(
             'type' => 'char',
-            'len' => 0,
+            'len' => 2,
             'flags' => 'not_null',
         ),
         5 => array(
             'type' => 'real',
-            'len' => 0,
+            'len' => 8,
             'flags' => '',
         ),
         9 => array(
             'type' => 'char',
-            'len' => 10,
+            'len' => 20,
             'flags' => '',
         ),
     ),
@@ -913,18 +915,36 @@ if ($quirk_key == 'odbc:access') {
 
 // $null is set in mktable.inc
 
-$dbh->query("
-    CREATE TABLE phptest_fk (
-        a INTEGER NOT NULL,
-        fk INTEGER NOT NULL,
-        c {$quirks[$quirk_key]['clob']} $null,
-        d {$quirks[$quirk_key]['date']} NOT NULL,
-        e CHAR(2) $default_e NOT NULL,
-        f $decimal $null,
-        PRIMARY KEY (fk),
-        UNIQUE (a, d)
-    )
-");
+switch ($dbh->phptype) {
+    case 'msql':
+        $dbh->query("
+            CREATE TABLE phptest_fk (
+                a INTEGER NOT NULL,
+                fk INTEGER NOT NULL,
+                c {$quirks[$quirk_key]['clob']} $null,
+                d {$quirks[$quirk_key]['date']} NOT NULL,
+                e CHAR(2) $default_e NOT NULL,
+                f $decimal $null
+            )
+        ");
+        $dbh->query('CREATE UNIQUE INDEX fkpk ON phptest_fk (fk)');
+        $dbh->query('CREATE UNIQUE INDEX fkuk ON phptest_fk (a, d)');
+        break;
+    default:
+        $dbh->query("
+            CREATE TABLE phptest_fk (
+                a INTEGER NOT NULL,
+                fk INTEGER NOT NULL,
+                c {$quirks[$quirk_key]['clob']} $null,
+                d {$quirks[$quirk_key]['date']} NOT NULL,
+                e CHAR(2) $default_e NOT NULL,
+                f $decimal $null,
+                PRIMARY KEY (fk),
+                UNIQUE (a, d)
+            )
+        ");
+}
+
 $dbh->query("CREATE INDEX thedidx ON phptest_fk (d)");
 $dbh->query("INSERT INTO phptest_fk VALUES (10, 1, 'One',"
             . $quirks[$quirk_key]['dateliteral'] . "'2001-02-16',  'c1', 1.1)");
@@ -940,7 +960,15 @@ function &runQuery() {
 
     switch ($quirk_key) {
         case 'odbc:db2':
+            // can't extract blob's this way so make a fake column
             $query = "SELECT phptest_fk.a, phptest_fk.fk, 'tempxyz' AS c,"
+                   . ' phptest_fk.d, phptest_fk.e, phptest_fk.f,'
+                   . ' phptest.a, phptest.b, phptest.c, phptest.d'
+                   . ' FROM phptest_fk, phptest'
+                   . ' WHERE phptest.a = phptest_fk.fk';
+            break;
+        case 'msql:msql':
+            $query = 'SELECT phptest_fk.a, phptest_fk.fk, phptest_fk.c,'
                    . ' phptest_fk.d, phptest_fk.e, phptest_fk.f,'
                    . ' phptest.a, phptest.b, phptest.c, phptest.d'
                    . ' FROM phptest_fk, phptest'
@@ -1155,10 +1183,10 @@ $array = $dbh->tableInfo('phptest_fk');
 print "\ncolumn 0:\n";
 examineArrayData($array, $expected01, 0, false);
 
-print "\nsecond field:\n";
+print "\ncolumn 1:\n";
 examineArrayData($array, $expected02, 1, false);
 
-print "\nthird field:\n";
+print "\ncolumn 2:\n";
 examineArrayData($array, $expected03, 2, false);
 
 print "\ncolumn 3:\n";
@@ -1274,10 +1302,10 @@ Output = default.
 column 0:
 matched expected result
 
-second field:
+column 1:
 matched expected result
 
-third field:
+column 2:
 matched expected result
 
 column 3:

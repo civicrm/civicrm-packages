@@ -60,6 +60,19 @@ function check_error($e, $expected_db_code, $should_be_error = true) {
     }
 }
 
+/**
+ * Local error callback handler
+ * 
+ * @param object  $o  PEAR error object automatically passed to this method
+ * @return void
+ * @see PEAR::setErrorHandling()
+ */
+function pe($o) {
+    print "\n---------------\n";
+    print "Having problems creating a table for testing...\n";
+    print $o->getDebugInfo() . "\n";
+    print "---------------\n";
+}
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
@@ -104,7 +117,9 @@ check_error($res, DB_ERROR_ALREADY_EXISTS);
 
 print 'Trying to provoke DB_ERROR_ALREADY_EXISTS for create index:  ';
 $res = drop_table($dbh, 'a');
+$dbh->pushErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 $res = $dbh->query('CREATE TABLE a (a INTEGER)');
+$dbh->popErrorHandling();
 $res = $dbh->query('CREATE INDEX aa_idx ON a (a)');
 $res = $dbh->query('CREATE INDEX aa_idx ON a (a)');
 switch ($dbh->phptype) {
@@ -120,7 +135,16 @@ $res = drop_table($dbh, 'a');
 
 print 'Trying to provoke DB_ERROR_CONSTRAINT for primary key insert duplicate:  ';
 $res = drop_table($dbh, 'a');
-$res = $dbh->query('CREATE TABLE a (a INTEGER NOT NULL, PRIMARY KEY (a))');
+$dbh->pushErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
+switch ($dbh->phptype) {
+    case 'msql':
+        $res = $dbh->query('CREATE TABLE a (a INTEGER NOT NULL)');
+        $res = $dbh->query('CREATE UNIQUE INDEX apk ON a (a)');
+        break;
+    default:
+        $res = $dbh->query('CREATE TABLE a (a INTEGER NOT NULL, PRIMARY KEY (a))');
+}
+$dbh->popErrorHandling();
 $res = $dbh->query('INSERT INTO a VALUES (1)');
 $res = $dbh->query('INSERT INTO a VALUES (1)');
 check_error($res, DB_ERROR_CONSTRAINT);
@@ -134,7 +158,16 @@ check_error($res, DB_ERROR_CONSTRAINT);
 
 print 'Trying to provoke DB_ERROR_CONSTRAINT for unique key insert duplicate:  ';
 $res = drop_table($dbh, 'a');
-$res = $dbh->query('CREATE TABLE a (a INTEGER NOT NULL, UNIQUE (a))');
+$dbh->pushErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
+switch ($dbh->phptype) {
+    case 'msql':
+        $res = $dbh->query('CREATE TABLE a (a INTEGER NOT NULL)');
+        $res = $dbh->query('CREATE UNIQUE INDEX auk ON a (a)');
+        break;
+    default:
+        $res = $dbh->query('CREATE TABLE a (a INTEGER NOT NULL, UNIQUE (a))');
+}
+$dbh->popErrorHandling();
 $res = $dbh->query('INSERT INTO a VALUES (1)');
 $res = $dbh->query('INSERT INTO a VALUES (1)');
 check_error($res, DB_ERROR_CONSTRAINT);
@@ -149,6 +182,7 @@ check_error($res, DB_ERROR_CONSTRAINT);
 print 'Trying to provoke DB_ERROR_CONSTRAINT for foreign key on insert:  ';
 $res = drop_table($dbh, 'b');
 $res = drop_table($dbh, 'a');
+$dbh->pushErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 switch ($dbh->phptype) {
     case 'mysql':
     case 'mysqli':
@@ -159,37 +193,59 @@ switch ($dbh->phptype) {
                     . 'INDEX par_ind (b), '
                     . 'FOREIGN KEY (b) REFERENCES a (a)) '
                     . 'TYPE=INNODB');
+        $dbh->popErrorHandling();
         break;
+
+    case 'msql':
+        // msql does not support foreign keys
+        $res = $dbh->query('CREATE TABLE a (a INTEGER NOT NULL)');
+        $res = $dbh->query('CREATE UNIQUE INDEX auk ON a (a)');
+        $dbh->popErrorHandling();
+        $res = $dbh->query('CREATE TABLE b (b INTEGER REFERENCES a (a))');
+        if (DB::isError($res)) {
+            print "matches expected outcome\n";
+            print "Trying to provoke DB_ERROR_CONSTRAINT for foreign key on delete:  matches expected outcome\n";
+        } else {
+            print "WOW, it seems mSQL now supports references\n";
+            print "WOW, it seems mSQL now supports references\n";
+        }
+        break;
+
     default:
         $res = $dbh->query('CREATE TABLE a (a INTEGER NOT NULL, PRIMARY KEY (a))');
         $res = $dbh->query('CREATE TABLE b (b INTEGER REFERENCES a (a))');
-}
-$res = $dbh->query('INSERT INTO a (a) values (1)');
-$res = $dbh->query('INSERT INTO b (b) values (2)');
-switch ($dbh->phptype) {
-    case 'sqlite':
-        check_error($res, DB_ERROR_CONSTRAINT, false);
-        break;
-    default:
-        check_error($res, DB_ERROR_CONSTRAINT);
+        $dbh->popErrorHandling();
 }
 
+if ($dbh->phptype != 'msql') {
+    $res = $dbh->query('INSERT INTO a (a) values (1)');
+    $res = $dbh->query('INSERT INTO b (b) values (2)');
+    switch ($dbh->phptype) {
+        case 'sqlite':
+            check_error($res, DB_ERROR_CONSTRAINT, false);
+            break;
+        default:
+            check_error($res, DB_ERROR_CONSTRAINT);
+    }   
 
-print 'Trying to provoke DB_ERROR_CONSTRAINT for foreign key on delete:  ';
-$res = $dbh->query('INSERT INTO b (b) values (1)');
-$res = $dbh->query('DELETE FROM a WHERE a = 1');
-switch ($dbh->phptype) {
-    case 'sqlite':
-        check_error($res, DB_ERROR_CONSTRAINT, false);
-        break;
-    default:
-        check_error($res, DB_ERROR_CONSTRAINT);
+    print 'Trying to provoke DB_ERROR_CONSTRAINT for foreign key on delete:  ';
+    $res = $dbh->query('INSERT INTO b (b) values (1)');
+    $res = $dbh->query('DELETE FROM a WHERE a = 1');
+    switch ($dbh->phptype) {
+        case 'sqlite':
+            check_error($res, DB_ERROR_CONSTRAINT, false);
+            break;
+        default:
+            check_error($res, DB_ERROR_CONSTRAINT);
+    }
 }
 
 
 print 'Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL on insert:  ';
 $res = drop_table($dbh, 'peartestnull');
+$dbh->pushErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 $res = $dbh->query('CREATE TABLE peartestnull (a CHAR(3) NOT NULL)');
+$dbh->popErrorHandling();
 $res = $dbh->query('INSERT INTO peartestnull VALUES (NULL)');
 check_error($res, DB_ERROR_CONSTRAINT_NOT_NULL);
 
@@ -231,6 +287,9 @@ switch ($dbh->phptype) {
     case 'sybase':
         check_error($res, DB_ERROR_DIVZERO, false);
         break;
+    case 'msql':
+        check_error($res, DB_ERROR_SYNTAX);
+        break;
     default:
         check_error($res, DB_ERROR_DIVZERO);
 }
@@ -243,6 +302,9 @@ switch ($dbh->phptype) {
     case 'mysqli':
     case 'sqlite':
         check_error($res, DB_ERROR_INVALID_NUMBER, false);
+        break;
+    case 'msql':
+        check_error($res, DB_ERROR_INVALID);
         break;
     default:
         check_error($res, DB_ERROR_INVALID_NUMBER);
@@ -261,7 +323,13 @@ check_error($res, DB_ERROR_SYNTAX);
 
 print 'Trying to provoke DB_ERROR_VALUE_COUNT_ON_ROW:  ';
 $res = $dbh->query('INSERT INTO phptest (a) VALUES (678, 2)');
-check_error($res, DB_ERROR_VALUE_COUNT_ON_ROW);
+switch ($dbh->phptype) {
+    case 'msql':
+        check_error($res, DB_ERROR_VALUE_COUNT_ON_ROW, false);
+        break;
+    default:
+        check_error($res, DB_ERROR_VALUE_COUNT_ON_ROW);
+}
 
 
 drop_table($dbh, 'phptest');

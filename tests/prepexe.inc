@@ -61,18 +61,28 @@ if (($res = $dbh->execute($sth1, array(72))) === DB_OK) {
 } else {
     print "sth1 failed\n";
 }
+
 print 'sth2: ! and ? as params, passing as array... ';
 if (($res = $dbh->execute($sth2, array(72, "that's right"))) === DB_OK) {
     print "sth2 executed\n";
 } else {
     print "sth2 failed\n";
 }
+
 print 'sth3: ?, ! and & as params, passing as array... ';
-if (($res = $dbh->execute($sth3, array(72, "'it''s good'", $tmpfile))) === DB_OK) {
+switch ($dbh->phptype) {
+    case 'msql':
+        $res = $dbh->execute($sth3, array(72, "'it\\'s good'", $tmpfile));
+        break;
+    default:
+        $res = $dbh->execute($sth3, array(72, "'it''s good'", $tmpfile));
+}
+if ($res === DB_OK) {
     print "sth3 executed\n";
 } else {
     print "sth3 failed\n";
 }
+
 print 'sth4: no params... ';
 if (($res = $dbh->execute($sth4)) === DB_OK) {
     print "sth4 executed\n";
@@ -139,8 +149,24 @@ print 'insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 $sth6 = $dbh->prepare('SELECT a, b, d FROM phptest WHERE a = ?');
 $res = $dbh->execute($sth6, array(11));
 $row = $res->fetchRow(DB_FETCHMODE_ASSOC);
-print "a = {$row['a']}, b = {$row['b']}, d = " . gettype($row['d']) . "\n";
-
+print "a = {$row['a']}, b = {$row['b']}, d = ";
+if ($dbh->phptype == 'msql') {
+    if (!array_key_exists('d', $row)) {
+        // msql doesn't return empty columns
+        // http://bugs.php.net/?id=31960
+        print "got expected outcome\n";
+    } else {
+        $type = gettype($row['d']);
+        print "UNexpected outcome: $type\n";
+    }
+} else {
+    $type = gettype($row['d']);
+    if ($type == 'string') {
+        print "got expected outcome\n";
+    } else {
+        print "UNexpected outcome: $type\n";
+    }
+}
 
 /**
  * Automatically free the prepared statements and results when the script

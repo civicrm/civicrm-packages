@@ -249,12 +249,21 @@ print_r($ret);
 print "\n===================================================\n";
 print 'testing getOne with null value in column: ';
 $dbh->query("INSERT INTO phptest VALUES (9, 'nine', '', NULL)");
-
 $ret =& $dbh->getOne('SELECT d FROM phptest WHERE a = 9');
 if ($ret === '') {
-    print "empty string\n";
+    print "matches expected result\n";
 } else {
-    print 'type=' . gettype($ret) . ", value=$ret\n";
+    if ($dbh->phptype == 'msql') {
+        if (gettype($ret) == 'NULL') {
+            // msql doesn't even return the column.  Joy! :)
+            // http://bugs.php.net/?id=31960
+            print "matches expected result\n";
+        } else {
+            print "WOW, mSQL now returns columns that have NULLS in them\n";
+        }
+    } else {
+        print 'type=' . gettype($ret) . ", value=$ret\n";
+    }
 }
 
 print 'testing getOne with empty string in column: ';
@@ -646,7 +655,7 @@ Array
 )
 
 ===================================================
-testing getOne with null value in column: empty string
+testing getOne with null value in column: matches expected result
 testing getOne with empty string in column: empty string
 
 ===================================================

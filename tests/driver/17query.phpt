@@ -88,12 +88,24 @@ print '6) insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 $res =& $dbh->query('SELECT a, b, d FROM phptest WHERE a = ?', 11);
 $row = $res->fetchRow();
 print "7) a = {$row['a']}, b = {$row['b']}, d = ";
-$type = gettype($row['d']);
-if ($type == 'NULL' || $row['d'] == '') {
-    print "NULL\n";
+if ($dbh->phptype == 'msql') {
+    if (!array_key_exists('d', $row)) {
+        // msql doesn't return null columns
+        // http://bugs.php.net/?id=31960
+        print "got expected value\n";
+    } else {
+        $type = gettype($row['d']);
+        print "ERR: expected d's type to be NULL but it's $type and the value is ";
+        print $row['d'] . "\n";
+    }
 } else {
-    print "ERR: expected d's type to be NULL but it's $type and the value is ";
-    print $row['d'] . "\n";
+    $type = gettype($row['d']);
+    if ($type == 'NULL' || $row['d'] == '') {
+        print "got expected value\n";
+    } else {
+        print "ERR: expected d's type to be NULL but it's $type and the value is ";
+        print $row['d'] . "\n";
+    }
 }
 
 
@@ -118,7 +130,7 @@ drop_table($dbh, 'phptest');
 4) a = 17, b = one
 5) a = 17, b = two
 6) insert: okay
-7) a = 11, b = three, d = NULL
+7) a = 11, b = three, d = got expected value
 8) delete: okay
 9) delete with array(0) as param: okay
 10) delete with 0 as param: okay
