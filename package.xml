@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.54 2004-02-07 18:06:03 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.55 2004-02-07 18:12:25 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
 DB is a database abstraction layer providing:
 * an OO-style query API
+* portability features that make programs written
+&#160;&#160; for one DBMS work with other DBMS's
 * a DSN (data source name) format for specifying
 &#160;&#160; database servers
 * prepare/execute (bind) emulation for databases
