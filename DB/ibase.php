@@ -737,7 +737,7 @@ class DB_ibase extends DB_common
                         if (is_int(strpos($m[3], 'Table unknown'))) {
                             $db_errno = DB_ERROR_NOSUCHTABLE;
                         }
-                    break;
+                        break;
                     default:
                         $db_errno = $this->errorCode($native_errno);
                 }
