@@ -190,7 +190,7 @@ class DB
      * Create a new DB connection object for the specified database
      * type
      *
-     * @param string database type, for example "mysql"
+     * @param string $type database type, for example "mysql"
      *
      * @return mixed a newly created DB object, or a DB error code on
      * error
@@ -218,11 +218,11 @@ class DB
      * Create a new DB connection object and connect to the specified
      * database
      *
-     * @param mixed "data source name", see the DB::parseDSN
+     * @param mixed $dsn "data source name", see the DB::parseDSN
      * method for a description of the dsn format.  Can also be
      * specified as an array of the format returned by DB::parseDSN.
      *
-     * @param mixed An associative array of option names and
+     * @param mixed $options An associative array of option names and
      * their values.  For backwards compatibility, this parameter may
      * also be a boolean that tells whether the connection should be
      * persistent.  See DB_common::setOption for more information on
@@ -294,7 +294,7 @@ class DB
     /**
      * Tell whether a result code from a DB method is an error
      *
-     * @param int result code
+     * @param int $value result code
      *
      * @return bool whether $value is an error
      *
@@ -310,7 +310,7 @@ class DB
     /**
      * Tell whether a value is a DB connection
      *
-     * @param mixed value to test
+     * @param mixed $value value to test
      *
      * @return bool whether $value is a DB connection
      *
@@ -330,7 +330,7 @@ class DB
      *
      * @access public
      *
-     * @param string the query
+     * @param string $query the query
      *
      * @return boolean whether $query is a data manipulation query
      */
@@ -365,7 +365,7 @@ class DB
     /**
      * Return a textual error message for a DB error code
      *
-     * @param integer error code
+     * @param integer $value error code
      *
      * @return string error message, or false if the error code was
      * not recognized
@@ -441,7 +441,7 @@ class DB
      *  phptype(dbsyntax)
      *  phptype
      *
-     * @param string Data Source Name to be parsed
+     * @param string $dsn Data Source Name to be parsed
      *
      * @return array an associative array
      *
@@ -596,10 +596,10 @@ class DB_Error extends PEAR_Error
     /**
      * DB_Error constructor.
      *
-     * @param mixed      DB error code, or string with error message.
-     * @param integer    what "error mode" to operate in
-     * @param integer    what error level to use for $mode & PEAR_ERROR_TRIGGER
-     * @param mixed      additional debug info, such as the last query
+     * @param mixed   $code   DB error code, or string with error message.
+     * @param integer $mode   what "error mode" to operate in
+     * @param integer $level  what error level to use for $mode & PEAR_ERROR_TRIGGER
+     * @param mixed   $debuginfo  additional debug info, such as the last query
      *
      * @access public
      *
@@ -645,8 +645,8 @@ class DB_result
 
     /**
      * DB_result constructor.
-     * @param   resource  DB object reference
-     * @param   resource  result resource id
+     * @param resource &$dbh   DB object reference
+     * @param resource $result result resource id
      */
 
     function DB_result(&$dbh, $result)
@@ -657,8 +657,8 @@ class DB_result
 
     /**
      * Fetch and return a row of data (it uses driver->fetchInto for that)
-     * @param int  format of fetched row
-     * @param int  the row number to fetch
+     * @param int $fetchmode format of fetched row
+     * @param int $rownum    the row number to fetch
      *
      * @return  array a row of data, NULL on no more rows or PEAR_Error on error
      *
@@ -714,9 +714,9 @@ class DB_result
     /**
      * Fetch a row of data into an existing variable.
      *
-     * @param  mixed    reference to data containing the row
-     * @param  integer  format of fetched row
-     * @param  integer  the row number to fetch
+     * @param  mixed   &$arr     reference to data containing the row
+     * @param  integer $fetchmod format of fetched row
+     * @param  integer $rownum   the row number to fetch
      *
      * @return  mixed  DB_OK on success, NULL on no more rows or
      *                 a DB_Error object on error
