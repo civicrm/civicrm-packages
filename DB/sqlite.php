@@ -215,9 +215,10 @@ class DB_sqlite extends DB_common {
      *
      * @access public
      * @return bool TRUE on success, FALSE if not connected.
+     * @todo fix return values
      */
     function disconnect() {
-        $ret = @sqlite_close($this->dsn['database']);
+        $ret = @sqlite_close($this->connection);
         $this->connection = null;
         return $ret;
     }
