@@ -578,9 +578,11 @@ class DB_oci8 extends DB_common
         // coding a "home" SQL parser
         $q_fields = "SELECT * FROM ($query) WHERE NULL = NULL";
         if (!$result = @OCIParse($this->connection, $q_fields)) {
+            $this->last_query = $q_fields;
             return $this->oci8RaiseError();
         }
         if (!@OCIExecute($result, OCI_DEFAULT)) {
+            $this->last_query = $q_fields;
             return $this->oci8RaiseError($result);
         }
         $ncols = OCINumCols($result);
