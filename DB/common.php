@@ -1419,24 +1419,26 @@ class DB_common extends PEAR
      * @access public
      */
     function &getAll($query,
-                     $params = null,
+                     $params = array(),
                      $fetchmode = DB_FETCHMODE_DEFAULT)
     {
         // compat check, the params and fetchmode parameters used to
         // have the opposite order
         if (!is_array($params)) {
             if (is_array($fetchmode)) {
-                $tmp = $params;
+                if ($params === null) {
+                    $tmp = DB_FETCHMODE_DEFAULT;
+                } else {
+                    $tmp = $params;
+                }
                 $params = $fetchmode;
                 $fetchmode = $tmp;
             } elseif ($params !== null) {
                 $fetchmode = $params;
-                $params = null;
+                $params = array();
             }
         }
-        $params = (empty($params)) ? array() : $params;
-        $fetchmode = (empty($fetchmode)) ? DB_FETCHMODE_DEFAULT : $fetchmode;
-        settype($params, 'array');
+
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
 
