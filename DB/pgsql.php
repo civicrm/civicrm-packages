@@ -578,22 +578,6 @@ class DB_pgsql extends DB_common
     }
 
     // }}}
-    // {{{ errorNative()
-
-    /**
-     * Gets the DBMS' native error message produced by the last query
-     *
-     * {@internal Error messages are used instead of error codes 
-     * in order to support older versions of PostgreSQL.}}
-     *
-     * @return string  the DBMS' error message
-     */
-    function errorNative()
-    {
-        return pg_errormessage($this->connection);
-    }
-
-    // }}}
     // {{{ autoCommit()
 
     /**
@@ -799,6 +783,22 @@ class DB_pgsql extends DB_common
             $errno = $this->errorCode($native);
         }
         return $this->raiseError($errno, null, null, null, $native);
+    }
+
+    // }}}
+    // {{{ errorNative()
+
+    /**
+     * Gets the DBMS' native error message produced by the last query
+     *
+     * {@internal Error messages are used instead of error codes 
+     * in order to support older versions of PostgreSQL.}}
+     *
+     * @return string  the DBMS' error message
+     */
+    function errorNative()
+    {
+        return pg_errormessage($this->connection);
     }
 
     // }}}
