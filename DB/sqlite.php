@@ -639,6 +639,9 @@ class DB_sqlite extends DB_common
      */
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
+        if (preg_match('/LIMIT\s*\d(\s*(,|OFFSET)\s*\d+)?/i', $query)) {
+            return $query;
+        }
         return "$query LIMIT $count OFFSET $from";
     }
 

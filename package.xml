@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.175 2005-03-01 04:34:09 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.176 2005-03-01 20:22:03 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,67 +66,12 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.0</version>
+    <version>1.7.1</version>
     <state>stable</state>
     <date>2005-03-01</date>
     <notes><![CDATA[
-To view the majority of changes since 1.6.8,
-see the changelog for Release 1.7.0RC1.
-
 all:
-* __sleep() should not call disconnect().
-  Also store connection state in the new
-  $was_connected property.  This resolves
-  Bug 3594 that was introduced in 1.7.0RC1.
-
-fbsql:
-* Handle more error codes:
-  + 239 => DB_ERROR_TRUNCATED.
-  + 215 => DB_ERROR_NOSUCHFIELD for columns
-    not in both sides of JOIN.
-
-ibase:
-* Change error mapping of "arithmetic
-  exception, numeric overflow, or string
-  truncation" from DB_ERROR_DIVZERO to
-  DB_ERROR_INVALID because it covers
-  much more than division by zero.
-
-mssql:
-* Handle more error codes:
-  + 155 => DB_ERROR_NOSUCHFIELD for columns
-    not in both sides of JOIN.
-
-oci8:
-* Handle more error codes:
-  + 1401 => DB_ERROR_INVALID for strings
-    exceeding column size.
-
-odbc:
-* Handle more error codes:
-  + '22001' => DB_ERROR_INVALID for strings
-    exceeding column size.
-
-pgsql:
-* For getListOf('views'), ignore views in system
-  schemas rather than returning views in the
-  public schema.  Request 3595.
-* Handle more error messages:
-  + invalid input syntax for type numeric
-  + column reference "active" is ambiguous
-  + value too long for type character varying(50)
-  + value "50000" is out of range for type shortint
-  + integer out of range
-  + column "p_id" specified in USING clause does
-    not exist in left table
-  + column p.p_name does not exist
-* Silence errors in errorNative() when connection
-  doesn't exist.
-
-sqlite:
-* Handle more error messages:
-  + cannot join using column b - column not
-    present in both tables
+* modifyLimitQuery() should not not modify the query if it already has a LIMIT clause.  Bug 3663.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">

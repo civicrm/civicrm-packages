@@ -849,6 +849,9 @@ class DB_mysql extends DB_common
      */
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
+        if (preg_match('/LIMIT\s*\d(\s*(,|OFFSET)\s*\d+)?/i', $query)) {
+            return $query;
+        }
         if (DB::isManip($query)) {
             return $query . " LIMIT $count";
         } else {

@@ -319,10 +319,8 @@ class DB_ibase extends DB_common
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
         if ($this->dsn['dbsyntax'] == 'firebird') {
-            //$from++; // SKIP starts from 1, ie SKIP 1 starts from the first record
-                           // (cox) Seems that SKIP starts in 0
-            $query = preg_replace('/^\s*select\s(.*)$/is',
-                                  "SELECT FIRST $count SKIP $from $1", $query);
+            $query = preg_replace('/^([\s(])*SELECT(?!\s*FIRST\s*\d+)/i',
+                                  "SELECT FIRST $count SKIP $from", $query);
         }
         return $query;
     }
