@@ -90,6 +90,8 @@ class DB_dbase extends DB_common
         }
 
         $ini = ini_get('track_errors');
+        $php_errormsg = '';
+
         if ($ini) {
             $conn  = @dbase_open($dsninfo['database'], 0);
         } else {
@@ -97,6 +99,7 @@ class DB_dbase extends DB_common
             $conn  = @dbase_open($dsninfo['database'], 0);
             ini_set('track_errors', $ini);
         }
+
         if (!$conn) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED, null,
                                      null, null, strip_tags($php_errormsg));

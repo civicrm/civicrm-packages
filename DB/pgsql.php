@@ -140,6 +140,7 @@ class DB_pgsql extends DB_common
         $connect_function = $persistent ? 'pg_pconnect' : 'pg_connect';
 
         $ini = ini_get('track_errors');
+        $php_errormsg = '';
         if ($ini) {
             $conn = @$connect_function($connstr);
         } else {
