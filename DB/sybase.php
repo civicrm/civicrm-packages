@@ -98,7 +98,11 @@ class DB_sybase extends DB_common
         if ($interface && $user && $pw) {
             $conn = @$connect_function($interface, $user, $pw);
         } elseif ($interface && $user) {
-            $conn = @$connect_function($interface, $user);
+            /*
+             * Using false for pw as a workaround to avoid segfault.
+             * See PEAR bug 631
+             */
+            $conn = @$connect_function($interface, $user, false);
         } else {
             $conn = FALSE;
         }
