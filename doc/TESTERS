@@ -19,6 +19,14 @@ pear/DB/tests:            Common PEAR DB tests
 pear/DB/tests/<backend>:  Specific backend tests (old tests, don't used them)
 pear/DB/tests/driver:     Common tests for all the drivers
 
+If you run the tests, please report or fill the TEST CONFORMANCE table
+in the STATUS document. Before any commit to CVS be sure to run the tests
+and nothing got broken with the change.
+
+If you get the message "skip", means that the test it's not executed. Look
+at the DB/tests/driver/skipif.inc to see what's the problem (probably
+a connection problem).
+
 
 DB tester matrix
 ----------------
