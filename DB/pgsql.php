@@ -655,8 +655,8 @@ class DB_pgsql extends DB_common
             $keys = explode(' ', $row[2]);
 
             if (in_array($num_field + 1, $keys)) {
-                $flags .= ($row[0] == 't') ? 'unique ' : '';
-                $flags .= ($row[1] == 't') ? 'primary ' : '';
+                $flags .= ($row[0] == 't' && $row[1] == 'f') ? 'unique_key ' : '';
+                $flags .= ($row[1] == 't') ? 'primary_key ' : '';
                 if (count($keys) > 1)
                     $flags .= 'multiple_key ';
             }
@@ -669,96 +669,72 @@ class DB_pgsql extends DB_common
     // {{{ tableInfo()
 
     /**
-     * Returns information about a table or a result set
+     * Returns information about a table or a result set.
      *
-     * NOTE: doesn't support table name and flags if called from a db_result
+     * NOTE: only supports 'table' and 'flags' if <var>$result</var>
+     * is a table name.
      *
-     * @param  mixed $resource PostgreSQL result identifier or table name
-     * @param  int $mode A valid tableInfo mode (DB_TABLEINFO_ORDERTABLE or
-     *                   DB_TABLEINFO_ORDER)
-     *
-     * @return array An array with all the information
+     * @param object|string  $result  DB_result object from a query or a
+     *                                string containing the name of a table
+     * @param int            $mode    a valid tableInfo mode
+     * @return array  an associative array with the information requested
+     *                or an error object if something is wrong
+     * @access public
+     * @internal
+     * @see DB_common::tableInfo()
      */
     function tableInfo($result, $mode = null)
     {
-        $count = 0;
-        $id    = 0;
-        $res   = array();
-
-        /*
-         * depending on $mode, metadata returns the following values:
-         *
-         * - mode is false (default):
-         * $result[]:
-         *   [0]["table"]  table name
-         *   [0]["name"]   field name
-         *   [0]["type"]   field type
-         *   [0]["len"]    field length
-         *   [0]["flags"]  field flags
-         *
-         * - mode is DB_TABLEINFO_ORDER
-         * $result[]:
-         *   ["num_fields"] number of metadata records
-         *   [0]["table"]  table name
-         *   [0]["name"]   field name
-         *   [0]["type"]   field type
-         *   [0]["len"]    field length
-         *   [0]["flags"]  field flags
-         *   ["order"][field name]  index of field named "field name"
-         *   The last one is used, if you have a field name, but no index.
-         *   Test:  if (isset($result['meta']['myfield'])) { ...
-         *
-         * - mode is DB_TABLEINFO_ORDERTABLE
-         *    the same as above. but additionally
-         *   ["ordertable"][table name][field name] index of field
-         *      named "field name"
-         *
-         *      this is, because if you have fields from different
-         *      tables with the same field name * they override each
-         *      other with DB_TABLEINFO_ORDER
-         *
-         *      you can combine DB_TABLEINFO_ORDER and
-         *      DB_TABLEINFO_ORDERTABLE with DB_TABLEINFO_ORDER |
-         *      DB_TABLEINFO_ORDERTABLE * or with DB_TABLEINFO_FULL
-         */
-
-        // if $result is a string, then we want information about a
-        // table without a resultset
-
-        if (is_string($result)) {
-            $id = @pg_exec($this->connection,"SELECT * FROM $result LIMIT 0");
-            if (empty($id)) {
-                return $this->pgsqlRaiseError();
-            }
-        } else { // else we want information about a resultset
+        if (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $id = $result->result;
+            $got_string = false;
+        } elseif (is_string($result)) {
+            /*
+             * Probably received a table name.
+             * Create a result resource identifier.
+             */
+            $id = @pg_exec($this->connection, "SELECT * FROM $result LIMIT 0");
+            $got_string = true;
+        } else {
+            /*
+             * Probably received a result resource identifier.
+             * Copy it.
+             * Depricated.  Here for compatibility only.
+             */
             $id = $result;
-            if (empty($id)) {
-                return $this->pgsqlRaiseError();
-            }
+            $got_string = false;
+        }
+
+        if (!is_resource($id)) {
+            return $this->pgsqlRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
 
         $count = @pg_numfields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
-        if (empty($mode)) {
+        if (is_null($mode)) {
 
             for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = (is_string($result)) ? $result : '';
+                $res[$i]['table'] = ($got_string) ? $result : '';
                 $res[$i]['name']  = @pg_fieldname ($id, $i);
                 $res[$i]['type']  = @pg_fieldtype ($id, $i);
                 $res[$i]['len']   = @pg_fieldsize ($id, $i);
-                $res[$i]['flags'] = (is_string($result)) ? $this->_pgFieldflags($id, $i, $result) : '';
+                $res[$i]['flags'] = ($got_string) ? $this->_pgFieldflags($id, $i, $result) : '';
             }
 
         } else { // full
             $res['num_fields']= $count;
 
             for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = (is_string($result)) ? $result : '';
+                $res[$i]['table'] = ($got_string) ? $result : '';
                 $res[$i]['name']  = @pg_fieldname ($id, $i);
                 $res[$i]['type']  = @pg_fieldtype ($id, $i);
                 $res[$i]['len']   = @pg_fieldsize ($id, $i);
-                $res[$i]['flags'] = (is_string($result)) ? $this->_pgFieldFlags($id, $i, $result) : '';
+                $res[$i]['flags'] = ($got_string) ? $this->_pgFieldFlags($id, $i, $result) : '';
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }
@@ -769,7 +745,7 @@ class DB_pgsql extends DB_common
         }
 
         // free the result only if we were called on a table
-        if (is_string($result) && is_resource($id)) {
+        if ($got_string) {
             @pg_freeresult($id);
         }
         return $res;
