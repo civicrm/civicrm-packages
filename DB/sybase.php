@@ -611,6 +611,199 @@ class DB_sybase extends DB_common
     }
 
     // }}}
+    // {{{ tableInfo()
+
+    /**
+     * Returns information about a table or a result set.
+     *
+     * NOTE: only supports 'table' and 'flags' if <var>$result</var>
+     * is a table name.
+     *
+     * @param object|string  $result  DB_result object from a query or a
+     *                                string containing the name of a table
+     * @param int            $mode    a valid tableInfo mode
+     * @return array  an associative array with the information requested
+     *                or an error object if something is wrong
+     * @access public
+     * @internal
+     * @see DB_common::tableInfo()
+     */
+    function tableInfo($result, $mode = null)
+    {
+        if (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $id = $result->result;
+            $got_string = false;
+        } elseif (is_string($result)) {
+            /*
+             * Probably received a table name.
+             * Create a result resource identifier.
+             */
+            if (!@sybase_select_db($this->_db, $this->connection)) {
+                return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
+            }
+            $id = @sybase_query("SELECT * FROM $result WHERE 1=0",
+                                $this->connection);
+            $got_string = true;
+        } else {
+            /*
+             * Probably received a result resource identifier.
+             * Copy it.
+             * Depricated.  Here for compatibility only.
+             */
+            $id = $result;
+            $got_string = false;
+        }
+
+        if (!is_resource($id)) {
+            return $this->sybaseRaiseError(DB_ERROR_NEED_MORE_DATA);
+        }
+
+        $count = @sybase_num_fields($id);
+
+        // made this IF due to performance (one if is faster than $count if's)
+        if (is_null($mode)) {
+
+            for ($i=0; $i<$count; $i++) {
+                $f = @sybase_fetch_field($id, $i);
+
+                // column_source is often blank
+                if ($got_string) {
+                    $res[$i]['table'] = $result;
+                } else {
+                    $res[$i]['table'] = $f->column_source;
+                }
+                $res[$i]['name']  = $f->name;
+                $res[$i]['type']  = $f->type;
+                $res[$i]['len']   = $f->max_length;
+
+                if ($res[$i]['table']) {
+                    $res[$i]['flags'] = $this->_sybase_field_flags(
+                            $res[$i]['table'], $res[$i]['name']);
+                } else {
+                    $res[$i]['flags'] = '';
+                }
+            }
+
+        } else {
+            // get full info
+
+            $res['num_fields'] = $count;
+
+            for ($i=0; $i<$count; $i++) {
+                $f = @sybase_fetch_field($id, $i);
+
+                // column_source is often blank
+                if ($got_string) {
+                    $res[$i]['table'] = $result;
+                } else {
+                    $res[$i]['table'] = $f->column_source;
+                }
+                $res[$i]['name']  = $f->name;
+                $res[$i]['type']  = $f->type;
+                $res[$i]['len']   = $f->max_length;
+
+                if ($res[$i]['table']) {
+                    $res[$i]['flags'] = $this->_sybase_field_flags(
+                            $res[$i]['table'], $res[$i]['name']);
+                } else {
+                    $res[$i]['flags'] = '';
+                }
+
+                if ($mode & DB_TABLEINFO_ORDER) {
+                    $res['order'][$res[$i]['name']] = $i;
+                }
+                if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
+                }
+            }
+        }
+
+        // free the result only if we were called on a table
+        if ($got_string) {
+            @sybase_free_result($id);
+        }
+        return $res;
+    }
+
+    // }}}
+    // {{{ _sybase_field_flags()
+
+    /**
+     * Get the flags for a field.
+     *
+     * Currently supports:
+     *  + <samp>unique_key</samp>    (unique index, unique check or primary_key)
+     *  + <samp>multiple_key</samp>  (multi-key index)
+     *
+     * @param string  $table   table name
+     * @param string  $column  field name
+     * @return string  space delimited string of flags.  Empty string if none.
+     * @access private
+     */
+    function _sybase_field_flags($table, $column)
+    {
+        static $tableName = null;
+        static $flags = array();
+
+        if ($table != $tableName) {
+            $flags = array();
+            $tableName = $table;
+
+            // get unique/primary keys
+            $res = $this->getAll("sp_helpindex $table", DB_FETCHMODE_ASSOC);
+
+            if (!isset($res[0]['index_description'])) {
+                return '';
+            }
+
+            foreach ($res as $val) {
+                $keys = explode(', ', trim($val['index_keys']));
+
+                if (sizeof($keys) > 1) {
+                    foreach ($keys as $key) {
+                        $this->_add_flag($flags[$key], 'multiple_key');
+                    }
+                }
+
+                if (strpos($val['index_description'], 'unique')) {
+                    foreach ($keys as $key) {
+                        $this->_add_flag($flags[$key], 'unique_key');
+                    }
+                }
+            }
+       
+        }
+
+        if (array_key_exists($column, $flags)) {
+            return(implode(' ', $flags[$column]));
+        }
+
+        return '';
+    }
+
+    // }}}
+    // {{{ _add_flag()
+
+    /**
+     * Adds a string to the flags array if the flag is not yet in there
+     * - if there is no flag present the array is created.
+     *
+     * @param array  $array  reference of flags array to add a value to
+     * @param mixed  $value  value to add to the flag array
+     * @access private
+     */
+    function _add_flag(&$array, $value)
+    {
+        if (!is_array($array)) {
+            $array = array($value);
+        } elseif (!in_array($value, $array)) {
+            array_push($array, $value);
+        }
+    }
 
 }
 
