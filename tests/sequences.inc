@@ -1,4 +1,3 @@
-
 <?php // -*- PHP -*-
 
 function error_handler(&$obj) {
