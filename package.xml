@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.125 2004-10-05 00:06:54 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.126 2004-10-23 15:18:45 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -52,8 +52,13 @@ DB is compatible with both PHP 4 and PHP 5.
     <state>stable</state>
     <date>pending</date>
     <notes><![CDATA[
+ibase:
+* Add -904 => MDB2_ERROR_CONNECT_FAILED to errorcode_map.
+(from MDB2)
+
+all:
 * If DSN contains "dbsyntax", always use that for
-$this->dbsyntax.  Used to only done only for odbc.
+$this->dbsyntax.  Used to only be done for odbc.
 (danielc)
     ]]></notes>
     <filelist>

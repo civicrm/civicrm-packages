@@ -81,6 +81,7 @@ class DB_ibase extends DB_common
             -530 => DB_ERROR_CONSTRAINT,
             -607 => DB_ERROR_NOSUCHTABLE,
             -803 => DB_ERROR_CONSTRAINT,
+            -904 => MDB2_ERROR_CONNECT_FAILED,
             -551 => DB_ERROR_ACCESS_VIOLATION,
             -552 => DB_ERROR_ACCESS_VIOLATION,
             -922 => DB_ERROR_NOSUCHDB,
