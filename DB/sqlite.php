@@ -15,6 +15,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: Urs Gehrig <urs@circle.ch>                                  |
 // |          Mika Tuupola <tuupola@appelsiini.net>                       |
+// | Maintainer: Daniel Convissor <danielc@php.net>                       |
 // +----------------------------------------------------------------------+
 //
 // $Id$

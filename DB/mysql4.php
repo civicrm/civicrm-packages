@@ -15,6 +15,7 @@
 // +----------------------------------------------------------------------+
 // | Author: Chaillan Nicolas <nicos@php.net>                             |
 // | Based on mysql.php by Stig Bakken <ssb@php.net>                      |
+// | Maintainer: Daniel Convissor <danielc@php.net>                       |
 // +----------------------------------------------------------------------+
 //
 // $Id$

@@ -15,6 +15,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: Sterling Hughes <sterling@php.net>                          |
 // |          Antônio Carlos Venâncio Júnior <floripa@php.net>            |
+// | Maintainer: Daniel Convissor <danielc@php.net>                       |
 // +----------------------------------------------------------------------+
 //
 // $Id$

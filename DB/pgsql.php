@@ -15,6 +15,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: Rui Hirokawa <hirokawa@php.net>                             |
 // |          Stig Bakken <ssb@php.net>                                   |
+// | Maintainer: Daniel Convissor <danielc@php.net>                       |
 // +----------------------------------------------------------------------+
 //
 // $Id$
