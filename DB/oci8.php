@@ -448,27 +448,31 @@ class DB_oci8 extends DB_common
     /**
      * Executes a DB statement prepared with prepare().
      *
-     * @param $stmt a DB statement resource (returned from prepare())
-     * @param $data data to be used in execution of the statement
-     *
+     * @param resource  $stmt  a DB statement resource returned from prepare()
+     * @param mixed  $data  array, string or numeric data to be used in
+     *                      execution of the statement.  Quantity of items
+     *                      passed must match quantity of placeholders in
+     *                      query:  meaning 1 for non-array items or the
+     *                      quantity of elements in the array.
      * @return int returns an oci8 result resource for successful
      * SELECT queries, DB_OK for other successful queries.  A DB error
      * code is returned on failure.
+     * @see DB_oci::prepare()
      */
     function &execute($stmt, $data = array())
     {
-        $types=&$this->prepare_types[$stmt];
+        if (!is_array($data)) {
+            $data = array($data);
+        }
+
+        $types =& $this->prepare_types[$stmt];
         if (($size = sizeof($types)) != sizeof($data)) {
             $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
             return $tmp;
         }
+
         for ($i = 0; $i < $size; $i++) {
-            if (is_array($data)) {
-                $pdata[$i] = &$data[$i];
-            }
-            else {
-                $pdata[$i] = &$data;
-            }
+            $pdata[$i] = &$data[$i];
             if ($types[$i] == DB_PARAM_OPAQUE) {
                 $fp = fopen($pdata[$i], "r");
                 $pdata[$i] = '';
