@@ -450,9 +450,9 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ rollback()
 
-    function rollback($trans_number)
+    function rollback()
     {
-        return ibase_rollback($this->connection, $trans_number);
+        return ibase_rollback($this->connection);
     }
 
     // }}}
