@@ -594,7 +594,7 @@ class DB_odbc extends DB_common
             }
         }
         return $this->raiseError($errno, null, null, null,
-                        $this->errorNative());
+                                 $this->errorNative());
     }
 
     // }}}
