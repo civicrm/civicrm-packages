@@ -313,6 +313,65 @@ class DB_msql extends DB_common
         return @msql_affected_rows($this->connection);
     }
 
+    /**
+     * Get the last server error messge (if any)
+     *
+     * @return string  the last error message
+     */
+    function errorNative()
+    {
+        return @msql_error($this->connection);
+    }
+
+    // }}}
+    // {{{ errorCode()
+
+    /**
+     * Determine PEAR::DB error code from the database's text error message
+     *
+     * @param string $errormsg  the error message returned from the database
+     *
+     * @return integer  the error number from a DB_ERROR* constant
+     */
+    function errorCode($errormsg)
+    {
+        static $error_regexps;
+        if (!isset($error_regexps)) {
+            $error_regexps = array(
+            );
+        }
+
+        foreach ($error_regexps as $regexp => $code) {
+            if (preg_match($regexp, $errormsg)) {
+                return $code;
+            }
+        }
+        return DB_ERROR;
+    }
+
+    // }}}
+    // {{{ msqlRaiseError()
+
+    /**
+     * Gather information about an error and return it as a DB_Error object
+     *
+     * @param  integer  $errno  PEAR error number (usually a DB constant) if
+     *                          manually raising an error
+     *
+     * @return object  a DB_Error object
+     *
+     * @see DB_msql::errorNative(), DB_msql::errorCode(),
+     *      DB_common::raiseError()
+     */
+    function msqlRaiseError($errno = null)
+    {
+        $native = $this->errorNative();
+        if ($errno === null) {
+            $errno = $this->errorCode($native);
+        }
+        return $this->raiseError($errno, null, null, null, $native);
+    }
+
     // }}}
     // {{{ tableInfo()
 
