@@ -20,54 +20,6 @@
 //
 // $Id$
 
-
-// SQLite function set:
-//   sqlite_open, sqlite_popen, sqlite_close, sqlite_query
-//   sqlite_libversion, sqlite_libencoding, sqlite_changes
-//   sqlite_num_rows, sqlite_num_fields, sqlite_field_name, sqlite_seek
-//   sqlite_escape_string, sqlite_busy_timeout, sqlite_last_error
-//   sqlite_error_string, sqlite_unbuffered_query, sqlite_create_aggregate
-//   sqlite_create_function, sqlite_last_insert_rowid, sqlite_fetch_array
-//
-// Formatting:
-//   # astyle --style=kr < sqlite.php > out.php
-//
-// Status:
-//   EXPERIMENTAL
-
-
-/*
- * Example:
- *
-<?php
-
-    require_once 'DB.php';
-
-    // Define a DSN
-    $dsn = 'sqlite://dummy:@localhost/' . getcwd() . '/test.db?mode=0644';
-
-    $db = DB::connect($dsn, false);
-
-    // Give a new table name
-    $table = 'tbl_' .  md5(uniqid(rand()));
-    $table = substr($table, 0, 10);
-
-    // Create a new table
-    $result = $db->query("CREATE TABLE $table (comment varchar(50),
-      datetime varchar(50));");
-    $result = $db->query("INSERT INTO $table VALUES ('Date and Time', '" .
-      date('Y-m-j H:i:s') . "');");
-
-    // Get results
-    printf("affectedRows:\t\t%s\n", $db->affectedRows());
-    $result = $db->query("SELECT FROM $table;");
-    $arr = $db->fetchRow($result);
-    print_r($arr);
-    $db->disconnect();
-?>
- *
- */
-
 require_once 'DB/common.php';
 
 /**
