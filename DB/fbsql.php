@@ -40,6 +40,8 @@ require_once 'DB/common.php';
  * @version  $Id$
  * @category Database
  * @author   Frank M. Kromann <frank@frontbase.com>
+ * @author   Daniel Convissor <danielc@php.net>
+ * @since    Class became functional in Release 1.7.0
  */
 class DB_fbsql extends DB_common
 {
@@ -50,7 +52,7 @@ class DB_fbsql extends DB_common
     var $prepare_tokens = array();
     var $prepare_types = array();
     var $num_rows = array();
-    var $fetchmode = DB_FETCHMODE_ORDERED; /* Default fetch mode */
+    var $fetchmode = DB_FETCHMODE_ORDERED;
 
     // }}}
     // {{{ constructor
