@@ -157,35 +157,32 @@ class DB_sqlite extends DB_common
      */
     function connect($dsninfo, $persistent = false)
     {
-        $file = $dsninfo['database'];
-
         if (!DB::assertExtension('sqlite')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        if (isset($file)) {
-            if (!file_exists($file)) {
-                if (!touch($file)) {
+        if (isset($dsninfo['database'])) {
+            if (!file_exists($dsninfo['database'])) {
+                if (!touch($dsninfo['database'])) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
                 }
                 if (!isset($dsninfo['mode'])
-                        || !is_numeric($dsninfo['mode']))
-                {
+                        || !is_numeric($dsninfo['mode'])) {
                     $mode = 0644;
                 } else {
                     $mode = octdec($dsninfo['mode']);
                 }
-                if (!chmod($file, $mode)) {
+                if (!chmod($dsninfo['database'], $mode)) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
                 }
-                if (!file_exists($file)) {
+                if (!file_exists($dsninfo['database'])) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
                 }
             }
-            if (!is_file($file)) {
+            if (!is_file($dsninfo['database'])) {
                 return $this->sqliteRaiseError(DB_ERROR_INVALID);
             }
-            if (!is_readable($file)) {
+            if (!is_readable($dsninfo['database'])) {
                 return $this->sqliteRaiseError(DB_ERROR_ACCESS_VIOLATION);
             }
         } else {
@@ -197,7 +194,6 @@ class DB_sqlite extends DB_common
             return $this->sqliteRaiseError(DB_ERROR_NODBSELECTED);
         }
         $this->connection = $conn;
-        $this->dsn = $dsninfo;
 
         return DB_OK;
     }
