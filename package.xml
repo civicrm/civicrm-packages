@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.41 2004-01-25 19:25:21 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.42 2004-01-25 19:33:13 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -67,7 +67,7 @@ also avaible from a separate package).
 - The version numbers has been increased to 1.6.0 due to major changes, thereby skipping over a final 1.5.0 release.
 - All changes by danielc unless otherwise noted.
 
-== DB.php & common.php ======
+== DB.php and common.php ======
 - Make the $options argument in connect() default to an array to improve documentation.
 - Add strtolower() to all get_class() calls, creating PHP 4/5 compatibility.
 - Speed up connect() a bit by doing one is_array() up front.
@@ -164,7 +164,7 @@ also avaible from a separate package).
 - TABLEINFO() CLEAN UP / STANDARDIZATION
     * Can now be passsed a DB_result object, which has become the primary means of calling this method.
     * Flags now space-delimited rather than comma-delimited.
-    * _mssql_field_flags() revamped (contributed by Joern Barthel <j_barthel@web.de>)
+    * _mssql_field_flags() revamped (contributed by j_barthel)
     * _mssql_field_flags() was complaining about invalid indexes for $val.  The keys returned are lower case but the keys used in the script were upper.  Added array_change_key_case() call and changed case of keys in the script.
     * Multi-column indexes now convey 'multiple_key' on more than just the first column.
     * Create limit via 'WHERE 1=0' in the query used when table names submitted.
@@ -229,7 +229,7 @@ also avaible from a separate package).
 - Free result fixes.  Bug 25550.  (cox)
 - TABLEINFO() CLEAN UP / STANDARDIZATION
     * Can now be passsed a DB_result object, which has become the primary means of calling this method.
-    * Change flags from <term> to <term>_key (eg 'unique' is now 'unique_key').
+    * Change flags from 'term' to 'term_key' (eg 'unique' is now 'unique_key').
     * If a key is primary, just say 'primary_key', not that and 'unique_key'.
     * Suppress output from pg_exec() via @.
     * Change empty($mode) to is_null($mode) which has lower overhead.
@@ -250,7 +250,7 @@ also avaible from a separate package).
 - PEAR.php already required in DB.php
 - Return by reference fixes.  Bug 361.
 - Some cleanup (mj):
-    * Using <br /> instead of <br>
+    * Using &lt;br /&gt; instead of &lt;br&gt;
     * Removing usage of @ and replacing that with a more elaborate construct.
     * Removing usage of non-existing member variable $_discard.
 
