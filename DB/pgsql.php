@@ -181,11 +181,7 @@ class DB_pgsql extends DB_common
         if ($ismanip) {
             $this->affected = @pg_cmdtuples($result);
             return DB_OK;
-        } elseif ( (preg_match('/^\s*\(?\s*SELECT\s+/si', $query) &&
-                    !preg_match('/^\s*\(?\s*SELECT\s+INTO\s/si', $query))
-                   || preg_match('/^\s*EXPLAIN/si',$query )
-                 )
-        {
+        } elseif (preg_match('/^\s*\(?\s*(SELECT(?!\s+INTO)|EXPLAIN|SHOW)\s/si', $query)) {
             /* PostgreSQL commands:
                ABORT, ALTER, BEGIN, CLOSE, CLUSTER, COMMIT, COPY,
                CREATE, DECLARE, DELETE, DROP TABLE, EXPLAIN, FETCH,
