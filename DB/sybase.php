@@ -311,7 +311,17 @@ class DB_sybase extends DB_common
             }
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $ar = @sybase_fetch_array($result);
+            if (function_exists('sybase_fetch_assoc')) {
+                $ar = @sybase_fetch_assoc($result);
+            } else {
+                if ($ar = @sybase_fetch_array($result)) {
+                    foreach ($ar as $key => $value) {
+                        if (is_int($key)) {
+                            unset($ar[$key]);
+                        }
+                    }
+                }
+            }
             if ($this->options['optimize'] == 'portability' && $ar) {
                 $ar = array_change_key_case($ar, CASE_LOWER);
             }
