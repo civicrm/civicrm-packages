@@ -125,7 +125,7 @@ $res = $dbh->query('CREATE INDEX aa_idx ON a (a)');
 switch ($dbh->phptype) {
     case 'fbsql':
         // FrontBase doesn't assign a specific code for this yet.
-        check_error($res, DB_ERROR);
+        check_error($res, DB_ERROR_ALREADY_EXISTS, false);
         break;
     default:
         check_error($res, DB_ERROR_ALREADY_EXISTS);
