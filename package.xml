@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.134 2004-11-10 16:44:44 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.135 2004-11-15 08:29:25 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -77,6 +77,13 @@ resolving Bug #2140.  (Bug #2731)
 mysql & mysqli:
 * Added 1061 => DB_ERROR_ALREADY_EXISTS to error map.
   (danielc)
+
+oci8:
+* When running PHP5, use the new oci_new_connect() and
+  oci_close() functions instead of the old ones.
+  Works around crashes caused by PHP bug
+  http://bugs.php.net/bug.php?id=28924
+  (PEAR Bug #2622)  (danielc)
 
 sqlite:
 * Capture $php_errormsg on connection errors to make

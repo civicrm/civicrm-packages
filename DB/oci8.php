@@ -118,18 +118,33 @@ class DB_oci8 extends DB_common
             $this->dbsyntax = $dsninfo['dbsyntax'];
         }
 
-        $connect_function = $persistent ? 'OCIPLogon' : 'OCILogon';
-
-        if ($dsninfo['hostspec']) {
-            $conn = @$connect_function($dsninfo['username'],
-                                       $dsninfo['password'],
-                                       $dsninfo['hostspec']);
-        } elseif ($dsninfo['username'] || $dsninfo['password']) {
-            $conn = @$connect_function($dsninfo['username'],
-                                       $dsninfo['password']);
+        if (version_compare(phpversion(), '5.0.0', '>=')) {
+            $conn = oci_new_connect($dsninfo['username'],
+                    $dsninfo['password'],
+                    $dsninfo['database'],
+                    empty($dsninfo['charset']) ? null : $dsninfo['charset']);
+            $error = OCIError();
+            if (!empty($error) && $error['code'] == 12541) {
+                // Couldn't find TNS listener.  Try direct connection.
+                $conn = oci_new_connect($dsninfo['username'],
+                        $dsninfo['password'],
+                        null,
+                        empty($dsninfo['charset']) ? null : $dsninfo['charset']);
+            }
         } else {
-            $conn = false;
+            $connect_function = $persistent ? 'OCIPLogon' : 'OCILogon';
+            if ($dsninfo['hostspec']) {
+                $conn = @$connect_function($dsninfo['username'],
+                                           $dsninfo['password'],
+                                           $dsninfo['hostspec']);
+            } elseif ($dsninfo['username'] || $dsninfo['password']) {
+                $conn = @$connect_function($dsninfo['username'],
+                                           $dsninfo['password']);
+            } else {
+                $conn = false;
+            }
         }
+
         if ($conn == false) {
             $error = OCIError();
             $error = (is_array($error)) ? $error['message'] : null;
@@ -150,7 +165,11 @@ class DB_oci8 extends DB_common
      */
     function disconnect()
     {
-        $ret = @OCILogOff($this->connection);
+        if (version_compare(phpversion(), '5.0.0', '>=')) {
+            $ret = @oci_close($this->connection);
+        } else {
+            $ret = @OCILogOff($this->connection);
+        }
         $this->connection = null;
         return $ret;
     }
