@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.74 2004-02-19 17:34:41 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.75 2004-02-19 18:05:55 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -180,6 +180,7 @@ queries, just like the other DBMS's.  (danielc)
           <file name="08affectedrows.phpt"/>
           <file name="09numrows.phpt"/>
           <file name="10errormap.phpt"/>
+          <file name="11transactions.phpt"/>
           <file name="13limit.phpt"/>
           <file name="14fetchmode_object.phpt"/>
           <file name="15quote.phpt"/>
