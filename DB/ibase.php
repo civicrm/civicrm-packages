@@ -19,7 +19,7 @@
  * @author     Sterling Hughes <sterling@php.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -42,7 +42,7 @@ require_once 'DB/common.php';
  * @author     Sterling Hughes <sterling@php.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -66,6 +66,9 @@ class DB_ibase extends DB_common
     /**
      * The capabilities of this DB implementation
      *
+     * The 'new_link' element contains the PHP version that first provided
+     * new_link support for this DBMS.  Contains false if it's unsupported.
+     *
      * Meaning of the 'limit' element:
      *   + 'emulate' = emulate with fetch row by number
      *   + 'alter'   = alter the query
@@ -77,6 +80,7 @@ class DB_ibase extends DB_common
      */
     var $features = array(
         'limit'         => false,
+        'new_link'      => false,
         'pconnect'      => true,
         'prepare'       => true,
         'ssl'           => false,
@@ -159,39 +163,57 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ connect()
 
-    function connect($dsninfo, $persistent = false)
+    /**
+     * Connect to the database server, log in and open the database
+     *
+     * PEAR DB's ibase driver supports the following extra DSN options:
+     *   + buffers    The number of database buffers to allocate for the
+     *                 server-side cache.
+     *   + charset    The default character set for a database.
+     *   + dialect    The default SQL dialect for any statement
+     *                 executed within a connection.  Defaults to the
+     *                 highest one supported by client libraries.
+     *                 Functional only with InterBase 6 and up.
+     *   + role       Functional only with InterBase 5 and up.
+     *
+     * @param array $dsn         the data source name
+     * @param bool  $persistent  should the connection be persistent?
+     *
+     * @return int  DB_OK on success. A DB_error object on failure.
+     *
+     * @access private
+     * @see DB::connect(), DB::parseDSN()
+     */
+    function connect($dsn, $persistent = false)
     {
         if (!DB::assertExtension('interbase')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        $this->dsn = $dsninfo;
-        if ($dsninfo['dbsyntax']) {
-            $this->dbsyntax = $dsninfo['dbsyntax'];
+        $this->dsn = $dsn;
+        if ($dsn['dbsyntax']) {
+            $this->dbsyntax = $dsn['dbsyntax'];
+        }
+        if ($this->dbsyntax == 'firebird') {
+            $this->features['limit'] = 'alter';
         }
 
-        $dbhost = $dsninfo['hostspec'] ?
-                  ($dsninfo['hostspec'] . ':' . $dsninfo['database']) :
-                  $dsninfo['database'];
+        $params = array();
+        $params[] = $dsn['hostspec']
+                    ? ($dsn['hostspec'] . ':' . $dsn['database'])
+                    : $dsn['database'];
+        $params[] = $dsn['username'] ? $dsn['username'] : null;
+        $params[] = $dsn['password'] ? $dsn['password'] : null;
+        $params[] = isset($dsn['charset']) ? $dsn['charset'] : null;
+        $params[] = isset($dsn['buffers']) ? $dsn['buffers'] : null;
+        $params[] = isset($dsn['dialect']) ? $dsn['dialect'] : null;
+        $params[] = isset($dsn['role'])    ? $dsn['role'] : null;
 
         $connect_function = $persistent ? 'ibase_pconnect' : 'ibase_connect';
 
-        $params = array();
-        $params[] = $dbhost;
-        $params[] = $dsninfo['username'] ? $dsninfo['username'] : null;
-        $params[] = $dsninfo['password'] ? $dsninfo['password'] : null;
-        $params[] = isset($dsninfo['charset']) ? $dsninfo['charset'] : null;
-        $params[] = isset($dsninfo['buffers']) ? $dsninfo['buffers'] : null;
-        $params[] = isset($dsninfo['dialect']) ? $dsninfo['dialect'] : null;
-        $params[] = isset($dsninfo['role'])    ? $dsninfo['role'] : null;
-
-        $conn = @call_user_func_array($connect_function, $params);
-        if (!$conn) {
+        $this->connection = @call_user_func_array($connect_function, $params);
+        if (!$this->connection) {
             return $this->ibaseRaiseError(DB_ERROR_CONNECT_FAILED);
-        }
-        $this->connection = $conn;
-        if ($this->dsn['dbsyntax'] == 'firebird') {
-            $this->features['limit'] = 'alter';
         }
         return DB_OK;
     }

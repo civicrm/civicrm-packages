@@ -20,7 +20,7 @@
  * @author     Mika Tuupola <tuupola@appelsiini.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -42,7 +42,7 @@ require_once 'DB/common.php';
  * @author     Mika Tuupola <tuupola@appelsiini.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -65,6 +65,9 @@ class DB_sqlite extends DB_common
     /**
      * The capabilities of this DB implementation
      *
+     * The 'new_link' element contains the PHP version that first provided
+     * new_link support for this DBMS.  Contains false if it's unsupported.
+     *
      * Meaning of the 'limit' element:
      *   + 'emulate' = emulate with fetch row by number
      *   + 'alter'   = alter the query
@@ -74,6 +77,7 @@ class DB_sqlite extends DB_common
      */
     var $features = array(
         'limit'         => 'alter',
+        'new_link'      => false,
         'pconnect'      => true,
         'prepare'       => false,
         'ssl'           => false,
@@ -143,49 +147,54 @@ class DB_sqlite extends DB_common
     // {{{ connect()
 
     /**
-     * Connect to a database represented by a file
+     * Connect to the database server, log in and open the database
      *
-     * @param $dsn the data source name; the file is taken as
-     *        database; "sqlite://root:@host/test.db?mode=0644"
-     * @param $persistent (optional) whether the connection should
-     *        be persistent
+     * PEAR DB's sqlite driver supports the following extra DSN options:
+     *   + mode  The permissions for the database file, in four digit
+     *            chmod octal format (eg "0600").
      *
-     * @return int DB_OK on success, a DB error on failure
+     * @param array $dsn         the data source name
+     * @param bool  $persistent  should the connection be persistent?
+     *
+     * @return int  DB_OK on success. A DB_error object on failure.
+     *
+     * @access private
+     * @see DB::connect(), DB::parseDSN()
      */
-    function connect($dsninfo, $persistent = false)
+    function connect($dsn, $persistent = false)
     {
         if (!DB::assertExtension('sqlite')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        $this->dsn = $dsninfo;
-        if ($dsninfo['dbsyntax']) {
-            $this->dbsyntax = $dsninfo['dbsyntax'];
+        $this->dsn = $dsn;
+        if ($dsn['dbsyntax']) {
+            $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        if ($dsninfo['database']) {
-            if (!file_exists($dsninfo['database'])) {
-                if (!touch($dsninfo['database'])) {
+        if ($dsn['database']) {
+            if (!file_exists($dsn['database'])) {
+                if (!touch($dsn['database'])) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
                 }
-                if (!isset($dsninfo['mode']) ||
-                    !is_numeric($dsninfo['mode']))
+                if (!isset($dsn['mode']) ||
+                    !is_numeric($dsn['mode']))
                 {
                     $mode = 0644;
                 } else {
-                    $mode = octdec($dsninfo['mode']);
+                    $mode = octdec($dsn['mode']);
                 }
-                if (!chmod($dsninfo['database'], $mode)) {
+                if (!chmod($dsn['database'], $mode)) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
                 }
-                if (!file_exists($dsninfo['database'])) {
+                if (!file_exists($dsn['database'])) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
                 }
             }
-            if (!is_file($dsninfo['database'])) {
+            if (!is_file($dsn['database'])) {
                 return $this->sqliteRaiseError(DB_ERROR_INVALID);
             }
-            if (!is_readable($dsninfo['database'])) {
+            if (!is_readable($dsn['database'])) {
                 return $this->sqliteRaiseError(DB_ERROR_ACCESS_VIOLATION);
             }
         } else {
@@ -198,16 +207,15 @@ class DB_sqlite extends DB_common
         ini_set('track_errors', 1);
         $php_errormsg = '';
 
-        if (!($conn = @$connect_function($dsninfo['database']))) {
+        if (!$this->connection = @$connect_function($dsn['database'])) {
             if (empty($php_errormsg)) {
                 return $this->sqliteRaiseError(DB_ERROR_NODBSELECTED);
             } else {
-                return $this->raiseError(DB_ERROR_NODBSELECTED, null,
-                                         null, null, $php_errormsg);
+                return $this->raiseError(DB_ERROR_NODBSELECTED,
+                                         null, null, null,
+                                         $php_errormsg);
             }
         }
-
-        $this->connection = $conn;
         return DB_OK;
     }
 

@@ -20,7 +20,7 @@
  * @author     Antônio Carlos Venâncio Júnior <floripa@php.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -45,7 +45,7 @@ require_once 'DB/common.php';
  * @author     Antônio Carlos Venâncio Júnior <floripa@php.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -68,6 +68,9 @@ class DB_sybase extends DB_common
     /**
      * The capabilities of this DB implementation
      *
+     * The 'new_link' element contains the PHP version that first provided
+     * new_link support for this DBMS.  Contains false if it's unsupported.
+     *
      * Meaning of the 'limit' element:
      *   + 'emulate' = emulate with fetch row by number
      *   + 'alter'   = alter the query
@@ -77,6 +80,7 @@ class DB_sybase extends DB_common
      */
     var $features = array(
         'limit'         => 'emulate',
+        'new_link'      => false,
         'pconnect'      => true,
         'prepare'       => false,
         'ssl'           => false,
@@ -114,6 +118,16 @@ class DB_sybase extends DB_common
      */
     var $transaction_opcount = 0;
 
+    /**
+     * The database specified in the DSN
+     *
+     * It's a fix to allow calls to different databases in the same script.
+     *
+     * @var string
+     * @access private
+     */
+    var $_db = '';
+
 
     // }}}
     // {{{ constructor
@@ -132,15 +146,23 @@ class DB_sybase extends DB_common
     // {{{ connect()
 
     /**
-     * Connect to a database and log in as the specified user.
+     * Connect to the database server, log in and open the database
      *
-     * @param $dsn the data source name (see DB::parseDSN for syntax)
-     * @param $persistent (optional) whether the connection should
-     *        be persistent
-     * @access public
-     * @return int DB_OK on success, a DB error on failure
+     * PEAR DB's sybase driver supports the following extra DSN options:
+     *   + appname       The application name to use on this connection.
+     *                   Available since PEAR DB 1.7.0.
+     *   + charset       The character set to use on this connection.
+     *                   Available since PEAR DB 1.7.0.
+     *
+     * @param array $dsn         the data source name
+     * @param bool  $persistent  should the connection be persistent?
+     *
+     * @return int  DB_OK on success. A DB_error object on failure.
+     *
+     * @access private
+     * @see DB::connect(), DB::parseDSN()
      */
-    function connect($dsninfo, $persistent = false)
+    function connect($dsn, $persistent = false)
     {
         if (!DB::assertExtension('sybase') &&
             !DB::assertExtension('sybase_ct'))
@@ -148,40 +170,45 @@ class DB_sybase extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        $this->dsn = $dsninfo;
-        if ($dsninfo['dbsyntax']) {
-            $this->dbsyntax = $dsninfo['dbsyntax'];
+        $this->dsn = $dsn;
+        if ($dsn['dbsyntax']) {
+            $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        $interface = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
+        $dsn['hostspec'] = $dsn['hostspec'] ? $dsn['hostspec'] : 'localhost';
+        $dsn['password'] = !empty($dsn['password']) ? $dsn['password'] : false;
+        $dsn['charset'] = isset($dsn['charset']) ? $dsn['charset'] : false;
+        $dsn['appname'] = isset($dsn['appname']) ? $dsn['appname'] : false;
+
         $connect_function = $persistent ? 'sybase_pconnect' : 'sybase_connect';
-        $dsninfo['password'] = !empty($dsninfo['password']) ? $dsninfo['password'] : false;
-        $dsninfo['charset'] = isset($dsninfo['charset']) ? $dsninfo['charset'] : false;
-        $dsninfo['appname'] = isset($dsninfo['appname']) ? $dsninfo['appname'] : false;
 
-        if ($interface && $dsninfo['username']) {
-            $conn = @$connect_function($interface, $dsninfo['username'],
-                                       $dsninfo['password'],
-                                       $dsninfo['charset'],
-                                       $dsninfo['appname']);
+        if ($dsn['username']) {
+            $this->connection = @$connect_function($dsn['hostspec'],
+                                                   $dsn['username'],
+                                                   $dsn['password'],
+                                                   $dsn['charset'],
+                                                   $dsn['appname']);
         } else {
-            $conn = false;
+            return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                     null, null, null,
+                                     'The DSN did not contain a username.');
         }
 
-        if (!$conn) {
-            return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null, null,
+        if (!$this->connection) {
+            return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                     null, null, null,
                                      @sybase_get_last_message());
         }
 
-        if ($dsninfo['database']) {
-            if (!@sybase_select_db($dsninfo['database'], $conn)) {
-                return $this->raiseError(DB_ERROR_NODBSELECTED, null,
-                                         null, null, @sybase_get_last_message());
+        if ($dsn['database']) {
+            if (!@sybase_select_db($dsn['database'], $this->connection)) {
+                return $this->raiseError(DB_ERROR_NODBSELECTED,
+                                         null, null, null,
+                                         @sybase_get_last_message());
             }
-            $this->_db = $dsninfo['database'];
+            $this->_db = $dsn['database'];
         }
 
-        $this->connection = $conn;
         return DB_OK;
     }
 

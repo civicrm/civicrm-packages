@@ -19,7 +19,7 @@
  * @author     Sterling Hughes <sterling@php.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -40,7 +40,7 @@ require_once 'DB/common.php';
  * @author     Sterling Hughes <sterling@php.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -63,6 +63,9 @@ class DB_mssql extends DB_common
     /**
      * The capabilities of this DB implementation
      *
+     * The 'new_link' element contains the PHP version that first provided
+     * new_link support for this DBMS.  Contains false if it's unsupported.
+     *
      * Meaning of the 'limit' element:
      *   + 'emulate' = emulate with fetch row by number
      *   + 'alter'   = alter the query
@@ -72,6 +75,7 @@ class DB_mssql extends DB_common
      */
     var $features = array(
         'limit'         => 'emulate',
+        'new_link'      => false,
         'pconnect'      => true,
         'prepare'       => false,
         'ssl'           => false,
@@ -144,7 +148,18 @@ class DB_mssql extends DB_common
     // }}}
     // {{{ connect()
 
-    function connect($dsninfo, $persistent = false)
+    /**
+     * Connect to the database server, log in and open the database
+     *
+     * @param array $dsn         the data source name
+     * @param bool  $persistent  should the connection be persistent?
+     *
+     * @return int  DB_OK on success. A DB_error object on failure.
+     *
+     * @access private
+     * @see DB::connect(), DB::parseDSN()
+     */
+    function connect($dsn, $persistent = false)
     {
         if (!DB::assertExtension('mssql') && !DB::assertExtension('sybase')
             && !DB::assertExtension('sybase_ct'))
@@ -152,39 +167,40 @@ class DB_mssql extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        $this->dsn = $dsninfo;
-        if ($dsninfo['dbsyntax']) {
-            $this->dbsyntax = $dsninfo['dbsyntax'];
+        $this->dsn = $dsn;
+        if ($dsn['dbsyntax']) {
+            $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
-        if ($dsninfo['port']) {
+        $dbhost = $dsn['hostspec'] ? $dsn['hostspec'] : 'localhost';
+        if ($dsn['port']) {
             $dbhost .= ((substr(PHP_OS, 0, 3) == 'WIN') ? ',' : ':')
-                     . $dsninfo['port'];
+                     . $dsn['port'];
         }
 
         $connect_function = $persistent ? 'mssql_pconnect' : 'mssql_connect';
 
-        if ($dbhost && $dsninfo['username'] && $dsninfo['password']) {
-            $conn = @$connect_function($dbhost, $dsninfo['username'],
-                                       $dsninfo['password']);
-        } elseif ($dbhost && $dsninfo['username']) {
-            $conn = @$connect_function($dbhost, $dsninfo['username']);
+        if ($dbhost && $dsn['username'] && $dsn['password']) {
+            $this->connection = @$connect_function($dbhost, $dsn['username'],
+                                                   $dsn['password']);
+        } elseif ($dbhost && $dsn['username']) {
+            $this->connection = @$connect_function($dbhost, $dsn['username']);
         } else {
-            $conn = @$connect_function($dbhost);
+            $this->connection = @$connect_function($dbhost);
         }
-        if (!$conn) {
-            return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
-                                         null, @mssql_get_last_message());
+        if (!$this->connection) {
+            return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                     null, null, null,
+                                     @mssql_get_last_message());
         }
-        if ($dsninfo['database']) {
-            if (!@mssql_select_db($dsninfo['database'], $conn)) {
-                return $this->raiseError(DB_ERROR_NODBSELECTED, null, null,
-                                         null, @mssql_get_last_message());
+        if ($dsn['database']) {
+            if (!@mssql_select_db($dsn['database'], $this->connection)) {
+                return $this->raiseError(DB_ERROR_NODBSELECTED,
+                                         null, null, null,
+                                         @mssql_get_last_message());
             }
-            $this->_db = $dsninfo['database'];
+            $this->_db = $dsn['database'];
         }
-        $this->connection = $conn;
         return DB_OK;
     }
 

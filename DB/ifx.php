@@ -19,7 +19,7 @@
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -47,7 +47,7 @@ require_once 'DB/common.php';
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -70,6 +70,9 @@ class DB_ifx extends DB_common
     /**
      * The capabilities of this DB implementation
      *
+     * The 'new_link' element contains the PHP version that first provided
+     * new_link support for this DBMS.  Contains false if it's unsupported.
+     *
      * Meaning of the 'limit' element:
      *   + 'emulate' = emulate with fetch row by number
      *   + 'alter'   = alter the query
@@ -79,6 +82,7 @@ class DB_ifx extends DB_common
      */
     var $features = array(
         'limit'         => 'emulate',
+        'new_link'      => false,
         'pconnect'      => true,
         'prepare'       => false,
         'ssl'           => false,
@@ -156,15 +160,17 @@ class DB_ifx extends DB_common
     // {{{ connect()
 
     /**
-     * Connect to a database and log in as the specified user.
+     * Connect to the database server, log in and open the database
      *
-     * @param $dsn the data source name (see DB::parseDSN for syntax)
-     * @param $persistent (optional) whether the connection should
-     *        be persistent
+     * @param array $dsn         the data source name
+     * @param bool  $persistent  should the connection be persistent?
      *
-     * @return int DB_OK on success, a DB error code on failure
+     * @return int  DB_OK on success. A DB_error object on failure.
+     *
+     * @access private
+     * @see DB::connect(), DB::parseDSN()
      */
-    function connect($dsninfo, $persistent = false)
+    function connect($dsn, $persistent = false)
     {
         if (!DB::assertExtension('informix') &&
             !DB::assertExtension('Informix'))
@@ -172,15 +178,15 @@ class DB_ifx extends DB_common
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        $this->dsn = $dsninfo;
-        if ($dsninfo['dbsyntax']) {
-            $this->dbsyntax = $dsninfo['dbsyntax'];
+        $this->dsn = $dsn;
+        if ($dsn['dbsyntax']) {
+            $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        $dbhost = $dsninfo['hostspec'] ? '@' . $dsninfo['hostspec'] : '';
-        $dbname = $dsninfo['database'] ? $dsninfo['database'] . $dbhost : '';
-        $user = $dsninfo['username'] ? $dsninfo['username'] : '';
-        $pw = $dsninfo['password'] ? $dsninfo['password'] : '';
+        $dbhost = $dsn['hostspec'] ? '@' . $dsn['hostspec'] : '';
+        $dbname = $dsn['database'] ? $dsn['database'] . $dbhost : '';
+        $user = $dsn['username'] ? $dsn['username'] : '';
+        $pw = $dsn['password'] ? $dsn['password'] : '';
 
         $connect_function = $persistent ? 'ifx_pconnect' : 'ifx_connect';
 

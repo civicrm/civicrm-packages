@@ -18,7 +18,7 @@
  * @package    DB
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -42,7 +42,7 @@ require_once 'DB/common.php';
  * @package    DB
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  * @since      Class functional since Release 1.6.3
@@ -66,6 +66,9 @@ class DB_mysqli extends DB_common
     /**
      * The capabilities of this DB implementation
      *
+     * The 'new_link' element contains the PHP version that first provided
+     * new_link support for this DBMS.  Contains false if it's unsupported.
+     *
      * Meaning of the 'limit' element:
      *   + 'emulate' = emulate with fetch row by number
      *   + 'alter'   = alter the query
@@ -75,6 +78,7 @@ class DB_mysqli extends DB_common
      */
     var $features = array(
         'limit'         => 'alter',
+        'new_link'      => false,
         'pconnect'      => false,
         'prepare'       => false,
         'ssl'           => true,
@@ -215,26 +219,63 @@ class DB_mysqli extends DB_common
     // {{{ connect()
 
     /**
-     * Connect to a database and log in as the specified user.
+     * Connect to the database server, log in and open the database
      *
-     * @param string $dsn the data source name (see DB::parseDSN for syntax)
-     * @param boolean $persistent (optional) whether the connection should
-     *                            be persistent
-     * @return mixed DB_OK on success, a DB error on failure
-     * @access public
+     * PEAR DB's mysqli driver supports the following extra DSN options:
+     *   + When the 'ssl' $option passed to DB::connect() is true:
+     *     + key      The path to the key file.
+     *     + cert     The path to the certificate file.
+     *     + ca       The path to the certificate authority file.
+     *     + capath   The path to a directory that contains trusted SSL
+     *                 CA certificates in pem format.
+     *     + cipher   The list of allowable ciphers for SSL encryption.
+     *
+     * Example of how to connect using SSL:
+     * <code>
+     * require_once 'DB.php';
+     * 
+     * $dsn = array(
+     *     'phptype'  => 'mysqli',
+     *     'username' => 'someuser',
+     *     'password' => 'apasswd',
+     *     'hostspec' => 'localhost',
+     *     'database' => 'thedb',
+     *     'key'      => 'client-key.pem',
+     *     'cert'     => 'client-cert.pem',
+     *     'ca'       => 'cacert.pem',
+     *     'capath'   => '/path/to/ca/dir',
+     *     'cipher'   => 'AES',
+     * );
+     * 
+     * $options = array(
+     *     'ssl' => true,
+     * );
+     * 
+     * $db =& DB::connect($dsn, $options);
+     * if (DB::isError($db)) {
+     *     die($db->getMessage());
+     * }
+     * </code>
+     *
+     * @param array $dsn         the data source name
+     * @param bool  $persistent  should the connection be persistent?
+     *
+     * @return int  DB_OK on success. A DB_error object on failure.
+     *
+     * @access private
+     * @see DB::connect(), DB::parseDSN()
      */
-    function connect($dsninfo, $persistent = false)
+    function connect($dsn, $persistent = false)
     {
         if (!DB::assertExtension('mysqli')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        $this->dsn = $dsninfo;
-        if ($dsninfo['dbsyntax']) {
-            $this->dbsyntax = $dsninfo['dbsyntax'];
+        $this->dsn = $dsn;
+        if ($dsn['dbsyntax']) {
+            $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        $conn = false;
         $ini = ini_get('track_errors');
         ini_set('track_errors', 1);
         $php_errormsg = '';
@@ -243,52 +284,54 @@ class DB_mysqli extends DB_common
             $init = mysqli_init();
             mysqli_ssl_set(
                 $init,
-                empty($dsninfo['key'])    ? null : $dsninfo['key'],
-                empty($dsninfo['cert'])   ? null : $dsninfo['cert'],
-                empty($dsninfo['ca'])     ? null : $dsninfo['ca'],
-                empty($dsninfo['capath']) ? null : $dsninfo['capath'],
-                empty($dsninfo['cipher']) ? null : $dsninfo['cipher']
+                empty($dsn['key'])    ? null : $dsn['key'],
+                empty($dsn['cert'])   ? null : $dsn['cert'],
+                empty($dsn['ca'])     ? null : $dsn['ca'],
+                empty($dsn['capath']) ? null : $dsn['capath'],
+                empty($dsn['cipher']) ? null : $dsn['cipher']
             );
-            if ($conn = @mysqli_real_connect($init,
-                                             $dsninfo['hostspec'],
-                                             $dsninfo['username'],
-                                             $dsninfo['password'],
-                                             $dsninfo['database'],
-                                             $dsninfo['port'],
-                                             $dsninfo['socket']))
+            if ($this->connection = @mysqli_real_connect(
+                    $init,
+                    $dsn['hostspec'],
+                    $dsn['username'],
+                    $dsn['password'],
+                    $dsn['database'],
+                    $dsn['port'],
+                    $dsn['socket']))
             {
-                $conn = $init;
+                $this->connection = $init;
             }
         } else {
-            $conn = @mysqli_connect(
-                $dsninfo['hostspec'],
-                $dsninfo['username'],
-                $dsninfo['password'],
-                $dsninfo['database'],
-                $dsninfo['port'],
-                $dsninfo['socket']
+            $this->connection = @mysqli_connect(
+                $dsn['hostspec'],
+                $dsn['username'],
+                $dsn['password'],
+                $dsn['database'],
+                $dsn['port'],
+                $dsn['socket']
             );
         }
 
         ini_set('track_errors', $ini);
 
-        if (!$conn) {
+        if (!$this->connection) {
             if (($err = @mysqli_connect_error()) != '') {
-                return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
-                                         null, $err);
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                         null, null, null,
+                                         $err);
             } elseif (empty($php_errormsg)) {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED);
             } else {
-                return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
-                                         null, $php_errormsg);
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                         null, null, null,
+                                         $php_errormsg);
             }
         }
 
-        if ($dsninfo['database']) {
-            $this->_db = $dsninfo['database'];
+        if ($dsn['database']) {
+            $this->_db = $dsn['database'];
         }
 
-        $this->connection = $conn;
         return DB_OK;
     }
 

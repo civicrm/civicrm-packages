@@ -19,7 +19,7 @@
  * @author     Tomas V.V. Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -40,7 +40,7 @@ require_once 'DB/common.php';
  * @author     Tomas V.V. Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -63,6 +63,9 @@ class DB_dbase extends DB_common
     /**
      * The capabilities of this DB implementation
      *
+     * The 'new_link' element contains the PHP version that first provided
+     * new_link support for this DBMS.  Contains false if it's unsupported.
+     *
      * Meaning of the 'limit' element:
      *   + 'emulate' = emulate with fetch row by number
      *   + 'alter'   = alter the query
@@ -72,6 +75,7 @@ class DB_dbase extends DB_common
      */
     var $features = array(
         'limit'         => false,
+        'new_link'      => false,
         'pconnect'      => false,
         'prepare'       => false,
         'ssl'           => false,
@@ -129,33 +133,43 @@ class DB_dbase extends DB_common
     // }}}
     // {{{ connect()
 
-    function connect($dsninfo, $persistent = false)
+    /**
+     * Connect to the database server, log in and open the database
+     *
+     * @param array $dsn         the data source name
+     * @param bool  $persistent  should the connection be persistent?
+     *
+     * @return int  DB_OK on success. A DB_error object on failure.
+     *
+     * @access private
+     * @see DB::connect(), DB::parseDSN()
+     */
+    function connect($dsn, $persistent = false)
     {
         if (!DB::assertExtension('dbase')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        $this->dsn = $dsninfo;
-        if ($dsninfo['dbsyntax']) {
-            $this->dbsyntax = $dsninfo['dbsyntax'];
+        $this->dsn = $dsn;
+        if ($dsn['dbsyntax']) {
+            $this->dbsyntax = $dsn['dbsyntax'];
         }
 
         $ini = ini_get('track_errors');
         $php_errormsg = '';
-
         if ($ini) {
-            $conn  = @dbase_open($dsninfo['database'], 0);
+            $this->connection = @dbase_open($dsn['database'], 0);
         } else {
             ini_set('track_errors', 1);
-            $conn  = @dbase_open($dsninfo['database'], 0);
+            $this->connection = @dbase_open($dsn['database'], 0);
             ini_set('track_errors', $ini);
         }
 
-        if (!$conn) {
-            return $this->raiseError(DB_ERROR_CONNECT_FAILED, null,
-                                     null, null, strip_tags($php_errormsg));
+        if (!$this->connection) {
+            return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                     null, null, null,
+                                     strip_tags($php_errormsg));
         }
-        $this->connection = $conn;
         return DB_OK;
     }
 
