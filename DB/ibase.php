@@ -903,6 +903,8 @@ class DB_ibase extends DB_common
         static $error_regexps;
         if (!isset($error_regexps)) {
             $error_regexps = array(
+                '/generator .* is not defined/'
+                    => DB_ERROR_SYNTAX,  // for compat. w ibase_errcode()
                 '/table.*(not exist|not found|unknown)/i'
                     => DB_ERROR_NOSUCHTABLE,
                 '/table .* already exists/i'
