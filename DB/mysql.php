@@ -504,6 +504,9 @@ class DB_mysql extends DB_common
     function nextId($seq_name, $ondemand = true)
     {
         $seqname = $this->getSequenceName($seq_name);
+        if (!@mysql_select_db($this->_db, $this->connection)) {
+            return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+        }
         do {
             $repeat = 0;
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
