@@ -1,4 +1,4 @@
-s<?php
+<?php
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
@@ -799,20 +799,20 @@ class DB_pgsql extends DB_common
      */
     function tableInfo($result, $mode = null)
     {
-        if (isset($result->result)) {
-            /*
-             * Probably received a result object.
-             * Extract the result resource identifier.
-             */
-            $id = $result->result;
-            $got_string = false;
-        } elseif (is_string($result)) {
+        if (is_string($result)) {
             /*
              * Probably received a table name.
              * Create a result resource identifier.
              */
             $id = @pg_exec($this->connection, "SELECT * FROM $result LIMIT 0");
             $got_string = true;
+        } elseif (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $id = $result->result;
+            $got_string = false;
         } else {
             /*
              * Probably received a result resource identifier.

@@ -574,16 +574,7 @@ class DB_sqlite extends DB_common
      */
     function tableInfo($result, $mode = null)
     {
-        if (isset($result->result)) {
-            /*
-             * Probably received a result object.
-             * Extract the result resource identifier.
-             */
-            $this->last_query = '';
-            return $this->raiseError(DB_ERROR_NOT_CAPABLE, null, null, null,
-                                     'This DBMS can not obtain tableInfo' .
-                                     ' from result sets');
-        } elseif (is_string($result)) {
+        if (is_string($result)) {
             /*
              * Probably received a table name.
              * Create a result resource identifier.
@@ -592,6 +583,15 @@ class DB_sqlite extends DB_common
                                       "PRAGMA table_info('$result');",
                                       SQLITE_ASSOC);
             $got_string = true;
+        } elseif (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $this->last_query = '';
+            return $this->raiseError(DB_ERROR_NOT_CAPABLE, null, null, null,
+                                     'This DBMS can not obtain tableInfo' .
+                                     ' from result sets');
         } else {
             /*
              * Probably received a result resource identifier.

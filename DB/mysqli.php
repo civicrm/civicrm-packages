@@ -867,14 +867,7 @@ class DB_mysqli extends DB_common
      * @see DB_common::tableInfo()
      */
     function tableInfo($result, $mode = null) {
-        if (isset($result->result)) {
-            /*
-             * Probably received a result object.
-             * Extract the result resource identifier.
-             */
-            $id = $result->result;
-            $got_string = false;
-        } elseif (is_string($result)) {
+        if (is_string($result)) {
             /*
              * Probably received a table name.
              * Create a result resource identifier.
@@ -882,6 +875,13 @@ class DB_mysqli extends DB_common
             $id = @mysqli_query($this->connection,
                                 "SELECT * FROM $result LIMIT 0");
             $got_string = true;
+        } elseif (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $id = $result->result;
+            $got_string = false;
         } else {
             /*
              * Probably received a result resource identifier.

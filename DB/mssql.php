@@ -594,14 +594,7 @@ class DB_mssql extends DB_common
      */
     function tableInfo($result, $mode = null)
     {
-        if (isset($result->result)) {
-            /*
-             * Probably received a result object.
-             * Extract the result resource identifier.
-             */
-            $id = $result->result;
-            $got_string = false;
-        } elseif (is_string($result)) {
+        if (is_string($result)) {
             /*
              * Probably received a table name.
              * Create a result resource identifier.
@@ -612,6 +605,13 @@ class DB_mssql extends DB_common
             $id = @mssql_query("SELECT * FROM $result WHERE 1=0",
                                $this->connection);
             $got_string = true;
+        } elseif (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $id = $result->result;
+            $got_string = false;
         } else {
             /*
              * Probably received a result resource identifier.
