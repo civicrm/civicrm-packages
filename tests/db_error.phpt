@@ -1,10 +1,10 @@
 --TEST--
 DB_Error
 --SKIPIF--
-<?php if (!@include("DB.php")) print "skip"; ?>
+<?php if (!@require_once 'DB.php') print 'skip'; ?>
 --FILE--
 <?php // -*- C++ -*-
-include_once './include.inc';
+require_once './include.inc';
 // Test for: DB.php
 // Parts tested: DB_Error
 
@@ -18,28 +18,27 @@ function test_error_handler($errno, $errmsg, $file, $line, $vars) {
     } else {
         define('E_STRICT', 2048);
     }
-        $errortype = array (
-                1   =>  "Error",
-                2   =>  "Warning",
-                4   =>  "Parsing Error",
-                8   =>  "Notice",
-                16  =>  "Core Error",
-                32  =>  "Core Warning",
-                64  =>  "Compile Error",
-                128 =>  "Compile Warning",
-                256 =>  "User Error",
-                512 =>  "User Warning",
-                1024=>  "User Notice",
+    $errortype = array (
+        E_ERROR => 'Error',
+        E_WARNING => 'Warning',
+        E_PARSE => 'Parsing Error',
+        E_NOTICE => 'Notice',
+        E_CORE_ERROR => 'Core Error',
+        E_CORE_WARNING => 'Core Warning',
+        E_COMPILE_ERROR => 'Compile Error',
+        E_COMPILE_WARNING => 'Compile Warning',
+        E_USER_ERROR => 'User Error',
+        E_USER_WARNING => 'User Warning',
+        E_USER_NOTICE => 'User Notice',
         E_STRICT => 'Strict Notice',
-        );
-        $prefix = $errortype[$errno];
-        $file = basename($file);
-        print "\n$prefix: $errmsg in $file on line XXX\n";
+    );
+    $prefix = $errortype[$errno];
+    print "\n$prefix: $errmsg in " . basename($file) . " on line XXX\n";
 }
 
 error_reporting(E_ALL);
-set_error_handler("test_error_handler");
-require_once "DB.php";
+set_error_handler('test_error_handler');
+require_once 'DB.php';
 
 print "testing different error codes...\n";
 $e = new DB_Error(); print $e->toString()."\n";
