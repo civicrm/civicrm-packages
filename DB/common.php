@@ -212,14 +212,10 @@ class DB_common extends PEAR
      *                 backslashes, then the whole string is encapsulated
      *                 between single quotes
      *               + boolean = output depends on the driver in use:
-     *                - string <samp>TRUE</samp> or <samp>FALSE</samp>
-     *                  for DBMS's with <kbd>BOOLEAN</kbd> handling:
-     *                 # fbsql
-     *                 # ibase
-     *                 # pgsql
      *                - int <samp>1</samp> if true, <samp>0</samp> if false
      *                  for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
      *                  Such drivers and the data types expected:
+     *                 # ibase   <kbd>SMALLINT</kbd> [1]
      *                 # ifx     <kbd>SMALLINT</kbd> [1]
      *                 # msql    <kbd>INTEGER</kbd>
      *                 # mssql   <kbd>BIT</kbd>
@@ -228,11 +224,15 @@ class DB_common extends PEAR
      *                 # oci8    <kbd>NUMBER(1)</kbd>
      *                 # odbc    <kbd>SMALLINT</kbd> [1]
      *                 # sqlite  <kbd>INTEGER</kbd>
-     *                 # sybase  <kbd>TINYINT</kbd>
+     *                 # sybase  <kbd>TINYINT(1)</kbd>
      *                - string <samp>T</samp> if true, <samp>F</samp> if false
      *                  for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
      *                  Such drivers and the data types expected:
      *                 # dbase   <kbd>Logical</kbd>
+     *                - string <samp>TRUE</samp> or <samp>FALSE</samp>
+     *                  for DBMS's with <kbd>BOOLEAN</kbd> handling:
+     *                 # fbsql
+     *                 # pgsql
      *
      * [1] Accommodate the lowest common denominator because not all versions
      * of have <kbd>BOOLEAN</kbd>.
@@ -246,7 +246,7 @@ class DB_common extends PEAR
         if (is_int($in) || is_double($in)) {
             return $in;
         } elseif (is_bool($in)) {
-            return $in ? 'TRUE' : 'FALSE';
+            return $in ? 1 : 0;
         } elseif (is_null($in)) {
             return 'NULL';
         } else {

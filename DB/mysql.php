@@ -670,39 +670,6 @@ class DB_mysql extends DB_common
     }
 
     // }}}
-    // {{{ quoteSmart()
-
-    /**
-     * Format input so it can be safely used in a query
-     *
-     * @param mixed $in  data to be quoted
-     *
-     * @return mixed Submitted variable's type = returned value:
-     *               + null = the string <samp>NULL</samp>
-     *               + boolean = <samp>1</samp> if true or
-     *                 <samp>0</samp> if false.
-     *                 1 and 0 used because MySQL maps BOOL to TINYINT(1).
-     *               + integer or double = the unquoted number
-     *               + other (including strings and numeric strings) =
-     *                 the data escaped according to MySQL's settings
-     *                 then encapsulated between single quotes
-     *
-     * @internal
-     */
-    function quoteSmart($in)
-    {
-        if (is_int($in) || is_double($in)) {
-            return $in;
-        } elseif (is_bool($in)) {
-            return $in ? 1 : 0;
-        } elseif (is_null($in)) {
-            return 'NULL';
-        } else {
-            return "'" . $this->escapeSimple($in) . "'";
-        }
-    }
-
-    // }}}
     // {{{ escapeSimple()
 
     /**

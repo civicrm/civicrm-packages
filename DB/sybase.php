@@ -369,40 +369,6 @@ class DB_sybase extends DB_common
     }
 
     // }}}
-    // {{{ quoteSmart()
-
-    /**
-     * Format input so it can be safely used in a query
-     *
-     * @param mixed $in  data to be quoted
-     *
-     * @return mixed Submitted variable's type = returned value:
-     *               + null = the string <samp>NULL</samp>
-     *               + integer or double = the unquoted number
-     *               + boolean = <samp>1</samp> if true or
-     *                 <samp>0</samp> if false.  Use the TINYINT data type.
-     *                 Sybase doesn't have BOOLEAN and BIT can't be null.
-     *               + other (including strings and numeric strings) =
-     *                 the data with single quotes escaped by preceeding
-     *                 single quotes then the whole string is encapsulated
-     *                 between single quotes
-     *
-     * @internal
-     */
-    function quoteSmart($in)
-    {
-        if (is_int($in) || is_double($in)) {
-            return $in;
-        } elseif (is_bool($in)) {
-            return $in ? 1 : 0;
-        } elseif (is_null($in)) {
-            return 'NULL';
-        } else {
-            return "'" . $this->escapeSimple($in) . "'";
-        }
-    }
-
-    // }}}
     // {{{ numCols()
 
     /**
