@@ -270,40 +270,109 @@ class DB_ibase extends DB_common
         }
         return $cols;
     }
-
-    // }}}
-    // {{{ prepare()
-
+    /**
+     * Prepares a query for multiple execution with execute().
+     * @param $query query to be prepared
+     *
+     * @return DB statement resource
+     */
     function prepare($query)
     {
-        if (strpos($query, '&') !== false) {
-            return $this->raiseError(null, "Placeholder '&' not supported");
+        $tokens = split('[\&\?]', $query);
+        $token = 0;
+        $types = array();
+        $qlen = strlen($query);
+        for ($i = 0; $i < $qlen; $i++) {
+            switch ($query[$i]) {
+                case '?':
+                    $types[$token++] = DB_PARAM_SCALAR;
+                    break;
+                case '&':
+                    $types[$token++] = DB_PARAM_OPAQUE;
+                    break;
+            }
         }
+        $newquery = strtr($query, '&', '?');
         $this->last_query = $query;
-        $query = $this->modifyQuery($query);
-        $stmt = ibase_prepare($query);
-        $this->manip_query[(int)$stmt] = DB::isManip($query);
+        $newquery = $this->modifyQuery($newquery);
+        $stmt = ibase_prepare($this->connection, $newquery);
+        $this->prepare_types[(int)$stmt] = $types;
+        $this->manip_query[(int)$stmt]   = DB::isManip($query);
         return $stmt;
     }
 
     // }}}
     // {{{ execute()
 
-    function execute($stmt, $data = false)
+    /**
+     * Executes a DB statement prepared with prepare().
+     *
+     * @param $stmt a DB statement resource (returned from prepare())
+     * @param $data data to be used in execution of the statement
+     *
+     * @return int returns an oci8 result resource for successful
+     * SELECT queries, DB_OK for other successful queries.  A DB error
+     * code is returned on failure.
+     */
+    function &execute($stmt, $data = false)
     {
-        if (!sizeof($data)) {
+        $types=&$this->prepare_types[$stmt];
+        if (($size = sizeof($types)) != sizeof($data)) {
             return $this->raiseError(DB_ERROR_MISMATCH);
         }
-        $data = array_merge(array($stmt), $data);
-        $result = call_user_func_array('ibase_execute', $data);
-        if (!$result) {
+        $pdata[0] = $stmt;
+        for ($j = 0; $j < $size; $j++) {
+            $i = $j + 1;
+            if (is_array($data)) {
+                $pdata[$i] = &$data[$j];
+            } else {
+                $pdata[$i] = &$data;
+            }
+            if ($types[$j] == DB_PARAM_OPAQUE) {
+                $fp = fopen($pdata[$i], 'r');
+                $pdata[$i] = '';
+                if ($fp) {
+                    while (($buf = fread($fp, 4096)) != false) {
+                        $pdata[$i] .= $buf;
+                    }
+                    fclose($fp);
+                }
+            }
+        }
+        $res = call_user_func_array('ibase_execute', $pdata);
+        if (!$res) {
             return $this->ibaseRaiseError();
         }
-        if ($this->autocommit) {
+        /* XXX need this?
+        if ($this->autocommit && $this->manip_query[(int)$stmt]) {
             ibase_commit($this->connection);
+        }*/
+        if ($this->manip_query[(int)$stmt]) {
+            return DB_OK;
+        } else {
+            return new DB_result($this, $res);
         }
-        return DB::isManip($this->manip_query[(int)$stmt]) ? DB_OK : new DB_result($this, $result);
     }
+
+    /**
+     * Free the internal resources associated with a prepared query.
+     *
+     * @param $stmt The interbase_query resource type
+     *
+     * @return bool TRUE on success, FALSE if $result is invalid
+     */
+    function freePrepared($stmt)
+    {
+        if (!is_resource($stmt)) {
+            return false;
+        }
+        ibase_free_query($stmt);
+        unset($this->prepare_tokens[(int)$stmt]);
+        unset($this->prepare_types[(int)$stmt]);
+        unset($this->manip_query[(int)$stmt]);
+        return true;
+    }
+
 
     // }}}
     // {{{ autoCommit()
