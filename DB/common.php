@@ -1163,7 +1163,6 @@ class DB_common extends PEAR
         }
 
         $results = array();
-        $this->pushErrorHandling(PEAR_ERROR_RETURN);
         while (DB_OK === $res->fetchInto($row, $fetchmode)) {
             if ($fetchmode & DB_FETCHMODE_FLIPPED) {
                 foreach ($row as $key => $val) {
@@ -1173,7 +1172,6 @@ class DB_common extends PEAR
                 $results[] = $row;
             }
         }
-        $this->popErrorHandling();
 
         $res->free();
 
