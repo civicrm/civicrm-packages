@@ -124,11 +124,13 @@ class DB_sqlite extends DB_common {
                               'prepare' => false,
                               'pconnect' => true,
                               'transactions' => false,
-                              'limit' => 'emulate'
+                              'limit' => 'alter'
                           );
+/*
         $this->options = array (
                              'optimize' => 'portability'
                          );
+*/
 
         // SQLite data types, http://www.sqlite.org/datatypes.html
         $this->keywords = array (
@@ -150,8 +152,9 @@ class DB_sqlite extends DB_common {
                               "VARYING"   => ""
                           );
         $this->errorcode_map = array(
+                                   1    => DB_ERROR_SYNTAX,
+                                   
                                    1004 => DB_ERROR_CANNOT_CREATE,
-                                   1005 => DB_ERROR_CANNOT_CREATE,
                                    1006 => DB_ERROR_CANNOT_CREATE,
                                    1007 => DB_ERROR_ALREADY_EXISTS,
                                    1008 => DB_ERROR_CANNOT_DROP,
@@ -248,19 +251,22 @@ class DB_sqlite extends DB_common {
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
         $query = $this->_modifyQuery($query);
-
         $result = @sqlite_query($query, $this->connection);
         $this->result = $result;
-        if (!$this->result ) {
+       if (!$this->result ) {
             $errno = sqlite_last_error($this->connection );
             if (!$errno) {
                 return null;
             }
             return $this->sqliteRaiseError($errno);
         }
-
-        if (gettype($result) === "resource") {
+        
+        /* sqlite_query() seems to allways return a resource */
+        /* so cant use that                                  */
+        if (!$ismanip) {
             $numRows = $this->numRows($result);
+
+            /* if numRows() returnet PEAR_Error */
             if (is_object($numRows )) {
                 return $numRows;
             }
@@ -400,7 +406,7 @@ class DB_sqlite extends DB_common {
      */
     function numRows($result) {
         $rows = @sqlite_num_rows($result);
-        if (!$rows) {
+        if (!is_integer($rows)) {
             return $this->raiseError();
         }
         return $rows;
@@ -429,6 +435,53 @@ class DB_sqlite extends DB_common {
     function getLastInsertId() {
         return sqlite_last_insert_rowid($this->connection );
     }
+
+    function dropSequence($seq_name)
+    {
+        $seqname = $this->getSequenceName($seq_name);
+        return $this->query("DROP TABLE $seqname");
+    } 
+     
+
+    function createSequence($seq_name) 
+    {
+        $seqname = $this->getSequenceName($seq_name);
+        $query   = 'CREATE TABLE ' . $seqname .
+                   ' (id INTEGER UNSIGNED PRIMARY KEY) ';
+        $result  = $this->query($query);
+        if (DB::isError($result)) {
+            return($result);
+        } 
+    }
+
+    function nextId($seq_name, $ondemand = true)
+    { 
+        $seqname = $this->getSequenceName($seq_name);
+ 
+        do {
+            $repeat = 0;
+            $this->pushErrorHandling(PEAR_ERROR_RETURN);
+            $result = $this->query("INSERT INTO $seqname VALUES (NULL)");
+            $this->popErrorHandling();
+            if ($result == DB_OK) {
+                $id = sqlite_last_insert_rowid($this->connection);
+                if ($id != 0) {
+                    return $id;
+                }
+            } elseif ($ondemand && DB::isError($result) &&
+            $result->getCode() == 1) {
+                $result = $this->createSequence($seq_name);
+                if (DB::isError($result)) {
+                    return $this->raiseError($result);
+                } else {
+                    $repeat = 1;
+                }        
+            }
+        } while ($repeat);
+
+        return $this->raiseError($result);
+    }
+
 
     // }}}
     // {{{ getSpecialQuery()
@@ -540,6 +593,12 @@ class DB_sqlite extends DB_common {
 
     // }}}
     // {{{ modifyQuery()
+
+    function modifyLimitQuery($query, $from, $count)
+    {
+        $query = $query . " LIMIT $count OFFSET $from";
+        return $query;
+    }
 
     /**
     * "DELETE FROM table" gives 0 affected rows in SQLite. This little hack 
