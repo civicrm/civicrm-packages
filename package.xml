@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.159 2005-02-03 06:27:27 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.160 2005-02-03 16:56:13 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -121,7 +121,11 @@ mssql:
   DB_ERROR_NOSUCHTABLE.
 
 mysql & mysqli:
-* Added 1061 => DB_ERROR_ALREADY_EXISTS to error map.
+* Added the following items to the error map:
+  1061 => DB_ERROR_ALREADY_EXISTS
+  1044 => DB_ERROR_ACCESS_VIOLATION
+  1049 => DB_ERROR_NOSUCHDB
+  1142 => DB_ERROR_ACCESS_VIOLATION
 * Remove $num_rows property.  Wasn't used in all
   drivers and numRows() can get the answer
   directly from the DBMS' API.
@@ -188,6 +192,7 @@ tests:
 * setup.inc now uses an array for the DSN's
   instead of defining constants.
 * Added the multiconnect.php test.
+* Added the 19getlistof.phpt test.
 * Reworked 10errormap.phpt so it passes when all
   expected conditions are met.  Also tweaked it
   to make it work under fbsql.
@@ -288,6 +293,7 @@ tests:
           <file name="16tableinfo.phpt"/>
           <file name="17query.phpt"/>
           <file name="18get.phpt"/>
+          <file name="19getlistof.phpt"/>
           <file name="bug22328.phpt"/>
           <file name="connect.inc"/>
           <file name="mktable.inc"/>
