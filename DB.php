@@ -437,14 +437,18 @@ class DB
      *  database: Database to use on the DBMS server
      *  username: User name for login
      *  password: Password for login
+     *  mode:     chmod mode for SQLite databases
+     *
+     * Additional keys can be added by appending a URI query string to the
+     * end of the DSN.
      *
      * The format of the supplied DSN is in its fullest form:
      *
-     *  phptype(dbsyntax)://username:password@protocol+hostspec/database
+     *  phptype(dbsyntax)://username:password@protocol+hostspec/database?option=8&another=true
      *
      * Most variations are allowed:
      *
-     *  phptype://username:password@protocol+hostspec:110//usr/db_file.db
+     *  phptype://username:password@protocol+hostspec:110//usr/db_file.db?mode=0644
      *  phptype://username:password@hostspec/database_name
      *  phptype://username:password@hostspec
      *  phptype://username@hostspec
@@ -565,7 +569,8 @@ class DB
                 }
                 foreach ($opts as $opt) {
                     list($key, $value) = explode('=', $opt);
-                    if (!isset($parsed[$key])) { // don't allow params overwrite
+                    if ($key == 'mode' || !isset($parsed[$key])) {
+                        // don't allow params overwrite, unless it's "mode"
                         $parsed[$key] = rawurldecode($value);
                     }
                 }
