@@ -817,14 +817,24 @@ class DB_pgsql extends DB_common
             $error_regexps = array(
                 '/(([Rr]elation|[Ss]equence|[Tt]able)( [\"\'].*[\"\'])? does not exist|[Cc]lass ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
                 '/index .* does not exist/' => DB_ERROR_NOT_FOUND,
-                '/[Cc]olumn [\"\'].*[\"\'] .*does not exist/' => DB_ERROR_NOSUCHFIELD,
+                '/^column .* does not exist/i'
+                    => DB_ERROR_NOSUCHFIELD,
                 '/[Rr]elation [\"\'].*[\"\'] already exists|[Cc]annot insert a duplicate key into (a )?unique index.*/' => DB_ERROR_ALREADY_EXISTS,
                 '/(divide|division) by zero$/'          => DB_ERROR_DIVZERO,
                 '/pg_atoi: error in .*: can\'t parse /' => DB_ERROR_INVALID_NUMBER,
-                '/invalid input syntax for integer/'    => DB_ERROR_INVALID_NUMBER,
+                '/^invalid input syntax for( type)? (integer|numeric)/i'
+                    => DB_ERROR_INVALID_NUMBER,
+                '/^value .* is out of range for type \w*int/i'
+                    => DB_ERROR_INVALID_NUMBER,
+                '/^value too long for type character/i'
+                    => DB_ERROR_INVALID,
                 '/ttribute [\"\'].*[\"\'] not found$|[Rr]elation [\"\'].*[\"\'] does not have attribute [\"\'].*[\"\']/' => DB_ERROR_NOSUCHFIELD,
+                '/^column .* specified in USING clause does not exist in (left|right) table/i'
+                    => DB_ERROR_NOSUCHFIELD,
                 '/parser: parse error at or near \"/'   => DB_ERROR_SYNTAX,
                 '/syntax error at/'                     => DB_ERROR_SYNTAX,
+                '/^column reference .* is ambiguous/i'
+                    => DB_ERROR_SYNTAX,
                 '/permission denied/'                   => DB_ERROR_ACCESS_VIOLATION,
                 '/violates not-null constraint/'        => DB_ERROR_CONSTRAINT_NOT_NULL,
                 '/violates [\w ]+ constraint/'          => DB_ERROR_CONSTRAINT,
