@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(E_ALL);
+
 if (!defined('PATH_SEPARATOR')) {
     if (stristr(PHP_OS, 'WIN')) {
         define('PATH_SEPARATOR', ';');
