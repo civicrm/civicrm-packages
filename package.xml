@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.96 2004-04-17 19:43:39 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.97 2004-04-28 18:38:06 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -67,6 +67,10 @@ DB is compatible with both PHP 4 and PHP 5.
     <notes>
 =============
 BUGS FIXED:
+
+- common:
+Fix docblocks for getAssoc() and limitQuery().
+(danielc)
 
 - mysqli:
 Move connection id to first argument in

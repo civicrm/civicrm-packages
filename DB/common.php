@@ -1160,7 +1160,11 @@ class DB_common extends PEAR
      * @param string  $query query
      * @param integer $from  the row to start to fetching
      * @param integer $count the numbers of rows to fetch
-     * @param array   $params required for a statement
+     * @param mixed   $params array, string or numeric data to be used in
+     *                       execution of the statement.  Quantity of items
+     *                       passed must match quantity of placeholders in
+     *                       query:  meaning 1 placeholder for non-array
+     *                       parameters or 1 placeholder per array element.
      *
      * @return mixed a DB_Result object, DB_OK or a DB_Error
      *
@@ -1428,6 +1432,7 @@ class DB_common extends PEAR
      *                        passed must match quantity of placeholders in
      *                        query:  meaning 1 placeholder for non-array
      *                        parameters or 1 placeholder per array element.
+     * @param int     $fetchmode  the fetch mode to use
      * @param boolean $group  if true, the values of the returned array
      *                        is wrapped in another array.  If the same
      *                        key value (in the first column) repeats
