@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.133 2004-11-10 16:42:39 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.134 2004-11-10 16:44:44 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -72,7 +72,7 @@ ibase:
 mssql:
 * Use "," to delimit port only for Windows.  Use ":"
 for other OS's.  This bug was introduced when
-resolving Bug #2140.  (Bug #2730)
+resolving Bug #2140.  (Bug #2731)
 
 mysql & mysqli:
 * Added 1061 => DB_ERROR_ALREADY_EXISTS to error map.
