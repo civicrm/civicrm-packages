@@ -937,18 +937,31 @@ class DB_pgsql extends DB_common
     {
         switch ($type) {
             case 'tables':
-                return "SELECT c.relname as \"Name\"
-                        FROM pg_class c, pg_user u
-                        WHERE c.relowner = u.usesysid AND c.relkind = 'r'
-                        AND not exists (select 1 from pg_views where viewname = c.relname)
-                        AND c.relname !~ '^(pg_|sql_)'
-                        UNION
-                        SELECT c.relname as \"Name\"
-                        FROM pg_class c
-                        WHERE c.relkind = 'r'
-                        AND not exists (select 1 from pg_views where viewname = c.relname)
-                        AND not exists (select 1 from pg_user where usesysid = c.relowner)
-                        AND c.relname !~ '^pg_'";
+                return 'SELECT c.relname AS "Name"'
+                        . ' FROM pg_class c, pg_user u'
+                        . ' WHERE c.relowner = u.usesysid'
+                        . " AND c.relkind = 'r'"
+                        . ' AND NOT EXISTS'
+                        . ' (SELECT 1 FROM pg_views'
+                        . '  WHERE viewname = c.relname)'
+                        . " AND c.relname !~ '^(pg_|sql_)'"
+                        . ' UNION'
+                        . ' SELECT c.relname AS "Name"'
+                        . ' FROM pg_class c'
+                        . " WHERE c.relkind = 'r'"
+                        . ' AND NOT EXISTS'
+                        . ' (SELECT 1 FROM pg_views'
+                        . '  WHERE viewname = c.relname)'
+                        . ' AND NOT EXISTS'
+                        . ' (SELECT 1 FROM pg_user'
+                        . '  WHERE usesysid = c.relowner)'
+                        . " AND c.relname !~ '^pg_'";
+            case 'schema.tables':
+                return "SELECT schemaname || '.' || tablename"
+                        . ' AS "Name"'
+                        . ' FROM pg_catalog.pg_tables'
+                        . ' WHERE schemaname NOT IN'
+                        . " ('pg_catalog', 'information_schema', 'pg_toast')";
             case 'views':
                 // Table cols: viewname | viewowner | definition
                 return 'SELECT viewname FROM pg_views'
