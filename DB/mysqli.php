@@ -173,12 +173,6 @@ class DB_mysqli extends DB_common
             $this->_db = $dsninfo['database'];
         }
 
-        if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
-            $this->errorcode_map[1022] = DB_ERROR_CONSTRAINT;
-            $this->errorcode_map[1048] = DB_ERROR_CONSTRAINT_NOT_NULL;
-            $this->errorcode_map[1062] = DB_ERROR_CONSTRAINT;
-        }
-
         $this->connection = $conn;
         return DB_OK;
     }
@@ -736,6 +730,11 @@ class DB_mysqli extends DB_common
     function mysqlRaiseError($errno = null)
     {
         if ($errno === null) {
+            if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
+                $this->errorcode_map[1022] = DB_ERROR_CONSTRAINT;
+                $this->errorcode_map[1048] = DB_ERROR_CONSTRAINT_NOT_NULL;
+                $this->errorcode_map[1062] = DB_ERROR_CONSTRAINT;
+            }
             $errno = $this->errorCode(mysqli_errno($this->connection));
         }
         return $this->raiseError($errno, null, null, null,
