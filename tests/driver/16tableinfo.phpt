@@ -201,7 +201,7 @@ $quirks = array(
         ),
         4 => array(
             'type' => 'CHAR',
-            'len' => 4,
+            'len' => 2,
             'flags' => 'not_null default',
         ),
         5 => array(
@@ -244,7 +244,7 @@ $quirks = array(
         ),
         4 => array(
             'type' => 'SQLCHAR',
-            'len' => 4,
+            'len' => 2,
             'flags' => 'not_null',
         ),
         5 => array(
@@ -289,7 +289,7 @@ $quirks = array(
         ),
         4 => array(
             'type' => 'char',
-            'len' => 4,
+            'len' => 2,
             'flags' => 'not_null',
         ),
         5 => array(
@@ -332,7 +332,7 @@ $quirks = array(
         ),
         4 => array(
             'type' => 'string',
-            'len' => 4,
+            'len' => 2,
             'flags' => 'not_null',
         ),
         5 => array(
@@ -355,37 +355,37 @@ $quirks = array(
         ),
         0 => array(
             'type' => 'int',
-            'len' => 11,
-            'flags' => 'not_null unique_key multiple_key',
+            'len' => 0,
+            'flags' => 'not_null unique_key multiple_key group_by',
         ),
         1 => array(
             'type' => 'int',
-            'len' => 11,
+            'len' => 0,
             'flags' => 'not_null primary_key',
         ),
         2 => array(
             'type' => 'blob',
-            'len' => 65535,
+            'len' => 0,
             'flags' => 'blob',
         ),
         3 => array(
             'type' => 'date',
-            'len' => 10,
+            'len' => 0,
             'flags' => 'not_null unique_key multiple_key',
         ),
         4 => array(
-            'type' => 'string',
-            'len' => 4,
+            'type' => 'char',
+            'len' => 0,
             'flags' => 'not_null',
         ),
         5 => array(
-            'type' => 'real',
-            'len' => 4,
-            'flags' => '',
+            'type' => 'decimal',
+            'len' => 0,
+            'flags' => 'group_by',
         ),
         9 => array(
-            'type' => 'string',
-            'len' => 20,
+            'type' => 'varchar',
+            'len' => 0,
             'flags' => '',
         ),
     ),
@@ -419,7 +419,7 @@ $quirks = array(
         ),
         4 => array(
             'type' => 'CHAR',
-            'len' => 4,
+            'len' => 2,
             'flags' => 'not_null',
         ),
         5 => array(
@@ -464,7 +464,7 @@ $quirks = array(
         4 => array(
             'type' => 'bpchar',
             'len' => -1,
-            'flags' => 'not_null default_df%20t',
+            'flags' => 'not_null default_%20e',
         ),
         5 => array(
             'type' => 'numeric',
@@ -507,7 +507,7 @@ $quirks = array(
         ),
         4 => array(
             'type' => 'string',
-            'len' => 4,
+            'len' => 2,
             'flags' => '',
         ),
         5 => array(
@@ -554,7 +554,7 @@ $dbh->query("
         fk INTEGER NOT NULL,
         c {$quirks[$dbh->phptype]['clob']} $null,
         d {$quirks[$dbh->phptype]['date']} NOT NULL,
-        e CHAR(4) DEFAULT 'df t' NOT NULL,
+        e CHAR(2) DEFAULT ' e' NOT NULL,
         f DECIMAL(2,1) $null,
         PRIMARY KEY (fk),
         UNIQUE (a, d)
