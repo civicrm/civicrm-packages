@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.76 2004-02-19 18:16:58 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.77 2004-02-19 19:39:29 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -126,6 +126,11 @@ because ifx_fetch_row() starts at 1.  (peterwb)
 - ifx:
 affectedRows() now returns 0 for SELECT
 queries, just like the other DBMS's.  (danielc)
+
+- ibase:
+Remove trans_number argument from rollback()
+method.  No other driver has it and
+ibase_rollback() doesn't accept it.  (danielc)
 
 - sqlite:
 Set $dsn property when connecting.  (danielc)
