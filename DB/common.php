@@ -459,8 +459,8 @@ class DB_common extends PEAR
         return $this->prepare($query);
     }
 
-    // {{{
-    // }}} autoExecute()
+    // }}}
+    // {{{ autoExecute()
 
     /**
     * Make automaticaly an insert or update query and call prepare() and execute() with it
@@ -483,8 +483,8 @@ class DB_common extends PEAR
 
     }
 
-    // {{{
-    // }}} buildManipSQL()
+    // }}}
+    // {{{ buildManipSQL()
 
     /**
     * Make automaticaly an sql query for prepare()
