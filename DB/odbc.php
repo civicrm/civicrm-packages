@@ -336,6 +336,43 @@ class DB_odbc extends DB_common
     }
 
     // }}}
+    // {{{ quoteIdentifier()
+
+    /**
+     * Quote a string so it can be safely used as a table / column name
+     *
+     * Quoting style depends on which dbsyntax was passed in the DSN.
+     *
+     * Use 'mssql' as the dbsyntax in the DB DSN only if you've unchecked
+     * "Use ANSI quoted identifiers" when setting up the ODBC data source.
+     *
+     * @param string $str  identifier name to be quoted
+     *
+     * @return string  quoted identifier string
+     *
+     * @since 1.6.0
+     * @access public
+     */
+    function quoteIdentifier($str)
+    {
+        switch ($this->dsn['dbsyntax']) {
+            case 'access':
+                return '[' . $str . ']';
+                break;
+            case 'mssql':
+            case 'sybase':
+                return '[' . str_replace(']', ']]', $str) . ']';
+                break;
+            case 'mysql':
+            case 'mysql4':
+                return '`' . $str . '`';
+                break;
+            default:
+                return '"' . str_replace('"', '""', $str) . '"';
+        }
+    }
+
+    // }}}
     // {{{ quote()
 
     /**
