@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.43 2004-01-25 19:36:29 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.44 2004-01-27 18:33:01 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -57,225 +57,33 @@ also avaible from a separate package).
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.0RC1</version>
+    <version>1.6.0RC2</version>
     <state>beta</state>
-    <date>2004-01-25</date>
+    <date>2004-01-27</date>
     <notes>
-== GENERAL NOTES ============
-- PEAR DB now requires PHP to be at version 4.2.0 or greater.
-- An **experimental** driver for mysql4 has been added.  (nicos, Roman, et al)
-- The version numbers has been increased to 1.6.0 due to major changes, thereby skipping over a final 1.5.0 release.
-- All changes by danielc unless otherwise noted.
+=============
+NEW FEATURES:
 
-== DB.php and common.php ======
-- Make the $options argument in connect() default to an array to improve documentation.
-- Add strtolower() to all get_class() calls, creating PHP 4/5 compatibility.
-- Speed up connect() a bit by doing one is_array() up front.
-- factory() now has $options parameter and the error reporting / setOption() code related thereto.  Bug 25.
-- Have DB_result::tableInfo() -- which has been long deprecated -- forward a result object rather than a result resource.
-- Removed deprecated constants DB_WARNING and DB_WARNING_READ_ONLY
-- Add DB_FETCHMODE_OBJECT support to fetchAssoc().  Bug 232.  **ONLY WORKS IN PHP 4.**
-- var $phptype was misnamed $type.
-- Save a couple steps in constructor by setting values in var declarations.
-- Allow '.' in sequence names.  Bug 135.
-- Speed getRow() a tad more by making default $params an array.
-- getRow() drop general checks/settype by more efficient specific checks earlier.  Fix docblock param order.
-- trim() $nativecode because some error strings have line breaks at end.
-- Fix broken fold marks.  (ssb)
-- Add 'ssl' connection option to $options/setOption().
-- Fix ; to : at end of case statement.  Bug 617.
-- REFINE PREPARE/EXECUTE EMULATION
-    * Allow scalars in addition to arrays.
-    * prepare() now allows placeholder characters to be escaped so they can be used in literals.  Bug 31.
-    * Allow associative arrays to be passed to execute() and (perhaps speed things) up by using foreach instead of for.  Bug 585.
-    * Fix wrong splitting by \ in prepare().  Bug 45.  (cox)
-    * Use fopen($file, 'rb') to make sure we get binary data properly on Windows platforms. (chagenbu)
-    * Eliminate unnecessary variable assignments.
-    * Move error checking up front so it doesn't need to be repeated in for loop.
-    * Reorganize conditional statements to reduce need for executing them.
-    * Raise DB_ERROR_ACCESS_VIOLATION on fopen() failure.
-    * Use fread() instead of while fgets().
-    * Adjust docblocks to match changes and related realities.
+- An **experimental** driver for mysql4 has been
+added.  (nicos, Roman, et al)
 
-== All Drivers ==============
-- Whitespace cleanup.
-- Docblock enhancements.
-- Change double quotes to single quotes for minor efficiency gain on strings that don't need to be evaluated.
-- quoteSmart() and escapeSimple() methods introduced.
-- quote() and quoteString() are now officially deprecated.
-- REWORK PORTABILITY FEATURES
-    * Added new 'portability' option.
-    * The 'optimize' option is now deprecated, but full backwards compatibility is built in.
-    * Each portability feature can be turned on and off.
-    * New portability feature allows right trimming database output.
-    * All DBMS's can now lowercase field names.  Bug 397.
-    * All tableInfo() methods now have the ability to lowercase table and field names.
-    * Portability features enabled/disabled by passing bitwised constants to DB_common::setOption().
-    * Enhanced docblocks for related methods.
-    * Adjusted tests accordingly.
-    * This system is documented in the DB_common::setOption() method.
-- Dropped freeResult() as a way for freeing prepared queries (cox):
-    $res = $dbh->prepare(..);
-    $dbh->freeResult($res);
-    (that was never documented/used anyways)
-    Use $dbh->freePrepared($res) instead
+=============
+BUGS FIXED:
 
-== fbsql ====================
-- Fix mem leaks in some drivers even when free() is called.  (cox)
-- TABLEINFO() CLEAN UP / STANDARDIZATION
-    * Can now be passsed a DB_result object, which has become the primary means of calling this method.
-    * Change empty($mode) to is_null($mode) which has lower overhead.
-    * Create $got_string variable so don't need to call is_string() over and over.
-    * Centralize $result validation check.
+- ibase:  Add error mapping for 'no permission for...'
 
-== ibase ====================
-- Fix mem leaks in some drivers even when free() is called.  (cox)
-- TABLEINFO() CLEAN UP / STANDARDIZATION
-    * Can now be passsed a DB_result object, which has become the primary means of calling this method.
-    * Suppress output from ibase_query() via @.
-    * Create limit via 'WHERE 1=0' in the query used when table names submitted.
-    * Change empty($mode) to is_null($mode) which has lower overhead.
-    * Create $got_string variable so don't need to call is_string() over and over.
-    * Centralize $result validation check.
-- REFINE PREPARE/EXECUTE
-    * prepare() now allows placeholder characters to be escaped so they can be used in literals.  Bug 31.
-    * Allow associative arrays to be passed to execute() and (perhaps speed things) up by using foreach instead of for.  Bug 585.
-    * Allow ! as placeholder in prepare().  Bug 91.
-    * Fix execute() always requiring placeholders.
-    * Use fopen($file, 'rb') to make sure we get binary data properly on Windows platforms.
-    * Raise DB_ERROR_ACCESS_VIOLATION on fopen() failure.
-    * Do type checking before entering loop to save processing.
-    * Speed up by using fread(filesize()) in prepare() instead of doing fread() in loop.
-    * Document ability to accept both arrays and scalars.
+- ifx:    Use NEXT for fetch_row() instead of null.  Bug 598.
 
-== ifx ======================
-- Fix capitalization of ifxRaiseError().  Thanks peterwb.
-- Add return for 'tables' in getSpecialQuery() to make getListOf('tables') work.  From peterwb.
-- Fix mem leaks in some drivers even when free() is called.  (cox)
+- sybase: Use false for password when password is empty in
+order to workaround a PHP bug.  Bug 631.
 
-== msql =====================
-- Fix mem leaks in some drivers even when free() is called.  (cox)
+- dbase, ifx, mssql, mysql, oci8, sqlite, sybase:
+Changed $str to $in for boolean test in smartQuote().
 
-== mssql ====================
-- Add @ to mssql_query() in tableInfo().
-- Made possible to call _mssql_field_flags() multiple times with different table names
-- Add 8134, 'Divide by zero error encountered' to errormap.  But doesn't pass errormap tests due PHP not reporting it as an error.  See PHP bug 26799.
-- Fix mem leaks in some drivers even when free() is called.  (cox)
-- TABLEINFO() CLEAN UP / STANDARDIZATION
-    * Can now be passsed a DB_result object, which has become the primary means of calling this method.
-    * Flags now space-delimited rather than comma-delimited.
-    * _mssql_field_flags() revamped (contributed by j_barthel)
-    * _mssql_field_flags() was complaining about invalid indexes for $val.  The keys returned are lower case but the keys used in the script were upper.  Added array_change_key_case() call and changed case of keys in the script.
-    * Multi-column indexes now convey 'multiple_key' on more than just the first column.
-    * Create limit via 'WHERE 1=0' in the query used when table names submitted.
-    * Change empty($mode) to is_null($mode) which has lower overhead.
-    * Create $got_string variable so don't need to call is_string() over and over.
-    * Centralize $result validation check.
-- FIX ERROR HANDLING
-    * errorCode() mistakenly returned an mssql error code rather than a PEAR DB code.  Fixed.
-    * Added errorNative() method which returns an mssql error code.
-    * Have mssqlRaiseError() take advantage of the new/fixed methods.
-
-== mysql ====================
-- Fix mem leaks in some drivers even when free() is called.  (cox)
-- TABLEINFO() CLEAN UP / STANDARDIZATION
-    * Can now be passsed a DB_result object, which has become the primary means of calling this method.
-    * Change empty($mode) to is_null($mode) which has lower overhead.
-    * Create $got_string variable so don't need to call is_string() over and over.
-    * Centralize $result validation check.
-
-== oci8 =====================
-- Make modifyLimitQuery() work by properly incrementing $from.  Bug 474.
-- Remove ocifreestatement() from freeResult() so can get results from SELECT queries.  Bug 229.  PHP Bug 25747.
-- Add errorcode_map for ORA-00921 'unexpected end of SQL command.'  oci8 now passes all errormap tests.
-- Suppress stdout by placing @ in front of several OCI*() calls.  Bug 77.
-- Return by reference oci8RaiseError().
-- Fix mem leaks in some drivers even when free() is called.  (cox)
-- TABLEINFO() CLEAN UP / STANDARDIZATION
-    * Can now be passsed a DB_result object, which has become the primary means of calling this method.
-    * When analyzing a query result, looking up the table name via USER_TAB_COLUMNS fails when more than one table in the schema uses the column name in question.  Drop this 'feature.'
-    * Fix bug introduced in August that passed OCIColumnName() to 'type'.
-    * 'type' is different for each DBMS, so no need to lowercase it.
-    * Change $count to $i for standardization.
-    * Suppress output from oci*() calls via @.
-    * Check for 'portability' once per column.
-    * Reformat $q_fields query to make it more readable and not call unneeded fields.
-    * Place $q_fields in $this->last_query to clarify debuging.
-    * Change empty($mode) to is_null($mode) which has lower overhead.
-    * Create $got_string variable so don't need to call is_string() over and over.
-- REFINE PREPARE/EXECUTE
-    * prepare() now allows placeholder characters to be escaped so they can be used in literals.  Bug 31.
-    * Allow associative arrays to be passed to execute() and (perhaps speed things) up by using foreach instead of for.  Bug 585.
-    * Allow ! as placeholder in prepare().  Bug 91.
-    * Use fopen($file, 'rb') to make sure we get binary data properly on Windows platforms.
-    * Fix OCI8 Execute always requires placeholders.  Bug 72.  (cox)
-    * Fix OCI8 Prepare() does not raise SQL parse error.  Bug 73.  (cox)
-    * Raise DB_ERROR_ACCESS_VIOLATION on fopen() failure.
-    * Speed up by using fread(filesize()) in prepare() instead of doing fread() in loop.
-    * Document ability to accept both arrays and scalars.
-    * Do type checking before entering loop to save processing.
-
-== odbc =====================
-- Fix mem leaks in some drivers even when free() is called.  (cox)
-
-== pgsql ====================
-- In tableInfo() flag's default value component: 1) run values through rawurlencode() because spaces would interfere with space separation of the flags list and 2) remove ::datatype from the end since it's already stated in 'type'.
-- Allow EXPLAIN in simpleQuery() and merge the method's three preg tests into one.  Bug 593.
-- Eliminate potential for undefined variable in _pgFieldFlags().
-- Add several items to errorcode_map. pgsql now passes all errormap tests.
-- Make error-matching regular expressions case-insensitive. (chagenbu)
-- Allow for postgres sockets in a non-standard location.  Bug 339.  (chagenbu)
-- Fix mem leaks in some drivers even when free() is called.  (cox)
-- Free result fixes.  Bug 25550.  (cox)
-- TABLEINFO() CLEAN UP / STANDARDIZATION
-    * Can now be passsed a DB_result object, which has become the primary means of calling this method.
-    * Change flags from 'term' to 'term_key' (eg 'unique' is now 'unique_key').
-    * If a key is primary, just say 'primary_key', not that and 'unique_key'.
-    * Suppress output from pg_exec() via @.
-    * Change empty($mode) to is_null($mode) which has lower overhead.
-    * Create $got_string variable so don't need to call is_string() over and over.
-    * Centralize $result validation check.
-
-== sqlite ===================
-- Remove fetchRow().  It's already in DB_result, no other driver has one, argument order was different, works fine without it.
-- Catch touch() and chmod() errors.  Bug 292.
-- Since only SQLite uses 'mode', remove it from $params in DB.php and add an isset check in sqlite.php.
-- Fix connection types. Was using persistent when asked for regular and regular when asked for persistent.  Bug 25806.  (tuupola)
-- Remove unused DB_FETCHMODE_BOTH constanst.  (tuupola)
-- Add debug information from sqlite_last_error() in sqliteRaiseError().  (tuupola)
-- Fix mem leaks in some drivers even when free() is called.  (cox)
-
-== storage ==================
-- Add strtolower() to all get_class() calls, creating PHP 4/5 compatibililty.
-- PEAR.php already required in DB.php
-- Return by reference fixes.  Bug 361.
-- Some cleanup (mj):
-    * Using &lt;br /&gt; instead of &lt;br&gt;
-    * Removing usage of @ and replacing that with a more elaborate construct.
-    * Removing usage of non-existing member variable $_discard.
-
-== sybase ===================
-- Allow empty passwords.  Bug 564.
-- Add tableInfo().
-- Implement sequences.
-- Make fetchInto() drop numbered keys when DB_FETCHMODE_ASSOC.  Bug 350.
-- Quiet the sybase connect call.  Bug 437.
-- Set $this->_db so sybase_select_db() in simpleQuery() will work.  Bug 49.
-- Fix mem leaks in some drivers even when free() is called.  (cox)
-- MAKE ERROR MESSAGES WORK:
-    * Use foreach() in errorCode() so loop starts at begining of $error_regexps array each time.
-    * Add some new error string expressions to $error_regexps.
-    * Change values of $error_regexps from Sybase error codes to DB constants.
-    * Delete all elements in $errorcode_map because Sybase extension doesn't return error codes.
-    * Simplify errorCode() and sybaseRaiseError().  Was passing inappropriate arguments to raiseError() -- Sybase's native message went $userinfo and needlessly tried sending DB's own message to $native.  Now native goes to $native and $userinfo is null.
-    * Add docblocks for these error methods.
-    * Divide by zero error doesn't pass errormap tests due PHP not reporting it as an error.
-
-== tests ====================
-- Expanded range of tests.
-- Adjusted tests to ensure they work under both PHP 4 and PHP 5.
-- Each test creates and drops all needed tables, even when tests fail.
-	</notes>
+- fbsql, ibase:
+Use getSequenceName() in createSequence(), nextID() and
+dropSequence() for uniformity between drivers.
+    </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
       <dir name="DB" role="php">
@@ -287,6 +95,7 @@ also avaible from a separate package).
         <file name="msql.php"/>
         <file name="mssql.php"/>
         <file name="mysql.php"/>
+        <file name="mysql4.php"/>
         <file name="oci8.php"/>
         <file name="odbc.php"/>
         <file name="pgsql.php"/>
