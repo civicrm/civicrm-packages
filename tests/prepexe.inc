@@ -3,7 +3,7 @@
 $tmpfile = tempnam("/tmp", "phptmp");
 register_shutdown_function("my_shutdown");
 $fp = fopen($tmpfile, "w");
-$filedata = "opaque\nplaceholder\ntest";
+$filedata = "opaque\nplaceholder's\ntest";
 fwrite($fp, $filedata);
 fclose($fp);
 
@@ -97,7 +97,23 @@ print "a = {$row['a']}, b = {$row['b']}, d = " . gettype($row['d']) . "\n";
 
 
 function my_shutdown() {
-    global $tmpfile, $dbh;
+    global $tmpfile, $dbh, $sth1, $sth2, $sth3, $sth4, $sth5, $sth6, $res;
+
+    switch ($dbh->phptype) {
+        case 'ibase':
+            /*
+             * Interbase doesn't allow dropping tables that have result
+             * sets still open.
+             */
+            $dbh->freePrepared($sth1);
+            $dbh->freePrepared($sth2);
+            $dbh->freePrepared($sth3);
+            $dbh->freePrepared($sth4);
+            $dbh->freePrepared($sth5);
+            $dbh->freePrepared($sth6);
+            $dbh->freeResult($res->result);
+            break;
+    }
 
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
     $dbh->query('DROP TABLE phptest');
