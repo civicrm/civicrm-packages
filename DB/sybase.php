@@ -165,7 +165,7 @@ class DB_sybase extends DB_common
     function errorCode($errormsg)
     {
         static $error_regexps;
-        if (empty($error_regexps)) {
+        if (!isset($error_regexps)) {
             $error_regexps = array(
                 '/Incorrect syntax near/'
                     => DB_ERROR_SYNTAX,

@@ -120,7 +120,7 @@ class DB_fbsql extends DB_common
         } else {
             $conn = false;
         }
-        if (empty($conn)) {
+        if (!$conn) {
             if (empty($php_errormsg)) {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED);
             } else {

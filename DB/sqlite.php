@@ -421,7 +421,7 @@ class DB_sqlite extends DB_common
     function errorCode($errormsg)
     {
         static $error_regexps;
-        if (empty($error_regexps)) {
+        if (!isset($error_regexps)) {
             $error_regexps = array(
                 '/^no such table:/' => DB_ERROR_NOSUCHTABLE,
                 '/^table .* already exists$/' => DB_ERROR_ALREADY_EXISTS,

@@ -166,7 +166,7 @@ class DB_storage extends PEAR
         if (DB::isError($row)) {
             return $row;
         }
-        if (empty($row)) {
+        if (!$row) {
             return $this->raiseError(null, DB_ERROR_NOT_FOUND, null, null,
                                      $query, null, true);
         }

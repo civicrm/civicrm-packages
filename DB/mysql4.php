@@ -116,7 +116,7 @@ class DB_mysql4 extends DB_common
             $dbhost = ':' . $dsninfo['socket'];
         } else {
             $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
-            if (!empty($dsninfo['port'])) {
+            if ($dsninfo['port']) {
                 $dbhost .= ':' . $dsninfo['port'];
             }
         }
@@ -140,7 +140,7 @@ class DB_mysql4 extends DB_common
 
         @ini_restore('track_errors');
 
-        if (empty($conn)) {
+        if (!$conn) {
             if (($err = @mysqli_error()) != '') {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
                                          null, $err);

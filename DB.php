@@ -578,13 +578,13 @@ class DB
         // $str => phptype(dbsyntax)
         if (preg_match('|^(.+?)\((.*?)\)$|', $str, $arr)) {
             $parsed['phptype']  = $arr[1];
-            $parsed['dbsyntax'] = (empty($arr[2])) ? $arr[1] : $arr[2];
+            $parsed['dbsyntax'] = !$arr[2] ? $arr[1] : $arr[2];
         } else {
             $parsed['phptype']  = $str;
             $parsed['dbsyntax'] = $str;
         }
 
-        if (empty($dsn)) {
+        if (!count($dsn)) {
             return $parsed;
         }
 
@@ -606,7 +606,7 @@ class DB
         // $dsn => proto(proto_opts)/database
         if (preg_match('|^([^(]+)\((.*?)\)/?(.*?)$|', $dsn, $match)) {
             $proto       = $match[1];
-            $proto_opts  = (!empty($match[2])) ? $match[2] : false;
+            $proto_opts  = $match[2] ? $match[2] : false;
             $dsn         = $match[3];
 
         // $dsn => protocol+hostspec/database (old format)
@@ -637,7 +637,7 @@ class DB
 
         // Get dabase if any
         // $dsn => database
-        if (!empty($dsn)) {
+        if ($dsn) {
             // /database
             if (($pos = strpos($dsn, '?')) === false) {
                 $parsed['database'] = $dsn;

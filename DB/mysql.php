@@ -119,7 +119,7 @@ class DB_mysql extends DB_common
             $dbhost = ':' . $dsninfo['socket'];
         } else {
             $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
-            if (!empty($dsninfo['port'])) {
+            if ($dsninfo['port']) {
                 $dbhost .= ':' . $dsninfo['port'];
             }
         }
@@ -136,7 +136,7 @@ class DB_mysql extends DB_common
         } else {
             $conn = false;
         }
-        if (empty($conn)) {
+        if (!$conn) {
             if (($err = @mysql_error()) != '') {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
                                          null, $err);

@@ -106,8 +106,8 @@ class DB_ibase extends DB_common
 
         $params = array();
         $params[] = $dbhost;
-        $params[] = !empty($dsninfo['username']) ? $dsninfo['username'] : null;
-        $params[] = !empty($dsninfo['password']) ? $dsninfo['password'] : null;
+        $params[] = $dsninfo['username'] ? $dsninfo['username'] : null;
+        $params[] = $dsninfo['password'] ? $dsninfo['password'] : null;
         $params[] = isset($dsninfo['charset']) ? $dsninfo['charset'] : null;
         $params[] = isset($dsninfo['buffers']) ? $dsninfo['buffers'] : null;
         $params[] = isset($dsninfo['dialect']) ? $dsninfo['dialect'] : null;
@@ -567,7 +567,7 @@ class DB_ibase extends DB_common
               .' WHERE  I.RDB$FIELD_NAME=\''.$field_name.'\''
                  .' AND R.RDB$RELATION_NAME=\''.$table_name.'\'';
         $result = ibase_query($this->connection, $sql);
-        if (empty($result)) {
+        if (!$result) {
             $tmp =& $this->ibaseRaiseError();
             return $tmp;
         }
@@ -590,7 +590,7 @@ class DB_ibase extends DB_common
               .' WHERE  R.RDB$RELATION_NAME=\''.$table_name.'\''
                 .' AND  R.RDB$FIELD_NAME=\''.$field_name.'\'';
         $result = ibase_query($this->connection, $sql);
-        if (empty($result)) {
+        if (!$result) {
             $tmp =& $this->ibaseRaiseError();
             return $tmp;
         }
