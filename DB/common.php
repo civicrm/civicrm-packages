@@ -745,21 +745,22 @@ class DB_common extends PEAR
     // {{{ limitQuery()
     /**
     * Generates a limited query
-    * *EXPERIMENTAL*
     *
     * @param string  $query query
     * @param integer $from  the row to start to fetching
     * @param integer $count the numbers of rows to fetch
+    * @param array   $params required for a statement
     *
-    * @return mixed a DB_Result object or a DB_Error
+    * @return mixed a DB_Result object, DB_OK or a DB_Error
     *
     * @access public
     */
-    function &limitQuery($query, $from, $count)
+    function &limitQuery($query, $from, $count, $params = array())
     {
         $query  = $this->modifyLimitQuery($query, $from, $count);
-        $result = $this->simpleQuery($query);
-        if (DB::isError($result) || $result === DB_OK) {
+        $result = $this->query($query, $params);
+        if (DB::isError($result) || get_class($result) == 'db_result' ||
+            $result === DB_OK) {
             return $result;
         } else {
             $options['limit_from']  = $from;
