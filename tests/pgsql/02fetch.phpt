@@ -5,7 +5,6 @@ DB_pgsql::fetch test
 --FILE--
 <?php
 include("mktable.inc");
-include("../fetchrow.inc");
 include("../fetchmodes.inc");
 ?>
 --EXPECT--

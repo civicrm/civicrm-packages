@@ -5,7 +5,6 @@ DB_driver::fetch
 --FILE--
 <?php
 require_once './mktable.inc';
-require_once '../fetchrow.inc';
 require_once '../fetchmodes.inc';
 ?>
 --EXPECT--

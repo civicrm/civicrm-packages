@@ -5,7 +5,6 @@ DB_mysql fetch test
 --FILE--
 <?php
 include("mktable.inc");
-include(dirname(__FILE__)."/../fetchrow.inc");
 include(dirname(__FILE__)."/../fetchmodes.inc");
 ?>
 --EXPECT--
