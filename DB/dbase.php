@@ -152,12 +152,37 @@ class DB_dbase extends DB_common
     // {{{ connect()
 
     /**
-     * Connect to the database server, log in and open the database
+     * Connect to the database and create it if it doesn't exist
+     *
+     * <code>
+     * require_once 'DB.php';
+     *
+     * $dsn = array(
+     *     'phptype'  => 'dbase',
+     *     'database' => '/path/and/name/of/dbase/file',
+     *     'mode'     => 2,
+     *     'fields'   => array(
+     *         array('a', 'N', 5, 0),
+     *         array('b', 'C', 40),
+     *         array('c', 'C', 255),
+     *         array('d', 'C', 20),
+     *     ),
+     * );
+     * $options = array(
+     *     'debug'       => 2,
+     *     'portability' => DB_PORTABILITY_ALL,
+     * );
+     *
+     * $db =& DB::connect($dsn, $options);
+     * if (DB::isError($db)) {
+     *     die($db->getMessage());
+     * }
+     * </code>
      *
      * @param array $dsn         the data source name
      * @param bool  $persistent  should the connection be persistent?
      *
-     * @return int  DB_OK on success. A DB_error object on failure.
+     * @return int  DB_OK on success. A DB_Error object on failure.
      *
      * @see DB::connect(), DB::parseDSN()
      */
@@ -172,20 +197,43 @@ class DB_dbase extends DB_common
             $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        $ini = ini_get('track_errors');
+        /*
+         * Turn track_errors on for entire script since $php_errormsg
+         * is the only way to find errors from the dbase extension.
+         */
+        ini_set('track_errors', 1);
         $php_errormsg = '';
-        if ($ini) {
-            $this->connection = @dbase_open($dsn['database'], 0);
-        } else {
-            ini_set('track_errors', 1);
-            $this->connection = @dbase_open($dsn['database'], 0);
-            ini_set('track_errors', $ini);
-        }
 
-        if (!$this->connection) {
-            return $this->raiseError(DB_ERROR_CONNECT_FAILED,
-                                     null, null, null,
-                                     strip_tags($php_errormsg));
+        if (!file_exists($dsn['database'])) {
+            $this->dsn['mode'] = 2;
+            if (empty($dsn['fields']) || !is_array($dsn['fields'])) {
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                         null, null, null,
+                                         'the dbase file does not exist and '
+                                         . 'it could not be created because '
+                                         . 'the "fields" element of the DSN '
+                                         . 'is not properly set');
+            }
+            $this->connection = @dbase_create($dsn['database'],
+                                              $dsn['fields']);
+            if (!$this->connection) {
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                         null, null, null,
+                                         'the dbase file does not exist and '
+                                         . 'the attempt to create it failed: '
+                                         . $php_errormsg);
+            }
+        } else {
+            if (!isset($this->dsn['mode'])) {
+                $this->dsn['mode'] = 0;
+            }
+            $this->connection = @dbase_open($dsn['database'],
+                                            $this->dsn['mode']);
+            if (!$this->connection) {
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                         null, null, null,
+                                         $php_errormsg);
+            }
         }
         return DB_OK;
     }
@@ -325,17 +373,8 @@ class DB_dbase extends DB_common
      */
     function tableInfo($result = null, $mode = null)
     {
-        $ini = ini_get('track_errors');
-        $php_errormsg = '';
-        if (!$ini) {
-            ini_set('track_errors', 1);
-        }
-
         if (version_compare(phpversion(), '5.0.0', '>=')) {
             $id = @dbase_get_header_info($this->connection);
-            if (!$ini) {
-                ini_set('track_errors', 0);
-            }
             if (!$id && $php_errormsg) {
                 return $this->raiseError(DB_ERROR,
                                          null, null, null,
@@ -348,9 +387,6 @@ class DB_dbase extends DB_common
              * the dBase reference page in the PHP manual.
              */
             $db = @fopen($this->dsn['database'], 'r');
-            if (!$ini) {
-                ini_set('track_errors', 0);
-            }
             if (!$db) {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED,
                                          null, null, null,
@@ -396,7 +432,7 @@ class DB_dbase extends DB_common
 
         for ($i = 0; $i < $count; $i++) {
             $res[$i] = array(
-                'table' => $result,
+                'table' => $this->dsn['database'],
                 'name'  => $case_func($id[$i]['name']),
                 'type'  => $id[$i]['type'],
                 'len'   => $id[$i]['length'],
