@@ -127,7 +127,19 @@ class DB_odbc extends DB_common
             default:
                 break;
         }
-        $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
+
+        /*
+         * This is hear for backwards compatibility.
+         * Should have been using 'database' all along, but used hostspec.
+         */
+        if ($dsninfo['database']) {
+            $odbcdsn = $dsninfo['database'];
+        } elseif ($dsninfo['hostspec']) {
+            $odbcdsn = $dsninfo['hostspec'];
+        } else {
+            $odbcdsn = 'localhost';
+        }
+
         $user = $dsninfo['username'];
         $pw = $dsninfo['password'];
         if ($this->provides('pconnect')) {
@@ -135,7 +147,7 @@ class DB_odbc extends DB_common
         } else {
             $connect_function = 'odbc_connect';
         }
-        $conn = @$connect_function($dbhost, $user, $pw);
+        $conn = @$connect_function($odbcdsn, $user, $pw);
         if (!is_resource($conn)) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
                                          null, $this->errorNative());
