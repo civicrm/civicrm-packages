@@ -111,10 +111,10 @@ class DB_pgsql extends DB_common
         if ($dsninfo['password']) {
             $connstr .= ' password=\'' . addslashes($dsninfo['password']) . '\'';
         }
-        if (isset($dsninfo['options'])) {
+        if (!empty($dsninfo['options'])) {
             $connstr .= ' options=' . $dsninfo['options'];
         }
-        if (isset($dsninfo['tty'])) {
+        if (!empty($dsninfo['tty'])) {
             $connstr .= ' tty=' . $dsninfo['tty'];
         }
 
