@@ -18,9 +18,6 @@
 //
 // $Id$
 //
-// Database independent query interface definition for PHP's MySQL
-// extension.
-//
 
 //
 // XXX legend:
@@ -30,6 +27,16 @@
 //
 
 require_once "DB/common.php";
+
+/**
+ * Database independent query interface definition for PHP's MySQL
+ * extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Stig Bakken <ssb@php.net>
+ */
 
 class DB_mysql extends DB_common
 {

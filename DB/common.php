@@ -14,6 +14,7 @@
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
 // | Author: Stig Bakken <ssb@php.net>                                    |
+// |         Tomas V.V.Cox <cox@idecnet.com>                              |
 // +----------------------------------------------------------------------+
 //
 // $Id$
@@ -21,12 +22,18 @@
 // Base class for DB implementations.
 //
 
+require_once 'PEAR.php';
+
 /**
  * DB_common is a base class for DB implementations, and must be
  * inherited by all such.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Stig Bakken <ssb@php.net>
+ * @author   Tomas V.V.Cox <cox@idecnet.com>
  */
-
-require_once 'PEAR.php';
 
 class DB_common extends PEAR
 {
@@ -295,7 +302,7 @@ class DB_common extends PEAR
         }
 
         return PEAR::raiseError(null, $code, $mode, $options, $userinfo,
-                                  'DB_Error', true);
+                                'DB_Error', true);
     }
 
     // }}}

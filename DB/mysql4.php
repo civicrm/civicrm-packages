@@ -18,11 +18,20 @@
 // +----------------------------------------------------------------------+
 //
 
-/* Warning this can't work for now until the PHP extension for MySQL 4 is done! */
+// Warning this can't work for now until the PHP extension for MySQL 4 is done!
 
-// Database independent query interface definition for PHP's MySQL 4
-// We're still waiting for the new MySQL4 protocol for the PHP extension.
-// Note that pconnect is GONE.
+require_once 'DB/common.php';
+
+/**
+ * Database independent query interface definition for PHP's MySQL 4
+ * We're still waiting for the new MySQL4 protocol for the PHP extension.
+ * Note that pconnect is GONE.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Chaillan Nicolas <nicos@php.net>
+ */
 
 class DB_mysql4 extends DB_common
 {

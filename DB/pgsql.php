@@ -19,11 +19,19 @@
 //
 // $Id$
 //
-// Database independent query interface definition for PHP's PostgreSQL
-// extension.
-//
 
 require_once 'DB/common.php';
+
+/**
+ * Database independent query interface definition for PHP's PostgreSQL
+ * extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Rui Hirokawa <rui_hirokawa@ybb.ne.jp>
+ * @author   Stig Bakken <ssb@php.net>
+ */
 
 class DB_pgsql extends DB_common
 {

@@ -18,11 +18,18 @@
 //
 // $Id$
 //
-// Database independent query interface definition for PHP's Microsoft SQL Server
-// extension.
-//
 
 require_once 'DB/common.php';
+
+/**
+ * Database independent query interface definition for PHP's Microsoft SQL Server
+ * extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Sterling Hughes <sterling@php.net>
+ */
 
 class DB_mssql extends DB_common
 {

@@ -18,14 +18,21 @@
 //
 // $Id$
 //
-// Database independent query interface definition for PHP's Interbase
-// extension.
-//
+
 // Bugs:
 //  - If dbsyntax is not firebird, the limitQuery may fail
-//  - The palceholders '&' and '!' don't work here
 
 require_once 'DB/common.php';
+
+/**
+ * Database independent query interface definition for PHP's Interbase
+ * extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Sterling Hughes <sterling@php.net>
+ */
 
 class DB_ibase extends DB_common
 {

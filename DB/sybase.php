@@ -19,15 +19,23 @@
 //
 // $Id$
 //
-// Database independent query interface definition for PHP's Sybase
-// extension.
-//
 //
 // TODO
 //    - This driver may fail with multiple connections under the same
 //      user/pass/host and different databases
 
 require_once 'DB/common.php';
+
+/**
+ * Database independent query interface definition for PHP's Sybase
+ * extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Sterling Hughes <sterling@php.net>
+ * @author   Antônio Carlos Venâncio Júnior <floripa@php.net>
+ */
 
 class DB_sybase extends DB_common
 {

@@ -18,14 +18,21 @@
 //
 // $Id$
 //
-// Database independent query interface definition for PHP's dbase
-// extension.
-//
 // XXX legend:
 //  You have to compile your PHP with the --enable-dbase option
 //
 
 require_once "DB/common.php";
+
+/**
+ * Database independent query interface definition for PHP's dbase
+ * extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Stig Bakken <ssb@php.net>
+ */
 
 class DB_dbase extends DB_common
 {

@@ -204,7 +204,10 @@ define('DB_AUTOQUERY_UPDATE', 2);
  *
  * @package  DB
  * @author   Stig Bakken <ssb@php.net>
+ * @author   Tomas V.V.Cox <cox@idecnet.com>
  * @since    PHP 4.0
+ * @version  $Id$
+ * @category Database
  */
 
 class DB

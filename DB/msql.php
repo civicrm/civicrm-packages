@@ -18,11 +18,18 @@
 //
 // $Id$
 //
-// Database independent query interface definition for PHP's Mini-SQL
-// extension.
-//
 
 require_once 'DB/common.php';
+
+/**
+ * Database independent query interface definition for PHP's Mini-SQL
+ * extension.
+ *
+ * @package  DB
+ * @version  $Id$
+ * @category Database
+ * @author   Sterling Hughes <sterling@php.net>
+ */
 
 class DB_msql extends DB_common
 {
