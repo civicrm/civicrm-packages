@@ -18,7 +18,7 @@
  * @package    DB
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
@@ -42,9 +42,11 @@ require_once 'DB/common.php';
  *   - set needed env Informix vars on connect
  *   - implement native prepare/execute
  *
+ * @category   Database
+ * @package    DB
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB

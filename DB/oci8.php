@@ -18,7 +18,7 @@
  * @package    DB
  * @author     James L. Pine <jlp@valinux.com>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
@@ -41,9 +41,11 @@ require_once 'DB/common.php';
  * statement, so functions return the generic DB_ERROR instead of more
  * useful errors that have to do with feedback from the database.
  *
+ * @category   Database
+ * @package    DB
  * @author     James L. Pine <jlp@valinux.com>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB

@@ -19,7 +19,7 @@
  * @author     Rui Hirokawa <hirokawa@php.net>
  * @author     Stig Bakken <ssb@php.net>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
@@ -36,10 +36,12 @@ require_once 'DB/common.php';
  *
  * These methods overload the ones declared in DB_common.
  *
+ * @category   Database
+ * @package    DB
  * @author     Rui Hirokawa <hirokawa@php.net>
  * @author     Stig Bakken <ssb@php.net>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB

@@ -19,7 +19,7 @@
  * @author     Sterling Hughes <sterling@php.net>
  * @author     Antônio Carlos Venâncio Júnior <floripa@php.net>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
@@ -39,10 +39,12 @@ require_once 'DB/common.php';
  * WARNING:  This driver may fail with multiple connections under the
  * same user/pass/host and different databases.
  *
+ * @category   Database
+ * @package    DB
  * @author     Sterling Hughes <sterling@php.net>
  * @author     Antônio Carlos Venâncio Júnior <floripa@php.net>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB

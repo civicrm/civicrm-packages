@@ -18,7 +18,7 @@
  * @author     Stig Bakken <ssb@php.net>
  * @author     Tomas V.V. Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
@@ -35,10 +35,12 @@ require_once 'PEAR.php';
  * All common methods are declared here.  If a given DBMS driver contains
  * a particular method, that method will overload the one here.
  *
+ * @category   Database
+ * @package    DB
  * @author     Stig Bakken <ssb@php.net>
  * @author     Tomas V.V. Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB

@@ -18,7 +18,7 @@
  * @author     Stig Bakken <ssb@php.net>
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
@@ -267,10 +267,12 @@ define('DB_PORTABILITY_ALL', 63);
  *              class.
  * </pre>
  *
+ * @category   Database
+ * @package    DB
  * @author     Stig Bakken <ssb@php.net>
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
@@ -733,8 +735,10 @@ class DB
  * DB_Error implements a class for reporting portable database error
  * messages
  *
+ * @category   Database
+ * @package    DB
  * @author     Stig Bakken <ssb@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
@@ -776,8 +780,10 @@ class DB_Error extends PEAR_Error
  * A new instance of this class will be returned by the DB implementation
  * after processing a query that returns data.
  *
+ * @category   Database
+ * @package    DB
  * @author     Stig Bakken <ssb@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
@@ -1100,8 +1106,10 @@ class DB_result
 /**
  * Pear DB Row Object
  *
+ * @category   Database
+ * @package    DB
  * @author     Stig Bakken <ssb@php.net>
- * @copyright  1997-2004 The PHP Group
+ * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
