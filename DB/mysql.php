@@ -94,6 +94,7 @@ class DB_mysql extends DB_common
             1136 => DB_ERROR_VALUE_COUNT_ON_ROW,
             1146 => DB_ERROR_NOSUCHTABLE,
             1216 => DB_ERROR_CONSTRAINT,
+            1217 => DB_ERROR_CONSTRAINT,
         );
     }
 
