@@ -158,7 +158,7 @@ class DB_mssql extends DB_common
             }
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $ar = @mssql_fetch_array($result);
+            $ar = @mssql_fetch_array($result, MSSQL_ASSOC);
         } else {
             $ar = @mssql_fetch_row($result);
         }
