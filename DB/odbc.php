@@ -584,6 +584,7 @@ class DB_odbc extends DB_common
                                         $native_code . ' ' . $errormsg);
                             }
                         }
+                        $errno = DB_ERROR;
                     } else {
                         $errno = $this->errorCode($native_code);
                     }
