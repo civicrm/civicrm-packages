@@ -511,101 +511,77 @@ class DB_mssql extends DB_common
     // {{{ tableInfo()
 
     /**
-     * Returns information about a table or a result set
+     * Returns information about a table or a result set.
      *
-     * NOTE: doesn't support table name and flags if called from a db_result
+     * NOTE: only supports 'table' and 'flags' if <var>$result</var>
+     * is a table name.
      *
-     * @param  mixed $resource SQL Server result identifier or table name
-     * @param  int $mode A valid tableInfo mode (DB_TABLEINFO_ORDERTABLE or
-     *                   DB_TABLEINFO_ORDER)
-     *
-     * @return array An array with all the information
+     * @param object|string  $result  DB_result object from a query or a
+     *                                string containing the name of a table
+     * @param int            $mode    a valid tableInfo mode
+     * @return array  an associative array with the information requested
+     *                or an error object if something is wrong
+     * @access public
+     * @internal
+     * @see DB_common::tableInfo()
      */
     function tableInfo($result, $mode = null)
     {
-        $count = 0;
-        $id    = 0;
-        $res   = array();
-
-        /*
-         * depending on $mode, metadata returns the following values:
-         *
-         * - mode is false (default):
-         * $result[]:
-         *   [0]["table"]  table name
-         *   [0]["name"]   field name
-         *   [0]["type"]   field type
-         *   [0]["len"]    field length
-         *   [0]["flags"]  field flags
-         *
-         * - mode is DB_TABLEINFO_ORDER
-         * $result[]:
-         *   ["num_fields"] number of metadata records
-         *   [0]["table"]  table name
-         *   [0]["name"]   field name
-         *   [0]["type"]   field type
-         *   [0]["len"]    field length
-         *   [0]["flags"]  field flags
-         *   ["order"][field name]  index of field named "field name"
-         *   The last one is used, if you have a field name, but no index.
-         *   Test:  if (isset($result['meta']['myfield'])) { ...
-         *
-         * - mode is DB_TABLEINFO_ORDERTABLE
-         *    the same as above. but additionally
-         *   ["ordertable"][table name][field name] index of field
-         *      named "field name"
-         *
-         *      this is, because if you have fields from different
-         *      tables with the same field name * they override each
-         *      other with DB_TABLEINFO_ORDER
-         *
-         *      you can combine DB_TABLEINFO_ORDER and
-         *      DB_TABLEINFO_ORDERTABLE with DB_TABLEINFO_ORDER |
-         *      DB_TABLEINFO_ORDERTABLE * or with DB_TABLEINFO_FULL
-         */
-
-        // if $result is a string, then we want information about a
-        // table without a resultset
-
-        if (is_string($result)) {
+        if (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $id = $result->result;
+            $got_string = false;
+        } elseif (is_string($result)) {
+            /*
+             * Probably received a table name.
+             * Create a result resource identifier.
+             */
             if (!@mssql_select_db($this->_db, $this->connection)) {
                 return $this->mssqlRaiseError(DB_ERROR_NODBSELECTED);
             }
-            $id = @mssql_query("SELECT * FROM $result", $this->connection);
-            if (empty($id)) {
-                return $this->mssqlRaiseError();
-            }
-        } else { // else we want information about a resultset
+            $id = @mssql_query("SELECT * FROM $result WHERE 1=0",
+                               $this->connection);
+            $got_string = true;
+        } else {
+            /*
+             * Probably received a result resource identifier.
+             * Copy it.
+             * Depricated.  Here for compatibility only.
+             */
             $id = $result;
-            if (empty($id)) {
-                return $this->mssqlRaiseError();
-            }
+            $got_string = false;
+        }
+
+        if (!is_resource($id)) {
+            return $this->mssqlRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
 
         $count = @mssql_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
-        if (empty($mode)) {
-
+        if (is_null($mode)) {
             for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = (is_string($result)) ? $result : '';
+                $res[$i]['table'] = ($got_string) ? $result : '';
                 $res[$i]['name']  = @mssql_field_name($id, $i);
                 $res[$i]['type']  = @mssql_field_type($id, $i);
                 $res[$i]['len']   = @mssql_field_length($id, $i);
                 // We only support flags for tables
-                $res[$i]['flags'] = is_string($result) ? $this->_mssql_field_flags($result, $res[$i]['name']) : '';
+                $res[$i]['flags'] = $got_string ? $this->_mssql_field_flags($result, $res[$i]['name']) : '';
             }
 
         } else { // full
             $res['num_fields']= $count;
 
             for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = (is_string($result)) ? $result : '';
+                $res[$i]['table'] = ($got_string) ? $result : '';
                 $res[$i]['name']  = @mssql_field_name($id, $i);
                 $res[$i]['type']  = @mssql_field_type($id, $i);
                 $res[$i]['len']   = @mssql_field_length($id, $i);
                 // We only support flags for tables
-                $res[$i]['flags'] = is_string($result) ? $this->_mssql_field_flags($result, $res[$i]['name']) : '';
+                $res[$i]['flags'] = $got_string ? $this->_mssql_field_flags($result, $res[$i]['name']) : '';
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }
@@ -616,7 +592,7 @@ class DB_mssql extends DB_common
         }
 
         // free the result only if we were called on a table
-        if (is_string($result)) {
+        if ($got_string) {
             @mssql_free_result($id);
         }
         return $res;
@@ -677,11 +653,12 @@ class DB_mssql extends DB_common
             $res = $this->getAll("EXEC SP_HELPINDEX[$table]", DB_FETCHMODE_ASSOC);
 
             foreach ($res as $val) {
-
                 $keys = explode(', ', $val['index_keys']);
 
                 if (sizeof($keys) > 1) {
-                    $this->_add_flag($flags[$keys[0]], 'multiple_key');
+                    foreach ($keys as $key) {
+                        $this->_add_flag($flags[$key], 'multiple_key');
+                    }
                 }
 
                 if (strpos($val['index_description'], 'primary key')) {
@@ -713,7 +690,7 @@ class DB_mssql extends DB_common
         }
 
         if (array_key_exists($column, $flags)) {
-            return(implode(', ', $flags[$column]));
+            return(implode(' ', $flags[$column]));
         }
         return('');
     }
