@@ -10,14 +10,17 @@ require_once 'DB.php';
 error_reporting(E_ALL);
 
 function myfunc(&$obj) {
-    print "myfunc here, obj=".$obj->toString()."\n";
+    print 'myfunc here, obj='
+          . strtolower($obj->toString()) . "\n";
 }
 function myfunc2(&$obj) {
-    print "myfunc2 here, obj=".$obj->toString()."\n";
+    print 'myfunc2 here, obj='
+          . strtolower($obj->toString()) . "\n";
 }
 class myclass {
     function myfunc(&$obj) {
-        print "myclass::myfunc here, obj=".$obj->toString()."\n";
+        print 'myclass::myfunc here, obj='
+          . strtolower($obj->toString()) . "\n";
     }
 }
 function test_error_handler($errno, $errmsg, $file, $line, $vars) {
@@ -45,7 +48,8 @@ function test_error_handler($errno, $errmsg, $file, $line, $vars) {
         E_STRICT => 'Strict Notice',
     );
     $prefix = $errortype[$errno];
-    print "$prefix: $errmsg in " . basename($file) . " on line XXX\n";
+    print strtolower("$prefix: $errmsg in " . basename($file)
+                     . " on line XXX\n");
 }
 
 $obj = new myclass;
@@ -54,7 +58,7 @@ $dbh = DB::factory("mysql");
 
 print "default: ";
 $e = $dbh->raiseError("return testing error");
-print $e->toString() . "\n";
+print strtolower($e->toString()) . "\n";
 
 print "global default: ";
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "myfunc2");
@@ -80,9 +84,9 @@ $e = $dbh->raiseError("trigger testing error");
 
 ?>
 --EXPECT--
-default: [db_error: message="DB Error: return testing error" code=-1 mode=return level=notice prefix="" info=""]
-global default: myfunc2 here, obj=[db_error: message="DB Error: global default test" code=-1 mode=callback callback=myfunc2 prefix="" info=""]
+default: [db_error: message="db error: return testing error" code=-1 mode=return level=notice prefix="" info=""]
+global default: myfunc2 here, obj=[db_error: message="db error: global default test" code=-1 mode=callback callback=myfunc2 prefix="" info=""]
 mode=print: DB Error: print testing error
-mode=function callback: myfunc here, obj=[db_error: message="DB Error: function callback testing error" code=-1 mode=callback callback=myfunc prefix="" info=""]
-mode=object callback: myclass::myfunc here, obj=[db_error: message="DB Error: object callback testing error" code=-1 mode=callback callback=myclass::myfunc prefix="" info=""]
-mode=trigger: User Notice: DB Error: trigger testing error in PEAR.php on line XXX
+mode=function callback: myfunc here, obj=[db_error: message="db error: function callback testing error" code=-1 mode=callback callback=myfunc prefix="" info=""]
+mode=object callback: myclass::myfunc here, obj=[db_error: message="db error: object callback testing error" code=-1 mode=callback callback=myclass::myfunc prefix="" info=""]
+mode=trigger: user notice: db error: trigger testing error in pear.php on line xxx

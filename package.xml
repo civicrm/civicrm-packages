@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.101 2004-04-30 02:45:15 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.102 2004-04-30 03:18:50 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -90,6 +90,10 @@ IT NOW WORKS!  (danielc)
 - tests:
 Make test suite work for installed packages.
 Already worked for CVS checkouts.  (danielc)
+
+- tests:
+db_error.phpt and db_error2.phpt now pass
+when using PHP 5.  (danielc)
 
 - tests:
 Made adjustments so mysql and mysqli pass

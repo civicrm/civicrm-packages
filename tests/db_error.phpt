@@ -39,15 +39,15 @@ error_reporting(E_ALL);
 set_error_handler('test_error_handler');
 
 print "testing different error codes...\n";
-$e = new DB_Error(); print $e->toString()."\n";
-$e = new DB_Error("test error"); print $e->toString()."\n";
-$e = new DB_Error(DB_OK); print $e->toString()."\n";
-$e = new DB_Error(DB_ERROR); print $e->toString()."\n";
-$e = new DB_Error(DB_ERROR_SYNTAX); print $e->toString()."\n";
-$e = new DB_Error(DB_ERROR_DIVZERO); print $e->toString()."\n";
+$e = new DB_Error(); print strtolower($e->toString())."\n";
+$e = new DB_Error("test error"); print strtolower($e->toString())."\n";
+$e = new DB_Error(DB_OK); print strtolower($e->toString())."\n";
+$e = new DB_Error(DB_ERROR); print strtolower($e->toString())."\n";
+$e = new DB_Error(DB_ERROR_SYNTAX); print strtolower($e->toString())."\n";
+$e = new DB_Error(DB_ERROR_DIVZERO); print strtolower($e->toString())."\n";
 
 print "testing different error modes...\n";
-$e = new DB_Error(DB_ERROR, PEAR_ERROR_PRINT); print $e->toString()."\n";
+$e = new DB_Error(DB_ERROR, PEAR_ERROR_PRINT); print strtolower($e->toString())."\n";
 $e = new DB_Error(DB_ERROR_SYNTAX, PEAR_ERROR_TRIGGER);
 
 print "testing different error serverities...\n";
@@ -60,14 +60,14 @@ $e = new DB_Error(DB_ERROR_SYNTAX, PEAR_ERROR_TRIGGER, E_USER_ERROR);
 --POST--
 --EXPECT--
 testing different error codes...
-[db_error: message="DB Error: unknown error" code=-1 mode=return level=notice prefix="" info=""]
-[db_error: message="DB Error: test error" code=-1 mode=return level=notice prefix="" info=""]
-[db_error: message="DB Error: no error" code=1 mode=return level=notice prefix="" info=""]
-[db_error: message="DB Error: unknown error" code=-1 mode=return level=notice prefix="" info=""]
-[db_error: message="DB Error: syntax error" code=-2 mode=return level=notice prefix="" info=""]
-[db_error: message="DB Error: division by zero" code=-13 mode=return level=notice prefix="" info=""]
+[db_error: message="db error: unknown error" code=-1 mode=return level=notice prefix="" info=""]
+[db_error: message="db error: test error" code=-1 mode=return level=notice prefix="" info=""]
+[db_error: message="db error: no error" code=1 mode=return level=notice prefix="" info=""]
+[db_error: message="db error: unknown error" code=-1 mode=return level=notice prefix="" info=""]
+[db_error: message="db error: syntax error" code=-2 mode=return level=notice prefix="" info=""]
+[db_error: message="db error: division by zero" code=-13 mode=return level=notice prefix="" info=""]
 testing different error modes...
-DB Error: unknown error[db_error: message="DB Error: unknown error" code=-1 mode=print level=notice prefix="" info=""]
+DB Error: unknown error[db_error: message="db error: unknown error" code=-1 mode=print level=notice prefix="" info=""]
 
 User Notice: DB Error: syntax error in PEAR.php on line XXX
 testing different error serverities...
