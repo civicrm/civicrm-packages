@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.170 2005-02-21 20:31:07 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.171 2005-02-22 06:21:07 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -68,7 +68,7 @@ DB is compatible with both PHP 4 and PHP 5.
   <release>
     <version>1.7.0RC1</version>
     <state>beta</state>
-    <date>pending</date>
+    <date>2005-02-22</date>
     <notes><![CDATA[
 all:
 * PEAR DB can now be used on more OS's due to
