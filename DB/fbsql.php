@@ -409,7 +409,7 @@ class DB_fbsql extends DB_common
         $seqname = $this->getSequenceName($seq_name);
         $repeat = 0;
         do {
-            $result = $this->query("INSERT INTO ${seqname} VALUES(NULL)");
+            $result = $this->query("INSERT INTO ${seqname} (id) VALUES (NULL)");
             if ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE) {
                 $repeat = 1;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.98 2004-04-28 19:58:29 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.99 2004-04-28 20:13:10 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -67,6 +67,10 @@ DB is compatible with both PHP 4 and PHP 5.
     <notes>
 =============
 BUGS FIXED:
+
+- fbsql, mysql, mysqli, sqlite:
+Explicitly name 'id' column when performing
+inserts for sequence methods.  (danielc)
 
 - common:
 Fix docblocks for getAssoc() and limitQuery().

@@ -514,7 +514,7 @@ class DB_mysqli extends DB_common
                 }
 
                 // add the default value
-                $result = $this->query("REPLACE INTO ${seqname} VALUES (0)");
+                $result = $this->query("REPLACE INTO ${seqname} (id) VALUES (0)");
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
                 }
@@ -579,7 +579,7 @@ class DB_mysqli extends DB_common
             return $res;
         }
         // insert yields value 1, nextId call will generate ID 2
-        return $this->query("INSERT INTO ${seqname} VALUES(0)");
+        return $this->query("INSERT INTO ${seqname} (id) VALUES (0)");
     }
 
     // }}}
