@@ -54,7 +54,7 @@ class DB_common extends PEAR
      * DB type (mysql, oci8, odbc etc.)
      * @var string
      */
-    var $type;
+    var $phptype;
 
     /**
      * @var string
