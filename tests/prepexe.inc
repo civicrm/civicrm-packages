@@ -3,7 +3,7 @@
 $tmpfile = tempnam("/tmp", "phptmp");
 register_shutdown_function("my_shutdown");
 $fp = fopen($tmpfile, "w");
-$filedata = "opaque\nplaceholder's\ntest";
+$filedata = "opaque placeholder's test";
 fwrite($fp, $filedata);
 fclose($fp);
 

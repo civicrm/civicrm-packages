@@ -17,52 +17,30 @@ sth4: no params... sth4 executed
 results:
 |72 - a -  - |
 |72 - direct -  - |
-|72 - it's good - opaque
-placeholder's
-test - |
+|72 - it's good - opaque placeholder's test - |
 |72 - that's right -  - |
 
 ------------2------------
 results:
-|72 - set1 - opaque
-placeholder's
-test - 1234-56-78|
-|72 - set2 - opaque
-placeholder's
-test - |
-|72 - set3 - opaque
-placeholder's
-test - |
+|72 - set1 - opaque placeholder's test - 1234-56-78|
+|72 - set2 - opaque placeholder's test - |
+|72 - set3 - opaque placeholder's test - |
 
 ------------3------------
 TRUE
 FALSE
 
 ------------4------------
-|72 - set1 - opaque
-placeholder's
-test - 1234-56-78|
-|72 - set2 - opaque
-placeholder's
-test - |
-|72 - set3 - opaque
-placeholder's
-test - |
+|72 - set1 - opaque placeholder's test - 1234-56-78|
+|72 - set2 - opaque placeholder's test - |
+|72 - set3 - opaque placeholder's test - |
 ~~
 ~~
-|72 - set1 - opaque
-placeholder's
-test - 1234-56-78|
+|72 - set1 - opaque placeholder's test - 1234-56-78|
 ~~
-|72 - set1 - opaque
-placeholder's
-test - 1234-56-78|
-|72 - set2 - opaque
-placeholder's
-test - |
-|72 - set3 - opaque
-placeholder's
-test - |
+|72 - set1 - opaque placeholder's test - 1234-56-78|
+|72 - set2 - opaque placeholder's test - |
+|72 - set3 - opaque placeholder's test - |
 ~~
 
 ------------5------------
