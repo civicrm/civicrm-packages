@@ -13,8 +13,8 @@
 // | obtain it through the world-wide-web, please send a note to          |
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
-// | Author: Chaillan Nicolas <nicos@php.net>							  |
-// | Based on mysql.php by Stig Bakken <ssb@php.net>					  |
+// | Author: Chaillan Nicolas <nicos@php.net>                             |
+// | Based on mysql.php by Stig Bakken <ssb@php.net>                      |
 // +----------------------------------------------------------------------+
 //
 
@@ -95,7 +95,7 @@ class DB_mysql4 extends DB_common
     {
         if (!DB::assertExtension('mysql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
-		}
+        }
 
         $this->dsn = $dsninfo;
         if (isset($dsninfo['protocol']) && $dsninfo['protocol'] == 'unix') {
@@ -109,12 +109,12 @@ class DB_mysql4 extends DB_common
         $user = $dsninfo['username'];
         $pw = $dsninfo['password'];
 
-		$ssl_mode = $ssl ? 'CLIENT_SSL' : NULL;
+        $ssl_mode = $ssl ? 'CLIENT_SSL' : NULL;
 
         @ini_set('track_errors', true);
-        
-		if ($dbhost && $user && $pw) {
-			// Need to verify if arguments are okay
+
+        if ($dbhost && $user && $pw) {
+            // Need to verify if arguments are okay
             $conn = @mysql_connect($dbhost, $user, $pw, $ssl_mode);
         } elseif ($dbhost && $user) {
             $conn = @mysql_connect($dbhost, $user, NULL, $ssl_mode);
@@ -123,8 +123,8 @@ class DB_mysql4 extends DB_common
         } else {
             $conn = false;
         }
-        
-		@ini_restore('track_errors');
+
+        @ini_restore('track_errors');
 
         if (empty($conn)) {
             if (($err = @mysql_error()) != '') {
