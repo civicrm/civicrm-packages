@@ -529,9 +529,11 @@ class DB_fbsql extends DB_common
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
         if (DB::isManip($query)) {
-            return str_ireplace("SELECT", "SELECT TOP($count)", $query);
+            return preg_replace('/^([\s(])*SELECT/i',
+                                "\\1SELECT TOP($count)", $query);
         } else {
-            return str_ireplace("SELECT", "SELECT TOP($from, $count)", $query);
+            return preg_replace('/([\s(])*SELECT/i',
+                                "\\1SELECT TOP($from, $count)", $query);
         }
     }
 
