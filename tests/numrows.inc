@@ -39,7 +39,7 @@ function pe($o) {
     drop_table($dbh, 'phptest');
 
     print "\n------------\n";
-    if ($o->getCode() == DB_ERROR_UNSUPPORTED) {
+    if ($o->getCode() == DB_ERROR_NOT_CAPABLE) {
         print "This DBMS does not support numRows().";
     } elseif ($o->getCode() == DB_ERROR_MISMATCH) {
         print "Mismatch between the number of placeholders and parameters.\n";
@@ -59,34 +59,25 @@ function pe($o) {
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
 
-$sth = $dbh->query("SELECT a FROM phptest");
-switch ($dbh->phptype) {
-    case 'ibase':
-        /*
-         * Interbase doesn't allow manipulating tables that have result
-         * sets still open.
-         */
-        $dbh->freeResult($sth->result);
-        break;
-}
-if (!DB::isError($rows = $sth->numRows())) {
-    print "$rows from first\n";
+$res = $dbh->query("SELECT a FROM phptest");
+if (!DB::isError($rows = $res->numRows())) {
+    print "(want 1) got $rows from first\n";
 } else {
     print "\n";
 }
 for ($i = 0; $i < 5; $i++) {
-    $sth = $dbh->query("INSERT INTO phptest (a) VALUES ($i)");
-    $sth = $dbh->query("SELECT a FROM phptest");
-    if (!DB::isError($rows = $sth->numRows())) {
-        print "$rows from $i\n";
+    $dbh->query("INSERT INTO phptest (a) VALUES ($i)");
+    $res = $dbh->query("SELECT a FROM phptest");
+    if (!DB::isError($rows = $res->numRows())) {
+        print '(want ' . ($i + 2) . ") got $rows from $i\n";
     } else {
         print "\n";
     }
 }
 
-$sth = $dbh->query('SELECT a FROM phptest WHERE a > ?', 0);
-if (!DB::isError($rows = $sth->numRows())) {
-    print "$rows from > 0\n";
+$res = $dbh->query('SELECT a FROM phptest WHERE a > ?', 0);
+if (!DB::isError($rows = $res->numRows())) {
+    print "(want 5) got $rows from > 0 (passing params to query)\n";
 } else {
     print "\n";
 }
@@ -94,34 +85,26 @@ if (!DB::isError($rows = $sth->numRows())) {
 $sth = $dbh->prepare('SELECT a FROM phptest WHERE a < ?');
 $res = $dbh->execute($sth, array(4));
 if (!DB::isError($rows = $res->numRows())) {
-    print "$rows from < 4\n";
+    print "(want 4) got $rows from < 4 (doing prepare/execute)\n";
 } else {
     print "\n";
 }
 
 $dbh->query("DELETE FROM phptest WHERE a < 4");
-$sth = $dbh->query("SELECT a FROM phptest");
-if (!DB::isError($rows = $sth->numRows())) {
-    print "$rows from 5 and 6 not deleted\n";
+$res = $dbh->query("SELECT a FROM phptest");
+if (!DB::isError($rows = $res->numRows())) {
+    print "(want 2) got $rows from 5 and 6 not deleted\n";
 } else {
     print "\n";
 }
-$sth = $dbh->query("SELECT a FROM phptest where a < 0");
-if (!DB::isError($rows = $sth->numRows())) {
-    print "$rows from < 0\n";
+$res = $dbh->query("SELECT a FROM phptest where a < 0");
+if (!DB::isError($rows = $res->numRows())) {
+    print "(want 0) got $rows from < 0\n";
 } else {
     print "\n";
 }
 
 
-switch ($dbh->phptype) {
-    case 'ibase':
-        /*
-         * Interbase doesn't allow dropping tables that have result
-         * sets still open.
-         */
-        $dbh->freeResult($sth->result);
-        break;
-}
+$res->free();  // keep ibase happy
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 drop_table($dbh, 'phptest');
