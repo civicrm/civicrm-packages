@@ -81,6 +81,7 @@ class DB_mysql4 extends DB_common
             1006 => DB_ERROR_CANNOT_CREATE,
             1007 => DB_ERROR_ALREADY_EXISTS,
             1008 => DB_ERROR_CANNOT_DROP,
+            1022 => DB_ERROR_ALREADY_EXISTS,
             1046 => DB_ERROR_NODBSELECTED,
             1050 => DB_ERROR_ALREADY_EXISTS,
             1051 => DB_ERROR_NOSUCHTABLE,
