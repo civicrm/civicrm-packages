@@ -92,6 +92,7 @@ class DB_oci8 extends DB_common
         1    => DB_ERROR_CONSTRAINT,
         900  => DB_ERROR_SYNTAX,
         904  => DB_ERROR_NOSUCHFIELD,
+        913  => DB_ERROR_VALUE_COUNT_ON_ROW,
         921  => DB_ERROR_SYNTAX,
         923  => DB_ERROR_SYNTAX,
         942  => DB_ERROR_NOSUCHTABLE,

@@ -333,7 +333,8 @@ class DB_pgsql extends DB_common
                 '/permission denied/'                   => DB_ERROR_ACCESS_VIOLATION,
                 '/violates not-null constraint/'        => DB_ERROR_CONSTRAINT_NOT_NULL,
                 '/violates [\w ]+ constraint/'          => DB_ERROR_CONSTRAINT,
-                '/referential integrity violation/'     => DB_ERROR_CONSTRAINT
+                '/referential integrity violation/'     => DB_ERROR_CONSTRAINT,
+                '/more expressions than target columns/i' => DB_ERROR_VALUE_COUNT_ON_ROW,
             );
         }
         foreach ($error_regexps as $regexp => $code) {

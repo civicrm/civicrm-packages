@@ -621,11 +621,13 @@ class DB_common extends PEAR
      * + mysql, mysqli:  change unique/primary key constraints
      *   DB_ERROR_ALREADY_EXISTS -> DB_ERROR_CONSTRAINT
      *
+     * + odbc:  column/value count discrepancies
+     *   DB_ERROR_MISMATCH -> DB_ERROR_VALUE_COUNT_ON_ROW
+     *
      * + odbc(access):  MS's ODBC driver reports 'no such field' as code
      *   07001, which means 'too few parameters.'  When this option is on
      *   that code gets mapped to DB_ERROR_NOSUCHFIELD.
      *   DB_ERROR_MISMATCH -> DB_ERROR_NOSUCHFIELD
-     *
      *
      * <samp>DB_PORTABILITY_NULL_TO_EMPTY</samp>
      * convert null values to empty strings in data output by get*() and

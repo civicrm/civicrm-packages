@@ -84,6 +84,7 @@ class DB_mssql extends DB_common
      */
     // XXX Add here error codes ie: 'S100E' => DB_ERROR_SYNTAX
     var $errorcode_map = array(
+        110   => DB_ERROR_VALUE_COUNT_ON_ROW,
         170   => DB_ERROR_SYNTAX,
         207   => DB_ERROR_NOSUCHFIELD,
         208   => DB_ERROR_NOSUCHTABLE,

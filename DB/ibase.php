@@ -110,6 +110,7 @@ class DB_ibase extends DB_common
         -552 => DB_ERROR_ACCESS_VIOLATION,
         -607 => DB_ERROR_NOSUCHTABLE,
         -803 => DB_ERROR_CONSTRAINT,
+        -804 => DB_ERROR_VALUE_COUNT_ON_ROW,
         -904 => DB_ERROR_CONNECT_FAILED,
         -922 => DB_ERROR_NOSUCHDB,
         -923 => DB_ERROR_CONNECT_FAILED,

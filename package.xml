@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.149 2005-01-29 05:09:35 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.150 2005-01-30 02:45:33 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -146,6 +146,9 @@ all:
   $this->dbsyntax.  Used to only be done for odbc.
 * When trying to DROP an index that doesn't exist,
   use the DB_ERROR_NOT_FOUND error code.
+* When the number of columns doesn't match the number
+  of values use the DB_ERROR_VALUE_COUNT_ON_ROW
+  error code.
 * Resolve tableInfo() issue caused by PHP 5.0.3.
   Bug 2988.
 

@@ -605,6 +605,13 @@ class DB_odbc extends DB_common
     function odbcRaiseError($errno = null)
     {
         if ($errno === null) {
+            if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
+                $this->errorcode_map['21S01'] = DB_ERROR_VALUE_COUNT_ON_ROW;
+            } else {
+                // Doing this in case mode changes during runtime.
+                $this->errorcode_map['21S01'] = DB_ERROR_MISMATCH;
+            }
+
             switch ($this->dbsyntax) {
                 case 'access':
                     if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {

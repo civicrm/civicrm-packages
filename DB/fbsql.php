@@ -88,6 +88,7 @@ class DB_fbsql extends DB_common
          85 => DB_ERROR_ALREADY_EXISTS,
         108 => DB_ERROR_SYNTAX,
         116 => DB_ERROR_NOSUCHTABLE,
+        124 => DB_ERROR_VALUE_COUNT_ON_ROW,
         217 => DB_ERROR_INVALID_NUMBER,
         226 => DB_ERROR_NOSUCHFIELD,
         231 => DB_ERROR_INVALID,
