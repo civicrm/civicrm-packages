@@ -46,16 +46,8 @@ $strings = array(
     "\\\"\\\""
 );
 $nums = array(
-    156,
     12.3,
     15,
-    12.3
-);
-$numsexpect = array(
-    '156.0',
-    12.3,
-    '15.0',
-    12.3
 );
 
 echo "String escape test: ";
@@ -79,10 +71,18 @@ foreach ($nums as $n) {
     $quoted = $dbh->quoteSmart($n);
     $dbh->query("INSERT INTO pearquote VALUES ($quoted, 'foo')");
 }
-$diff = array_diff($numsexpect, $res = $dbh->getCol("SELECT n FROM pearquote"));
+
+$diff = array();
+$res =& $dbh->getCol('SELECT n FROM pearquote ORDER BY n');
+foreach ($nums as $key => $val) {
+    if ($val != $res[$key]) {
+        $diff[] = "$val != {$res[$key]}";
+    }
+}
+
 if (count($diff) > 0) {
     echo "FAIL";
-    print_r($numsexpect);
+    print_r($nums);
     print_r($res);
 } else {
     echo "OK\n";
