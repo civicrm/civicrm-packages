@@ -141,6 +141,12 @@ class DB_ibase extends DB_common
      */
     var $manip_query = array();
 
+    /**
+     * The number of rows affected by a data manipulation query
+     * @var integer
+     */
+    var $affected = 0;
+
 
     // }}}
     // {{{ constructor
@@ -209,15 +215,20 @@ class DB_ibase extends DB_common
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
         $result = @ibase_query($this->connection, $query);
+
         if (!$result) {
             return $this->ibaseRaiseError();
         }
         if ($this->autocommit && $ismanip) {
             @ibase_commit($this->connection);
         }
-        // Determine which queries that should return data, and which
-        // should return an error code only.
-        return $ismanip ? DB_OK : $result;
+        if ($ismanip) {
+            $this->affected = $result;
+            return DB_OK;
+        } else {
+            $this->affected = 0;
+            return $result;
+        }
     }
 
     // }}}
@@ -333,6 +344,26 @@ class DB_ibase extends DB_common
     {
         @ibase_free_query($query);
         return true;
+    }
+
+    // }}}
+    // {{{ affectedRows()
+
+    /**
+     * Gets the number of rows affected by the last data manipulation
+     * query
+     *
+     * @return int  the number of rows affected.  If the last query was
+     *               a SELECT, returns 0.  If the DBMS or PHP driver
+     *               doesn't yet support this feature a PEAR Error
+     *               object is returned with a code of DB_ERROR_NOT_CAPABLE.
+     */
+    function affectedRows()
+    {
+        if (is_integer($this->affected)) {
+            return $this->affected;
+        }
+        return $this->ibaseRaiseError(DB_ERROR_NOT_CAPABLE);
     }
 
     // }}}

@@ -24,7 +24,7 @@ numRows          x    T    n    n    x    T    T    T    E    T    T    T    n
 errorNative      n    T    n    t    n    T    T    T    T    T    T    E    T
 prepare/execute  e    E    T    E    e    E    E    E    T    E    E    E    E
 sequences        -    E    T    E    n    E    E    E    T    E    T    E    E
-affectedRows     n    T    n    T    x    n    T    T    T    T    T    T    T
+affectedRows     n    T    T    T    x    n    T    T    T    T    T    T    T
 fetch modes      x    T    T    T    x    T    T    T    T    T    T    T    T
 fetch row by no  x    T    n    T    x    T    T    T    n    x    T    T    T
 transactions     -    T    T    n    n    T    T    T    T    T    T    -    T
@@ -59,7 +59,7 @@ Symbols:
 04numcols        -    o    o    o    -    o    o    o    o    o    o    o    o
 05sequences      -    o    o    o    -    o    o    o    o    o    o    o    o
 06prepexec       -    o    o    o    -    o    o    o    o    o    o    o    o
-08affectedrows   -    o    X    o    -    o    o    o    o    o    o    o    o
+08affectedrows   -    o    o    o    -    o    o    o    o    o    o    o    o
 09numrows        -    o    X    X    -    o    o    o    o    o    o    o    o
 10errormap       -    o    o    N    -    E    o    o    o    o    o    o    E
 11transactions   -    o    o    -    -    o    o    o    o    o    o    -    o
@@ -70,4 +70,4 @@ Symbols:
 17query          -    o    X    o    -    o    o    o    o    o    o    o    o
 18get            -    o    X    o    -    o    o    o    o    o    o    o    o
 
-NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
+NOTE: ibase testing performed with Firebird under PHP 5.1-dev.
