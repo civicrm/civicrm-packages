@@ -34,25 +34,25 @@ $sth3 = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES (?,!,&)");
 $sth4 = $dbh->prepare("INSERT INTO phptest (a, b) VALUES (72, 'direct')");
 print "sth1,sth2,sth3,sth4 created\n";
 print 'sth1: ? as param, passing as array... ';
-if (($res = $dbh->execute($sth1, array(72))) == DB_OK) {
+if (($res = $dbh->execute($sth1, array(72))) === DB_OK) {
     print "sth1 executed\n";
 } else {
     print "sth1 failed\n";
 }
 print 'sth2: ! and ? as params, passing as array... ';
-if (($res = $dbh->execute($sth2, array(72, "that's right"))) == DB_OK) {
+if (($res = $dbh->execute($sth2, array(72, "that's right"))) === DB_OK) {
     print "sth2 executed\n";
 } else {
     print "sth2 failed\n";
 }
 print 'sth3: ?, ! and & as params, passing as array... ';
-if (($res = $dbh->execute($sth3, array(72, "'it''s good'", $tmpfile))) == DB_OK) {
+if (($res = $dbh->execute($sth3, array(72, "'it''s good'", $tmpfile))) === DB_OK) {
     print "sth3 executed\n";
 } else {
     print "sth3 failed\n";
 }
 print 'sth4: no params... ';
-if (($res = $dbh->execute($sth4)) == DB_OK) {
+if (($res = $dbh->execute($sth4)) === DB_OK) {
     print "sth4 executed\n";
 } else {
     print "sth4 failed\n";
@@ -113,7 +113,7 @@ $array = array(
     'baz' => null,
 );
 $res = $dbh->execute($sth5, $array);
-print 'insert: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
+print 'insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 $sth6 = $dbh->prepare('SELECT a, b, d FROM phptest WHERE a = ?');
 $res = $dbh->execute($sth6, array(11));

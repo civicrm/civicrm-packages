@@ -1581,7 +1581,7 @@ class DB_common extends PEAR
             $res =& $this->query($query);
         }
 
-        if (DB::isError($res) || $res == DB_OK) {
+        if (DB::isError($res) || $res === DB_OK) {
             return $res;
         }
 

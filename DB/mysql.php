@@ -501,7 +501,7 @@ class DB_mysql extends DB_common
             $result = $this->query("UPDATE ${seqname} ".
                                    'SET id=LAST_INSERT_ID(id+1)');
             $this->popErrorHandling();
-            if ($result == DB_OK) {
+            if ($result === DB_OK) {
                 /** COMMON CASE **/
                 $id = @mysql_insert_id($this->connection);
                 if ($id != 0) {

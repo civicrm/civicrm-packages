@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.92 2004-04-02 22:04:16 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.93 2004-04-07 04:56:58 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -73,6 +73,10 @@ ENHANCEMENTS:
 
 =============
 BUGS FIXED:
+
+- mysql, mysqli, sqlite, tests:
+Eliminate object to integer conversion notices.
+Bug 1088.  (danielc)
 
 - mysqli:
 Move connection id to first argument in

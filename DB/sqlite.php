@@ -470,7 +470,7 @@ class DB_sqlite extends DB_common
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
             $result = $this->query("INSERT INTO $seqname VALUES (NULL)");
             $this->popErrorHandling();
-            if ($result == DB_OK) {
+            if ($result === DB_OK) {
                 $id = @sqlite_last_insert_rowid($this->connection);
                 if ($id != 0) {
                     return $id;

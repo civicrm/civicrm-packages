@@ -56,13 +56,13 @@ $dbh->setFetchMode(DB_FETCHMODE_ASSOC);
 
 
 $res =& $dbh->query('DELETE FROM phptest WHERE a = 17');
-print 'delete: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
+print 'delete: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 $res =& $dbh->query("INSERT INTO phptest (a, b, c) VALUES (17, 'one', 'One')");
-print 'insert: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
+print 'insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 $res =& $dbh->query('INSERT INTO phptest (a, b, c) VALUES (?, ?, ?)', array(17, 'two', 'Two'));
-print 'insert: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
+print 'insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 
 $res =& $dbh->query('SELECT a, b FROM phptest WHERE a = 17');
@@ -80,7 +80,7 @@ $array = array(
     'baz' => null,
 );
 $res =& $dbh->query('INSERT INTO phptest (a, b, d) VALUES (?, ?, ?)', $array);
-print 'insert: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
+print 'insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 $res =& $dbh->query('SELECT a, b, d FROM phptest WHERE a = ?', 11);
 $row = $res->fetchRow();
@@ -95,7 +95,7 @@ if ($type == 'NULL' || $row['d'] == '') {
 
 
 $res =& $dbh->query('DELETE FROM phptest WHERE a = ?', array(17));
-print 'delete: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
+print 'delete: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
