@@ -232,7 +232,13 @@ class DB_ifx extends DB_common
         if (($rownum !== null) && ($rownum < 0)) {
             return null;
         }
-        // if $rownum is null, fetch row will return the next row
+        if ($rownum === null) {
+            /*
+             * Even though fetch_row() should return the next row  if
+             * $rownum is null, it doesn't in all cases.  Bug 598.
+             */
+            $rownum = 'NEXT';
+        }
         if (!$arr = @ifx_fetch_row($result, $rownum)) {
             return null;
         }
