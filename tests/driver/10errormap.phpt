@@ -1,11 +1,10 @@
 --TEST--
 DB_driver::error mapping
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
+<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--
 <?php
-require_once 'connect.inc';
-require_once 'mktable.inc';
+require_once './mktable.inc';
 require_once '../errors.inc';
 ?>
 --EXPECT--

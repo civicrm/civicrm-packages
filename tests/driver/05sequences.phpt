@@ -3,10 +3,7 @@ DB_driver::sequences
 --SKIPIF--
 <?php
 chdir(dirname(__FILE__));
-require_once 'skipif.inc';
-require_once 'setup.inc';
-require_once 'DB.php';
-$db = DB::connect(DRIVER_DSN);
+require_once './skipif.inc';
 $tableInfo = $db->dropSequence('ajkdslfajoijkadie');
 if (DB::isError($tableInfo) && $tableInfo->code == DB_ERROR_NOT_CAPABLE) {
     die("skip $tableInfo->message");
@@ -14,7 +11,7 @@ if (DB::isError($tableInfo) && $tableInfo->code == DB_ERROR_NOT_CAPABLE) {
 ?>
 --FILE--
 <?php
-require_once 'connect.inc';
+require_once './connect.inc';
 require_once '../sequences.inc';
 ?>
 --EXPECT--
