@@ -892,6 +892,24 @@ class DB_ibase extends DB_common
     }
 
     // }}}
+    // {{{ getSpecialQuery()
+
+    function getSpecialQuery($type)
+    {
+        switch ($type) {
+            case 'tables':
+                return 'SELECT DISTINCT R.RDB$RELATION_NAME FROM '
+                       . 'RDB$RELATION_FIELDS R WHERE R.RDB$SYSTEM_FLAG=0';
+            case 'views':
+                return 'SELECT DISTINCT RDB$VIEW_NAME from RDB$VIEW_RELATIONS';
+            case 'users':
+                return 'SELECT DISTINCT RDB$USER FROM RDB$USER_PRIVILEGES';
+            default:
+                return $this->raiseError(DB_ERROR_UNSUPPORTED);
+        }
+    }
+
+    // }}}
 
 }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.155 2005-02-02 16:53:58 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.156 2005-02-02 17:16:28 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -77,6 +77,7 @@ fbsql:
 * FrontBase driver now works and passes all tests.
 
 ibase:
+* Add getListOf() support.
 * Add affectedRows() support.
 * Add items to errorcode_map (from MDB2):
   -303 => DB_ERROR_INVALID

@@ -32,13 +32,10 @@ auto-commit      -    x    x    n    n    n    E    E    x    x    x    -    n
 error mapping    -    T    T    t    -    t    t    t    T    T    E    l    l
 tableInfo        n    T    T    t    n    T    T    t    T    n    T    T    T
 
-NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
-
-
 TYPE (getListOf)
-tables           -    T    -    -    -    T    T    T    T    -    T    T    T
-views            -    -    -    -    -    x    n    n    -    -    x    -    x
-users            -    -    -    -    -    -    x    x    -    -    x    -    -
+tables           -    T    T    -    -    T    T    T    T    -    T    T    T
+views            -    -    T    -    -    x    n    n    -    -    x    -    x
+users            -    -    T    -    -    -    x    x    -    -    x    -    -
 databases        -    -    -    -    -    -    x    x    -    -    x    -    -
 functions        -    -    -    -    -    -    -    -    -    -    x    -    -
 
@@ -71,3 +68,4 @@ Symbols:
 18get            -    o    X    o    -    o    o    o    o    o    o    o    o
 
 NOTE: ibase testing performed with Firebird under PHP 5.1-dev.
+      ibase under PHP 4 is unstable on Windows.
