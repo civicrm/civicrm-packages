@@ -141,25 +141,45 @@ class DB_msql extends DB_common
             $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        $dbhost = $dsn['hostspec'] ? $dsn['hostspec'] : 'localhost';
+        $params = array();
+        if ($dsn['hostspec']) {
+            $params[] = $dsn['port'] 
+                        ? $dsn['hostspec'] . ',' . $dsn['port']
+                        : $dsn['hostspec'];
+        }
 
         $connect_function = $persistent ? 'msql_pconnect' : 'msql_connect';
 
-        if ($dbhost && $dsn['username'] && $dsn['password']) {
-            $this->connection = $connect_function($dbhost, $dsn['username'],
-                                                  $dsn['password']);
-        } elseif ($dbhost && $dsn['username']) {
-            $this->connection = $connect_function($dbhost, $dsn['username']);
+        $ini = ini_get('track_errors');
+        $php_errormsg = '';
+        if ($ini) {
+            $this->connection = @call_user_func_array($connect_function,
+                                                      $params);
         } else {
-            $this->connection = $connect_function($dbhost);
+            ini_set('track_errors', 1);
+            $this->connection = @call_user_func_array($connect_function,
+                                                      $params);
+            ini_set('track_errors', $ini);
         }
 
         if (!$this->connection) {
-            $this->raiseError(DB_ERROR_CONNECT_FAILED);
+            if (($err = @msql_error()) != '') {
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                         null, null, null,
+                                         $err);
+            } elseif ($php_errormsg) {
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                         null, null, null,
+                                         $php_errormsg);
+            } else {
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED);
+            }
         }
 
         if (!@msql_select_db($dsn['database'], $this->connection)){
-            return $this->msqlRaiseError();
+            return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                     null, null, null,
+                                     'msql_select_db() failure');
         }
         return DB_OK;
     }
