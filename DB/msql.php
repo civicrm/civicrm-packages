@@ -102,6 +102,17 @@ class DB_msql extends DB_common
     var $dsn = array();
 
 
+    /**
+     * The query result resource created by PHP
+     *
+     * Used to make affectedRows() work.  Only contains the result for
+     * data manipulation queries.  Contains false for other queries.
+     *
+     * @var resource
+     */
+    var $_result;
+
+
     // }}}
     // {{{ constructor
 
@@ -174,7 +185,7 @@ class DB_msql extends DB_common
             }
         }
 
-        if (!@msql_select_db($dsn['database'], $this->connection)){
+        if (!@msql_select_db($dsn['database'], $this->connection)) {
             return $this->msqlRaiseError();
         }
         return DB_OK;
@@ -203,7 +214,13 @@ class DB_msql extends DB_common
         }
         // Determine which queries that should return data, and which
         // should return an error code only.
-        return DB::isManip($query) ? DB_OK : $result;
+        if (DB::isManip($query)) {
+            $this->_result = $result;
+            return DB_OK;
+        } else {
+            $this->_result = false;
+            return $result;
+        }
     }
 
 
@@ -314,7 +331,10 @@ class DB_msql extends DB_common
      */
     function affectedRows()
     {
-        return @msql_affected_rows($this->connection);
+        if (!$this->_result) {
+            return 0;
+        }
+        return msql_affected_rows($this->_result);
     }
 
     /**
