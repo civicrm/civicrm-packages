@@ -1,10 +1,11 @@
 --TEST--
-DB_driver::affectedRows test
+DB_driver::affectedRows
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
+<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--
 <?php
-require_once 'mktable.inc';
+require_once './mktable.inc';
+
 // Clean table
 $dbh->query("DELETE FROM phptest");
 

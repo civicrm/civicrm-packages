@@ -1,10 +1,10 @@
 --TEST--
-DB_driver::prepare/execute test
+DB_driver::prepare/execute
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
+<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--
 <?php
-require_once 'mktable.inc';
+require_once './mktable.inc';
 require_once '../prepexe.inc';
 ?>
 --EXPECT--

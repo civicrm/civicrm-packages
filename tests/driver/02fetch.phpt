@@ -1,10 +1,10 @@
 --TEST--
-DB_driver::fetch test
+DB_driver::fetch
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require_once 'skipif.inc'; ?>
+<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--
 <?php
-require_once 'mktable.inc';
+require_once './mktable.inc';
 require_once '../fetchrow.inc';
 require_once '../fetchmodes.inc';
 ?>
