@@ -438,7 +438,7 @@ class DB_common extends PEAR
     // {{{ setOption()
 
     /**
-     * Set run-time configuration options for the db class
+     * Set run-time configuration options for PEAR DB
      *
      * Options, their data types, default values and description:
      * <ul>
@@ -546,7 +546,7 @@ class DB_common extends PEAR
      * @param string $option option name
      * @param mixed  $value value for the option
      *
-     * @return mixed DB_OK or DB_Error
+     * @return int  DB_OK on success.  DB_Error object on failure.
      *
      * @see DB_common::$options
      */
