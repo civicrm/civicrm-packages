@@ -435,6 +435,113 @@ class DB_ifx extends DB_common
     }
 
     // }}}
+    // {{{ tableInfo()
+
+    /**
+     * Returns information about a table or a result set.
+     *
+     * NOTE: only supports 'table' if <var>$result</var> is a table name.
+     *
+     * If analyzing a query result and the result has duplicate field names,
+     * an error will be raised saying
+     * <samp>can't distinguish duplicate field names</samp>.
+     *
+     * @param object|string  $result  DB_result object from a query or a
+     *                                string containing the name of a table 
+     * @param int            $mode    a valid tableInfo mode
+     * @return array  an associative array with the information requested
+     *                or an error object if something is wrong
+     * @access public
+     * @internal
+     * @see DB_common::tableInfo()
+     */
+    function tableInfo($result, $mode = null)
+    {
+        if (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $id = $result->result;
+            $got_string = false;
+        } elseif (is_string($result)) {
+            /*
+             * Probably received a table name.
+             * Create a result resource identifier.
+             */
+            $id = @ifx_query("SELECT * FROM $result WHERE 1=0",
+                             $this->connection);
+            $got_string = true;
+        } else {
+            /*
+             * Probably received a result resource identifier.
+             * Copy it.
+             */
+            $id = $result;
+            $got_string = false;
+        }
+
+        if (!is_resource($id)) {
+            return $this->ifxRaiseError(DB_ERROR_NEED_MORE_DATA);
+        }
+
+        $flds = @ifx_fieldproperties($id);
+        $count = @ifx_num_fields($id);
+
+        if ($flds != $count) {
+            return $this->raiseError("can't distinguish duplicate field names");
+        }
+
+        if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+            $case_func = 'strtolower';
+        } else {
+            $case_func = '';
+        }
+        
+        $i = 0;
+        // made this IF due to performance (one if is faster than $count if's)
+        if (!$mode) {
+            foreach ($flds as $key => $value) {
+                $props = explode(';', $value);
+
+                $res[$i]['table'] = $got_string ? $case_func($result) : '';
+                $res[$i]['name']  = $case_func($key);
+                $res[$i]['type']  = $props[0];
+                $res[$i]['len']   = $props[1];
+                $res[$i]['flags'] = $props[4] == 'N' ? 'not_null' : '';
+                $i++;
+            }
+
+        } else { // full
+            $res['num_fields'] = $count;
+
+            foreach ($flds as $key => $value) {
+                $props = explode(';', $value);
+
+                $res[$i]['table'] = $got_string ? $case_func($result) : '';
+                $res[$i]['name']  = $case_func($key);
+                $res[$i]['type']  = $props[0];
+                $res[$i]['len']   = $props[1];
+                $res[$i]['flags'] = $props[4] == 'N' ? 'not_null' : '';
+
+                if ($mode & DB_TABLEINFO_ORDER) {
+                    $res['order'][$res[$i]['name']] = $i;
+                }
+                if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
+                }
+                $i++;
+            }
+        }
+
+        // free the result only if we were called on a table
+        if ($got_string) {
+            @ifx_free_result($id);
+        }
+        return $res;
+    }
+
+    // }}}
 
 }
 
