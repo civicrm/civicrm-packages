@@ -475,6 +475,7 @@ class DB
             'hostspec' => false,
             'port'     => false,
             'socket'   => false,
+            'mode'     => false,
             'database' => false
         );
 
