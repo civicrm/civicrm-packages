@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.58 2004-02-07 18:28:17 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.59 2004-02-10 04:17:54 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -61,29 +61,38 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.0RC5</version>
+    <version>1.6.0RC6</version>
     <state>beta</state>
-    <date>2004-02-06</date>
+    <date>2004-02-10</date>
     <notes>
 =============
 ENHANCEMENTS:
 
-Added quoteIdentifier() method.  (danielc)
+- all:
+When connecting with an array as the DSN and the
+'dbsyntax' element is not set, parseDSN() now
+sets it to 'phptype', just like what happens when
+parsing a DSN string.  (danielc)
 
+- mssql, odbc, pgsql, sqlite:
+Duplicate key constraint mapped to
+DB_ERROR_CONSTRAINT.  (danielc)
+
+- mysql:
+Added DB_PORTABILITY_CONSTRAINT portability option
+because other DBMS's map duplicate key constraints
+to DB_ERROR_CONSTRAINT but MySQL mapped it to
+DB_ERROR_ALREADY_EXISTS.  (danielc)
 
 =============
 BUGS FIXED:
 
-tableInfo() $mode can once again be 0.  (danielc)
-
--- all
-Finalize the fix for the "undefined index" notices
-bug when using an array for the DSN.  Bugs 693 and
-696.  (danielc)
-
--- oci8
-Have modifyLimitQuery() deal with columns names
-which have spaces in them.  Bug 679.  (danielc)
+- oci8:
+Change duplicate key constraint mapping from 
+DB_ERROR_ALREADY_EXISTS to DB_ERROR_CONSTRAINT
+for portability with other DBMS's.  Since the
+initial mapping was added in 1.6.0RC1, this
+isn't a backwards compatibility issue.  (danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
