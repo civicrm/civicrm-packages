@@ -1069,7 +1069,7 @@ class DB_row
      */
     function DB_row(&$arr)
     {
-        for (reset($arr); $key = key($arr); next($arr)) {
+        foreach ($arr as $key => $value) {
             $this->$key = &$arr[$key];
         }
     }
