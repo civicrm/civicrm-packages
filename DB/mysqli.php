@@ -860,14 +860,6 @@ class DB_mysqli extends DB_common
     }
 
     // }}}
-    // {{{ modifyQuery()
-
-    function modifyQuery($query)
-    {
-        return $query;
-    }
-
-    // }}}
     // {{{ modifyLimitQuery()
 
     /**

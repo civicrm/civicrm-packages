@@ -525,14 +525,6 @@ class DB_fbsql extends DB_common
     }
 
     // }}}
-    // {{{ modifyQuery()
-
-    function modifyQuery($query)
-    {
-        return $query;
-    }
-
-    // }}}
     // {{{ modifyLimitQuery()
 
     /**
