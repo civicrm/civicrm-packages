@@ -209,6 +209,7 @@ class DB_common extends PEAR
      * delimited identifiers:
      *   + backtick (<kbd>`</kbd>) -- due to MySQL
      *   + double quote (<kbd>"</kbd>) -- due to Oracle
+     *   + brackets (<kbd>[</kbd> or <kbd>]</kbd>) -- due to Access
      *
      * Delimited identifiers are known to generally work correctly under
      * the following drivers:
@@ -216,6 +217,7 @@ class DB_common extends PEAR
      *   + mysql
      *   + mysql4
      *   + oci8
+     *   + odbc(access)
      *   + odbc(db2)
      *   + pgsql
      *   + sqlite
