@@ -133,6 +133,9 @@ class DB_ifx extends DB_common
         if (preg_match('/(SELECT)/i', $query)) {
             return $result;
         }
+        // Result has to be freeed even with a insert or update
+        ifx_free_result($result);
+
         return DB_OK;
     }
 
