@@ -16,7 +16,6 @@
  *
  * @category   Database
  * @package    DB
- * @author     Sterling Hughes <sterling@php.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
@@ -37,13 +36,12 @@ require_once 'DB/common.php';
  *
  * @category   Database
  * @package    DB
- * @author     Sterling Hughes <sterling@php.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
- * @since      Class not fully functional until Release 1.7.0
+ * @since      Class not functional until Release 1.7.0
  */
 class DB_msql extends DB_common
 {
@@ -177,9 +175,7 @@ class DB_msql extends DB_common
         }
 
         if (!@msql_select_db($dsn['database'], $this->connection)){
-            return $this->raiseError(DB_ERROR_CONNECT_FAILED,
-                                     null, null, null,
-                                     'msql_select_db() failure');
+            return $this->msqlRaiseError();
         }
         return DB_OK;
     }
@@ -346,22 +342,58 @@ class DB_msql extends DB_common
         static $error_regexps;
         if (!isset($error_regexps)) {
             $error_regexps = array(
+                '/^Access to database denied/i'
+                    => DB_ERROR_ACCESS_VIOLATION,
                 '/^Bad index name/i'
                     => DB_ERROR_ALREADY_EXISTS,
+                '/^Bad order field/i'
+                    => DB_ERROR_SYNTAX,
+                '/^Bad type for comparison/i'
+                    => DB_ERROR_SYNTAX,
+                '/^Can\'t perform LIKE on/i'
+                    => DB_ERROR_SYNTAX,
+                '/^Can\'t use TEXT fields in LIKE comparison/i'
+                    => DB_ERROR_SYNTAX,
+                '/^Couldn\'t create temporary table/i'
+                    => DB_ERROR_CANNOT_CREATE,
+                '/^Error creating table file/i'
+                    => DB_ERROR_CANNOT_CREATE,
                 '/^Field .* cannot be null$/i'
                     => DB_ERROR_CONSTRAINT_NOT_NULL,
+                '/^Index (field|condition) .* cannot be null$/i'
+                    => DB_ERROR_SYNTAX,
+                '/^Invalid date format/i'
+                    => DB_ERROR_INVALID_DATE,
+                '/^Invalid time format/i'
+                    => DB_ERROR_INVALID,
                 '/^Literal value for .* is wrong type$/i'
                     => DB_ERROR_INVALID,
+                '/^No Database Selected/i'
+                    => DB_ERROR_NODBSELECTED,
+                '/^No value specified for field/i'
+                    => DB_ERROR_VALUE_COUNT_ON_ROW,
+                '/^Non unique value for unique index/i'
+                    => DB_ERROR_CONSTRAINT,
+                '/^Out of memory for temporary table/i'
+                    => DB_ERROR_CANNOT_CREATE,
+                '/^Permission denied/i'
+                    => DB_ERROR_ACCESS_VIOLATION,
+                '/^Reference to un-selected table/i'
+                    => DB_ERROR_SYNTAX,
                 '/^syntax error/i'
                     => DB_ERROR_SYNTAX,
                 '/^Table .* exists$/i'
                     => DB_ERROR_ALREADY_EXISTS,
-                '/^Unknown field/i'
+                '/^Unknown database/i'  
+                    => DB_ERROR_NOSUCHDB,
+                '/^Unknown field/i'  
                     => DB_ERROR_NOSUCHFIELD,
-                '/^Unknown index/i'
+                '/^Unknown (index|system variable)/i' 
                     => DB_ERROR_NOT_FOUND,
-                '/^Unknown table/i'   
+                '/^Unknown table/i'
                     => DB_ERROR_NOSUCHTABLE,
+                '/^Unqualified field/i'
+                    => DB_ERROR_SYNTAX,
             );
         }
 
