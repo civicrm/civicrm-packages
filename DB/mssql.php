@@ -97,12 +97,12 @@ class DB_mssql extends DB_common
         }
         if (!$conn) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
-                                         null, mssql_get_last_message());
+                                         null, $this->errorNative());
         }
         if ($dsninfo['database']) {
             if (!@mssql_select_db($dsninfo['database'], $conn)) {
                 return $this->raiseError(DB_ERROR_NODBSELECTED, null, null,
-                                         null, mssql_get_last_message());
+                                         null, $this->errorNative());
             }
             $this->_db = $dsninfo['database'];
         }
@@ -215,7 +215,7 @@ class DB_mssql extends DB_common
         if (!$ar) {
             /* This throws informative error messages,
                don't use it for now
-            if ($msg = mssql_get_last_message()) {
+            if ($msg = $this->errorNative()) {
                 return $this->raiseError($msg);
             }
             */
@@ -440,6 +440,20 @@ class DB_mssql extends DB_common
         $seqname = $this->getSequenceName($seq_name);
         return $this->query("DROP TABLE $seqname");
     }
+
+    // }}}
+    // {{{ errorNative()
+
+    /**
+     * Get the last server error messge (if any)
+     *
+     * @return string mssql last error message
+     */
+    function errorNative()
+    {
+        return mssql_get_last_message();
+    }
+
     // }}}
     // {{{ errorCode()
 
@@ -468,7 +482,7 @@ class DB_mssql extends DB_common
      */
     function mssqlRaiseError($code = null)
     {
-        $native_msg = mssql_get_last_message();
+        $native_msg = $this->errorNative();
         $native_code = $this->errorCode();
         if ($code === null) {
             if (isset($this->errorcode_map[$native_code])) {
