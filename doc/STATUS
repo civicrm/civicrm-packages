@@ -32,7 +32,6 @@ auto-commit      x    x    n    n    n    n    -    x    x    x    n    -
 error mapping    x    T    e    -    t    t    -    T    T    E    l    l
 tableInfo        x    n    n    n    T    T    -    T    n    T    T    -
 
-[1]:  Works on firebird but not interbase.
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
 
 TYPE (getListOf)
@@ -68,5 +67,4 @@ Symbols:
 16tableinfo      -    -    -    -    o    o    -    o    -    o    o    -
 17query          -    X    -    -    o    o    -    o    o    o    o    o
 
-[1]:  Works on firebird but not interbase.
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
