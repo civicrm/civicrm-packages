@@ -586,20 +586,21 @@ class DB_sqlite extends DB_common
              */
             $rows = strtr($args['rows'], $this->keywords);
 
-            $query .= 'BEGIN TRANSACTION;';
-            $query .= "CREATE TEMPORARY TABLE {$args['table']}_backup ({$args['rows']});";
-            $query .= "INSERT INTO {$args['table']}_backup SELECT {$args['save']} FROM {$args['table']};";
-            $query .= "DROP TABLE {$args['table']};";
-            $query .= "CREATE TABLE {$args['table']} ({$args['rows']});";
-            $query .= "INSERT INTO {$args['table']} SELECT {$rows} FROM {$args['table']}_backup;";
-            $query .= "DROP TABLE {$args['table']}_backup;";
-            $query .= 'COMMIT;';
+            $q = array(
+                'BEGIN TRANSACTION',
+                "CREATE TEMPORARY TABLE {$args['table']}_backup ({$args['rows']})",
+                "INSERT INTO {$args['table']}_backup SELECT {$args['save']} FROM {$args['table']}",
+                "DROP TABLE {$args['table']}",
+                "CREATE TABLE {$args['table']} ({$args['rows']})",
+                "INSERT INTO {$args['table']} SELECT {$rows} FROM {$args['table']}_backup",
+                "DROP TABLE {$args['table']}_backup",
+                'COMMIT',
+            );
 
             // This is a dirty hack, since the above query will no get executed with a single
             // query call; so here the query method will be called directly and return a select instead.
-            $q = explode(';', $query);
-            for($i=0; $i<8; $i++) {
-                $result = $this->query($q[$i]);
+            foreach($q as $query) {
+                $this->query($query);
             }
             return "SELECT * FROM {$args['table']};";
         default:
