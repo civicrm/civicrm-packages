@@ -48,10 +48,12 @@ New Features:
 Use it with: $db = DB::connect($dsn, array('autofree' => true));
 - Added new methods: buildManipSQL(), autoPrepare() and autoExecute()
 - Dropped all references to the unused DB_Warning class
+- Added new driver DB_Ado (as a sepparate package), contributed by Alexios Fakos)
 
 Bugs fixed:
 - Fix MS SQL server multiple connections under the same script
-- Fix possible bug in MySQL sequence emulation and multiple connections in the same script
+- The MySQL driver no longer needs to specify a database (allowing queries
+with the style database.table)
 - Fix parseDSN() to not confuse an Oracle TSN with the protocol
 - Adapt the tests paths to work with the new "pear run-tests" (do a "pear download DB", uncompress
 the packages and run "pear run-tests tests").
