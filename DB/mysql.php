@@ -48,7 +48,6 @@ class DB_mysql extends DB_common
     var $phptype, $dbsyntax;
     var $prepare_tokens = array();
     var $prepare_types = array();
-    var $num_rows = array();
     var $transaction_opcount = 0;
     var $autocommit = true;
     var $fetchmode = DB_FETCHMODE_ORDERED; /* Default fetch mode */
@@ -231,11 +230,6 @@ class DB_mysql extends DB_common
             return $this->mysqlRaiseError();
         }
         if (is_resource($result)) {
-            $numrows = $this->numrows($result);
-            if (is_object($numrows)) {
-                return $numrows;
-            }
-            $this->num_rows[(int)$result] = $numrows;
             return $result;
         }
         return DB_OK;
@@ -336,7 +330,6 @@ class DB_mysql extends DB_common
      */
     function freeResult($result)
     {
-        unset($this->num_rows[(int)$result]);
         return @mysql_free_result($result);
     }
 
