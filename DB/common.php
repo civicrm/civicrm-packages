@@ -873,7 +873,7 @@ class DB_common extends PEAR
      * 0, or a DB error code.
      */
     function &getRow($query,
-                     $params = null,
+                     $params = array(),
                      $fetchmode = DB_FETCHMODE_DEFAULT)
     {
         // compat check, the params and fetchmode parameters used to
