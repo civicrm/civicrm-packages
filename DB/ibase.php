@@ -495,12 +495,13 @@ class DB_ibase extends DB_common
      */
     function nextId($seq_name, $ondemand = true)
     {
-        $sqn = strtoupper(preg_replace('/[^a-z0-9_]/i', '_', $seq_name));
+        $sqn = strtoupper($this->getSequenceName($seq_name));
         $repeat = 0;
         do {
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
-            $result =& $this->query("SELECT GEN_ID(${sqn}_SEQ, 1) FROM RDB\$GENERATORS"
-                                   ." WHERE RDB\$GENERATOR_NAME='${sqn}_SEQ'");
+            $result =& $this->query("SELECT GEN_ID(${sqn}, 1) "
+                                   . 'FROM RDB$GENERATORS '
+                                   . "WHERE RDB\$GENERATOR_NAME='${sqn}'");
             $this->popErrorHandling();
             if ($ondemand && DB::isError($result)) {
                 $repeat = 1;
@@ -533,9 +534,9 @@ class DB_ibase extends DB_common
      */
     function createSequence($seq_name)
     {
-        $sqn = strtoupper(preg_replace('/[^a-z0-9_]/i', '_', $seq_name));
+        $sqn = strtoupper($this->getSequenceName($seq_name));
         $this->pushErrorHandling(PEAR_ERROR_RETURN);
-        $result = $this->query("CREATE GENERATOR ${sqn}_SEQ");
+        $result = $this->query("CREATE GENERATOR ${sqn}");
         $this->popErrorHandling();
 
         return $result;
@@ -553,8 +554,9 @@ class DB_ibase extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $sqn = strtoupper(preg_replace('/[^a-z0-9_]/i', '_', $seq_name));
-        return $this->query("DELETE FROM RDB\$GENERATORS WHERE RDB\$GENERATOR_NAME='${sqn}_SEQ'");
+        $sqn = strtoupper($this->getSequenceName($seq_name));
+        return $this->query('DELETE FROM RDB$GENERATORS '
+                            . "WHERE RDB\$GENERATOR_NAME='${sqn}'");
     }
 
     // }}}

@@ -401,10 +401,9 @@ class DB_fbsql extends DB_common
      */
     function nextId($seq_name, $ondemand = true)
     {
-        $sqn = preg_replace('/[^a-z0-9_]/i', '_', $seq_name);
+        $seqname = $this->getSequenceName($seq_name);
         $repeat = 0;
         do {
-            $seqname = sprintf($this->getOption("seqname_format"), $sqn);
             $result = $this->query("INSERT INTO ${seqname} VALUES(NULL)");
             if ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE) {
@@ -437,8 +436,7 @@ class DB_fbsql extends DB_common
      */
     function createSequence($seq_name)
     {
-        $sqn = preg_replace('/[^a-z0-9_]/i', '_', $seq_name);
-        $seqname = sprintf($this->getOption("seqname_format"), $sqn);
+        $seqname = $this->getSequenceName($seq_name);
         return $this->query("CREATE TABLE ${seqname} ".
                             '(id INTEGER UNSIGNED AUTO_INCREMENT NOT NULL,'.
                             ' PRIMARY KEY(id))');
@@ -460,8 +458,7 @@ class DB_fbsql extends DB_common
      */
     function dropSequence($seq_name)
     {
-        $sqn = preg_replace('/[^a-z0-9_]/i', '_', $seq_name);
-        $seqname = sprintf($this->getOption("seqname_format"), $sqn);
+        $seqname = $this->getSequenceName($seq_name);
         return $this->query("DROP TABLE ${seqname} RESTRICT");
     }
 
