@@ -28,6 +28,8 @@ DB_driver::tableInfo
  *     1 => array()  Info expected to be reported for phptest_fk.fk
  *     2 => array()  Info expected to be reported for phptest_fk.c
  *     3 => array()  Info expected to be reported for phptest_fk.d
+ *     4 => array()  Info expected to be reported for phptest_fk.e
+ *     5 => array()  Info expected to be reported for phptest_fk.f
  *     9 => array()  Info expected to be reported for phptest.d
  * )
  * </pre>
