@@ -599,7 +599,7 @@ class DB_sqlite extends DB_common
     // {{{ escapeSimple()
 
     /**
-     * Escape a string according to the current DBMS's standards
+     * Escapes a string according to the current DBMS's standards
      *
      * In SQLite, this makes things safe for inserts/updates, but may
      * cause problems when performing text comparisons against columns
@@ -718,7 +718,7 @@ class DB_sqlite extends DB_common
     // {{{ errorCode()
 
     /**
-     * Determine PEAR::DB error code from the database's text error message
+     * Determines PEAR::DB error code from the database's text error message
      *
      * @param string $errormsg  the error message returned from the database
      *
@@ -841,7 +841,7 @@ class DB_sqlite extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Obtains the query string needed for listing a given type of objects
      *
      * @param string $type  the kind of objects you want to retrieve
      * @param array  $args  SQLITE DRIVER ONLY: a private array of arguments

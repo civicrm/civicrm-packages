@@ -596,14 +596,14 @@ class DB_ibase extends DB_common
     }
 
     /**
-     * Free the internal resources associated with a prepared query
+     * Frees the internal resources associated with a prepared query
      *
      * @param resource $stmt           the prepared statement's PHP resource
      * @param bool     $free_resource  should the PHP resource be freed too?
      *                                  Use false if you need to get data
      *                                  from the result set later.
      *
-     * @return bool  true on success, false if $result is invalid
+     * @return bool  TRUE on success, FALSE if $result is invalid
      *
      * @see DB_ibase::prepare()
      */
@@ -625,7 +625,7 @@ class DB_ibase extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable or disable automatic commits
+     * Enables or disables automatic commits
      *
      * @param bool $onoff  true turns it on, false turns it off
      *
@@ -862,7 +862,7 @@ class DB_ibase extends DB_common
     // {{{ errorNative()
 
     /**
-     * Get the DBMS' native error code produced by the last query
+     * Gets the DBMS' native error code produced by the last query
      *
      * @return int  the DBMS' error code.  NULL if there is no error code.
      *
@@ -884,7 +884,7 @@ class DB_ibase extends DB_common
     // {{{ errorCode()
 
     /**
-     * Map native error codes to DB's portable ones
+     * Maps native error codes to DB's portable ones
      *
      * @param int $nativecode  the error code returned by the DBMS
      *
@@ -1030,7 +1030,7 @@ class DB_ibase extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Obtains the query string needed for listing a given type of objects
      *
      * @param string $type  the kind of objects you want to retrieve
      *

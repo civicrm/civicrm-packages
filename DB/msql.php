@@ -522,7 +522,7 @@ class DB_msql extends DB_common
     // {{{ escapeSimple()
 
     /**
-     * Escape a string according to the current DBMS's standards
+     * Escapes a string according to the current DBMS's standards
      *
      * @param string $str  the string to be escaped
      *
@@ -577,7 +577,7 @@ class DB_msql extends DB_common
     // {{{ errorCode()
 
     /**
-     * Determine PEAR::DB error code from the database's text error message
+     * Determines PEAR::DB error code from the database's text error message
      *
      * @param string $errormsg  the error message returned from the database
      *

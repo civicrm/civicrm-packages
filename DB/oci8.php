@@ -403,14 +403,14 @@ class DB_oci8 extends DB_common
     }
 
     /**
-     * Free the internal resources associated with a prepared query
+     * Frees the internal resources associated with a prepared query
      *
      * @param resource $stmt           the prepared statement's resource
      * @param bool     $free_resource  should the PHP resource be freed too?
      *                                  Use false if you need to get data
      *                                  from the result set later.
      *
-     * @return bool  true on success, false if $result is invalid
+     * @return bool  TRUE on success, FALSE if $result is invalid
      *
      * @see DB_oci8::prepare()
      */
@@ -657,7 +657,7 @@ class DB_oci8 extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable or disable automatic commits
+     * Enables or disables automatic commits
      *
      * @param bool $onoff  true turns it on, false turns it off
      *
@@ -924,7 +924,7 @@ class DB_oci8 extends DB_common
     // {{{ errorNative()
 
     /**
-     * Get the DBMS' native error code produced by the last query
+     * Gets the DBMS' native error code produced by the last query
      *
      * @return int  the DBMS' error code.  FALSE if the code could not be
      *               determined
@@ -1060,7 +1060,7 @@ class DB_oci8 extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Obtains the query string needed for listing a given type of objects
      *
      * @param string $type  the kind of objects you want to retrieve
      *

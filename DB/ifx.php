@@ -427,7 +427,7 @@ class DB_ifx extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable or disable automatic commits
+     * Enables or disables automatic commits
      *
      * @param bool $onoff  true turns it on, false turns it off
      *
@@ -523,7 +523,7 @@ class DB_ifx extends DB_common
     // {{{ errorCode()
 
     /**
-     * Map native error codes to DB's portable ones.
+     * Maps native error codes to DB's portable ones.
      *
      * Requires that the DB implementation's constructor fills
      * in the <var>$errorcode_map</var> property.
@@ -647,7 +647,7 @@ class DB_ifx extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Obtains the query string needed for listing a given type of objects
      *
      * @param string $type  the kind of objects you want to retrieve
      *

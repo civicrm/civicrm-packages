@@ -325,7 +325,7 @@ class DB_fbsql extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable or disable automatic commits
+     * Enables or disables automatic commits
      *
      * @param bool $onoff  true turns it on, false turns it off
      *
@@ -611,7 +611,7 @@ class DB_fbsql extends DB_common
     // {{{ errorNative()
 
     /**
-     * Get the DBMS' native error code produced by the last query
+     * Gets the DBMS' native error code produced by the last query
      *
      * @return int  the DBMS' error code
      */
@@ -709,7 +709,7 @@ class DB_fbsql extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Obtains the query string needed for listing a given type of objects
      *
      * @param string $type  the kind of objects you want to retrieve
      *

@@ -532,7 +532,7 @@ class DB_sybase extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable or disable automatic commits
+     * Enables or disables automatic commits
      *
      * @param bool $onoff  true turns it on, false turns it off
      *
@@ -634,7 +634,7 @@ class DB_sybase extends DB_common
     // {{{ errorCode()
 
     /**
-     * Determine PEAR::DB error code from the database's text error message.
+     * Determines PEAR::DB error code from the database's text error message.
      *
      * @param  string  $errormsg  error message returned from the database
      * @return integer  an error number from a DB error constant
@@ -870,7 +870,7 @@ class DB_sybase extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Obtains the query string needed for listing a given type of objects
      *
      * @param string $type  the kind of objects you want to retrieve
      *

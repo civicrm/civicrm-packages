@@ -451,7 +451,7 @@ class DB_odbc extends DB_common
     // {{{ quoteIdentifier()
 
     /**
-     * Quote a string so it can be safely used as a table or column name
+     * Quotes a string so it can be safely used as a table or column name
      *
      * Use 'mssql' as the dbsyntax in the DB DSN only if you've unchecked
      * "Use ANSI quoted identifiers" when setting up the ODBC data source.
@@ -587,7 +587,7 @@ class DB_odbc extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable or disable automatic commits
+     * Enables or disables automatic commits
      *
      * @param bool $onoff  true turns it on, false turns it off
      *
@@ -802,7 +802,7 @@ class DB_odbc extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Obtains the query string needed for listing a given type of objects
      *
      * Thanks to symbol1@gmail.com and Philippe.Jausions@11abacus.com.
      *

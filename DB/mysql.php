@@ -465,7 +465,7 @@ class DB_mysql extends DB_common
     // {{{ autoCommit()
 
     /**
-     * Enable or disable automatic commits
+     * Enables or disables automatic commits
      *
      * @param bool $onoff  true turns it on, false turns it off
      *
@@ -740,7 +740,7 @@ class DB_mysql extends DB_common
     // {{{ quoteIdentifier()
 
     /**
-     * Quote a string so it can be safely used as a table or column name
+     * Quotes a string so it can be safely used as a table or column name
      *
      * MySQL can't handle the backtick character (<kbd>`</kbd>) in
      * table or column names.
@@ -772,7 +772,7 @@ class DB_mysql extends DB_common
     // {{{ escapeSimple()
 
     /**
-     * Escape a string according to the current DBMS's standards
+     * Escapes a string according to the current DBMS's standards
      *
      * @param string $str  the string to be escaped
      *
@@ -887,7 +887,7 @@ class DB_mysql extends DB_common
     // {{{ errorNative()
 
     /**
-     * Get the DBMS' native error code produced by the last query
+     * Gets the DBMS' native error code produced by the last query
      *
      * @return int  the DBMS' error code
      */
@@ -985,7 +985,7 @@ class DB_mysql extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Obtains the query string needed for listing a given type of objects
      *
      * @param string $type  the kind of objects you want to retrieve
      *

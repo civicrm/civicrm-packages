@@ -131,8 +131,8 @@ class DB_common extends PEAR
     // {{{ __sleep()
 
     /**
-     * When PHP's serialize() function is called, automatically disconnect
-     * from the database and indicate which properties should be saved
+     * Automatically disconnects from the database and indicates which
+     * properties should be saved When PHP's serialize() function is called
      *
      * @return array  the array of properties names that should be saved
      */
@@ -170,7 +170,7 @@ class DB_common extends PEAR
     // {{{ __wakeup()
 
     /**
-     * Automatically reconnect to the database when PHP's unserialize()
+     * Automatically reconnects to the database when PHP's unserialize()
      * function is called
      *
      * The reconnection attempt is only performed if the object was connected
@@ -269,7 +269,7 @@ class DB_common extends PEAR
     // {{{ quoteIdentifier()
 
     /**
-     * Quote a string so it can be safely used as a table or column name
+     * Quotes a string so it can be safely used as a table or column name
      *
      * Delimiting style depends on which database driver is being used.
      *
@@ -334,7 +334,7 @@ class DB_common extends PEAR
      *    <kbd>integer</kbd> or <kbd>double</kbd> -> the unquoted number
      *  </li>
      *  <li>
-     *    &type.bool; -> output depends on the driver in use
+     *    <kbd>bool</kbd> -> output depends on the driver in use
      *    Most drivers return integers: <samp>1</samp> if
      *    <kbd>true</kbd> or <samp>0</samp> if
      *    <kbd>false</kbd>.
@@ -431,7 +431,7 @@ class DB_common extends PEAR
     // {{{ escapeSimple()
 
     /**
-     * Escape a string according to the current DBMS's standards
+     * Escapes a string according to the current DBMS's standards
      *
      * In SQLite, this makes things safe for inserts/updates, but may
      * cause problems when performing text comparisons against columns
@@ -454,7 +454,7 @@ class DB_common extends PEAR
     // {{{ provides()
 
     /**
-     * Tell whether the present driver supports a given feature
+     * Tells whether the present driver supports a given feature
      *
      * @param string $feature  the feature you're curious about
      *
@@ -504,7 +504,7 @@ class DB_common extends PEAR
     // {{{ setOption()
 
     /**
-     * Set run-time configuration options for PEAR DB
+     * Sets run-time configuration options for PEAR DB
      *
      * Options, their data types, default values and description:
      * <ul>
@@ -630,7 +630,7 @@ class DB_common extends PEAR
      * @param string $option option name
      * @param mixed  $value value for the option
      *
-     * @return int  DB_OK on success.  DB_Error object on failure.
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
      * @see DB_common::$options
      */
@@ -728,7 +728,8 @@ class DB_common extends PEAR
      *
      * @param string $query  the query to be prepared
      *
-     * @return mixed  DB statement resource on success. DB_Error on failure.
+     * @return mixed  DB statement resource on success. A DB_Error object
+     *                 on failure.
      *
      * @see DB_common::execute()
      */
@@ -770,7 +771,7 @@ class DB_common extends PEAR
     // {{{ autoPrepare()
 
     /**
-     * Automaticaly generate an insert or update query and pass it to prepare()
+     * Automaticaly generates an insert or update query and pass it to prepare()
      *
      * @param string $table         the table name
      * @param array  $table_fields  the array of field names
@@ -782,7 +783,7 @@ class DB_common extends PEAR
      *
      * @return resource  the query handle
      *
-     * @see DB_common::prepare(), DB_common::buildManipSQL()
+     * @uses DB_common::prepare(), DB_common::buildManipSQL()
      */
     function autoPrepare($table, $table_fields, $mode = DB_AUTOQUERY_INSERT,
                          $where = false)
@@ -795,7 +796,7 @@ class DB_common extends PEAR
     // {{{ autoExecute()
 
     /**
-     * Automaticaly generate an insert or update query and call prepare()
+     * Automaticaly generates an insert or update query and call prepare()
      * and execute() with it
      *
      * @param string $table         the table name
@@ -807,9 +808,11 @@ class DB_common extends PEAR
      *                               append to the SQL statement.  Don't
      *                               include the "WHERE" keyword.
      *
-     * @return mixed  a new DB_Result or a DB_Error upon failure
+     * @return mixed  a new DB_result object for successful SELECT queries
+     *                 or DB_OK for successul data manipulation queries.
+     *                 A DB_Error object on failure.
      *
-     * @see DB_common::autoPrepare(), DB_common::buildManipSQL()
+     * @uses DB_common::autoPrepare(), DB_common::execute()
      */
     function autoExecute($table, $fields_values, $mode = DB_AUTOQUERY_INSERT,
                          $where = false)
@@ -826,7 +829,7 @@ class DB_common extends PEAR
     // {{{ buildManipSQL()
 
     /**
-     * Make automaticaly an sql query for prepare()
+     * Produces an SQL query string for autoPrepare()
      *
      * Example:
      * <pre>
@@ -853,9 +856,7 @@ class DB_common extends PEAR
      *                               append to the SQL statement.  Don't
      *                               include the "WHERE" keyword.
      *
-     * @return string  the sql query for prepare()
-     *
-     * @see DB_common::prepare(), DB_common::autoPrepare()
+     * @return string  the sql query for autoPrepare()
      */
     function buildManipSQL($table, $table_fields, $mode, $where = false)
     {
@@ -922,7 +923,9 @@ class DB_common extends PEAR
      *                         query:  meaning 1 placeholder for non-array
      *                         parameters or 1 placeholder per array element.
      *
-     * @return object  a new DB_Result on success or a DB_Error on failure
+     * @return mixed  a new DB_result object for successful SELECT queries
+     *                 or DB_OK for successul data manipulation queries.
+     *                 A DB_Error object on failure.
      *
      * {@internal ibase and oci8 have their own execute() methods.}}
      *
@@ -948,7 +951,7 @@ class DB_common extends PEAR
     // {{{ executeEmulateQuery()
 
     /**
-     * Emulates the execute statement, when not supported
+     * Emulates executing prepared statements if the DBMS not support them
      *
      * @param resource $stmt  a DB statement resource returned from execute()
      * @param mixed    $data  array, string or numeric data to be used in
@@ -1001,7 +1004,7 @@ class DB_common extends PEAR
     // {{{ executeMultiple()
 
     /**
-     * This function does several execute() calls on the same statement handle
+     * Performs several execute() calls on the same statement handle
      *
      * $data must be an array indexed numerically
      * from 0, one execute call is done for every "row" in the array.
@@ -1013,7 +1016,7 @@ class DB_common extends PEAR
      * @param array    $data  numeric array containing the
      *                         data to insert into the query
      *
-     * @return mixed DB_OK or DB_Error
+     * @return int  DB_OK on success.  A DB_Error object on failure.
      *
      * @see DB_common::prepare(), DB_common::execute()
      */
@@ -1032,14 +1035,14 @@ class DB_common extends PEAR
     // {{{ freePrepared()
 
     /**
-     * Free the internal resources associated with a prepared query
+     * Frees the internal resources associated with a prepared query
      *
      * @param resource $stmt           the prepared statement's PHP resource
      * @param bool     $free_resource  should the PHP resource be freed too?
      *                                  Use false if you need to get data
      *                                  from the result set later.
      *
-     * @return bool  true on success, false if $result is invalid
+     * @return bool  TRUE on success, FALSE if $result is invalid
      *
      * @see DB_common::prepare()
      */
@@ -1107,8 +1110,7 @@ class DB_common extends PEAR
     // {{{ query()
 
     /**
-     * Send a query to the database and return any results with a
-     * DB_result object
+     * Sends a query to the database server
      *
      * The query string can be either a normal statement to be sent directly
      * to the server OR if <var>$params</var> are passed the query can have
@@ -1121,8 +1123,9 @@ class DB_common extends PEAR
      *                         query:  meaning 1 placeholder for non-array
      *                         parameters or 1 placeholder per array element.
      *
-     * @return mixed  a DB_result object or DB_OK on success.
-     *                A DB_Error object on failure.
+     * @return mixed  a new DB_result object for successful SELECT queries
+     *                 or DB_OK for successul data manipulation queries.
+     *                 A DB_Error object on failure.
      *
      * @see DB_result, DB_common::prepare(), DB_common::execute()
      */
@@ -1163,8 +1166,9 @@ class DB_common extends PEAR
      *                         query:  meaning 1 placeholder for non-array
      *                         parameters or 1 placeholder per array element.
      *
-     * @return mixed  a DB_result object or DB_OK on success.
-     *                A DB_Error object on failure.
+     * @return mixed  a new DB_result object for successful SELECT queries
+     *                 or DB_OK for successul data manipulation queries.
+     *                 A DB_Error object on failure.
      */
     function &limitQuery($query, $from, $count, $params = array())
     {
@@ -1184,8 +1188,7 @@ class DB_common extends PEAR
     // {{{ getOne()
 
     /**
-     * Fetch the first column of the first row of data returned from
-     * a query
+     * Fetches the first column of the first row from a query result
      *
      * Takes care of doing the query and freeing the results when finished.
      *
@@ -1234,7 +1237,7 @@ class DB_common extends PEAR
     // {{{ getRow()
 
     /**
-     * Fetch the first row of data returned from a query
+     * Fetches the first row of data returned from a query result
      *
      * Takes care of doing the query and freeing the results when finished.
      *
@@ -1301,7 +1304,7 @@ class DB_common extends PEAR
     // {{{ getCol()
 
     /**
-     * Fetch a single column from a result set and return it as an
+     * Fetches a single column from a query result and returns it as an
      * indexed array
      *
      * @param string $query   the SQL query
@@ -1365,7 +1368,7 @@ class DB_common extends PEAR
     // {{{ getAssoc()
 
     /**
-     * Fetch the entire result set of a query and return it as an
+     * Fetches an entire query result and returns it as an
      * associative array using the first column as the key
      *
      * If the result set contains more than two columns, the value
@@ -1542,7 +1545,7 @@ class DB_common extends PEAR
     // {{{ getAll()
 
     /**
-     * Fetch all the rows returned from a query
+     * Fetches all of the rows from a query result
      *
      * @param string $query      the SQL query
      * @param mixed  $params     array, string or numeric data to be used in
@@ -1616,7 +1619,7 @@ class DB_common extends PEAR
     // {{{ autoCommit()
 
     /**
-     * Enable or disable automatic commits
+     * Enables or disables automatic commits
      *
      * @param bool $onoff  true turns it on, false turns it off
      *
@@ -1688,7 +1691,7 @@ class DB_common extends PEAR
     // {{{ getSequenceName()
 
     /**
-     * Generate the name used inside the database for a sequence
+     * Generates the name used inside the database for a sequence
      *
      * The createSequence() docblock contains notes about storing sequence
      * names.
@@ -1775,7 +1778,7 @@ class DB_common extends PEAR
     // {{{ raiseError()
 
     /**
-     * Communicate an error and invoke error callbacks, etc
+     * Communicates an error and invoke error callbacks, etc
      *
      * Basically a wrapper for PEAR::raiseError without the message string.
      *
@@ -1833,7 +1836,7 @@ class DB_common extends PEAR
     // {{{ errorNative()
 
     /**
-     * Get the DBMS' native error code produced by the last query
+     * Gets the DBMS' native error code produced by the last query
      *
      * @return mixed  the DBMS' error code.  A DB_Error object on failure.
      */
@@ -1846,7 +1849,7 @@ class DB_common extends PEAR
     // {{{ errorCode()
 
     /**
-     * Map native error codes to DB's portable ones
+     * Maps native error codes to DB's portable ones
      *
      * Uses the <var>$errorcode_map</var> property defined in each driver.
      *
@@ -1869,12 +1872,12 @@ class DB_common extends PEAR
     // {{{ errorMessage()
 
     /**
-     * Map a DB error code to a textual message
+     * Maps a DB error code to a textual message
      *
      * @param integer $dbcode  the DB error code
      *
      * @return string  the error message corresponding to the error code
-     *                  submitted.  false if the error code is unknown.
+     *                  submitted.  FALSE if the error code is unknown.
      *
      * @see DB::errorMessage()
      */
@@ -2066,7 +2069,7 @@ class DB_common extends PEAR
     // {{{ getSpecialQuery()
 
     /**
-     * Obtain the query string needed for listing a given type of objects
+     * Obtains the query string needed for listing a given type of objects
      *
      * @param string $type  the kind of objects you want to retrieve
      *
@@ -2085,7 +2088,7 @@ class DB_common extends PEAR
     // {{{ _rtrimArrayValues()
 
     /**
-     * Right trim all strings in an array
+     * Right-trims all strings in an array
      *
      * @param array $array  the array to be trimmed (passed by reference)
      *
@@ -2106,7 +2109,7 @@ class DB_common extends PEAR
     // {{{ _convertNullArrayValuesToEmpty()
 
     /**
-     * Convert all null values in an array to empty strings
+     * Converts all null values in an array to empty strings
      *
      * @param array  $array  the array to be de-nullified (passed by reference)
      *
