@@ -90,13 +90,13 @@ class DB_pgsql extends DB_common
         }
 
         if (isset($dsninfo['database'])) {
-            $connstr .= ' dbname=' . $dsninfo['database'];
+            $connstr .= ' dbname=' . "'" . addslashes($dsninfo['database']) . "'";
         }
         if (!empty($dsninfo['username'])) {
-            $connstr .= ' user=' . $dsninfo['username'];
+            $connstr .= ' user=' . "'" . addslashes($dsninfo['username']) . "'";
         }
         if (!empty($dsninfo['password'])) {
-            $connstr .= ' password=' . $dsninfo['password'];
+            $connstr .= ' password=' . "'". addslashes($dsninfo['password']) . "'";
         }
         if (!empty($dsninfo['options'])) {
             $connstr .= ' options=' . $dsninfo['options'];
