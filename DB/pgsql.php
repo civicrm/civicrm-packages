@@ -641,6 +641,8 @@ class DB_pgsql extends DB_common
 
                 $flags .= "default_$num ";
             }
+        } else {
+            $flags = '';
         }
         $result = @pg_exec($this->connection, "SELECT i.indisunique, i.indisprimary, i.indkey
                                 FROM pg_attribute f, pg_class tab, pg_type typ, pg_index i
