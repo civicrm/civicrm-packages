@@ -15,6 +15,7 @@ function errhandler($obj)
 
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, "errhandler");
 
+
 print "Trying to provoke DB_ERROR_NOSUCHTABLE\n";
 $dbh->query("SELECT * FROM tableThatDoesNotExist");
 
@@ -68,5 +69,11 @@ $dbh->query("SELECT e FROM phptest");
 
 print "Trying to provoke DB_ERROR_SYNTAX\n";
 $dbh->query("CREATE");
+
+
+$dbh->setErrorHandling(PEAR_ERROR_RETURN);
+$dbh->query('DROP TABLE phptest');
+$dbh->query('DROP TABLE b');
+$dbh->query('DROP TABLE a');
 
 ?>

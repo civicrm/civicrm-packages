@@ -1,7 +1,5 @@
 <?php
 
-$dbh->setErrorHandling(PEAR_ERROR_DIE);
-
 $tmpfile = tempnam("/tmp", "phptmp");
 register_shutdown_function("my_shutdown");
 $fp = fopen($tmpfile, "w");
@@ -92,7 +90,11 @@ print "a = {$row['a']}, b = {$row['b']}, d = " . gettype($row['d']) . "\n";
 
 
 function my_shutdown() {
-    global $tmpfile;
+    global $tmpfile, $dbh;
+
+    $dbh->setErrorHandling(PEAR_ERROR_RETURN);
+    $dbh->query('DROP TABLE phptest');
+
     unlink($tmpfile);
 }
 

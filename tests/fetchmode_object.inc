@@ -1,8 +1,25 @@
 <?php
 error_reporting(E_ALL);
-function pe($obj) {
-    die($obj->getMessage() . "\n" . $obj->getDebugInfo());
+
+/**
+ * Local error callback handler.
+ *
+ * Drops the phptest table, prints out an error message and kills the
+ * process.
+ *
+ * @param object  $o  PEAR error object automatically passed to this method
+ * @return void
+ * @see PEAR::setErrorHandling()
+ */
+function pe($o) {
+    global $dbh;
+
+    $dbh->setErrorHandling(PEAR_ERROR_RETURN);
+    $dbh->query('DROP TABLE phptest');
+
+    die($o->toString());
 }
+
 
 function print_obj(&$obj) {
     if (!is_object($obj)) {
@@ -11,6 +28,7 @@ function print_obj(&$obj) {
         echo strtolower(get_class($obj)) . ' -> ' . implode(' ', array_keys((array)$obj)) . "\n";
     }
 }
+
 
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
@@ -39,4 +57,9 @@ print_obj($row);
 $sth = $dbh->query("SELECT * FROM phptest");
 $sth->fetchInto($row);
 print_obj($row);
+
+
+$dbh->setErrorHandling(PEAR_ERROR_RETURN);
+$dbh->query('DROP TABLE phptest');
+
 ?>

@@ -29,7 +29,29 @@ require_once './skipif.inc';
  */
 require_once './mktable.inc';
 
-$dbh->setErrorHandling(PEAR_ERROR_DIE);
+
+/**
+ * Local error callback handler.
+ *
+ * Drops the phptest table, prints out an error message and kills the
+ * process.
+ *
+ * @param object  $o  PEAR error object automatically passed to this method
+ * @return void
+ * @see PEAR::setErrorHandling()
+ */
+function pe($o) {
+    global $dbh;
+
+    $dbh->setErrorHandling(PEAR_ERROR_RETURN);
+    $dbh->query('DROP TABLE phptest');
+
+    die($o->toString());
+}
+
+$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
+
+
 $dbh->setFetchMode(DB_FETCHMODE_ASSOC);
 
 
@@ -67,6 +89,10 @@ print "a = {$row['a']}, b = {$row['b']}, d = " . gettype($row['d']) . "\n";
 
 $res =& $dbh->query('DELETE FROM phptest WHERE a = ?', array(17));
 print 'delete: ' . ($res == DB_OK ? 'okay' : 'error') . "\n";
+
+
+$dbh->setErrorHandling(PEAR_ERROR_RETURN);
+$dbh->query('DROP TABLE phptest');
 
 ?>
 --EXPECT--

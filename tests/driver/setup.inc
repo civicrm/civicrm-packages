@@ -11,12 +11,13 @@ ini_set('include_path', realpath(dirname(__FILE__) . '/../..')
         . PATH_SEPARATOR . '.' . PATH_SEPARATOR
         . ini_get('include_path'));
 
-define('DRIVER_DSN', '');
-//define('DRIVER_DSN', 'pgsql://postgres@localhost/test');
-//define('DRIVER_DSN', 'mysql://root@localhost/test');
-//define('DRIVER_DSN', 'oci8://system:manager@');
-//define('DRIVER_DSN', 'ibase(firebird)://SYSDBA:masterkey@//opt/interbase/examples/employee.gdb?dialect=3');
-//define('DRIVER_DSN', 'mssql://sa@somehost/pubs');
-//define('DRIVER_DSN', 'odbc(db2)://db2inst1:XXXX@SAMPLE');
-//define('DRIVER_DSN', 'sqlite://dummy:@localhost/' . getcwd() . DIRECTORY_SEPARATOR . 'test.db?mode=0644');
+//define('DRIVER_DSN', '');
+define('DRIVER_DSN', 'pgsql://Shmigegie:176z.-ak&&U@localhost/stp');
+//define('DRIVER_DSN', 'mysql://Shmigegie:176z.-ak&&U@/stp');
+//define('DRIVER_DSN', 'oci8://Shmigegie:176z.-ak&&U@/stp');
+//define('DRIVER_DSN', 'ibase://Shmigegie:176z.-ak&&U@/d:/interbase/stp.gdb');
+//define('DRIVER_DSN', 'mssql://Shmigegie:176z.-ak&&U@/stp');
+//define('DRIVER_DSN', 'sybase://Shmigegie:176z.-ak&&U@base2k/stp');
+//define('DRIVER_DSN', 'sqlite://Shmigegie:176z.-ak&&U@base2k/d:/sqlite/stp?mode=0666');
+
 ?>

@@ -4,7 +4,7 @@ DB_driver::fetchmode object
 <?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--
 <?php
-require_once './connect.inc';
+require_once './mktable.inc';
 require_once '../fetchmode_object.inc';
 ?>
 --EXPECT--

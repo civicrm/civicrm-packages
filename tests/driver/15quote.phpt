@@ -6,13 +6,32 @@ DB_driver::quote
 <?php
 require_once './connect.inc';
 
-$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'debug_die');
 
-$dbh->expectError(DB_ERROR_ALREADY_EXISTS);
+/**
+ * Local error callback handler.
+ *
+ * Drops the phptest table, prints out an error message and kills the
+ * process.
+ *
+ * @param object  $o  PEAR error object automatically passed to this method
+ * @return void
+ * @see PEAR::setErrorHandling()
+ */
+function pe($o) {
+    global $dbh;
+
+    $dbh->setErrorHandling(PEAR_ERROR_RETURN);
+    $dbh->query('DROP TABLE pearquote');
+
+    die($o->toString());
+}
+
+
+$dbh->setErrorHandling(PEAR_ERROR_RETURN);
+$dbh->query('DROP TABLE pearquote');
 $dbh->query("CREATE TABLE pearquote (n FLOAT, s VARCHAR(8))");
-$dbh->popExpect();
 
-$dbh->query("DELETE FROM pearquote");
+$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
 $strings = array(
     "'",
@@ -62,6 +81,11 @@ if (count($diff) > 0) {
 } else {
     echo "OK\n";
 }
+
+
+$dbh->setErrorHandling(PEAR_ERROR_RETURN);
+$dbh->query('DROP TABLE pearquote');
+
 ?>
 --EXPECT--
 String escape test: OK

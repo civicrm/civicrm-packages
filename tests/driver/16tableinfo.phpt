@@ -69,6 +69,12 @@ require_once './mktable.inc';
  * @see PEAR::setErrorHandling()
  */
 function pe($o){
+    global $dbh;
+
+    $dbh->setErrorHandling(PEAR_ERROR_RETURN);
+    $dbh->query('DROP TABLE phptest');
+    $dbh->query('DROP TABLE phptest_fk');
+
     die($o->toString());
 }
 
@@ -559,7 +565,8 @@ print "\nfirst field:\n";
 examineArrayData($array[0], 0, false);
 
 
-$dbh->query('DELETE FROM phptest WHERE a <> 42');
+$dbh->setErrorHandling(PEAR_ERROR_RETURN);
+$dbh->query('DROP TABLE phptest');
 $dbh->query('DROP TABLE phptest_fk');
 
 ?>

@@ -1,18 +1,27 @@
 <?php
 
-if (!function_exists("errhandler"))
-{
-    function errhandler($obj)
-    {
-        printf("%s\n", $obj->getMessage());
-    }
+/**
+ * Local error callback handler.
+ *
+ * Drops the phptest table, prints out an error message and kills the
+ * process.
+ *
+ * @param object  $o  PEAR error object automatically passed to this method
+ * @return void
+ * @see PEAR::setErrorHandling()
+ */
+function pe($o) {
+    global $dbh;
+
+    $dbh->setErrorHandling(PEAR_ERROR_RETURN);
+    $dbh->query('DROP TABLE phptest');
+
+    die($o->toString());
 }
 
-if (isset($test_error_mode)) {
-    $dbh->setErrorHandling($test_error_mode);
-} else {
-    $dbh->setErrorHandling(PEAR_ERROR_DIE);
-}
+$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
+
+
 $sth = $dbh->query("SELECT a FROM phptest");
 if (!DB::isError($rows = $sth->numRows())) {
     print "$rows\n";
@@ -41,4 +50,9 @@ if (!DB::isError($rows = $sth->numRows())) {
 } else {
     print "\n";
 }
+
+
+$dbh->setErrorHandling(PEAR_ERROR_RETURN);
+$dbh->query('DROP TABLE phptest');
+
 ?>
