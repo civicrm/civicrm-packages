@@ -162,7 +162,7 @@ $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 $quirks = array(
     'ifx' => array(
         'clob' => 'CHAR(29)',
-        'date' => 'DATE',
+        'date' => 'CHAR(10)',
         'finds_table' => false,
         'commands' => array(
         ),
@@ -182,14 +182,14 @@ $quirks = array(
             'flags' => '',
         ),
         3 => array(
-            'type' => 'SQLDATE',
-            'len' => 4,
+            'type' => 'SQLCHAR',
+            'len' => 10,
             'flags' => 'not_null',
         ),
         4 => array(
             'type' => 'SQLCHAR',
             'len' => 4,
-            'flags' => 'not_null',
+            'flags' => 'not_null default_df%20t',
         ),
         5 => array(
             'type' => 'SQLREAL',
@@ -365,7 +365,7 @@ $quirks = array(
         4 => array(
             'type' => 'bpchar',
             'len' => -1,
-            'flags' => "not_null default_df%20t",
+            'flags' => 'not_null default_df%20t',
         ),
         5 => array(
             'type' => 'numeric',
@@ -467,8 +467,10 @@ $dbh->query("INSERT INTO phptest_fk VALUES (20, 2, 'Two', '2001-02-15', 'c2', 2.
 $dbh->query("INSERT INTO phptest_fk VALUES (30, 3, 'Three', '2001-02-14', 'c3', 3.3)");
 
 
-$resultobj =& $dbh->query('SELECT * FROM phptest_fk, ' .
-                          'phptest WHERE phptest.a = phptest_fk.fk');
+$resultobj =& $dbh->query('SELECT phptest_fk.a, phptest_fk.fk,
+        phptest_fk.c, phptest_fk.d, phptest_fk.e, phptest_fk.f,
+        phptest.a, phptest.b, phptest.c, phptest.d
+        FROM phptest_fk, phptest WHERE phptest.a = phptest_fk.fk');
 
 
 

@@ -47,20 +47,26 @@ $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'debug_die');
 switch ($dbh->phptype) {
     case 'ibase':
         $null = '';
+        $chrc = 'VARCHAR(255)';
+        $chrd = 'VARCHAR(20)';
         break;
     case 'ifx':
         $null = '';
+        $chrc = 'CHAR(255)';
+        $chrd = 'CHAR(20)';
         break;
     default:
         $null = 'NULL';
+        $chrc = 'VARCHAR(255)';
+        $chrd = 'VARCHAR(20)';
 }
 
 $test_mktable_query = "
     CREATE TABLE phptest (
       a INTEGER $null,
       b CHAR(40) DEFAULT 'def' NOT NULL,
-      c VARCHAR(255) $null,
-      d VARCHAR(20) $null)
+      c $chrc $null,
+      d $chrd $null)
 ";
 
 $dbh->query($test_mktable_query);
