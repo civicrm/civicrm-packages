@@ -51,7 +51,6 @@ class DB_mysqli extends DB_common
     var $phptype, $dbsyntax;
     var $prepare_tokens = array();
     var $prepare_types = array();
-    var $num_rows = array();
     var $transaction_opcount = 0;
     var $autocommit = true;
     var $fetchmode = DB_FETCHMODE_ORDERED; /* Default fetch mode */
@@ -269,7 +268,7 @@ class DB_mysqli extends DB_common
         $query = $this->modifyQuery($query);
         if ($this->_db) {
             if (!@mysqli_select_db($this->connection, $this->_db)) {
-                return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+                return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
             }
         }
         if (!$this->autocommit && $ismanip) {
@@ -277,24 +276,21 @@ class DB_mysqli extends DB_common
                 $result = @mysqli_query($this->connection, 'SET AUTOCOMMIT=0');
                 $result = @mysqli_query($this->connection, 'BEGIN');
                 if (!$result) {
-                    return $this->mysqlRaiseError();
+                    return $this->mysqliRaiseError();
                 }
             }
             $this->transaction_opcount++;
         }
         $result = @mysqli_query($this->connection, $query);
         if (!$result) {
-            return $this->mysqlRaiseError();
+            return $this->mysqliRaiseError();
         }
 # this next block is still sketchy..
         if (is_object($result)) {
-            $numrows = $this->numrows($result);
+            $numrows = $this->numRows($result);
             if (is_object($numrows)) {
                 return $numrows;
             }
-# need to come up with different means for next line
-# since $result is object (int)$result won't fly...
-//            $this->num_rows[(int)$result] = $numrows;
             return $result;
         }
         return DB_OK;
@@ -358,7 +354,7 @@ class DB_mysqli extends DB_common
             if (!$errno) {
                 return null;
             }
-            return $this->mysqlRaiseError($errno);
+            return $this->mysqliRaiseError($errno);
         }
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
             /*
@@ -386,9 +382,6 @@ class DB_mysqli extends DB_common
      */
     function freeResult($result)
     {
-# need to come up with different means for next line
-# since $result is object (int)$result won't fly...
-//        unset($this->num_rows[(int)$result]);
         return @mysqli_free_result($result);
     }
 
@@ -409,7 +402,7 @@ class DB_mysqli extends DB_common
         $cols = @mysqli_num_fields($result);
 
         if (!$cols) {
-            return $this->mysqlRaiseError();
+            return $this->mysqliRaiseError();
         }
 
         return $cols;
@@ -429,7 +422,7 @@ class DB_mysqli extends DB_common
     {
         $rows = @mysqli_num_rows($result);
         if ($rows === null) {
-            return $this->mysqlRaiseError();
+            return $this->mysqliRaiseError();
         }
         return $rows;
     }
@@ -459,14 +452,14 @@ class DB_mysqli extends DB_common
         if ($this->transaction_opcount > 0) {
             if ($this->_db) {
                 if (!@mysqli_select_db($this->connection, $this->_db)) {
-                    return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+                    return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
                 }
             }
             $result = @mysqli_query($this->connection, 'COMMIT');
             $result = @mysqli_query($this->connection, 'SET AUTOCOMMIT=1');
             $this->transaction_opcount = 0;
             if (!$result) {
-                return $this->mysqlRaiseError();
+                return $this->mysqliRaiseError();
             }
         }
         return DB_OK;
@@ -483,14 +476,14 @@ class DB_mysqli extends DB_common
         if ($this->transaction_opcount > 0) {
             if ($this->_db) {
                 if (!@mysqli_select_db($this->connection, $this->_db)) {
-                    return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+                    return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
                 }
             }
             $result = @mysqli_query($this->connection, 'ROLLBACK');
             $result = @mysqli_query($this->connection, 'SET AUTOCOMMIT=1');
             $this->transaction_opcount = 0;
             if (!$result) {
-                return $this->mysqlRaiseError();
+                return $this->mysqliRaiseError();
             }
         }
         return DB_OK;
@@ -569,7 +562,7 @@ class DB_mysqli extends DB_common
                 }
                 if ($result == 0) {
                     // Failed to get the lock, bail with a DB_ERROR_NOT_LOCKED error
-                    return $this->mysqlRaiseError(DB_ERROR_NOT_LOCKED);
+                    return $this->mysqliRaiseError(DB_ERROR_NOT_LOCKED);
                 }
 
                 // add the default value
@@ -682,7 +675,7 @@ class DB_mysqli extends DB_common
         if ($result == 0) {
             // Failed to get the lock, can't do the conversion, bail
             // with a DB_ERROR_NOT_LOCKED error
-            return $this->mysqlRaiseError(DB_ERROR_NOT_LOCKED);
+            return $this->mysqliRaiseError(DB_ERROR_NOT_LOCKED);
         }
 
         $highest_id = $this->getOne("SELECT MAX(id) FROM ${seqname}");
@@ -768,7 +761,7 @@ class DB_mysqli extends DB_common
     }
 
     // }}}
-    // {{{ mysqlRaiseError()
+    // {{{ mysqliRaiseError()
 
     /**
      * Gather information about an error, then use that info to create a
@@ -780,7 +773,7 @@ class DB_mysqli extends DB_common
      * @see DB_common::errorCode()
      * @see DB_common::raiseError()
      */
-    function mysqlRaiseError($errno = null)
+    function mysqliRaiseError($errno = null)
     {
         if ($errno === null) {
             if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
@@ -845,7 +838,7 @@ class DB_mysqli extends DB_common
         }
 
         if (!is_a($id, 'mysqli_result')) {
-            return $this->mysqlRaiseError(DB_ERROR_NEED_MORE_DATA);
+            return $this->mysqliRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
 
         if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
@@ -945,7 +938,7 @@ class DB_mysqli extends DB_common
                     $db->disconnect();
                     // XXX Fixme the mysql driver should take care of this
                     if (!@mysqli_select_db($this->connection, $this->dsn['database'])) {
-                        return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+                        return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
                     }
                 }
                 return $sql;
