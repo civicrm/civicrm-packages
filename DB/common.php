@@ -1227,6 +1227,16 @@ class DB_common extends PEAR
                         $results[$key] = $row;
                     }
                 }
+            } elseif ($fetchmode == DB_FETCHMODE_OBJECT) {
+                while ($row = $res->fetchRow(DB_FETCHMODE_OBJECT)) {
+                    $arr = get_object_vars($row);
+                    $key = current($arr);
+                    if ($group) {
+                        $results[$key][] = $row;
+                    } else {
+                        $results[$key] = $row;
+                    }
+                }
             } else {
                 while (is_array($row = $res->fetchRow(DB_FETCHMODE_ORDERED))) {
                     // we shift away the first element to get
