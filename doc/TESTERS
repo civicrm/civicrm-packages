@@ -90,7 +90,6 @@ Test Types and Locations
 ------------------------
 tests             Common PEAR DB tests
 tests/driver      Common tests for all the drivers
-tests/<backend>   Specific backend tests (old tests, don't used them)
 
 
 Results and What To Do With Them
