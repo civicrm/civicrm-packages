@@ -665,6 +665,7 @@ class DB_mysql extends DB_common
             case 'null':
                 return 'NULL';
             case 'integer':
+            case 'double':
                 return $str;
             case 'string':
             default:
