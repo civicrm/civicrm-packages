@@ -299,25 +299,37 @@ class DB
     // {{{ &connect()
 
     /**
-     * Create a new DB connection object and connect to the specified
-     * database
+     * Create a new DB object and connect to the specified database.
      *
-     * @param mixed $dsn "data source name", see the DB::parseDSN
-     * method for a description of the dsn format.  Can also be
-     * specified as an array of the format returned by DB::parseDSN.
+     * Example 1.
+     * <code> <?php
+     * require_once 'DB.php';
      *
-     * @param mixed $options An associative array of option names and
-     * their values.  For backwards compatibility, this parameter may
-     * also be a boolean that tells whether the connection should be
-     * persistent.  See DB_common::setOption() for more information on
-     * connection options.
+     * $dsn = 'mysql://user:password@host/database'
+     * $options = array(
+     *     'debug'       => 2,
+     *     'portability' => DB_PORTABILITY_ALL,
+     * );
+     * 
+     * $dbh =& DB::connect($dsn, $options);
+     * if (DB::isError($dbh)) {
+     *     die($dbh->getMessage());
+     * }
+     * ?></code>
      *
-     * @return mixed a newly created DB connection object, or a DB
-     * error object on error
+     * @param mixed $dsn      string "data source name" or an array in the
+     *                        format returned by DB::parseDSN()
      *
-     * @see DB_common::setOption(), DB::parseDSN(), DB::isError()
+     * @param array $options  an associative array of option names and
+     *                        their values
+     *
+     * @return object  a newly created DB connection object, or a DB
+     *                 error object on error
+     *
+     * @see DB::parseDSN(), DB_common::setOption(), DB::isError()
+     * @access public
      */
-    function &connect($dsn, $options = false)
+    function &connect($dsn, $options = array())
     {
         if (is_array($dsn)) {
             $dsninfo = $dsn;
@@ -327,6 +339,10 @@ class DB
         $type = $dsninfo['phptype'];
 
         if (!is_array($options)) {
+            /*
+             * For backwards compatibility.  $options used to be boolean,
+             * indicating whether the connection should be persistent.
+             */
             $options = array('persistent' => $options);
         }
 
