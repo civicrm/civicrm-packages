@@ -284,7 +284,7 @@ class DB_mysql extends DB_common
      *
      * Generally uses mysql_query().  If you want to use
      * mysql_unbuffered_query() set the "result_buffering" option to 0 using
-     * setOptions().
+     * setOptions().  This option was added in Release 1.7.0.
      *
      * @param string  the SQL query string
      *

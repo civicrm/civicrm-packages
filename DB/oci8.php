@@ -286,6 +286,7 @@ class DB_oci8 extends DB_common
      *
      * To determine how many rows of a result set get buffered using
      * ocisetprefetch(), see the "result_buffering" option in setOptions().
+     * This option was added in Release 1.7.0.
      *
      * @param string  the SQL query string
      *
@@ -591,6 +592,7 @@ class DB_oci8 extends DB_common
      *
      * To determine how many rows of a result set get buffered using
      * ocisetprefetch(), see the "result_buffering" option in setOptions().
+     * This option was added in Release 1.7.0.
      *
      * @param resource  $stmt  a DB statement resource returned from prepare()
      * @param mixed  $data  array, string or numeric data to be used in
