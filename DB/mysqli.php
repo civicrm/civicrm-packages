@@ -141,7 +141,7 @@ class DB_mysqli extends DB_common
         @ini_restore('track_errors');
 
         if (!$conn) {
-            if (($err = @mysqli_error()) != '') {
+            if (($err = @mysqli_connect_error()) != '') {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
                                          null, $err);
             } elseif (empty($php_errormsg)) {
