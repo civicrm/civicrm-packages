@@ -797,7 +797,7 @@ class DB_oci8 extends DB_common
                 }
                 $res[$i]['type']  = @OCIResult($stmt, 2);
                 $res[$i]['len']   = @OCIResult($stmt, 3);
-                $res[$i]['flags'] = (@OCIResult($stmt, 5) == 'N') ? 'not_null' : '';
+                $res[$i]['flags'] = (@OCIResult($stmt, 4) == 'N') ? 'not_null' : '';
 
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
