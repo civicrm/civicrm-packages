@@ -172,7 +172,7 @@ class DB_sqlite extends DB_common {
             return $this->sqliteRaiseError(DB_ERROR_ACCESS_VIOLATION);
         }
 
-        $connect_function = $persistent ? 'sqlite_open' : 'sqlite_popen';
+        $connect_function = $persistent ? 'sqlite_popen' : 'sqlite_open';
         if (!($conn = @$connect_function($dsninfo['database']) )) {
             return $this->sqliteRaiseError(DB_ERROR_NODBSELECTED);
         }
