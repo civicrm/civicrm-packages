@@ -78,6 +78,7 @@ class DB_ifx extends DB_common
             '-391'    => DB_ERROR_CONSTRAINT_NOT_NULL,
             '-554'    => DB_ERROR_SYNTAX,
             '-691'    => DB_ERROR_CONSTRAINT,
+            '-703'    => DB_ERROR_CONSTRAINT_NOT_NULL,
             '-1204'   => DB_ERROR_INVALID_DATE,
             '-1205'   => DB_ERROR_INVALID_DATE,
             '-1206'   => DB_ERROR_INVALID_DATE,
