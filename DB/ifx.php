@@ -249,6 +249,9 @@ class DB_ifx extends DB_common
              * $rownum is null, it doesn't in all cases.  Bug 598.
              */
             $rownum = 'NEXT';
+        } else {
+            // Index starts at row 1, unlike most DBMS's starting at 0.
+            $rownum++;
         }
         if (!$arr = @ifx_fetch_row($result, $rownum)) {
             return null;
