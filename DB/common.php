@@ -218,7 +218,6 @@ class DB_common extends PEAR
      *               + boolean = output depends on the driver in use:
      *                 - string <samp>TRUE</samp> or <samp>FALSE</samp>
      *                   for DBMS's with <kbd>BOOLEAN</kbd> handling:
-     *                     + dbase
      *                     + fbsql
      *                     + ibase
      *                     + odbc
@@ -233,6 +232,10 @@ class DB_common extends PEAR
      *                     + oci8    <kbd>NUMBER(1)</kbd>
      *                     + sqlite  <kbd>INTEGER</kbd>
      *                     + sybase  <kbd>TINYINT(1)</kbd>
+     *                 - string <samp>T</samp> if true, <samp>F</samp> if false
+     *                   for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
+     *                   Such drivers and the data types expected:
+     *                     + dbase   <kbd>Logical</kbd>
      *
      * [1] Accommodate the lowest common denominator because not all versions
      * of have <kbd>BOOLEAN</kbd>.

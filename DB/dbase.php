@@ -170,6 +170,40 @@ class DB_dbase extends DB_common
     }
 
     // }}}
+    // {{{ quoteSmart()
+
+    /**
+     * Format input so it can be safely used in a query
+     *
+     * @param mixed $in  data to be quoted
+     *
+     * @return mixed Submitted variable's type = returned value:
+     *               + null = the string <samp>NULL</samp>
+     *               + boolean = <samp>T</samp> if true or
+     *                 <samp>F</samp> if false.  Use the <kbd>Logical</kbd>
+     *                 data type.
+     *               + integer or double = the unquoted number
+     *               + other (including strings and numeric strings) =
+     *                 the data with single quotes escaped by preceeding
+     *                 single quotes then the whole string is encapsulated
+     *                 between single quotes
+     *
+     * @internal
+     */
+    function quoteSmart($in)
+    {
+        if (is_int($in) || is_double($in)) {
+            return $in;
+        } elseif (is_bool($in)) {
+            return $str ? 'T' : 'F';
+        } elseif (is_null($in)) {
+            return 'NULL';
+        } else {
+            return "'" . $this->escapeSimple($in) . "'";
+        }
+    }
+
+    // }}}
 
 }
 
