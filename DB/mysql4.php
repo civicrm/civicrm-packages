@@ -870,7 +870,6 @@ class DB_mysql4 extends DB_common
                 return $sql;
             case 'databases':
                 return 'SHOW DATABASES';
-                break;
             default:
                 return null;
         }
