@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.84 2004-03-06 01:46:48 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.85 2004-03-11 03:48:47 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -99,6 +99,11 @@ on/off during runtime.  (danielc)
 - oci8
 In tableInfo() only return num_fields key if $mode
 is set.  (lsmith)
+
+- sqlite:
+Now uses sqlite_escape_string() to escape strings
+in escapeSimple() and quoteSmart().
+(danielc via Matt Eaton)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>

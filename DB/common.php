@@ -363,6 +363,11 @@ class DB_common extends PEAR
     /**
      * Escape a string according to the current DBMS's standards
      *
+     * In SQLite, this makes things safe for inserts/updates, but may
+     * cause problems when performing text comparisons against columns
+     * containing binary data. See the
+     * {@link http://php.net/sqlite_escape_string PHP manual} for more info.
+     *
      * @param string $str  the string to be escaped
      *
      * @return string  the escaped string
