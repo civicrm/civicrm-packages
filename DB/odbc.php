@@ -72,6 +72,7 @@ class DB_odbc extends DB_common
             '22012' => DB_ERROR_DIVZERO,
             '23000' => DB_ERROR_CONSTRAINT,
             '23503' => DB_ERROR_CONSTRAINT,
+            '23505' => DB_ERROR_CONSTRAINT,
             '24000' => DB_ERROR_INVALID,
             '34000' => DB_ERROR_INVALID,
             '37000' => DB_ERROR_SYNTAX,
