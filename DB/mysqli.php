@@ -825,6 +825,9 @@ class DB_mysqli extends DB_common
                 if ($tmp->flags & MYSQLI_MULTIPLE_KEY_FLAG) {
                     $res[$i]['flags'] .= 'multiple_key ';
                 }
+                if ($tmp->flags & MYSQLI_BLOB_FLAG) {
+                    $res[$i]['flags'] .= 'blob ';
+                }
                 if ($tmp->def) {
                     $res[$i]['flags'] .= 'default_' . rawurlencode($tmp->def);
                 }
@@ -852,6 +855,9 @@ class DB_mysqli extends DB_common
                 }
                 if ($tmp->flags & MYSQLI_MULTIPLE_KEY_FLAG) {
                     $res[$i]['flags'] .= 'multiple_key ';
+                }
+                if ($tmp->flags & MYSQLI_BLOB_FLAG) {
+                    $res[$i]['flags'] .= 'blob ';
                 }
                 if ($tmp->def) {
                     $res[$i]['flags'] .= 'default_' . rawurlencode($tmp->def);
