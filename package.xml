@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.78 2004-02-19 20:27:46 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.79 2004-02-23 13:57:03 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -61,79 +61,25 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
     <state>stable</state>
-    <date>2004-02-19</date>
+    <date></date>
     <notes>
+changelog notes for pending 1.6.1 release
+
 =============
 API CHANGE:
-
-mysql4 was renamed mysqli.  Change your DSN info
-accordingly.  (danielc)
-
 
 =============
 ENHANCEMENTS:
 
-- test suite:
-The test suite now includes a shell script for
-jump starting the process.  Also, the version
-of setup.inc stored in CVS was renamed so you
-don't have to worry about CVS touching or
-committing your locally modified copy.  (danielc)
-
-- all:
-Added DB_PORTABILITY_NULL_TO_EMPTY portability
-mode.  Converts null values to empty strings in
-data output by * get*() and fetch*().  Helpful
-because Oracle doesn't know the difference
-between null and empty.  (danielc)
-
-- ifx:
-Several new error code mappings:
-'Identifier too long' = DB_ERROR_SYNTAX
-'Table already exists' = DB_ERROR_ALREADY_EXISTS
-'duplicate value' = DB_ERROR_CONSTRAINT
-'Could not update a row in the table'
-&#160;&#160; = DB_ERROR_CONSTRAINT
-'Missing key in referenced table for referential
-&#160;&#160; constraint' = DB_ERROR_CONSTRAINT
-'Character to numeric conversion error'
-&#160;&#160; = DB_ERROR_INVALID_NUMBER
-'Syntax disallowed in this database server'
-&#160;&#160; = DB_ERROR_SYNTAX
-(danielc)
-
--ibase, ifx, mssql, oci8, odbc, pgsql,
-sqlite, sybase:
-Map not null constraint errors to
-DB_ERROR_CONSTRAINT_NOT_NULL.  (danielc) 
-
--mysql, mysqli:
-Map not null constraint error (1048) from
-DB_ERROR_CONSTRAINT to
-DB_ERROR_CONSTRAINT_NOT_NULL when
-portability is on. (danielc)
-
-
 =============
 BUGS FIXED:
 
-- ifx:
-fetchRow() now adds 1 to the requested $rownum
-because ifx_fetch_row() starts at 1.  (peterwb)
-
-- ifx:
-affectedRows() now returns 0 for SELECT
-queries, just like the other DBMS's.  (danielc)
-
-- ibase:
-Remove trans_number argument from rollback()
-method.  No other driver has it and
-ibase_rollback() doesn't accept it.  (danielc)
-
-- sqlite:
-Set $dsn property when connecting.  (danielc)
+-mysql, mysqli, odbc:
+Move error code portability mapping from connect()
+to mysqlRaiseError() so the feature can be turned
+on/off during runtime.  (danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
