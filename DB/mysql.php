@@ -98,7 +98,6 @@ class DB_mysql extends DB_common
     }
 
     // }}}
-
     // {{{ connect()
 
     /**
@@ -124,7 +123,7 @@ class DB_mysql extends DB_common
                 $dbhost .= ':' . $dsninfo['port'];
             }
         }
-        
+
         $connect_function = $persistent ? 'mysql_pconnect' : 'mysql_connect';
 
         if ($dbhost && $dsninfo['username'] && isset($dsninfo['password'])) {

@@ -465,7 +465,7 @@ class DB_ifx extends DB_common
      * <samp>can't distinguish duplicate field names</samp>.
      *
      * @param object|string  $result  DB_result object from a query or a
-     *                                string containing the name of a table 
+     *                                string containing the name of a table
      * @param int            $mode    a valid tableInfo mode
      * @return array  an associative array with the information requested
      *                or an error object if something is wrong
@@ -516,7 +516,7 @@ class DB_ifx extends DB_common
         } else {
             $case_func = 'strval';
         }
-        
+
         $i = 0;
         // made this IF due to performance (one if is faster than $count if's)
         if (!$mode) {

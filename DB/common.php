@@ -265,13 +265,13 @@ class DB_common extends PEAR
      *  <li>
      *    &type.bool; -> output depends on the driver in use
      *    Most drivers return integers: <samp>1</samp> if
-     *    <kbd>true</kbd> or <samp>0</samp> if 
+     *    <kbd>true</kbd> or <samp>0</samp> if
      *    <kbd>false</kbd>.
      *    Some return strings: <samp>TRUE</samp> if
-     *    <kbd>true</kbd> or <samp>FALSE</samp> if 
+     *    <kbd>true</kbd> or <samp>FALSE</samp> if
      *    <kbd>false</kbd>.
      *    Finally one returns strings: <samp>T</samp> if
-     *    <kbd>true</kbd> or <samp>F</samp> if 
+     *    <kbd>true</kbd> or <samp>F</samp> if
      *    <kbd>false</kbd>. Here is a list of each DBMS,
      *    the values returned and the suggested column type:
      *    <ul>
@@ -339,7 +339,7 @@ class DB_common extends PEAR
      *    between single quotes
      *  </li>
      * </ul>
-     *      
+     *
      * @since 1.6.0
      * @see DB_common::escapeSimple()
      * @access public
