@@ -804,6 +804,9 @@ class DB_common extends PEAR
                          $where = false)
     {
         $query = $this->buildManipSQL($table, $table_fields, $mode, $where);
+        if (DB::isError($query)) {
+            return $query;
+        }
         return $this->prepare($query);
     }
 
@@ -834,6 +837,9 @@ class DB_common extends PEAR
     {
         $sth = $this->autoPrepare($table, array_keys($fields_values), $mode,
                                   $where);
+        if (DB::isError($sth)) {
+            return $sth;
+        }
         $ret =& $this->execute($sth, array_values($fields_values));
         $this->freePrepared($sth);
         return $ret;
@@ -876,7 +882,7 @@ class DB_common extends PEAR
     function buildManipSQL($table, $table_fields, $mode, $where = false)
     {
         if (count($table_fields) == 0) {
-            $this->raiseError(DB_ERROR_NEED_MORE_DATA);
+            return $this->raiseError(DB_ERROR_NEED_MORE_DATA);
         }
         $first = true;
         switch ($mode) {
@@ -910,7 +916,7 @@ class DB_common extends PEAR
                 }
                 return $sql;
             default:
-                $this->raiseError(DB_ERROR_SYNTAX);
+                return $this->raiseError(DB_ERROR_SYNTAX);
         }
     }
 
