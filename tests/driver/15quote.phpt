@@ -29,7 +29,7 @@ function pe($o) {
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 $dbh->query('DROP TABLE pearquote');
-$dbh->query("CREATE TABLE pearquote (n FLOAT, s VARCHAR(8))");
+$dbh->query("CREATE TABLE pearquote (n DECIMAL(3,1), s VARCHAR(8))");
 
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
@@ -49,6 +49,12 @@ $nums = array(
     156,
     12.3,
     15,
+    12.3
+);
+$numsexpect = array(
+    '156.0',
+    12.3,
+    '15.0',
     12.3
 );
 
@@ -73,10 +79,10 @@ foreach ($nums as $n) {
     $quoted = $dbh->quoteSmart($n);
     $dbh->query("INSERT INTO pearquote VALUES ($quoted, 'foo')");
 }
-$diff = array_diff($nums, $res = $dbh->getCol("SELECT n FROM pearquote"));
+$diff = array_diff($numsexpect, $res = $dbh->getCol("SELECT n FROM pearquote"));
 if (count($diff) > 0) {
     echo "FAIL";
-    print_r($nums);
+    print_r($numsexpect);
     print_r($res);
 } else {
     echo "OK\n";
