@@ -599,6 +599,7 @@ class DB_mysql extends DB_common
     }
 
     // }}}
+    // {{{ _BCsequence()
 
     /**
     * Backwards compatibility with old sequence emulation implementation
@@ -644,6 +645,7 @@ class DB_mysql extends DB_common
         return true;
     }
 
+    // }}}
     // {{{ quote()
 
     /**
