@@ -10,11 +10,19 @@ require_once '../errors.inc';
 --EXPECT--
 Trying to provoke DB_ERROR_NOSUCHTABLE
   DB Error: no such table
-Trying to provoke DB_ERROR_ALREADY_EXISTS
+Trying to provoke DB_ERROR_ALREADY_EXISTS for create table
   DB Error: already exists
 Trying to provoke DB_ERROR_NOSUCHTABLE
   DB Error: no such table
-Trying to provoke DB_ERROR_CONSTRAINT
+Trying to provoke DB_ERROR_CONSTRAINT for primary key insert duplicate
+  DB Error: constraint violation
+Trying to provoke DB_ERROR_CONSTRAINT for primary key update duplicate
+  DB Error: constraint violation
+Trying to provoke DB_ERROR_CONSTRAINT for unique key insert duplicate
+  DB Error: constraint violation
+Trying to provoke DB_ERROR_CONSTRAINT for unique key update duplicate
+  DB Error: constraint violation
+Trying to provoke DB_ERROR_CONSTRAINT for foreign key
   DB Error: constraint violation
 Trying to provoke DB_ERROR_DIVZERO
   DB Error: division by zero
