@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.60 2004-02-10 05:12:30 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.61 2004-02-10 16:04:22 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -62,7 +62,7 @@ DB is compatible with both PHP 4 and PHP 5.
   </maintainers>
   <release>
     <version>1.6.0RC6</version>
-    <state>beta</state>
+    <state>stable</state>
     <date>2004-02-10</date>
     <notes>
 =============
@@ -96,6 +96,12 @@ DB_ERROR_ALREADY_EXISTS to DB_ERROR_CONSTRAINT
 for portability with other DBMS's.  Since the
 initial mapping was added in 1.6.0RC1, this
 isn't a backwards compatibility issue.  (danielc)
+
+- all:
+All drivers with tableInfo() methods had bug
+introduced in 1.6.0RC5 that caused
+'undefined function' errors when lowercasing
+portability was off.  Bug 724.  (danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
