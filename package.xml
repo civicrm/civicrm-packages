@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.91 2004-03-15 07:34:16 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.92 2004-04-02 22:04:16 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -73,6 +73,14 @@ ENHANCEMENTS:
 
 =============
 BUGS FIXED:
+
+- mysqli:
+Move connection id to first argument in
+mysqli_*() functions.  (Mark Reidenbach)
+
+- mysqli:
+Bring tableInfo() closer to working by using
+mysqli_fetch_field().  (danielc)
 
 - oci8:
 Pass $params from limitQuery() to
