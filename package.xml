@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.66 2004-02-10 23:23:33 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.67 2004-02-11 02:00:28 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -63,7 +63,7 @@ DB is compatible with both PHP 4 and PHP 5.
   <release>
     <version>1.6.0RC6</version>
     <state>stable</state>
-    <date>2004-02-10</date>
+    <date>2004-02-11</date>
     <notes>
 =============
 ENHANCEMENTS:
@@ -77,15 +77,21 @@ parsing a DSN string.  (danielc)
 - ifx:
 Add tableInfo().
 
+- mysql, odbc(access):
+Added DB_PORTABILITY_ERRORS portability option
+to ensure consistent mapping of errors between
+DBMS's. In mysql this changes duplicate key
+constraints from DB_ERROR_ALREADY_EXISTS to
+DB_ERROR_CONSTRAINT. In access MS's ODBC driver
+mistakenly reports 'no such field' as
+'too few parameters' so this option maps the
+error back to the standard DB_ERROR_NOSUCHFIELD.
+(danielc)
+
 - ibase, mssql, odbc, pgsql, sqlite:
 Duplicate key constraint violations mapped to
 DB_ERROR_CONSTRAINT.  (danielc)
 
-- mysql:
-Added DB_PORTABILITY_CONSTRAINT portability
-option because other DBMS's map duplicate key
-constraints to DB_ERROR_CONSTRAINT but MySQL
-mapped it to DB_ERROR_ALREADY_EXISTS.  (danielc)
 
 =============
 BUGS FIXED:
@@ -96,11 +102,6 @@ DB_ERROR_ALREADY_EXISTS to DB_ERROR_CONSTRAINT
 for portability with other DBMS's.  Since the
 initial mapping was added in 1.6.0RC1, this
 isn't a backwards compatibility issue.  (danielc)
-
--odbc(access):
-MS's ODBC driver reports 'no such field' as
-'too few parameters.'  Make custom mapping back
-to DB_ERROR_NOSUCHFIELD.  (danielc)
 
 - oci8:
 Have modifyLimitQuery() quote all identifiers in

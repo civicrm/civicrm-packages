@@ -127,7 +127,9 @@ class DB_odbc extends DB_common
                 $this->features['limit'] = false;
                 break;
             case 'access':
-                $this->errorcode_map['07001'] = DB_ERROR_NOSUCHFIELD;
+                if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
+                    $this->errorcode_map['07001'] = DB_ERROR_NOSUCHFIELD;
+                }
                 break;
             default:
                 break;

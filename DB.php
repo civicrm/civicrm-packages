@@ -205,11 +205,19 @@ define('DB_PORTABILITY_DELETE_COUNT', 4);
 define('DB_PORTABILITY_NUMROWS', 8);
 
 /**
- * Portability: makes MySQL error message for unique/primary key
- * constraints match those in other DBMS's.
+ * Portability: makes certain error messages in certain drivers compatible
+ * with those from other DBMS's.
+ *
+ * + mysql, mysql4:  change unique/primary key constraints
+ *   DB_ERROR_ALREADY_EXISTS -> DB_ERROR_CONSTRAINT
+ *
+ * + odbc(access):  MS's ODBC driver reports 'no such field' as code
+ *   07001, which means 'too few parameters.'  When this option is on
+ *   that code gets mapped to DB_ERROR_NOSUCHFIELD.
+ *
  * @see DB_common::setOption()
  */
-define('DB_PORTABILITY_CONSTRAINT', 16);
+define('DB_PORTABILITY_ERRORS', 16);
 
 /**
  * Portability: turn on all portability features.
