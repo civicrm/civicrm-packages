@@ -24,6 +24,8 @@ print "testing DB::parseDSN...\n\n";
 
 test("mysql");
 test("odbc(mssql)");
+test('odbc(db2)://user:password@/database');
+test('odbc(access):///database');
 test("mysql://localhost");
 test("mysql://remote.host.com/db");
 test("oci8://system:manager@");
@@ -87,6 +89,32 @@ Array
     [port] => 
     [socket] => 
     [database] => 
+)
+DSN: odbc(db2)://user:password@/database
+Array
+(
+    [phptype] => odbc
+    [dbsyntax] => db2
+    [username] => user
+    [password] => password
+    [protocol] => tcp
+    [hostspec] => 
+    [port] => 
+    [socket] => 
+    [database] => database
+)
+DSN: odbc(access):///database
+Array
+(
+    [phptype] => odbc
+    [dbsyntax] => access
+    [username] => 
+    [password] => 
+    [protocol] => tcp
+    [hostspec] => 
+    [port] => 
+    [socket] => 
+    [database] => database
 )
 DSN: mysql://localhost
 Array
