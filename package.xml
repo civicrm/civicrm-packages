@@ -58,7 +58,9 @@ Bugs fixed:
 - odbc: added native quote() function, better error handling, and other bugfixes
 - pgsql: minor bugfixes
 
-Special thanks for those persons who sent patches and bug reports
+Special thanks for those persons who sent patches and bug reports. This release
+is done for public testing before the final release in sync with the
+upcomming PHP 4.3.3 version.
 </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
