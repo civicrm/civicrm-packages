@@ -349,7 +349,9 @@ class DB_oci8 extends DB_common
         $newquery .= $tokens[$i];
         $this->last_query = $query;
         $newquery = $this->modifyQuery($newquery);
-        $stmt = @OCIParse($this->connection, $newquery);
+        if (!$stmt = @OCIParse($this->connection, $newquery)) {
+            return $this->oci8RaiseError();
+        }
         $this->prepare_types[$stmt] = $types;
         $this->manip_query[(int)$stmt] = DB::isManip($query);
         return $stmt;
