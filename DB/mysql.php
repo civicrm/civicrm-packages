@@ -561,7 +561,12 @@ class DB_mysql extends DB_common
             return $res;
         }
         // insert yields value 1, nextId call will generate ID 2
-        return $this->query("INSERT INTO ${seqname} VALUES(0)");
+        $res = $this->query("INSERT INTO ${seqname} VALUES(0)");
+        if (DB::isError($res)) {
+            return $res;
+        }
+        // so reset to zero
+        return $this->query("UPDATE ${seqname} SET id = 0;");
     }
 
     // }}}
