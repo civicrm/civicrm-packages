@@ -792,7 +792,21 @@ class DB_result
 {
     // {{{ properties
 
+    /**
+     * DB_driver object
+     * @var object
+     */
     var $dbh;
+
+    /**
+     * The name of the class into which results should be fetched when
+     * DB_FETCHMODE_OBJECT is in effect
+     *
+     * @var string
+     * @see DB_common::$fetchmode_object_class
+     */
+    var $fetchmode_object_class = '';
+
     var $result;
     var $row_counter = null;
 
@@ -813,7 +827,7 @@ class DB_result
 
     /**
      * DB_result constructor.
-     * @param resource &$dbh   DB object reference
+     * @param object   &$dbh    DB object reference
      * @param resource $result  result resource id
      * @param array    $options assoc array with optional result options
      */
