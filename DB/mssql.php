@@ -571,7 +571,7 @@ class DB_mssql extends DB_common
             if (!@mssql_select_db($this->_db, $this->connection)) {
                 return $this->mssqlRaiseError(DB_ERROR_NODBSELECTED);
             }
-            $id = mssql_query("SELECT * FROM $result", $this->connection);
+            $id = @mssql_query("SELECT * FROM $result", $this->connection);
             if (empty($id)) {
                 return $this->mssqlRaiseError();
             }
