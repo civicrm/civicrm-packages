@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.141 2004-12-15 19:41:02 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.142 2004-12-17 01:51:51 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -20,11 +20,20 @@ DB is a database abstraction layer providing:
 * DocBook and PHPDoc API documentation
 
 DB layers itself on top of PHP's existing
-database extensions.  The currently supported
-extensions are:
-dbase, fbsql, interbase, informix, msql,
-mssql, mysql, mysqli, oci8, odbc, pgsql,
-sqlite and sybase.
+database extensions.
+
+Drivers for the following extensions pass
+the complete test suite and provide
+interchangeability when all of DB's
+portability options are enabled:
+
+  fbsql, ibase, mssql, mysql, mysqli,
+  oci8, odbc, pgsql, sqlite and sybase.
+
+Drivers for these extensions exist but
+haven't been thoroughly tested:
+
+  dbase, informix, and msql.
 
 DB is compatible with both PHP 4 and PHP 5.
 </description>
@@ -54,21 +63,12 @@ DB is compatible with both PHP 4 and PHP 5.
     <state>beta</state>
     <date>pending</date>
     <notes><![CDATA[
-= - = - = - = - = - = - = - = - = - = - = - = - =
-NOTICE!  fbsql has undergone major changes:
-
-* Error mapping now works.  $errorcode_map was using
-  MySQL's codes by mistake.  (danielc)
-* Sequences now work.
-* Removed WHERE 1=1 affected rows hack for DELETE
-  queries from the modifyQuery() method.  Probably
-  was inadvertently left when copying driver from
-  mysql.php.
-= - = - = - = - = - = - = - = - = - = - = - = - =
-
 common:
 * Consider SELECT INTO and COPY data manipulation
   queries in isManip().  Bug 2883.
+
+fbsql:
+* FrontBase driver now works and passes all tests.
 
 ibase:
 * Add items to errorcode_map (from MDB2):
