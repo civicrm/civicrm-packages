@@ -717,7 +717,7 @@ class DB_mssql extends DB_common
         if (array_key_exists($column, $flags)) {
             return(implode(' ', $flags[$column]));
         }
-        return('');
+        return '';
     }
 
     // }}}
@@ -734,11 +734,11 @@ class DB_mssql extends DB_common
      */
     function _add_flag (&$array, $value)
     {
-        if (!is_array($array))
+        if (!is_array($array)) {
             $array = array($value);
-
-        else if (!in_array($value, $array))
+        } elseif (!in_array($value, $array)) {
             array_push($array, $value);
+        }
     }
 
     // }}}
