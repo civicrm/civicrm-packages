@@ -523,13 +523,10 @@ class DB_mysql extends DB_common
                 $result->getCode() == DB_ERROR_NOSUCHTABLE)
             {
                 $result = $this->createSequence($seq_name);
-                // Since createSequence initializes the ID to be 1,
-                // we do not need to retrieve the ID again (or we will get 2)
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
                 } else {
-                    // First ID of a newly created sequence is 1
-                    return 1;
+                    $repeat = 1;
                 }
 
             /** BACKWARDS COMPAT **/
