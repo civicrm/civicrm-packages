@@ -282,6 +282,10 @@ class DB_mysql extends DB_common
     /**
      * Sends a query to the database server
      *
+     * Generally uses mysql_query().  If you want to use
+     * mysql_unbuffered_query() set the "buffer" option to 1 using
+     * setOptions().
+     *
      * @param string  the SQL query string
      *
      * @return mixed  + a PHP result resrouce for successful SELECT queries
@@ -308,7 +312,11 @@ class DB_mysql extends DB_common
             }
             $this->transaction_opcount++;
         }
-        $result = @mysql_query($query, $this->connection);
+        if ($this->options['buffer'] == 1) {
+            $result = @mysql_unbuffered_query($query, $this->connection);
+        } else {
+            $result = @mysql_query($query, $this->connection);
+        }
         if (!$result) {
             return $this->mysqlRaiseError();
         }

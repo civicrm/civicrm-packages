@@ -516,7 +516,9 @@ class DB_common extends PEAR
      * </li><li>
      * <var>buffer</var> <kbd>integer</kbd> = <samp>1000</samp>
      *      <br />how many rows of the result set should be buffered?
-     *            This is only used by the oci8 driver at this point.
+     *      <br />In mysql: mysql_unbuffered_query() is used instead of
+     *            mysql_query() if this value is 1.
+     *      <br />In oci8: this value is passed to ocisetprefetch().
      * </li><li>
      * <var>debug</var> <kbd>integer</kbd> = <samp>0</samp>
      *      <br />debug level
