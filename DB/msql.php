@@ -386,7 +386,7 @@ class DB_msql extends DB_common
                 $flags .= 'not_null ';
             }
             if ($tmp->unique) {
-                $flags .= 'unique ';
+                $flags .= 'unique_key ';
             }
             $flags = trim($flags);
 
