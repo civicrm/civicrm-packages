@@ -1018,9 +1018,6 @@ class DB_mysqli extends DB_common
      *
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
-     *                  MySQL driver tweaks: When seeking users, this method
-     *                  figures it out and returns the array or a DB_Error
-     *                  object on failure.
      *
      * @access private
      * @see DB_common::getListOf()
@@ -1039,7 +1036,7 @@ class DB_mysqli extends DB_common
         }
     }
 
-   // }}}
+    // }}}
 
 }
 

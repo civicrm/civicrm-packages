@@ -949,10 +949,7 @@ class DB_mysql extends DB_common
      * @param string $type  the kind of objects you want to retrieve
      *
      * @return string  the SQL query string or null if the driver doesn't
-     *                  support the object type requested.
-     *                  MySQL driver tweaks: When seeking users, this method
-     *                  figures it out and returns the array or a DB_Error
-     *                  object on failure.
+     *                  support the object type requested
      *
      * @access private
      * @see DB_common::getListOf()
