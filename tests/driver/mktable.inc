@@ -105,13 +105,19 @@ switch ($type) {
         $date_literal = ' DATE ';
         $tabletype = '';
         break;
-    case 'msql':
     case 'ifx':
         // doing this for ifx to keep certain versions happy
         $null = '';
         $chrc = 'CHAR(255)';
         $chrd = 'CHAR(20)';
         $default = "DEFAULT 'def' NOT NULL";
+        $tabletype = '';
+        break;
+    case 'msql':
+        $null = '';
+        $chrc = 'CHAR(255)';
+        $chrd = 'CHAR(20)';
+        $default = '';
         $tabletype = '';
         break;
     case 'mysql':

@@ -89,6 +89,9 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
     case 'sybase:sybase':
         $res = $dbh->query('DROP INDEX phptest.fakeindex');
         break;
+    case 'msql:msql':
+        $res = $dbh->query('DROP INDEX fakeindex FROM phptest');
+        break;
     default:
         $res = $dbh->query('DROP INDEX fakeindex ON phptest');
 }
