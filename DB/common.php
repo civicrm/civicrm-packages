@@ -123,7 +123,7 @@ class DB_common extends PEAR
     */
     function toString()
     {
-        $info = get_class($this);
+        $info = strtolower(get_class($this));
         $info .=  ': (phptype=' . $this->phptype .
                   ', dbsyntax=' . $this->dbsyntax .
                   ')';
@@ -804,7 +804,7 @@ class DB_common extends PEAR
     {
         $query  = $this->modifyLimitQuery($query, $from, $count);
         $result =& $this->query($query, $params);
-        if (get_class($result) == 'db_result') {
+        if (strtolower(get_class($result)) == 'db_result') {
             $result->setOption('limit_from', $from);
             $result->setOption('limit_count', $count);
         }

@@ -219,7 +219,7 @@ class DB_storage extends PEAR
      */
     function toString()
     {
-        $info = get_class($this);
+        $info = strtolower(get_class($this));
         $info .= " (table=";
         $info .= $this->_table;
         $info .= ", keycolumn=";
@@ -285,7 +285,7 @@ class DB_storage extends PEAR
      */
     function &create($table, &$data)
     {
-        $classname = get_class($this);
+        $classname = strtolower(get_class($this));
         $obj =& new $classname($table);
         reset($data);
         while (list($name, $value) = each($data)) {

@@ -8,7 +8,7 @@ function print_obj(&$obj) {
     if (!is_object($obj)) {
         echo "ERROR: no object!\n";
     } else {
-        echo get_class($obj) . " -> " . implode(" ", array_keys((array)$obj)) . "\n";
+        echo strtolower(get_class($obj)) . ' -> ' . implode(' ', array_keys((array)$obj)) . "\n";
     }
 }
 
