@@ -105,6 +105,8 @@ class DB_sqlite extends DB_common {
     var $phptype, $dbsyntax;
     var $prepare_tokens = array();
     var $prepare_types = array();
+    
+    var $_lasterror = '';
 
     // }}}
     // {{{ constructor
@@ -117,6 +119,10 @@ class DB_sqlite extends DB_common {
     * @access public
     */
     function DB_sqlite() {
+
+        /* for retrieving meaningfull error messages */
+        /* TODO: set it back to original somewhere   */
+
         $this->DB_common();
         $this->phptype = 'sqlite';
         $this->dbsyntax = 'sqlite';
@@ -234,14 +240,13 @@ class DB_sqlite extends DB_common {
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
         $query = $this->_modifyQuery($query);
+        ini_set('track_errors', true);
         $result = @sqlite_query($query, $this->connection);
+        ini_restore('track_errors');
+        $this->_lasterror = isset($php_errormsg) ? $php_errormsg : '';
         $this->result = $result;
-       if (!$this->result ) {
-            $errno = sqlite_last_error($this->connection );
-            if (!$errno) {
-                return null;
-            }
-            return $this->sqliteRaiseError($errno);
+        if (!$this->result ) {
+            return $this->sqliteRaiseError(null);
         }
         
         /* sqlite_query() seems to allways return a resource */
@@ -409,6 +414,40 @@ class DB_sqlite extends DB_common {
 
     // }}}
 
+
+
+    /**
+     * Get the native error string of the last error (if any) that
+     * occured on the current connection. This is used to retrieve
+     * more meaningfull error messages DB_pgsql way since
+     * sqlite_last_error() does not provide adequate info.
+     *
+     * @return string native SQLite error message
+     */
+    function errorNative()
+    {
+        return($this->_lasterror);
+    }
+
+    function errorCode($errormsg) 
+    {
+        static $error_regexps;
+        if (empty($error_regexps)) {
+            $error_regexps = array(
+                '/^no such table:/' => DB_ERROR_NOSUCHTABLE
+             );
+        }
+        foreach ($error_regexps as $regexp => $code) {
+            if (preg_match($regexp, $errormsg)) {
+                return $code;
+            }
+        }
+        // Fall back to DB_ERROR if there was no mapping.
+        return DB_ERROR;
+    }
+
+
+
     function dropSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
@@ -464,7 +503,7 @@ class DB_sqlite extends DB_common {
                     return $id;
                 }
             } elseif ($ondemand && DB::isError($result) &&
-            $result->getCode() == 1) {
+            $result->getCode() == DB_ERROR_NOSUCHTABLE) {
                 $result = $this->createSequence($seq_name);
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
@@ -622,8 +661,10 @@ class DB_sqlite extends DB_common {
     * @return object  a PEAR error object
     */
     function sqliteRaiseError($errno = null) {
+ 
+        $native = $this->errorNative();
         if ($errno === null) {
-            $errno = $this->errorCode(sqlite_last_error($this->connection));
+            $errno = $this->errorCode($native);
         }
         return $this->raiseError($errno, null, null, null,
                                  @sqlite_last_error($this->connection) . " ** " .
