@@ -88,15 +88,15 @@ class DB_pgsql extends DB_common
         $connstr = '';
 
         if ($protocol == 'tcp') {
-            if ($dsninfo['hostspec']) {
+            if (!empty($dsninfo['hostspec'])) {
                 $connstr .= 'host=' . $dsninfo['hostspec'];
             }
-            if ($dsninfo['port']) {
+            if (!empty($dsninfo['port'])) {
                 $connstr .= ' port=' . $dsninfo['port'];
             }
         } elseif ($protocol == 'unix') {
             // Allow for pg socket in non-standard locations.
-            if ($dsninfo['socket']) {
+            if (!empty($dsninfo['socket'])) {
                 $connstr .= 'host=' . $dsninfo['socket'];
             }
         }
@@ -104,16 +104,16 @@ class DB_pgsql extends DB_common
         if (isset($dsninfo['database'])) {
             $connstr .= ' dbname=\'' . addslashes($dsninfo['database']) . '\'';
         }
-        if ($dsninfo['username']) {
+        if (!empty($dsninfo['username'])) {
             $connstr .= ' user=\'' . addslashes($dsninfo['username']) . '\'';
         }
-        if ($dsninfo['password']) {
+        if (!empty($dsninfo['password'])) {
             $connstr .= ' password=\'' . addslashes($dsninfo['password']) . '\'';
         }
-        if (isset($dsninfo['options'])) {
+        if (!empty($dsninfo['options'])) {
             $connstr .= ' options=' . $dsninfo['options'];
         }
-        if (isset($dsninfo['tty'])) {
+        if (!empty($dsninfo['tty'])) {
             $connstr .= ' tty=' . $dsninfo['tty'];
         }
 
@@ -233,7 +233,7 @@ class DB_pgsql extends DB_common
     function errorCode($errormsg)
     {
         static $error_regexps;
-        if (!isset($error_regexps)) {
+        if (empty($error_regexps)) {
             $error_regexps = array(
                 '/(([Rr]elation|[Ss]equence|[Tt]able)( [\"\'].*[\"\'])? does not exist|[Cc]lass ".+" not found)$/' => DB_ERROR_NOSUCHTABLE,
                 '/[Cc]olumn [\"\'].*[\"\'] does not exist/' => DB_ERROR_NOSUCHFIELD,
