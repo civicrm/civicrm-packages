@@ -761,6 +761,10 @@ class DB_pgsql extends DB_common
         if (preg_match('/LIMIT\s*\d(\s*(,|OFFSET)\s*\d+)?/i', $query)) {
             return $query;
         }
+        $query = rtrim($query);
+        if (substr($query, -1) == ';') {
+            $query = substr($query, 0, -1);
+        }
         return "$query LIMIT $count OFFSET $from";
     }
 

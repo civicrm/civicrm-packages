@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.176 2005-03-01 20:22:03 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.177 2005-03-02 14:42:58 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,12 +66,14 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.1</version>
+    <version>1.7.2</version>
     <state>stable</state>
-    <date>2005-03-01</date>
+    <date>pending</date>
     <notes><![CDATA[
 all:
-* modifyLimitQuery() should not not modify the query if it already has a LIMIT clause.  Bug 3663.
+* Make modifyLimitQuery() accommodate
+  queries that already have ";"
+  appended to them.  Bug 3666.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">

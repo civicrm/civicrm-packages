@@ -852,6 +852,10 @@ class DB_mysql extends DB_common
         if (preg_match('/LIMIT\s*\d(\s*(,|OFFSET)\s*\d+)?/i', $query)) {
             return $query;
         }
+        $query = rtrim($query);
+        if (substr($query, -1) == ';') {
+            $query = substr($query, 0, -1);
+        }
         if (DB::isManip($query)) {
             return $query . " LIMIT $count";
         } else {
