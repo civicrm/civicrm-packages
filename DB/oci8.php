@@ -897,6 +897,8 @@ class DB_oci8 extends DB_common
         switch ($type) {
             case 'tables':
                 return 'SELECT table_name FROM user_tables';
+            case 'synonyms':
+                return 'SELECT synonym_name FROM user_synonyms';
             default:
                 return null;
         }
