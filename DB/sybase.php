@@ -255,8 +255,8 @@ class DB_sybase extends DB_common
     function fetchInto($result, &$ar, $fetchmode, $rownum=null)
     {
         if ($rownum !== null) {
-            if (!sybase_data_seek($result, $rownum)) {
-                return $this->sybaseRaiseError();
+            if (!@sybase_data_seek($result, $rownum)) {
+                return null;
             }
         }
         $ar = ($fetchmode & DB_FETCHMODE_ASSOC) ? @sybase_fetch_array($result) : @sybase_fetch_row($result);
