@@ -11,14 +11,14 @@ if (is_object($dbh)) {
 }
 switch ($dbh->phptype) {
     case 'mysqli':
-        if (is_a($dbh, 'mysqli')) {
+        if (is_a($dbh->connection, 'mysqli')) {
             print "\$dbh is connected\n";
         } else {
             print "\$dbh NOT connected\n";
         }
         break;
     default:
-        if (gettype($dbh) == 'resource') {
+        if (gettype($dbh->connection) == 'resource') {
             print "\$dbh is connected\n";
         } else {
             print "\$dbh NOT connected\n";
@@ -43,14 +43,14 @@ if (is_object($dbha)) {
 }
 switch ($dbh->phptype) {
     case 'mysqli':
-        if (is_a($dbha, 'mysqli')) {
+        if (is_a($dbha->connection, 'mysqli')) {
             print "\$dbha is connected\n";
         } else {
             print "\$dbha NOT connected\n";
         }
         break;
     default:
-        if (gettype($dbha) == 'resource') {
+        if (gettype($dbha->connection) == 'resource') {
             print "\$dbha is connected\n";
         } else {
             print "\$dbha NOT connected\n";
