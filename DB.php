@@ -122,11 +122,6 @@ define('DB_ERROR_NODBSELECTED', -14);
 define('DB_ERROR_CANNOT_CREATE', -15);
 
 /**
- * UNUSED
- */
-define('DB_ERROR_CANNOT_DELETE', -16);
-
-/**
  * Could not drop the database requested because it does not exist
  */
 define('DB_ERROR_CANNOT_DROP', -17);
@@ -670,7 +665,6 @@ class DB
                 DB_ERROR_ACCESS_VIOLATION   => 'insufficient permissions',
                 DB_ERROR_ALREADY_EXISTS     => 'already exists',
                 DB_ERROR_CANNOT_CREATE      => 'can not create',
-                DB_ERROR_CANNOT_DELETE      => 'can not delete',
                 DB_ERROR_CANNOT_DROP        => 'can not drop',
                 DB_ERROR_CONNECT_FAILED     => 'connect failed',
                 DB_ERROR_CONSTRAINT         => 'constraint violation',
