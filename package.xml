@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.59 2004-02-10 04:17:54 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.60 2004-02-10 05:12:30 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -73,6 +73,9 @@ When connecting with an array as the DSN and the
 'dbsyntax' element is not set, parseDSN() now
 sets it to 'phptype', just like what happens when
 parsing a DSN string.  (danielc)
+
+- ifx:
+Add tableInfo().
 
 - mssql, odbc, pgsql, sqlite:
 Duplicate key constraint mapped to
