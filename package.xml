@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "../../php4/pear/package.dtd">
+<package version="1.0">
+  <name>DB</name>
+  <summary>Unified Database API</summary>
+  <description>
+    DB is PEAR's database abstraction layer (or "unified database API"
+    if you prefer).
+  </description>
+  <maintainers>
+    <maintainer>
+      <user>ssb</user>
+      <role>lead</role>
+      <name>Stig Sæther Bakken</name>
+      <email>stig@php.net</email>
+    </maintainer>
+    <maintainer>
+      <user>cox</user>
+      <role>developer</role>
+      <name>Tomas V.V.Cox</name>
+      <email>cox@php.net</email>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>1.0</version>
+    <state>stable</state>
+    <date>2002-01-29</date>
+    <notes>First independent release of DB</notes>
+    <filelist>
+      <file role="php">DB.php</file>
+      <dir name="DB">
+        <file role="php">DB/storage.php</file>
+        <file role="php">DB/common.php</file>
+        <file role="php">DB/fbsql.php</file>
+        <file role="php">DB/ibase.php</file>
+        <file role="php">DB/ifx.php</file>
+        <file role="php">DB/msql.php</file>
+        <file role="php">DB/mssql.php</file>
+        <file role="php">DB/mysql.php</file>
+        <file role="php">DB/oci8.php</file>
+        <file role="php">DB/odbc.php</file>
+        <file role="php">DB/pgsql.php</file>
+        <file role="php">DB/sybase.php</file>
+      </dir>
+    </filelist>
+    <deps>
+      <dep type="php" rel="ge" version="4.0.4pl1" />
+    </deps>
+  </release>
+</package>
