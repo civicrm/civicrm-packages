@@ -66,6 +66,7 @@ class DB_oci8 extends DB_common
         $this->errorcode_map = array(
             900 => DB_ERROR_SYNTAX,
             904 => DB_ERROR_NOSUCHFIELD,
+            921 => DB_ERROR_SYNTAX,
             923 => DB_ERROR_SYNTAX,
             942 => DB_ERROR_NOSUCHTABLE,
             955 => DB_ERROR_ALREADY_EXISTS,
