@@ -79,6 +79,7 @@ class DB_mysqli extends DB_common
     var $features = array(
         'limit'         => 'alter',
         'new_link'      => false,
+        'numrows'       => true,
         'pconnect'      => false,
         'prepare'       => false,
         'ssl'           => true,

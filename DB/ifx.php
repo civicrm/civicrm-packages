@@ -83,6 +83,7 @@ class DB_ifx extends DB_common
     var $features = array(
         'limit'         => 'emulate',
         'new_link'      => false,
+        'numrows'       => 'emulate',
         'pconnect'      => true,
         'prepare'       => false,
         'ssl'           => false,

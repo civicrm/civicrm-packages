@@ -78,6 +78,7 @@ class DB_pgsql extends DB_common
     var $features = array(
         'limit'         => 'alter',
         'new_link'      => '4.3.0',
+        'numrows'       => true,
         'pconnect'      => true,
         'prepare'       => false,
         'ssl'           => true,

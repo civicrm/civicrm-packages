@@ -89,6 +89,13 @@ class DB_common extends PEAR
     );
 
     /**
+     * The parameters from the most recently executed query
+     * @var array
+     * @since Property available since Release 1.7.0
+     */
+    var $last_parameters = array();
+
+    /**
      * The elements from each prepared statement
      * @var array
      */
@@ -1019,6 +1026,7 @@ class DB_common extends PEAR
         if (!is_array($data)) {
             $data = array($data);
         }
+        $this->last_parameters = $data;
 
         if (count($this->prepare_types[$stmt]) != count($data)) {
             $this->last_query = $this->prepared_queries[$stmt];
@@ -1177,6 +1185,7 @@ class DB_common extends PEAR
             $this->freePrepared($sth);
             return $ret;
         } else {
+            $this->last_parameters = array();
             $result = $this->simpleQuery($query);
             if (DB::isError($result) || $result === DB_OK) {
                 return $result;

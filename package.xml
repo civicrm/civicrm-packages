@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.160 2005-02-03 16:56:13 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.161 2005-02-04 18:10:42 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -97,17 +97,24 @@ all:
 * Consider SELECT INTO and COPY data manipulation
   queries in isManip().  Bug 2883.
 
+dbase:
+* Provide tableInfo().  Request 2142.
+
 fbsql:
 * FrontBase driver now works and passes all tests.
 
 ibase:
 * Add getListOf() support.
 * Add affectedRows() support.
+* Add numRows() support (Note:
+  DB_PORTABILITY_NUMROWS must be enabled).
 * Add items to errorcode_map (from MDB2):
   -303 => DB_ERROR_INVALID
   -904 => DB_ERROR_CONNECT_FAILED
 
 ifx:
+* Add numRows() support (Note:
+  DB_PORTABILITY_NUMROWS must be enabled).
 * Add $this->DB_common() call to the constructor,
   just like is done in all the other drivers.
 

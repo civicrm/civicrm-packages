@@ -76,6 +76,7 @@ class DB_mysql extends DB_common
     var $features = array(
         'limit'         => 'alter',
         'new_link'      => '4.2.0',
+        'numrows'       => true,
         'pconnect'      => true,
         'prepare'       => false,
         'ssl'           => false,

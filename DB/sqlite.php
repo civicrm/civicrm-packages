@@ -78,6 +78,7 @@ class DB_sqlite extends DB_common
     var $features = array(
         'limit'         => 'alter',
         'new_link'      => false,
+        'numrows'       => true,
         'pconnect'      => true,
         'prepare'       => false,
         'ssl'           => false,

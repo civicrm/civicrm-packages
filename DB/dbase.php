@@ -76,6 +76,7 @@ class DB_dbase extends DB_common
     var $features = array(
         'limit'         => false,
         'new_link'      => false,
+        'numrows'       => true,
         'pconnect'      => false,
         'prepare'       => false,
         'ssl'           => false,

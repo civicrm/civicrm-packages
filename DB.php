@@ -971,8 +971,16 @@ class DB_result
     /**
      * The query string that created this result
      * @var string
+     * @since Property available since Release 1.7.0
      */
     var $query = '';
+
+    /**
+     * The execute parameters that created this result
+     * @var array
+     * @since Property available since Release 1.7.0
+     */
+    var $parameters = array();
 
 
     // }}}
@@ -992,6 +1000,7 @@ class DB_result
         $this->dbh         = &$dbh;
         $this->result      = $result;
         $this->query       = $dbh->last_query;
+        $this->parameters  = $dbh->last_parameters;
         $this->limit_type  = $dbh->features['limit'];
         $this->autofree    = $dbh->options['autofree'];
         $this->fetchmode   = $dbh->fetchmode;
@@ -1214,7 +1223,21 @@ class DB_result
      */
     function numRows()
     {
-        return $this->dbh->numRows($this->result);
+        if ($this->dbh->features['numrows'] === 'emulate'
+            && $this->dbh->options['portability'] & DB_PORTABILITY_NUMROWS)
+        {
+            $res = $this->dbh->query($this->query, $this->parameters);
+            if (DB::isError($res)) {
+                return $res;
+            }
+            $i = 0;
+            while ($res->fetchInto($tmp, DB_FETCHMODE_ORDERED)) {
+                $i++;
+            }
+            return $i;
+        } else {
+            return $this->dbh->numRows($this->result);
+        }
     }
 
     // }}}
@@ -1275,6 +1298,8 @@ class DB_result
      * Determine the query string that created this result
      *
      * @return string  the query string
+     *
+     * @since Method available since Release 1.7.0
      */
     function getQuery()
     {

@@ -84,6 +84,7 @@ class DB_odbc extends DB_common
     var $features = array(
         'limit'         => 'emulate',
         'new_link'      => false,
+        'numrows'       => true,
         'pconnect'      => true,
         'prepare'       => false,
         'ssl'           => false,

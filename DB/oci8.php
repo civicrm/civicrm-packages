@@ -82,6 +82,7 @@ class DB_oci8 extends DB_common
     var $features = array(
         'limit'         => 'alter',
         'new_link'      => '5.0.0',
+        'numrows'       => 'alter',
         'pconnect'      => true,
         'prepare'       => true,
         'ssl'           => false,
@@ -301,6 +302,7 @@ class DB_oci8 extends DB_common
     function simpleQuery($query)
     {
         $this->_data = array();
+        $this->last_parameters = array();
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
         $result = @OCIParse($this->connection, $query);
@@ -591,7 +593,7 @@ class DB_oci8 extends DB_common
         if (!is_array($data)) {
             $data = array($data);
         }
-
+        $this->last_parameters = $data;
         $this->_data = $data;
 
         $types =& $this->prepare_types[(int)$stmt];

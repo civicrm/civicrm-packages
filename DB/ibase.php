@@ -81,6 +81,7 @@ class DB_ibase extends DB_common
     var $features = array(
         'limit'         => false,
         'new_link'      => false,
+        'numrows'       => 'emulate',
         'pconnect'      => true,
         'prepare'       => true,
         'ssl'           => false,
@@ -495,6 +496,7 @@ class DB_ibase extends DB_common
         if (!is_array($data)) {
             $data = array($data);
         }
+        $this->last_parameters = $data;
 
         $types =& $this->prepare_types[(int)$stmt];
         if (count($types) != count($data)) {
