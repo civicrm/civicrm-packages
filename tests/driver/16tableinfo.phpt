@@ -409,6 +409,52 @@ $quirks = array(
         ),
     ),
 
+    'msql:msql' => array(
+        'clob' => 'TEXT(255)',
+        'date' => 'DATE',
+        'dateliteral' => '',
+        'finds_table' => true,
+        'size_from_table' => true,
+        'handles_results' => true,
+        'commands' => array(
+        ),
+        0 => array(
+            'type' => 'int',
+            'len' => 2,
+            'flags' => 'not_null',
+        ),
+        1 => array(
+            'type' => 'int',
+            'len' => 0,
+            'flags' => 'primary_key not_null',
+        ),
+        2 => array(
+            'type' => 'char',
+            'len' => 0,
+            'flags' => 'char',
+        ),
+        3 => array(
+            'type' => 'date',
+            'len' => 10,
+            'flags' => 'not_null',
+        ),
+        4 => array(
+            'type' => 'char',
+            'len' => 0,
+            'flags' => 'not_null',
+        ),
+        5 => array(
+            'type' => 'real',
+            'len' => 0,
+            'flags' => '',
+        ),
+        9 => array(
+            'type' => 'char',
+            'len' => 10,
+            'flags' => '',
+        ),
+    ),
+
     'mssql:mssql' => array(
         'clob' => 'TEXT',
         'date' => 'SMALLDATETIME',
@@ -857,6 +903,9 @@ $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 if ($quirk_key == 'odbc:access') {
     $default_e = '';
     $decimal   = 'NUMERIC';
+} elseif ($quirk_key == 'msql:msql') {
+    $default_e = '';
+    $decimal   = 'REAL';
 } else {
     $default_e = "DEFAULT ' e'";
     $decimal   = 'DECIMAL(2,1)';
