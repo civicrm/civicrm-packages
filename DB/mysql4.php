@@ -697,7 +697,7 @@ class DB_mysql4 extends DB_common
     // }}}
     // {{{ modifyQuery()
 
-    function modifyQuery($query, $subject = null)
+    function modifyQuery($query)
     {
         if ($this->options['portability'] & DB_PORTABILITY_DELETE_COUNT) {
             // "DELETE FROM table" gives 0 affected rows in MySQL.
