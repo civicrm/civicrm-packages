@@ -139,9 +139,9 @@ class DB_dbase extends DB_common
     // {{{ constructor
 
     /**
-     * DB_mysql constructor.
+     * This constructor calls <kbd>$this->DB_common()</kbd>
      *
-     * @access public
+     * @return void
      */
     function DB_dbase()
     {
@@ -156,8 +156,6 @@ class DB_dbase extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_dbase::connect($this->dsn, $this->options);
@@ -174,7 +172,6 @@ class DB_dbase extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)

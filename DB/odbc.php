@@ -139,9 +139,11 @@ class DB_odbc extends DB_common
      */
     var $dsn = array();
 
+
     /**
      * The number of rows affected by a data manipulation query
      * @var integer
+     * @access private
      */
     var $affected = 0;
 
@@ -149,6 +151,11 @@ class DB_odbc extends DB_common
     // }}}
     // {{{ constructor
 
+    /**
+     * This constructor calls <kbd>$this->DB_common()</kbd>
+     *
+     * @return void
+     */
     function DB_odbc()
     {
         $this->DB_common();
@@ -162,8 +169,6 @@ class DB_odbc extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_odbc::connect($this->dsn, $this->options);
@@ -183,7 +188,6 @@ class DB_odbc extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)
@@ -616,7 +620,7 @@ class DB_odbc extends DB_common
      *
      * @return string  the list of objects requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      * @since Method available since Release 1.7.0
      */

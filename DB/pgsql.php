@@ -104,15 +104,22 @@ class DB_pgsql extends DB_common
      */
     var $dsn = array();
 
+
     /**
      * Should data manipulation queries be committed automatically?
      * @var bool
+     * @access private
      */
     var $autocommit = true;
 
     /**
      * The quantity of transactions begun
+     *
+     * {@internal  While this is private, it can't actually be designated
+     * private in PHP 5 because it is directly accessed in the test suite.}}
+     *
      * @var integer
+     * @access private
      */
     var $transaction_opcount = 0;
 
@@ -125,12 +132,14 @@ class DB_pgsql extends DB_common
     /**
      * The current row being looked at in fetchInto()
      * @var array
+     * @access private
      */
     var $row = array();
 
     /**
      * The number of rows in a given result set
      * @var array
+     * @access private
      */
     var $_num_rows = array();
 
@@ -138,6 +147,11 @@ class DB_pgsql extends DB_common
     // }}}
     // {{{ constructor
 
+    /**
+     * This constructor calls <kbd>$this->DB_common()</kbd>
+     *
+     * @return void
+     */
     function DB_pgsql()
     {
         $this->DB_common();
@@ -151,8 +165,6 @@ class DB_pgsql extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_pgsql::connect($this->dsn, $this->options);
@@ -188,7 +200,6 @@ class DB_pgsql extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      * @link http://www.postgresql.org/docs/current/static/libpq.html#LIBPQ-CONNECT
      */
@@ -776,15 +787,17 @@ class DB_pgsql extends DB_common
     // {{{ _pgFieldFlags()
 
     /**
-     * Flags of a Field
+     * Get a column's flags
      *
-     * @param int $resource PostgreSQL result identifier
-     * @param int $num_field the field number
+     * Supports "not_null", "default_value", "primary_key", "unique_key"
+     * and "multiple_key".  The default value is passed through
+     * rawurlencode() in case there are spaces in it.
      *
-     * @return string The flags of the field ("not_null", "default_value",
-     *                "primary_key", "unique_key" and "multiple_key"
-     *                are supported).  The default value is passed
-     *                through rawurlencode() in case there are spaces in it.
+     * @param int $resource   the PostgreSQL result identifier
+     * @param int $num_field  the field number
+     *
+     * @return string  the flags
+     *
      * @access private
      */
     function _pgFieldFlags($resource, $num_field, $table_name)
@@ -938,7 +951,7 @@ class DB_pgsql extends DB_common
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)

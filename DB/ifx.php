@@ -134,21 +134,29 @@ class DB_ifx extends DB_common
      */
     var $dsn = array();
 
+
     /**
      * Should data manipulation queries be committed automatically?
      * @var bool
+     * @access private
      */
     var $autocommit = true;
 
     /**
      * The quantity of transactions begun
+     *
+     * {@internal  While this is private, it can't actually be designated
+     * private in PHP 5 because it is directly accessed in the test suite.}}
+     *
      * @var integer
+     * @access private
      */
     var $transaction_opcount = 0;
 
     /**
      * The number of rows affected by a data manipulation query
      * @var integer
+     * @access private
      */
     var $affected = 0;
 
@@ -156,6 +164,11 @@ class DB_ifx extends DB_common
     // }}}
     // {{{ constructor
 
+    /**
+     * This constructor calls <kbd>$this->DB_common()</kbd>
+     *
+     * @return void
+     */
     function DB_ifx()
     {
         $this->DB_common();
@@ -169,8 +182,6 @@ class DB_ifx extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_ifx::connect($this->dsn, $this->options);
@@ -187,7 +198,6 @@ class DB_ifx extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)
@@ -534,7 +544,7 @@ class DB_ifx extends DB_common
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)

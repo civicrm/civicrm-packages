@@ -107,6 +107,11 @@ class DB_msql extends DB_common
     // }}}
     // {{{ constructor
 
+    /**
+     * This constructor calls <kbd>$this->DB_common()</kbd>
+     *
+     * @return void
+     */
     function DB_msql()
     {
         $this->DB_common();
@@ -120,8 +125,6 @@ class DB_msql extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_msql::connect($this->dsn, $this->options);
@@ -138,7 +141,6 @@ class DB_msql extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)

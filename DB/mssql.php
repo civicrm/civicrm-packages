@@ -115,15 +115,22 @@ class DB_mssql extends DB_common
      */
     var $dsn = array();
 
+
     /**
      * Should data manipulation queries be committed automatically?
      * @var bool
+     * @access private
      */
     var $autocommit = true;
 
     /**
      * The quantity of transactions begun
+     *
+     * {@internal  While this is private, it can't actually be designated
+     * private in PHP 5 because it is directly accessed in the test suite.}}
+     *
      * @var integer
+     * @access private
      */
     var $transaction_opcount = 0;
 
@@ -141,6 +148,11 @@ class DB_mssql extends DB_common
     // }}}
     // {{{ constructor
 
+    /**
+     * This constructor calls <kbd>$this->DB_common()</kbd>
+     *
+     * @return void
+     */
     function DB_mssql()
     {
         $this->DB_common();
@@ -154,8 +166,6 @@ class DB_mssql extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_mssql::connect($this->dsn, $this->options);
@@ -172,7 +182,6 @@ class DB_mssql extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)
@@ -707,7 +716,7 @@ class DB_mssql extends DB_common
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)
@@ -727,7 +736,9 @@ class DB_mssql extends DB_common
     // {{{ _mssql_field_flags()
 
     /**
-     * Get the flags for a field, currently supports "not_null", "primary_key",
+     * Get a column's flags
+     *
+     * Supports "not_null", "primary_key",
      * "auto_increment" (mssql identity), "timestamp" (mssql timestamp),
      * "unique_key" (mssql unique index, unique check or primary_key) and
      * "multiple_key" (multikey index)
@@ -736,10 +747,13 @@ class DB_mssql extends DB_common
      * not useful at all - is the behaviour of mysql_field_flags that primary
      * keys are alway unique? is the interpretation of multiple_key correct?
      *
-     * @param string The table name
-     * @param string The field
-     * @author Joern Barthel <j_barthel@web.de>
+     * @param string $table   the table name
+     * @param string $column  the field name
+     *
+     * @return string  the flags
+     *
      * @access private
+     * @author Joern Barthel <j_barthel@web.de>
      */
     function _mssql_field_flags($table, $column)
     {
@@ -802,10 +816,13 @@ class DB_mssql extends DB_common
 
     /**
      * Adds a string to the flags array if the flag is not yet in there
-     * - if there is no flag present the array is created.
+     * - if there is no flag present the array is created
      *
-     * @param reference  Reference to the flag-array
-     * @param value      The flag value
+     * @param array  &$array  the reference to the flag-array
+     * @param string $value   the flag value
+     *
+     * @return void
+     *
      * @access private
      * @author Joern Barthel <j_barthel@web.de>
      */

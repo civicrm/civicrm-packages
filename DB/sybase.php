@@ -107,15 +107,22 @@ class DB_sybase extends DB_common
      */
     var $dsn = array();
 
+
     /**
      * Should data manipulation queries be committed automatically?
      * @var bool
+     * @access private
      */
     var $autocommit = true;
 
     /**
      * The quantity of transactions begun
+     *
+     * {@internal  While this is private, it can't actually be designated
+     * private in PHP 5 because it is directly accessed in the test suite.}}
+     *
      * @var integer
+     * @access private
      */
     var $transaction_opcount = 0;
 
@@ -134,9 +141,9 @@ class DB_sybase extends DB_common
     // {{{ constructor
 
     /**
-     * DB_sybase constructor.
+     * This constructor calls <kbd>$this->DB_common()</kbd>
      *
-     * @access public
+     * @return void
      */
     function DB_sybase()
     {
@@ -151,8 +158,6 @@ class DB_sybase extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_sybase::connect($this->dsn, $this->options);
@@ -175,7 +180,6 @@ class DB_sybase extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)
@@ -633,7 +637,7 @@ class DB_sybase extends DB_common
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)
@@ -809,15 +813,17 @@ class DB_sybase extends DB_common
     // {{{ _sybase_field_flags()
 
     /**
-     * Get the flags for a field.
+     * Get the flags for a field
      *
      * Currently supports:
      *  + <samp>unique_key</samp>    (unique index, unique check or primary_key)
      *  + <samp>multiple_key</samp>  (multi-key index)
      *
-     * @param string  $table   table name
-     * @param string  $column  field name
+     * @param string  $table   the table name
+     * @param string  $column  the field name
+     *
      * @return string  space delimited string of flags.  Empty string if none.
+     *
      * @access private
      */
     function _sybase_field_flags($table, $column)
@@ -866,10 +872,13 @@ class DB_sybase extends DB_common
 
     /**
      * Adds a string to the flags array if the flag is not yet in there
-     * - if there is no flag present the array is created.
+     * - if there is no flag present the array is created
      *
      * @param array  $array  reference of flags array to add a value to
      * @param mixed  $value  value to add to the flag array
+     *
+     * @return void
+     *
      * @access private
      */
     function _add_flag(&$array, $value)

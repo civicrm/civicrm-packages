@@ -125,15 +125,22 @@ class DB_mysql extends DB_common
      */
     var $dsn = array();
 
+
     /**
      * Should data manipulation queries be committed automatically?
      * @var bool
+     * @access private
      */
     var $autocommit = true;
 
     /**
      * The quantity of transactions begun
+     *
+     * {@internal  While this is private, it can't actually be designated
+     * private in PHP 5 because it is directly accessed in the test suite.}}
+     *
      * @var integer
+     * @access private
      */
     var $transaction_opcount = 0;
 
@@ -152,7 +159,9 @@ class DB_mysql extends DB_common
     // {{{ constructor
 
     /**
-     * DB_mysql constructor.
+     * This constructor calls <kbd>$this->DB_common()</kbd>
+     *
+     * @return void
      */
     function DB_mysql()
     {
@@ -167,8 +176,6 @@ class DB_mysql extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_mysql::connect($this->dsn, $this->options);
@@ -194,7 +201,6 @@ class DB_mysql extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)
@@ -363,7 +369,6 @@ class DB_mysql extends DB_common
      * @return mixed DB_OK on success, null when end of result set is
      *               reached or on failure
      *
-     * @access private
      * @see DB_result::fetchInto()
      */
     function fetchInto($result, &$arr, $fetchmode, $rownum=null)
@@ -683,8 +688,11 @@ class DB_mysql extends DB_common
      * Backwards compatibility with old sequence emulation implementation
      * (clean up the dupes)
      *
-     * @param string $seqname The sequence name to clean up
-     * @return mixed DB_Error or true
+     * @param string $seqname  the sequence name to clean up
+     *
+     * @return bool  true on success.  A DB_Error object on failure.
+     *
+     * @access private
      */
     function _BCsequence($seqname)
     {
@@ -932,7 +940,7 @@ class DB_mysql extends DB_common
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)

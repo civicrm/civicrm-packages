@@ -125,9 +125,11 @@ class DB_oci8 extends DB_common
      */
     var $dsn = array();
 
+
     /**
      * Should data manipulation queries be committed automatically?
      * @var bool
+     * @access private
      */
     var $autocommit = true;
 
@@ -153,6 +155,7 @@ class DB_oci8 extends DB_common
     /**
      * Is the given prepared statement a data manipulation query?
      * @var array
+     * @access private
      */
     var $manip_query = array();
 
@@ -160,6 +163,11 @@ class DB_oci8 extends DB_common
     // }}}
     // {{{ constructor
 
+    /**
+     * This constructor calls <kbd>$this->DB_common()</kbd>
+     *
+     * @return void
+     */
     function DB_oci8()
     {
         $this->DB_common();
@@ -173,8 +181,6 @@ class DB_oci8 extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_oci8::connect($this->dsn, $this->options);
@@ -209,7 +215,6 @@ class DB_oci8 extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)
@@ -915,7 +920,7 @@ class DB_oci8 extends DB_common
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)

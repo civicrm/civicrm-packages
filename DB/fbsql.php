@@ -122,9 +122,9 @@ class DB_fbsql extends DB_common
     // {{{ constructor
 
     /**
-     * DB_fbsql constructor.
+     * This constructor calls <kbd>$this->DB_common()</kbd>
      *
-     * @access public
+     * @return void
      */
     function DB_fbsql()
     {
@@ -139,8 +139,6 @@ class DB_fbsql extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_fbsql::connect($this->dsn, $this->options);
@@ -157,7 +155,6 @@ class DB_fbsql extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)
@@ -698,7 +695,7 @@ class DB_fbsql extends DB_common
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)

@@ -75,8 +75,8 @@ class DB_common extends PEAR
      * The 'optimize' option has been deprecated.  Use the 'portability'
      * option instead.
      *
-     * @see DB_common::setOption()
      * @var array
+     * @see DB_common::setOption()
      */
     var $options = array(
         'persistent' => false,
@@ -118,9 +118,7 @@ class DB_common extends PEAR
     // {{{ DB_common
 
     /**
-     * Constructor
-     *
-     * Calls <kbd>$this->PEAR('DB_Error')</kbd>
+     * This constructor calls <kbd>$this->PEAR('DB_Error')</kbd>
      *
      * @return void
      */
@@ -178,7 +176,7 @@ class DB_common extends PEAR
      * @return string  the quoted string
      *
      * @see DB_common::quoteSmart(), DB_common::escapeSimple()
-     * @deprecated Deprecated in release 1.2 or lower
+     * @deprecated Method deprecated some time before Release 1.2
      */
     function quoteString($string)
     {
@@ -1003,7 +1001,7 @@ class DB_common extends PEAR
      * @return mixed  a string containing the real query run when emulating
      *                 prepare/execute.  A DB_Error object on failure.
      *
-     * @access private
+     * @access protected
      * @see DB_common::execute()
      */
     function executeEmulateQuery($stmt, $data = array())
@@ -1111,7 +1109,7 @@ class DB_common extends PEAR
      *
      * @return string  the modified query
      *
-     * @access private
+     * @access protected
      */
     function modifyQuery($query) {
         return $query;
@@ -1134,7 +1132,7 @@ class DB_common extends PEAR
      *
      * @return string  the modified query
      *
-     * @access private
+     * @access protected
      */
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
@@ -1748,7 +1746,7 @@ class DB_common extends PEAR
      *
      * @return string  the sequence's name in the backend
      *
-     * @access private
+     * @access protected
      * @see DB_common::createSequence(), DB_common::dropSequence(),
      *      DB_common::nextID(), DB_common::setOption()
      */
@@ -1963,7 +1961,7 @@ class DB_common extends PEAR
      *
      * @return array  the list of tables.  A DB_Error object on failure.
      *
-     * @deprecated Deprecated in release 1.2 or lower
+     * @deprecated Method deprecated some time before Release 1.2
      */
     function getTables()
     {
@@ -2012,7 +2010,7 @@ class DB_common extends PEAR
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)
@@ -2030,7 +2028,7 @@ class DB_common extends PEAR
      *
      * @return void
      *
-     * @access private
+     * @access protected
      */
     function _rtrimArrayValues(&$array)
     {
@@ -2051,7 +2049,7 @@ class DB_common extends PEAR
      *
      * @return void
      *
-     * @access private
+     * @access protected
      */
     function _convertNullArrayValuesToEmpty(&$array)
     {

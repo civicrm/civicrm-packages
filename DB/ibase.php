@@ -136,9 +136,18 @@ class DB_ibase extends DB_common
      */
     var $dsn = array();
 
+
+    /**
+     * The number of rows affected by a data manipulation query
+     * @var integer
+     * @access private
+     */
+    var $affected = 0;
+
     /**
      * Should data manipulation queries be committed automatically?
      * @var bool
+     * @access private
      */
     var $autocommit = true;
 
@@ -150,26 +159,25 @@ class DB_ibase extends DB_common
      * still in scope.}}
      *
      * @var resource
-     * @access protected
      */
     var $last_stmt;
 
     /**
      * Is the given prepared statement a data manipulation query?
      * @var array
+     * @access private
      */
     var $manip_query = array();
-
-    /**
-     * The number of rows affected by a data manipulation query
-     * @var integer
-     */
-    var $affected = 0;
 
 
     // }}}
     // {{{ constructor
 
+    /**
+     * This constructor calls <kbd>$this->DB_common()</kbd>
+     *
+     * @return void
+     */
     function DB_ibase()
     {
         $this->DB_common();
@@ -183,8 +191,6 @@ class DB_ibase extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_ibase::connect($this->dsn, $this->options);
@@ -211,7 +217,6 @@ class DB_ibase extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)
@@ -700,13 +705,16 @@ class DB_ibase extends DB_common
     // {{{ _ibaseFieldFlags()
 
     /**
-     * get the Flags of a Field
+     * Get the column's flags
      *
-     * @param string $field_name the name of the field
-     * @param string $table_name the name of the table
+     * Supports "primary_key", "unique_key", "not_null", "default",
+     * "computed" and "blob".
      *
-     * @return string The flags of the field ("primary_key", "unique_key", "not_null"
-     *                "default", "computed" and "blob" are supported)
+     * @param string $field_name  the name of the field
+     * @param string $table_name  the name of the table
+     *
+     * @return string  the flags
+     *
      * @access private
      */
     function _ibaseFieldFlags($field_name, $table_name)
@@ -932,7 +940,7 @@ class DB_ibase extends DB_common
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      */
     function getSpecialQuery($type)

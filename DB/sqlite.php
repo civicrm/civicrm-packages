@@ -87,6 +87,11 @@ class DB_sqlite extends DB_common
 
     /**
      * A mapping of native error codes to DB error codes
+     *
+     * {@internal  Error codes according to sqlite_exec.  See the online
+     * manual at http://sqlite.org/c_interface.html for info.
+     * This error handling based on sqlite_exec is not yet implemented.}}
+     *
      * @var array
      */
     var $errorcode_map = array(
@@ -103,6 +108,7 @@ class DB_sqlite extends DB_common
      * @var array
      */
     var $dsn = array();
+
 
     /**
      * SQLite data types
@@ -142,12 +148,7 @@ class DB_sqlite extends DB_common
     // {{{ constructor
 
     /**
-     * Constructor for this class
-     *
-     * Error codes according to sqlite_exec.  Error Codes specification is
-     * in the {@link http://sqlite.org/c_interface.html online manual}.
-     *
-     * This errorhandling based on sqlite_exec is not yet implemented.
+     * This constructor calls <kbd>$this->DB_common()</kbd>
      *
      * @return void
      */
@@ -164,8 +165,6 @@ class DB_sqlite extends DB_common
      * function is called
      *
      * @return void
-     *
-     * @access private
      */
     function __wakeup() {
         DB_sqlite::connect($this->dsn, $this->options);
@@ -186,7 +185,6 @@ class DB_sqlite extends DB_common
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
-     * @access private
      * @see DB::connect(), DB::parseDSN()
      */
     function connect($dsn, $persistent = false)
@@ -693,7 +691,7 @@ class DB_sqlite extends DB_common
      * @return string  the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
-     * @access private
+     * @access protected
      * @see DB_common::getListOf()
      */
     function getSpecialQuery($type, $args = array())
