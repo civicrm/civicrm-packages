@@ -44,6 +44,12 @@ to LDAP servers and MS ADO (using COM) are also avaible from a separate package)
       <name>Chuck Hagenbuch</name>
       <email>chuck@horde.org</email>
     </maintainer>
+    <maintainer>
+      <user>danielc</user>
+      <role>developer</role>
+      <name>Daniel Convissor</name>
+      <email>danielc@analysisandsolutions.com</email>
+    </maintainer>
   </maintainers>
   <release>
     <version>1.5.0RC3</version>
