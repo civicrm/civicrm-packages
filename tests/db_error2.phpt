@@ -1,5 +1,7 @@
 --TEST--
-DB configurable error handler test
+DB::Error 2
+--SKIPIF--
+<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--
 <?php
 require_once './include.inc';

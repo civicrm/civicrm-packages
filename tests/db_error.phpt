@@ -1,13 +1,11 @@
 --TEST--
-DB_Error
+DB::DB_Error
 --SKIPIF--
-<?php if (!@include 'DB.php') print 'skip could not find DB.php'; ?>
+<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--
 <?php // -*- C++ -*-
 require_once './include.inc';
-
-// Test for: DB.php
-// Parts tested: DB_Error
+require_once 'DB.php';
 
 function test_error_handler($errno, $errmsg, $file, $line, $vars) {
     if (defined('E_STRICT')) {
@@ -39,7 +37,6 @@ function test_error_handler($errno, $errmsg, $file, $line, $vars) {
 
 error_reporting(E_ALL);
 set_error_handler('test_error_handler');
-require_once 'DB.php';
 
 print "testing different error codes...\n";
 $e = new DB_Error(); print $e->toString()."\n";

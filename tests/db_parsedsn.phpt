@@ -1,13 +1,10 @@
 --TEST--
-DB::parseDSN test
+DB::parseDSN
 --SKIPIF--
-<?php if (!@include 'DB.php') print 'skip could not find DB.php'; ?>
+<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
 --FILE--
 <?php // -*- C++ -*-
 require_once './include.inc';
-
-// Test for: DB::parseDSN()
-
 require_once 'DB.php';
 
 function test($dsn) {
