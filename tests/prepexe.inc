@@ -18,18 +18,26 @@ print "sth1,sth2,sth3,sth4 created\n";
 print 'sth1: ? as param, passing as array... ';
 if (($res = $dbh->execute($sth1, array(72))) == DB_OK) {
     print "sth1 executed\n";
+} else {
+    print "sth1 failed\n";
 }
 print 'sth2: ! and ? as params, passing as array... ';
 if (($res = $dbh->execute($sth2, array(72, "that's right"))) == DB_OK) {
     print "sth2 executed\n";
+} else {
+    print "sth2 failed\n";
 }
 print 'sth3: ?, ! and & as params, passing as array... ';
 if (($res = $dbh->execute($sth3, array(72, "'it''s good'", $tmpfile))) == DB_OK) {
     print "sth3 executed\n";
+} else {
+    print "sth3 failed\n";
 }
 print 'sth4: no params... ';
 if (($res = $dbh->execute($sth4)) == DB_OK) {
     print "sth4 executed\n";
+} else {
+    print "sth4 failed\n";
 }
 print_results();
 
