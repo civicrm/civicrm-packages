@@ -492,20 +492,20 @@ class DB_pgsql extends DB_common
     function nextId($seq_name, $ondemand = true)
     {
         $seqname = $this->getSequenceName($seq_name);
-        $repeat = 0;
+        $repeat = false;
         do {
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
             $result = $this->query("SELECT NEXTVAL('${seqname}')");
             $this->popErrorHandling();
             if ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE) {
-                $repeat = 1;
+                $repeat = true;
                 $result = $this->createSequence($seq_name);
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
                 }
             } else {
-                $repeat = 0;
+                $repeat = false;
             }
         } while ($repeat);
         if (DB::isError($result)) {
