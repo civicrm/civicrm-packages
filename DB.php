@@ -282,8 +282,11 @@ class DB
         }
         $type = $dsninfo['phptype'];
 
-        if (is_array($options) && isset($options['debug']) &&
-            $options['debug'] >= 2) {
+        if (!is_array($options)) {
+            $options = array('persistent' => $options);
+        }
+
+        if (isset($options['debug']) && $options['debug'] >= 2) {
             // expose php errors with sufficient debug level
             include_once "DB/${type}.php";
         } else {
@@ -300,16 +303,13 @@ class DB
 
         @$obj =& new $classname;
 
-        if (is_array($options)) {
-            foreach ($options as $option => $value) {
-                $test = $obj->setOption($option, $value);
-                if (DB::isError($test)) {
-                    return $test;
-                }
+        foreach ($options as $option => $value) {
+            $test = $obj->setOption($option, $value);
+            if (DB::isError($test)) {
+                return $test;
             }
-        } else {
-            $obj->setOption('persistent', $options);
         }
+
         $err = $obj->connect($dsninfo, $obj->getOption('persistent'));
         if (DB::isError($err)) {
             $err->addUserInfo($dsn);
