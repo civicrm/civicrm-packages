@@ -118,19 +118,6 @@ class DB_msql extends DB_common
     }
 
     // }}}
-    // {{{ __wakeup()
-
-    /**
-     * Automatically reconnect to the database when PHP's unserialize()
-     * function is called
-     *
-     * @return void
-     */
-    function __wakeup() {
-        DB_msql::connect($this->dsn, $this->options);
-    }
-
-    // }}}
     // {{{ connect()
 
     /**
@@ -391,7 +378,8 @@ class DB_msql extends DB_common
      *
      * @see DB_common::setOption()
      */
-    function tableInfo($result, $mode = null) {
+    function tableInfo($result, $mode = null)
+    {
         if (is_string($result)) {
             /*
              * Probably received a table name.

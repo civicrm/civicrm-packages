@@ -169,19 +169,6 @@ class DB_mysql extends DB_common
     }
 
     // }}}
-    // {{{ __wakeup()
-
-    /**
-     * Automatically reconnect to the database when PHP's unserialize()
-     * function is called
-     *
-     * @return void
-     */
-    function __wakeup() {
-        DB_mysql::connect($this->dsn, $this->options);
-    }
-
-    // }}}
     // {{{ connect()
 
     /**
@@ -760,7 +747,8 @@ class DB_mysql extends DB_common
     /**
      * @deprecated  Deprecated in release 1.6.0
      */
-    function quote($str) {
+    function quote($str)
+    {
         return $this->quoteSmart($str);
     }
 
@@ -776,7 +764,8 @@ class DB_mysql extends DB_common
      *
      * @internal
      */
-    function escapeSimple($str) {
+    function escapeSimple($str)
+    {
         if (function_exists('mysql_real_escape_string')) {
             return @mysql_real_escape_string($str, $this->connection);
         } else {
@@ -863,7 +852,8 @@ class DB_mysql extends DB_common
      *
      * @see DB_common::tableInfo()
      */
-    function tableInfo($result, $mode = null) {
+    function tableInfo($result, $mode = null)
+    {
         if (is_string($result)) {
             /*
              * Probably received a table name.

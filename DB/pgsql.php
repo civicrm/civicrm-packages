@@ -158,19 +158,6 @@ class DB_pgsql extends DB_common
     }
 
     // }}}
-    // {{{ __wakeup()
-
-    /**
-     * Automatically reconnect to the database when PHP's unserialize()
-     * function is called
-     *
-     * @return void
-     */
-    function __wakeup() {
-        DB_pgsql::connect($this->dsn, $this->options);
-    }
-
-    // }}}
     // {{{ connect()
 
     /**
@@ -496,7 +483,8 @@ class DB_pgsql extends DB_common
      * @deprecated  Deprecated in release 1.6.0
      * @internal
      */
-    function quote($str) {
+    function quote($str)
+    {
         return $this->quoteSmart($str);
     }
 
@@ -549,7 +537,8 @@ class DB_pgsql extends DB_common
      *
      * @internal
      */
-    function escapeSimple($str) {
+    function escapeSimple($str)
+    {
         return str_replace("'", "''", str_replace('\\', '\\\\', $str));
     }
 

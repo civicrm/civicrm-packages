@@ -175,19 +175,6 @@ class DB_ifx extends DB_common
     }
 
     // }}}
-    // {{{ __wakeup()
-
-    /**
-     * Automatically reconnect to the database when PHP's unserialize()
-     * function is called
-     *
-     * @return void
-     */
-    function __wakeup() {
-        DB_ifx::connect($this->dsn, $this->options);
-    }
-
-    // }}}
     // {{{ connect()
 
     /**
