@@ -911,7 +911,7 @@ class DB_common extends PEAR
      */
     function executeMultiple($stmt, $data)
     {
-       foreach ($data as $value) {
+        foreach ($data as $value) {
             $res =& $this->execute($stmt, $value);
             if (DB::isError($res)) {
                 return $res;
