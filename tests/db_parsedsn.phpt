@@ -1,13 +1,13 @@
 --TEST--
 DB::parseDSN test
 --SKIPIF--
-<?php if (!@include("DB.php")) print "skip"; ?>
+<?php if (!@include(dirname(__FILE__)."/../DB.php")) print "skip"; ?>
 --FILE--
 <?php // -*- C++ -*-
 
 // Test for: DB::parseDSN()
 
-include_once dirname(__FILE__)."/../../DB.php";
+include_once dirname(__FILE__)."/../DB.php";
 
 function test($dsn) {
     echo "DSN: $dsn\n";
