@@ -328,7 +328,7 @@ class DB_msql extends DB_common
      */
     function errorNative()
     {
-        return @msql_error($this->connection);
+        return @msql_error();
     }
 
     // }}}
@@ -346,6 +346,22 @@ class DB_msql extends DB_common
         static $error_regexps;
         if (!isset($error_regexps)) {
             $error_regexps = array(
+                '/^Bad index name/i'
+                    => DB_ERROR_ALREADY_EXISTS,
+                '/^Field .* cannot be null$/i'
+                    => DB_ERROR_CONSTRAINT_NOT_NULL,
+                '/^Literal value for .* is wrong type$/i'
+                    => DB_ERROR_INVALID,
+                '/^syntax error/i'
+                    => DB_ERROR_SYNTAX,
+                '/^Table .* exists$/i'
+                    => DB_ERROR_ALREADY_EXISTS,
+                '/^Unknown field/i'
+                    => DB_ERROR_NOSUCHFIELD,
+                '/^Unknown index/i'
+                    => DB_ERROR_NOT_FOUND,
+                '/^Unknown table/i'   
+                    => DB_ERROR_NOSUCHTABLE,
             );
         }
 
