@@ -220,19 +220,22 @@ class DB_common extends PEAR
      *                   for DBMS's with <kbd>BOOLEAN</kbd> handling:
      *                     + dbase
      *                     + fbsql
-     *                     + ifx
      *                     + ibase
      *                     + odbc
      *                     + pgsql
      *                 - int <samp>1</samp> if true, <samp>0</samp> if false
      *                   for DMBS's lacking real <kbd>BOOLEAN</kbd> columns.
      *                   Such drivers and the data types expected:
+     *                     + ifx     <kbd>SMALLINT</kbd> [1]
      *                     + mssql   <kbd>BIT</kbd>
      *                     + mysql   <kbd>TINYINT(1)</kbd>
      *                     + mysql4  <kbd>TINYINT(1)</kbd>
      *                     + oci8    <kbd>NUMBER(1)</kbd>
      *                     + sqlite  <kbd>INTEGER</kbd>
      *                     + sybase  <kbd>TINYINT(1)</kbd>
+     *
+     * [1] Accommodate the lowest common denominator because not all versions
+     * of have <kbd>BOOLEAN</kbd>.
      *
      * @see DB_common::escapeSimple()
      * @access public
