@@ -203,8 +203,10 @@ class DB_mysql extends DB_common
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
-        if (!@mysql_select_db($this->_db, $this->connection)) {
-            return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+        if ($this->_db) {
+            if (!@mysql_select_db($this->_db, $this->connection)) {
+                return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+            }
         }
         if (!$this->autocommit && $ismanip) {
             if ($this->transaction_opcount == 0) {
@@ -413,8 +415,10 @@ class DB_mysql extends DB_common
     function commit()
     {
         if ($this->transaction_opcount > 0) {
-            if (!@mysql_select_db($this->_db, $this->connection)) {
-                return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+            if ($this->_db) {
+                if (!@mysql_select_db($this->_db, $this->connection)) {
+                    return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+                }
             }
             $result = @mysql_query('COMMIT', $this->connection);
             $result = @mysql_query('SET AUTOCOMMIT=1', $this->connection);
@@ -435,8 +439,10 @@ class DB_mysql extends DB_common
     function rollback()
     {
         if ($this->transaction_opcount > 0) {
-            if (!@mysql_select_db($this->_db, $this->connection)) {
-                return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+            if ($this->_db) {
+                if (!@mysql_select_db($this->_db, $this->connection)) {
+                    return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+                }
             }
             $result = @mysql_query('ROLLBACK', $this->connection);
             $result = @mysql_query('SET AUTOCOMMIT=1', $this->connection);
@@ -504,9 +510,6 @@ class DB_mysql extends DB_common
     function nextId($seq_name, $ondemand = true)
     {
         $seqname = $this->getSequenceName($seq_name);
-        if (!@mysql_select_db($this->_db, $this->connection)) {
-            return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
-        }
         do {
             $repeat = 0;
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
@@ -685,8 +688,7 @@ class DB_mysql extends DB_common
 
     function modifyLimitQuery($query, $from, $count)
     {
-        $query = $query . " LIMIT $from, $count";
-        return $query;
+        return $query . " LIMIT $from, $count";
     }
 
     // }}}
