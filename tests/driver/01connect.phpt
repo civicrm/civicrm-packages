@@ -5,11 +5,24 @@ DB_driver::connect
 --FILE--
 <?php
 require_once './connect.inc';
+
 if (is_object($dbh)) {
     print "\$dbh is an object\n";
 }
-if (is_resource($dbh->connection)) {
-    print "\$dbh is connected\n";
+switch ($dbh->phptype) {
+    case 'mysqli':
+        if (is_a($dbh, 'mysqli')) {
+            print "\$dbh is connected\n";
+        } else {
+            print "\$dbh NOT connected\n";
+        }
+        break;
+    default:
+        if (gettype($dbh) == 'resource') {
+            print "\$dbh is connected\n";
+        } else {
+            print "\$dbh NOT connected\n";
+        }
 }
 
 
@@ -25,13 +38,23 @@ $dbha =& DB::connect($test_array_dsn, $options);
 if (DB::isError($dbha)) {
     die("connect.inc: ".$dbha->toString());
 }
-
 if (is_object($dbha)) {
     print "\$dbha is an object\n";
 }
-
-if (is_resource($dbha->connection)) {
-    print "\$dbha is connected\n";
+switch ($dbh->phptype) {
+    case 'mysqli':
+        if (is_a($dbha, 'mysqli')) {
+            print "\$dbha is connected\n";
+        } else {
+            print "\$dbha NOT connected\n";
+        }
+        break;
+    default:
+        if (gettype($dbha) == 'resource') {
+            print "\$dbha is connected\n";
+        } else {
+            print "\$dbha NOT connected\n";
+        }
 }
 
 ?>

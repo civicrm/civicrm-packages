@@ -23,7 +23,22 @@ $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
 
 $sth = $dbh->simpleQuery("SELECT * FROM phptest");
-print gettype($sth)."\n";
+
+switch ($dbh->phptype) {
+    case 'mysqli':
+        if (is_a($sth, 'mysqli_result')) {
+            print "passed\n";
+        } else {
+            print "PROBLEM\n";
+        }
+        break;
+    default:
+        if (gettype($sth) == 'resource') {
+            print "passed\n";
+        } else {
+            print "PROBLEM\n";
+        }
+}
 
 
 switch ($dbh->phptype) {

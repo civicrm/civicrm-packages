@@ -8,4 +8,4 @@ require_once './mktable.inc';
 require_once '../simplequery.inc';
 ?>
 --EXPECT--
-resource
+passed
