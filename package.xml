@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.62 2004-02-10 17:22:57 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.63 2004-02-10 19:06:49 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -97,11 +97,21 @@ for portability with other DBMS's.  Since the
 initial mapping was added in 1.6.0RC1, this
 isn't a backwards compatibility issue.  (danielc)
 
+- oci8:
+Have modifyLimitQuery() quote all identifiers in
+order to avoid problems when certain queries with
+quoted identifiers are passed to limitQuery().
+Bug 679. (danielc)
+
 - all:
 All drivers with tableInfo() methods had bug
 introduced in 1.6.0RC5 that caused
 'undefined function' errors when lowercasing
 portability was off.  Bug 724.  (danielc)
+
+- all:
+In modifyLimitQuery(), if errors, put bad query
+into last_query to help debugging.  (danielc)
 
 - all:
 In limitQuery(), check if return from
