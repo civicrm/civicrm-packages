@@ -205,10 +205,21 @@ class DB_common extends PEAR
      * you SHOULD use them.  In general, they end up causing way more
      * problems than they solve.
      *
-     * Portability is broken by using the following characters in
+     * Portability is broken by using the following characters inside
      * delimited identifiers:
      *   + backtick (<kbd>`</kbd>) -- due to MySQL
      *   + double quote (<kbd>"</kbd>) -- due to Oracle
+     *
+     * Delimited identifiers are known to generally work correctly under
+     * the following drivers:
+     *   + mssql
+     *   + mysql
+     *   + mysql4
+     *   + oci8
+     *   + odbc(db2)
+     *   + pgsql
+     *   + sqlite
+     *   + sybase
      *
      * InterBase doesn't seem to be ability to use delimited identifiers
      * via PHP.
