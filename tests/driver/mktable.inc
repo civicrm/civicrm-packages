@@ -44,12 +44,29 @@ $dbh->query("DROP TABLE phptest");
 //$dbh->setErrorHandling(PEAR_ERROR_TRIGGER);
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'debug_die');
 
-switch ($dbh->phptype) {
-    case 'odbc':
+if ($dbh->phptype == 'odbc') {
+    if ($dbh->dbsyntax == 'odbc') {
+        $type = $dbh->phptype;
+    } else {
+        $type = $dbh->dbsyntax;
+    }
+} else {
+    $type = $dbh->phptype;
+}
+
+switch ($type) {
+    case 'access':
+        $null = 'NULL';
+        $chrc = 'VARCHAR(255)';
+        $chrd = 'VARCHAR(20)';
+        $default = '';
+        break;
+    case 'db2':
     case 'ibase':
         $null = '';
         $chrc = 'VARCHAR(255)';
         $chrd = 'VARCHAR(20)';
+        $default = "DEFAULT 'def' NOT NULL";
         break;
     case 'msql':
     case 'ifx':
@@ -57,17 +74,19 @@ switch ($dbh->phptype) {
         $null = '';
         $chrc = 'CHAR(255)';
         $chrd = 'CHAR(20)';
+        $default = "DEFAULT 'def' NOT NULL";
         break;
     default:
         $null = 'NULL';
         $chrc = 'VARCHAR(255)';
         $chrd = 'VARCHAR(20)';
+        $default = "DEFAULT 'def' NOT NULL";
 }
 
 $test_mktable_query = "
     CREATE TABLE phptest (
       a INTEGER $null,
-      b CHAR(40) DEFAULT 'def' NOT NULL,
+      b CHAR(40) $default,
       c $chrc $null,
       d $chrd $null)
 ";

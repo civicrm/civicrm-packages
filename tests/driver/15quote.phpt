@@ -44,9 +44,27 @@ $boolean_col_type = array(
 );
 
 // adjust things for specific DBMS's
-switch ($dbh->phptype) {
-    case 'odbc':
+
+if ($dbh->phptype == 'odbc') {
+    if ($dbh->dbsyntax == 'odbc') {
+        $type = $dbh->phptype;
+    } else {
+        $type = $dbh->dbsyntax;
+    }
+} else {
+    $type = $dbh->phptype;
+}
+
+switch ($type) {
+    case 'access':
+        $decimal = 'SINGLE';
+        $null = '';
+        $chr  = 'VARCHAR(8)';
+        $identifier = 'q\ut "dnt';
+        break;
+    case 'db2':
     case 'ibase':
+        $decimal = 'DECIMAL(3,1)';
         $null = '';
         $chr  = 'VARCHAR(8)';
         $identifier = 'q\ut] "dn[t';
@@ -54,16 +72,19 @@ switch ($dbh->phptype) {
     case 'msql':
     case 'ifx':
         // doing this for ifx to keep certain versions happy
+        $decimal = 'DECIMAL(3,1)';
         $null = '';
         $chr  = 'CHAR(8)';
         $identifier = 'q\ut] "dn[t';
         break;
     case 'oci8':
+        $decimal = 'DECIMAL(3,1)';
         $null = '';
         $chr  = 'VARCHAR(8)';
         $identifier = 'q\ut] dn[t';
         break;
     default:
+        $decimal = 'DECIMAL(3,1)';
         $null = 'NULL';
         $chr  = 'VARCHAR(8)';
         $identifier = 'q\ut] "dn[t';
@@ -76,9 +97,9 @@ $dbh->query('DROP TABLE pearquote');
 if ($identifier) {
     $create = $dbh->query("
         CREATE TABLE pearquote (
-          n DECIMAL(3,1) $null,
+          n $decimal $null,
           s $chr $null,
-          " . $dbh->quoteIdentifier($identifier) . " DECIMAL(3,1) $null,
+          " . $dbh->quoteIdentifier($identifier) . " $decimal $null,
           b {$boolean_col_type[$dbh->phptype]} $null
         )
     ");
