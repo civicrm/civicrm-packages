@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.51 2004-02-04 06:54:08 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.52 2004-02-04 06:55:11 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -15,8 +15,8 @@ DB is a database abstraction layer providing:
 * sequence emulation
 * sequential and non-sequential row fetching as well
 &#160;&#160; as bulk fetching
-* ordered array, associative array and object formats
-&#160;&#160; supported for the fetched rows
+* ordered array, associative array and object
+&#160;&#160; formats supported for the fetched rows
 * row limit support
 * transactions support
 * table information interface
@@ -27,8 +27,8 @@ DB layers itself on top of PHP's existing database
 extensions.  The currently supported extensions are:
 dbase, fbsql, interbase, informix, msql, mssql, mysql,
 mysqli, oci8, odbc, pgsql, sqlite and sybase (DB style
-interfaces to LDAP servers and MS ADO (using COM) are
-also avaible from a separate package).
+interfaces to LDAP servers and MS ADO (using COM)
+are also avaible from a separate package).
 </description>
   <license>PHP License</license>
   <maintainers>
