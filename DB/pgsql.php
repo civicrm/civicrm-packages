@@ -798,7 +798,7 @@ class DB_pgsql extends DB_common
      */
     function errorNative()
     {
-        return pg_errormessage($this->connection);
+        return @pg_errormessage($this->connection);
     }
 
     // }}}
@@ -830,6 +830,8 @@ class DB_pgsql extends DB_common
                 '/invalid input syntax for( type)? (integer|numeric)/i'
                     => DB_ERROR_INVALID_NUMBER,
                 '/value .* is out of range for type \w*int/i'
+                    => DB_ERROR_INVALID_NUMBER,
+                '/integer out of range/i'
                     => DB_ERROR_INVALID_NUMBER,
                 '/value too long for type character/i'
                     => DB_ERROR_INVALID,
