@@ -51,10 +51,95 @@ class DB_ibase extends DB_common
 
     // {{{ properties
 
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'ibase';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'ibase';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * NOTE: only firebird supports limit.
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => false,
+        'pconnect'      => true,
+        'prepare'       => true,
+        'ssl'           => false,
+        'transactions'  => true,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+        88   => DB_ERROR_NOSUCHTABLE,
+        -104 => DB_ERROR_SYNTAX,
+        -150 => DB_ERROR_ACCESS_VIOLATION,
+        -151 => DB_ERROR_ACCESS_VIOLATION,
+        -155 => DB_ERROR_NOSUCHTABLE,
+        -157 => DB_ERROR_NOSUCHFIELD,
+        -158 => DB_ERROR_VALUE_COUNT_ON_ROW,
+        -170 => DB_ERROR_MISMATCH,
+        -171 => DB_ERROR_MISMATCH,
+        -172 => DB_ERROR_INVALID,
+        -204 => DB_ERROR_INVALID,
+        -205 => DB_ERROR_NOSUCHFIELD,
+        -206 => DB_ERROR_NOSUCHFIELD,
+        -208 => DB_ERROR_INVALID,
+        -219 => DB_ERROR_NOSUCHTABLE,
+        -297 => DB_ERROR_CONSTRAINT,
+        -303 => DB_ERROR_INVALID,
+        -530 => DB_ERROR_CONSTRAINT,
+        -551 => DB_ERROR_ACCESS_VIOLATION,
+        -552 => DB_ERROR_ACCESS_VIOLATION,
+        -607 => DB_ERROR_NOSUCHTABLE,
+        -803 => DB_ERROR_CONSTRAINT,
+        -904 => DB_ERROR_CONNECT_FAILED,
+        -922 => DB_ERROR_NOSUCHDB,
+        -923 => DB_ERROR_CONNECT_FAILED,
+        -924 => DB_ERROR_CONNECT_FAILED
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
     var $connection;
-    var $phptype, $dbsyntax;
-    var $autocommit = 1;
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
+    var $dsn = array();
+
+    /**
+     * Should data manipulation queries be committed automatically?
+     * @var bool
+     */
+    var $autocommit = true;
+
+    /**
+     * Is the given prepared statement a data manipulation query?
+     * @var array
+     */
     var $manip_query = array();
+
 
     // }}}
     // {{{ constructor
@@ -62,44 +147,6 @@ class DB_ibase extends DB_common
     function DB_ibase()
     {
         $this->DB_common();
-        $this->phptype = 'ibase';
-        $this->dbsyntax = 'ibase';
-        $this->features = array(
-            'prepare' => true,
-            'pconnect' => true,
-            'transactions' => true,
-            'limit' => false
-        );
-        // just a few of the tons of Interbase error codes listed in the
-        // Language Reference section of the Interbase manual
-        $this->errorcode_map = array(
-            88   => DB_ERROR_NOSUCHTABLE,
-            -104 => DB_ERROR_SYNTAX,
-            -150 => DB_ERROR_ACCESS_VIOLATION,
-            -151 => DB_ERROR_ACCESS_VIOLATION,
-            -155 => DB_ERROR_NOSUCHTABLE,
-            -157 => DB_ERROR_NOSUCHFIELD,
-            -158 => DB_ERROR_VALUE_COUNT_ON_ROW,
-            -170 => DB_ERROR_MISMATCH,
-            -171 => DB_ERROR_MISMATCH,
-            -172 => DB_ERROR_INVALID,
-            -204 => DB_ERROR_INVALID,
-            -205 => DB_ERROR_NOSUCHFIELD,
-            -206 => DB_ERROR_NOSUCHFIELD,
-            -208 => DB_ERROR_INVALID,
-            -219 => DB_ERROR_NOSUCHTABLE,
-            -297 => DB_ERROR_CONSTRAINT,
-            -303 => DB_ERROR_INVALID,
-            -530 => DB_ERROR_CONSTRAINT,
-            -551 => DB_ERROR_ACCESS_VIOLATION,
-            -552 => DB_ERROR_ACCESS_VIOLATION,
-            -607 => DB_ERROR_NOSUCHTABLE,
-            -803 => DB_ERROR_CONSTRAINT,
-            -904 => DB_ERROR_CONNECT_FAILED,
-            -922 => DB_ERROR_NOSUCHDB,
-            -923 => DB_ERROR_CONNECT_FAILED,
-            -924 => DB_ERROR_CONNECT_FAILED
-        );
     }
 
     // }}}

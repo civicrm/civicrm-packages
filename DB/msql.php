@@ -48,10 +48,55 @@ class DB_msql extends DB_common
 {
     // {{{ properties
 
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'msql';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'msql';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => 'emulate',
+        'pconnect'      => true,
+        'prepare'       => false,
+        'ssl'           => false,
+        'transactions'  => false,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
     var $connection;
-    var $phptype, $dbsyntax;
-    var $prepare_tokens = array();
-    var $prepare_types = array();
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
+    var $dsn = array();
+
 
     // }}}
     // {{{ constructor
@@ -59,14 +104,6 @@ class DB_msql extends DB_common
     function DB_msql()
     {
         $this->DB_common();
-        $this->phptype = 'msql';
-        $this->dbsyntax = 'msql';
-        $this->features = array(
-            'prepare' => false,
-            'pconnect' => true,
-            'transactions' => false,
-            'limit' => 'emulate'
-        );
     }
 
     // }}}

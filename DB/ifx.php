@@ -55,49 +55,100 @@ class DB_ifx extends DB_common
 {
     // {{{ properties
 
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'ifx';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'ifx';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => 'emulate',
+        'pconnect'      => true,
+        'prepare'       => false,
+        'ssl'           => false,
+        'transactions'  => true,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+        '-201'    => DB_ERROR_SYNTAX,
+        '-206'    => DB_ERROR_NOSUCHTABLE,
+        '-217'    => DB_ERROR_NOSUCHFIELD,
+        '-239'    => DB_ERROR_CONSTRAINT,
+        '-253'    => DB_ERROR_SYNTAX,
+        '-292'    => DB_ERROR_CONSTRAINT_NOT_NULL,
+        '-310'    => DB_ERROR_ALREADY_EXISTS,
+        '-329'    => DB_ERROR_NODBSELECTED,
+        '-346'    => DB_ERROR_CONSTRAINT,
+        '-386'    => DB_ERROR_CONSTRAINT_NOT_NULL,
+        '-391'    => DB_ERROR_CONSTRAINT_NOT_NULL,
+        '-554'    => DB_ERROR_SYNTAX,
+        '-691'    => DB_ERROR_CONSTRAINT,
+        '-703'    => DB_ERROR_CONSTRAINT_NOT_NULL,
+        '-1204'   => DB_ERROR_INVALID_DATE,
+        '-1205'   => DB_ERROR_INVALID_DATE,
+        '-1206'   => DB_ERROR_INVALID_DATE,
+        '-1209'   => DB_ERROR_INVALID_DATE,
+        '-1210'   => DB_ERROR_INVALID_DATE,
+        '-1212'   => DB_ERROR_INVALID_DATE,
+        '-1213'   => DB_ERROR_INVALID_NUMBER,
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
     var $connection;
-    var $affected = 0;
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
     var $dsn = array();
-    var $transaction_opcount = 0;
+
+    /**
+     * Should data manipulation queries be committed automatically?
+     * @var bool
+     */
     var $autocommit = true;
-    var $fetchmode = DB_FETCHMODE_ORDERED; /* Default fetch mode */
+
+    /**
+     * The quantity of transactions begun
+     * @var integer
+     */
+    var $transaction_opcount = 0;
+
+    /**
+     * The number of rows affected by a data manipulation query
+     * @var integer
+     */
+    var $affected = 0;
+
 
     // }}}
     // {{{ constructor
 
     function DB_ifx()
     {
-        $this->phptype = 'ifx';
-        $this->dbsyntax = 'ifx';
-        $this->features = array(
-            'prepare' => false,
-            'pconnect' => true,
-            'transactions' => true,
-            'limit' => 'emulate'
-        );
-        $this->errorcode_map = array(
-            '-201'    => DB_ERROR_SYNTAX,
-            '-206'    => DB_ERROR_NOSUCHTABLE,
-            '-217'    => DB_ERROR_NOSUCHFIELD,
-            '-239'    => DB_ERROR_CONSTRAINT,
-            '-253'    => DB_ERROR_SYNTAX,
-            '-292'    => DB_ERROR_CONSTRAINT_NOT_NULL,
-            '-310'    => DB_ERROR_ALREADY_EXISTS,
-            '-329'    => DB_ERROR_NODBSELECTED,
-            '-346'    => DB_ERROR_CONSTRAINT,
-            '-386'    => DB_ERROR_CONSTRAINT_NOT_NULL,
-            '-391'    => DB_ERROR_CONSTRAINT_NOT_NULL,
-            '-554'    => DB_ERROR_SYNTAX,
-            '-691'    => DB_ERROR_CONSTRAINT,
-            '-703'    => DB_ERROR_CONSTRAINT_NOT_NULL,
-            '-1204'   => DB_ERROR_INVALID_DATE,
-            '-1205'   => DB_ERROR_INVALID_DATE,
-            '-1206'   => DB_ERROR_INVALID_DATE,
-            '-1209'   => DB_ERROR_INVALID_DATE,
-            '-1210'   => DB_ERROR_INVALID_DATE,
-            '-1212'   => DB_ERROR_INVALID_DATE,
-            '-1213'   => DB_ERROR_INVALID_NUMBER,
-        );
     }
 
     // }}}
@@ -239,7 +290,6 @@ class DB_ifx extends DB_common
         } else {
             return 0;
         }
-        
     }
 
     // }}}

@@ -51,9 +51,95 @@ class DB_odbc extends DB_common
 {
     // {{{ properties
 
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'odbc';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'sql92';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * NOTE: The feature set of the following drivers are different than
+     * the default:
+     *   + solid: 'transactions' = true
+     *   + navision: 'limit' = false
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => 'emulate',
+        'pconnect'      => true,
+        'prepare'       => false,
+        'ssl'           => false,
+        'transactions'  => false,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+        '01004' => DB_ERROR_TRUNCATED,
+        '07001' => DB_ERROR_MISMATCH,
+        '21S01' => DB_ERROR_MISMATCH,
+        '21S02' => DB_ERROR_MISMATCH,
+        '22003' => DB_ERROR_INVALID_NUMBER,
+        '22005' => DB_ERROR_INVALID_NUMBER,
+        '22008' => DB_ERROR_INVALID_DATE,
+        '22012' => DB_ERROR_DIVZERO,
+        '23000' => DB_ERROR_CONSTRAINT,
+        '23502' => DB_ERROR_CONSTRAINT_NOT_NULL,
+        '23503' => DB_ERROR_CONSTRAINT,
+        '23504' => DB_ERROR_CONSTRAINT,
+        '23505' => DB_ERROR_CONSTRAINT,
+        '24000' => DB_ERROR_INVALID,
+        '34000' => DB_ERROR_INVALID,
+        '37000' => DB_ERROR_SYNTAX,
+        '42000' => DB_ERROR_SYNTAX,
+        '42601' => DB_ERROR_SYNTAX,
+        'IM001' => DB_ERROR_UNSUPPORTED,
+        'S0000' => DB_ERROR_NOSUCHTABLE,
+        'S0001' => DB_ERROR_ALREADY_EXISTS,
+        'S0002' => DB_ERROR_NOSUCHTABLE,
+        'S0011' => DB_ERROR_ALREADY_EXISTS,
+        'S0012' => DB_ERROR_NOT_FOUND,
+        'S0021' => DB_ERROR_ALREADY_EXISTS,
+        'S0022' => DB_ERROR_NOSUCHFIELD,
+        'S1009' => DB_ERROR_INVALID,
+        'S1090' => DB_ERROR_INVALID,
+        'S1C00' => DB_ERROR_NOT_CAPABLE,
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
     var $connection;
-    var $phptype, $dbsyntax;
-    var $row = array();
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
+    var $dsn = array();
+
+    /**
+     * The number of rows affected by a data manipulation query
+     * @var integer
+     */
+    var $affected = 0;
+
 
     // }}}
     // {{{ constructor
@@ -61,45 +147,6 @@ class DB_odbc extends DB_common
     function DB_odbc()
     {
         $this->DB_common();
-        $this->phptype = 'odbc';
-        $this->dbsyntax = 'sql92';
-        $this->features = array(
-            'prepare' => false,
-            'pconnect' => true,
-            'transactions' => false,
-            'limit' => 'emulate'
-        );
-        $this->errorcode_map = array(
-            '01004' => DB_ERROR_TRUNCATED,
-            '07001' => DB_ERROR_MISMATCH,
-            '21S01' => DB_ERROR_MISMATCH,
-            '21S02' => DB_ERROR_MISMATCH,
-            '22003' => DB_ERROR_INVALID_NUMBER,
-            '22005' => DB_ERROR_INVALID_NUMBER,
-            '22008' => DB_ERROR_INVALID_DATE,
-            '22012' => DB_ERROR_DIVZERO,
-            '23000' => DB_ERROR_CONSTRAINT,
-            '23502' => DB_ERROR_CONSTRAINT_NOT_NULL,
-            '23503' => DB_ERROR_CONSTRAINT,
-            '23504' => DB_ERROR_CONSTRAINT,
-            '23505' => DB_ERROR_CONSTRAINT,
-            '24000' => DB_ERROR_INVALID,
-            '34000' => DB_ERROR_INVALID,
-            '37000' => DB_ERROR_SYNTAX,
-            '42000' => DB_ERROR_SYNTAX,
-            '42601' => DB_ERROR_SYNTAX,
-            'IM001' => DB_ERROR_UNSUPPORTED,
-            'S0000' => DB_ERROR_NOSUCHTABLE,
-            'S0001' => DB_ERROR_ALREADY_EXISTS,
-            'S0002' => DB_ERROR_NOSUCHTABLE,
-            'S0011' => DB_ERROR_ALREADY_EXISTS,
-            'S0012' => DB_ERROR_NOT_FOUND,
-            'S0021' => DB_ERROR_ALREADY_EXISTS,
-            'S0022' => DB_ERROR_NOSUCHFIELD,
-            'S1009' => DB_ERROR_INVALID,
-            'S1090' => DB_ERROR_INVALID,
-            'S1C00' => DB_ERROR_NOT_CAPABLE
-        );
     }
 
     // }}}
@@ -126,11 +173,7 @@ class DB_odbc extends DB_common
         }
         switch ($this->dbsyntax) {
             case 'solid':
-                $this->features = array(
-                    'prepare' => false,
-                    'pconnect' => true,
-                    'transactions' => true
-                );
+                $this->features['transactions'] = true;
                 break;
             case 'navision':
                 // the Navision driver doesn't support fetch row by number
@@ -206,11 +249,10 @@ class DB_odbc extends DB_common
         // Determine which queries that should return data, and which
         // should return an error code only.
         if (DB::isManip($query)) {
-            $this->manip_result = $result; // For affectedRows()
+            $this->affected = $result; // For affectedRows()
             return DB_OK;
         }
-        $this->row[(int)$result] = 0;
-        $this->manip_result = 0;
+        $this->affected = 0;
         return $result;
     }
 
@@ -298,7 +340,6 @@ class DB_odbc extends DB_common
 
     function freeResult($result)
     {
-        unset($this->row[(int)$result]);
         return @odbc_free_result($result);
     }
 
@@ -325,10 +366,10 @@ class DB_odbc extends DB_common
      */
     function affectedRows()
     {
-        if (empty($this->manip_result)) {  // In case of SELECT stms
+        if (empty($this->affected)) {  // In case of SELECT stms
             return 0;
         }
-        $nrows = @odbc_num_rows($this->manip_result);
+        $nrows = @odbc_num_rows($this->affected);
         if ($nrows == -1) {
             return $this->odbcRaiseError();
         }

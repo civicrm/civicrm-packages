@@ -54,15 +54,79 @@ class DB_oci8 extends DB_common
 {
     // {{{ properties
 
-    var $connection;
-    var $phptype, $dbsyntax;
-    var $manip_query = array();
-    var $prepare_types = array();
-    var $autoCommit = 1;
-    var $last_stmt = false;
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'oci8';
 
     /**
-     * stores the $data passed to execute() in the oci8 driver
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'oci8';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => 'alter',
+        'pconnect'      => true,
+        'prepare'       => true,
+        'ssl'           => false,
+        'transactions'  => true,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+        1    => DB_ERROR_CONSTRAINT,
+        900  => DB_ERROR_SYNTAX,
+        904  => DB_ERROR_NOSUCHFIELD,
+        921  => DB_ERROR_SYNTAX,
+        923  => DB_ERROR_SYNTAX,
+        942  => DB_ERROR_NOSUCHTABLE,
+        955  => DB_ERROR_ALREADY_EXISTS,
+        1400 => DB_ERROR_CONSTRAINT_NOT_NULL,
+        1407 => DB_ERROR_CONSTRAINT_NOT_NULL,
+        1418 => DB_ERROR_NOT_FOUND,
+        1476 => DB_ERROR_DIVZERO,
+        1722 => DB_ERROR_INVALID_NUMBER,
+        2289 => DB_ERROR_NOSUCHTABLE,
+        2291 => DB_ERROR_CONSTRAINT,
+        2292 => DB_ERROR_CONSTRAINT,
+        2449 => DB_ERROR_CONSTRAINT,
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
+    var $connection;
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
+    var $dsn = array();
+
+    /**
+     * Should data manipulation queries be committed automatically?
+     * @var bool
+     */
+    var $autocommit = true;
+
+    /**
+     * Stores the $data passed to execute() in the oci8 driver
      *
      * Gets reset to array() when simpleQuery() is run.
      *
@@ -74,38 +138,25 @@ class DB_oci8 extends DB_common
      */
     var $_data = array();
 
+    /**
+     * The result handle from the most recently executed prepared statement
+     * @var resource
+     */
+    var $last_stmt;
+
+    /**
+     * Is the given prepared statement a data manipulation query?
+     * @var array
+     */
+    var $manip_query = array();
+
+
     // }}}
     // {{{ constructor
 
     function DB_oci8()
     {
         $this->DB_common();
-        $this->phptype = 'oci8';
-        $this->dbsyntax = 'oci8';
-        $this->features = array(
-            'prepare' => true,
-            'pconnect' => true,
-            'transactions' => true,
-            'limit' => 'alter'
-        );
-        $this->errorcode_map = array(
-            1 => DB_ERROR_CONSTRAINT,
-            900 => DB_ERROR_SYNTAX,
-            904 => DB_ERROR_NOSUCHFIELD,
-            921 => DB_ERROR_SYNTAX,
-            923 => DB_ERROR_SYNTAX,
-            942 => DB_ERROR_NOSUCHTABLE,
-            955 => DB_ERROR_ALREADY_EXISTS,
-            1400 => DB_ERROR_CONSTRAINT_NOT_NULL,
-            1407 => DB_ERROR_CONSTRAINT_NOT_NULL,
-            1418 => DB_ERROR_NOT_FOUND,
-            1476 => DB_ERROR_DIVZERO,
-            1722 => DB_ERROR_INVALID_NUMBER,
-            2289 => DB_ERROR_NOSUCHTABLE,
-            2291 => DB_ERROR_CONSTRAINT,
-            2292 => DB_ERROR_CONSTRAINT,
-            2449 => DB_ERROR_CONSTRAINT,
-        );
     }
 
     // }}}
@@ -211,7 +262,7 @@ class DB_oci8 extends DB_common
         if (!$result) {
             return $this->oci8RaiseError();
         }
-        if ($this->autoCommit) {
+        if ($this->autocommit) {
             $success = @OCIExecute($result,OCI_COMMIT_ON_SUCCESS);
         } else {
             $success = @OCIExecute($result,OCI_DEFAULT);
@@ -531,7 +582,7 @@ class DB_oci8 extends DB_common
             }
             $i++;
         }
-        if ($this->autoCommit) {
+        if ($this->autocommit) {
             $success = @OCIExecute($stmt, OCI_COMMIT_ON_SUCCESS);
         } else {
             $success = @OCIExecute($stmt, OCI_DEFAULT);
@@ -559,7 +610,7 @@ class DB_oci8 extends DB_common
      */
     function autoCommit($onoff = false)
     {
-        $this->autoCommit = (bool)$onoff;;
+        $this->autocommit = (bool)$onoff;;
         return DB_OK;
     }
 

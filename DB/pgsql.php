@@ -1,4 +1,4 @@
-<?php
+s<?php
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
@@ -50,17 +50,85 @@ class DB_pgsql extends DB_common
 {
     // {{{ properties
 
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'pgsql';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'pgsql';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => 'alter',
+        'pconnect'      => true,
+        'prepare'       => false,
+        'ssl'           => false,
+        'transactions'  => true,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
     var $connection;
-    var $phptype, $dbsyntax;
-    var $prepare_tokens = array();
-    var $prepare_types = array();
-    var $transaction_opcount = 0;
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
     var $dsn = array();
-    var $row = array();
-    var $_num_rows = array();
-    var $affected = 0;
+
+    /**
+     * Should data manipulation queries be committed automatically?
+     * @var bool
+     */
     var $autocommit = true;
-    var $fetchmode = DB_FETCHMODE_ORDERED;
+
+    /**
+     * The quantity of transactions begun
+     * @var integer
+     */
+    var $transaction_opcount = 0;
+
+    /**
+     * The number of rows affected by a data manipulation query
+     * @var integer
+     */
+    var $affected = 0;
+
+    /**
+     * The current row being looked at in fetchInto()
+     * @var array
+     */
+    var $row = array();
+
+    /**
+     * The number of rows in a given result set
+     * @var array
+     */
+    var $_num_rows = array();
+
 
     // }}}
     // {{{ constructor
@@ -68,16 +136,6 @@ class DB_pgsql extends DB_common
     function DB_pgsql()
     {
         $this->DB_common();
-        $this->phptype = 'pgsql';
-        $this->dbsyntax = 'pgsql';
-        $this->features = array(
-            'prepare' => false,
-            'pconnect' => true,
-            'transactions' => true,
-            'limit' => 'alter'
-        );
-        $this->errorcode_map = array(
-        );
     }
 
     // }}}

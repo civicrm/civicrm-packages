@@ -50,11 +50,75 @@ class DB_sqlite extends DB_common
 {
     // {{{ properties
 
-    var $connection;
-    var $phptype, $dbsyntax;
-    var $prepare_tokens = array();
-    var $prepare_types = array();
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'sqlite';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'sqlite';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => 'alter',
+        'pconnect'      => true,
+        'prepare'       => false,
+        'ssl'           => false,
+        'transactions'  => false,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+    );
+
+    /**
+     * SQLite data types
+     *
+     * @link http://www.sqlite.org/datatypes.html
+     *
+     * @var array
+     */
+    var $keywords = array (
+        'BLOB'      => '',
+        'BOOLEAN'   => '',
+        'CHARACTER' => '',
+        'CLOB'      => '',
+        'FLOAT'     => '',
+        'INTEGER'   => '',
+        'KEY'       => '',
+        'NATIONAL'  => '',
+        'NUMERIC'   => '',
+        'NVARCHAR'  => '',
+        'PRIMARY'   => '',
+        'TEXT'      => '',
+        'TIMESTAMP' => '',
+        'UNIQUE'    => '',
+        'VARCHAR'   => '',
+        'VARYING'   => '',
+    );
+
+    /**
+     * The most recent error message from $php_errormsg
+     * @var string
+     */
     var $_lasterror = '';
+
 
     // }}}
     // {{{ constructor
@@ -72,36 +136,6 @@ class DB_sqlite extends DB_common
     function DB_sqlite()
     {
         $this->DB_common();
-        $this->phptype = 'sqlite';
-        $this->dbsyntax = 'sqlite';
-        $this->features = array (
-            'prepare' => false,
-            'pconnect' => true,
-            'transactions' => false,
-            'limit' => 'alter'
-        );
-
-        // SQLite data types, http://www.sqlite.org/datatypes.html
-        $this->keywords = array (
-            'BLOB'      => '',
-            'BOOLEAN'   => '',
-            'CHARACTER' => '',
-            'CLOB'      => '',
-            'FLOAT'     => '',
-            'INTEGER'   => '',
-            'KEY'       => '',
-            'NATIONAL'  => '',
-            'NUMERIC'   => '',
-            'NVARCHAR'  => '',
-            'PRIMARY'   => '',
-            'TEXT'      => '',
-            'TIMESTAMP' => '',
-            'UNIQUE'    => '',
-            'VARCHAR'   => '',
-            'VARYING'   => ''
-        );
-        $this->errorcode_map = array(
-        );
     }
 
     // }}}

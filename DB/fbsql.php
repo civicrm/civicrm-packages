@@ -49,11 +49,68 @@ class DB_fbsql extends DB_common
 {
     // {{{ properties
 
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'fbsql';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'fbsql';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => 'alter',
+        'pconnect'      => true,
+        'prepare'       => false,
+        'ssl'           => false,
+        'transactions'  => true,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+         22 => DB_ERROR_SYNTAX,
+         85 => DB_ERROR_ALREADY_EXISTS,
+        108 => DB_ERROR_SYNTAX,
+        116 => DB_ERROR_NOSUCHTABLE,
+        217 => DB_ERROR_INVALID_NUMBER,
+        226 => DB_ERROR_NOSUCHFIELD,
+        231 => DB_ERROR_INVALID,
+        251 => DB_ERROR_SYNTAX,
+        266 => DB_ERROR_NOT_FOUND,
+        357 => DB_ERROR_CONSTRAINT_NOT_NULL,
+        358 => DB_ERROR_CONSTRAINT,
+        360 => DB_ERROR_CONSTRAINT,
+        361 => DB_ERROR_CONSTRAINT,
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
     var $connection;
-    var $phptype, $dbsyntax;
-    var $prepare_tokens = array();
-    var $prepare_types = array();
-    var $fetchmode = DB_FETCHMODE_ORDERED;
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
+    var $dsn = array();
+
 
     // }}}
     // {{{ constructor
@@ -66,29 +123,6 @@ class DB_fbsql extends DB_common
     function DB_fbsql()
     {
         $this->DB_common();
-        $this->phptype = 'fbsql';
-        $this->dbsyntax = 'fbsql';
-        $this->features = array(
-            'prepare' => false,
-            'pconnect' => true,
-            'transactions' => true,
-            'limit' => 'alter'
-        );
-        $this->errorcode_map = array(
-             22 => DB_ERROR_SYNTAX,
-             85 => DB_ERROR_ALREADY_EXISTS,
-            108 => DB_ERROR_SYNTAX,
-            116 => DB_ERROR_NOSUCHTABLE,
-            217 => DB_ERROR_INVALID_NUMBER,
-            226 => DB_ERROR_NOSUCHFIELD,
-            231 => DB_ERROR_INVALID,
-            251 => DB_ERROR_SYNTAX,
-            266 => DB_ERROR_NOT_FOUND,
-            357 => DB_ERROR_CONSTRAINT_NOT_NULL,
-            358 => DB_ERROR_CONSTRAINT,
-            360 => DB_ERROR_CONSTRAINT,
-            361 => DB_ERROR_CONSTRAINT,
-        );
     }
 
     // }}}

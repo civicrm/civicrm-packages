@@ -48,13 +48,89 @@ class DB_mssql extends DB_common
 {
     // {{{ properties
 
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'mssql';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'mssql';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => 'emulate',
+        'pconnect'      => true,
+        'prepare'       => false,
+        'ssl'           => false,
+        'transactions'  => true,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    // XXX Add here error codes ie: 'S100E' => DB_ERROR_SYNTAX
+    var $errorcode_map = array(
+        170   => DB_ERROR_SYNTAX,
+        207   => DB_ERROR_NOSUCHFIELD,
+        208   => DB_ERROR_NOSUCHTABLE,
+        245   => DB_ERROR_INVALID_NUMBER,
+        515   => DB_ERROR_CONSTRAINT_NOT_NULL,
+        547   => DB_ERROR_CONSTRAINT,
+        1913  => DB_ERROR_ALREADY_EXISTS,
+        2627  => DB_ERROR_CONSTRAINT,
+        2714  => DB_ERROR_ALREADY_EXISTS,
+        3701  => DB_ERROR_NOSUCHTABLE,
+        8134  => DB_ERROR_DIVZERO,
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
     var $connection;
-    var $phptype, $dbsyntax;
-    var $prepare_tokens = array();
-    var $prepare_types = array();
-    var $transaction_opcount = 0;
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
+    var $dsn = array();
+
+    /**
+     * Should data manipulation queries be committed automatically?
+     * @var bool
+     */
     var $autocommit = true;
+
+    /**
+     * The quantity of transactions begun
+     * @var integer
+     */
+    var $transaction_opcount = 0;
+
+    /**
+     * The database specified in the DSN
+     *
+     * It's a fix to allow calls to different databases in the same script.
+     *
+     * @var string
+     * @access private
+     */
     var $_db = null;
+
 
     // }}}
     // {{{ constructor
@@ -62,28 +138,6 @@ class DB_mssql extends DB_common
     function DB_mssql()
     {
         $this->DB_common();
-        $this->phptype = 'mssql';
-        $this->dbsyntax = 'mssql';
-        $this->features = array(
-            'prepare' => false,
-            'pconnect' => true,
-            'transactions' => true,
-            'limit' => 'emulate'
-        );
-        // XXX Add here error codes ie: 'S100E' => DB_ERROR_SYNTAX
-        $this->errorcode_map = array(
-            170   => DB_ERROR_SYNTAX,
-            207   => DB_ERROR_NOSUCHFIELD,
-            208   => DB_ERROR_NOSUCHTABLE,
-            245   => DB_ERROR_INVALID_NUMBER,
-            515   => DB_ERROR_CONSTRAINT_NOT_NULL,
-            547   => DB_ERROR_CONSTRAINT,
-            1913  => DB_ERROR_ALREADY_EXISTS,
-            2627  => DB_ERROR_CONSTRAINT,
-            2714  => DB_ERROR_ALREADY_EXISTS,
-            3701  => DB_ERROR_NOSUCHTABLE,
-            8134  => DB_ERROR_DIVZERO,
-        );
     }
 
     // }}}

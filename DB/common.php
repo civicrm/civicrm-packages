@@ -50,63 +50,27 @@ class DB_common extends PEAR
     // {{{ properties
 
     /**
-     * assoc of capabilities for this DB implementation
-     * $features['limit'] =>  'emulate' => emulate with fetch row by number
-     *                        'alter'   => alter the query
-     *                        false     => skip rows
-     * @var array
-     */
-    var $features = array();
-
-    /**
-     * assoc mapping native error codes to DB ones
-     * @var array
-     */
-    var $errorcode_map = array();
-
-    /**
-     * DB type (mysql, oci8, odbc etc.)
-     * @var string
-     */
-    var $phptype;
-
-    /**
-     * @var string
-     */
-    var $prepare_tokens;
-
-    /**
-     * @var string
-     */
-    var $prepare_types;
-
-    /**
-     * @var string
-     */
-    var $prepared_queries;
-
-    /**
-     * @var integer
-     */
-    var $prepare_maxstmt = 0;
-
-    /**
-     * @var string
-     */
-    var $last_query = '';
-
-    /**
+     * The current default fetch mode
      * @var integer
      */
     var $fetchmode = DB_FETCHMODE_ORDERED;
 
     /**
+     * The name of the class into which results should be fetched when
+     * DB_FETCHMODE_OBJECT is in effect
+     *
      * @var string
      */
     var $fetchmode_object_class = 'stdClass';
 
     /**
-     * Run-time configuration options.
+     * The most recently executed query
+     * @var string
+     */
+    var $last_query = '';
+
+    /**
+     * Run-time configuration options
      *
      * The 'optimize' option has been deprecated.  Use the 'portability'
      * option instead.
@@ -125,10 +89,23 @@ class DB_common extends PEAR
     );
 
     /**
-     * DB handle
-     * @var resource
+     * The elements from each prepared statement
+     * @var array
      */
-    var $dbh;
+    var $prepare_tokens = array();
+
+    /**
+     * The data types of the various elements in each prepared statement
+     * @var array
+     */
+    var $prepare_types = array();
+
+    /**
+     * The prepared queries
+     * @var array
+     */
+    var $prepared_queries = array();
+
 
     // }}}
     // {{{ toString()

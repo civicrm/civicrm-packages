@@ -53,12 +53,67 @@ class DB_sybase extends DB_common
 {
     // {{{ properties
 
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'sybase';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'sybase';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => 'emulate',
+        'pconnect'      => true,
+        'prepare'       => false,
+        'ssl'           => false,
+        'transactions'  => true,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
     var $connection;
-    var $phptype, $dbsyntax;
-    var $prepare_tokens = array();
-    var $prepare_types = array();
-    var $transaction_opcount = 0;
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
+    var $dsn = array();
+
+    /**
+     * Should data manipulation queries be committed automatically?
+     * @var bool
+     */
     var $autocommit = true;
+
+    /**
+     * The quantity of transactions begun
+     * @var integer
+     */
+    var $transaction_opcount = 0;
+
 
     // }}}
     // {{{ constructor
@@ -71,16 +126,6 @@ class DB_sybase extends DB_common
     function DB_sybase()
     {
         $this->DB_common();
-        $this->phptype = 'sybase';
-        $this->dbsyntax = 'sybase';
-        $this->features = array(
-            'prepare' => false,
-            'pconnect' => true,
-            'transactions' => false,
-            'limit' => 'emulate'
-        );
-        $this->errorcode_map = array(
-        );
     }
 
     // }}}

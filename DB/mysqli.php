@@ -51,14 +51,96 @@ class DB_mysqli extends DB_common
 {
     // {{{ properties
 
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'mysqli';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'mysqli';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => 'alter',
+        'pconnect'      => false,
+        'prepare'       => false,
+        'ssl'           => true,
+        'transactions'  => true,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+        1004 => DB_ERROR_CANNOT_CREATE,
+        1005 => DB_ERROR_CANNOT_CREATE,
+        1006 => DB_ERROR_CANNOT_CREATE,
+        1007 => DB_ERROR_ALREADY_EXISTS,
+        1008 => DB_ERROR_CANNOT_DROP,
+        1022 => DB_ERROR_ALREADY_EXISTS,
+        1046 => DB_ERROR_NODBSELECTED,
+        1048 => DB_ERROR_CONSTRAINT,
+        1050 => DB_ERROR_ALREADY_EXISTS,
+        1051 => DB_ERROR_NOSUCHTABLE,
+        1054 => DB_ERROR_NOSUCHFIELD,
+        1061 => DB_ERROR_ALREADY_EXISTS,
+        1062 => DB_ERROR_ALREADY_EXISTS,
+        1064 => DB_ERROR_SYNTAX,
+        1091 => DB_ERROR_NOT_FOUND,
+        1100 => DB_ERROR_NOT_LOCKED,
+        1136 => DB_ERROR_VALUE_COUNT_ON_ROW,
+        1146 => DB_ERROR_NOSUCHTABLE,
+        1216 => DB_ERROR_CONSTRAINT,
+        1217 => DB_ERROR_CONSTRAINT,
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
     var $connection;
-    var $phptype, $dbsyntax;
-    var $prepare_tokens = array();
-    var $prepare_types = array();
-    var $transaction_opcount = 0;
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
+    var $dsn = array();
+
+    /**
+     * Should data manipulation queries be committed automatically?
+     * @var bool
+     */
     var $autocommit = true;
-    var $fetchmode = DB_FETCHMODE_ORDERED; /* Default fetch mode */
-    var $_db = false;
+
+    /**
+     * The quantity of transactions begun
+     * @var integer
+     */
+    var $transaction_opcount = 0;
+
+    /**
+     * The database specified in the DSN
+     *
+     * It's a fix to allow calls to different databases in the same script.
+     *
+     * @var string
+     * @access private
+     */
+    var $_db = '';
 
     /**
      * Array for converting MYSQLI_*_FLAG constants to text values
@@ -115,6 +197,7 @@ class DB_mysqli extends DB_common
         MYSQLI_TYPE_GEOMETRY    => 'geometry',
     );
 
+
     // }}}
     // {{{ constructor
 
@@ -126,36 +209,6 @@ class DB_mysqli extends DB_common
     function DB_mysqli()
     {
         $this->DB_common();
-        $this->phptype = 'mysqli';
-        $this->dbsyntax = 'mysqli';
-        $this->features = array(
-            'prepare' => false,
-            'ssl' => true,
-            'transactions' => true,
-            'limit' => 'alter'
-        );
-        $this->errorcode_map = array(
-            1004 => DB_ERROR_CANNOT_CREATE,
-            1005 => DB_ERROR_CANNOT_CREATE,
-            1006 => DB_ERROR_CANNOT_CREATE,
-            1007 => DB_ERROR_ALREADY_EXISTS,
-            1008 => DB_ERROR_CANNOT_DROP,
-            1022 => DB_ERROR_ALREADY_EXISTS,
-            1046 => DB_ERROR_NODBSELECTED,
-            1048 => DB_ERROR_CONSTRAINT,
-            1050 => DB_ERROR_ALREADY_EXISTS,
-            1051 => DB_ERROR_NOSUCHTABLE,
-            1054 => DB_ERROR_NOSUCHFIELD,
-            1061 => DB_ERROR_ALREADY_EXISTS,
-            1062 => DB_ERROR_ALREADY_EXISTS,
-            1064 => DB_ERROR_SYNTAX,
-            1091 => DB_ERROR_NOT_FOUND,
-            1100 => DB_ERROR_NOT_LOCKED,
-            1136 => DB_ERROR_VALUE_COUNT_ON_ROW,
-            1146 => DB_ERROR_NOSUCHTABLE,
-            1216 => DB_ERROR_CONSTRAINT,
-            1217 => DB_ERROR_CONSTRAINT,
-        );
     }
 
     // }}}

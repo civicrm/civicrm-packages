@@ -48,12 +48,70 @@ class DB_dbase extends DB_common
 {
     // {{{ properties
 
+    /**
+     * The DB driver type (mysql, oci8, odbc, etc.)
+     * @var string
+     */
+    var $phptype = 'dbase';
+
+    /**
+     * The database syntax variant to be used (db2, access, etc.), if any
+     * @var string
+     */
+    var $dbsyntax = 'dbase';
+
+    /**
+     * The capabilities of this DB implementation
+     *
+     * Meaning of the 'limit' element:
+     *   + 'emulate' = emulate with fetch row by number
+     *   + 'alter'   = alter the query
+     *   + false     = skip rows
+     *
+     * @var array
+     */
+    var $features = array(
+        'limit'         => false,
+        'pconnect'      => false,
+        'prepare'       => false,
+        'ssl'           => false,
+        'transactions'  => false,
+    );
+
+    /**
+     * A mapping of native error codes to DB error codes
+     * @var array
+     */
+    var $errorcode_map = array(
+    );
+
+    /**
+     * The raw database connection created by PHP
+     * @var resource
+     */
     var $connection;
-    var $phptype, $dbsyntax;
-    var $prepare_tokens = array();
-    var $prepare_types = array();
+
+    /**
+     * The DSN information for connecting to a database
+     * @var array
+     */
+    var $dsn = array();
+
+    /**
+     * A means of emulating result resources
+     * @var array
+     */
     var $res_row = array();
+
+    /**
+     * The quantity of results so far
+     *
+     * For emulating result resources.
+     *
+     * @var integer
+     */
     var $result = 0;
+
 
     // }}}
     // {{{ constructor
@@ -66,15 +124,6 @@ class DB_dbase extends DB_common
     function DB_dbase()
     {
         $this->DB_common();
-        $this->phptype = 'dbase';
-        $this->dbsyntax = 'dbase';
-        $this->features = array(
-            'prepare'       => false,
-            'pconnect'      => false,
-            'transactions'  => false,
-            'limit'         => false
-        );
-        $this->errorcode_map = array();
     }
 
     // }}}
