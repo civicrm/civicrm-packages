@@ -219,7 +219,7 @@ foreach ($bools as $b) {
 }
 
 $diff = array();
-$res =& $dbh->getCol('SELECT b FROM pearquote ORDER BY n');
+$res =& $dbh->getCol('SELECT b, n FROM pearquote ORDER BY n');
 foreach ($bools as $key => $val) {
     if ($val === true) {
         if ($res[$key] == 1 || $res[$key] == true ||
