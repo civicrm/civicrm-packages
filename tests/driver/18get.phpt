@@ -17,7 +17,7 @@ DB_driver::get
  */
 
 chdir(dirname(__FILE__));
-require_once './driver/skipif.inc';
+require_once './skipif.inc';
 
 ?>
 --FILE--
