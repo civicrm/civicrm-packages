@@ -19,7 +19,7 @@
  * @author     Stig Bakken <ssb@php.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -40,7 +40,7 @@ require_once 'DB/common.php';
  * @author     Stig Bakken <ssb@php.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -63,6 +63,9 @@ class DB_mysql extends DB_common
     /**
      * The capabilities of this DB implementation
      *
+     * The 'new_link' element contains the PHP version that first provided
+     * new_link support for this DBMS.  Contains false if it's unsupported.
+     *
      * Meaning of the 'limit' element:
      *   + 'emulate' = emulate with fetch row by number
      *   + 'alter'   = alter the query
@@ -72,6 +75,7 @@ class DB_mysql extends DB_common
      */
     var $features = array(
         'limit'         => 'alter',
+        'new_link'      => '4.2.0',
         'pconnect'      => true,
         'prepare'       => false,
         'ssl'           => false,
@@ -145,8 +149,6 @@ class DB_mysql extends DB_common
 
     /**
      * DB_mysql constructor.
-     *
-     * @access public
      */
     function DB_mysql()
     {
@@ -159,94 +161,106 @@ class DB_mysql extends DB_common
     /**
      * Connect to the database server, log in and open the database
      *
-     * Since version 1.7.0 of PEAR DB, the mysql driver supports two
-     * additional DSN options:
-     *   + new_link      Causes subsequent calls to connect() to return a
-     *                   new connection link instead of the existing one.
-     *                   WARNING: this is not portable to other DBMS's.
-     *   + client_flags  Any combination of MYSQL_CLIENT_* constants.  Only
-     *                   effective if PHP is at version 4.3.0 or greater.
+     * PEAR DB's mysql driver supports the following extra DSN options:
+     *   + new_link      If set to true, causes subsequent calls to connect()
+     *                    to return a new connection link instead of the
+     *                    existing one.  WARNING: this is not portable to
+     *                    other DBMS's. Available since PEAR DB 1.7.0.
+     *   + client_flags  Any combination of MYSQL_CLIENT_* constants.
+     *                    Only used if PHP is at version 4.3.0 or greater.
+     *                    Available since PEAR DB 1.7.0.
      *
      * @param array $dsn         the data source name
-     * @param bool  $persistent  should the connection should be persistent?
+     * @param bool  $persistent  should the connection be persistent?
      *
      * @return int  DB_OK on success. A DB_error object on failure.
      *
      * @access private
-     * @see DB::connect()
+     * @see DB::connect(), DB::parseDSN()
      */
-    function connect($dsninfo, $persistent = false)
+    function connect($dsn, $persistent = false)
     {
         if (!DB::assertExtension('mysql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
         }
 
-        $this->dsn = $dsninfo;
-        if ($dsninfo['dbsyntax']) {
-            $this->dbsyntax = $dsninfo['dbsyntax'];
+        $this->dsn = $dsn;
+        if ($dsn['dbsyntax']) {
+            $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        if ($dsninfo['protocol'] && $dsninfo['protocol'] == 'unix') {
-            $dbhost = ':' . $dsninfo['socket'];
+        $params = array();
+        if ($dsn['protocol'] && $dsn['protocol'] == 'unix') {
+            $params[0] = ':' . $dsn['socket'];
         } else {
-            $dbhost = $dsninfo['hostspec'] ? $dsninfo['hostspec'] : 'localhost';
-            if ($dsninfo['port']) {
-                $dbhost .= ':' . $dsninfo['port'];
+            $params[0] = $dsn['hostspec'] ? $dsn['hostspec']
+                         : 'localhost';
+            if ($dsn['port']) {
+                $params[0] .= ':' . $dsn['port'];
             }
+        }
+        $params[] = $dsn['username'] ? $dsn['username'] : null;
+        $params[] = $dsn['password'] ? $dsn['password'] : null;
+        if (isset($dsn['new_link'])
+            && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true))
+        {
+            $params[] = true;
+        } else {
+            $params[] = false;
+        }
+        if (version_compare(phpversion(), '4.3.0', '>=')) {
+            $params[] = isset($dsn['client_flags'])
+                        ? $dsn['client_flags'] : null;
         }
 
         $connect_function = $persistent ? 'mysql_pconnect' : 'mysql_connect';
 
-        $params = array();
-        $params[] = $dbhost;
-        $params[] = $dsninfo['username'] ? $dsninfo['username'] : null;
-        $params[] = $dsninfo['password'] ? $dsninfo['password'] : null;
-        $params[] = isset($dsninfo['new_link']) ? true : null;
-        if (version_compare(phpversion(), '4.3.0', '>=')) {
-            $params[] = isset($dsninfo['client_flags'])
-                        ? $dsninfo['client_flags'] : null;
-        }
-
         $ini = ini_get('track_errors');
         $php_errormsg = '';
         if ($ini) {
-            $conn = @call_user_func_array($connect_function, $params);
+            $this->connection = @call_user_func_array($connect_function,
+                                                      $params);
         } else {
             ini_set('track_errors', 1);
-            $conn = @call_user_func_array($connect_function, $params);
+            $this->connection = @call_user_func_array($connect_function,
+                                                      $params);
             ini_set('track_errors', $ini);
         }
 
-        if (!$conn) {
+        if (!$this->connection) {
             if (($err = @mysql_error()) != '') {
-                return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
-                                         null, $err);
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                         null, null, null, 
+                                         $err);
             } elseif (empty($php_errormsg)) {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED);
             } else {
-                return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null,
-                                         null, $php_errormsg);
+                return $this->raiseError(DB_ERROR_CONNECT_FAILED,
+                                         null, null, null,
+                                         $php_errormsg);
             }
         }
 
-        if ($dsninfo['database']) {
-            if (!@mysql_select_db($dsninfo['database'], $conn)) {
-               switch(mysql_errno($conn)) {
-                        case 1049:
-                            return $this->raiseError(DB_ERROR_NOSUCHDB, null, null,
-                                                     null, @mysql_error($conn));
-                        case 1044:
-                             return $this->raiseError(DB_ERROR_ACCESS_VIOLATION, null, null,
-                                                      null, @mysql_error($conn));
-                        default:
-                            return $this->raiseError(DB_ERROR, null, null,
-                                                     null, @mysql_error($conn));
-                    }
+        if ($dsn['database']) {
+            if (!@mysql_select_db($dsn['database'], $this->connection)) {
+                switch(mysql_errno($this->connection)) {
+                    case 1049:
+                        return $this->raiseError(DB_ERROR_NOSUCHDB,
+                                                 null, null, null,
+                                                 @mysql_error($this->connection));
+                    case 1044:
+                        return $this->raiseError(DB_ERROR_ACCESS_VIOLATION,
+                                                 null, null, null,
+                                                 @mysql_error($this->connection));
+                    default:
+                        return $this->raiseError(DB_ERROR,
+                                                 null, null, null,
+                                                 @mysql_error($this->connection));
+                }
             }
-            $this->_db = $dsninfo['database'];
+            $this->_db = $dsn['database'];
         }
 
-        $this->connection = $conn;
         return DB_OK;
     }
 
@@ -255,8 +269,6 @@ class DB_mysql extends DB_common
 
     /**
      * Log out and disconnect from the database.
-     *
-     * @access public
      *
      * @return bool true on success, false if not connected.
      */
@@ -275,8 +287,6 @@ class DB_mysql extends DB_common
      * identifier.
      *
      * @param the SQL query
-     *
-     * @access public
      *
      * @return mixed returns a valid MySQL result for successful SELECT
      * queries, DB_OK for other successful queries.  A DB error is
@@ -322,8 +332,6 @@ class DB_mysql extends DB_common
      *
      * @param a valid sql result resource
      *
-     * @access public
-     *
      * @return false
      */
     function nextResult($result)
@@ -349,8 +357,8 @@ class DB_mysql extends DB_common
      * @return mixed DB_OK on success, null when end of result set is
      *               reached or on failure
      *
-     * @see DB_result::fetchInto()
      * @access private
+     * @see DB_result::fetchInto()
      */
     function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
@@ -401,8 +409,6 @@ class DB_mysql extends DB_common
      *
      * @param $result MySQL result identifier
      *
-     * @access public
-     *
      * @return bool true on success, false if $result is invalid
      */
     function freeResult($result)
@@ -417,8 +423,6 @@ class DB_mysql extends DB_common
      * Get the number of columns in a result set.
      *
      * @param $result MySQL result identifier
-     *
-     * @access public
      *
      * @return int the number of columns per row in $result
      */
@@ -440,8 +444,6 @@ class DB_mysql extends DB_common
      * Get the number of rows in a result set.
      *
      * @param $result MySQL result identifier
-     *
-     * @access public
      *
      * @return int the number of rows in $result
      */
@@ -541,8 +543,6 @@ class DB_mysql extends DB_common
      * Get the native error code of the last error (if any) that
      * occured on the current connection.
      *
-     * @access public
-     *
      * @return int native MySQL error code
      */
     function errorNative()
@@ -562,9 +562,7 @@ class DB_mysql extends DB_common
      *
      * @return int  the next id number in the sequence.  DB_Error if problem.
      *
-     * @internal
      * @see DB_common::nextID()
-     * @access public
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -576,20 +574,20 @@ class DB_mysql extends DB_common
                                    'SET id=LAST_INSERT_ID(id+1)');
             $this->popErrorHandling();
             if ($result === DB_OK) {
-                /** COMMON CASE **/
+                // COMMON CASE
                 $id = @mysql_insert_id($this->connection);
                 if ($id != 0) {
                     return $id;
                 }
-                /** EMPTY SEQ TABLE **/
-                // Sequence table must be empty for some reason, so fill it and return 1
-                // Obtain a user-level lock
+                // EMPTY SEQ TABLE
+                // Sequence table must be empty for some reason, so fill
+                // it and return 1 and obtain a user-level lock
                 $result = $this->getOne("SELECT GET_LOCK('${seqname}_lock',10)");
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
                 }
                 if ($result == 0) {
-                    // Failed to get the lock, bail with a DB_ERROR_NOT_LOCKED error
+                    // Failed to get the lock
                     return $this->mysqlRaiseError(DB_ERROR_NOT_LOCKED);
                 }
 
@@ -607,10 +605,10 @@ class DB_mysql extends DB_common
                 // We know what the result will be, so no need to try again
                 return 1;
 
-            /** ONDEMAND TABLE CREATION **/
             } elseif ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE)
             {
+                // ONDEMAND TABLE CREATION
                 $result = $this->createSequence($seq_name);
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
@@ -618,10 +616,10 @@ class DB_mysql extends DB_common
                     $repeat = 1;
                 }
 
-            /** BACKWARDS COMPAT **/
             } elseif (DB::isError($result) &&
                       $result->getCode() == DB_ERROR_ALREADY_EXISTS)
             {
+                // BACKWARDS COMPAT
                 // see _BCsequence() comment
                 $result = $this->_BCsequence($seqname);
                 if (DB::isError($result)) {
@@ -645,9 +643,7 @@ class DB_mysql extends DB_common
      * @return int  DB_OK on success.  A DB_Error object is returned if
      *              problems arise.
      *
-     * @internal
      * @see DB_common::createSequence()
-     * @access public
      */
     function createSequence($seq_name)
     {
@@ -677,9 +673,7 @@ class DB_mysql extends DB_common
      *
      * @return int  DB_OK on success.  DB_Error if problems.
      *
-     * @internal
      * @see DB_common::dropSequence()
-     * @access public
      */
     function dropSequence($seq_name)
     {
@@ -748,9 +742,7 @@ class DB_mysql extends DB_common
      *
      * @return string  quoted identifier string
      *
-     * @since 1.6.0
-     * @access public
-     * @internal
+     * @since Method available since Release 1.6.0
      */
     function quoteIdentifier($str)
     {
@@ -762,7 +754,6 @@ class DB_mysql extends DB_common
 
     /**
      * @deprecated  Deprecated in release 1.6.0
-     * @internal
      */
     function quote($str) {
         return $this->quoteSmart($str);
@@ -853,15 +844,15 @@ class DB_mysql extends DB_common
     // {{{ tableInfo()
 
     /**
-     * Returns information about a table or a result set.
+     * Returns information about a table or a result set
      *
      * @param object|string  $result  DB_result object from a query or a
      *                                string containing the name of a table
      * @param int            $mode    a valid tableInfo mode
+     *
      * @return array  an associative array with the information requested
      *                or an error object if something is wrong
-     * @access public
-     * @internal
+     *
      * @see DB_common::tableInfo()
      */
     function tableInfo($result, $mode = null) {
@@ -963,7 +954,9 @@ class DB_mysql extends DB_common
                     $sql = $db->getCol($sql);
                     $db->disconnect();
                     // XXX Fixme the mysql driver should take care of this
-                    if (!@mysql_select_db($this->dsn['database'], $this->connection)) {
+                    if (!@mysql_select_db($this->dsn['database'],
+                                          $this->connection))
+                    {
                         return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
                     }
                 }
