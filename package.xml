@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.87 2004-03-12 01:17:39 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.88 2004-03-13 16:17:19 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -77,6 +77,10 @@ BUGS FIXED:
 - all:
 All native function calls now get errors silenced
 via @.  (danielc)
+
+- all:
+LOAD DATA statements now return TRUE from isManip().
+Bug 1005.  (danielc)
 
 - common:
 Calling setFetchMode(DB_FETCHMODE_OBJECT) after
