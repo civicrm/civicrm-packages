@@ -252,6 +252,7 @@ class DB_pgsql extends DB_common
                 '/ttribute [\"\'].*[\"\'] not found$|[Rr]elation [\"\'].*[\"\'] does not have attribute [\"\'].*[\"\']/' => DB_ERROR_NOSUCHFIELD,
                 '/parser: parse error at or near \"/'   => DB_ERROR_SYNTAX,
                 '/syntax error at/'                     => DB_ERROR_SYNTAX,
+                '/permission denied/'                   => DB_ERROR_ACCESS_VIOLATION,
                 '/violates not-null constraint/'        => DB_ERROR_CONSTRAINT_NOT_NULL,
                 '/violates [\w ]+ constraint/'          => DB_ERROR_CONSTRAINT,
                 '/referential integrity violation/'     => DB_ERROR_CONSTRAINT
