@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.128 2004-10-29 02:30:18 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.129 2004-10-31 20:38:53 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -48,23 +48,40 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.9</version>
-    <state>stable</state>
+    <version>1.7.0RC1</version>
+    <state>beta</state>
     <date>pending</date>
     <notes><![CDATA[
+= - = - = - = - = - = - = - = - = - = - = - = - =
+NOTICE!  fbsql has undergone major changes:
+
+* Error mapping now works.  $errorcode_map was using
+  MySQL's codes by mistake.  (danielc)
+= - = - = - = - = - = - = - = - = - = - = - = - =
+
 ibase:
-* Add -904 => DB_ERROR_CONNECT_FAILED to errorcode_map.
-(from MDB2)
+* Add items to errorcode_map (from MDB2):
+  -303 => DB_ERROR_INVALID
+  -904 => DB_ERROR_CONNECT_FAILED
+
+mysql & mysqli:
+* Added 1061 => DB_ERROR_ALREADY_EXISTS to error map.
+  (danielc)
 
 sybase:
 * Provide debugging information to raiseError() when
-connections fail so getUserInfo() and getDebugInfo()
-provide useful information.  (danielc)
+  connections fail so getUserInfo() and getDebugInfo()
+  provide useful information.  (danielc)
 
 all:
 * If DSN contains "dbsyntax", always use that for
-$this->dbsyntax.  Used to only be done for odbc.
-(danielc)
+  $this->dbsyntax.  Used to only be done for odbc.
+  (danielc)
+
+tests:
+* Reworked 10errormap.phpt so it passes when all
+  expected conditions are met.  Also tweaked it
+  to make it work under fbsql.  (danielc)
     ]]></notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
