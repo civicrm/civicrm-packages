@@ -1,7 +1,7 @@
 --TEST--
 DB::factory test
 --SKIPIF--
-<?php if (!@require_once 'DB.php') print 'skip'; ?>
+<?php if (!@include 'DB.php') print 'skip'; ?>
 --FILE--
 <?php // -*- C++ -*-
 require_once './include.inc';
