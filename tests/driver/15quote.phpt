@@ -28,8 +28,8 @@ $strings = array(
 $nums = array(
     156,
     12.3,
-    '15',
-    '12.3'
+    15,
+    12.3
 );
 
 echo "String escape test: ";
