@@ -816,7 +816,9 @@ class DB_ibase extends DB_common
                 'name'  => $case_func($info['name']),
                 'type'  => $info['type'],
                 'len'   => $info['length'],
-                'flags' => ($got_string) ? $this->_ibaseFieldFlags($info['name'], $result) : '',
+                'flags' => ($got_string)
+                            ? $this->_ibaseFieldFlags($info['name'], $result)
+                            : '',
             );
             if ($mode & DB_TABLEINFO_ORDER) {
                 $res['order'][$res[$i]['name']] = $i;
