@@ -44,12 +44,23 @@ $dbh->query("DROP TABLE phptest");
 //$dbh->setErrorHandling(PEAR_ERROR_TRIGGER);
 $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'debug_die');
 
+switch ($dbh->phptype) {
+    case 'ibase':
+        $null = '';
+        break;
+    case 'ifx':
+        $null = '';
+        break;
+    default:
+        $null = 'NULL';
+}
+
 $test_mktable_query = "
     CREATE TABLE phptest (
-      a INTEGER NULL,
+      a INTEGER $null,
       b CHAR(40) DEFAULT 'def' NOT NULL,
-      c VARCHAR(255) NULL,
-      d VARCHAR(20) NULL)
+      c VARCHAR(255) $null,
+      d VARCHAR(20) $null)
 ";
 
 $dbh->query($test_mktable_query);
