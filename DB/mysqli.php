@@ -109,6 +109,7 @@ class DB_mysqli extends DB_common
         1091 => DB_ERROR_NOT_FOUND,
         1100 => DB_ERROR_NOT_LOCKED,
         1136 => DB_ERROR_VALUE_COUNT_ON_ROW,
+        1142 => DB_ERROR_ACCESS_VIOLATION,
         1146 => DB_ERROR_NOSUCHTABLE,
         1216 => DB_ERROR_CONSTRAINT,
         1217 => DB_ERROR_CONSTRAINT,
