@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.67 2004-02-11 02:00:28 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.68 2004-02-11 05:49:26 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -75,7 +75,7 @@ sets it to 'phptype', just like what happens when
 parsing a DSN string.  (danielc)
 
 - ifx:
-Add tableInfo().
+Add tableInfo().  (peterwb@iafrica.com, danielc)
 
 - mysql, odbc(access):
 Added DB_PORTABILITY_ERRORS portability option
