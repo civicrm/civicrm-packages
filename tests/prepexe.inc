@@ -12,7 +12,7 @@ fclose($fp);
 // 1) Multiple prepare/exec INSERT queries
 echo "------------1------------\n";
 
-$sth1 = $dbh->prepare("INSERT INTO phptest (a) VALUES(?)");
+$sth1 = $dbh->prepare("INSERT INTO phptest (a, b) VALUES(?, 'a')");
 $sth2 = $dbh->prepare("INSERT INTO phptest (a,b) VALUES(?,?)");
 $sth3 = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES(?,?,&)");
 print "sth1,sth2,sth3 created\n";

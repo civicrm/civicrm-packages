@@ -14,7 +14,7 @@ sth1 executed
 sth2 executed
 sth3 executed
 results:
-|72 -  -  - |
+|72 - a -  - |
 |72 - bing -  - |
 |72 - gazonk - opaque
 placeholder
