@@ -754,6 +754,12 @@ class DB_oci8 extends DB_common
      */
     function tableInfo($result, $mode = null)
     {
+        if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+            $case_func = 'strtolower';
+        } else {
+            $case_func = '';
+        }
+
         if (is_string($result)) {
             /*
              * Probably received a table name.
@@ -776,16 +782,12 @@ class DB_oci8 extends DB_common
 
             $i = 0;
             while (@OCIFetch($stmt)) {
-                $res[$i]['table'] = $result;
-                $res[$i]['name']  = @OCIResult($stmt, 1);
+                $res[$i]['table'] = $case_func($result);
+                $res[$i]['name']  = $case_func(@OCIResult($stmt, 1));
                 $res[$i]['type']  = @OCIResult($stmt, 2);
                 $res[$i]['len']   = @OCIResult($stmt, 3);
                 $res[$i]['flags'] = (@OCIResult($stmt, 4) == 'N') ? 'not_null' : '';
 
-                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
-                    $res[$i]['table'] = strtolower($res[$i]['table']);
-                    $res[$i]['name']  = strtolower($res[$i]['name']);
-                }
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }
@@ -817,14 +819,11 @@ class DB_oci8 extends DB_common
 
                 for ($i=0; $i<$count; $i++) {
                     $res[$i]['table'] = '';
-                    $res[$i]['name']  = @OCIColumnName($result, $i+1);
+                    $res[$i]['name']  = $case_func(@OCIColumnName($result, $i+1));
                     $res[$i]['type']  = @OCIColumnType($result, $i+1);
                     $res[$i]['len']   = @OCIColumnSize($result, $i+1);
                     $res[$i]['flags'] = '';
 
-                    if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
-                        $res[$i]['name'] = strtolower($res[$i]['name']);
-                    }
                     if ($mode & DB_TABLEINFO_ORDER) {
                         $res['order'][$res[$i]['name']] = $i;
                     }

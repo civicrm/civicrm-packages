@@ -650,6 +650,12 @@ class DB_sybase extends DB_common
             return $this->sybaseRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
 
+        if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+            $case_func = 'strtolower';
+        } else {
+            $case_func = '';
+        }
+
         $count = @sybase_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
@@ -660,11 +666,11 @@ class DB_sybase extends DB_common
 
                 // column_source is often blank
                 if ($got_string) {
-                    $res[$i]['table'] = $result;
+                    $res[$i]['table'] = $case_func($result);
                 } else {
-                    $res[$i]['table'] = $f->column_source;
+                    $res[$i]['table'] = $case_func($f->column_source);
                 }
-                $res[$i]['name']  = $f->name;
+                $res[$i]['name']  = $case_func($f->name);
                 $res[$i]['type']  = $f->type;
                 $res[$i]['len']   = $f->max_length;
                 if ($res[$i]['table']) {
@@ -672,11 +678,6 @@ class DB_sybase extends DB_common
                             $res[$i]['table'], $res[$i]['name']);
                 } else {
                     $res[$i]['flags'] = '';
-                }
-
-                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
-                    $res[$i]['table'] = strtolower($res[$i]['table']);
-                    $res[$i]['name']  = strtolower($res[$i]['name']);
                 }
             }
 
@@ -690,11 +691,11 @@ class DB_sybase extends DB_common
 
                 // column_source is often blank
                 if ($got_string) {
-                    $res[$i]['table'] = $result;
+                    $res[$i]['table'] = $case_func($result);
                 } else {
-                    $res[$i]['table'] = $f->column_source;
+                    $res[$i]['table'] = $case_func($f->column_source);
                 }
-                $res[$i]['name']  = $f->name;
+                $res[$i]['name']  = $case_func($f->name);
                 $res[$i]['type']  = $f->type;
                 $res[$i]['len']   = $f->max_length;
                 if ($res[$i]['table']) {
@@ -704,10 +705,6 @@ class DB_sybase extends DB_common
                     $res[$i]['flags'] = '';
                 }
 
-                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
-                    $res[$i]['table'] = strtolower($res[$i]['table']);
-                    $res[$i]['name']  = strtolower($res[$i]['name']);
-                }
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }

@@ -539,39 +539,36 @@ class DB_mssql extends DB_common
             return $this->mssqlRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
 
+        if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+            $case_func = 'strtolower';
+        } else {
+            $case_func = '';
+        }
+
         $count = @mssql_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
         if (is_null($mode)) {
             for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = ($got_string) ? $result : '';
-                $res[$i]['name']  = @mssql_field_name($id, $i);
+                $res[$i]['table'] = $got_string ? $case_func($result) : '';
+                $res[$i]['name']  = $case_func(@mssql_field_name($id, $i));
                 $res[$i]['type']  = @mssql_field_type($id, $i);
                 $res[$i]['len']   = @mssql_field_length($id, $i);
                 // We only support flags for tables
                 $res[$i]['flags'] = $got_string ? $this->_mssql_field_flags($result, $res[$i]['name']) : '';
-
-                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
-                    $res[$i]['table'] = strtolower($res[$i]['table']);
-                    $res[$i]['name']  = strtolower($res[$i]['name']);
-                }
             }
 
         } else { // full
             $res['num_fields']= $count;
 
             for ($i=0; $i<$count; $i++) {
-                $res[$i]['table'] = ($got_string) ? $result : '';
-                $res[$i]['name']  = @mssql_field_name($id, $i);
+                $res[$i]['table'] = $got_string ? $case_func($result) : '';
+                $res[$i]['name']  = $case_func(@mssql_field_name($id, $i));
                 $res[$i]['type']  = @mssql_field_type($id, $i);
                 $res[$i]['len']   = @mssql_field_length($id, $i);
                 // We only support flags for tables
                 $res[$i]['flags'] = $got_string ? $this->_mssql_field_flags($result, $res[$i]['name']) : '';
 
-                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
-                    $res[$i]['table'] = strtolower($res[$i]['table']);
-                    $res[$i]['name']  = strtolower($res[$i]['name']);
-                }
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }

@@ -656,38 +656,35 @@ class DB_ibase extends DB_common
             return $this->ibaseRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
 
+        if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+            $case_func = 'strtolower';
+        } else {
+            $case_func = '';
+        }
+
         $count = @ibase_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
         if (is_null($mode)) {
             for ($i=0; $i<$count; $i++) {
                 $info = @ibase_field_info($id, $i);
-                $res[$i]['table'] = ($got_string) ? $result : '';
-                $res[$i]['name']  = $info['name'];
+                $res[$i]['table'] = $got_string ? $case_func($result) : '';
+                $res[$i]['name']  = $case_func($info['name']);
                 $res[$i]['type']  = $info['type'];
                 $res[$i]['len']   = $info['length'];
                 $res[$i]['flags'] = ($got_string) ? $this->_ibaseFieldFlags($info['name'], $result) : '';
-
-                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
-                    $res[$i]['table'] = strtolower($res[$i]['table']);
-                    $res[$i]['name']  = strtolower($res[$i]['name']);
-                }
             }
         } else { // full
             $res['num_fields']= $count;
 
             for ($i=0; $i<$count; $i++) {
                 $info = @ibase_field_info($id, $i);
-                $res[$i]['table'] = ($got_string) ? $result : '';
-                $res[$i]['name']  = $info['name'];
+                $res[$i]['table'] = $got_string ? $case_func($result) : '';
+                $res[$i]['name']  = $case_func($info['name']);
                 $res[$i]['type']  = $info['type'];
                 $res[$i]['len']   = $info['length'];
                 $res[$i]['flags'] = ($got_string) ? $this->_ibaseFieldFlags($info['name'], $result) : '';
 
-                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
-                    $res[$i]['table'] = strtolower($res[$i]['table']);
-                    $res[$i]['name']  = strtolower($res[$i]['name']);
-                }
                 if ($mode & DB_TABLEINFO_ORDER) {
                     $res['order'][$res[$i]['name']] = $i;
                 }
