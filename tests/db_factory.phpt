@@ -24,12 +24,13 @@ $backends = array(
 
 reset($backends);
 while (list($i, $name) = each($backends)) {
-    print "testing $name: ";
     $obj = DB::factory($name);
+
+    print "testing $name: ";
     if (DB::isError($obj)) {
-	print "error: ".$obj->getMessage()."\n";
+	    print 'error: ' . $obj->getMessage() . "\n";
     } else {
-	print "object: ".$obj->toString()."\n";
+	    print 'object: ' . $obj->toString() . "\n";
     }
 }
 
