@@ -468,7 +468,15 @@ class DB_oci8 extends DB_common
 
         for ($i = 0; $i < $size; $i++) {
             $pdata[$i] = &$data[$i];
-            if ($types[$i] == DB_PARAM_OPAQUE) {
+            if ($types[$i] == DB_PARAM_MISC) {
+                /*
+                 * Oracle doesn't seem to have the ability to pass a
+                 * parameter along unchanged, so strip off quotes from start
+                 * and end in order to avoid the quotes getting escaped by
+                 * Oracle and ending up in the database.
+                 */
+                $pdata[$i] = preg_replace("/^'(.*)'$/", "\\1", $pdata[$i]);
+            } elseif ($types[$i] == DB_PARAM_OPAQUE) {
                 $fp = @fopen($pdata[$i], 'rb');
                 if (!$fp) {
                     return $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
