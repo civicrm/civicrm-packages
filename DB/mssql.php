@@ -150,7 +150,6 @@ class DB_mssql extends DB_common
     }
 
     // }}}
-
     // {{{ nextResult()
 
     /**
@@ -432,6 +431,7 @@ class DB_mssql extends DB_common
                             '([id] [int] IDENTITY (1, 1) NOT NULL ,' .
                             '[vapor] [int] NULL)');
     }
+
     // }}}
     // {{{ dropSequence()
 
@@ -521,10 +521,8 @@ class DB_mssql extends DB_common
      *
      * @return array An array with all the information
      */
-
     function tableInfo($result, $mode = null)
     {
-
         $count = 0;
         $id    = 0;
         $res   = array();
@@ -628,10 +626,10 @@ class DB_mssql extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {
@@ -646,23 +644,25 @@ class DB_mssql extends DB_common
         }
         return $sql;
     }
+
     // }}}
     // {{{ _mssql_field_flags()
+
     /**
-    * Get the flags for a field, currently supports "not_null", "primary_key",
-    * "auto_increment" (mssql identity), "timestamp" (mssql timestamp),
-    * "unique_key" (mssql unique index, unique check or primary_key) and
-    * "multiple_key" (multikey index)
-    *
-    * mssql timestamp is NOT similar to the mysql timestamp so this is maybe
-    * not useful at all - is the behaviour of mysql_field_flags that primary
-    * keys are alway unique? is the interpretation of multiple_key correct?
-    *
-    * @param string The table name
-    * @param string The field
-    * @author Joern Barthel <j_barthel@web.de>
-    * @access private
-    */
+     * Get the flags for a field, currently supports "not_null", "primary_key",
+     * "auto_increment" (mssql identity), "timestamp" (mssql timestamp),
+     * "unique_key" (mssql unique index, unique check or primary_key) and
+     * "multiple_key" (multikey index)
+     *
+     * mssql timestamp is NOT similar to the mysql timestamp so this is maybe
+     * not useful at all - is the behaviour of mysql_field_flags that primary
+     * keys are alway unique? is the interpretation of multiple_key correct?
+     *
+     * @param string The table name
+     * @param string The field
+     * @author Joern Barthel <j_barthel@web.de>
+     * @access private
+     */
     function _mssql_field_flags($table, $column)
     {
         static $tableName = null;
@@ -719,19 +719,17 @@ class DB_mssql extends DB_common
     }
 
     // }}}
-    // {{{ _mssql_field_flags()
-
-    // }}}
     // {{{ _add_flag()
+
     /**
-    * adds a string to the flags array if the flag is not yet in there - if there is no
-    * flag present the array is created
-    *
-    * @param reference  Reference to the flag-array
-    * @param value      The flag value
-    * @access private
-    * @author Joern Barthel <j_barthel@web.de>
-    */
+     * Adds a string to the flags array if the flag is not yet in there
+     * - if there is no flag present the array is created.
+     *
+     * @param reference  Reference to the flag-array
+     * @param value      The flag value
+     * @access private
+     * @author Joern Barthel <j_barthel@web.de>
+     */
     function _add_flag (&$array, $value)
     {
         if (!is_array($array))
@@ -740,7 +738,5 @@ class DB_mssql extends DB_common
         else if (!in_array($value, $array))
             array_push($array, $value);
     }
-    // }}}
-    // {{{ _add_flag()
 }
 ?>
