@@ -71,11 +71,10 @@ require_once './mktable.inc';
  * @see PEAR::setErrorHandling()
  */
 function pe($o){
-    global $dbh, $skip_array;
+    global $dbh;
 
     if ($o->getMessage() == "DB Error: can't distinguish duplicate field names") {
         print "NOTICE: $dbh->phptype can't distinguish duplicate field names\n";
-        $skip_array = true;
         return;
     }
 
@@ -97,11 +96,10 @@ function pe($o){
  * @return void
  */
 function examineArrayData($array, $field = false, $query = true) {
-    global $dbh, $quirks, $skip_array;
+    global $dbh, $quirks;
 
-    if ($skip_array == true) {
-        $skip_array = false;
-        print "\n\n\n\n\n";
+    if (!is_array($array)) {
+        print "This DMBS didn't produce proper results\n\n\n";
         return;
     }
 
@@ -561,7 +559,9 @@ print "\nnum_fields:\n";
 print "{$array['num_fields']}\n";
 
 print "\norder:\n";
-ksort($array['order']);
+if (is_array($array['order'])) {
+    ksort($array['order']);
+}
 examineArrayData($array['order']);
 
 
