@@ -62,7 +62,7 @@ test('mysql:///database');
 // array tests
 $array = array(
     'phptype'  => 'mysql',
-    'dbsyntax' => 'mysql',
+    'hostspec' => 'foobar',
 );
 testArray($array);
 
@@ -476,7 +476,7 @@ Array
     [username] => 
     [password] => 
     [protocol] => 
-    [hostspec] => 
+    [hostspec] => foobar
     [port] => 
     [socket] => 
     [database] => 
