@@ -33,6 +33,8 @@ class DB_sybase extends DB_common
     var $phptype, $dbsyntax;
     var $prepare_tokens = array();
     var $prepare_types = array();
+    var $transaction_opcount = 0;
+    var $autocommit = true;
 
     // }}}
     // {{{ constructor
@@ -202,8 +204,21 @@ class DB_sybase extends DB_common
      */
     function simpleQuery($query)
     {
+        $ismanip = DB::isManip($query);
         $this->last_query = $query;
+        if (!@sybase_select_db($this->_db, $this->connection)) {
+            return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
+        }
         $query = $this->modifyQuery($query);
+        if (!$this->autocommit && $ismanip) {
+            if ($this->transaction_opcount == 0) {
+                $result = @sybase_query('BEGIN TRANSACTION', $this->connection);
+                if (!$result) {
+                    return $this->sybaseRaiseError();
+                }
+            }
+            $this->transaction_opcount++;
+        }
         $result = @sybase_query($query, $this->connection);
         if (!$result) {
             return $this->sybaseRaiseError();
@@ -218,7 +233,7 @@ class DB_sybase extends DB_common
         }
         // Determine which queries that should return data, and which
         // should return an error code only.
-        return DB::isManip($query) ? DB_OK : $result;
+        return $ismanip ? DB_OK : $result;
     }
 
     // }}}
@@ -379,6 +394,62 @@ class DB_sybase extends DB_common
                 return null;
         }
         return $sql;
+    }
+
+    // }}}
+    // {{{ autoCommit()
+
+    /**
+     * Enable/disable automatic commits
+     */
+    function autoCommit($onoff = false)
+    {
+        // XXX if $this->transaction_opcount > 0, we should probably
+        // issue a warning here.
+        $this->autocommit = $onoff ? true : false;
+        return DB_OK;
+    }
+
+    // }}}
+    // {{{ commit()
+
+    /**
+     * Commit the current transaction.
+     */
+    function commit()
+    {
+        if ($this->transaction_opcount > 0) {
+            if (!@sybase_select_db($this->_db, $this->connection)) {
+                return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
+            }
+            $result = @sybase_query('COMMIT', $this->connection);
+            $this->transaction_opcount = 0;
+            if (!$result) {
+                return $this->sybaseRaiseError();
+            }
+        }
+        return DB_OK;
+    }
+
+    // }}}
+    // {{{ rollback()
+
+    /**
+     * Roll back (undo) the current transaction.
+     */
+    function rollback()
+    {
+        if ($this->transaction_opcount > 0) {
+            if (!@sybase_select_db($this->_db, $this->connection)) {
+                return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
+            }
+            $result = @sybase_query('ROLLBACK', $this->connection);
+            $this->transaction_opcount = 0;
+            if (!$result) {
+                return $this->sybaseRaiseError();
+            }
+        }
+        return DB_OK;
     }
 
     // }}}
