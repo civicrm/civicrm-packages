@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.143 2004-12-17 16:52:41 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.144 2004-12-24 20:48:18 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -82,6 +82,9 @@ resolving Bug #2140.  (Bug #2731)
 
 mysql & mysqli:
 * Added 1061 => DB_ERROR_ALREADY_EXISTS to error map.
+* Remove $num_rows property.  Wasn't used in all
+  drivers and numRows() can get the answer
+  directly from the DBMS' API.
 
 oci8:
 * When running PHP5, use the new oci_new_connect() and
@@ -101,6 +104,7 @@ pgsql:
   (due to regex in simpleQuery()).  Bug 2586.
 * Use pg_affected_rows() instead of the undocumented
   pg_cmdtuples() in affectedRows().
+* Make $num_rows property private.
 
 sqlite:
 * Add tableInfo().  Request #1317.
@@ -111,6 +115,9 @@ sybase:
 * Provide debugging information to raiseError() when
   connections fail so getUserInfo() and getDebugInfo()
   provide useful information.
+* Remove $num_rows property.  Wasn't used in all
+  drivers and numRows() can get the answer
+  directly from the DBMS' API.
 
 all:
 * If DSN contains "dbsyntax", always use that for
