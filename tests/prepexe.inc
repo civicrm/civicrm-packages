@@ -93,7 +93,6 @@ echo "\n";
 
 // 4) SELECTs tests
 echo "\n------------4------------\n";
-
 $sth1 = $dbh->prepare("SELECT * FROM phptest WHERE a = ? ORDER BY b");
 print_4($sth1, 72);
 print_4($sth1, 71);

@@ -59,6 +59,17 @@ class DB_mysqli extends DB_common
     var $_db = false;
 
     /**
+     * An enumerated array containing arrays with the column names
+     * in results of executing prepared SELECT statements
+     *
+     * The keys are the statement's index number.
+     *
+     * @var    array
+     * @access private
+     */
+    var $_stmt_col_names = array();
+
+    /**
      * Array for converting MYSQLI_*_FLAG constants to text values
      * @var    array
      * @access public
@@ -294,6 +305,176 @@ class DB_mysqli extends DB_common
     }
 
     // }}}
+    // {{{ prepare()
+
+    /**
+     * Prepares a query for multiple execution with execute().
+     *
+     * prepare() requires a generic query as string like <code>
+     *    INSERT INTO numbers VALUES (?, ?, ?)
+     * </code>.  The <kbd>?</kbd> characters are placeholders.
+     *
+     * Three types of placeholders can be used:
+     *   + <kbd>?</kbd>  a quoted scalar value, i.e. strings, integers
+     *   + <kbd>!</kbd>  value is inserted 'as is'
+     *   + <kbd>&</kbd>  requires a file name.  The file's contents get
+     *                     inserted into the query (i.e. saving binary
+     *                     data in a db)
+     *
+     * Use backslashes to escape placeholder characters if you don't want
+     * them to be interpreted as placeholders.  Example: <code>
+     *    "UPDATE foo SET col=? WHERE col='over \& under'"
+     * </code>
+     *
+     * @param string $query query to be prepared
+     *
+     * @return mixed DB statement resource on success. DB_Error on failure.
+     *
+     * @see DB_mysqli::execute()
+     * @since Method available since Release 1.7.0
+     */
+    function prepare($query)
+    {
+        $tokens   = preg_split('/((?<!\\\)[&?!])/', $query, -1,
+                               PREG_SPLIT_DELIM_CAPTURE);
+        $binds    = count($tokens) - 1;
+        $token    = 0;
+        $types    = array();
+        $newquery = '';
+
+        foreach ($tokens as $key => $val) {
+            switch ($val) {
+                case '?':
+                    $types[$token++] = DB_PARAM_SCALAR;
+                    unset($tokens[$key]);
+                    break;
+                case '&':
+                    $types[$token++] = DB_PARAM_OPAQUE;
+                    unset($tokens[$key]);
+                    break;
+                case '!':
+                    $types[$token++] = DB_PARAM_MISC;
+                    unset($tokens[$key]);
+                    break;
+                default:
+                    $tokens[$key] = preg_replace('/\\\([&?!])/', "\\1", $val);
+                    if ($key != $binds) {
+                        $newquery .= $tokens[$key] . '?';
+                    } else {
+                        $newquery .= $tokens[$key];
+                    }
+            }
+        }
+
+        $this->last_query = $query;
+        $newquery = $this->modifyQuery($newquery);
+        if (!$stmt = @mysqli_prepare($this->connection, $newquery)) {
+            return $this->mysqliRaiseError();
+        }
+
+ob_start();
+var_dump($stmt);
+$id = md5(ob_get_contents());
+ob_end_clean();
+
+        $this->prepare_types[$id] = $types;
+        $this->manip_query[$id] = DB::isManip($query);
+        return $stmt;
+    }
+
+    // }}}
+    // {{{ execute()
+
+    /**
+     * Executes a DB statement prepared with prepare().
+     *
+     * @param resource  $stmt  a DB statement resource returned from prepare()
+     * @param mixed  $data  array, string or numeric data to be used in
+     *                      execution of the statement.  Quantity of items
+     *                      passed must match quantity of placeholders in
+     *                      query:  meaning 1 for non-array items or the
+     *                      quantity of elements in the array.
+     *
+     * @return mixed  returns a mysqli result resource for successful SELECT
+     *                queries, DB_OK for other successful queries.
+     *                A DB error object is returned on failure.
+     *
+     * @see DB_mysqli::prepare()
+     * @since Method available since Release 1.7.0
+     */
+    function &execute($stmt, $data = array())
+    {
+        if (!is_array($data)) {
+            $data = array($data);
+        }
+
+        $this->_data = $data;
+
+ob_start();
+var_dump($stmt);
+$id = md5(ob_get_contents());
+ob_end_clean();
+        $types =& $this->prepare_types[$id];
+        if (count($types) != count($data)) {
+            $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
+            return $tmp;
+        }
+
+        $i      = 0;
+        $params = array($stmt, '');
+        foreach ($data as $key => $value) {
+            if ($types[$i] == DB_PARAM_OPAQUE) {
+                $fp = @fopen($data[$key], 'rb');
+                if (!$fp) {
+                    $tmp =& $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
+                    return $tmp;
+                }
+                $data[$key] = fread($fp, filesize($data[$key]));
+                fclose($fp);
+                $params[1] .= 'b';
+            } else {
+                if (is_string($data[$key])) {
+                    $params[1] .= 's';
+                }
+                if (is_int($data[$key])) {
+                    $params[1] .= 'i';
+                }
+                if (is_float($data[$key])) {
+                    $params[1] .= 'd';
+                }
+                if (is_null($data[$key])) {
+                    $params[1] .= 's';
+                    $data[$key] = 'NULL';
+                }
+            }
+            $params[] =& $data[$key];
+            $i++;
+        }
+
+        $php_errormsg = '';
+        if (!@call_user_func_array('mysqli_stmt_bind_param', $params)) {
+            $tmp =& $this->raiseError(DB_ERROR, null, null, null,
+                                      $php_errormsg);
+            return $tmp;
+        }
+
+        if (!@mysqli_stmt_execute($stmt)) {
+            $tmp =& $this->raiseError(DB_ERROR, null, null, null,
+                                      @mysqli_stmt_errno($stmt) . ' ** ' .
+                                      @mysqli_stmt_error($stmt));
+            return $tmp;
+        }
+
+        $this->last_stmt = $stmt;
+        if ($this->manip_query[$id]) {
+            $tmp = DB_OK;
+        } else {
+            $tmp =& new DB_result($this, $stmt);
+        }
+        return $tmp;
+    }
+
+    // }}}
     // {{{ nextResult()
 
     /**
@@ -333,26 +514,72 @@ class DB_mysqli extends DB_common
      */
     function fetchInto($result, &$arr, $fetchmode, $rownum=null)
     {
-        if ($rownum !== null) {
-            if (!@mysqli_data_seek($result, $rownum)) {
-                return null;
+        if ($result instanceof mysqli_result) {
+            // a result from a regular query
+
+            if ($rownum !== null) {
+                if (!@mysqli_data_seek($result, $rownum)) {
+                    return null;
+                }
             }
-        }
-        if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $arr = @mysqli_fetch_array($result, MYSQLI_ASSOC);
-            if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE && $arr) {
-                $arr = array_change_key_case($arr, CASE_LOWER);
+            if ($fetchmode & DB_FETCHMODE_ASSOC) {
+                $arr = @mysqli_fetch_array($result, MYSQLI_ASSOC);
+                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE && $arr) {
+                    $arr = array_change_key_case($arr, CASE_LOWER);
+                }
+            } else {
+                $arr = @mysqli_fetch_row($result);
+            }
+            if (!$arr) {
+                $errno = @mysqli_errno($this->connection);
+                if (!$errno) {
+                    return null;
+                }
+                return $this->mysqliRaiseError($errno);
             }
         } else {
-            $arr = @mysqli_fetch_row($result);
-        }
-        if (!$arr) {
-            $errno = @mysqli_errno($this->connection);
-            if (!$errno) {
-                return null;
+            // a result from the execution of a prepared statement
+
+ob_start();
+var_dump($stmt);
+$id = md5(ob_get_contents());
+ob_end_clean();
+
+            if ($rownum !== null) {
+                if (!@mysqli_stmt_data_seek($result, $rownum)) {
+                    return null;
+                }
             }
-            return $this->mysqliRaiseError($errno);
+
+            if (!isset($this->_stmt_col_names[$id])) {
+                $i = 0;
+                $this->_stmt_col_names[$id] = array();
+                $meta = mysqli_stmt_result_metadata($result);
+                while ($info = mysqli_fetch_field($meta)) {
+                    $this->_stmt_col_names[$id]['ordered'][$i++] = '';
+                    $this->_stmt_col_names[$id]['assoc'][$info->name] = '';
+                    $this->_stmt_col_names[$id]['lower'][strtolower($info->name)] = '';
+                }
+            }
+
+            if ($fetchmode & DB_FETCHMODE_ASSOC) {
+                if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+                    $arr = $this->_stmt_col_names[$id]['lower'];
+                } else {
+                    $arr = $this->_stmt_col_names[$id]['assoc'];
+                }
+            } else {
+                $arr = $this->_stmt_col_names[$id]['ordered'];
+            }
+
+            $params = array($result);
+            foreach ($arr as $key => $value) {
+                $params[] =& $arr[$key];
+            }
+            call_user_func_array('mysqli_stmt_bind_result', $params);
+            mysqli_stmt_fetch($result);
         }
+
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
             /*
              * Even though this DBMS already trims output, we do this because
@@ -380,6 +607,38 @@ class DB_mysqli extends DB_common
     function freeResult($result)
     {
         return @mysqli_free_result($result);
+    }
+
+    // }}}
+    // {{{ freePrepared()
+
+    /**
+     * Free the internal resources associated with a prepared query.
+     *
+     * @param $stmt mysqli statement identifier
+     *
+     * @return bool true on success, false if $stmt is invalid
+     *
+     * @since Method available since Release 1.7.0
+     */
+    function freePrepared($stmt)
+    {
+ob_start();
+var_dump($stmt);
+$id = md5(ob_get_contents());
+ob_end_clean();
+
+        if (is_object($stmt) &&
+            isset($this->prepare_types[$id]))
+        {
+            unset($this->prepare_types[$id]);
+            unset($this->manip_query[$id]);
+            unset($this->_stmt_col_names[$id]);
+            @mysqli_stmt_close($stmt);
+        } else {
+            return false;
+        }
+        return true;
     }
 
     // }}}
