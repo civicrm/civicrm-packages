@@ -22,7 +22,7 @@ simpleQuery      -    x    T    T    x    T    T    x    T    T    T    T    T
 numCols          x    x    T    x    x    T    T    x    T    T    T    T    T
 numRows          x    x    n    n    x    T    T    x    E    T    T    T    n 
 errorNative      n    x    n    t    n    T    T    x    T    T    T    E    T
-prepare/execute  e    e    T    E    e    E    E    e    T    E    E    E    e
+prepare/execute  e    e    T    E    e    E    E    e    T    E    E    E    E
 sequences        -    e    T    E    n    E    E    e    T    E    T    E    E
 affectedRows     n    x    n    T    x    n    T    x    T    T    T    T    T
 fetch modes      x    x    T    T    x    T    T    x    T    T    T    T    T
