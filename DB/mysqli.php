@@ -783,8 +783,6 @@ class DB_mysqli extends DB_common
             $got_string = false;
         }
 
-var_dump($id);
-return;
         if (!is_resource($id)) {
             return $this->mysqlRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
