@@ -141,13 +141,14 @@ class DB_fbsql extends DB_common
             }
         }
 
+        $this->connection = $conn;
+
         if ($dsninfo['database']) {
             if (!fbsql_select_db($dsninfo['database'], $conn)) {
                 return $this->fbsqlRaiseError();
             }
         }
 
-        $this->connection = $conn;
         return DB_OK;
     }
 
