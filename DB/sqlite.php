@@ -654,14 +654,11 @@ class DB_sqlite extends DB_common {
     */
     function sqliteRaiseError($errno = null) {
 
+        $native = $this->errorNative();
         if ($errno === null) {
-            $native = $this->errorNative();
             $errno = $this->errorCode($native);
         }
-        $error_code = @sqlite_last_error($this->connection);
-        return $this->raiseError($errno, null, null, null,
-                                 $error_code . " ** " .
-                                 @sqlite_error_string($error_code));
+        return $this->raiseError($errno, null, null, null, $native);
     }
 
     // }}}
