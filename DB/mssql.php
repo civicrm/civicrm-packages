@@ -440,17 +440,47 @@ class DB_mssql extends DB_common
         $seqname = $this->getSequenceName($seq_name);
         return $this->query("DROP TABLE $seqname");
     }
+
+    // }}}
+    // {{{ errorNative()
+
+    /**
+     * Determine MS SQL Server error code by querying @@ERROR.
+     *
+     * @return mixed  mssql's native error code or DB_ERROR if unknown.
+     */
+    function errorNative()
+    {
+        $res = mssql_query('select @@ERROR as ErrorCode', $this->connection);
+        if (!$res) {
+            return DB_ERROR;
+        }
+        $row = mssql_fetch_row($res);
+        return $row[0];
+    }
+
     // }}}
     // {{{ errorCode()
 
-    function errorCode()
+    /**
+     * Determine PEAR::DB error code from mssql's native codes.
+     *
+     * If <var>$nativecode</var> isn't known yet, it will be looked up.
+     *
+     * @param  mixed  $nativecode  mssql error code, if known
+     * @return integer  an error number from a DB error constant
+     * @see errorNative()
+     */
+    function errorCode($nativecode = null)
     {
-       $res = mssql_query('select @@ERROR as ErrorCode', $this->connection);
-       if (!$res) {
-           return DB_ERROR;
-       }
-       $row = mssql_fetch_row($res);
-       return $row[0];
+        if (!$nativecode) {
+            $nativecode = $this->errorNative();
+        }
+        if (isset($this->errorcode_map[$nativecode])) {
+            return $this->errorcode_map[$nativecode];
+        } else {
+            return DB_ERROR;
+        }
     }
 
     // }}}
@@ -464,27 +494,23 @@ class DB_mssql extends DB_common
      *                         manually raising an error
      * @return object  DB error object
      * @see errorCode()
+     * @see errorNative()
      * @see DB_common::raiseError()
      */
     function mssqlRaiseError($code = null)
     {
-        $native_msg = mssql_get_last_message();
-        $native_code = $this->errorCode();
-        if ($code === null) {
-            if (isset($this->errorcode_map[$native_code])) {
-                $code = $this->errorcode_map[$native_code];
-            } else {
-                $code = DB_ERROR;
-            }
+        $message = mssql_get_last_message();
+        if (!$code) {
+            $code = $this->errorNative();
         }
-        return $this->raiseError($code, null, null, null, $native_code . ' - ' . $native_msg);
+        return $this->raiseError($this->errorCode($code), null, null, null,
+                                 "$code - $message");
     }
 
     // }}}
     // {{{ tableInfo()
 
-  /**
-
+    /**
      * Returns information about a table or a result set
      *
      * NOTE: doesn't support table name and flags if called from a db_result
