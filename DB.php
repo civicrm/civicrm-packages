@@ -1235,7 +1235,7 @@ class DB_result
         if ($this->dbh->features['numrows'] === 'emulate'
             && $this->dbh->options['portability'] & DB_PORTABILITY_NUMROWS)
         {
-            if ($this->dbh->features['prepare'] === 'emulate') {
+            if (!$this->dbh->features['prepare']) {
                 $res = $this->dbh->query($this->query);
             } else {
                 $res = $this->dbh->query($this->query, $this->parameters);
