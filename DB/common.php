@@ -909,10 +909,10 @@ class DB_common extends PEAR
      * @see DB_common::prepare(), DB_common::execute()
      * @access public
      */
-    function executeMultiple( $stmt, &$data )
+    function executeMultiple($stmt, $data)
     {
-        for($i = 0; $i < sizeof( $data ); $i++) {
-            $res =& $this->execute($stmt, $data[$i]);
+       foreach ($data as $value) {
+            $res =& $this->execute($stmt, $value);
             if (DB::isError($res)) {
                 return $res;
             }
