@@ -212,7 +212,7 @@ class DB_ifx extends DB_common
 
         $this->connection = @$connect_function($dbname, $user, $pw);
         if (!is_resource($this->connection)) {
-            return $this->ifxraiseError(DB_ERROR_CONNECT_FAILED);
+            return $this->ifxRaiseError(DB_ERROR_CONNECT_FAILED);
         }
         return DB_OK;
     }
@@ -259,7 +259,7 @@ class DB_ifx extends DB_common
                 if ($this->transaction_opcount == 0) {
                     $result = @ifx_query('BEGIN WORK', $this->connection);
                     if (!$result) {
-                        return $this->ifxraiseError();
+                        return $this->ifxRaiseError();
                     }
                 }
                 $this->transaction_opcount++;
@@ -267,7 +267,7 @@ class DB_ifx extends DB_common
             $result = @ifx_query($query, $this->connection);
         }
         if (!$result) {
-            return $this->ifxraiseError();
+            return $this->ifxRaiseError();
         }
         $this->affected = @ifx_affected_rows($result);
         // Determine which queries should return data, and which
@@ -392,7 +392,7 @@ class DB_ifx extends DB_common
     function numCols($result)
     {
         if (!$cols = @ifx_num_fields($result)) {
-            return $this->ifxraiseError();
+            return $this->ifxRaiseError();
         }
         return $cols;
     }
@@ -463,7 +463,7 @@ class DB_ifx extends DB_common
     }
 
     // }}}
-    // {{{ ifxraiseError()
+    // {{{ ifxRaiseError()
 
     /**
      * Gather information about an error, then use that info to create a
@@ -476,14 +476,13 @@ class DB_ifx extends DB_common
      * @see errorCode()
      * @see DB_common::raiseError()
      */
-    function ifxraiseError($errno = null)
+    function ifxRaiseError($errno = null)
     {
         if ($errno === null) {
             $errno = $this->errorCode(ifx_error());
         }
-
         return $this->raiseError($errno, null, null, null,
-                            $this->errorNative());
+                                 $this->errorNative());
     }
 
     // }}}
