@@ -352,6 +352,8 @@ class DB_pgsql extends DB_common
             case 'integer':
             case 'double' :
                 return $str;
+            case 'boolean':
+                return $str ? 'TRUE' : 'FALSE';
             case 'string':
             default:
                 $str = str_replace("'", "''", $str);
