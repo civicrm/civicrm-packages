@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.109 2004-07-08 21:15:10 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.110 2004-07-12 17:51:24 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -74,6 +74,9 @@ Adjust tableInfo() so it can deal with changes made to
 mysqli_fetch_field()'s behavior.  Add the $mysqli_flags
 and $mysqli_types properties as part of this effort.
 (danielc)
+
+* mysqli:
+mysql >= 4.0 doesn't need WHERE 1=1 hack for DELETE.
 
 * pgsql:
 Adjust getListOf('tables') to accommodate the addition of
