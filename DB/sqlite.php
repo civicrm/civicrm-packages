@@ -167,8 +167,9 @@ class DB_sqlite extends DB_common
                 if (!touch($dsninfo['database'])) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
                 }
-                if (!isset($dsninfo['mode'])
-                        || !is_numeric($dsninfo['mode'])) {
+                if (!isset($dsninfo['mode']) ||
+                    !is_numeric($dsninfo['mode']))
+                {
                     $mode = 0644;
                 } else {
                     $mode = octdec($dsninfo['mode']);
@@ -525,7 +526,8 @@ class DB_sqlite extends DB_common
                     return $id;
                 }
             } elseif ($ondemand && DB::isError($result) &&
-            $result->getCode() == DB_ERROR_NOSUCHTABLE) {
+                      $result->getCode() == DB_ERROR_NOSUCHTABLE)
+            {
                 $result = $this->createSequence($seq_name);
                 if (DB::isError($result)) {
                     return $this->raiseError($result);
@@ -631,12 +633,14 @@ class DB_sqlite extends DB_common
     function getDbFileStats($arg = '')
     {
         $stats = stat($this->dsn['database']);
-        if ($stats == false)
+        if ($stats == false) {
             return false;
+        }
         if (is_array($stats)) {
             if(is_numeric($arg)) {
-                if(((int)$arg <= 12) & ((int)$arg >= 0))
+                if (((int)$arg <= 12) & ((int)$arg >= 0)) {
                     return false;
+                }
                 return $stats[$arg ];
             }
             if (array_key_exists(trim($arg), $stats)) {
