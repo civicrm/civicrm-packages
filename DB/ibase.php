@@ -352,11 +352,7 @@ class DB_ibase extends DB_common
             $arr = @ibase_fetch_row($result);
         }
         if (!$arr) {
-            if ($errmsg = @ibase_errmsg()) {
-                return $this->ibaseRaiseError(null, $errmsg);
-            } else {
-                return null;
-            }
+            return null;
         }
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
             $this->_rtrimArrayValues($arr);

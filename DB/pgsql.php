@@ -445,11 +445,7 @@ class DB_pgsql extends DB_common
             $arr = @pg_fetch_row($result, $rownum);
         }
         if (!$arr) {
-            $err = pg_errormessage($this->connection);
-            if (!$err) {
-                return null;
-            }
-            return $this->pgsqlRaiseError();
+            return null;
         }
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
             $this->_rtrimArrayValues($arr);

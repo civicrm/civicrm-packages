@@ -311,11 +311,7 @@ class DB_fbsql extends DB_common
             $arr = @fbsql_fetch_row($result);
         }
         if (!$arr) {
-            $errno = @fbsql_errno($this->connection);
-            if (!$errno) {
-                return null;
-            }
-            return $this->fbsqlRaiseError($errno);
+            return null;
         }
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
             $this->_rtrimArrayValues($arr);

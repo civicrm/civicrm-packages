@@ -256,11 +256,7 @@ class DB_msql extends DB_common
             $arr = @msql_fetch_row($result);
         }
         if (!$arr) {
-            if ($error = @msql_error()) {
-                return $this->msqlRaiseError();
-            } else {
-                return null;
-            }
+            return null;
         }
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
             $this->_rtrimArrayValues($arr);

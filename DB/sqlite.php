@@ -360,7 +360,6 @@ class DB_sqlite extends DB_common
             $arr = @sqlite_fetch_array($result, SQLITE_NUM);
         }
         if (!$arr) {
-            /* See: http://bugs.php.net/bug.php?id=22328 */
             return null;
         }
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {

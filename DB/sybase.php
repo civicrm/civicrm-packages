@@ -444,13 +444,7 @@ class DB_sybase extends DB_common
             $arr = @sybase_fetch_row($result);
         }
         if (!$arr) {
-            // reported not work as seems that sybase_get_last_message()
-            // always return a message here
-            //if ($errmsg = @sybase_get_last_message()) {
-            //    return $this->sybaseRaiseError($errmsg);
-            //} else {
-                return null;
-            //}
+            return null;
         }
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
             $this->_rtrimArrayValues($arr);

@@ -313,12 +313,6 @@ class DB_mssql extends DB_common
             $arr = @mssql_fetch_row($result);
         }
         if (!$arr) {
-            /* This throws informative error messages,
-               don't use it for now
-            if ($msg = @mssql_get_last_message()) {
-                return $this->raiseError($msg);
-            }
-            */
             return null;
         }
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {

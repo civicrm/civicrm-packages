@@ -467,11 +467,7 @@ class DB_mysqli extends DB_common
             $arr = @mysqli_fetch_row($result);
         }
         if (!$arr) {
-            $errno = @mysqli_errno($this->connection);
-            if (!$errno) {
-                return null;
-            }
-            return $this->mysqliRaiseError($errno);
+            return null;
         }
         if ($this->options['portability'] & DB_PORTABILITY_RTRIM) {
             /*

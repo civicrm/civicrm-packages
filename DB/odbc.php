@@ -329,13 +329,7 @@ class DB_odbc extends DB_common
         } else {
             $cols = @odbc_fetch_into($result, $arr);
         }
-
         if (!$cols) {
-            /* XXX FIXME: doesn't work with unixODBC and easysoft
-                          (get corrupted $errno values)
-            if ($errno = @odbc_error($this->connection)) {
-                return $this->RaiseError($errno);
-            }*/
             return null;
         }
         if ($fetchmode !== DB_FETCHMODE_ORDERED) {
