@@ -125,7 +125,7 @@ $ret =& $dbh->getCol("SELECT * FROM phptest ORDER BY b");
 print_r($ret);
 
 print "testing getCol on query with no records:\n";
-$ret =& $dbh->getCol('SELECT * FROM phptest WHERE b > 200');
+$ret =& $dbh->getCol('SELECT * FROM phptest WHERE a > 200');
 print_r($ret);
 
 print "testing getCol with invalid column id:\n";
