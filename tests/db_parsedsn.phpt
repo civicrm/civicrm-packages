@@ -52,6 +52,12 @@ test('ibase://user:pass@localhost//var/lib/dbase.dbf?role=foo');
 test('dbase://@/?role=foo&dialect=bar');
 test('sqlite:///database?option=value&anotheroption=anothervalue');
 
+// some examples from manual
+test('mysql://username@hostspec');
+test('mysql://hostspec/database');
+test('mysql://hostspec');
+test('mysql:///database');
+
 // array tests
 $array = array(
     'phptype'  => 'mysql',
@@ -394,6 +400,58 @@ Array
     [database] => database
     [option] => value
     [anotheroption] => anothervalue
+)
+DSN: mysql://username@hostspec
+Array
+(
+    [phptype] => mysql
+    [dbsyntax] => mysql
+    [username] => username
+    [password] => 
+    [protocol] => tcp
+    [hostspec] => hostspec
+    [port] => 
+    [socket] => 
+    [database] => 
+)
+DSN: mysql://hostspec/database
+Array
+(
+    [phptype] => mysql
+    [dbsyntax] => mysql
+    [username] => 
+    [password] => 
+    [protocol] => tcp
+    [hostspec] => hostspec
+    [port] => 
+    [socket] => 
+    [database] => database
+)
+DSN: mysql://hostspec
+Array
+(
+    [phptype] => mysql
+    [dbsyntax] => mysql
+    [username] => 
+    [password] => 
+    [protocol] => tcp
+    [hostspec] => hostspec
+    [port] => 
+    [socket] => 
+    [database] => 
+)
+DSN: mysql:///database
+Array
+(
+    [phptype] => mysql
+    [dbsyntax] => mysql
+    [username] => 
+    [password] => 
+    [protocol] => tcp
+    [hostspec] => 
+    [port] => 
+    [socket] => 
+    [database] => database
 )
 DSN: array
 Array
