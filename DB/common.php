@@ -1951,27 +1951,33 @@ class DB_common extends PEAR
     // {{{ getListOf()
 
     /**
-     * list internal DB info
-     * valid values for $type are db dependent,
-     * often: databases, users, view, functions
+     * Lists internal database information
      *
-     * @param string $type type of requested info
+     * @param string $type  type of information being sought.
+     *                       Common items being sought are:
+     *                       tables, databases, users, views, functions
+     *                       Each DBMS's has its own capabilities.
      *
-     * @return mixed DB_Error or the requested data
+     * @return array  an array listing the items sought or a DB_Error
+     *                if the request fails
      *
      * @access public
      */
     function getListOf($type)
     {
         $sql = $this->getSpecialQuery($type);
-        if ($sql === null) {                                // No support
+        if ($sql === null) {
+            // No support
             return $this->raiseError(DB_ERROR_UNSUPPORTED);
-        } elseif (is_int($sql) || DB::isError($sql)) {      // Previous error
+        } elseif (is_int($sql) || DB::isError($sql)) {
+            // Previous error
             return $this->raiseError($sql);
-        } elseif (is_array($sql)) {                         // Already the result
+        } elseif (is_array($sql)) {
+            // Already the result
             return $sql;
         }
-        return $this->getCol($sql);                         // Launch this query
+        // Launch this query
+        return $this->getCol($sql);
     }
 
     // }}}
