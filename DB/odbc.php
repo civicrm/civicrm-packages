@@ -358,15 +358,12 @@ class DB_odbc extends DB_common
         switch ($this->dsn['dbsyntax']) {
             case 'access':
                 return '[' . $str . ']';
-                break;
             case 'mssql':
             case 'sybase':
                 return '[' . str_replace(']', ']]', $str) . ']';
-                break;
             case 'mysql':
             case 'mysql4':
                 return '`' . $str . '`';
-                break;
             default:
                 return '"' . str_replace('"', '""', $str) . '"';
         }
