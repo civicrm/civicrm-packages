@@ -460,7 +460,6 @@ class DB
      *  + database: Database to use on the DBMS server
      *  + username: User name for login
      *  + password: Password for login
-     *  + mode:     chmod mode for SQLite databases
      *
      * @author Tomas V.V.Cox <cox@idecnet.com>
      */
@@ -479,7 +478,6 @@ class DB
             'hostspec' => false,
             'port'     => false,
             'socket'   => false,
-            'mode'     => false,
             'database' => false
         );
 
@@ -570,8 +568,8 @@ class DB
                 }
                 foreach ($opts as $opt) {
                     list($key, $value) = explode('=', $opt);
-                    if ($key == 'mode' || !isset($parsed[$key])) {
-                        // don't allow params overwrite, unless it's "mode"
+                    if (!isset($parsed[$key])) {
+                        // don't allow params overwrite
                         $parsed[$key] = rawurldecode($value);
                     }
                 }
