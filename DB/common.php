@@ -1983,7 +1983,8 @@ class DB_common extends PEAR
      * @return void
      * @access private
      */
-    function _rtrimArrayValues(&$array) {
+    function _rtrimArrayValues(&$array)
+    {
         foreach ($array as $key => $value) {
             if (is_string($value)) {
                 $array[$key] = rtrim($value);
@@ -2001,7 +2002,8 @@ class DB_common extends PEAR
      * @return void
      * @access private
      */
-    function _convertNullArrayValuesToEmpty(&$array) {
+    function _convertNullArrayValuesToEmpty(&$array)
+    {
         foreach ($array as $key => $value) {
             if (is_null($value)) {
                 $array[$key] = '';
