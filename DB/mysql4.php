@@ -662,11 +662,7 @@ class DB_mysql4 extends DB_common
         } elseif (is_bool($str)) {
             return $str ? 1 : 0;
         } else {
-            if(function_exists('mysqli_real_escape_string')) {
-                return "'".mysqli_real_escape_string($str, $this->connection)."'";
-            } else {
-                return "'".mysqli_escape_string($str)."'";
-            }
+            return "'".mysqli_real_escape_string($str, $this->connection)."'";
         }
     }
 
