@@ -27,17 +27,18 @@
  */
 function error_handler(&$obj) {
     print "sequences.inc error_handler:\n    ";
-    print $obj->getDebugInfo() . "\n";
+    print $obj->getDebugInfo() . "\n\n";
 }
 ob_implicit_flush(true);
 
 $drop = $dbh->dropSequence('test');
 if (DB::isError($drop) &&
-    $drop->getMessage() != 'DB Error: no such table')
+    $drop->getCode() != DB_ERROR_NOSUCHTABLE)
 {
-    print 'Could not drop sequence... ' . $drop->getMessage() . "\n";
+    print "Could not drop sequence...\n";
+    print $drop->getDebugInfo() . "\n\n";
     if ($dbh->phptype == 'ibase' &&
-        $drop->getMessage() == 'DB Error: insufficient permissions')
+        $drop->getCode() == DB_ERROR_ACCESS_VIOLATION)
     {
         print "Use this query to provide the permissions needed:\n";
         print '   grant all on RDB$GENERATORS to <USERNAME>';
@@ -49,7 +50,7 @@ if (DB::isError($drop) &&
 
 $e = $dbh->nextId("test", false);
 if (DB::isError($e)) {
-    print $e->getMessage() . "\n";
+    print $e->getDebugInfo() . "\n\n";
 } else {
     print "test 1) failed!\n";
 }
@@ -68,35 +69,32 @@ $dbh->_default_error_mode = null;
 $a = $dbh->nextId("test");
 $b = $dbh->nextId("test");
 if (DB::isError($a)) {
-    print "a: ".$a->toString()."\n";
+    print 'a: ' . $a->getDebugInfo() . "\n\n";
 } else {
     print "a=$a\n";
 }
 if (DB::isError($b)) {
-    print "b: ".$b->toString()."\n";
+    print 'b: ' . $b->getDebugInfo() . "\n\n";
 } else {
     print "b=$b\n";
 }
-print "b-a=".($b-$a)."\n";
+if (!DB::isError($a) && !DB::isError($b)) {
+    print 'b-a=' . ($b-$a) . "\n";
+}
 
 // 4) test that the user-specified error handler is really disabled
 // during nextId, with per-object handler as well as global handler
 $dbh->dropSequence("test");
 
-$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
+$dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'error_handler');
 $c = $dbh->nextId("test");
-if (DB::isError($c)) {
-    print "c: ".$c->toString()."\n";
-} else {
+if (!DB::isError($c)) {
     print "c=$c\n";
 }
 $dbh->dropSequence("test");
 $dbh->_default_error_mode = null;
-PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "error_handler");
 $d = $dbh->nextId("test");
-if (DB::isError($d)) {
-    print "d: ".$d->toString()."\n";
-} else {
+if (!DB::isError($d)) {
     print "d=$d\n";
 }
 
@@ -108,7 +106,7 @@ $dbh->query('DELETE FROM test_seq');
 PEAR::popErrorHandling();
 $e = $dbh->nextID('test');
 if (DB::isError($d)) {
-    print "e: ".$d->toString()."\n";
+    print 'e: ' . $d->getDebugInfo() . "\n\n";
 } else {
     print "e=$d\n";
 }
