@@ -250,7 +250,7 @@ class DB_mssql extends DB_common
         if (is_int($in) || is_double($in)) {
             return $in;
         } elseif (is_bool($in)) {
-            return $str ? 1 : 0;
+            return $in ? 1 : 0;
         } elseif (is_null($in)) {
             return 'NULL';
         } else {

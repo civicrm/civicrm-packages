@@ -195,7 +195,7 @@ class DB_dbase extends DB_common
         if (is_int($in) || is_double($in)) {
             return $in;
         } elseif (is_bool($in)) {
-            return $str ? 'T' : 'F';
+            return $in ? 'T' : 'F';
         } elseif (is_null($in)) {
             return 'NULL';
         } else {
