@@ -38,7 +38,6 @@ require_once 'DB/common.php';
  * @category Database
  * @author   Stig Bakken <ssb@php.net>
  */
-
 class DB_odbc extends DB_common
 {
     // {{{ properties
@@ -294,11 +293,11 @@ class DB_odbc extends DB_common
     // {{{ affectedRows()
 
     /**
-    * Returns the number of rows affected by a manipulative query
-    * (INSERT, DELETE, UPDATE)
-    * @return mixed int affected rows, 0 when non manip queries or
-    *               DB error on error
-    */
+     * Returns the number of rows affected by a manipulative query
+     * (INSERT, DELETE, UPDATE)
+     * @return mixed int affected rows, 0 when non manip queries or
+     *               DB error on error
+     */
     function affectedRows()
     {
         if (empty($this->manip_result)) {  // In case of SELECT stms
@@ -516,10 +515,10 @@ class DB_odbc extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {
@@ -534,8 +533,11 @@ class DB_odbc extends DB_common
 
 }
 
-// Local variables:
-// tab-width: 4
-// c-basic-offset: 4
-// End:
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
+
 ?>

@@ -29,7 +29,7 @@ require_once 'DB/common.php';
 /**
  * Database independent query interface definition for PHP's Oracle 8
  * call-interface extension.
- * 
+ *
  * Definitely works with versions 8 and 9 of Oracle.
  *
  * @package  DB
@@ -37,7 +37,6 @@ require_once 'DB/common.php';
  * @category Database
  * @author   James L. Pine <jlp@valinux.com>
  */
-
 class DB_oci8 extends DB_common
 {
     // {{{ properties
@@ -595,15 +594,15 @@ class DB_oci8 extends DB_common
     // {{{ modifyLimitQuery()
 
     /**
-    * Emulate the row limit support altering the query
-    *
-    * @param string $query The query to treat
-    * @param int    $from  The row to start to fetch from
-    * @param int    $count The offset
-    * @return string The modified query
-    *
-    * @author Tomas V.V.Cox <cox@idecnet.com>
-    */
+     * Emulate the row limit support altering the query
+     *
+     * @param string $query The query to treat
+     * @param int    $from  The row to start to fetch from
+     * @param int    $count The offset
+     * @return string The modified query
+     *
+     * @author Tomas V.V.Cox <cox@idecnet.com>
+     */
     function modifyLimitQuery($query, $from, $count)
     {
         // Let Oracle return the name of the columns instead of
@@ -731,10 +730,10 @@ class DB_oci8 extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {
@@ -862,8 +861,12 @@ class DB_oci8 extends DB_common
     // }}}
 
 }
-// Local variables:
-// tab-width: 4
-// c-basic-offset: 4
-// End:
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
+
 ?>

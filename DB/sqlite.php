@@ -58,10 +58,10 @@
       date('Y-m-j H:i:s') . "');");
 
     // Get results
-    printf("affectedRows:\t\t%s\n", $db->affectedRows() );
-    $result = $db->query("SELECT FROM $table;" );
-    $arr = $db->fetchRow($result );
-    print_r($arr );
+    printf("affectedRows:\t\t%s\n", $db->affectedRows());
+    $result = $db->query("SELECT FROM $table;");
+    $arr = $db->fetchRow($result);
+    print_r($arr);
     $db->disconnect();
 ?>
  *
@@ -79,8 +79,8 @@ require_once 'DB/common.php';
  * @author   Urs Gehrig <urs@circle.ch>
  * @author   Mika Tuupola <tuupola@appelsiini.net>
  */
-
-class DB_sqlite extends DB_common {
+class DB_sqlite extends DB_common
+{
     // {{{ properties
 
     var $connection;
@@ -102,7 +102,8 @@ class DB_sqlite extends DB_common {
      *
      * @access public
      */
-    function DB_sqlite() {
+    function DB_sqlite()
+    {
 
         $this->DB_common();
         $this->phptype = 'sqlite';
@@ -154,7 +155,8 @@ class DB_sqlite extends DB_common {
      * @access public
      * @return int DB_OK on success, a DB error on failure
      */
-    function connect($dsninfo, $persistent = false) {
+    function connect($dsninfo, $persistent = false)
+    {
         $ret = DB_OK;
         $file = $dsninfo['database'];
 
@@ -191,7 +193,7 @@ class DB_sqlite extends DB_common {
         }
 
         $connect_function = $persistent ? 'sqlite_popen' : 'sqlite_open';
-        if (!($conn = @$connect_function($dsninfo['database']) )) {
+        if (!($conn = @$connect_function($dsninfo['database']))) {
             return $this->sqliteRaiseError(DB_ERROR_NODBSELECTED);
         }
         $this->connection = $conn;
@@ -210,7 +212,8 @@ class DB_sqlite extends DB_common {
      * @return bool TRUE on success, FALSE if not connected.
      * @todo fix return values
      */
-    function disconnect() {
+    function disconnect()
+    {
         $ret = @sqlite_close($this->connection);
         $this->connection = null;
         return $ret;
@@ -229,7 +232,8 @@ class DB_sqlite extends DB_common {
      * queries, DB_OK for other successful queries. A DB error is
      * returned on failure.
      */
-    function simpleQuery($query) {
+    function simpleQuery($query)
+    {
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
         $query = $this->_modifyQuery($query);
@@ -238,7 +242,7 @@ class DB_sqlite extends DB_common {
         ini_restore('track_errors');
         $this->_lasterror = isset($php_errormsg) ? $php_errormsg : '';
         $this->result = $result;
-        if (!$this->result ) {
+        if (!$this->result) {
             return $this->sqliteRaiseError(null);
         }
 
@@ -248,7 +252,7 @@ class DB_sqlite extends DB_common {
             $numRows = $this->numRows($result);
 
             /* if numRows() returned PEAR_Error */
-            if (is_object($numRows )) {
+            if (is_object($numRows)) {
                 return $numRows;
             }
             return $result;
@@ -266,7 +270,8 @@ class DB_sqlite extends DB_common {
      * @access public
      * @return true if a result is available otherwise return false
      */
-    function nextResult($result) {
+    function nextResult($result)
+    {
         return false;
     }
 
@@ -300,7 +305,8 @@ class DB_sqlite extends DB_common {
      * @see DB_common::setFetchMode()
      * @access public
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum=null) {
+    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
+    {
         if ($rownum !== null) {
             if (!@sqlite_seek($this->result, $rownum)) {
                 return null;
@@ -346,7 +352,8 @@ class DB_sqlite extends DB_common {
      *
      * @return number of columns in a result set
      */
-    function numCols($result) {
+    function numCols($result)
+    {
         $cols = @sqlite_num_fields($result);
         if (!$cols) {
             return $this->sqliteRaiseError();
@@ -362,7 +369,8 @@ class DB_sqlite extends DB_common {
      *
      * @return number of rows affected by the last query
      */
-    function numRows($result) {
+    function numRows($result)
+    {
         $rows = @sqlite_num_rows($result);
         if (!is_integer($rows)) {
             return $this->raiseError();
@@ -378,8 +386,9 @@ class DB_sqlite extends DB_common {
      *
      * @return number of rows affected by the last query
      */
-    function affectedRows() {
-        return sqlite_changes($this->connection );
+    function affectedRows()
+    {
+        return sqlite_changes($this->connection);
     }
 
     // }}}
@@ -417,7 +426,7 @@ class DB_sqlite extends DB_common {
                 '/^table .* already exists$/' => DB_ERROR_ALREADY_EXISTS,
                 '/^no such column:/' => DB_ERROR_NOSUCHFIELD,
                 '/^near ".*": syntax error$/' => DB_ERROR_SYNTAX
-             );
+            );
         }
         foreach ($error_regexps as $regexp => $code) {
             if (preg_match($regexp, $errormsg)) {
@@ -516,7 +525,8 @@ class DB_sqlite extends DB_common {
      * @param string $type What kind of info you want to retrieve
      * @return string The SQL query string
      */
-    function getSpecialQuery($type, $args=array()) {
+    function getSpecialQuery($type, $args=array())
+    {
         $query = '';
         if(!is_array($args))
             return $this->raiseError('no key specified', null, null, null,
@@ -539,11 +549,11 @@ class DB_sqlite extends DB_common {
         case 'schema_x':
             /*
              * Use like:
-             * $res = $db->query( $db->getSpecialQuery('schema_x', array('table' => 'table3' )) );
+             * $res = $db->query($db->getSpecialQuery('schema_x', array('table' => 'table3')));
              */
             $query .= 'SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL ';
             $query .= 'SELECT * FROM sqlite_temp_master) ';
-            $query .= sprintf("WHERE tbl_name LIKE '%s' AND type!='meta' ", $args['table'] );
+            $query .= sprintf("WHERE tbl_name LIKE '%s' AND type!='meta' ", $args['table']);
             $query .= 'ORDER BY type DESC, name;';
             break;
         case 'alter':
@@ -559,7 +569,7 @@ class DB_sqlite extends DB_common {
              *     'rows'  => "id INTEGER PRIMARY KEY, firstname TEXT, surname TEXT, datetime TEXT",
              *     'save'  => "NULL, titel, content, datetime"
              * );
-             * $res = $db->query( $db->getSpecialQuery('alter', $args) );
+             * $res = $db->query( $db->getSpecialQuery('alter', $args));
              */
             $rows = strtr($args['rows'], $this->keywords);
 
@@ -574,9 +584,9 @@ class DB_sqlite extends DB_common {
 
             // This is a dirty hack, since the above query will no get executed with a single
             // query call; so here the query method will be called directly and return a select instead.
-            $q = explode(';', $query );
+            $q = explode(';', $query);
             for($i=0; $i<8; $i++) {
-                $result = $this->query( $q[$i] );
+                $result = $this->query($q[$i]);
             }
             $query = "SELECT * FROM {$args['table']};";
             break;
@@ -600,12 +610,13 @@ class DB_sqlite extends DB_common {
      * @return mixed array on an unspecified key, integer on a passed arg and
      * FALSE at a stats error.
      */
-    function getDbFileStats($arg = '') {
-        $stats = stat($this->dsn['database'] );
-        if ($stats == false )
+    function getDbFileStats($arg = '')
+    {
+        $stats = stat($this->dsn['database']);
+        if ($stats == false)
             return false;
         if (is_array($stats)) {
-            if(is_numeric($arg) ) {
+            if(is_numeric($arg)) {
                 if(((int)$arg <= 12) & ((int)$arg >= 0))
                     return false;
                 return $stats[$arg ];
@@ -633,11 +644,12 @@ class DB_sqlite extends DB_common {
      * "DELETE FROM table" gives 0 affected rows in SQLite.
      *
      * This little hack lets you know how many rows were deleted.
-     * 
+     *
      * @param string $query The SQL query string
      * @return string The SQL query string
      */
-    function _modifyQuery($query ) {
+    function _modifyQuery($query)
+    {
         if ($this->options['optimize'] == 'portability') {
             if (preg_match('/^\s*DELETE\s+FROM\s+(\S+)\s*$/i', $query)) {
                 $query = preg_replace('/^\s*DELETE\s+FROM\s+(\S+)\s*$/',
@@ -661,7 +673,8 @@ class DB_sqlite extends DB_common {
      * @see errorCode()
      * @see DB_common::raiseError()
      */
-    function sqliteRaiseError($errno = null) {
+    function sqliteRaiseError($errno = null)
+    {
 
         $native = $this->errorNative();
         if ($errno === null) {
@@ -676,5 +689,12 @@ class DB_sqlite extends DB_common {
 
     // }}}
 }
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
 
 ?>

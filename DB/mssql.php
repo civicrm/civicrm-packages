@@ -29,7 +29,6 @@ require_once 'DB/common.php';
  * @category Database
  * @author   Sterling Hughes <sterling@php.net>
  */
-
 class DB_mssql extends DB_common
 {
     // {{{ properties
@@ -715,5 +714,15 @@ class DB_mssql extends DB_common
         else if (!in_array($value, $array))
             array_push($array, $value);
     }
+
+    // }}}
 }
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
+
 ?>

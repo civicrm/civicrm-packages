@@ -39,7 +39,6 @@ require_once 'DB/common.php';
  * @category Database
  * @author   Tomas V.V.Cox <cox@idecnet.com>
  */
-
 class DB_ifx extends DB_common
 {
     // {{{ properties
@@ -80,6 +79,7 @@ class DB_ifx extends DB_common
 
     // }}}
     // {{{ connect()
+
     /**
      * Connect to a database and log in as the specified user.
      *
@@ -111,6 +111,7 @@ class DB_ifx extends DB_common
 
     // }}}
     // {{{ disconnect()
+
     /**
      * Log out and disconnect from the database.
      *
@@ -125,6 +126,7 @@ class DB_ifx extends DB_common
 
     // }}}
     // {{{ simpleQuery()
+
     /**
      * Send a query to Informix and return the results as a
      * Informix resource identifier.
@@ -192,6 +194,7 @@ class DB_ifx extends DB_common
 
     // }}}
     // {{{ affectedRows()
+
     /**
      * Gets the number of rows affected by the last query.
      * if the last query was a select, returns an _estimate_ value.
@@ -266,6 +269,7 @@ class DB_ifx extends DB_common
 
     // }}}
     // {{{ numCols()
+
     /**
      * Get the number of columns in a result set.
      *
@@ -283,6 +287,7 @@ class DB_ifx extends DB_common
 
     // }}}
     // {{{ freeResult()
+
     /**
      * Free the internal resources associated with $result.
      *
@@ -411,10 +416,10 @@ class DB_ifx extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {
@@ -427,6 +432,14 @@ class DB_ifx extends DB_common
     }
 
     // }}}
+
 }
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
 
 ?>

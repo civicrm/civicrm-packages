@@ -34,7 +34,6 @@ require_once 'DB/common.php';
  * @category Database
  * @author   Stig Bakken <ssb@php.net>
  */
-
 class DB_dbase extends DB_common
 {
     // {{{ properties
@@ -55,7 +54,6 @@ class DB_dbase extends DB_common
      *
      * @access public
      */
-
     function DB_dbase()
     {
         $this->DB_common();
@@ -180,4 +178,12 @@ class DB_dbase extends DB_common
     // }}}
 
 }
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
+
 ?>

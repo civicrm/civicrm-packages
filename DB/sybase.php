@@ -37,7 +37,6 @@ require_once 'DB/common.php';
  * @author   Sterling Hughes <sterling@php.net>
  * @author   Antônio Carlos Venâncio Júnior <floripa@php.net>
  */
-
 class DB_sybase extends DB_common
 {
     // {{{ properties
@@ -535,10 +534,10 @@ class DB_sybase extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {
@@ -775,7 +774,7 @@ class DB_sybase extends DB_common
                     }
                 }
             }
-       
+
         }
 
         if (array_key_exists($column, $flags)) {
@@ -813,4 +812,5 @@ class DB_sybase extends DB_common
  * c-basic-offset: 4
  * End:
  */
+
 ?>

@@ -41,7 +41,6 @@ require_once 'DB/common.php';
  * @category Database
  * @author   Chaillan Nicolas <nicos@php.net>
  */
-
 class DB_mysql4 extends DB_common
 {
     // {{{ properties
@@ -834,4 +833,12 @@ class DB_mysql4 extends DB_common
    // }}}
 
 }
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
+
 ?>

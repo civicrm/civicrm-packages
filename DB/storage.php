@@ -31,7 +31,6 @@ require_once 'DB.php';
  * @category Database
  * @author   Stig Bakken <stig@php.net>
  */
-
 class DB_storage extends PEAR
 {
     // {{{ properties
@@ -345,7 +344,7 @@ class DB_storage extends PEAR
         }
         return DB_OK;
     }
-*/
+ */
 
     // }}}
     // {{{ set()
@@ -487,5 +486,12 @@ class DB_storage extends PEAR
 
     // }}}
 }
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
 
 ?>

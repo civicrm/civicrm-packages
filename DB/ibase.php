@@ -34,7 +34,6 @@ require_once 'DB/common.php';
  * @category Database
  * @author   Sterling Hughes <sterling@php.net>
  */
-
 class DB_ibase extends DB_common
 {
 
@@ -174,19 +173,18 @@ class DB_ibase extends DB_common
     // {{{ modifyLimitQuery()
 
     /**
-    * This method is used by backends to alter limited queries
-    * Uses the new FIRST n SKIP n Firebird 1.0 syntax, so it is
-    * only compatible with Firebird 1.x
-    *
-    * @param string  $query query to modify
-    * @param integer $from  the row to start to fetching
-    * @param integer $count the numbers of rows to fetch
-    *
-    * @return the new (modified) query
-    * @author Ludovico Magnocavallo <ludo@sumatrasolutions.com>
-    * @access private
-    */
-
+     * This method is used by backends to alter limited queries
+     * Uses the new FIRST n SKIP n Firebird 1.0 syntax, so it is
+     * only compatible with Firebird 1.x
+     *
+     * @param string  $query query to modify
+     * @param integer $from  the row to start to fetching
+     * @param integer $count the numbers of rows to fetch
+     *
+     * @return the new (modified) query
+     * @author Ludovico Magnocavallo <ludo@sumatrasolutions.com>
+     * @access private
+     */
     function modifyLimitQuery($query, $from, $count)
     {
         if ($this->dsn['dbsyntax'] == 'firebird') {
@@ -486,6 +484,7 @@ class DB_ibase extends DB_common
 
     // }}}
     // {{{ nextId()
+
     /**
      * Get the next value in a sequence.
      *
@@ -564,73 +563,73 @@ class DB_ibase extends DB_common
     // }}}
     // {{{ _ibaseFieldFlags()
 
-     /**
-      * get the Flags of a Field
-      *
-      * @param string $field_name the name of the field
-      * @param string $table_name the name of the table
-      *
-      * @return string The flags of the field ("primary_key", "unique_key", "not_null"
-      *                "default", "computed" and "blob" are supported)
-      * @access private
-      */
-     function _ibaseFieldFlags($field_name, $table_name)
-     {
+    /**
+     * get the Flags of a Field
+     *
+     * @param string $field_name the name of the field
+     * @param string $table_name the name of the table
+     *
+     * @return string The flags of the field ("primary_key", "unique_key", "not_null"
+     *                "default", "computed" and "blob" are supported)
+     * @access private
+     */
+    function _ibaseFieldFlags($field_name, $table_name)
+    {
 
-         $sql = 'SELECT  R.RDB$CONSTRAINT_TYPE CTYPE'
-                .' FROM  RDB$INDEX_SEGMENTS I'
-                .' JOIN  RDB$RELATION_CONSTRAINTS R ON I.RDB$INDEX_NAME=R.RDB$INDEX_NAME'
-               .' WHERE  I.RDB$FIELD_NAME=\''.$field_name.'\''
-                  .' AND R.RDB$RELATION_NAME=\''.$table_name.'\'';
-         $result = ibase_query($this->connection, $sql);
-         if (empty($result)) {
-             $tmp =& $this->ibaseRaiseError();
-             return $tmp;
-         }
-         if ($obj = @ibase_fetch_object($result)) {
-             ibase_free_result($result);
-             if (isset($obj->CTYPE)  && trim($obj->CTYPE) == 'PRIMARY KEY') {
-                 $flags = 'primary_key ';
-             }
-             if (isset($obj->CTYPE)  && trim($obj->CTYPE) == 'UNIQUE') {
-                 $flags .= 'unique_key ';
-             }
-         }
+        $sql = 'SELECT  R.RDB$CONSTRAINT_TYPE CTYPE'
+               .' FROM  RDB$INDEX_SEGMENTS I'
+               .' JOIN  RDB$RELATION_CONSTRAINTS R ON I.RDB$INDEX_NAME=R.RDB$INDEX_NAME'
+              .' WHERE  I.RDB$FIELD_NAME=\''.$field_name.'\''
+                 .' AND R.RDB$RELATION_NAME=\''.$table_name.'\'';
+        $result = ibase_query($this->connection, $sql);
+        if (empty($result)) {
+            $tmp =& $this->ibaseRaiseError();
+            return $tmp;
+        }
+        if ($obj = @ibase_fetch_object($result)) {
+            ibase_free_result($result);
+            if (isset($obj->CTYPE)  && trim($obj->CTYPE) == 'PRIMARY KEY') {
+                $flags = 'primary_key ';
+            }
+            if (isset($obj->CTYPE)  && trim($obj->CTYPE) == 'UNIQUE') {
+                $flags .= 'unique_key ';
+            }
+        }
 
-         $sql = 'SELECT  R.RDB$NULL_FLAG AS NFLAG,'
-                      .' R.RDB$DEFAULT_SOURCE AS DSOURCE,'
-                      .' F.RDB$FIELD_TYPE AS FTYPE,'
-                      .' F.RDB$COMPUTED_SOURCE AS CSOURCE'
-                .' FROM  RDB$RELATION_FIELDS R '
-                .' JOIN  RDB$FIELDS F ON R.RDB$FIELD_SOURCE=F.RDB$FIELD_NAME'
-               .' WHERE  R.RDB$RELATION_NAME=\''.$table_name.'\''
-                 .' AND  R.RDB$FIELD_NAME=\''.$field_name.'\'';
-         $result = ibase_query($this->connection, $sql);
-         if (empty($result)) {
-             $tmp =& $this->ibaseRaiseError();
-             return $tmp;
-         }
-         if ($obj = @ibase_fetch_object($result)) {
-             ibase_free_result($result);
-             if (isset($obj->NFLAG)) {
-                 $flags .= 'not_null ';
-             }
-             if (isset($obj->DSOURCE)) {
-                 $flags .= 'default ';
-             }
-             if (isset($obj->CSOURCE)) {
-                 $flags .= 'computed ';
-             }
-             if (isset($obj->FTYPE)  && $obj->FTYPE == 261) {
-                 $flags .= 'blob ';
-             }
-         }
+        $sql = 'SELECT  R.RDB$NULL_FLAG AS NFLAG,'
+                     .' R.RDB$DEFAULT_SOURCE AS DSOURCE,'
+                     .' F.RDB$FIELD_TYPE AS FTYPE,'
+                     .' F.RDB$COMPUTED_SOURCE AS CSOURCE'
+               .' FROM  RDB$RELATION_FIELDS R '
+               .' JOIN  RDB$FIELDS F ON R.RDB$FIELD_SOURCE=F.RDB$FIELD_NAME'
+              .' WHERE  R.RDB$RELATION_NAME=\''.$table_name.'\''
+                .' AND  R.RDB$FIELD_NAME=\''.$field_name.'\'';
+        $result = ibase_query($this->connection, $sql);
+        if (empty($result)) {
+            $tmp =& $this->ibaseRaiseError();
+            return $tmp;
+        }
+        if ($obj = @ibase_fetch_object($result)) {
+            ibase_free_result($result);
+            if (isset($obj->NFLAG)) {
+                $flags .= 'not_null ';
+            }
+            if (isset($obj->DSOURCE)) {
+                $flags .= 'default ';
+            }
+            if (isset($obj->CSOURCE)) {
+                $flags .= 'computed ';
+            }
+            if (isset($obj->FTYPE)  && $obj->FTYPE == 261) {
+                $flags .= 'blob ';
+            }
+        }
 
-         return trim($flags);
-     }
+        return trim($flags);
+    }
 
-     // }}}
-     // {{{ tableInfo()
+    // }}}
+    // {{{ tableInfo()
 
     /**
      * Returns information about a table or a result set.
@@ -678,53 +677,53 @@ class DB_ibase extends DB_common
             return $this->ibaseRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
 
-         $count = @ibase_num_fields($id);
+        $count = @ibase_num_fields($id);
 
-         // made this IF due to performance (one if is faster than $count if's)
-         if (is_null($mode)) {
-             for ($i=0; $i<$count; $i++) {
-                 $info = @ibase_field_info($id, $i);
-                 $res[$i]['table'] = ($got_string) ? $result : '';
-                 $res[$i]['name']  = $info['name'];
-                 $res[$i]['type']  = $info['type'];
-                 $res[$i]['len']   = $info['length'];
-                 $res[$i]['flags'] = ($got_string) ? $this->_ibaseFieldFlags($info['name'], $result) : '';
-             }
+        // made this IF due to performance (one if is faster than $count if's)
+        if (is_null($mode)) {
+            for ($i=0; $i<$count; $i++) {
+                $info = @ibase_field_info($id, $i);
+                $res[$i]['table'] = ($got_string) ? $result : '';
+                $res[$i]['name']  = $info['name'];
+                $res[$i]['type']  = $info['type'];
+                $res[$i]['len']   = $info['length'];
+                $res[$i]['flags'] = ($got_string) ? $this->_ibaseFieldFlags($info['name'], $result) : '';
+            }
 
-         } else { // full
-             $res['num_fields']= $count;
+        } else { // full
+            $res['num_fields']= $count;
 
-             for ($i=0; $i<$count; $i++) {
-                 $info = @ibase_field_info($id, $i);
-                 $res[$i]['table'] = ($got_string) ? $result : '';
-                 $res[$i]['name']  = $info['name'];
-                 $res[$i]['type']  = $info['type'];
-                 $res[$i]['len']   = $info['length'];
-                 $res[$i]['flags'] = ($got_string) ? $this->_ibaseFieldFlags($info['name'], $result) : '';
-                 if ($mode & DB_TABLEINFO_ORDER) {
-                     $res['order'][$res[$i]['name']] = $i;
-                 }
-                 if ($mode & DB_TABLEINFO_ORDERTABLE) {
-                     $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
-                 }
-             }
-         }
+            for ($i=0; $i<$count; $i++) {
+                $info = @ibase_field_info($id, $i);
+                $res[$i]['table'] = ($got_string) ? $result : '';
+                $res[$i]['name']  = $info['name'];
+                $res[$i]['type']  = $info['type'];
+                $res[$i]['len']   = $info['length'];
+                $res[$i]['flags'] = ($got_string) ? $this->_ibaseFieldFlags($info['name'], $result) : '';
+                if ($mode & DB_TABLEINFO_ORDER) {
+                    $res['order'][$res[$i]['name']] = $i;
+                }
+                if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                    $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
+                }
+            }
+        }
 
-         // free the result only if we were called on a table
-         if ($got_string) {
-             ibase_free_result($id);
-         }
-         return $res;
-     }
+        // free the result only if we were called on a table
+        if ($got_string) {
+            ibase_free_result($id);
+        }
+        return $res;
+    }
 
     // }}}
     // {{{ getSpecialQuery()
 
     /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {

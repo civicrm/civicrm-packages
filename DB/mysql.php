@@ -23,6 +23,10 @@
 //
 // XXX ERRORMSG: The error message from the mysql function should
 //               be registered here.
+//
+// TODO/wishlist:
+// longReadlen
+// binmode
 
 
 require_once 'DB/common.php';
@@ -38,7 +42,6 @@ require_once 'DB/common.php';
  * @category Database
  * @author   Stig Bakken <ssb@php.net>
  */
-
 class DB_mysql extends DB_common
 {
     // {{{ properties
@@ -61,7 +64,6 @@ class DB_mysql extends DB_common
      *
      * @access public
      */
-
     function DB_mysql()
     {
         $this->DB_common();
@@ -107,7 +109,6 @@ class DB_mysql extends DB_common
      * @access public
      * @return int DB_OK on success, a DB error on failure
      */
-
     function connect($dsninfo, $persistent = false)
     {
         if (!DB::assertExtension('mysql')) {
@@ -454,7 +455,6 @@ class DB_mysql extends DB_common
      *
      * @return number of rows affected by the last query
      */
-
     function affectedRows()
     {
         if (DB::isManip($this->last_query)) {
@@ -476,7 +476,6 @@ class DB_mysql extends DB_common
      *
      * @return int native MySQL error code
      */
-
     function errorNative()
     {
         return mysql_errno($this->connection);
@@ -600,12 +599,12 @@ class DB_mysql extends DB_common
     // {{{ _BCsequence()
 
     /**
-    * Backwards compatibility with old sequence emulation implementation
-    * (clean up the dupes)
-    *
-    * @param string $seqname The sequence name to clean up
-    * @return mixed DB_Error or true
-    */
+     * Backwards compatibility with old sequence emulation implementation
+     * (clean up the dupes)
+     *
+     * @param string $seqname The sequence name to clean up
+     * @return mixed DB_Error or true
+     */
     function _BCsequence($seqname)
     {
         // Obtain a user-level lock... this will release any previous
@@ -814,10 +813,10 @@ class DB_mysql extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {
@@ -854,9 +853,13 @@ class DB_mysql extends DB_common
 
     // }}}
 
-    // TODO/wishlist:
-    // longReadlen
-    // binmode
 }
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
 
 ?>

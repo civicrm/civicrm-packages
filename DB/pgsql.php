@@ -31,7 +31,6 @@ require_once 'DB/common.php';
  * @author   Rui Hirokawa <rui_hirokawa@ybb.ne.jp>
  * @author   Stig Bakken <ssb@php.net>
  */
-
 class DB_pgsql extends DB_common
 {
     // {{{ properties
@@ -755,10 +754,10 @@ class DB_pgsql extends DB_common
     // {{{ getTablesQuery()
 
     /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {
@@ -805,8 +804,11 @@ class DB_pgsql extends DB_common
 
 }
 
-// Local variables:
-// tab-width: 4
-// c-basic-offset: 4
-// End:
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
+
 ?>

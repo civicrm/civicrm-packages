@@ -29,7 +29,6 @@ require_once 'DB/common.php';
  * @category Database
  * @author   Sterling Hughes <sterling@php.net>
  */
-
 class DB_msql extends DB_common
 {
     // {{{ properties
@@ -226,7 +225,6 @@ class DB_msql extends DB_common
      *
      * @return number of rows affected by the last query
      */
-
     function affectedRows()
     {
         return @msql_affected_rows($this->connection);
@@ -236,10 +234,10 @@ class DB_msql extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-    * Returns the query needed to get some backend info
-    * @param string $type What kind of info you want to retrieve
-    * @return string The SQL query string
-    */
+     * Returns the query needed to get some backend info
+     * @param string $type What kind of info you want to retrieve
+     * @return string The SQL query string
+     */
     function getSpecialQuery($type)
     {
         switch ($type) {
@@ -253,4 +251,12 @@ class DB_msql extends DB_common
     // }}}
 
 }
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
+
 ?>

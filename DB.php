@@ -20,12 +20,13 @@
 // $Id$
 //
 // Database independent query interface.
-//
+
 
 require_once 'PEAR.php';
 
 // {{{ constants
 // {{{ error codes
+
 /*
  * The method mapErrorCode in each DB_dbtype implementation maps
  * native error codes to one of these.
@@ -33,7 +34,6 @@ require_once 'PEAR.php';
  * If you add an error code here, make sure you also add a textual
  * version of it in DB::errorMessage().
  */
-
 define('DB_OK',                         1);
 define('DB_ERROR',                     -1);
 define('DB_ERROR_SYNTAX',              -2);
@@ -65,6 +65,7 @@ define('DB_ERROR_NOSUCHDB',           -27);
 
 // }}}
 // {{{ prepared statement-related
+
 /*
  * These constants are used when storing information about prepared
  * statements (using the "prepare" method in DB_dbtype).
@@ -81,13 +82,13 @@ define('DB_ERROR_NOSUCHDB',           -27);
  * DB_PARAM_OPAQUE (&) => 'string from file quoted'
  * DB_PARAM_MISC   (!) => original string
  */
-
 define('DB_PARAM_SCALAR', 1);
 define('DB_PARAM_OPAQUE', 2);
 define('DB_PARAM_MISC',   3);
 
 // }}}
 // {{{ binary data-related
+
 /*
  * These constants define different ways of returning binary data
  * from queries.  Again, this model has been borrowed from the ODBC
@@ -99,36 +100,32 @@ define('DB_PARAM_MISC',   3);
  * DB_BINMODE_CONVERT returns data as well, only it is converted to
  * hex format, for example the string "123" would become "313233".
  */
-
 define('DB_BINMODE_PASSTHRU', 1);
 define('DB_BINMODE_RETURN',   2);
 define('DB_BINMODE_CONVERT',  3);
 
 // }}}
 // {{{ fetch modes
+
 /**
  * This is a special constant that tells DB the user hasn't specified
  * any particular get mode, so the default should be used.
  */
-
 define('DB_FETCHMODE_DEFAULT', 0);
 
 /**
  * Column data indexed by numbers, ordered from 0 and up
  */
-
 define('DB_FETCHMODE_ORDERED', 1);
 
 /**
  * Column data indexed by column names
  */
-
 define('DB_FETCHMODE_ASSOC', 2);
 
 /**
  * Column data as object properties
  */
-
 define('DB_FETCHMODE_OBJECT', 3);
 
 /**
@@ -137,23 +134,21 @@ define('DB_FETCHMODE_OBJECT', 3);
  * DB_FETCHMODE_FLIPPED switches this order, so the first level of arrays
  * is the column name, and the second level the row number.
  */
-
 define('DB_FETCHMODE_FLIPPED', 4);
 
 /* for compatibility */
-
 define('DB_GETMODE_ORDERED', DB_FETCHMODE_ORDERED);
 define('DB_GETMODE_ASSOC',   DB_FETCHMODE_ASSOC);
 define('DB_GETMODE_FLIPPED', DB_FETCHMODE_FLIPPED);
 
 // }}}
 // {{{ tableInfo() && autoPrepare()-related
+
 /**
  * these are constants for the tableInfo-function
  * they are bitwised or'ed. so if there are more constants to be defined
  * in the future, adjust DB_TABLEINFO_FULL accordingly
  */
-
 define('DB_TABLEINFO_ORDER', 1);
 define('DB_TABLEINFO_ORDERTABLE', 2);
 define('DB_TABLEINFO_FULL', 3);
@@ -165,9 +160,10 @@ define('DB_AUTOQUERY_INSERT', 1);
 define('DB_AUTOQUERY_UPDATE', 2);
 
 // }}}
-// }}}
 
+// }}}
 // {{{ class DB
+
 /**
  * The main "DB" class is simply a container class with some static
  * methods for creating DB objects as well as some utility functions
@@ -196,7 +192,6 @@ define('DB_AUTOQUERY_UPDATE', 2);
  * @version  $Id$
  * @category Database
  */
-
 class DB
 {
     // {{{ &factory()
@@ -321,6 +316,7 @@ class DB
 
     // }}}
     // {{{ apiVersion()
+
     /**
      * Return the DB API version
      *
@@ -335,6 +331,7 @@ class DB
 
     // }}}
     // {{{ isError()
+
     /**
      * Tell whether a result code from a DB method is an error
      *
@@ -353,6 +350,7 @@ class DB
 
     // }}}
     // {{{ isConnection()
+
     /**
      * Tell whether a value is a DB connection
      *
@@ -371,6 +369,7 @@ class DB
 
     // }}}
     // {{{ isManip()
+
     /**
      * Tell whether a query is a data manipulation query (insert,
      * update or delete) or a data definition query (create, drop,
@@ -394,6 +393,7 @@ class DB
 
     // }}}
     // {{{ errorMessage()
+
     /**
      * Return a textual error message for a DB error code
      *
@@ -602,6 +602,7 @@ class DB
 
     // }}}
     // {{{ assertExtension()
+
     /**
      * Load a PHP database extension if it is not loaded already.
      *
@@ -625,9 +626,10 @@ class DB
     }
     // }}}
 }
-// }}}
 
+// }}}
 // {{{ class DB_Error
+
 /**
  * DB_Error implements a class for reporting portable database error
  * messages.
@@ -638,6 +640,7 @@ class DB
 class DB_Error extends PEAR_Error
 {
     // {{{ constructor
+
     /**
      * DB_Error constructor.
      *
@@ -650,7 +653,6 @@ class DB_Error extends PEAR_Error
      *
      * @see PEAR_Error
      */
-
     function DB_Error($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
               $level = E_USER_NOTICE, $debuginfo = null)
     {
@@ -662,9 +664,10 @@ class DB_Error extends PEAR_Error
     }
     // }}}
 }
-// }}}
 
+// }}}
 // {{{ class DB_Result
+
 /**
  * This class implements a wrapper for a DB result set.
  * A new instance of this class will be returned by the DB implementation
@@ -673,7 +676,6 @@ class DB_Error extends PEAR_Error
  * @package  DB
  * @author Stig Bakken <ssb@php.net>
  */
-
 class DB_result
 {
     // {{{ properties
@@ -681,27 +683,28 @@ class DB_result
     var $dbh;
     var $result;
     var $row_counter = null;
+
     /**
-    * for limit queries, the row to start fetching
-    * @var integer
-    */
+     * for limit queries, the row to start fetching
+     * @var integer
+     */
     var $limit_from  = null;
 
     /**
-    * for limit queries, the number of rows to fetch
-    * @var integer
-    */
+     * for limit queries, the number of rows to fetch
+     * @var integer
+     */
     var $limit_count = null;
 
     // }}}
     // {{{ constructor
+
     /**
      * DB_result constructor.
      * @param resource &$dbh   DB object reference
      * @param resource $result  result resource id
      * @param array    $options assoc array with optional result options
      */
-
     function DB_result(&$dbh, $result, $options = array())
     {
         $this->dbh = &$dbh;
@@ -727,6 +730,7 @@ class DB_result
 
     // }}}
     // {{{ fetchRow()
+
     /**
      * Fetch and return a row of data (it uses driver->fetchInto for that)
      * @param int $fetchmode format of fetched row
@@ -790,6 +794,7 @@ class DB_result
 
     // }}}
     // {{{ fetchInto()
+
     /**
      * Fetch a row of data into an existing variable.
      *
@@ -856,6 +861,7 @@ class DB_result
 
     // }}}
     // {{{ numCols()
+
     /**
      * Get the the number of columns in a result set.
      *
@@ -870,6 +876,7 @@ class DB_result
 
     // }}}
     // {{{ numRows()
+
     /**
      * Get the number of rows in a result set.
      *
@@ -884,6 +891,7 @@ class DB_result
 
     // }}}
     // {{{ nextResult()
+
     /**
      * Get the next result if a batch of queries was executed.
      *
@@ -898,6 +906,7 @@ class DB_result
 
     // }}}
     // {{{ free()
+
     /**
      * Frees the resources allocated for this result set.
      * @return  int error code
@@ -932,31 +941,34 @@ class DB_result
 
     // }}}
     // {{{ getRowCounter()
+
     /**
-    * returns the actual row number
-    * @return integer
-    */
+     * returns the actual row number
+     * @return integer
+     */
     function getRowCounter()
     {
         return $this->row_counter;
     }
     // }}}
 }
-// }}}
 
+// }}}
 // {{{ class DB_Row
+
 /**
-* Pear DB Row Object
-* @see DB_common::setFetchMode()
-*/
+ * Pear DB Row Object
+ * @see DB_common::setFetchMode()
+ */
 class DB_row
 {
     // {{{ constructor
+
     /**
-    * constructor
-    *
-    * @param resource row data as array
-    */
+     * constructor
+     *
+     * @param resource row data as array
+     */
     function DB_row(&$arr)
     {
         for (reset($arr); $key = key($arr); next($arr)) {
@@ -966,6 +978,14 @@ class DB_row
 
     // }}}
 }
+
 // }}}
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ */
 
 ?>
