@@ -600,8 +600,10 @@ class DB_pgsql extends DB_common
      * @param int $resource PostgreSQL result identifier
      * @param int $num_field the field number
      *
-     * @return string The flags of the field ("not_null", "default_xx", "primary_key",
-     *                "unique_key" and "multiple_key" are supported)
+     * @return string The flags of the field ("not_null", "default_value",
+     *                "primary_key", "unique_key" and "multiple_key"
+     *                are supported).  The default value is passed
+     *                through rawurlencode() in case there are spaces in it.
      * @access private
      */
     function _pgFieldFlags($resource, $num_field, $table_name)
@@ -625,9 +627,8 @@ class DB_pgsql extends DB_common
                                     AND f.attrelid = a.adrelid AND f.attname = '$field_name'
                                     AND tab.relname = '$table_name' AND f.attnum = a.adnum");
                 $row = @pg_fetch_row($result, 0);
-                $num = str_replace('\'', '', $row[0]);
-
-                $flags .= "default_$num ";
+                $num = preg_replace("/'(.*)'::\w+/", "\\1", $row[0]);
+                $flags .= 'default_' . rawurlencode($num) . ' ';
             }
         } else {
             $flags = '';

@@ -365,7 +365,7 @@ $quirks = array(
         4 => array(
             'type' => 'bpchar',
             'len' => -1,
-            'flags' => 'not_null default_dflt::bpchar',
+            'flags' => "not_null default_df%20t",
         ),
         5 => array(
             'type' => 'numeric',
@@ -453,7 +453,7 @@ $dbh->query("
         fk INTEGER NOT NULL,
         c {$quirks[$dbh->phptype]['clob']} NULL,
         d {$quirks[$dbh->phptype]['date']} NOT NULL,
-        e CHAR(4) DEFAULT 'dflt' NOT NULL,
+        e CHAR(4) DEFAULT 'df t' NOT NULL,
         f DECIMAL(2,1) NULL,
         PRIMARY KEY (fk),
         UNIQUE (a, d)
