@@ -951,6 +951,18 @@ class DB_result
     var $fetchmode_object_class = '';
 
     /**
+     * The row to start fetching from in limit queries
+     * @var integer
+     */
+    var $limit_from = null;
+
+    /**
+     * The number of rows to fetch from a limit query
+     * @var integer
+     */
+    var $limit_count = null;
+
+    /**
      * The query result resource id created by PHP
      * @var resource
      */
@@ -963,16 +975,10 @@ class DB_result
     var $row_counter = null;
 
     /**
-     * The row to start fetching from in limit queries
-     * @var integer
+     * The query string that created this result
+     * @var string
      */
-    var $limit_from = null;
-
-    /**
-     * The number of rows to fetch from a limit query
-     * @var integer
-     */
-    var $limit_count = null;
+    var $query = '';
 
 
     // }}}
@@ -989,15 +995,16 @@ class DB_result
      */
     function DB_result(&$dbh, $result, $options = array())
     {
-        $this->dbh = &$dbh;
-        $this->result = $result;
-        foreach ($options as $key => $value) {
-            $this->setOption($key, $value);
-        }
+        $this->dbh         = &$dbh;
+        $this->result      = $result;
+        $this->query       = $dbh->last_query;
         $this->limit_type  = $dbh->features['limit'];
         $this->autofree    = $dbh->options['autofree'];
         $this->fetchmode   = $dbh->fetchmode;
         $this->fetchmode_object_class = $dbh->fetchmode_object_class;
+        foreach ($options as $key => $value) {
+            $this->setOption($key, $value);
+        }
     }
 
     /**
@@ -1265,6 +1272,19 @@ class DB_result
             return $this->dbh->raiseError(DB_ERROR_NEED_MORE_DATA);
         }
         return $this->dbh->tableInfo($this, $mode);
+    }
+
+    // }}}
+    // {{{ getQuery()
+
+    /**
+     * Determine the query string that created this result
+     *
+     * @return string  the query string
+     */
+    function getQuery()
+    {
+        return $this->query;
     }
 
     // }}}
