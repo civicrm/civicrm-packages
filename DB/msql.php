@@ -314,6 +314,106 @@ class DB_msql extends DB_common
     }
 
     // }}}
+    // {{{ tableInfo()
+
+    /**
+     * Returns information about a table or a result set
+     *
+     * @param object|string  $result  DB_result object from a query or a
+     *                                 string containing the name of a table.
+     *                                 While this also accepts a query result
+     *                                 resource identifier, this behavior is
+     *                                 deprecated.
+     * @param int            $mode    a valid tableInfo mode
+     *
+     * @return array  an associative array with the information requested.
+     *                 A DB_Error object on failure.
+     *
+     * @see DB_common::setOption()
+     * @since Method available since Release 1.7.0
+     */
+    function tableInfo($result, $mode = null) {
+        if (is_string($result)) {
+            /*
+             * Probably received a table name.
+             * Create a result resource identifier.
+             */
+            $id = @msql_query("SELECT * FROM $result WHERE 1=0",
+                              $this->connection);
+            $got_string = true;
+        } elseif (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $id = $result->result;
+            $got_string = false;
+        } else {
+            /*
+             * Probably received a result resource identifier.
+             * Copy it.
+             * Deprecated.  Here for compatibility only.
+             */
+            $id = $result;
+            $got_string = false;
+        }
+
+        if (!is_resource($id)) {
+            return $this->raiseError(DB_ERROR_NEED_MORE_DATA);
+        }
+
+        if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
+            $case_func = 'strtolower';
+        } else {
+            $case_func = 'strval';
+        }
+
+        $count = @msql_num_fields($id);
+        $res   = array();
+
+        if ($mode) {
+            $res['num_fields'] = $count;
+        }
+
+        for ($i = 0; $i < $count; $i++) {
+            $tmp = @msql_fetch_field($id);
+
+            $flags = '';
+            if ($tmp->primary_key) {
+                $flags .= 'primary_key ';
+            }
+            if ($tmp->not_null) {
+                $flags .= 'not_null ';
+            }
+            if ($tmp->unique) {
+                $flags .= 'unique ';
+            }
+            $flags = trim($flags);
+
+            $res[$i] = array(
+                'table' => $case_func($tmp->table),
+                'name'  => $case_func($tmp->name),
+                'type'  => $tmp->type,
+                'len'   => msql_field_len($id, $i),
+                'flags' => $flags,
+            );
+
+            if ($mode & DB_TABLEINFO_ORDER) {
+                $res['order'][$res[$i]['name']] = $i;
+            }
+            if ($mode & DB_TABLEINFO_ORDERTABLE) {
+                $res['ordertable'][$res[$i]['table']][$res[$i]['name']] = $i;
+            }
+        }
+
+        // free the result only if we were called on a table
+        if ($got_string) {
+            @msql_free_result($id);
+        }
+        return $res;
+    }
+
+    // }}}
 
 }
 
