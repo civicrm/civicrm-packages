@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.50 2004-01-31 19:40:22 chagenbu Exp $ -->
+  <!-- $Id: package.xml,v 1.51 2004-02-04 06:54:08 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -58,51 +58,37 @@ also avaible from a separate package).
     </maintainer>
   </maintainers>
   <release>
-    <version>1.6.0RC3</version>
+    <version>1.6.0RC4</version>
     <state>beta</state>
-    <date>2004-01-30</date>
+    <date>2004-02-04</date>
     <notes>
 =============
-GENERAL:
+ENHANCEMENTS:
 
-Loads of small code optimizations implemented, many of
-which were found using Zend Studio's Code Analyzer.
-
-Since most DBMS's need 1/0 for boolean support, use
-1/0 in common.php and only put quoteSimple() methods
-in the few drivers that use true booleans or other
-formats (dbase, fbase, pgsql).
-
-Enhanced 15quote.phpt so it tests boolean features
-in quoteSmart() and handles more DBMS types.
-
-Added new 18get.phpt test.
+Speed up getAll() a tad.  (danielc)
 
 
 =============
 BUGS FIXED:
 
-- odbc:
-Fix connect() so uses 'database' from DSN instead of
-having to use 'hostspec' as a workaround.  Correct
-DSN syntax is: odbc(db2)://user:password@/database
+-mysql4
+Change exentsion check from mysql to mysqli.
+(chagenbu)
 
-- pgsql:
-Refine DB_ERROR_NOSUCHTABLE error_regexp.
+All normal $dsninfo array elements are now set in
+parseDSN(), eliminating the need to check them in
+each driver's connect() method.  This also eliminates
+a bug introduced in 1.6.0RC3 which caused
+&quot;undefined index&quot; notices when using an
+array for the DSN when connecting.  (danielc, chagenbu)
 
-- sqlite:
-Make freeResult() do what it says it does.
+All methods that return by reference always return
+a variable.  This avoids memory corruption in PHP 4.
+This has been gradually implemented during all of the
+1.6.0 RC's up to this point.  Bug 361.  (danielc)
 
-- ibase, msql, odbc:
-quoteSmart() now uses 1/0 for booleans.
-
-- ibase, msql, odbc:
-getSpecialQuery() doesn't return anything in these
-drivers. Put one in common.php that raises
-DB_ERROR_UNSUPPORTED.
-
-- mysql, mysql4:
-Removed unused argument "$subject" from modifyQuery().
+15quote test now works correctly for boolean types.
+(danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
