@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.156 2005-02-02 17:16:28 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.157 2005-02-02 22:52:45 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -69,7 +69,22 @@ DB is compatible with both PHP 4 and PHP 5.
     <state>beta</state>
     <date>pending</date>
     <notes><![CDATA[
-common:
+all:
+* PEAR DB can now be used on more OS's due to
+  switching from DB::assertExtension() to
+  PEAR::loadExtension().  Request 1337.
+* If DSN contains "dbsyntax", always use that for
+  $this->dbsyntax.  Used to only be done for odbc.
+* When trying to DROP an index that doesn't exist,
+  use the DB_ERROR_NOT_FOUND error code.
+* When the number of values in an INSERT query
+  doesn't match the number columns, use the
+  DB_ERROR_VALUE_COUNT_ON_ROW error code.
+* Resolve tableInfo() issue caused by PHP 5.0.3.
+  Bug 2988.
+* When using getOne() and getRow(), if the DBMS
+  supports LIMIT queries, limit the output to
+  one row.  Request 1771.
 * Consider SELECT INTO and COPY data manipulation
   queries in isManip().  Bug 2883.
 
@@ -116,6 +131,7 @@ oci8:
   (PEAR Bug #2622)
 * The autoCommit property was renamed autocommit to be
   in line with the other drivers.
+* getListOf() now supports synonyms.  Request 752.
 
 odbc:
 * Add '23504' => DB_ERROR_CONSTRAINT to error map.
@@ -140,6 +156,10 @@ pgsql:
   pg_cmdtuples() in affectedRows().
 * Make $num_rows property private.
 * Add duplicate index creation to errorcode_map.
+* When doing getListOf() for views (Bug 2085) or
+  functions, only show non-system items.
+* getListOf() now supports listing the schema and table
+  by using the 'schema.tables' type.  Request 682.
 
 sqlite:
 * Add tableInfo().  Request 1317.
@@ -154,20 +174,6 @@ sybase:
 * Remove $num_rows property.  Wasn't used in all
   drivers and numRows() can get the answer
   directly from the DBMS' API.
-
-all:
-* If DSN contains "dbsyntax", always use that for
-  $this->dbsyntax.  Used to only be done for odbc.
-* When trying to DROP an index that doesn't exist,
-  use the DB_ERROR_NOT_FOUND error code.
-* When the number of values in an INSERT query
-  doesn't match the number columns, use the
-  DB_ERROR_VALUE_COUNT_ON_ROW error code.
-* Resolve tableInfo() issue caused by PHP 5.0.3.
-  Bug 2988.
-* When using getOne() and getRow(), if the DBMS
-  supports LIMIT queries, limit the output to
-  one row.  Request 1771.
 
 tests:
 * setup.inc now uses an array for the DSN's
