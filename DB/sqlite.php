@@ -427,6 +427,7 @@ class DB_sqlite extends DB_common
                 '/^no such table:/' => DB_ERROR_NOSUCHTABLE,
                 '/^table .* already exists$/' => DB_ERROR_ALREADY_EXISTS,
                 '/PRIMARY KEY must be unique/i' => DB_ERROR_CONSTRAINT,
+                '/is not unique/' => DB_ERROR_CONSTRAINT,
                 '/uniqueness constraint failed/' => DB_ERROR_CONSTRAINT,
                 '/^no such column:/' => DB_ERROR_NOSUCHFIELD,
                 '/^near ".*": syntax error$/' => DB_ERROR_SYNTAX

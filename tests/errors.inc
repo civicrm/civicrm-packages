@@ -68,6 +68,16 @@ switch ($dbh->phptype) {
         break;
 }
 
+
+print "Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL\n";
+$dbh->query('INSERT INTO a VALUES (NULL)');
+switch ($dbh->phptype) {
+    case 'sqlite':
+        print "  $dbh->phptype doesn't consider this an error\n";
+        break;
+}
+
+
 print "Trying to provoke DB_ERROR_DIVZERO\n";
 // Interbase detects the error on fetching
 $dbh->getAll("SELECT 0/0 FROM phptest");

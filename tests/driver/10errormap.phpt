@@ -24,6 +24,8 @@ Trying to provoke DB_ERROR_CONSTRAINT for unique key update duplicate
   DB Error: constraint violation
 Trying to provoke DB_ERROR_CONSTRAINT for foreign key
   DB Error: constraint violation
+Trying to provoke DB_ERROR_CONSTRAINT_NOT_NULL
+  DB Error: null value violates not-null constraint
 Trying to provoke DB_ERROR_DIVZERO
   DB Error: division by zero
 Trying to provoke DB_ERROR_INVALID_NUMBER

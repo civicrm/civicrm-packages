@@ -71,6 +71,7 @@ class DB_odbc extends DB_common
             '22008' => DB_ERROR_INVALID_DATE,
             '22012' => DB_ERROR_DIVZERO,
             '23000' => DB_ERROR_CONSTRAINT,
+            '23502' => DB_ERROR_CONSTRAINT_NOT_NULL,
             '23503' => DB_ERROR_CONSTRAINT,
             '23505' => DB_ERROR_CONSTRAINT,
             '24000' => DB_ERROR_INVALID,
@@ -86,6 +87,7 @@ class DB_odbc extends DB_common
             'S0012' => DB_ERROR_NOT_FOUND,
             'S0021' => DB_ERROR_ALREADY_EXISTS,
             'S0022' => DB_ERROR_NOSUCHFIELD,
+            'S1000' => DB_ERROR_CONSTRAINT_NOT_NULL,
             'S1009' => DB_ERROR_INVALID,
             'S1090' => DB_ERROR_INVALID,
             'S1C00' => DB_ERROR_NOT_CAPABLE

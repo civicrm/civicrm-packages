@@ -191,6 +191,8 @@ class DB_sybase extends DB_common
                     => DB_ERROR_ALREADY_EXISTS,
                 '/Invalid column name/'
                     => DB_ERROR_NOSUCHFIELD,
+                '/does not allow null values/'
+                    => DB_ERROR_CONSTRAINT_NOT_NULL,
                 '/Command has been aborted/'
                     => DB_ERROR_CONSTRAINT,
             );

@@ -63,6 +63,7 @@ define('DB_ERROR_CONNECT_FAILED',     -24);
 define('DB_ERROR_EXTENSION_NOT_FOUND',-25);
 define('DB_ERROR_ACCESS_VIOLATION',   -26);
 define('DB_ERROR_NOSUCHDB',           -27);
+define('DB_ERROR_CONSTRAINT_NOT_NULL',-29);
 
 
 // }}}
@@ -495,6 +496,7 @@ class DB
                 DB_ERROR_CANNOT_DELETE      => 'can not delete',
                 DB_ERROR_CANNOT_DROP        => 'can not drop',
                 DB_ERROR_CONSTRAINT         => 'constraint violation',
+                DB_ERROR_CONSTRAINT_NOT_NULL=> 'null value violates not-null constraint',
                 DB_ERROR_DIVZERO            => 'division by zero',
                 DB_ERROR_INVALID            => 'invalid',
                 DB_ERROR_INVALID_DATE       => 'invalid date or time',

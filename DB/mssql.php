@@ -62,6 +62,7 @@ class DB_mssql extends DB_common
             207   => DB_ERROR_NOSUCHFIELD,
             208   => DB_ERROR_NOSUCHTABLE,
             245   => DB_ERROR_INVALID_NUMBER,
+            515   => DB_ERROR_CONSTRAINT_NOT_NULL,
             547   => DB_ERROR_CONSTRAINT,
             2627  => DB_ERROR_CONSTRAINT,
             2714  => DB_ERROR_ALREADY_EXISTS,
