@@ -707,67 +707,55 @@ class DB_mysql4 extends DB_common
     // }}}
     // {{{ tableInfo()
 
+    /**
+     * Returns information about a table or a result set.
+     *
+     * WARNING: this method will probably not work because the mysqli_*()
+     * functions it relies upon may not exist.
+     *
+     * @param object|string  $result  DB_result object from a query or a
+     *                                string containing the name of a table
+     * @param int            $mode    a valid tableInfo mode
+     * @return array  an associative array with the information requested
+     *                or an error object if something is wrong
+     * @access public
+     * @internal
+     * @see DB_common::tableInfo()
+     */
     function tableInfo($result, $mode = null) {
-        $count = 0;
-        $id    = 0;
-        $res   = array();
-
-        /*
-         * depending on $mode, metadata returns the following values:
-         *
-         * - mode is null (default):
-         * $result[]:
-         *   [0]["table"]  table name
-         *   [0]["name"]   field name
-         *   [0]["type"]   field type
-         *   [0]["len"]    field length
-         *   [0]["flags"]  field flags
-         *
-         * - mode is DB_TABLEINFO_ORDER
-         * $result[]:
-         *   ["num_fields"] number of metadata records
-         *   [0]["table"]  table name
-         *   [0]["name"]   field name
-         *   [0]["type"]   field type
-         *   [0]["len"]    field length
-         *   [0]["flags"]  field flags
-         *   ["order"][field name]  index of field named "field name"
-         *   The last one is used, if you have a field name, but no index.
-         *   Test:  if (isset($result['meta']['myfield'])) { ...
-         *
-         * - mode is DB_TABLEINFO_ORDERTABLE
-         *    the same as above. but additionally
-         *   ["ordertable"][table name][field name] index of field
-         *      named "field name"
-         *
-         *      this is, because if you have fields from different
-         *      tables with the same field name * they override each
-         *      other with DB_TABLEINFO_ORDER
-         *
-         *      you can combine DB_TABLEINFO_ORDER and
-         *      DB_TABLEINFO_ORDERTABLE with DB_TABLEINFO_ORDER |
-         *      DB_TABLEINFO_ORDERTABLE * or with DB_TABLEINFO_FULL
-         */
-
-        // if $result is a string, then we want information about a
-        // table without a resultset
-        if (is_string($result)) {
+        if (isset($result->result)) {
+            /*
+             * Probably received a result object.
+             * Extract the result resource identifier.
+             */
+            $id = $result->result;
+            $got_string = false;
+        } elseif (is_string($result)) {
+            /*
+             * Probably received a table name.
+             * Create a result resource identifier.
+             */
             $id = @mysqli_list_fields($this->dsn['database'],
                                      $result, $this->connection);
-            if (empty($id)) {
-                return $this->mysqlRaiseError();
-            }
-        } else { // else we want information about a resultset
+            $got_string = true;
+        } else {
+            /*
+             * Probably received a result resource identifier.
+             * Copy it.
+             * Depricated.  Here for compatibility only.
+             */
             $id = $result;
-            if (empty($id)) {
-                return $this->mysqlRaiseError();
-            }
+            $got_string = false;
+        }
+
+        if (!is_resource($id)) {
+            return $this->mysqlRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
 
         $count = @mysqli_num_fields($id);
 
         // made this IF due to performance (one if is faster than $count if's)
-        if (empty($mode)) {
+        if (is_null($mode)) {
             for ($i=0; $i<$count; $i++) {
                 $res[$i]['table'] = @mysqli_field_table ($id, $i);
                 $res[$i]['name']  = @mysqli_field_name  ($id, $i);
@@ -794,7 +782,7 @@ class DB_mysql4 extends DB_common
         }
 
         // free the result only if we were called on a table
-        if (is_string($result)) {
+        if ($got_string) {
             @mysqli_free_result($id);
         }
         return $res;
