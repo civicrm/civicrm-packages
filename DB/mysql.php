@@ -709,6 +709,16 @@ class DB_mysql extends DB_common
     // }}}
     // {{{ mysqlRaiseError()
 
+    /**
+     * Gather information about an error, then use that info to create a
+     * DB error object and finally return that object.
+     *
+     * @param  integer  $errno  PEAR error number (usually a DB constant) if
+     *                          manually raising an error
+     * @return object  DB error object
+     * @see DB_common::errorCode()
+     * @see DB_common::raiseError()
+     */
     function mysqlRaiseError($errno = null)
     {
         if ($errno === null) {

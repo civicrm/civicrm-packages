@@ -427,6 +427,12 @@ class DB_sqlite extends DB_common {
     // }}}
     // {{{ errorCode()
 
+    /**
+     * Determine PEAR::DB error code from the database's text error message.
+     *
+     * @param  string  $errormsg  error message returned from the database
+     * @return integer  an error number from a DB error constant
+     */
     function errorCode($errormsg)
     {
         static $error_regexps;
@@ -670,10 +676,15 @@ class DB_sqlite extends DB_common {
     // {{{ sqliteRaiseError()
 
     /**
-     * Handling PEAR Errors.
+     * Gather information about an error, then use that info to create a
+     * DB error object and finally return that object.
      *
-     * @param int $errno  a PEAR error code
-     * @return object  a PEAR error object
+     * @param  integer  $errno  PEAR error number (usually a DB constant) if
+     *                          manually raising an error
+     * @return object  DB error object
+     * @see errorNative()
+     * @see errorCode()
+     * @see DB_common::raiseError()
      */
     function sqliteRaiseError($errno = null) {
 

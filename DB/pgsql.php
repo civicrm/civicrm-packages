@@ -229,17 +229,11 @@ class DB_pgsql extends DB_common
     // {{{ errorCode()
 
     /**
-     * Map native error codes to DB's portable ones.  Requires that
-     * the DB implementation's constructor fills in the $errorcode_map
-     * property.
+     * Determine PEAR::DB error code from the database's text error message.
      *
-     * @param $nativecode the native error code, as returned by the backend
-     * database extension (string or integer)
-     *
-     * @return int a portable DB error code, or FALSE if this DB
-     * implementation has no mapping for the given error code.
+     * @param  string  $errormsg  error message returned from the database
+     * @return integer  an error number from a DB error constant
      */
-
     function errorCode($errormsg)
     {
         static $error_regexps;
@@ -586,6 +580,17 @@ class DB_pgsql extends DB_common
     // }}}
     // {{{ pgsqlRaiseError()
 
+    /**
+     * Gather information about an error, then use that info to create a
+     * DB error object and finally return that object.
+     *
+     * @param  integer  $errno  PEAR error number (usually a DB constant) if
+     *                          manually raising an error
+     * @return object  DB error object
+     * @see errorNative()
+     * @see errorCode()
+     * @see DB_common::raiseError()
+     */
     function pgsqlRaiseError($errno = null)
     {
         $native = $this->errorNative();

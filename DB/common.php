@@ -209,19 +209,19 @@ class DB_common extends PEAR
     // {{{ errorCode()
 
     /**
-     * Map native error codes to DB's portable ones.  Requires that
-     * the DB implementation's constructor fills in the $errorcode_map
-     * property.
+     * Map native error codes to DB's portable ones.
      *
-     * @param mixed $nativecode the native error code, as returned by the backend
-     * database extension (string or integer)
+     * Requires that the DB implementation's constructor fills
+     * in the <var>$errorcode_map</var> property.
      *
-     * @return int a portable DB error code, or FALSE if this DB
+     * @param mixed  $nativecode  the native error code, as returned by the
+     * backend database extension (string or integer)
+     *
+     * @return int a portable DB error code, or DB_ERROR if this DB
      * implementation has no mapping for the given error code.
      *
      * @access public
      */
-
     function errorCode($nativecode)
     {
         if (isset($this->errorcode_map[$nativecode])) {

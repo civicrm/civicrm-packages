@@ -348,6 +348,17 @@ class DB_ifx extends DB_common
     // }}}
     // {{{ ifxraiseError()
 
+    /**
+     * Gather information about an error, then use that info to create a
+     * DB error object and finally return that object.
+     *
+     * @param  integer  $errno  PEAR error number (usually a DB constant) if
+     *                          manually raising an error
+     * @return object  DB error object
+     * @see errorNative()
+     * @see errorCode()
+     * @see DB_common::raiseError()
+     */
     function ifxraiseError($errno = null)
     {
         if ($errno === null) {
@@ -360,15 +371,17 @@ class DB_ifx extends DB_common
 
     // }}}
     // {{{ errorCode()
+
     /**
-     * Map native error codes to DB's portable ones.  Requires that
-     * the DB implementation's constructor fills in the $errorcode_map
-     * property.
+     * Map native error codes to DB's portable ones.
      *
+     * Requires that the DB implementation's constructor fills
+     * in the <var>$errorcode_map</var> property.
+     *
+     * @param  string  $nativecode  error code returned by the database
      * @return int a portable DB error code, or DB_ERROR if this DB
      * implementation has no mapping for the given error code.
      */
-
     function errorCode($nativecode)
     {
         if (ereg('SQLCODE=(.*)]', $nativecode, $match)) {
@@ -382,6 +395,7 @@ class DB_ifx extends DB_common
 
     // }}}
     // {{{ errorNative()
+
     /**
      * Get the native error message of the last error (if any) that
      * occured on the current connection.

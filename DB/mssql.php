@@ -456,6 +456,16 @@ class DB_mssql extends DB_common
     // }}}
     // {{{ mssqlRaiseError()
 
+    /**
+     * Gather information about an error, then use that info to create a
+     * DB error object and finally return that object.
+     *
+     * @param  integer  $code  PEAR error number (usually a DB constant) if
+     *                         manually raising an error
+     * @return object  DB error object
+     * @see errorCode()
+     * @see DB_common::raiseError()
+     */
     function mssqlRaiseError($code = null)
     {
         $native_msg = mssql_get_last_message();

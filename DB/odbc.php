@@ -372,7 +372,6 @@ class DB_odbc extends DB_common
      *
      * @return int ODBC error code
      */
-
     function errorNative()
     {
         if (!isset($this->connection) || !is_resource($this->connection)) {
@@ -493,6 +492,17 @@ class DB_odbc extends DB_common
     // }}}
     // {{{ odbcRaiseError()
 
+    /**
+     * Gather information about an error, then use that info to create a
+     * DB error object and finally return that object.
+     *
+     * @param  integer  $errno  PEAR error number (usually a DB constant) if
+     *                          manually raising an error
+     * @return object  DB error object
+     * @see errorNative()
+     * @see DB_common::errorCode()
+     * @see DB_common::raiseError()
+     */
     function odbcRaiseError($errno = null)
     {
         if ($errno === null) {
