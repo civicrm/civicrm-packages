@@ -119,17 +119,19 @@ class DB_oci8 extends DB_common
         }
 
         if (version_compare(phpversion(), '5.0.0', '>=')) {
-            $conn = oci_new_connect($dsninfo['username'],
-                    $dsninfo['password'],
-                    $dsninfo['database'],
-                    empty($dsninfo['charset']) ? null : $dsninfo['charset']);
+            $connect_function = $persistent ? 'oci_pconnect' : 'oci_connect';
+            $char = empty($dsninfo['charset']) ? null : $dsninfo['charset'];
+            $conn = @$connect_function($dsninfo['username'],
+                                       $dsninfo['password'],
+                                       $dsninfo['database'],
+                                       $char);
             $error = OCIError();
             if (!empty($error) && $error['code'] == 12541) {
                 // Couldn't find TNS listener.  Try direct connection.
-                $conn = oci_new_connect($dsninfo['username'],
-                        $dsninfo['password'],
-                        null,
-                        empty($dsninfo['charset']) ? null : $dsninfo['charset']);
+                $conn = @$connect_function($dsninfo['username'],
+                                           $dsninfo['password'],
+                                           null,
+                                           $char);
             }
         } else {
             $connect_function = $persistent ? 'OCIPLogon' : 'OCILogon';
