@@ -656,6 +656,26 @@ class DB_fbsql extends DB_common
                        . ' WHERE t0.schema_pk=t1.schema_pk AND'
                        . ' "table_type" = \'BASE TABLE\''
                        . ' AND "schema_name" = current_schema';
+            case 'views':
+                return 'SELECT "table_name" FROM information_schema.tables'
+                       . ' t0, information_schema.schemata t1'
+                       . ' WHERE t0.schema_pk=t1.schema_pk AND'
+                       . ' "table_type" = \'VIEW\''
+                       . ' AND "schema_name" = current_schema';
+            case 'users':
+                return 'SELECT "user_name" from information_schema.users'; 
+            case 'functions':
+                return 'SELECT "table_name" FROM information_schema.psm_routines'
+                       . ' t0, information_schema.schemata t1'
+                       . ' WHERE t0.schema_pk=t1.schema_pk AND'
+                       . ' AND "routine_kind"=\'FUNCTION\''
+                       . ' AND "schema_name" = current_schema';
+            case 'procedures':
+                return 'SELECT "table_name" FROM information_schema.psm_routines'
+                       . ' t0, information_schema.schemata t1'
+                       . ' WHERE t0.schema_pk=t1.schema_pk AND'
+                       . ' AND "routine_kind"=\'PROCEDURE\''
+                       . ' AND "schema_name" = current_schema';
             default:
                 return null;
         }
