@@ -20,7 +20,7 @@
  * @author     Mika Tuupola <tuupola@appelsiini.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
@@ -42,7 +42,7 @@ require_once 'DB/common.php';
  * @author     Mika Tuupola <tuupola@appelsiini.net>
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
  */
@@ -116,6 +116,7 @@ class DB_sqlite extends DB_common
     /**
      * The most recent error message from $php_errormsg
      * @var string
+     * @access private
      */
     var $_lasterror = '';
 
@@ -124,14 +125,14 @@ class DB_sqlite extends DB_common
     // {{{ constructor
 
     /**
-     * Constructor for this class.
+     * Constructor for this class
      *
      * Error codes according to sqlite_exec.  Error Codes specification is
      * in the {@link http://sqlite.org/c_interface.html online manual}.
      *
      * This errorhandling based on sqlite_exec is not yet implemented.
      *
-     * @access public
+     * @return void
      */
     function DB_sqlite()
     {
@@ -142,13 +143,13 @@ class DB_sqlite extends DB_common
     // {{{ connect()
 
     /**
-     * Connect to a database represented by a file.
+     * Connect to a database represented by a file
      *
      * @param $dsn the data source name; the file is taken as
      *        database; "sqlite://root:@host/test.db?mode=0644"
      * @param $persistent (optional) whether the connection should
      *        be persistent
-     * @access public
+     *
      * @return int DB_OK on success, a DB error on failure
      */
     function connect($dsninfo, $persistent = false)
@@ -214,10 +215,10 @@ class DB_sqlite extends DB_common
     // {{{ disconnect()
 
     /**
-     * Log out and disconnect from the database.
+     * Log out and disconnect from the database
      *
-     * @access public
-     * @return bool true on success, false if not connected.
+     * @return bool true on success, false if not connected
+     *
      * @todo fix return values
      */
     function disconnect()
@@ -232,13 +233,13 @@ class DB_sqlite extends DB_common
 
     /**
      * Send a query to SQLite and returns the results as a SQLite resource
-     * identifier.
+     * identifier
      *
-     * @param the SQL query
-     * @access public
-     * @return mixed returns a valid SQLite result for successful SELECT
-     * queries, DB_OK for other successful queries. A DB error is
-     * returned on failure.
+     * @param string $query  the SQL query
+     *
+     * @return mixed  a valid SQLite result for successful SELECT queries,
+     *                DB_OK for other successful queries. A DB error is
+     *                returned on failure.
      */
     function simpleQuery($query)
     {
@@ -260,13 +261,12 @@ class DB_sqlite extends DB_common
             return $this->sqliteRaiseError(null);
         }
 
-        /* sqlite_query() seems to allways return a resource */
-        /* so cant use that. Using $ismanip instead          */
+        // sqlite_query() seems to allways return a resource
+        // so cant use that. Using $ismanip instead
         if (!$ismanip) {
             $numRows = $this->numRows($result);
-
-            /* if numRows() returned PEAR_Error */
             if (is_object($numRows)) {
+                // we've got PEAR_Error
                 return $numRows;
             }
             return $result;
@@ -278,11 +278,11 @@ class DB_sqlite extends DB_common
     // {{{ nextResult()
 
     /**
-     * Move the internal sqlite result pointer to the next available result.
+     * Move the internal sqlite result pointer to the next available result
      *
-     * @param a valid sqlite result resource
-     * @access public
-     * @return true if a result is available otherwise return false
+     * @param resource $result  the valid sqlite result resource
+     *
+     * @return bool  true if a result is available otherwise return false
      */
     function nextResult($result)
     {
@@ -293,10 +293,9 @@ class DB_sqlite extends DB_common
     // {{{ fetchInto()
 
     /**
-     * Fetch a row and insert the data into an existing array.
+     * Fetch a row and insert the data into an existing array
      *
      * Formating of the array and the data therein are configurable.
-     * See DB_result::fetchInto() for more information.
      *
      * @param resource $result    query result identifier
      * @param array    $arr       (reference) array where data from the row
@@ -308,9 +307,8 @@ class DB_sqlite extends DB_common
      *               reached or on failure
      *
      * @see DB_result::fetchInto()
-     * @access private
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum=null)
+    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum !== null) {
             if (!@sqlite_seek($this->result, $rownum)) {
@@ -347,11 +345,11 @@ class DB_sqlite extends DB_common
     // {{{ freeResult()
 
     /**
-     * Free the internal resources associated with $result.
+     * Free the internal resources associated with $result
      *
-     * @param $result SQLite result identifier
-     * @access public
-     * @return bool true on success, false if $result is invalid
+     * @param resource $result  the SQLite result identifier
+     *
+     * @return bool  true on success, false if $result is invalid
      */
     function freeResult(&$result)
     {
@@ -367,9 +365,12 @@ class DB_sqlite extends DB_common
     // {{{ numCols()
 
     /**
-     * Gets the number of columns in a result set.
+     * Gets the number of columns in a result set
      *
-     * @return number of columns in a result set
+     * @param resource $result  the SQLite result identifier
+     *
+     * @return int  the number of columns in a result set, or a DB_Error
+     *              object on failure
      */
     function numCols($result)
     {
@@ -384,9 +385,12 @@ class DB_sqlite extends DB_common
     // {{{ numRows()
 
     /**
-     * Gets the number of rows affected by a query.
+     * Gets the number of rows affected by a query
      *
-     * @return number of rows affected by the last query
+     * @param resource $result  the SQLite result identifier
+     *
+     * @return int  the number of rows affected by the last query, or a
+     *              DB_Error object on failure
      */
     function numRows($result)
     {
@@ -401,9 +405,9 @@ class DB_sqlite extends DB_common
     // {{{ affected()
 
     /**
-     * Gets the number of rows affected by a query.
+     * Gets the number of rows affected by a data manipulation query
      *
-     * @return number of rows affected by the last query
+     * @return int  the number of rows affected by the last query
      */
     function affectedRows()
     {
@@ -415,12 +419,12 @@ class DB_sqlite extends DB_common
 
     /**
      * Get the native error string of the last error (if any) that
-     * occured on the current connection.
+     * occured on the current connection
      *
      * This is used to retrieve more meaningfull error messages DB_pgsql
      * way since sqlite_last_error() does not provide adequate info.
      *
-     * @return string native SQLite error message
+     * @return string  the native SQLite error message
      */
     function errorNative()
     {
@@ -431,10 +435,11 @@ class DB_sqlite extends DB_common
     // {{{ errorCode()
 
     /**
-     * Determine PEAR::DB error code from the database's text error message.
+     * Determine PEAR::DB error code from the database's text error message
      *
-     * @param  string  $errormsg  error message returned from the database
-     * @return integer  an error number from a DB error constant
+     * @param string $errormsg  the error message returned from the database
+     *
+     * @return integer  the DB error number
      */
     function errorCode($errormsg)
     {
@@ -472,9 +477,7 @@ class DB_sqlite extends DB_common
      *
      * @return int  DB_OK on success.  DB_Error if problems.
      *
-     * @internal
      * @see DB_common::dropSequence()
-     * @access public
      */
     function dropSequence($seq_name)
     {
@@ -490,9 +493,7 @@ class DB_sqlite extends DB_common
      * @return int  DB_OK on success.  A DB_Error object is returned if
      *              problems arise.
      *
-     * @internal
      * @see DB_common::createSequence()
-     * @access public
      */
     function createSequence($seq_name)
     {
@@ -525,9 +526,7 @@ class DB_sqlite extends DB_common
      *
      * @return int  the next id number in the sequence.  DB_Error if problem.
      *
-     * @internal
      * @see DB_common::nextID()
-     * @access public
      */
     function nextId($seq_name, $ondemand = true)
     {
@@ -562,14 +561,14 @@ class DB_sqlite extends DB_common
     // {{{ tableInfo()
 
     /**
-     * Returns information about a table.
+     * Returns information about a table
      *
      * @param string         $result  a string containing the name of a table
      * @param int            $mode    a valid tableInfo mode
+     *
      * @return array  an associative array with the information requested
      *                or an error object if something is wrong
-     * @access public
-     * @internal
+     *
      * @see DB_common::tableInfo()
      * @since Method available since Release 1.7.0
      */
@@ -687,12 +686,13 @@ class DB_sqlite extends DB_common
     // {{{ getSpecialQuery()
 
     /**
-     * Returns the query needed to get some backend info.
+     * Returns the query needed to get some backend info
      *
      * Refer to the online manual at http://sqlite.org/sqlite.html.
      *
-     * @param string $type What kind of info you want to retrieve
-     * @return string The SQL query string
+     * @param string $type  what kind of info you want to retrieve
+     *
+     * @return string  the SQL query string
      */
     function getSpecialQuery($type, $args=array())
     {
@@ -765,15 +765,16 @@ class DB_sqlite extends DB_common
     // {{{ getDbFileStats()
 
     /**
-     * Get the file stats for the current database.
+     * Get the file stats for the current database
      *
      * Possible arguments are dev, ino, mode, nlink, uid, gid, rdev, size,
      * atime, mtime, ctime, blksize, blocks or a numeric key between
      * 0 and 12.
      *
-     * @param string $arg Array key for stats()
-     * @return mixed array on an unspecified key, integer on a passed arg and
-     * false at a stats error.
+     * @param string $arg  the array key for stats()
+     *
+     * @return mixed  an array on an unspecified key, integer on a passed
+     *                arg and false at a stats error
      */
     function getDbFileStats($arg = '')
     {
@@ -810,9 +811,8 @@ class DB_sqlite extends DB_common
      *
      * @return string  the escaped string
      *
-     * @since 1.6.1
+     * @since Method available since Release 1.6.1
      * @see DB_common::escapeSimple()
-     * @internal
      */
     function escapeSimple($str) {
         return @sqlite_escape_string($str);
@@ -831,12 +831,15 @@ class DB_sqlite extends DB_common
     // {{{ modifyQuery()
 
     /**
-     * "DELETE FROM table" gives 0 affected rows in SQLite.
+     * "DELETE FROM table" gives 0 affected rows in SQLite
      *
      * This little hack lets you know how many rows were deleted.
      *
-     * @param string $query The SQL query string
-     * @return string The SQL query string
+     * @param string $query  the SQL query string
+     *
+     * @return string  the SQL query string
+     *
+     * @access private
      */
     function _modifyQuery($query)
     {
@@ -854,14 +857,14 @@ class DB_sqlite extends DB_common
 
     /**
      * Gather information about an error, then use that info to create a
-     * DB error object and finally return that object.
+     * DB error object and finally return that object
      *
-     * @param  integer  $errno  PEAR error number (usually a DB constant) if
-     *                          manually raising an error
-     * @return object  DB error object
-     * @see errorNative()
-     * @see errorCode()
-     * @see DB_common::raiseError()
+     * @param integer $errno  the PEAR error number (usually a DB constant) if
+     *                         manually raising an error
+     *
+     * @return object  DB_error object
+     *
+     * @see errorNative(), errorCode(), DB_common::raiseError()
      */
     function sqliteRaiseError($errno = null)
     {
