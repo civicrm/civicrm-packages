@@ -15,19 +15,24 @@ $sth2 = $dbh->prepare("INSERT INTO phptest (a,b) VALUES (!,?)");
 $sth3 = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES (?,!,&)");
 $sth4 = $dbh->prepare("INSERT INTO phptest (a, b) VALUES (72, 'direct')");
 print "sth1,sth2,sth3,sth4 created\n";
+print 'sth1: ? as param, passing as array... ';
 if (($res = $dbh->execute($sth1, array(72))) == DB_OK) {
     print "sth1 executed\n";
 }
+print 'sth2: ! and ? as params, passing as array... ';
 if (($res = $dbh->execute($sth2, array(72, "that's right"))) == DB_OK) {
     print "sth2 executed\n";
 }
+print 'sth3: ?, ! and & as params, passing as array... ';
 if (($res = $dbh->execute($sth3, array(72, "'it''s good'", $tmpfile))) == DB_OK) {
     print "sth3 executed\n";
 }
+print 'sth4: no params... ';
 if (($res = $dbh->execute($sth4)) == DB_OK) {
     print "sth4 executed\n";
 }
 print_results();
+
 
 // 2) One prepared, multiple time executed
 echo "\n------------2------------\n";
@@ -41,6 +46,7 @@ $data = array(
 );
 $dbh->executeMultiple($sth, $data);
 print_results();
+
 
 // 3) freePrepared() test
 echo "\n------------3------------\n";
@@ -57,6 +63,7 @@ if ($dbh->freePrepared(666)) {
     echo 'FALSE';
 }
 echo "\n";
+
 
 // 4) SELECTs tests
 echo "\n------------4------------\n";
