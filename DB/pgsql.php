@@ -337,7 +337,7 @@ class DB_pgsql extends DB_common
                UNLISTEN, UPDATE, VACUUM
             */
             $this->row[(int)$result] = 0; // reset the row counter.
-            $numrows = $this->numrows($result);
+            $numrows = $this->numRows($result);
             if (is_object($numrows)) {
                 return $numrows;
             }
