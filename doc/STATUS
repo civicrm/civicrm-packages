@@ -17,7 +17,7 @@ Symbols:
   -  =  no implementation of this feature or status unknown
 
                     fbsql      ifx      mssql     mysqli     odbc     sqlite
-FEATURE        dbase  |  ibase  |  msql   |   mysql |   oci8  |   pgsql |  sybase
+FEATURE        dbase  |  ibase  |  msql   |  mysql  |   oci8  |  pgsql  |  sybase
 simpleQuery      -    x    T    T    x    T    T    x    T    T    T    T    T
 numCols          x    x    T    x    x    T    T    x    T    T    T    T    T
 numRows          x    x    n    n    x    T    T    x    E    T    T    T    n 
@@ -52,7 +52,7 @@ Symbols:
     E  =  Test failed due to problem with PHP extension
 
                     fbsql      ifx      mssql     mysqli     odbc     sqlite
-               dbase  |  ibase  |  msql   |   mysql |   oci8  |   pgsql |  sybase
+               dbase  |  ibase  |  msql   |  mysql  |   oci8  |  pgsql  |  sybase
 01connect        -    -    o    o    -    o    o    -    o    o    o    o    o 
 02fetch          -    -    o    o    -    o    o    -    o    o    o    o    o
 03simplequery    -    -    o    o    -    o    o    -    o    o    o    o    o
