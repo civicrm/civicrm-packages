@@ -951,14 +951,15 @@ class DB_pgsql extends DB_common
                         AND c.relname !~ '^pg_'";
             case 'views':
                 // Table cols: viewname | viewowner | definition
-                return 'SELECT viewname FROM pg_views';
+                return 'SELECT viewname FROM pg_views'
+                       . " WHERE schemaname = 'public'";
             case 'users':
                 // cols: usename |usesysid|usecreatedb|usetrace|usesuper|usecatupd|passwd  |valuntil
                 return 'SELECT usename FROM pg_user';
             case 'databases':
                 return 'SELECT datname FROM pg_database';
             case 'functions':
-                return 'SELECT proname FROM pg_proc';
+                return 'SELECT proname FROM pg_proc WHERE proowner <> 1';
             default:
                 return null;
         }
