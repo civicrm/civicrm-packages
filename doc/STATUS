@@ -18,25 +18,25 @@ Symbols:
 
                     fbsql      ifx      mssql     mysqli     odbc     sqlite
 FEATURE        dbase  |  ibase  |  msql   |  mysql  |   oci8  |  pgsql  |  sybase
-simpleQuery      -    x    T    T    x    T    T    T    T    T    T    T    T
-numCols          x    x    T    x    x    T    T    T    T    T    T    T    T
-numRows          x    x    n    n    x    T    T    T    E    T    T    T    n 
-errorNative      n    x    n    t    n    T    T    T    T    T    T    E    T
-prepare/execute  e    e    T    E    e    E    E    E    T    E    E    E    E
-sequences        -    e    T    E    n    E    E    E    T    E    T    E    E
-affectedRows     n    x    n    T    x    n    T    T    T    T    T    T    T
-fetch modes      x    x    T    T    x    T    T    T    T    T    T    T    T
-fetch row by no  x    x    n    T    x    T    T    T    n    x    T    T    T
-transactions     -    x    T    n    n    T    T    T    T    T    T    -    T
+simpleQuery      -    T    T    T    x    T    T    T    T    T    T    T    T
+numCols          x    T    T    x    x    T    T    T    T    T    T    T    T
+numRows          x    T    n    n    x    T    T    T    E    T    T    T    n 
+errorNative      n    T    n    t    n    T    T    T    T    T    T    E    T
+prepare/execute  e    E    T    E    e    E    E    E    T    E    E    E    E
+sequences        -    E    T    E    n    E    E    E    T    E    T    E    E
+affectedRows     n    T    n    T    x    n    T    T    T    T    T    T    T
+fetch modes      x    T    T    T    x    T    T    T    T    T    T    T    T
+fetch row by no  x    T    n    T    x    T    T    T    n    x    T    T    T
+transactions     -    T    T    n    n    T    T    T    T    T    T    -    T
 auto-commit      -    x    x    n    n    n    E    E    x    x    x    -    n
-error mapping    -    x    T    t    -    t    t    t    T    T    E    l    l
-tableInfo        n    x    T    t    n    T    T    t    T    n    T    T    T
+error mapping    -    T    T    t    -    t    t    t    T    T    E    l    l
+tableInfo        n    T    T    t    n    T    T    t    T    n    T    T    T
 
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
 
 
 TYPE (getListOf)
-tables           -    x    -    -    -    x    x    x    x    -    x    -    x
+tables           -    T    -    -    -    T    T    T    T    -    T    T    T
 views            -    -    -    -    -    x    n    n    -    -    x    -    x
 users            -    -    -    -    -    -    x    x    -    -    x    -    -
 databases        -    -    -    -    -    -    x    x    -    -    x    -    -
@@ -53,21 +53,21 @@ Symbols:
 
                     fbsql      ifx      mssql     mysqli     odbc     sqlite
                dbase  |  ibase  |  msql   |  mysql  |   oci8  |  pgsql  |  sybase
-01connect        -    -    o    o    -    o    o    o    o    o    o    o    o 
-02fetch          -    -    o    o    -    o    o    o    o    o    o    o    o
-03simplequery    -    -    o    o    -    o    o    o    o    o    o    o    o
-04numcols        -    -    o    o    -    o    o    o    o    o    o    o    o
-05sequences      -    -    o    o    -    o    o    o    o    o    o    o    o
-06prepexec       -    -    o    o    -    o    o    o    o    o    o    o    o
-08affectedrows   -    -    X    o    -    o    o    o    o    o    o    o    o
-09numrows        -    -    X    X    -    o    o    o    o    o    o    o    o
-10errormap       -    -    o    N    -    E    N    N    o    o    o    N    E
-11transactions   -    -    o    -    -    o    o    o    o    o    o    -    o
-13limit          -    -    o    o    -    o    o    o    o    o    o    o    o
-14fetchmode_obje -    -    o    o    -    o    o    o    o    o    o    o    o
-15quote          -    -    o    X    -    o    o    o    o    o    o    o    o
-16tableinfo      -    -    o    X    -    o    o    X    o    -    o    o    o
-17query          -    -    X    o    -    o    o    o    o    o    o    o    o
-18get            -    -    X    o    -    o    o    o    o    o    o    o    o
+01connect        -    o    o    o    -    o    o    o    o    o    o    o    o 
+02fetch          -    o    o    o    -    o    o    o    o    o    o    o    o
+03simplequery    -    o    o    o    -    o    o    o    o    o    o    o    o
+04numcols        -    o    o    o    -    o    o    o    o    o    o    o    o
+05sequences      -    o    o    o    -    o    o    o    o    o    o    o    o
+06prepexec       -    o    o    o    -    o    o    o    o    o    o    o    o
+08affectedrows   -    o    X    o    -    o    o    o    o    o    o    o    o
+09numrows        -    o    X    X    -    o    o    o    o    o    o    o    o
+10errormap       -    o    o    N    -    E    o    o    o    o    o    o    E
+11transactions   -    o    o    -    -    o    o    o    o    o    o    -    o
+13limit          -    o    o    o    -    o    o    o    o    o    o    o    o
+14fetchmode_obje -    o    o    o    -    o    o    o    o    o    o    o    o
+15quote          -    o    o    X    -    o    o    o    o    o    o    o    o
+16tableinfo      -    o    o    X    -    o    o    X    o    -    o    o    o
+17query          -    o    X    o    -    o    o    o    o    o    o    o    o
+18get            -    o    X    o    -    o    o    o    o    o    o    o    o
 
 NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
