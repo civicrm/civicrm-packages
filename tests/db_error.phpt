@@ -24,7 +24,7 @@ function test_error_handler($errno, $errmsg, $file, $line, $vars) {
         );
         $prefix = $errortype[$errno];
         $file = basename($file);
-        print "\n$prefix: $errmsg in $file on line $line\n";
+        print "\n$prefix: $errmsg in $file on line XXX\n";
 }
 
 error_reporting(E_ALL);
@@ -68,11 +68,11 @@ testing different error codes...
 testing different error modes...
 DB Error: unknown error[db_error: message="DB Error: unknown error" code=-1 mode=print level=notice prefix="" info=""]
 
-User Notice: DB Error: syntax error in PEAR.php on line 591
+User Notice: DB Error: syntax error in PEAR.php on line XXX
 testing different error serverities...
 
-User Notice: DB Error: syntax error in PEAR.php on line 591
+User Notice: DB Error: syntax error in PEAR.php on line XXX
 
-User Warning: DB Error: syntax error in PEAR.php on line 591
+User Warning: DB Error: syntax error in PEAR.php on line XXX
 
-User Error: DB Error: syntax error in PEAR.php on line 591
+User Error: DB Error: syntax error in PEAR.php on line XXX

@@ -33,7 +33,7 @@ function test_error_handler($errno, $errmsg, $file, $line, $vars) {
         );
         $prefix = $errortype[$errno];
         $file = basename($file);
-        print "$prefix: $errmsg in $file on line $line\n";
+        print "$prefix: $errmsg in $file on line XXX\n";
 }
 
 $obj = new myclass;
@@ -73,4 +73,4 @@ global default: myfunc2 here, obj=[db_error: message="DB Error: global default t
 mode=print: DB Error: print testing error
 mode=function callback: myfunc here, obj=[db_error: message="DB Error: function callback testing error" code=-1 mode=callback callback=myfunc prefix="" info=""]
 mode=object callback: myclass::myfunc here, obj=[db_error: message="DB Error: object callback testing error" code=-1 mode=callback callback=myclass::myfunc prefix="" info=""]
-mode=trigger: User Notice: DB Error: trigger testing error in PEAR.php on line 591
+mode=trigger: User Notice: DB Error: trigger testing error in PEAR.php on line XXX
