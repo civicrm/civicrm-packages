@@ -682,19 +682,31 @@ class DB_result
     /**
      * DB_result constructor.
      * @param resource &$dbh   DB object reference
-     * @param resource $result result resource id
+     * @param resource $result  result resource id
+     * @param array    $options assoc array with optional result options
      */
 
     function DB_result(&$dbh, $result, $options = array())
     {
         $this->dbh = &$dbh;
         $this->result = $result;
-        $this->limit_from  = isset($options['limit_from'])  ? $options['limit_from']  : null;
-        $this->limit_count = isset($options['limit_count']) ? $options['limit_count'] : null;
+        foreach ($options as $key => $value) {
+            $this->setOption($key, $value);
+        }
         $this->limit_type  = $dbh->features['limit'];
         $this->autofree    = $dbh->options['autofree'];
         $this->fetchmode   = $dbh->fetchmode;
         $this->fetchmode_object_class = $dbh->fetchmode_object_class;
+    }
+
+    function setOption($key, $value = null)
+    {
+        switch ($key) {
+            case 'limit_from':
+                $this->limit_from = $value; break;
+            case 'limit_count';
+                $this->limit_count = $value; break;
+        }
     }
 
     // }}}
@@ -731,12 +743,14 @@ class DB_result
             if ($this->row_counter >= (
                     $this->limit_from + $this->limit_count))
             {
+                if ($this->autofree) {
+                    $this->free();
+                }
                 return null;
             }
             if ($this->limit_type == 'emulate') {
                 $rownum = $this->row_counter;
             }
-
             $this->row_counter++;
         }
         $res = $this->dbh->fetchInto($this->result, $arr, $fetchmode, $rownum);
