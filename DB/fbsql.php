@@ -604,7 +604,7 @@ class DB_fbsql extends DB_common
             $errno = $this->errorCode(fbsql_errno($this->connection));
         }
         return $this->raiseError($errno, null, null, null,
-                        @fbsql_error($this->connection));
+                                 @fbsql_error($this->connection));
     }
 
     // }}}
