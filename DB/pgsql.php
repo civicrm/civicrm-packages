@@ -122,14 +122,18 @@ class DB_pgsql extends DB_common
         }
 
         $connect_function = $persistent ? 'pg_pconnect' : 'pg_connect';
-        // catch error
-        ob_start();
-        $conn = $connect_function($connstr);
-        $error = ob_get_contents();
-        ob_end_clean();
+
+        $ini = ini_get('track_errors');
+        if ($ini) {
+            $conn = @$connect_function($connstr);
+        } else {
+            ini_set('track_errors', 1);
+            $conn = @$connect_function($connstr);
+            ini_set('track_errors', $ini);
+        }
         if ($conn == false) {
             return $this->raiseError(DB_ERROR_CONNECT_FAILED, null,
-                                     null, null, strip_tags($error));
+                                     null, null, strip_tags($php_errormsg));
         }
         $this->connection = $conn;
         return DB_OK;
