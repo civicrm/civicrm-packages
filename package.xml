@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.99 2004-04-28 20:13:10 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.100 2004-04-29 23:45:04 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -80,9 +80,17 @@ Fix docblocks for getAssoc() and limitQuery().
 Fix notice caused by passing invalid $col to
 getCol().  (danielc)
 
+- mysql, mysqli, oci8:
+Add error maping for failure of update/delete
+due to foreign key constraint.  (danielc)
+
 - mysqli:
-Move connection id to first argument in
-mysqli_*() functions.  (danielc)
+IT NOW WORKS!  (danielc)
+
+- tests:
+Made adjustments so mysql and mysqli pass
+transactions and foreign key tests.
+(danielc)
     </notes>
     <filelist>
       <file role="php" baseinstalldir="/">DB.php</file>
