@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.183 2005-03-29 13:29:32 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.184 2005-04-07 14:27:35 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,20 +66,12 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.5</version>
+    <version>1.7.6</version>
     <state>stable</state>
-    <date>2005-03-29</date>
+    <date>pending</date>
     <notes><![CDATA[
 common:
-* Have buildManipSQL() return any errors that were raised.  Bug 3954.
-* Have autoExecute() check for errors coming back from autoPrepare().
-* Have autoPrepare() check for errors coming back from buildManipSQL().
-
-mysql:
-* Don't pass new_link to mysql_pconnect().  Bug 3993.
-
-sqlite:
-* Map error message for multi-column unique constraints.
+* Fix the docblocks regarding DB_FETCHMODE_FLIPPED.  Bug 4027.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">

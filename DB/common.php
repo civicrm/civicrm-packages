@@ -479,10 +479,8 @@ class DB_common extends PEAR
     /**
      * Sets the fetch mode that should be used by default for query results
      *
-     * @param integer $fetchmode   DB_FETCHMODE_ORDERED or DB_FETCHMODE_ASSOC,
-     *                              possibly bit-wise OR'ed with
-     *                              DB_FETCHMODE_FLIPPED
-     *
+     * @param integer $fetchmode    DB_FETCHMODE_ORDERED, DB_FETCHMODE_ASSOC
+     *                               or DB_FETCHMODE_OBJECT
      * @param string $object_class  the class name of the object to be returned
      *                               by the fetch methods when the
      *                               DB_FETCHMODE_OBJECT mode is selected.
@@ -491,8 +489,7 @@ class DB_common extends PEAR
      *                               done.  There is also the posibility to use
      *                               and extend the 'DB_row' class.
      *
-     * @see DB_FETCHMODE_ORDERED, DB_FETCHMODE_ASSOC, DB_FETCHMODE_FLIPPED,
-     *      DB_FETCHMODE_OBJECT
+     * @see DB_FETCHMODE_ORDERED, DB_FETCHMODE_ASSOC, DB_FETCHMODE_OBJECT
      */
     function setFetchMode($fetchmode, $object_class = 'stdClass')
     {
@@ -1571,7 +1568,11 @@ class DB_common extends PEAR
      *                            placeholders in query:  meaning 1
      *                            placeholder for non-array parameters or
      *                            1 placeholder per array element.
-     * @param int    $fetchmode  the fetch mode to use
+     * @param int    $fetchmode  the fetch mode to use:
+     *                            + DB_FETCHMODE_ORDERED
+     *                            + DB_FETCHMODE_ASSOC
+     *                            + DB_FETCHMODE_ORDERED | DB_FETCHMODE_FLIPPED
+     *                            + DB_FETCHMODE_ASSOC | DB_FETCHMODE_FLIPPED
      *
      * @return array  the nested array.  A DB_Error object on failure.
      */
