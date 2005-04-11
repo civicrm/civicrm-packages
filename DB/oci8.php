@@ -225,10 +225,18 @@ class DB_oci8 extends DB_common
                 $connect_function = $persistent ? 'oci_pconnect'
                                     : 'oci_connect';
             }
+
+            // Backwards compatibility with DB < 1.7.0
+            if (empty($dsn['database']) && !empty($dsn['hostspec'])) {
+                $db = $dsn['hostspec'];
+            } else {
+                $db = $dsn['database'];
+            }
+
             $char = empty($dsn['charset']) ? null : $dsn['charset'];
             $this->connection = @$connect_function($dsn['username'],
                                                    $dsn['password'],
-                                                   $dsn['database'],
+                                                   $db,
                                                    $char);
             $error = OCIError();
             if (!empty($error) && $error['code'] == 12541) {
