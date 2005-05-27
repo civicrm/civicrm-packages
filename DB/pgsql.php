@@ -779,6 +779,10 @@ class DB_pgsql extends DB_common
     function pgsqlRaiseError($errno = null)
     {
         $native = $this->errorNative();
+        if (!$native) {
+            $native = 'Database connection has been lost.';
+            $errno = DB_ERROR_CONNECT_FAILED;
+        }
         if ($errno === null) {
             $errno = $this->errorCode($native);
         }

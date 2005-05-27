@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.186 2005-05-27 15:32:34 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.187 2005-05-27 15:48:17 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -74,6 +74,9 @@ pgsql:
 * When inserting to non-existant column, produce
   proper error, "no such field", instead of
   "no such table".  Bug 4365.
+
+* If connection is lost, raise DB_ERROR_CONNECT_FAILED
+  instead of the generic DB_ERROR.  Bug 4446.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">
