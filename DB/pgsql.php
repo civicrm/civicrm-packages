@@ -815,12 +815,12 @@ class DB_pgsql extends DB_common
         static $error_regexps;
         if (!isset($error_regexps)) {
             $error_regexps = array(
+                '/column .* (of relation .*)?does not exist/i'
+                    => DB_ERROR_NOSUCHFIELD,
                 '/(relation|sequence|table).*does not exist|class .* not found/i'
                     => DB_ERROR_NOSUCHTABLE,
                 '/index .* does not exist/'
                     => DB_ERROR_NOT_FOUND,
-                '/column .* does not exist/i'
-                    => DB_ERROR_NOSUCHFIELD,
                 '/relation .* already exists/i'
                     => DB_ERROR_ALREADY_EXISTS,
                 '/(divide|division) by zero$/i'

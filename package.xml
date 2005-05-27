@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.185 2005-04-11 15:10:18 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.186 2005-05-27 15:32:34 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,15 +66,14 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.6</version>
+    <version>1.7.7</version>
     <state>stable</state>
-    <date>2005-04-11</date>
+    <date>pending</date>
     <notes><![CDATA[
-common:
-* Fix the docblocks regarding DB_FETCHMODE_FLIPPED.  Bug 4027.
-
-oic8:
-* Provide BC hack for those connecting to oci8 using 'hostspec' instead of 'database'.  Bug 4104.
+pgsql:
+* When inserting to non-existant column, produce
+  proper error, "no such field", instead of
+  "no such table".  Bug 4365.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">
