@@ -35,6 +35,14 @@ require_once 'DB/common.php';
  *
  * These methods overload the ones declared in DB_common.
  *
+ * DB's mssql driver is only for Microsfoft SQL Server databases.
+ *
+ * If you're connecting to a Sybase database, you MUST specify "sybase"
+ * as the "phptype" in the DSN.
+ *
+ * This class only works correctly if you have compiled PHP using
+ * --with-mssql=[dir_to_FreeTDS].
+ *
  * @category   Database
  * @package    DB
  * @author     Sterling Hughes <sterling@php.net>
@@ -316,6 +324,14 @@ class DB_mssql extends DB_common
             }
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
+            /*
+             * The mssql_fetch_array() only works correctly if you have
+             * compiled PHP using --with-mssql=[dir_to_FreeTDS].
+             *
+             * Also, DB's mssql driver is only for Microsfoft SQL Server
+             * databases.  If you're connecting to a Sybase database, you
+             * MUST specify "sybase" as the "phptype" in the DSN.
+             */
             $arr = @mssql_fetch_array($result, MSSQL_ASSOC);
             if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE && $arr) {
                 $arr = array_change_key_case($arr, CASE_LOWER);
