@@ -336,19 +336,26 @@ class DB_pgsql extends DB_common
         if (!$result) {
             return $this->pgsqlRaiseError();
         }
-        // Determine which queries that should return data, and which
-        // should return an error code only.
+
+        /*
+         * Determine whether queries produce affected rows, result or nothing.
+         *
+         * This logic was introduced in version 1.1 of the file by ssb,
+         * though the regex has been modified slightly since then.
+         *
+         * PostgreSQL commands:
+         * ABORT, ALTER, BEGIN, CLOSE, CLUSTER, COMMIT, COPY,
+         * CREATE, DECLARE, DELETE, DROP TABLE, EXPLAIN, FETCH,
+         * GRANT, INSERT, LISTEN, LOAD, LOCK, MOVE, NOTIFY, RESET,
+         * REVOKE, ROLLBACK, SELECT, SELECT INTO, SET, SHOW,
+         * UNLISTEN, UPDATE, VACUUM
+         */
         if ($ismanip) {
             $this->affected = @pg_affected_rows($result);
             return DB_OK;
-        } elseif (preg_match('/^\s*\(*\s*(SELECT|EXPLAIN|SHOW)\s/si', $query)) {
-            /* PostgreSQL commands:
-               ABORT, ALTER, BEGIN, CLOSE, CLUSTER, COMMIT, COPY,
-               CREATE, DECLARE, DELETE, DROP TABLE, EXPLAIN, FETCH,
-               GRANT, INSERT, LISTEN, LOAD, LOCK, MOVE, NOTIFY, RESET,
-               REVOKE, ROLLBACK, SELECT, SELECT INTO, SET, SHOW,
-               UNLISTEN, UPDATE, VACUUM
-            */
+        } elseif (preg_match('/^\s*\(*\s*(SELECT|EXPLAIN|FETCH|SHOW)\s/si',
+                             $query))
+        {
             $this->row[(int)$result] = 0; // reset the row counter.
             $numrows = $this->numRows($result);
             if (is_object($numrows)) {
