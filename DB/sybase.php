@@ -250,7 +250,7 @@ class DB_sybase extends DB_common
     {
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
-        if (!@sybase_select_db($this->_db, $this->connection)) {
+        if ($this->_db && !@sybase_select_db($this->_db, $this->connection)) {
             return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
         }
         $query = $this->modifyQuery($query);
@@ -462,7 +462,7 @@ class DB_sybase extends DB_common
     function nextId($seq_name, $ondemand = true)
     {
         $seqname = $this->getSequenceName($seq_name);
-        if (!@sybase_select_db($this->_db, $this->connection)) {
+        if ($this->_db && !@sybase_select_db($this->_db, $this->connection)) {
             return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
         }
         $repeat = 0;
@@ -558,7 +558,7 @@ class DB_sybase extends DB_common
     function commit()
     {
         if ($this->transaction_opcount > 0) {
-            if (!@sybase_select_db($this->_db, $this->connection)) {
+            if ($this->_db && !@sybase_select_db($this->_db, $this->connection)) {
                 return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
             }
             $result = @sybase_query('COMMIT', $this->connection);
@@ -581,7 +581,7 @@ class DB_sybase extends DB_common
     function rollback()
     {
         if ($this->transaction_opcount > 0) {
-            if (!@sybase_select_db($this->_db, $this->connection)) {
+            if ($this->_db && !@sybase_select_db($this->_db, $this->connection)) {
                 return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
             }
             $result = @sybase_query('ROLLBACK', $this->connection);
@@ -714,7 +714,7 @@ class DB_sybase extends DB_common
              * Probably received a table name.
              * Create a result resource identifier.
              */
-            if (!@sybase_select_db($this->_db, $this->connection)) {
+            if ($this->_db && !@sybase_select_db($this->_db, $this->connection)) {
                 return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
             }
             $id = @sybase_query("SELECT * FROM $result WHERE 1=0",
