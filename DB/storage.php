@@ -445,6 +445,8 @@ class DB_storage extends PEAR
      */
     function store()
     {
+        $params = array();
+        $vars = array();
         foreach ($this->_changes as $name => $foo) {
             $params[] = &$this->$name;
             $vars[] = $name . ' = ?';
