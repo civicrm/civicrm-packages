@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.189 2005-07-10 13:38:51 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.190 2005-07-14 02:42:16 danielc Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -70,6 +70,10 @@ DB is compatible with both PHP 4 and PHP 5.
     <state>stable</state>
     <date>pending</date>
     <notes><![CDATA[
+odbc(access):
+* Tweak quoteSmart() to allows MS Access to wrap dates
+  in #'s.  Bug 4813.
+
 mssql:
 * Use mssql_fetch_assoc() instead of mssql_fetch_array().
   Should resolve FreeTDS and/or Sybase issues discussed

@@ -431,6 +431,11 @@ class DB_common extends PEAR
         } elseif (is_null($in)) {
             return 'NULL';
         } else {
+            if ($this->dbsyntax == 'access'
+                && preg_match('/^#.+#$/', $in))
+            {
+                return $this->escapeSimple($in);
+            }
             return "'" . $this->escapeSimple($in) . "'";
         }
     }
