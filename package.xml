@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.190 2005-07-14 02:42:16 danielc Exp $ -->
+  <!-- $Id: package.xml,v 1.191 2005-08-14 08:31:13 lsmith Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -62,7 +62,7 @@ DB is compatible with both PHP 4 and PHP 5.
       <user>lsmith</user>
       <role>helper</role>
       <name>Lukas Kahwe Smith</name>
-      <email>smith@backendmedia.com</email>
+      <email>smith@pooteeweet.org</email>
     </maintainer>
   </maintainers>
   <release>
