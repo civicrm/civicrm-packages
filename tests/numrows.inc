@@ -33,13 +33,14 @@
  * @see PEAR::setErrorHandling()
  */
 function pe($o) {
-    global $dbh;
+    global $dbh, $res;
 
     $dbh->setErrorHandling(PEAR_ERROR_RETURN);
+    $res->free();
     drop_table($dbh, 'phptest');
 
     print "\n------------\n";
-    if ($o->getCode() == DB_ERROR_NOT_CAPABLE) {
+    if ($o->getCode() == DB_ERROR_UNSUPPORTED) {
         print "This DBMS does not support numRows().";
     } elseif ($o->getCode() == DB_ERROR_MISMATCH) {
         print "Mismatch between the number of placeholders and parameters.\n";
@@ -105,6 +106,4 @@ if (!DB::isError($rows = $res->numRows())) {
 }
 
 
-$res->free();  // keep ibase happy
-$dbh->setErrorHandling(PEAR_ERROR_RETURN);
 drop_table($dbh, 'phptest');
