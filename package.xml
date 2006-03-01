@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.191 2005-08-14 08:31:13 lsmith Exp $ -->
+  <!-- $Id: package.xml,v 1.192 2006-03-01 22:59:43 lsmith Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -78,6 +78,10 @@ mssql:
 * Use mssql_fetch_assoc() instead of mssql_fetch_array().
   Should resolve FreeTDS and/or Sybase issues discussed
   in bug 1525, et al.
+
+mysqli:
+* worked around an issue in 'len' handling of tableInfo(). There is a bug in
+  ext/mysqli or the mysqli docs.  Bug 5680.
 
 pgsql:
 * When inserting to non-existant column, produce
