@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.192 2006-03-01 22:59:43 lsmith Exp $ -->
+  <!-- $Id: package.xml,v 1.193 2006-03-01 23:21:29 lsmith Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -78,6 +78,9 @@ mssql:
 * Use mssql_fetch_assoc() instead of mssql_fetch_array().
   Should resolve FreeTDS and/or Sybase issues discussed
   in bug 1525, et al.
+
+mysql:
+* fixed handling of fully qualified table names in tableInfo().  Bug 4272.
 
 mysqli:
 * worked around an issue in 'len' handling of tableInfo(). There is a bug in
