@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.193 2006-03-01 23:21:29 lsmith Exp $ -->
+  <!-- $Id: package.xml,v 1.194 2006-03-01 23:33:36 lsmith Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -70,6 +70,10 @@ DB is compatible with both PHP 4 and PHP 5.
     <state>stable</state>
     <date>pending</date>
     <notes><![CDATA[
+DB:
+* added ability to specify port number when using unix sockets in DB::parseDSN()
+  Bug 5982
+
 odbc(access):
 * Tweak quoteSmart() to allows MS Access to wrap dates
   in #'s.  Bug 4813.
