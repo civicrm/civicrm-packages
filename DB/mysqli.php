@@ -1015,7 +1015,9 @@ class DB_mysqli extends DB_common
                 'type'  => isset($this->mysqli_types[$tmp->type])
                                     ? $this->mysqli_types[$tmp->type]
                                     : 'unknown',
-                'len'   => $tmp->max_length,
+                // work around for http://bugs.php.net/?id=36579
+                'len'   => ($tmp->max_length && isset($tmp->length))
+                    ? $tmp->max_length : $tmp->length,
                 'flags' => $flags,
             );
 
