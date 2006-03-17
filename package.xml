@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.194 2006-03-01 23:33:36 lsmith Exp $ -->
+  <!-- $Id: package.xml,v 1.195 2006-03-17 08:48:49 lsmith Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -99,6 +99,9 @@ pgsql:
   instead of the generic DB_ERROR.  Bug 4446.
 
 * Allow FETCH queries to return results.  Bug 4112.
+
+sqlite:
+* Fix bug sqlite:///:memory: trys to open file.  Bug 6599.
 
 sybase:
 * Allow connecting without specifying db name.  Bug 4588.
