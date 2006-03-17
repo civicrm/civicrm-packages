@@ -204,7 +204,11 @@ class DB_sqlite extends DB_common
             $this->dbsyntax = $dsn['dbsyntax'];
         }
 
-        if ($dsn['database']) {
+        if (!$dsn['database']) {
+            return $this->sqliteRaiseError(DB_ERROR_ACCESS_VIOLATION);
+        }
+
+        if ($dsn['database'] !== ':memory:') {
             if (!file_exists($dsn['database'])) {
                 if (!touch($dsn['database'])) {
                     return $this->sqliteRaiseError(DB_ERROR_NOT_FOUND);
@@ -229,8 +233,6 @@ class DB_sqlite extends DB_common
             if (!is_readable($dsn['database'])) {
                 return $this->sqliteRaiseError(DB_ERROR_ACCESS_VIOLATION);
             }
-        } else {
-            return $this->sqliteRaiseError(DB_ERROR_ACCESS_VIOLATION);
         }
 
         $connect_function = $persistent ? 'sqlite_popen' : 'sqlite_open';
