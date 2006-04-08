@@ -932,8 +932,8 @@ class DB_mysql extends DB_common
              * Probably received a table name.
              * Create a result resource identifier.
              */
-            $id = @mysql_query($this->connection,
-                                "SELECT * FROM $result LIMIT 0");
+            $id = @mysql_query("SELECT * FROM $result LIMIT 0",
+                               $this->connection);
             $got_string = true;
         } elseif (isset($result->result)) {
             /*
