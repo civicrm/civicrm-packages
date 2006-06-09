@@ -752,9 +752,10 @@ class DB_mysql extends DB_common
 
     /**
      * Quotes a string so it can be safely used as a table or column name
+     * (WARNING: using names that require this is a REALLY BAD IDEA)
      *
-     * MySQL can't handle the backtick character (<kbd>`</kbd>) in
-     * table or column names.
+     * WARNING:  Older versions of MySQL can't handle the backtick
+     * character (<kbd>`</kbd>) in table or column names.
      *
      * @param string $str  identifier name to be quoted
      *
@@ -765,7 +766,7 @@ class DB_mysql extends DB_common
      */
     function quoteIdentifier($str)
     {
-        return '`' . $str . '`';
+        return '`' . str_replace('`', '``', $str) . '`';
     }
 
     // }}}
