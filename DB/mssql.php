@@ -753,16 +753,22 @@ class DB_mssql extends DB_common
         }
 
         for ($i = 0; $i < $count; $i++) {
+            if ($got_string) {
+                $flags = $this->_mssql_field_flags($result,
+                        @mssql_field_name($id, $i));
+                if (DB::isError($flags)) {
+                    return $flags;
+                }
+            } else {
+                $flags = '';
+            }
+
             $res[$i] = array(
                 'table' => $got_string ? $case_func($result) : '',
                 'name'  => $case_func(@mssql_field_name($id, $i)),
                 'type'  => @mssql_field_type($id, $i),
                 'len'   => @mssql_field_length($id, $i),
-                // We only support flags for table
-                'flags' => $got_string
-                           ? $this->_mssql_field_flags($result,
-                                                       @mssql_field_name($id, $i))
-                           : '',
+                'flags' => $flags,
             );
             if ($mode & DB_TABLEINFO_ORDER) {
                 $res['order'][$res[$i]['name']] = $i;
@@ -813,7 +819,10 @@ class DB_mssql extends DB_common
             $tableName = $table;
 
             // get unique and primary keys
-            $res = $this->getAll("EXEC SP_HELPINDEX[$table]", DB_FETCHMODE_ASSOC);
+            $res = $this->getAll("EXEC SP_HELPINDEX $table", DB_FETCHMODE_ASSOC);
+            if (DB::isError($res)) {
+                return $res;
+            }
 
             foreach ($res as $val) {
                 $keys = explode(', ', $val['index_keys']);
@@ -836,7 +845,10 @@ class DB_mssql extends DB_common
             }
 
             // get auto_increment, not_null and timestamp
-            $res = $this->getAll("EXEC SP_COLUMNS[$table]", DB_FETCHMODE_ASSOC);
+            $res = $this->getAll("EXEC SP_COLUMNS $table", DB_FETCHMODE_ASSOC);
+            if (DB::isError($res)) {
+                return $res;
+            }
 
             foreach ($res as $val) {
                 $val = array_change_key_case($val, CASE_LOWER);
