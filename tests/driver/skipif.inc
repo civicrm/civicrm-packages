@@ -14,7 +14,7 @@
  * @category   Database
  * @package    DB
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2005 The PHP Group
+ * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    $Id$
  * @link       http://pear.php.net/package/DB
@@ -33,5 +33,5 @@ list($dbms, $dsn) = each($dsns);
 
 $dbh =& DB::connect($dsn, $options);
 if (DB::isError($dbh)) {
-    die('skip ' . $dbh->message);
+    die('skip ' . $dbh->getUserInfo());
 }
