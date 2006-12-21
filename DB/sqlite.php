@@ -728,6 +728,7 @@ class DB_sqlite extends DB_common
      */
     function errorCode($errormsg)
     {
+        $errormsg = str_replace('sqlite_query(): ', '', $errormsg);
         static $error_regexps;
         if (!isset($error_regexps)) {
             $error_regexps = array(
