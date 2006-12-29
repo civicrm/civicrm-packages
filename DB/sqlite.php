@@ -728,8 +728,12 @@ class DB_sqlite extends DB_common
      */
     function errorCode($errormsg)
     {
-        $errormsg = str_replace('sqlite_query(): ', '', $errormsg);
         static $error_regexps;
+        
+        // PHP 5.2+ prepends the function name to $php_errormsg, so we need
+        // this hack to work around it, per bug #9599.
+        $errormsg = preg_replace('/^sqlite[a-z_]+\(\): /', '', $errormsg);
+        
         if (!isset($error_regexps)) {
             $error_regexps = array(
                 '/^no such table:/' => DB_ERROR_NOSUCHTABLE,

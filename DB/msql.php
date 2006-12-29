@@ -598,6 +598,11 @@ class DB_msql extends DB_common
     function errorCode($errormsg)
     {
         static $error_regexps;
+        
+        // PHP 5.2+ prepends the function name to $php_errormsg, so we need
+        // this hack to work around it, per bug #9599.
+        $errormsg = preg_replace('/^msql[a-z_]+\(\): /', '', $errormsg);
+
         if (!isset($error_regexps)) {
             $error_regexps = array(
                 '/^Access to database denied/i'
