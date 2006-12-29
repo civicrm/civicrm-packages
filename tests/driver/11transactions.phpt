@@ -5,7 +5,7 @@ error_reporting = 2047
 --SKIPIF--
 <?php
 chdir(dirname(__FILE__)); require_once './skipif.inc';
-if (!$db->features['transactions']) {
+if (!$dbh->features['transactions']) {
     die('skip this driver does not support transactions');
 }
 ?>

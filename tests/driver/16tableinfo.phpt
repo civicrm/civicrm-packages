@@ -56,7 +56,7 @@ error_reporting = 2047
 error_reporting(E_ALL);
 chdir(dirname(__FILE__));
 require_once './skipif.inc';
-$tableInfo = $db->tableInfo('ajkdslfajoijkadie');
+$tableInfo = $dbh->tableInfo('ajkdslfajoijkadie');
 if (DB::isError($tableInfo) && $tableInfo->code == DB_ERROR_NOT_CAPABLE) {
     die("skip $tableInfo->message");
 }
