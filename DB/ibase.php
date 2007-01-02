@@ -123,6 +123,7 @@ class DB_ibase extends DB_common
         -625 => DB_ERROR_CONSTRAINT_NOT_NULL,
         -803 => DB_ERROR_CONSTRAINT,
         -804 => DB_ERROR_VALUE_COUNT_ON_ROW,
+        // -902 =>  // Covers too many errors, need to use regex on msg
         -904 => DB_ERROR_CONNECT_FAILED,
         -922 => DB_ERROR_NOSUCHDB,
         -923 => DB_ERROR_CONNECT_FAILED,
@@ -925,6 +926,8 @@ class DB_ibase extends DB_common
                     => DB_ERROR_ACCESS_VIOLATION,
                 '/arithmetic exception, numeric overflow, or string truncation/i'
                     => DB_ERROR_INVALID,
+                '/feature is not supported/i'
+                    => DB_ERROR_NOT_CAPABLE,
             );
         }
 

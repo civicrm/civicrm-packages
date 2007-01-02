@@ -278,8 +278,15 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
 print 'DB_ERROR_NOSUCHFIELD joining USING bogus column:  ';
 $res = $dbh->query('SELECT * FROM phptest JOIN a USING (b)');
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
-    case 'ibase:ibase':
     case 'ibase:firebird':
+        /* FirebirdSQL 2 returns -902 (feature is not supported) for this test
+         * rather than a syntax error. For now, we'll test for both. */
+        if ($res->getCode() == DB_ERROR_SYNTAX)
+            check_error($res, DB_ERROR_SYNTAX);
+        else
+            check_error($res, DB_ERROR_NOT_CAPABLE);
+        break;
+    case 'ibase:ibase':
     case 'msql:msql':
     case 'odbc:access':
     case 'odbc:db2':
