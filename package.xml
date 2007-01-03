@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.199 2006-12-29 07:46:34 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.200 2007-01-03 04:35:13 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -87,6 +87,7 @@ mssql:
   in bug 1525, et al.
 * Fix issues with delimited identifiers in mssql tableInfo().
   Bug 8336.
+* Added support for some of the key error codes introduced in SQL Server 2005.
 
 mysql:
 * fixed handling of fully qualified table names in tableInfo().  Bug 4272.
