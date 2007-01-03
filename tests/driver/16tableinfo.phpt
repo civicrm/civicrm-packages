@@ -495,7 +495,7 @@ $quirks = array(
         ),
         5 => array(
             'type' => 'real',
-            'len' => 19,
+            'len' => 8,
             'flags' => '',
         ),
         9 => array(
