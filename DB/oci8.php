@@ -94,24 +94,25 @@ class DB_oci8 extends DB_common
      * @var array
      */
     var $errorcode_map = array(
-        1    => DB_ERROR_CONSTRAINT,
-        900  => DB_ERROR_SYNTAX,
-        904  => DB_ERROR_NOSUCHFIELD,
-        913  => DB_ERROR_VALUE_COUNT_ON_ROW,
-        921  => DB_ERROR_SYNTAX,
-        923  => DB_ERROR_SYNTAX,
-        942  => DB_ERROR_NOSUCHTABLE,
-        955  => DB_ERROR_ALREADY_EXISTS,
-        1400 => DB_ERROR_CONSTRAINT_NOT_NULL,
-        1401 => DB_ERROR_INVALID,
-        1407 => DB_ERROR_CONSTRAINT_NOT_NULL,
-        1418 => DB_ERROR_NOT_FOUND,
-        1476 => DB_ERROR_DIVZERO,
-        1722 => DB_ERROR_INVALID_NUMBER,
-        2289 => DB_ERROR_NOSUCHTABLE,
-        2291 => DB_ERROR_CONSTRAINT,
-        2292 => DB_ERROR_CONSTRAINT,
-        2449 => DB_ERROR_CONSTRAINT,
+        1     => DB_ERROR_CONSTRAINT,
+        900   => DB_ERROR_SYNTAX,
+        904   => DB_ERROR_NOSUCHFIELD,
+        913   => DB_ERROR_VALUE_COUNT_ON_ROW,
+        921   => DB_ERROR_SYNTAX,
+        923   => DB_ERROR_SYNTAX,
+        942   => DB_ERROR_NOSUCHTABLE,
+        955   => DB_ERROR_ALREADY_EXISTS,
+        1400  => DB_ERROR_CONSTRAINT_NOT_NULL,
+        1401  => DB_ERROR_INVALID,
+        1407  => DB_ERROR_CONSTRAINT_NOT_NULL,
+        1418  => DB_ERROR_NOT_FOUND,
+        1476  => DB_ERROR_DIVZERO,
+        1722  => DB_ERROR_INVALID_NUMBER,
+        2289  => DB_ERROR_NOSUCHTABLE,
+        2291  => DB_ERROR_CONSTRAINT,
+        2292  => DB_ERROR_CONSTRAINT,
+        2449  => DB_ERROR_CONSTRAINT,
+        12899 => DB_ERROR_INVALID,
     );
 
     /**
@@ -216,6 +217,13 @@ class DB_oci8 extends DB_common
             $this->dbsyntax = $dsn['dbsyntax'];
         }
 
+        // Backwards compatibility with DB < 1.7.0
+        if (empty($dsn['database']) && !empty($dsn['hostspec'])) {
+            $db = $dsn['hostspec'];
+        } else {
+            $db = $dsn['database'];
+        }
+
         if (function_exists('oci_connect')) {
             if (isset($dsn['new_link'])
                 && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true))
@@ -224,13 +232,6 @@ class DB_oci8 extends DB_common
             } else {
                 $connect_function = $persistent ? 'oci_pconnect'
                                     : 'oci_connect';
-            }
-
-            // Backwards compatibility with DB < 1.7.0
-            if (empty($dsn['database']) && !empty($dsn['hostspec'])) {
-                $db = $dsn['hostspec'];
-            } else {
-                $db = $dsn['database'];
             }
 
             $char = empty($dsn['charset']) ? null : $dsn['charset'];
@@ -248,10 +249,10 @@ class DB_oci8 extends DB_common
             }
         } else {
             $connect_function = $persistent ? 'OCIPLogon' : 'OCILogon';
-            if ($dsn['hostspec']) {
+            if ($db) {
                 $this->connection = @$connect_function($dsn['username'],
                                                        $dsn['password'],
-                                                       $dsn['hostspec']);
+                                                       $db);
             } elseif ($dsn['username'] || $dsn['password']) {
                 $this->connection = @$connect_function($dsn['username'],
                                                        $dsn['password']);

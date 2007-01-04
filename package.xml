@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.200 2007-01-03 04:35:13 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.201 2007-01-04 08:16:58 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -78,6 +78,9 @@ odbc(access):
 * Tweak quoteSmart() to allows MS Access to wrap dates
   in #'s.  Bug 4813.
 
+dbase:
+* Added DB_dbase::freeResult().  Bug 6967.
+
 msql:
 * Fix error mapping in PHP 5.2.  Bug 9599.
 
@@ -97,6 +100,10 @@ mysqli:
 * worked around an issue in 'len' handling of tableInfo(). There is a bug in
   ext/mysqli or the mysqli docs.  Bug 5680.
 * Added support for new error codes in MySQL 5.
+
+oci8:
+* Allowed old-style functions to use the database DSN field if hostspec isn't
+  provided. Thanks to David Palm for the fix.  Bug 7501.
 
 pgsql:
 * When inserting to non-existant column, produce
