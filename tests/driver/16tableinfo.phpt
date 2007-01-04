@@ -913,6 +913,18 @@ if ($quirk_key == 'odbc:access') {
     $decimal   = 'DECIMAL(2,1)';
 }
 
+if ($quirk_key == 'mssql:mssql') {
+    /* We need to reset the expected length of phptest_fk.c to match
+     * @@TEXTSIZE, since the default value seems to vary based on the version
+     * of SQL Server we're talking to and its configuration. */
+    $textsize = $dbh->getOne('SELECT @@TEXTSIZE');
+    if (DB::isError($textsize)) {
+        echo 'Error retrieving @@TEXTSIZE: '.$textsize->getMessage()."\n";
+    } else {
+        $quirks[$quirk_key][2]['len'] = (integer) $textsize;
+    }
+}
+
 // $null is set in mktable.inc
 
 switch ($dbh->phptype) {
