@@ -326,6 +326,26 @@ class DB_dbase extends DB_common
     }
 
     // }}}
+    // {{{ freeResult()
+
+    /**
+     * Deletes the result set and frees the memory occupied by the result set.
+     *
+     * This method is a no-op for dbase, as there aren't result resources in
+     * the same sense as most other database backends.
+     *
+     * @param resource $result  PHP's query result resource
+     *
+     * @return bool  TRUE on success, FALSE if $result is invalid
+     *
+     * @see DB_result::free()
+     */
+    function freeResult($result)
+    {
+        return true;
+    }
+
+    // }}}
     // {{{ numCols()
 
     /**
