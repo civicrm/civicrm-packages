@@ -287,6 +287,7 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
             check_error($res, DB_ERROR_NOT_CAPABLE);
         break;
     case 'ibase:ibase':
+    case 'ifx:ifx':
     case 'msql:msql':
     case 'odbc:access':
     case 'odbc:db2':
@@ -313,7 +314,6 @@ switch ($dbh->phptype) {
         }
         break;
     case 'ibase':
-    case 'ifx':
     case 'fbsql':
     case 'mssql':
     case 'mysql':
@@ -371,6 +371,7 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
         check_error($res, DB_ERROR_SYNTAX);
         break;
     case 'fbsql:fbsql':
+    case 'ifx:ifx':
     case 'msql:msql':
     case 'mssql:mssql':
     case 'mysql:mysql':
@@ -429,6 +430,7 @@ switch ($dbh->phptype) {
 print 'DB_ERROR_INVALID on CHAR column data too long:  ';
 $res = $dbh->query("INSERT INTO phptest (b) VALUES ('123456789.123456789.123456789.123456789.1')");
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'ifx:ifx':
     case 'msql:msql':
     case 'mssql:mssql':
     case 'mysql:mysql':
@@ -449,6 +451,7 @@ switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
 print 'DB_ERROR_INVALID on VARCHAR column data too long:  ';
 $res = $dbh->query("INSERT INTO phptest (d) VALUES ('123456789.123456789.1')");
 switch ($dbh->phptype . ':' . $dbh->dbsyntax) {
+    case 'ifx:ifx':
     case 'msql:msql':
     case 'mssql:mssql':
     case 'mysql:mysql':

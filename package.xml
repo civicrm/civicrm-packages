@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.201 2007-01-04 08:16:58 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.202 2007-01-05 06:58:34 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -80,6 +80,9 @@ odbc(access):
 
 dbase:
 * Added DB_dbase::freeResult().  Bug 6967.
+
+ifx:
+* Added support for error codes as at Informix 10.
 
 msql:
 * Fix error mapping in PHP 5.2.  Bug 9599.
