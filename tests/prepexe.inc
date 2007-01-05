@@ -130,7 +130,7 @@ print_4($sth1, 72);
 print_4($sth1, 71);
 $sth2 = $dbh->prepare("SELECT * FROM phptest WHERE d = ? ORDER BY b");
 print_4($sth2, '1234-56-78');
-$sth3 = $dbh->prepare("SELECT * FROM phptest WHERE c = & ORDER BY b");
+$sth3 = $dbh->prepare("SELECT * FROM phptest WHERE cc = & ORDER BY b");
 print_4($sth3, $tmpfile);
 
 

@@ -9,7 +9,7 @@
  * CREATE TABLE phptest (
  *   a INTEGER NULL,
  *   b CHAR(40) DEFAULT 'def' NOT NULL,
- *   c VARCHAR(255) NULL,
+ *   cc VARCHAR(255) NULL,
  *   d VARCHAR(20) NULL)
  * </pre>
  *
@@ -149,7 +149,7 @@ switch ($dbh->phptype) {
             CREATE TABLE phptest (
               a INTEGER $null,
               b CHAR(40) $default,
-              c $chrc $null,
+              cc $chrc $null,
               d $chrd $null) $tabletype
         ";
 }

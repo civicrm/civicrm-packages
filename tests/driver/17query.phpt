@@ -72,7 +72,7 @@ $row = $res->fetchRow();
 print "4) a = {$row['a']}, b = {$row['b']}\n";
 $res->free();  // keep fbsql happy.
 
-$res =& $dbh->query('SELECT a, b FROM phptest WHERE c = ?', array('Two'));
+$res =& $dbh->query('SELECT a, b FROM phptest WHERE cc = ?', array('Two'));
 $row = $res->fetchRow();
 print "5) a = {$row['a']}, b = {$row['b']}\n";
 

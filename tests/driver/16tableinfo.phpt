@@ -933,7 +933,7 @@ switch ($dbh->phptype) {
             CREATE TABLE phptest_fk (
                 a INTEGER NOT NULL,
                 fk INTEGER NOT NULL,
-                c {$quirks[$quirk_key]['clob']} $null,
+                cc {$quirks[$quirk_key]['clob']} $null,
                 d {$quirks[$quirk_key]['date']} NOT NULL,
                 e CHAR(2) $default_e NOT NULL,
                 f $decimal $null
@@ -947,7 +947,7 @@ switch ($dbh->phptype) {
             CREATE TABLE phptest_fk (
                 a INTEGER NOT NULL,
                 fk INTEGER NOT NULL,
-                c {$quirks[$quirk_key]['clob']} $null,
+                cc {$quirks[$quirk_key]['clob']} $null,
                 d {$quirks[$quirk_key]['date']} NOT NULL,
                 e CHAR(2) $default_e NOT NULL,
                 f $decimal $null,

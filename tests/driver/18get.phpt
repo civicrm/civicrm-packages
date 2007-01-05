@@ -61,33 +61,33 @@ $dbh->query("INSERT INTO phptest VALUES (42, 'three', 'Three', '2003-03-23')");
 
 print "===================================================\n";
 print 'testing getOne: ';
-$ret =& $dbh->getOne("SELECT * FROM phptest WHERE c = 'Two'");
+$ret =& $dbh->getOne("SELECT * FROM phptest WHERE cc = 'Two'");
 print_r($ret);
 print "\n";
 
 print 'testing getOne with string params: ';
-$ret =& $dbh->getOne('SELECT * FROM phptest WHERE c = ?', 'Three');
+$ret =& $dbh->getOne('SELECT * FROM phptest WHERE cc = ?', 'Three');
 print_r($ret);
 print "\n";
 
 print 'testing getOne with array params: ';
-$ret =& $dbh->getOne('SELECT * FROM phptest WHERE c = ?', array('Two'));
+$ret =& $dbh->getOne('SELECT * FROM phptest WHERE cc = ?', array('Two'));
 print_r($ret);
 print "\n";
 
 print "\n===================================================\n";
 print "testing getRow:\n";
-$ret =& $dbh->getRow("SELECT * FROM phptest WHERE c = 'Two'");
+$ret =& $dbh->getRow("SELECT * FROM phptest WHERE cc = 'Two'");
 print_r($ret);
 
 print "testing getRow with null params, DB_FETCHMODE_ORDERED:\n";
-$ret =& $dbh->getRow("SELECT * FROM phptest WHERE c = 'Two'",
+$ret =& $dbh->getRow("SELECT * FROM phptest WHERE cc = 'Two'",
         null, DB_FETCHMODE_ORDERED);
 print_r($ret);
 
 // THIS DOESN'T WORK DUE TO BACKWARDS COMPATIBILITY CRAP
 // print "testing getRow with string params, DB_FETCHMODE_ORDERED:\n";
-// $ret =& $dbh->getRow('SELECT * FROM phptest WHERE c = ?',
+// $ret =& $dbh->getRow('SELECT * FROM phptest WHERE cc = ?',
 //         'Two', DB_FETCHMODE_ORDERED);
 // print_r($ret);
 //
@@ -101,22 +101,22 @@ print_r($ret);
 // )
 
    print "testing getRow with REVERSED args: DB_FETCHMODE_ASSOC, array params:\n";
-   $ret =& $dbh->getRow('SELECT * FROM phptest WHERE c = ?',
+   $ret =& $dbh->getRow('SELECT * FROM phptest WHERE cc = ?',
            DB_FETCHMODE_ASSOC, array('Two'));
    print_r($ret);
    
    print "testing getRow with REVERSED args: DB_FETCHMODE_ASSOC:\n";
-   $ret =& $dbh->getRow("SELECT * FROM phptest WHERE c = 'Two'",
+   $ret =& $dbh->getRow("SELECT * FROM phptest WHERE cc = 'Two'",
            DB_FETCHMODE_ASSOC);
    print_r($ret);
 
 print "testing getRow with array params, DB_FETCHMODE_ASSOC:\n";
-$ret =& $dbh->getRow('SELECT * FROM phptest WHERE c = ?',
+$ret =& $dbh->getRow('SELECT * FROM phptest WHERE cc = ?',
         array('Two'), DB_FETCHMODE_ASSOC);
 print_r($ret);
 
 print "testing getRow with array params, DB_FETCHMODE_OBJECT:\n";
-$ret =& $dbh->getRow('SELECT * FROM phptest WHERE c = ?',
+$ret =& $dbh->getRow('SELECT * FROM phptest WHERE cc = ?',
         array('Two'), DB_FETCHMODE_OBJECT);
 print_r($ret);
 
@@ -161,16 +161,16 @@ print_r($ret);
 
 print "\n===================================================\n";
 print "testing getAssoc:\n";
-$ret =& $dbh->getAssoc('SELECT a, b, c FROM phptest WHERE a < 100 ORDER BY b');
+$ret =& $dbh->getAssoc('SELECT a, b, cc FROM phptest WHERE a < 100 ORDER BY b');
 print_r($ret);
 
 print "testing getAssoc with false force, null params, DB_FETCHMODE_ORDERED:\n";
-$ret =& $dbh->getAssoc("SELECT a, b, c FROM phptest WHERE a < 100 ORDER BY b",
+$ret =& $dbh->getAssoc("SELECT a, b, cc FROM phptest WHERE a < 100 ORDER BY b",
                         false, null, DB_FETCHMODE_ORDERED);
 print_r($ret);
 
 print "testing getAssoc with false force, scalar params, DB_FETCHMODE_ASSOC:\n";
-$ret =& $dbh->getAssoc('SELECT a, b, c FROM phptest WHERE a < ? ORDER BY b',
+$ret =& $dbh->getAssoc('SELECT a, b, cc FROM phptest WHERE a < ? ORDER BY b',
                         false, 100, DB_FETCHMODE_ASSOC);
 print_r($ret);
 
@@ -185,34 +185,34 @@ $ret =& $dbh->getAssoc('SELECT a, b FROM phptest WHERE a < ? ORDER BY b',
 print_r($ret);
 
 print "testing getAssoc with false force, scalar params, DB_FETCHMODE_ASSOC, true group:\n";
-$ret =& $dbh->getAssoc('SELECT a, b, c FROM phptest WHERE a < ? ORDER BY b',
+$ret =& $dbh->getAssoc('SELECT a, b, cc FROM phptest WHERE a < ? ORDER BY b',
                         false, 100, DB_FETCHMODE_ASSOC, true);
 print_r($ret);
 
 print "testing getAssoc with false force, array params, DB_FETCHMODE_OBJECT:\n";
-$ret =& $dbh->getAssoc('SELECT a, b, c FROM phptest WHERE a < ? ORDER BY b',
+$ret =& $dbh->getAssoc('SELECT a, b, cc FROM phptest WHERE a < ? ORDER BY b',
                         false, array(100), DB_FETCHMODE_OBJECT);
 print_r($ret);
 
 print "testing getAssoc with true force, array params, DB_FETCHMODE_OBJECT, true group:\n";
-$ret =& $dbh->getAssoc('SELECT a, b, c FROM phptest WHERE a < ? ORDER BY b',
+$ret =& $dbh->getAssoc('SELECT a, b, cc FROM phptest WHERE a < ? ORDER BY b',
                         false, array(100), DB_FETCHMODE_OBJECT, true);
 print_r($ret);
 
 
 print "\n===================================================\n";
 print "testing getAll:\n";
-$ret =& $dbh->getAll("SELECT * FROM phptest WHERE c = 'Two' OR c = 'Three'");
+$ret =& $dbh->getAll("SELECT * FROM phptest WHERE cc = 'Two' OR cc = 'Three'");
 print_r($ret);
 
 print "testing getAll with null params, DB_FETCHMODE_ORDERED:\n";
-$ret =& $dbh->getAll("SELECT * FROM phptest WHERE c = 'Two' OR c = 'Three'",
+$ret =& $dbh->getAll("SELECT * FROM phptest WHERE cc = 'Two' OR cc = 'Three'",
         null, DB_FETCHMODE_ORDERED);
 print_r($ret);
 
 // THIS DOESN'T WORK DUE TO BACKWARDS COMPATIBILITY CRAP
 // print "testing getAll with string params, DB_FETCHMODE_ORDERED:\n";
-// $ret =& $dbh->getAll('SELECT * FROM phptest WHERE c = ?',
+// $ret =& $dbh->getAll('SELECT * FROM phptest WHERE cc = ?',
 //         'Two', DB_FETCHMODE_ORDERED);
 // print_r($ret);
 //
@@ -226,22 +226,22 @@ print_r($ret);
 // )
 
    print "testing getAll with REVERSED args: DB_FETCHMODE_ASSOC, array params:\n";
-   $ret =& $dbh->getAll('SELECT * FROM phptest WHERE c = ? OR c = ? ORDER BY c',
+   $ret =& $dbh->getAll('SELECT * FROM phptest WHERE cc = ? OR cc = ? ORDER BY c',
            DB_FETCHMODE_ASSOC, array('Two', 'Three'));
    print_r($ret);
    
    print "testing getAll with REVERSED args: DB_FETCHMODE_ASSOC:\n";
-   $ret =& $dbh->getAll("SELECT * FROM phptest WHERE c = 'Two' OR c = 'Three'",
+   $ret =& $dbh->getAll("SELECT * FROM phptest WHERE cc = 'Two' OR cc = 'Three'",
            DB_FETCHMODE_ASSOC);
    print_r($ret);
 
 print "testing getAll with array params, DB_FETCHMODE_ASSOC:\n";
-$ret =& $dbh->getAll('SELECT * FROM phptest WHERE c = ? OR c = ? ORDER BY c',
+$ret =& $dbh->getAll('SELECT * FROM phptest WHERE cc = ? OR cc = ? ORDER BY c',
         array('Two', 'Three'), DB_FETCHMODE_ASSOC);
 print_r($ret);
 
 print "testing getAll with array params, DB_FETCHMODE_OBJECT:\n";
-$ret =& $dbh->getAll('SELECT * FROM phptest WHERE c = ? OR c = ? ORDER BY c',
+$ret =& $dbh->getAll('SELECT * FROM phptest WHERE cc = ? OR cc = ? ORDER BY c',
         array('Two', 'Three'), DB_FETCHMODE_OBJECT);
 print_r($ret);
 
@@ -267,7 +267,7 @@ if ($ret === '') {
 }
 
 print 'testing getOne with empty string in column: ';
-$ret =& $dbh->getOne('SELECT c FROM phptest WHERE a = 9');
+$ret =& $dbh->getOne('SELECT cc FROM phptest WHERE a = 9');
 if ($ret === '') {
     print "empty string\n";
 } else {
