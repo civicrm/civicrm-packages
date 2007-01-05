@@ -39,7 +39,8 @@ function check_dbh($dbh, $name) {
             }
             break;
         case 'sybase':
-            if (gettype($dbh->connection) == 'integer' && $dbh->connection > 0) {
+            if (gettype($dbh->connection) == 'resource' ||
+                (gettype($dbh->connection) == 'integer' && $dbh->connection > 0)) {
                 print "$name is connected\n";
             } else {
                 print "$name NOT connected\n";
