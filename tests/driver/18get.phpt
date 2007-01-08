@@ -226,7 +226,7 @@ print_r($ret);
 // )
 
    print "testing getAll with REVERSED args: DB_FETCHMODE_ASSOC, array params:\n";
-   $ret =& $dbh->getAll('SELECT * FROM phptest WHERE cc = ? OR cc = ? ORDER BY c',
+   $ret =& $dbh->getAll('SELECT * FROM phptest WHERE cc = ? OR cc = ? ORDER BY cc',
            DB_FETCHMODE_ASSOC, array('Two', 'Three'));
    print_r($ret);
    
@@ -236,12 +236,12 @@ print_r($ret);
    print_r($ret);
 
 print "testing getAll with array params, DB_FETCHMODE_ASSOC:\n";
-$ret =& $dbh->getAll('SELECT * FROM phptest WHERE cc = ? OR cc = ? ORDER BY c',
+$ret =& $dbh->getAll('SELECT * FROM phptest WHERE cc = ? OR cc = ? ORDER BY cc',
         array('Two', 'Three'), DB_FETCHMODE_ASSOC);
 print_r($ret);
 
 print "testing getAll with array params, DB_FETCHMODE_OBJECT:\n";
-$ret =& $dbh->getAll('SELECT * FROM phptest WHERE cc = ? OR cc = ? ORDER BY c',
+$ret =& $dbh->getAll('SELECT * FROM phptest WHERE cc = ? OR cc = ? ORDER BY cc',
         array('Two', 'Three'), DB_FETCHMODE_OBJECT);
 print_r($ret);
 
@@ -310,7 +310,7 @@ Array
 (
     [a] => 2
     [b] => two
-    [c] => Two
+    [cc] => Two
     [d] => 2002-02-22
 )
 testing getRow with REVERSED args: DB_FETCHMODE_ASSOC:
@@ -318,7 +318,7 @@ Array
 (
     [a] => 2
     [b] => two
-    [c] => Two
+    [cc] => Two
     [d] => 2002-02-22
 )
 testing getRow with array params, DB_FETCHMODE_ASSOC:
@@ -326,7 +326,7 @@ Array
 (
     [a] => 2
     [b] => two
-    [c] => Two
+    [cc] => Two
     [d] => 2002-02-22
 )
 testing getRow with array params, DB_FETCHMODE_OBJECT:
@@ -334,7 +334,7 @@ stdClass Object
 (
     [a] => 2
     [b] => two
-    [c] => Two
+    [cc] => Two
     [d] => 2002-02-22
 )
 
@@ -420,13 +420,13 @@ Array
     [42] => Array
         (
             [b] => three
-            [c] => Three
+            [cc] => Three
         )
 
     [2] => Array
         (
             [b] => two
-            [c] => Two
+            [cc] => Two
         )
 
 )
@@ -458,13 +458,13 @@ Array
             [0] => Array
                 (
                     [b] => bing
-                    [c] => This is a test
+                    [cc] => This is a test
                 )
 
             [1] => Array
                 (
                     [b] => three
-                    [c] => Three
+                    [cc] => Three
                 )
 
         )
@@ -474,7 +474,7 @@ Array
             [0] => Array
                 (
                     [b] => two
-                    [c] => Two
+                    [cc] => Two
                 )
 
         )
@@ -487,14 +487,14 @@ Array
         (
             [a] => 42
             [b] => three
-            [c] => Three
+            [cc] => Three
         )
 
     [2] => stdClass Object
         (
             [a] => 2
             [b] => two
-            [c] => Two
+            [cc] => Two
         )
 
 )
@@ -507,14 +507,14 @@ Array
                 (
                     [a] => 42
                     [b] => bing
-                    [c] => This is a test
+                    [cc] => This is a test
                 )
 
             [1] => stdClass Object
                 (
                     [a] => 42
                     [b] => three
-                    [c] => Three
+                    [cc] => Three
                 )
 
         )
@@ -525,7 +525,7 @@ Array
                 (
                     [a] => 2
                     [b] => two
-                    [c] => Two
+                    [cc] => Two
                 )
 
         )
@@ -580,7 +580,7 @@ Array
         (
             [a] => 42
             [b] => three
-            [c] => Three
+            [cc] => Three
             [d] => 2003-03-23
         )
 
@@ -588,7 +588,7 @@ Array
         (
             [a] => 2
             [b] => two
-            [c] => Two
+            [cc] => Two
             [d] => 2002-02-22
         )
 
@@ -600,7 +600,7 @@ Array
         (
             [a] => 2
             [b] => two
-            [c] => Two
+            [cc] => Two
             [d] => 2002-02-22
         )
 
@@ -608,7 +608,7 @@ Array
         (
             [a] => 42
             [b] => three
-            [c] => Three
+            [cc] => Three
             [d] => 2003-03-23
         )
 
@@ -620,7 +620,7 @@ Array
         (
             [a] => 42
             [b] => three
-            [c] => Three
+            [cc] => Three
             [d] => 2003-03-23
         )
 
@@ -628,7 +628,7 @@ Array
         (
             [a] => 2
             [b] => two
-            [c] => Two
+            [cc] => Two
             [d] => 2002-02-22
         )
 
@@ -640,7 +640,7 @@ Array
         (
             [a] => 42
             [b] => three
-            [c] => Three
+            [cc] => Three
             [d] => 2003-03-23
         )
 
@@ -648,7 +648,7 @@ Array
         (
             [a] => 2
             [b] => two
-            [c] => Two
+            [cc] => Two
             [d] => 2002-02-22
         )
 

@@ -48,7 +48,7 @@ $sth = $dbh->query("SELECT a FROM phptest");
 printf("%d\n", $sth->numCols());
 $sth = $dbh->query("SELECT a,b FROM phptest");
 printf("%d\n", $sth->numCols());
-$sth = $dbh->query("SELECT a,b,c FROM phptest");
+$sth = $dbh->query("SELECT a,b,cc FROM phptest");
 printf("%d\n", $sth->numCols());
 $sth = $dbh->query("SELECT * FROM phptest");
 printf("%d\n", $sth->numCols());

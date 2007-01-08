@@ -52,7 +52,7 @@ echo "------------1------------\n";
 
 $sth1 = $dbh->prepare("INSERT INTO phptest (a, b) VALUES (?, 'a')");
 $sth2 = $dbh->prepare("INSERT INTO phptest (a,b) VALUES (!,?)");
-$sth3 = $dbh->prepare("INSERT INTO phptest (a,b,c) VALUES (?,!,&)");
+$sth3 = $dbh->prepare("INSERT INTO phptest (a,b,cc) VALUES (?,!,&)");
 $sth4 = $dbh->prepare("INSERT INTO phptest (a, b) VALUES (72, 'direct')");
 print "sth1,sth2,sth3,sth4 created\n";
 print 'sth1: ? as param, passing as array... ';
@@ -96,7 +96,7 @@ print_results();
 echo "\n------------2------------\n";
 
 $dbh->query('DELETE FROM phptest');
-$sth = $dbh->prepare('INSERT INTO phptest (a, b, c, d) VALUES (?, ?, &, ?)');
+$sth = $dbh->prepare('INSERT INTO phptest (a, b, cc, d) VALUES (?, ?, &, ?)');
 $data = array(
     0 => array(72, 'set1', $tmpfile, '1234-56-78'),
     1 => array(72, 'set2', $tmpfile, null),

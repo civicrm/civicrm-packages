@@ -973,23 +973,23 @@ function &runQuery() {
     switch ($quirk_key) {
         case 'odbc:db2':
             // can't extract blob's this way so make a fake column
-            $query = "SELECT phptest_fk.a, phptest_fk.fk, 'tempxyz' AS c,"
+            $query = "SELECT phptest_fk.a, phptest_fk.fk, 'tempxyz' AS cc,"
                    . ' phptest_fk.d, phptest_fk.e, phptest_fk.f,'
-                   . ' phptest.a, phptest.b, phptest.c, phptest.d'
+                   . ' phptest.a, phptest.b, phptest.cc, phptest.d'
                    . ' FROM phptest_fk, phptest'
                    . ' WHERE phptest.a = phptest_fk.fk';
             break;
         case 'msql:msql':
-            $query = 'SELECT phptest_fk.a, phptest_fk.fk, phptest_fk.c,'
+            $query = 'SELECT phptest_fk.a, phptest_fk.fk, phptest_fk.cc,'
                    . ' phptest_fk.d, phptest_fk.e, phptest_fk.f,'
-                   . ' phptest.a, phptest.b, phptest.c, phptest.d'
+                   . ' phptest.a, phptest.b, phptest.cc, phptest.d'
                    . ' FROM phptest_fk, phptest'
                    . ' WHERE phptest.a = phptest_fk.fk';
             break;
         default:
-            $query = 'SELECT phptest_fk.a, phptest_fk.fk, phptest_fk.c,'
+            $query = 'SELECT phptest_fk.a, phptest_fk.fk, phptest_fk.cc,'
                    . ' phptest_fk.d, phptest_fk.e, phptest_fk.f,'
-                   . ' phptest.a, phptest.b, phptest.c, phptest.d'
+                   . ' phptest.a, phptest.b, phptest.cc, phptest.d'
                    . ' FROM phptest_fk, phptest'
                    . ' WHERE phptest.a = phptest_fk.fk';
     }
@@ -1013,7 +1013,7 @@ flags ... matched expected value
 ';
 
 $expected03 = 'table ... matched expected value
-name => c
+name => cc
 type ... matched expected value
 len ... matched expected value
 flags ... matched expected value
@@ -1089,7 +1089,7 @@ print "\norder:\n";
 if ($quirks[$quirk_key]['handles_results'] && is_array($array['order'])) {
     $expected = 'a => 6
 b => 7
-c => 8
+cc => 8
 d => 9
 e => 4
 f => 5
@@ -1133,7 +1133,7 @@ if ($quirks[$quirk_key]['handles_results'] && $array['num_fields'] == 10) {
 print 'ordertable[phptest]: ';
 $expected = 'a => 6
 b => 7
-c => 8
+cc => 8
 d => 9
 ';
 if ($quirks[$quirk_key]['handles_results']
@@ -1160,7 +1160,7 @@ if ($actual == $expected) {
 print 'ordertable[phptest_fk]: ';
 $expected = 'a => 0
 fk => 1
-c => 2
+cc => 2
 d => 3
 e => 4
 f => 5
@@ -1223,7 +1223,7 @@ examineArrayData($array, $expected01, 0, false);
 print "\norder:\n";
 $expect ='a => 0
 fk => 1
-c => 2
+cc => 2
 d => 3
 e => 4
 f => 5
@@ -1233,7 +1233,7 @@ examineArrayData($array['order'], $expect, false, false);
 print "\nordertable[phptest_fk]:\n";
 $expect ='a => 0
 fk => 1
-c => 2
+cc => 2
 d => 3
 e => 4
 f => 5

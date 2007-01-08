@@ -60,10 +60,10 @@ $dbh->setFetchMode(DB_FETCHMODE_ASSOC);
 $res =& $dbh->query('DELETE FROM phptest WHERE a = 17');
 print '1) delete: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
-$res =& $dbh->query("INSERT INTO phptest (a, b, c) VALUES (17, 'one', 'One')");
+$res =& $dbh->query("INSERT INTO phptest (a, b, cc) VALUES (17, 'one', 'One')");
 print '2) insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
-$res =& $dbh->query('INSERT INTO phptest (a, b, c) VALUES (?, ?, ?)', array(17, 'two', 'Two'));
+$res =& $dbh->query('INSERT INTO phptest (a, b, cc) VALUES (?, ?, ?)', array(17, 'two', 'Two'));
 print '3) insert: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
 

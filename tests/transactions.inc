@@ -92,7 +92,7 @@ dumptable(0);
 print '8) testing that select doesn\'t disturbe opcount: ';
 $dbh->autoCommit(false);
 $dbh->simpleQuery("SELECT * FROM phptest");
-$dbh->simpleQuery("SELECT a,c FROM phptest");
+$dbh->simpleQuery("SELECT a,cc FROM phptest");
 $dbh->simpleQuery("SELECT b,d FROM phptest");
 if (empty($dbh->transaction_opcount)) {
     print "ok\n";

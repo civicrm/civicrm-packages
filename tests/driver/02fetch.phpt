@@ -25,16 +25,16 @@ testing fetchmodes: fetchinto default default
 testing fetchmodes: fetchrow ordered default
 0 1 2 3
 testing fetchmodes: fetchrow assoc default
-a b c d
+a b cc d
 testing fetchmodes: fetchrow ordered default with assoc specified
-a b c d
+a b cc d
 testing fetchmodes: fetchrow assoc default with ordered specified
 0 1 2 3
 testing fetchmodes: fetchinto ordered default
 0 1 2 3
 testing fetchmodes: fetchinto assoc default
-a b c d
+a b cc d
 testing fetchmodes: fetchinto ordered default with assoc specified
-a b c d
+a b cc d
 testing fetchmodes: fetchinto assoc default with ordered specified
 0 1 2 3
