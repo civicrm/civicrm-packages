@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.202 2007-01-05 06:58:34 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.203 2007-01-08 00:34:02 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -68,8 +68,11 @@ DB is compatible with both PHP 4 and PHP 5.
   <release>
     <version>1.7.7</version>
     <state>stable</state>
-    <date>pending</date>
+    <date>2007-01-08</date>
     <notes><![CDATA[
+This release of DB fixes numerous minor bugs and improves compatibility with
+PHP 5.2 for the msql, sqlite and sybase drivers.
+
 DB:
 * added ability to specify port number when using unix sockets in DB::parseDSN()
   Bug 5982
