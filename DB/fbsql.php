@@ -171,10 +171,10 @@ class DB_fbsql extends DB_common
             $this->connection = @call_user_func_array($connect_function,
                                                       $params);
         } else {
-            ini_set('track_errors', 1);
+            @ini_set('track_errors', 1);
             $this->connection = @call_user_func_array($connect_function,
                                                       $params);
-            ini_set('track_errors', $ini);
+            @ini_set('track_errors', $ini);
         }
 
         if (!$this->connection) {

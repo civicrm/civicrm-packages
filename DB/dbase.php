@@ -214,7 +214,7 @@ class DB_dbase extends DB_common
          * Turn track_errors on for entire script since $php_errormsg
          * is the only way to find errors from the dbase extension.
          */
-        ini_set('track_errors', 1);
+        @ini_set('track_errors', 1);
         $php_errormsg = '';
 
         if (!file_exists($dsn['database'])) {

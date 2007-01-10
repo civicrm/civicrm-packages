@@ -238,7 +238,7 @@ class DB_sqlite extends DB_common
         $connect_function = $persistent ? 'sqlite_popen' : 'sqlite_open';
 
         // track_errors must remain on for simpleQuery()
-        ini_set('track_errors', 1);
+        @ini_set('track_errors', 1);
         $php_errormsg = '';
 
         if (!$this->connection = @$connect_function($dsn['database'])) {
