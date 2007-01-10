@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.203 2007-01-08 00:34:02 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.204 2007-01-10 02:14:34 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,71 +66,10 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.7</version>
+    <version>1.7.8</version>
     <state>stable</state>
-    <date>2007-01-08</date>
+    <date>pending</date>
     <notes><![CDATA[
-This release of DB fixes numerous minor bugs and improves compatibility with
-PHP 5.2 for the msql, sqlite and sybase drivers.
-
-DB:
-* added ability to specify port number when using unix sockets in DB::parseDSN()
-  Bug 5982
-
-odbc(access):
-* Tweak quoteSmart() to allows MS Access to wrap dates
-  in #'s.  Bug 4813.
-
-dbase:
-* Added DB_dbase::freeResult().  Bug 6967.
-
-ifx:
-* Added support for error codes as at Informix 10.
-
-msql:
-* Fix error mapping in PHP 5.2.  Bug 9599.
-
-mssql:
-* Use mssql_fetch_assoc() instead of mssql_fetch_array().
-  Should resolve FreeTDS and/or Sybase issues discussed
-  in bug 1525, et al.
-* Fix issues with delimited identifiers in mssql tableInfo().
-  Bug 8336.
-* Added support for some of the key error codes introduced in SQL Server 2005.
-
-mysql:
-* fixed handling of fully qualified table names in tableInfo().  Bug 4272.
-* Added support for new error codes in MySQL 5.
-
-mysqli:
-* worked around an issue in 'len' handling of tableInfo(). There is a bug in
-  ext/mysqli or the mysqli docs.  Bug 5680.
-* Added support for new error codes in MySQL 5.
-
-oci8:
-* Allowed old-style functions to use the database DSN field if hostspec isn't
-  provided. Thanks to David Palm for the fix.  Bug 7501.
-
-pgsql:
-* When inserting to non-existant column, produce
-  proper error, "no such field", instead of
-  "no such table".  Bug 4365.
-
-* If connection is lost, raise DB_ERROR_CONNECT_FAILED
-  instead of the generic DB_ERROR.  Bug 4446.
-
-* Allow FETCH queries to return results.  Bug 4112.
-
-sqlite:
-* Fix bug sqlite:///:memory: trys to open file.  Bug 6599.
-* Fix error mapping in PHP 5.2.  Bug 9599.
-
-sybase:
-* Allow connecting without specifying db name.  Bug 4588.
-* Fix error mapping in PHP 5.2.  Bug 9599.
-
-storage:
-* Eliminate "Undefined index $vars" notice in store().  Bug 4766.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">
