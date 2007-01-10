@@ -293,7 +293,7 @@ class DB_mysqli extends DB_common
         @ini_set('track_errors', 1);
         $php_errormsg = '';
 
-        if ($this->getOption('ssl') === true) {
+        if (((int) $this->getOption('ssl')) === 1) {
             $init = mysqli_init();
             mysqli_ssl_set(
                 $init,
