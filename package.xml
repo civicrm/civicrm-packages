@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.205 2007-01-10 08:24:22 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.206 2007-01-11 01:22:42 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -72,6 +72,9 @@ DB is compatible with both PHP 4 and PHP 5.
     <notes><![CDATA[
 DB:
 * Silenced errors on ini_set calls.  Bug 4915.
+
+ibase:
+* Handled cases where ibase_prepare returns false.  Bug 8217.
 
 mysqli:
 * Allowed the ssl option to be an integer.  Bug 5657.

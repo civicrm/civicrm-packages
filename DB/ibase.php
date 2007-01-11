@@ -522,8 +522,14 @@ class DB_ibase extends DB_common
         $this->last_query = $query;
         $newquery = $this->modifyQuery($newquery);
         $stmt = @ibase_prepare($this->connection, $newquery);
-        $this->prepare_types[(int)$stmt] = $types;
-        $this->manip_query[(int)$stmt]   = DB::isManip($query);
+
+        if ($stmt === false) {
+            $stmt = $this->ibaseRaiseError();
+        } else {
+            $this->prepare_types[(int)$stmt] = $types;
+            $this->manip_query[(int)$stmt]   = DB::isManip($query);
+        }
+
         return $stmt;
     }
 
