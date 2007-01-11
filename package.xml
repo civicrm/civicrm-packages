@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.207 2007-01-11 02:09:25 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.208 2007-01-11 02:15:52 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -80,6 +80,8 @@ mysqli:
 * Allowed the ssl option to be an integer.  Bug 5657.
 
 oci8:
+* Altered connect() to handle non-standard ports. Thanks to Lukas Smith for the
+  patch.  Bug 7216.
 * Altered numRows() to properly restore last_query state.  Bug 4388.
     ]]></notes>
     <filelist>

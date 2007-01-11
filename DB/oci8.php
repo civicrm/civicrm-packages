@@ -233,6 +233,9 @@ class DB_oci8 extends DB_common
                 $connect_function = $persistent ? 'oci_pconnect'
                                     : 'oci_connect';
             }
+            if (isset($this->dsn['port']) && $this->dsn['port']) {
+                $db = '//'.$db.':'.$this->dsn['port'];
+            }
 
             $char = empty($dsn['charset']) ? null : $dsn['charset'];
             $this->connection = @$connect_function($dsn['username'],
