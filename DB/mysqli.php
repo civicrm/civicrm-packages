@@ -190,6 +190,7 @@ class DB_mysqli extends DB_common
      */
     var $mysqli_types = array(
         MYSQLI_TYPE_DECIMAL     => 'decimal',
+        246                     => 'decimal',
         MYSQLI_TYPE_TINY        => 'tinyint',
         MYSQLI_TYPE_SHORT       => 'int',
         MYSQLI_TYPE_LONG        => 'int',

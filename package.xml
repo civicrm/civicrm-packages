@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.213 2007-01-11 07:43:09 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.214 2007-01-11 07:52:22 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -86,6 +86,7 @@ ibase:
 * Handled cases where ibase_prepare returns false.  Bug 8217.
 
 mysqli:
+* Added the mysterious 246 data type to the type map.  Bug 6477.
 * Allowed the ssl option to be an integer.  Bug 5657.
 
 oci8:
