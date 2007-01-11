@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.210 2007-01-11 05:18:47 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.211 2007-01-11 05:42:20 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -84,6 +84,8 @@ mysqli:
 * Allowed the ssl option to be an integer.  Bug 5657.
 
 oci8:
+* Added tracking of prepared queries to ensure that last_query is set properly
+  even when there are multiple prepared queries at a given time.  Bug 7632.
 * Altered connect() to handle non-standard ports. Thanks to Lukas Smith for the
   patch.  Bug 7216.
 * Altered numRows() to properly restore last_query state.  Bug 4388.

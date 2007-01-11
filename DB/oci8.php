@@ -161,6 +161,13 @@ class DB_oci8 extends DB_common
      */
     var $manip_query = array();
 
+    /**
+     * Store of prepared SQL queries.
+     * @var array
+     * @access private
+     */
+    var $_prepared_queries = array();
+
 
     // }}}
     // {{{ constructor
@@ -597,6 +604,7 @@ class DB_oci8 extends DB_common
         }
         $this->prepare_types[(int)$stmt] = $types;
         $this->manip_query[(int)$stmt] = DB::isManip($query);
+        $this->_prepared_queries[(int)$stmt] = $newquery;
         return $stmt;
     }
 
@@ -627,6 +635,7 @@ class DB_oci8 extends DB_common
     {
         $data = (array)$data;
         $this->last_parameters = $data;
+        $this->last_query = $this->_prepared_queries[(int)$stmt];
         $this->_data = $data;
 
         $types =& $this->prepare_types[(int)$stmt];
@@ -660,6 +669,7 @@ class DB_oci8 extends DB_common
                 $tmp = $this->oci8RaiseError($stmt);
                 return $tmp;
             }
+            $this->last_query = str_replace($this->last_query, ':bind'.$i, $this->quoteSmart($data['key']));
             $i++;
         }
         if ($this->autocommit) {
