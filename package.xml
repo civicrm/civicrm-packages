@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.208 2007-01-11 02:15:52 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.209 2007-01-11 02:52:54 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -71,6 +71,8 @@ DB is compatible with both PHP 4 and PHP 5.
     <date>pending</date>
     <notes><![CDATA[
 DB:
+* Added code to DB_result::numRows() to return correct results when limit
+  emulation is being used.  Bug 4649.
 * Silenced errors on ini_set calls.  Bug 4915.
 
 ibase:

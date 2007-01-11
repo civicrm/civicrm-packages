@@ -1251,10 +1251,24 @@ class DB_result
             while ($res->fetchInto($tmp, DB_FETCHMODE_ORDERED)) {
                 $i++;
             }
-            return $i;
+            $count = $i;
         } else {
-            return $this->dbh->numRows($this->result);
+            $count = $this->dbh->numRows($this->result);
         }
+
+        if ($this->dbh->features['limit'] === 'emulate'
+            && $this->limit_from !== null) {
+            $limit_count = is_null($this->limit_count) ? $count : $this->limit_count;
+            if ($count < $this->limit_from) {
+                $count = 0;
+            } elseif ($count < ($this->limit_from + $limit_count)) {
+                $count -= $this->limit_from;
+            } else {
+                $count = $limit_count;
+            }
+        }
+
+        return $count;
     }
 
     // }}}

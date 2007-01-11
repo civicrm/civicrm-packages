@@ -22,6 +22,7 @@ require_once '../limit.inc';
 8.- result 7
 9.- result 8
 10.- result 9
+Row count for limited result: 10
 ======= From: 10 || Number of rows to fetch: 10 =======
 11.- result 10
 12.- result 11
@@ -33,6 +34,7 @@ require_once '../limit.inc';
 18.- result 17
 19.- result 18
 20.- result 19
+Row count for limited result: 10
 ======= From: 20 || Number of rows to fetch: 10 =======
 21.- result 20
 22.- result 21
@@ -44,10 +46,12 @@ require_once '../limit.inc';
 28.- result 27
 29.- result 28
 30.- result 29
+Row count for limited result: 10
 ======= From: 30 || Number of rows to fetch: 10 =======
 31.- result 30
 32.- result 31
 33.- result 32
+Row count for limited result: 3
 ======= Passing $params || From: 11 || Number of rows to fetch: 3 =======
 12.- result 11
 13.- result 12

@@ -66,6 +66,8 @@ for ($i = 0; $i <= 3; $i++) {
     while ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
         echo $res->getRowCounter() . '.- ' . $row['a'] . "\n";
     }
+    $count = $res->numRows();
+    echo "Row count for limited result: $count\n";
     $res->free();  // keep fbsql happy.
 }
 
