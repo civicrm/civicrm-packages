@@ -1167,7 +1167,7 @@ class DB_result
             $fetchmode = DB_FETCHMODE_ASSOC;
             $object_class = $this->fetchmode_object_class;
         }
-        if ($this->limit_from !== null) {
+        if (is_null($rownum) && $this->limit_from !== null) {
             if ($this->row_counter === null) {
                 $this->row_counter = $this->limit_from;
                 // Skip rows
@@ -1249,7 +1249,7 @@ class DB_result
             $fetchmode = DB_FETCHMODE_ASSOC;
             $object_class = $this->fetchmode_object_class;
         }
-        if ($this->limit_from !== null) {
+        if (is_null($rownum) && $this->limit_from !== null) {
             if ($this->row_counter === null) {
                 $this->row_counter = $this->limit_from;
                 // Skip rows

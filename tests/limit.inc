@@ -84,5 +84,22 @@ while ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
 $res->free();  // keep fbsql happy.
                // keep ibase happy: can't drop tbl that has results open against it.
 
+// Regression test for bug #7502.
+$from  = 0;
+$count = 3;
+$iter  = 10;
+echo "======= From: $from || Number of rows to fetch: $count || Iterations: $iter =======\n";
+$res = $dbh->limitQuery("select * from php_limit", $from, $count);
+if (!in_array($dbh->phptype, array('ibase', 'oci8'))) {
+    for ($i = 0; $i < $iter; ++$i) {
+        if (is_null($row = $res->fetchRow(DB_FETCHMODE_ASSOC, 1))) {
+            echo "Error in iteration $i: {$row['a']}\n";
+        }
+    }
+}
+$count = $res->numRows();
+echo "Row count for limited result: $count\n";
+$res->free();  // keep fbsql happy.
+
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 drop_table($dbh, 'php_limit');

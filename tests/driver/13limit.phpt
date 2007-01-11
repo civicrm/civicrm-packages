@@ -56,3 +56,5 @@ Row count for limited result: 3
 12.- result 11
 13.- result 12
 14.- result 13
+======= From: 0 || Number of rows to fetch: 3 || Iterations: 10 =======
+Row count for limited result: 3
