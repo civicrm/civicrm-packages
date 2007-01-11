@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.209 2007-01-11 02:52:54 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.210 2007-01-11 05:18:47 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -73,6 +73,8 @@ DB is compatible with both PHP 4 and PHP 5.
 DB:
 * Added code to DB_result::numRows() to return correct results when limit
   emulation is being used.  Bug 4649.
+* Added DB::getDSNString() to allow pretty-printing of both string and array
+  DSNs, thereby improving the output of DB::connect() on error.  Bug 3759.
 * Silenced errors on ini_set calls.  Bug 4915.
 
 ibase:

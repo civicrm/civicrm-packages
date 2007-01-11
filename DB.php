@@ -555,7 +555,11 @@ class DB
 
         $err = $obj->connect($dsninfo, $obj->getOption('persistent'));
         if (DB::isError($err)) {
-            $err->addUserInfo($dsn);
+            if (is_array($dsn)) {
+                $err->addUserInfo(DB::getDSNString($dsn, true));
+            } else {
+                $err->addUserInfo($dsn);
+            }
             return $err;
         }
 
@@ -845,6 +849,82 @@ class DB
         return $parsed;
     }
 
+    // }}}
+    // {{{ getDSNString()
+
+    /**
+     * Returns the given DSN in a string format suitable for output.
+     *
+     * @param array|string the DSN to parse and format
+     * @param boolean true to hide the password, false to include it
+     * @return string
+     */
+    function getDSNString($dsn, $hidePassword) {
+        /* Calling parseDSN will ensure that we have all the array elements
+         * defined, and means that we deal with strings and array in the same
+         * manner. */
+        $dsnArray = DB::parseDSN($dsn);
+        
+        if ($hidePassword) {
+            $dsnArray['password'] = 'PASSWORD';
+        }
+
+        /* Protocol is special-cased, as using the default "tcp" along with an
+         * Oracle TNS connection string fails. */
+        if (is_string($dsn) && strpos($dsn, 'tcp') === false && $dsnArray['protocol'] == 'tcp') {
+            $dsnArray['protocol'] = false;
+        }
+        
+        // Now we just have to construct the actual string. This is ugly.
+        $dsnString = $dsnArray['phptype'];
+        if ($dsnArray['dbsyntax']) {
+            $dsnString .= '('.$dsnArray['dbsyntax'].')';
+        }
+        $dsnString .= '://'
+                     .$dsnArray['username']
+                     .':'
+                     .$dsnArray['password']
+                     .'@'
+                     .$dsnArray['protocol'];
+        if ($dsnArray['socket']) {
+            $dsnString .= '('.$dsnArray['socket'].')';
+        }
+        if ($dsnArray['protocol'] && $dsnArray['hostspec']) {
+            $dsnString .= '+';
+        }
+        $dsnString .= $dsnArray['hostspec'];
+        if ($dsnArray['port']) {
+            $dsnString .= ':'.$dsnArray['port'];
+        }
+        $dsnString .= '/'.$dsnArray['database'];
+        
+        /* Option handling. Unfortunately, parseDSN simply places options into
+         * the top-level array, so we'll first get rid of the fields defined by
+         * DB and see what's left. */
+        unset($dsnArray['phptype'],
+              $dsnArray['dbsyntax'],
+              $dsnArray['username'],
+              $dsnArray['password'],
+              $dsnArray['protocol'],
+              $dsnArray['socket'],
+              $dsnArray['hostspec'],
+              $dsnArray['port'],
+              $dsnArray['database']
+        );
+        if (count($dsnArray) > 0) {
+            $dsnString .= '?';
+            $i = 0;
+            foreach ($dsnArray as $key => $value) {
+                if (++$i > 1) {
+                    $dsnString .= '&';
+                }
+                $dsnString .= $key.'='.$value;
+            }
+        }
+
+        return $dsnString;
+    }
+    
     // }}}
 }
 
