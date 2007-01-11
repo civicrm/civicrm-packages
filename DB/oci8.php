@@ -487,12 +487,7 @@ class DB_oci8 extends DB_common
             $save_query = $this->last_query;
             $save_stmt = $this->last_stmt;
 
-            if (count($this->_data)) {
-                $smt = $this->prepare('SELECT COUNT(*) FROM ('.$this->last_query.')');
-                $count = $this->execute($smt, $this->_data);
-            } else {
-                $count =& $this->query($countquery);
-            }
+            $count =& $this->query($countquery);
 
             // Restore the last query and statement.
             $this->last_query = $save_query;
@@ -669,7 +664,7 @@ class DB_oci8 extends DB_common
                 $tmp = $this->oci8RaiseError($stmt);
                 return $tmp;
             }
-            $this->last_query = str_replace($this->last_query, ':bind'.$i, $this->quoteSmart($data['key']));
+            $this->last_query = str_replace(':bind'.$i, $this->quoteSmart($data[$key]), $this->last_query);
             $i++;
         }
         if ($this->autocommit) {
