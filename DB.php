@@ -1336,8 +1336,17 @@ class DB_result
             $count = $this->dbh->numRows($this->result);
         }
 
-        if ($this->dbh->features['limit'] === 'emulate'
-            && $this->limit_from !== null) {
+        /* fbsql is checked for here because limit queries are implemented
+         * using a TOP() function, which results in fbsql_num_rows still
+         * returning the total number of rows that would have been returned,
+         * rather than the real number. As a result, we'll just do the limit
+         * calculations for fbsql in the same way as a database with emulated
+         * limits. Unfortunately, we can't just do this in DB_fbsql::numRows()
+         * because that only gets the result resource, rather than the full
+         * DB_Result object. */
+        if (($this->dbh->features['limit'] === 'emulate'
+             && $this->limit_from !== null)
+            || $this->dbh->phptype == 'fbsql') {
             $limit_count = is_null($this->limit_count) ? $count : $this->limit_count;
             if ($count < $this->limit_from) {
                 $count = 0;
