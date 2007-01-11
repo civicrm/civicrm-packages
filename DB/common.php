@@ -424,10 +424,12 @@ class DB_common extends PEAR
      */
     function quoteSmart($in)
     {
-        if (is_int($in) || is_double($in)) {
+        if (is_int($in)) {
             return $in;
+        } elseif (is_float($in)) {
+            return $this->quoteFloat($in);
         } elseif (is_bool($in)) {
-            return $in ? 1 : 0;
+            return $this->quoteBoolean($in);
         } elseif (is_null($in)) {
             return 'NULL';
         } else {
@@ -440,6 +442,38 @@ class DB_common extends PEAR
         }
     }
 
+    // }}}
+    // {{{ quoteBoolean()
+
+    /**
+     * Formats a boolean value for use within a query in a locale-independent
+     * manner.
+     *
+     * @param boolean the boolean value to be quoted.
+     * @return string the quoted string.
+     * @see DB_common::quoteSmart()
+     * @since Method available since release 1.7.8.
+     */
+    function quoteBoolean($boolean) {
+        return $boolean ? '1' : '0';
+    }
+     
+    // }}}
+    // {{{ quoteFloat()
+
+    /**
+     * Formats a float value for use within a query in a locale-independent
+     * manner.
+     *
+     * @param float the float value to be quoted.
+     * @return string the quoted string.
+     * @see DB_common::quoteSmart()
+     * @since Method available since release 1.7.8.
+     */
+    function quoteFloat($float) {
+        return "'".$this->escapeSimple(str_replace(',', '.', strval(floatval($float))))."'";
+    }
+     
     // }}}
     // {{{ escapeSimple()
 

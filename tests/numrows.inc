@@ -76,7 +76,7 @@ for ($i = 0; $i < 5; $i++) {
     }
 }
 
-$res = $dbh->query('SELECT a FROM phptest WHERE a > ?', 0);
+$res = $dbh->query('SELECT a FROM phptest WHERE a > ?', array(0));
 if (!DB::isError($rows = $res->numRows())) {
     print "(want 5) got $rows from > 0 (passing params to query)\n";
 } else {

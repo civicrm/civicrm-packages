@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.212 2007-01-11 07:39:38 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.213 2007-01-11 07:43:09 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -75,6 +75,8 @@ DB:
   emulation is being used.  Bug 4649.
 * Added DB::getDSNString() to allow pretty-printing of both string and array
   DSNs, thereby improving the output of DB::connect() on error.  Bug 3759.
+* Fixed quoting of float values to always have the decimal point as a point,
+  rather than a comma, irrespective of locale.  Bug 3021.
 * Silenced errors on ini_set calls.  Bug 4915.
 
 fbsql:

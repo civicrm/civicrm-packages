@@ -388,41 +388,21 @@ class DB_dbase extends DB_common
     }
 
     // }}}
-    // {{{ quoteSmart()
+    // {{{ quoteBoolean()
 
     /**
-     * Formats input so it can be safely used in a query
+     * Formats a boolean value for use within a query in a locale-independent
+     * manner.
      *
-     * @param mixed $in  the data to be formatted
-     *
-     * @return mixed  the formatted data.  The format depends on the input's
-     *                 PHP type:
-     *                 + null = the string <samp>NULL</samp>
-     *                 + boolean = <samp>T</samp> if true or
-     *                   <samp>F</samp> if false.  Use the <kbd>Logical</kbd>
-     *                   data type.
-     *                 + integer or double = the unquoted number
-     *                 + other (including strings and numeric strings) =
-     *                   the data with single quotes escaped by preceeding
-     *                   single quotes then the whole string is encapsulated
-     *                   between single quotes
-     *
+     * @param boolean the boolean value to be quoted.
+     * @return string the quoted string.
      * @see DB_common::quoteSmart()
-     * @since Method available since Release 1.6.0
+     * @since Method available since release 1.7.8.
      */
-    function quoteSmart($in)
-    {
-        if (is_int($in) || is_double($in)) {
-            return $in;
-        } elseif (is_bool($in)) {
-            return $in ? 'T' : 'F';
-        } elseif (is_null($in)) {
-            return 'NULL';
-        } else {
-            return "'" . $this->escapeSimple($in) . "'";
-        }
+    function quoteBoolean($boolean) {
+        return $boolean ? 'T' : 'F';
     }
-
+     
     // }}}
     // {{{ tableInfo()
 

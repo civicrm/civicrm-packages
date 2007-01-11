@@ -553,38 +553,37 @@ class DB_fbsql extends DB_common
     }
 
     // }}}
-    // {{{ quoteSmart()
+    // {{{ quoteBoolean()
 
     /**
-     * Formats input so it can be safely used in a query
+     * Formats a boolean value for use within a query in a locale-independent
+     * manner.
      *
-     * @param mixed $in  the data to be formatted
-     *
-     * @return mixed  the formatted data.  The format depends on the input's
-     *                 PHP type:
-     *                 + null = the string <samp>NULL</samp>
-     *                 + boolean = string <samp>TRUE</samp> or <samp>FALSE</samp>
-     *                 + integer or double = the unquoted number
-     *                 + other (including strings and numeric strings) =
-     *                   the data escaped according to FrontBase's settings
-     *                   then encapsulated between single quotes
-     *
+     * @param boolean the boolean value to be quoted.
+     * @return string the quoted string.
      * @see DB_common::quoteSmart()
-     * @since Method available since Release 1.6.0
+     * @since Method available since release 1.7.8.
      */
-    function quoteSmart($in)
-    {
-        if (is_int($in) || is_double($in)) {
-            return $in;
-        } elseif (is_bool($in)) {
-            return $in ? 'TRUE' : 'FALSE';
-        } elseif (is_null($in)) {
-            return 'NULL';
-        } else {
-            return "'" . $this->escapeSimple($in) . "'";
-        }
+    function quoteBoolean($boolean) {
+        return $boolean ? 'TRUE' : 'FALSE';
     }
+     
+    // }}}
+    // {{{ quoteFloat()
 
+    /**
+     * Formats a float value for use within a query in a locale-independent
+     * manner.
+     *
+     * @param float the float value to be quoted.
+     * @return string the quoted string.
+     * @see DB_common::quoteSmart()
+     * @since Method available since release 1.7.8.
+     */
+    function quoteFloat($float) {
+        return $this->escapeSimple(str_replace(',', '.', strval(floatval($float))));
+    }
+     
     // }}}
     // {{{ fbsqlRaiseError()
 

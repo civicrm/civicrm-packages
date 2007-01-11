@@ -659,6 +659,12 @@ class DB_oci8 extends DB_common
                 }
                 $data[$key] = fread($fp, filesize($data[$key]));
                 fclose($fp);
+            } elseif ($types[$i] == DB_PARAM_SCALAR) {
+                // Floats have to be converted to a locale-neutral
+                // representation.
+                if (is_float($data[$key])) {
+                    $data[$key] = $this->quoteFloat($data[$key]);
+                }
             }
             if (!@OCIBindByName($stmt, ':bind' . $i, $data[$key], -1)) {
                 $tmp = $this->oci8RaiseError($stmt);
@@ -1115,6 +1121,22 @@ class DB_oci8 extends DB_common
         }
     }
 
+    // }}}
+    // {{{ quoteFloat()
+
+    /**
+     * Formats a float value for use within a query in a locale-independent
+     * manner.
+     *
+     * @param float the float value to be quoted.
+     * @return string the quoted string.
+     * @see DB_common::quoteSmart()
+     * @since Method available since release 1.7.8.
+     */
+    function quoteFloat($float) {
+        return $this->escapeSimple(str_replace(',', '.', strval(floatval($float))));
+    }
+     
     // }}}
 
 }
