@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.206 2007-01-11 01:22:42 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.207 2007-01-11 02:09:25 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -78,6 +78,9 @@ ibase:
 
 mysqli:
 * Allowed the ssl option to be an integer.  Bug 5657.
+
+oci8:
+* Altered numRows() to properly restore last_query state.  Bug 4388.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">

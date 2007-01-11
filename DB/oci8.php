@@ -484,13 +484,16 @@ class DB_oci8 extends DB_common
                 $count =& $this->query($countquery);
             }
 
+            // Restore the last query and statement.
+            $this->last_query = $save_query;
+            $this->last_stmt = $save_stmt;
+            
             if (DB::isError($count) ||
                 DB::isError($row = $count->fetchRow(DB_FETCHMODE_ORDERED)))
             {
-                $this->last_query = $save_query;
-                $this->last_stmt = $save_stmt;
                 return $this->raiseError(DB_ERROR_NOT_CAPABLE);
             }
+
             return $row[0];
         }
         return $this->raiseError(DB_ERROR_NOT_CAPABLE);
@@ -1016,7 +1019,7 @@ class DB_oci8 extends DB_common
             if (!@OCIExecute($stmt, OCI_DEFAULT)) {
                 return $this->oci8RaiseError($stmt);
             }
-
+            
             $i = 0;
             while (@OCIFetch($stmt)) {
                 $res[$i] = array(

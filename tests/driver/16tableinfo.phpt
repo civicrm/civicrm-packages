@@ -1054,6 +1054,8 @@ print "Passing result OBJECT to method in DB_<type>.\n";
 print "Output = default.\n";
 print "------------------------------------------\n";
 $resultobj =& runQuery();
+// This numRows call provides a regression test for bug #4388.
+$resultobj->numRows();
 $array = $dbh->tableInfo($resultobj);
 
 print "\ncolumn 0:\n";
