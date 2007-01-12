@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.218 2007-01-12 02:46:59 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.219 2007-01-12 03:11:17 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -77,6 +77,8 @@ DB:
   DSNs, thereby improving the output of DB::connect() on error.  Bug 3759.
 * Added DB_common::nextQueryIsManip() to explicitly hint that the next query is
   a manipulation query and therefore ignore DB::isManip().  Bug 3895.
+* Changed all freeResult() methods to check that the parameter is a resource
+  before calling the native function to free the result.  Bug 5762.
 * Fixed DB_result::fetch*() to only increment their internal row_counters when
   a row number has not been provided.  Bug 7502.
 * Fixed quoting of float values to always have the decimal point as a point,

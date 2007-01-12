@@ -370,7 +370,7 @@ class DB_sybase extends DB_common
      */
     function freeResult($result)
     {
-        return @sybase_free_result($result);
+        return is_resource($result) ? sybase_free_result($result) : false;
     }
 
     // }}}

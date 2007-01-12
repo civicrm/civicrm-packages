@@ -422,7 +422,7 @@ class DB_mysql extends DB_common
      */
     function freeResult($result)
     {
-        return @mysql_free_result($result);
+        return is_resource($result) ? mysql_free_result($result) : false;
     }
 
     // }}}

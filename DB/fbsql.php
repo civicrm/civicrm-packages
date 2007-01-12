@@ -320,7 +320,7 @@ class DB_fbsql extends DB_common
      */
     function freeResult($result)
     {
-        return @fbsql_free_result($result);
+        return is_resource($result) ? fbsql_free_result($result) : false;
     }
 
     // }}}

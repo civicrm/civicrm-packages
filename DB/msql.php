@@ -350,7 +350,7 @@ class DB_msql extends DB_common
      */
     function freeResult($result)
     {
-        return @msql_free_result($result);
+        return is_resource($result) ? msql_free_result($result) : false;
     }
 
     // }}}

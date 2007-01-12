@@ -426,7 +426,7 @@ class DB_oci8 extends DB_common
      */
     function freeResult($result)
     {
-        return @OCIFreeStatement($result);
+        return is_resource($result) ? OCIFreeStatement($result) : false;
     }
 
     /**

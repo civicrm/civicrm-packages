@@ -413,7 +413,7 @@ class DB_ibase extends DB_common
      */
     function freeResult($result)
     {
-        return @ibase_free_result($result);
+        return is_resource($result) ? ibase_free_result($result) : false;
     }
 
     // }}}
@@ -421,8 +421,7 @@ class DB_ibase extends DB_common
 
     function freeQuery($query)
     {
-        @ibase_free_query($query);
-        return true;
+        return is_resource($query) ? ibase_free_query($query) : false;
     }
 
     // }}}

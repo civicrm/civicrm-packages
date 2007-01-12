@@ -422,7 +422,7 @@ class DB_ifx extends DB_common
      */
     function freeResult($result)
     {
-        return @ifx_free_result($result);
+        return is_resource($result) ? ifx_free_result($result) : false;
     }
 
     // }}}
