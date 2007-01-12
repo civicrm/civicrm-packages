@@ -970,22 +970,33 @@ class DB_pgsql extends DB_common
     {
         $field_name = @pg_fieldname($resource, $num_field);
 
+        // Check if there's a schema in $table_name and update things
+        // accordingly.
+        $from = 'pg_attribute f, pg_class tab, pg_type typ';
+        if (strpos($table_name, '.') !== false) {
+            $from .= ', pg_namespace nsp';
+            list($schema, $table) = explode('.', $table_name);
+            $tableWhere = "tab.relname = '$table' AND tab.relnamespace = nsp.oid AND nsp.nspname = '$schema'";
+        } else {
+            $tableWhere = "tab.relname = '$table_name'";
+        }
+
         $result = @pg_exec($this->connection, "SELECT f.attnotnull, f.atthasdef
-                                FROM pg_attribute f, pg_class tab, pg_type typ
+                                FROM $from
                                 WHERE tab.relname = typ.typname
                                 AND typ.typrelid = f.attrelid
                                 AND f.attname = '$field_name'
-                                AND tab.relname = '$table_name'");
+                                AND $tableWhere");
         if (@pg_numrows($result) > 0) {
             $row = @pg_fetch_row($result, 0);
             $flags  = ($row[0] == 't') ? 'not_null ' : '';
 
             if ($row[1] == 't') {
                 $result = @pg_exec($this->connection, "SELECT a.adsrc
-                                    FROM pg_attribute f, pg_class tab, pg_type typ, pg_attrdef a
+                                    FROM $from, pg_attrdef a
                                     WHERE tab.relname = typ.typname AND typ.typrelid = f.attrelid
                                     AND f.attrelid = a.adrelid AND f.attname = '$field_name'
-                                    AND tab.relname = '$table_name' AND f.attnum = a.adnum");
+                                    AND $tableWhere AND f.attnum = a.adnum");
                 $row = @pg_fetch_row($result, 0);
                 $num = preg_replace("/'(.*)'::\w+/", "\\1", $row[0]);
                 $flags .= 'default_' . rawurlencode($num) . ' ';
@@ -994,12 +1005,12 @@ class DB_pgsql extends DB_common
             $flags = '';
         }
         $result = @pg_exec($this->connection, "SELECT i.indisunique, i.indisprimary, i.indkey
-                                FROM pg_attribute f, pg_class tab, pg_type typ, pg_index i
+                                FROM $from, pg_index i
                                 WHERE tab.relname = typ.typname
                                 AND typ.typrelid = f.attrelid
                                 AND f.attrelid = i.indrelid
                                 AND f.attname = '$field_name'
-                                AND tab.relname = '$table_name'");
+                                AND $tableWhere");
         $count = @pg_numrows($result);
 
         for ($i = 0; $i < $count ; $i++) {

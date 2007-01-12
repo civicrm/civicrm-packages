@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.215 2007-01-11 09:03:58 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.216 2007-01-12 02:10:40 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -97,6 +97,9 @@ oci8:
 * Altered connect() to handle non-standard ports. Thanks to Lukas Smith for the
   patch.  Bug 7216.
 * Altered numRows() to properly restore last_query state.  Bug 4388.
+
+pgsql:
+* Added schema support to _pgFieldFlags.  Bug 5796.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">
