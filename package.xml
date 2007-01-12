@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.217 2007-01-12 02:41:07 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.218 2007-01-12 02:46:59 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -88,6 +88,10 @@ fbsql:
 
 ibase:
 * Handled cases where ibase_prepare returns false.  Bug 8217.
+
+ifx:
+* Altered simpleQuery() to treat EXECUTE queries as being data-returning.
+  Bug 5204.
 
 mysqli:
 * Added the mysterious 246 data type to the type map.  Bug 6477.

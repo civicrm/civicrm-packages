@@ -248,7 +248,7 @@ class DB_ifx extends DB_common
         $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
         $this->affected   = null;
-        if (preg_match('/(SELECT)/i', $query)) {    //TESTME: Use !DB::isManip()?
+        if (preg_match('/(SELECT|EXECUTE)/i', $query)) {    //TESTME: Use !DB::isManip()?
             // the scroll is needed for fetching absolute row numbers
             // in a select query result
             $result = @ifx_query($query, $this->connection, IFX_SCROLL);
@@ -270,7 +270,7 @@ class DB_ifx extends DB_common
         $this->affected = @ifx_affected_rows($result);
         // Determine which queries should return data, and which
         // should return an error code only.
-        if (preg_match('/(SELECT)/i', $query)) {
+        if (preg_match('/(SELECT|EXECUTE)/i', $query)) {
             return $result;
         }
         // XXX Testme: free results inside a transaction
