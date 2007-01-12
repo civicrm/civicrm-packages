@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.219 2007-01-12 03:11:17 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.220 2007-01-12 05:16:22 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -94,6 +94,10 @@ ibase:
 ifx:
 * Altered simpleQuery() to treat EXECUTE queries as being data-returning.
   Bug 5204.
+
+mssql:
+* Altered nextId() to use IDENT_CURRENT instead of @@IDENTITY, thereby
+  resolving problems with concurrent nextId() calls.  Bug 181.
 
 mysqli:
 * Added the mysterious 246 data type to the type map.  Bug 6477.

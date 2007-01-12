@@ -566,7 +566,15 @@ class DB_mssql extends DB_common
                     return $this->raiseError($result);
                 }
             } elseif (!DB::isError($result)) {
-                $result =& $this->query("SELECT @@IDENTITY FROM $seqname");
+                $result =& $this->query("SELECT IDENT_CURRENT('$seqname')");
+                if (DB::isError($result)) {
+                    /* Fallback code for MS SQL Server 7.0, which doesn't have
+                     * IDENT_CURRENT. This is *not* safe for concurrent
+                     * requests, and really, if you're using it, you're in a
+                     * world of hurt. Nevertheless, it's here to ensure BC. See
+                     * bug #181 for the gory details.*/
+                    $result =& $this->query("SELECT @@IDENTITY FROM $seqname");
+                }
                 $repeat = 0;
             } else {
                 $repeat = false;
