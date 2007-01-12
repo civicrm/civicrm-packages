@@ -273,7 +273,7 @@ class DB_mssql extends DB_common
      */
     function simpleQuery($query)
     {
-        $ismanip = DB::isManip($query);
+        $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
         if (!@mssql_select_db($this->_db, $this->connection)) {
             return $this->mssqlRaiseError(DB_ERROR_NODBSELECTED);
@@ -512,7 +512,7 @@ class DB_mssql extends DB_common
      */
     function affectedRows()
     {
-        if (DB::isManip($this->last_query)) {
+        if ($this->_last_query_manip) {
             $res = @mssql_query('select @@rowcount', $this->connection);
             if (!$res) {
                 return $this->mssqlRaiseError();

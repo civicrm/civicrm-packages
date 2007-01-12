@@ -229,7 +229,7 @@ class DB_fbsql extends DB_common
         }
         // Determine which queries that should return data, and which
         // should return an error code only.
-        if (DB::isManip($query)) {
+        if ($this->_checkManip($query)) {
             return DB_OK;
         }
         return $result;
@@ -431,7 +431,7 @@ class DB_fbsql extends DB_common
      */
     function affectedRows()
     {
-        if (DB::isManip($this->last_query)) {
+        if ($this->_last_query_manip) {
             $result = @fbsql_affected_rows($this->connection);
         } else {
             $result = 0;
@@ -543,7 +543,7 @@ class DB_fbsql extends DB_common
      */
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
-        if (DB::isManip($query)) {
+        if (DB::isManip($query) || $this->_next_query_manip) {
             return preg_replace('/^([\s(])*SELECT/i',
                                 "\\1SELECT TOP($count)", $query);
         } else {

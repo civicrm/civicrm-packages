@@ -251,7 +251,7 @@ class DB_msql extends DB_common
         }
         // Determine which queries that should return data, and which
         // should return an error code only.
-        if (DB::isManip($query)) {
+        if ($this->_checkManip($query)) {
             $this->_result = $result;
             return DB_OK;
         } else {

@@ -121,6 +121,21 @@ class DB_common extends PEAR
      */
     var $prepared_queries = array();
 
+    /**
+     * Flag indicating that the last query was a manipulation query.
+     * @access protected
+     * @var boolean
+     */
+    var $_last_query_manip = false;
+
+    /**
+     * Flag indicating that the next query <em>must</em> be a manipulation
+     * query.
+     * @access protected
+     * @var boolean
+     */
+    var $_next_query_manip = false;
+
 
     // }}}
     // {{{ DB_common
@@ -2139,6 +2154,52 @@ class DB_common extends PEAR
     function getSpecialQuery($type)
     {
         return $this->raiseError(DB_ERROR_UNSUPPORTED);
+    }
+
+    // }}}
+    // {{{ nextQueryIsManip()
+
+    /**
+     * Sets (or unsets) a flag indicating that the next query will be a
+     * manipulation query, regardless of the usual DB::isManip() heuristics.
+     *
+     * @param boolean true to set the flag overriding the isManip() behaviour,
+     * false to clear it and fall back onto isManip()
+     *
+     * @return void
+     *
+     * @access public
+     */
+    function nextQueryIsManip($manip)
+    {
+        $this->_next_query_manip = $manip;
+    }
+
+    // }}}
+    // {{{ _checkManip()
+
+    /**
+     * Checks if the given query is a manipulation query. This also takes into
+     * account the _next_query_manip flag and sets the _last_query_manip flag
+     * (and resets _next_query_manip) according to the result.
+     *
+     * @param string The query to check.
+     *
+     * @return boolean true if the query is a manipulation query, false
+     * otherwise
+     *
+     * @access protected
+     */
+    function _checkManip($query)
+    {
+        if ($this->_next_query_manip || DB::isManip($query)) {
+            $this->_last_query_manip = true;
+        } else {
+            $this->_last_query_manip = false;
+        }
+        $this->_next_query_manip = false;
+        return $this->_last_query_manip;
+        $manip = $this->_next_query_manip;
     }
 
     // }}}

@@ -266,7 +266,7 @@ class DB_odbc extends DB_common
         }
         // Determine which queries that should return data, and which
         // should return an error code only.
-        if (DB::isManip($query)) {
+        if ($this->_checkManip($query)) {
             $this->affected = $result; // For affectedRows()
             return DB_OK;
         }

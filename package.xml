@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.216 2007-01-12 02:10:40 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.217 2007-01-12 02:41:07 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -75,6 +75,8 @@ DB:
   emulation is being used.  Bug 4649.
 * Added DB::getDSNString() to allow pretty-printing of both string and array
   DSNs, thereby improving the output of DB::connect() on error.  Bug 3759.
+* Added DB_common::nextQueryIsManip() to explicitly hint that the next query is
+  a manipulation query and therefore ignore DB::isManip().  Bug 3895.
 * Fixed DB_result::fetch*() to only increment their internal row_counters when
   a row number has not been provided.  Bug 7502.
 * Fixed quoting of float values to always have the decimal point as a point,

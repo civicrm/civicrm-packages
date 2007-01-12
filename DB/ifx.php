@@ -245,7 +245,7 @@ class DB_ifx extends DB_common
      */
     function simpleQuery($query)
     {
-        $ismanip = DB::isManip($query);
+        $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
         $this->affected   = null;
         if (preg_match('/(SELECT)/i', $query)) {    //TESTME: Use !DB::isManip()?
@@ -311,7 +311,7 @@ class DB_ifx extends DB_common
      */
     function affectedRows()
     {
-        if (DB::isManip($this->last_query)) {
+        if ($this->_last_query_manip) {
             return $this->affected;
         } else {
             return 0;

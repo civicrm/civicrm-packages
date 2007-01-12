@@ -122,6 +122,14 @@ print '9) delete with array(0) as param: ' . ($res === DB_OK ? 'okay' : 'error')
 $res =& $dbh->query('DELETE FROM phptest WHERE a = ?', 0);
 print '10) delete with 0 as param: ' . ($res === DB_OK ? 'okay' : 'error') . "\n";
 
+$dbh->nextQueryIsManip(true);
+$res =& $dbh->query('SELECT * FROM phptest');
+print '11) query is manip (with override): ' . ($dbh->_last_query_manip ? 'true' : 'false') . "\n";
+
+$dbh->nextQueryIsManip(false);
+$res =& $dbh->query('SELECT * FROM phptest');
+print '12) query is manip (without override): ' . ($dbh->_last_query_manip ? 'true' : 'false') . "\n";
+
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 drop_table($dbh, 'phptest');
@@ -138,3 +146,5 @@ drop_table($dbh, 'phptest');
 8) delete: okay
 9) delete with array(0) as param: okay
 10) delete with 0 as param: okay
+11) query is manip (with override): true
+12) query is manip (without override): false

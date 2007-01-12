@@ -276,7 +276,7 @@ class DB_ibase extends DB_common
      */
     function simpleQuery($query)
     {
-        $ismanip = DB::isManip($query);
+        $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
         $result = @ibase_query($this->connection, $query);
@@ -596,9 +596,12 @@ class DB_ibase extends DB_common
             @ibase_commit($this->connection);
         }*/
         $this->last_stmt = $stmt;
-        if ($this->manip_query[(int)$stmt]) {
+        if ($this->manip_query[(int)$stmt] || $this->_next_query_manip) {
+            $this->_last_query_manip = true;
+            $this->_next_query_manip = false;
             $tmp = DB_OK;
         } else {
+            $this->_last_query_manip = false;
             $tmp =& new DB_result($this, $res);
         }
         return $tmp;

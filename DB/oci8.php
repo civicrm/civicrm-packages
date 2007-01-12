@@ -333,7 +333,7 @@ class DB_oci8 extends DB_common
             return $this->oci8RaiseError($result);
         }
         $this->last_stmt = $result;
-        if (DB::isManip($query)) {
+        if ($this->_checkManip($query)) {
             return DB_OK;
         } else {
             @ocisetprefetch($result, $this->options['result_buffering']);
@@ -683,9 +683,12 @@ class DB_oci8 extends DB_common
             return $tmp;
         }
         $this->last_stmt = $stmt;
-        if ($this->manip_query[(int)$stmt]) {
+        if ($this->manip_query[(int)$stmt] || $this->_next_query_manip) {
+            $this->_last_query_manip = true;
+            $this->_next_query_manip = false;
             $tmp = DB_OK;
         } else {
+            $this->_last_query_manip = false;
             @ocisetprefetch($stmt, $this->options['result_buffering']);
             $tmp =& new DB_result($this, $stmt);
         }

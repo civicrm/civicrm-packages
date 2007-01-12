@@ -320,7 +320,7 @@ class DB_pgsql extends DB_common
      */
     function simpleQuery($query)
     {
-        $ismanip = DB::isManip($query);
+        $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
         if (!$this->autocommit && $ismanip) {

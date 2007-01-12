@@ -376,7 +376,7 @@ class DB_mysqli extends DB_common
      */
     function simpleQuery($query)
     {
-        $ismanip = DB::isManip($query);
+        $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
         if ($this->_db) {
@@ -630,7 +630,7 @@ class DB_mysqli extends DB_common
      */
     function affectedRows()
     {
-        if (DB::isManip($this->last_query)) {
+        if ($this->_last_query_manip) {
             return @mysqli_affected_rows($this->connection);
         } else {
             return 0;
@@ -883,7 +883,7 @@ class DB_mysqli extends DB_common
      */
     function modifyLimitQuery($query, $from, $count, $params = array())
     {
-        if (DB::isManip($query)) {
+        if (DB::isManip($query) || $this->_next_query_manip) {
             return $query . " LIMIT $count";
         } else {
             return $query . " LIMIT $from, $count";

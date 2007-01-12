@@ -248,7 +248,7 @@ class DB_sybase extends DB_common
      */
     function simpleQuery($query)
     {
-        $ismanip = DB::isManip($query);
+        $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
         if ($this->_db && !@sybase_select_db($this->_db, $this->connection)) {
             return $this->sybaseRaiseError(DB_ERROR_NODBSELECTED);
@@ -435,7 +435,7 @@ class DB_sybase extends DB_common
      */
     function affectedRows()
     {
-        if (DB::isManip($this->last_query)) {
+        if ($this->_last_query_manip) {
             $result = @sybase_affected_rows($this->connection);
         } else {
             $result = 0;
