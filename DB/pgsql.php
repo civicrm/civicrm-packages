@@ -502,9 +502,6 @@ class DB_pgsql extends DB_common
      * {@internal PostgreSQL treats a backslash as an escape character,
      * so they are escaped as well.
      *
-     * Not using pg_escape_string() yet because it requires PostgreSQL
-     * to be at version 7.2 or greater.}}
-     *
      * @param string $str  the string to be escaped
      *
      * @return string  the escaped string
@@ -514,7 +511,11 @@ class DB_pgsql extends DB_common
      */
     function escapeSimple($str)
     {
-        return str_replace("'", "''", str_replace('\\', '\\\\', $str));
+        if (function_exists('pg_escape_string')) {
+            return pg_escape_string($str);
+        } else {
+            return str_replace("'", "''", str_replace('\\', '\\\\', $str));
+        }
     }
 
     // }}}
