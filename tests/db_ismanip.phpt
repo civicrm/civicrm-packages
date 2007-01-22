@@ -19,6 +19,8 @@ test("Select * from table");
 test("select * From table");
 test("sElECt * frOm table");
 test("SELECT DISTINCT name FROM table");
+test("SELECT a, b INTO table2 FROM table1");
+test("SELECT a, b FROM table WHERE b = ' INTO '");
 test("UPDATE table SET foo = 'bar'");
 test("DELETE FROM table");
 test("delete from table where id is null");
@@ -41,6 +43,8 @@ SELECT : 0
 Select : 0
 select : 0
 sElECt : 0
+SELECT : 0
+SELECT : 1
 SELECT : 0
 UPDATE : 1
 DELETE : 1

@@ -629,7 +629,7 @@ class DB
     {
         $manips = 'INSERT|UPDATE|DELETE|REPLACE|'
                 . 'CREATE|DROP|'
-                . 'LOAD DATA|SELECT .* INTO|COPY|'
+                . 'LOAD DATA|SELECT .* INTO .* FROM|COPY|'
                 . 'ALTER|GRANT|REVOKE|'
                 . 'LOCK|UNLOCK';
         if (preg_match('/^\s*"?(' . $manips . ')\s+/i', $query)) {
