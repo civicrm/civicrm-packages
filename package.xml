@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.222 2007-01-22 01:17:48 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.223 2007-01-29 00:48:22 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,17 +66,68 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.8RC2</version>
-    <state>beta</state>
-    <date>2007-01-22</date>
+    <version>1.7.8</version>
+    <state>stable</state>
+    <date>2007-01-29</date>
     <notes><![CDATA[
-This release candidate of DB fixes a minor bug in 1.7.8RC1. If no further bugs
-are reported, this will be released as DB 1.7.8 (stable) next week; probably on
-January 29.
+This release of DB fixes numerous bugs compared to 1.7.7. Users of previous
+versions are encouraged to upgrade in due course.
+
+Users of the pgsql driver should note that this release fixes a security issue
+reported by Yasuo Ohgaki; the security issue is described in more detail by
+CVE-2006-2313 and CVE-2006-2314. PostgreSQL users should upgrade to both DB
+1.7.8 AND at least PostgreSQL 7.3.15, 7.4.13, 8.0.8, 8.1.4 or 8.2.0 as soon as
+possible if they are using SJIS, BIG5, GBK, GB18030 or UHC as a client
+encoding.
+
+This release is identical to 1.7.8RC2. The full change log from 1.7.7 to 1.7.8
+follows.
 
 DB:
+* Added code to DB_result::numRows() to return correct results when limit
+emulation is being used. Bug 4649.
+* Added DB::getDSNString() to allow pretty-printing of both string and array
+DSNs, thereby improving the output of DB::connect() on error. Bug 3759.
+* Added DB_common::nextQueryIsManip() to explicitly hint that the next query is
+a manipulation query and therefore ignore DB::isManip(). Bug 3895.
+* Changed all freeResult() methods to check that the parameter is a resource
+before calling the native function to free the result. Bug 5762.
+* Fixed DB_result::fetch*() to only increment their internal row_counters when
+a row number has not been provided. Bug 7502.
+* Fixed quoting of float values to always have the decimal point as a point,
+rather than a comma, irrespective of locale. Bug 3021.
+* Silenced errors on ini_set calls. Bug 4915.
 * Tweaked DB::isManip() to attempt to deal with SELECT queries that include the
   word INTO in a non-keyword context.  Bug 9869.
+
+fbsql:
+* Fix DB_result::numRows() to return the correct value for limit queries.
+
+ibase:
+* Handled cases where ibase_prepare returns false. Bug 8217.
+
+ifx:
+* Altered simpleQuery() to treat EXECUTE queries as being data-returning.
+Bug 5204.
+
+mssql:
+* Altered nextId() to use IDENT_CURRENT instead of @@IDENTITY, thereby
+resolving problems with concurrent nextId() calls. Bug 181.
+
+mysqli:
+* Added the mysterious 246 data type to the type map. Bug 6477.
+* Allowed the ssl option to be an integer. Bug 5657.
+
+oci8:
+* Added tracking of prepared queries to ensure that last_query is set properly
+even when there are multiple prepared queries at a given time. Bug 7632.
+* Altered connect() to handle non-standard ports. Thanks to Lukas Smith for the
+patch. Bug 7216.
+* Altered numRows() to properly restore last_query state. Bug 4388.
+
+pgsql:
+* Added schema support to _pgFieldFlags. Bug 5796.
+* Updated pgsql escaping to use pg_escape_string when available.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">
