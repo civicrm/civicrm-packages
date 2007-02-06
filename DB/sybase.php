@@ -834,14 +834,24 @@ class DB_sybase extends DB_common
             $flags = array();
             $tableName = $table;
 
-            // get unique/primary keys
-            $res = $this->getAll("sp_helpindex $table", DB_FETCHMODE_ASSOC);
+            /* We're running sp_helpindex directly because it doesn't exist in
+             * older versions of ASE -- unfortunately, we can't just use
+             * DB::isError() because the user may be using callback error
+             * handling. */
+            $res = @sybase_query("sp_helpindex $table", $this->connection);
 
-            if (!isset($res[0]['index_description'])) {
+            if ($res === false || $res === true) {
+                // Fake a valid response for BC reasons.
                 return '';
             }
 
-            foreach ($res as $val) {
+            while (($val = sybase_fetch_assoc($res)) !== false) {
+                if (!isset($val['index_keys'])) {
+                    /* No useful information returned. Break and be done with
+                     * it, which preserves the pre-1.7.9 behaviour. */
+                    break;
+                }
+
                 $keys = explode(', ', trim($val['index_keys']));
 
                 if (sizeof($keys) > 1) {
@@ -856,6 +866,8 @@ class DB_sybase extends DB_common
                     }
                 }
             }
+
+            sybase_free_result($res);
 
         }
 
