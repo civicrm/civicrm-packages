@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.227 2007-02-06 07:36:32 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.228 2007-02-06 07:41:14 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -175,6 +175,8 @@ sybase:
           <file name="17query.phpt"/>
           <file name="18get.phpt"/>
           <file name="19getlistof.phpt"/>
+          <file name="20locale.phpt"/>
+          <file name="21freeResult.phpt"/>
           <file name="connect.inc"/>
           <file name="mktable.inc"/>
           <file name="multiconnect.php"/>
