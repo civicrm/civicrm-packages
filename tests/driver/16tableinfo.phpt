@@ -851,7 +851,7 @@ $quirks = array(
         ),
         2 => array(
             'type' => 'string',
-            'len' => 32768,
+            'len' => 64512,
             'flags' => '',
         ),
         3 => array(
