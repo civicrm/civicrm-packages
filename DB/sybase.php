@@ -679,6 +679,8 @@ class DB_sybase extends DB_common
                     => DB_ERROR_ALREADY_EXISTS,
                 '/^There are fewer columns in the INSERT statement than values specified/i'
                     => DB_ERROR_VALUE_COUNT_ON_ROW,
+                '/Divide by zero/i'
+                    => DB_ERROR_DIVZERO,
             );
         }
 

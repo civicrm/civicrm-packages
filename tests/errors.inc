@@ -319,9 +319,6 @@ switch ($dbh->phptype) {
     case 'mysql':
     case 'mysqli':
     case 'sqlite':
-    case 'sybase':
-        check_error($res, DB_ERROR_DIVZERO, false);
-        break;
     case 'msql':
         check_error($res, DB_ERROR_SYNTAX);
         break;
