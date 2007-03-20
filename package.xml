@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.228 2007-02-06 07:41:14 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.229 2007-03-20 10:22:04 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,17 +66,15 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.9</version>
+    <version>1.7.10</version>
     <state>stable</state>
-    <date>2007-02-06</date>
+    <date>2007-03-20</date>
     <notes><![CDATA[
-This release of DB fixes minor bugs within the Sybase driver.
+This release of DB adds basic support for the BIT type within MySQL 5 when
+using the mysqli driver.
 
-sybase:
-* Added divide by zero error mapping.
-* Added a specific quoteFloat() implementation along the same lines as fbsql.
-* Updated tableInfo() to cope with old versions of ASE that don't have
-  sp_helpindex.  Bug 6683.
+mysqli:
+* Added a type map for BIT fields.  Bug 10211.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">

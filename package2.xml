@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.5.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.5.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
 http://pear.php.net/dtd/tasks-1.0.xsd
 http://pear.php.net/dtd/package-2.0
 http://pear.php.net/dtd/package-2.0.xsd">
@@ -65,24 +65,22 @@ DB is compatible with both PHP 4 and PHP 5.
   <email>cox@idecnet.com</email>
   <active>yes</active>
  </developer>
- <date>2007-02-06</date>
- <time>16:41:22</time>
+ <date>2007-03-20</date>
+ <time>18:40:19</time>
  <version>
-  <release>1.7.9</release>
-  <api>1.7.9</api>
+  <release>1.7.10</release>
+  <api>1.7.10</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>This release of DB fixes minor bugs within the Sybase driver.
+ <notes>This release of DB adds basic support for the BIT type within MySQL 5 when
+using the mysqli driver.
 
-sybase:
-* Added divide by zero error mapping.
-* Added a specific quoteFloat() implementation along the same lines as fbsql.
-* Updated tableInfo() to cope with old versions of ASE that don&apos;t have
-  sp_helpindex.  Bug 6683.
+mysqli:
+* Added a type map for BIT fields.  Bug 10211.
     
  </notes>
  <contents>

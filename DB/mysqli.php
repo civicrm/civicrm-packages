@@ -190,7 +190,6 @@ class DB_mysqli extends DB_common
      */
     var $mysqli_types = array(
         MYSQLI_TYPE_DECIMAL     => 'decimal',
-        246                     => 'decimal',
         MYSQLI_TYPE_TINY        => 'tinyint',
         MYSQLI_TYPE_SHORT       => 'int',
         MYSQLI_TYPE_LONG        => 'int',
@@ -214,6 +213,10 @@ class DB_mysqli extends DB_common
         MYSQLI_TYPE_VAR_STRING  => 'varchar',
         MYSQLI_TYPE_STRING      => 'char',
         MYSQLI_TYPE_GEOMETRY    => 'geometry',
+        /* These constants are conditionally compiled in ext/mysqli, so we'll
+         * define them by number rather than constant. */
+        16                      => 'bit',
+        246                     => 'decimal',
     );
 
 
