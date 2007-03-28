@@ -353,7 +353,7 @@ class DB_fbsql extends DB_common
      */
     function commit()
     {
-        @fbsql_commit();
+        @fbsql_commit($this->connection);
     }
 
     // }}}
@@ -366,7 +366,7 @@ class DB_fbsql extends DB_common
      */
     function rollback()
     {
-        @fbsql_rollback();
+        @fbsql_rollback($this->connection);
     }
 
     // }}}

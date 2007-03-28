@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <package version="1.0">
-  <!-- $Id: package.xml,v 1.229 2007-03-20 10:22:04 aharvey Exp $ -->
+  <!-- $Id: package.xml,v 1.230 2007-03-28 08:02:35 aharvey Exp $ -->
   <name>DB</name>
   <summary>Database Abstraction Layer</summary>
   <description>
@@ -66,15 +66,15 @@ DB is compatible with both PHP 4 and PHP 5.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.7.10</version>
+    <version>1.7.11</version>
     <state>stable</state>
-    <date>2007-03-20</date>
+    <date>2007-03-28</date>
     <notes><![CDATA[
-This release of DB adds basic support for the BIT type within MySQL 5 when
-using the mysqli driver.
+This release of DB fixes a bug in FrontBase's transaction support that could
+manifest when multiple connections were open at once.
 
-mysqli:
-* Added a type map for BIT fields.  Bug 10211.
+fbsql:
+* Fixed commit and rollback to specify the handle to be used. Thanks to Nicolas Ross for the patch.  Bug 10473.
     ]]></notes>
     <filelist>
       <file name="DB.php" role="php" baseinstalldir="/">

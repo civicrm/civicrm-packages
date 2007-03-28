@@ -65,22 +65,22 @@ DB is compatible with both PHP 4 and PHP 5.
   <email>cox@idecnet.com</email>
   <active>yes</active>
  </developer>
- <date>2007-03-20</date>
- <time>18:40:19</time>
+ <date>2007-03-28</date>
+ <time>15:10:13</time>
  <version>
-  <release>1.7.10</release>
-  <api>1.7.10</api>
+  <release>1.7.11</release>
+  <api>1.7.11</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>This release of DB adds basic support for the BIT type within MySQL 5 when
-using the mysqli driver.
+ <notes>This release of DB fixes a bug in FrontBase&apos;s transaction support that could
+manifest when multiple connections were open at once.
 
-mysqli:
-* Added a type map for BIT fields.  Bug 10211.
+fbsql:
+* Fixed commit and rollback to specify the handle to be used. Thanks to Nicolas Ross for the patch.  Bug 10473.
     
  </notes>
  <contents>
