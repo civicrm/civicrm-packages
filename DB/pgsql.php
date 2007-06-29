@@ -512,7 +512,17 @@ class DB_pgsql extends DB_common
     function escapeSimple($str)
     {
         if (function_exists('pg_escape_string')) {
-            return pg_escape_string($str);
+            /* This fixes an undocumented BC break in PHP 5.2.0 which changed
+             * the prototype of pg_escape_string. I'm not thrilled about having
+             * to sniff the PHP version, quite frankly, but it's the only way
+             * to deal with the problem. Revision 1.331.2.13.2.10 on
+             * php-src/ext/pgsql/pgsql.c (PHP_5_2 branch) is to blame, for the
+             * record. */
+            if (version_compare(PHP_VERSION, '5.2.0', '>=')) {
+                return pg_escape_string($this->connection, $str);
+            } else {
+                return pg_escape_string($str);
+            }
         } else {
             return str_replace("'", "''", str_replace('\\', '\\\\', $str));
         }
