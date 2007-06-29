@@ -313,14 +313,18 @@ switch ($dbh->phptype) {
                 break;
         }
         break;
-    case 'ibase':
+    case 'msql':
+        check_error($res, DB_ERROR_SYNTAX);
+        break;
     case 'fbsql':
+    case 'ibase':
     case 'mssql':
     case 'mysql':
     case 'mysqli':
     case 'sqlite':
-    case 'msql':
-        check_error($res, DB_ERROR_SYNTAX);
+        /* Not all databases detect division by zero errors. We call these
+         * databases "broken". */
+        check_error($res, null, false);
         break;
     default:
         check_error($res, DB_ERROR_DIVZERO);
