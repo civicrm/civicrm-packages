@@ -84,6 +84,7 @@ oci8:
 * Added view support to getSpecialQuery() for feature parity with other backends.  Request 11110.
 
 pgsql:
+* Added schema.views support to getSpecialQuery() to avoid disadvantaging views within schemas.  Request 11080.
 * Changed parameter escaping to correctly pass up the DB connection.  Bug 11125.
 
 tests:

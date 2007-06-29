@@ -1082,6 +1082,9 @@ class DB_pgsql extends DB_common
                         . ' FROM pg_catalog.pg_tables'
                         . ' WHERE schemaname NOT IN'
                         . " ('pg_catalog', 'information_schema', 'pg_toast')";
+            case 'schema.views':
+                return "SELECT schemaname || '.' || viewname from pg_views WHERE schemaname"
+                        . " NOT IN ('information_schema', 'pg_catalog')";
             case 'views':
                 // Table cols: viewname | viewowner | definition
                 return 'SELECT viewname from pg_views WHERE schemaname'
