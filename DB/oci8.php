@@ -1119,6 +1119,8 @@ class DB_oci8 extends DB_common
                 return 'SELECT table_name FROM user_tables';
             case 'synonyms':
                 return 'SELECT synonym_name FROM user_synonyms';
+            case 'views':
+                return 'SELECT view_name FROM user_views';
             default:
                 return null;
         }

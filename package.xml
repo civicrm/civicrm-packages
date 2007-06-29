@@ -80,6 +80,9 @@ This release of DB fixes an issue that prevented PostgreSQL users from escaping 
 
 Please note that this version of DB has removed the version 1 package.xml file. Consequently, PEAR 1.4 or later must be used to install this version of DB and any future versions.
 
+oci8:
+* Added view support to getSpecialQuery() for feature parity with other backends.  Request 11110.
+
 pgsql:
 * Changed parameter escaping to correctly pass up the DB connection.  Bug 11125.
 
