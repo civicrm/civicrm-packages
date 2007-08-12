@@ -690,7 +690,7 @@ class DB_oci8 extends DB_common
         } else {
             $this->_last_query_manip = false;
             @ocisetprefetch($stmt, $this->options['result_buffering']);
-            $tmp =& new DB_result($this, $stmt);
+            $tmp = new DB_result($this, $stmt);
         }
         return $tmp;
     }

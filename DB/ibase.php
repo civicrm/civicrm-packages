@@ -601,7 +601,7 @@ class DB_ibase extends DB_common
             $tmp = DB_OK;
         } else {
             $this->_last_query_manip = false;
-            $tmp =& new DB_result($this, $res);
+            $tmp = new DB_result($this, $res);
         }
         return $tmp;
     }
