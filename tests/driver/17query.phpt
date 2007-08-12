@@ -131,17 +131,23 @@ $res =& $dbh->query('SELECT * FROM phptest');
 print '12) query is manip (without override): ' . ($dbh->_last_query_manip ? 'true' : 'false') . "\n";
 
 // This one's here for bug #11716.
-$res =& $dbh->query('SELECT '.$dbh->quoteIdentifier('a').' FROM phptest');
+if ($dbh->phptype == 'msql') {
+    // mSQL doesn't support identifier quoting at all.
+    $res =& $dbh->query('SELECT a FROM phptest');
+} else {
+    $res =& $dbh->query('SELECT '.$dbh->quoteIdentifier('a').' FROM phptest');
+}
+
 print '13) select with quoteIdentifier: ';
 $row = $res->fetchRow(DB_FETCHMODE_ASSOC);
 if (isset($row['a'])) {
-	if ($row['a'] == 42) {
-		print "okay\n";
-	} else {
-		print "field value incorrect\n";
-	}
+    if ($row['a'] == 42) {
+        print "okay\n";
+    } else {
+        print "field value incorrect\n";
+    }
 } else {
-	print "expected field not in row\n";
+    print "expected field not in row\n";
 }
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
