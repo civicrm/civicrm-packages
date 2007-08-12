@@ -130,6 +130,19 @@ $dbh->nextQueryIsManip(false);
 $res =& $dbh->query('SELECT * FROM phptest');
 print '12) query is manip (without override): ' . ($dbh->_last_query_manip ? 'true' : 'false') . "\n";
 
+// This one's here for bug #11716.
+$res =& $dbh->query('SELECT '.$dbh->quoteIdentifier('a').' FROM phptest');
+print '13) select with quoteIdentifier: ';
+$row = $res->fetchRow(DB_FETCHMODE_ASSOC);
+if (isset($row['a'])) {
+	if ($row['a'] == 42) {
+		print "okay\n";
+	} else {
+		print "field value incorrect\n";
+	}
+} else {
+	print "expected field not in row\n";
+}
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 drop_table($dbh, 'phptest');
@@ -148,3 +161,4 @@ drop_table($dbh, 'phptest');
 10) delete with 0 as param: okay
 11) query is manip (with override): true
 12) query is manip (without override): false
+13) select with quoteIdentifier: okay
