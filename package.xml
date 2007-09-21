@@ -86,6 +86,9 @@ mysql:
 
 mysqli:
 * Added an explicit call to select the database to fix calls to tableInfo() without a preceding query.  Bug 11580.
+
+sqlite:
+* Altered fetchInto() to remove extraneous quotes returned by SQLite.  Bug 11716.
  </notes>
  <contents>
   <dir name="/">

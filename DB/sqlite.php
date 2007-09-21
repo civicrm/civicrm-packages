@@ -359,6 +359,16 @@ class DB_sqlite extends DB_common
             if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE && $arr) {
                 $arr = array_change_key_case($arr, CASE_LOWER);
             }
+
+            /* Remove extraneous " characters from the fields in the result.
+             * Fixes bug #11716. */
+            if (is_array($arr) && count($arr) > 0) {
+                $strippedArr = array();
+                foreach ($arr as $field => $value) {
+                    $strippedArr[trim($field, '"')] = $value;
+                }
+                $arr = $strippedArr;
+            }
         } else {
             $arr = @sqlite_fetch_array($result, SQLITE_NUM);
         }

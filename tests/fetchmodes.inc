@@ -162,6 +162,19 @@ $sth = $dbh->query("SELECT * FROM phptest");
 $row = array();
 $sth->fetchInto($row, DB_FETCHMODE_ORDERED);
 print implode(" ", array_keys($row))."\n";
+$sth->free();  // keep fbsql happy.
+
+print "testing fetchmodes: fetchrow assoc quoted identifiers\n";
+$dbh->setFetchMode(DB_FETCHMODE_ASSOC);
+$sql = sprintf('SELECT %s, %s, %s, %s FROM %s',
+    $dbh->quoteIdentifier('a'),
+    $dbh->quoteIdentifier('b'),
+    $dbh->quoteIdentifier('cc'),
+    $dbh->quoteIdentifier('d'),
+    $dbh->quoteIdentifier('phptest'));
+$sth = $dbh->query($sql);
+$row = $sth->fetchRow();
+print implode(" ", array_keys($row))."\n";
 
 $sth->free();  // keep fbsql happy.
                // keep ibase happy: can't drop tbl that has results open against it.
