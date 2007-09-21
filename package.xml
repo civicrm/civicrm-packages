@@ -65,10 +65,10 @@ DB is compatible with both PHP 4 and PHP 5.
   <email>cox@idecnet.com</email>
   <active>yes</active>
  </developer>
- <date>2007-06-29</date>
+ <date>2007-09-21</date>
  <version>
-  <release>1.7.12</release>
-  <api>1.7.12</api>
+  <release>1.7.13</release>
+  <api>1.7.13</api>
  </version>
  <stability>
   <release>stable</release>
@@ -76,19 +76,13 @@ DB is compatible with both PHP 4 and PHP 5.
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-This release of DB fixes an issue that prevented PostgreSQL users from escaping values with PHP 5.2.
+This release of DB fixes a number of minor issues reported since the release of DB 1.7.12.
 
-Please note that this version of DB has removed the version 1 package.xml file. Consequently, PEAR 1.4 or later must be used to install this version of DB and any future versions.
+mysql:
+* Added an explicit call to select the database to fix calls to tableInfo() without a preceding query.  Bug 11580.
 
-oci8:
-* Added view support to getSpecialQuery() for feature parity with other backends.  Request 11110.
-
-pgsql:
-* Added schema.views support to getSpecialQuery() to avoid disadvantaging views within schemas.  Request 11080.
-* Changed parameter escaping to correctly pass up the DB connection.  Bug 11125.
-
-tests:
-* Updated DIVZERO tests to reflect which DB backends actually return errors upon division by zero.  Bug 10894.
+mysqli:
+* Added an explicit call to select the database to fix calls to tableInfo() without a preceding query.  Bug 11580.
  </notes>
  <contents>
   <dir name="/">

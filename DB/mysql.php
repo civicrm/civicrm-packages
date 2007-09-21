@@ -932,6 +932,13 @@ class DB_mysql extends DB_common
     function tableInfo($result, $mode = null)
     {
         if (is_string($result)) {
+            // Fix for bug #11580.
+            if ($this->_db) {
+                if (!@mysql_select_db($this->_db, $this->connection)) {
+                    return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
+                }
+            }
+            
             /*
              * Probably received a table name.
              * Create a result resource identifier.
