@@ -487,7 +487,7 @@ class DB_oci8 extends DB_common
             $save_query = $this->last_query;
             $save_stmt = $this->last_stmt;
 
-            $count =& $this->query($countquery);
+            $count = $this->query($countquery);
 
             // Restore the last query and statement.
             $this->last_query = $save_query;
@@ -633,9 +633,9 @@ class DB_oci8 extends DB_common
         $this->last_query = $this->_prepared_queries[(int)$stmt];
         $this->_data = $data;
 
-        $types =& $this->prepare_types[(int)$stmt];
+        $types = $this->prepare_types[(int)$stmt];
         if (count($types) != count($data)) {
-            $tmp =& $this->raiseError(DB_ERROR_MISMATCH);
+            $tmp = $this->raiseError(DB_ERROR_MISMATCH);
             return $tmp;
         }
 
@@ -654,7 +654,7 @@ class DB_oci8 extends DB_common
             } elseif ($types[$i] == DB_PARAM_OPAQUE) {
                 $fp = @fopen($data[$key], 'rb');
                 if (!$fp) {
-                    $tmp =& $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
+                    $tmp = $this->raiseError(DB_ERROR_ACCESS_VIOLATION);
                     return $tmp;
                 }
                 $data[$key] = fread($fp, filesize($data[$key]));
@@ -818,7 +818,7 @@ class DB_oci8 extends DB_common
         if (count($params)) {
             $result = $this->prepare("SELECT * FROM ($query) "
                                      . 'WHERE NULL = NULL');
-            $tmp =& $this->execute($result, $params);
+            $tmp = $this->execute($result, $params);
         } else {
             $q_fields = "SELECT * FROM ($query) WHERE NULL = NULL";
 
@@ -878,7 +878,7 @@ class DB_oci8 extends DB_common
         $repeat = 0;
         do {
             $this->expectError(DB_ERROR_NOSUCHTABLE);
-            $result =& $this->query("SELECT ${seqname}.nextval FROM dual");
+            $result = $this->query("SELECT ${seqname}.nextval FROM dual");
             $this->popExpect();
             if ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE) {

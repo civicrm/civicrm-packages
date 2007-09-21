@@ -479,7 +479,7 @@ class DB_sybase extends DB_common
                     return $this->raiseError($result);
                 }
             } elseif (!DB::isError($result)) {
-                $result =& $this->query("SELECT @@IDENTITY FROM $seqname");
+                $result = $this->query("SELECT @@IDENTITY FROM $seqname");
                 $repeat = 0;
             } else {
                 $repeat = false;

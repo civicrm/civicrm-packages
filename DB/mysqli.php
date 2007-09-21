@@ -271,7 +271,7 @@ class DB_mysqli extends DB_common
      *     'ssl' => true,
      * );
      * 
-     * $db =& DB::connect($dsn, $options);
+     * $db = DB::connect($dsn, $options);
      * if (PEAR::isError($db)) {
      *     die($db->getMessage());
      * }

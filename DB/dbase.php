@@ -188,7 +188,7 @@ class DB_dbase extends DB_common
      *     'portability' => DB_PORTABILITY_ALL,
      * );
      *
-     * $db =& DB::connect($dsn, $options);
+     * $db = DB::connect($dsn, $options);
      * if (PEAR::isError($db)) {
      *     die($db->getMessage());
      * }
