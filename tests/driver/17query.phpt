@@ -131,8 +131,8 @@ $res =& $dbh->query('SELECT * FROM phptest');
 print '12) query is manip (without override): ' . ($dbh->_last_query_manip ? 'true' : 'false') . "\n";
 
 // This one's here for bug #11716.
-if ($dbh->phptype == 'msql') {
-    // mSQL doesn't support identifier quoting at all.
+if ($dbh->phptype == 'msql' || $dbh->phptype == 'ibase' || $dbh->phptype == 'oci8') {
+    // Some databases don't support quoted identifiers. They are full of lose.
     $res =& $dbh->query('SELECT a FROM phptest');
 } else {
     $res =& $dbh->query('SELECT '.$dbh->quoteIdentifier('a').' FROM phptest');
