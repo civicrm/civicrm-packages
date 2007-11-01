@@ -79,7 +79,7 @@ DB is compatible with both PHP 4 and PHP 5.
 This release of DB fixes a number of minor issues reported since the release of DB 1.7.12.
 
 All drivers:
-* Replaced instances of '=& new Foo' with '= new Foo' to make DB (slightly) more E_STRICT friendly.  Request 11581.
+* Replaced instances of '=&amp; new Foo' with '= new Foo' to make DB (slightly) more E_STRICT friendly.  Request 11581.
 
 mysql:
 * Added an explicit call to select the database to fix calls to tableInfo() without a preceding query.  Bug 11580.
