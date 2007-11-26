@@ -80,6 +80,9 @@ This release of DB fixes a number of minor issues reported since the release of 
 
 All drivers:
 * Made the definition of DB_common::raiseError() compatible with PEAR::raiseError() by adding dummy parameters.  Request 11581.
+
+sqlite:
+* Added support for another error message in the SQLite driver.  Bug 12105, patch by Adam Ashley.
  </notes>
  <contents>
   <dir name="/">
