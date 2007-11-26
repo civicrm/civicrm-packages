@@ -1868,13 +1868,18 @@ class DB_common extends PEAR
      *                 query and native error code.
      * @param mixed   native error code, integer or string depending the
      *                 backend
+     * @param mixed   dummy parameter for E_STRICT compatibility with
+     *                 PEAR::raiseError
+     * @param mixed   dummy parameter for E_STRICT compatibility with
+     *                 PEAR::raiseError
      *
      * @return object  the PEAR_Error object
      *
      * @see PEAR_Error
      */
     function &raiseError($code = DB_ERROR, $mode = null, $options = null,
-                         $userinfo = null, $nativecode = null)
+                         $userinfo = null, $nativecode = null, $dummy1 = null,
+                         $dummy2 = null)
     {
         // The error is yet a DB error object
         if (is_object($code)) {
