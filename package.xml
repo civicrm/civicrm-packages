@@ -81,6 +81,9 @@ This release candidate of DB fixes a number of minor issues reported since the r
 All drivers:
 * Made the definition of DB_common::raiseError() compatible with PEAR::raiseError() by adding dummy parameters.  Request 11581.
 
+oci8:
+* Fix for last_query reconstruction with lots of placeholders.  Bug 12418, patch by Nicholas Evans.
+
 pgsql:
 * Added special-case to handle SAVEPOINT queries as manip queries.  Bug 12260.
 

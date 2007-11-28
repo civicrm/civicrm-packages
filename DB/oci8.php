@@ -670,7 +670,7 @@ class DB_oci8 extends DB_common
                 $tmp = $this->oci8RaiseError($stmt);
                 return $tmp;
             }
-            $this->last_query = str_replace(':bind'.$i, $this->quoteSmart($data[$key]), $this->last_query);
+            $this->last_query = preg_replace("/:bind$i/",$this->quoteSmart($data[$key]),$this->last_query,1);
             $i++;
         }
         if ($this->autocommit) {
