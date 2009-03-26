@@ -916,6 +916,8 @@ class DB_ibase extends DB_common
             $error_regexps = array(
                 '/generator .* is not defined/'
                     => DB_ERROR_SYNTAX,  // for compat. w ibase_errcode()
+                '/violation of [\w ]+ constraint/i'
+                    => DB_ERROR_CONSTRAINT,
                 '/table.*(not exist|not found|unknown)/i'
                     => DB_ERROR_NOSUCHTABLE,
                 '/table .* already exists/i'
@@ -926,8 +928,6 @@ class DB_ibase extends DB_common
                     => DB_ERROR_NOT_FOUND,
                 '/validation error for column .* value "\*\*\* null/i'
                     => DB_ERROR_CONSTRAINT_NOT_NULL,
-                '/violation of [\w ]+ constraint/i'
-                    => DB_ERROR_CONSTRAINT,
                 '/conversion error from string/i'
                     => DB_ERROR_INVALID_NUMBER,
                 '/no permission for/i'

@@ -65,10 +65,10 @@ DB is compatible with both PHP 4 and PHP 5.
   <email>cox@idecnet.com</email>
   <active>yes</active>
  </developer>
- <date>2007-11-28</date>
+ <date>pending</date>
  <version>
-  <release>1.7.14RC1</release>
-  <api>1.7.14RC1</api>
+  <release>1.7.14RC2</release>
+  <api>1.7.14RC2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -76,7 +76,15 @@ DB is compatible with both PHP 4 and PHP 5.
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-This release candidate of DB fixes a number of minor issues reported since the release of DB 1.7.13. Note that this release has not yet been tested for databases other than MySQL, PostgreSQL and SQLite; however I've decided to put it out as a release candidate now as I won't be able to test the other database drivers until next week.
+This long, long overdue release candidate of DB fixes a number of minor issues reported since the release of DB 1.7.13 along with some issues in DB 1.7.14RC1 that have been exposed by a more comprehensive testing platform than was previously available.
+
+Changes since 1.7.14RC1:
+
+ibase:
+* Changed the order of regular expressions applied when mapping errors so that constraint violations in PHP 4.4 are actually reported as constraint violations and not table not found errors.
+* Fixed a test that should have been skipped in PHP 4.4.
+
+Changes since 1.7.13:
 
 All drivers:
 * Made the definition of DB_common::raiseError() compatible with PEAR::raiseError() by adding dummy parameters.  Request 11581.
