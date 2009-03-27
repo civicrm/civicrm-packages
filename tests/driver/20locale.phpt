@@ -3,7 +3,7 @@ DB_driver::locale
 --INI--
 error_reporting = 2047
 --SKIPIF--
-<?phpi
+<?php
 chdir(dirname(__FILE__)); require_once './skipif.inc';
 if (!function_exists('setlocale')) {
     die('skip setlocale is not defined');

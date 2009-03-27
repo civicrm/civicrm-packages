@@ -80,6 +80,9 @@ This long, long overdue release candidate of DB fixes a number of minor issues r
 
 Changes since 1.7.14RC1:
 
+All drivers:
+* Fixed SKIP block in the 20locale.phpt test.
+
 ibase:
 * Changed the order of regular expressions applied when mapping errors so that constraint violations in PHP 4.4 are actually reported as constraint violations and not table not found errors.
 * Fixed a test that should have been skipped in PHP 4.4.
