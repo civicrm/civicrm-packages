@@ -3,12 +3,12 @@ DB_driver::row limit
 --INI--
 error_reporting = 2047
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
+<?php require_once dirname(__FILE__) . '/skipif.inc'; ?>
 --FILE--
 <?php
-require_once './connect.inc';
-require_once './droptable.inc';
-require_once '../limit.inc';
+require_once dirname(__FILE__) . '/connect.inc';
+require_once dirname(__FILE__) . '/droptable.inc';
+require_once dirname(__FILE__) . '/../limit.inc';
 ?>
 --EXPECT--
 ======= From: 0 || Number of rows to fetch: 10 =======

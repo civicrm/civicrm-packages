@@ -23,7 +23,7 @@
 /**
  * Set up the include_path, error_reporting and PATH_SEPARATOR
  */
-require_once './include.inc';
+require_once dirname(__FILE__) . '/include.inc';
 
 if (!include_once 'DB.php') {
     print 'skip could not find DB.php';

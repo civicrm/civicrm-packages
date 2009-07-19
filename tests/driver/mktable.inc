@@ -47,12 +47,12 @@
 /**
  * Establishes the DB object and connects to the database
  */
-require_once './connect.inc';
+require_once dirname(__FILE__) . '/connect.inc';
 
 /**
  * Get the drop_table() function
  */
-require_once './droptable.inc';
+require_once dirname(__FILE__) . '/droptable.inc';
 
 /**
  * The error handler for the drop table procedure

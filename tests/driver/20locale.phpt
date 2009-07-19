@@ -4,7 +4,7 @@ DB_driver::locale
 error_reporting = 2047
 --SKIPIF--
 <?php
-chdir(dirname(__FILE__)); require_once './skipif.inc';
+require_once dirname(__FILE__) . '/skipif.inc';
 if (!function_exists('setlocale')) {
     die('skip setlocale is not defined');
 }
@@ -14,7 +14,7 @@ if (!OS_UNIX) {
 ?>
 --FILE--
 <?php
-require_once './mktable.inc';
+require_once dirname(__FILE__) . '/mktable.inc';
 
 if ($dbh->phptype == 'odbc') {
     if ($dbh->dbsyntax == 'odbc') {

@@ -27,7 +27,7 @@ error_reporting(E_ALL);
 /**
  * Establish the include_path, DSN's and connection $options
  */
-require_once './setup.inc';
+require_once dirname(__FILE__) . '/setup.inc';
 
 if (empty($dsns)) {
     die('At least one element of $dsns must be defined in setup.inc');

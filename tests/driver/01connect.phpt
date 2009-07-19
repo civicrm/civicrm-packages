@@ -3,10 +3,10 @@ DB_driver::connect
 --INI--
 error_reporting = 2047
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
+<?php require_once dirname(__FILE__) . '/skipif.inc'; ?>
 --FILE--
 <?php
-require_once './connect.inc';
+require_once dirname(__FILE__) . '/connect.inc';
 
 /**
  * Determine if the database connection matches what's expected

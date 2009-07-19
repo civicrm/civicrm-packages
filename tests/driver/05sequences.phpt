@@ -6,7 +6,7 @@ error_reporting = 2047
 <?php
 error_reporting(E_ALL);
 chdir(dirname(__FILE__));
-require_once './skipif.inc';
+require_once dirname(__FILE__) . '/skipif.inc';
 $tableInfo = $dbh->dropSequence('ajkdslfajoijkadie');
 if (DB::isError($tableInfo) && $tableInfo->code == DB_ERROR_NOT_CAPABLE) {
     die("skip $tableInfo->message");
@@ -14,8 +14,8 @@ if (DB::isError($tableInfo) && $tableInfo->code == DB_ERROR_NOT_CAPABLE) {
 ?>
 --FILE--
 <?php
-require_once './connect.inc';
-require_once '../sequences.inc';
+require_once dirname(__FILE__) . '/connect.inc';
+require_once dirname(__FILE__) . '/../sequences.inc';
 ?>
 --EXPECT--
 an error is the proper response here

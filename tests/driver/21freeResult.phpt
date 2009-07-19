@@ -4,12 +4,12 @@ DB_driver::freeResult
 error_reporting = 2047
 --SKIPIF--
 <?php
-chdir(dirname(__FILE__)); require_once './skipif.inc';
+require_once dirname(__FILE__) . '/skipif.inc';
 if ($dbh->phptype == 'mysqli') die ('skip mysqli returns result objects rather than resources');
 ?>
 --FILE--
 <?php
-require_once './mktable.inc';
+require_once dirname(__FILE__) . '/mktable.inc';
 
 $res = $dbh->query('SELECT * FROM phptest');
 

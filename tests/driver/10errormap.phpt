@@ -3,11 +3,11 @@ DB_driver::error mapping
 --INI--
 error_reporting = 2047
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
+<?php require_once dirname(__FILE__) . '/skipif.inc'; ?>
 --FILE--
 <?php
-require_once './mktable.inc';
-require_once '../errors.inc';
+require_once dirname(__FILE__) . '/mktable.inc';
+require_once dirname(__FILE__) . '/../errors.inc';
 ?>
 --EXPECT--
 DB_ERROR_NOSUCHTABLE for select:  matches expected outcome

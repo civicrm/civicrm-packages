@@ -4,7 +4,7 @@ DB_driver::affectedRows
 error_reporting = 2047
 --SKIPIF--
 <?php
-chdir(dirname(__FILE__)); require_once './skipif.inc';
+require_once dirname(__FILE__) . '/skipif.inc';
 
 // ibase_query on PHP 4 doesn't support affected rows.
 if ($dbh->phptype == 'ibase' && version_compare(PHP_VERSION, '5.0.0', '<')) {
@@ -13,7 +13,7 @@ if ($dbh->phptype == 'ibase' && version_compare(PHP_VERSION, '5.0.0', '<')) {
 ?>
 --FILE--
 <?php
-require_once './mktable.inc';
+require_once dirname(__FILE__) . '/mktable.inc';
 
 /**
  * Local error callback handler.

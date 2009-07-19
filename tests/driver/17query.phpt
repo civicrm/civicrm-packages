@@ -18,7 +18,7 @@ error_reporting = 2047
  */
 
 chdir(dirname(__FILE__));
-require_once './skipif.inc';
+require_once dirname(__FILE__) . '/skipif.inc';
 
 ?>
 --FILE--
@@ -29,7 +29,7 @@ require_once './skipif.inc';
 /**
  * Connect to the database and make the phptest table.
  */
-require_once './mktable.inc';
+require_once dirname(__FILE__) . '/mktable.inc';
 
 
 /**

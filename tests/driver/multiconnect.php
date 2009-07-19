@@ -24,7 +24,7 @@
 /**
  * Establish the include_path, DSN's and connection $options
  */
-require_once './setup.inc';
+require_once dirname(__FILE__) . '/setup.inc';
 
 foreach ($dsns as $dbms => $dsn) {
     echo "======== $dbms ========\n";

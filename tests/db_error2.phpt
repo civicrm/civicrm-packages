@@ -1,10 +1,10 @@
 --TEST--
 DB::Error 2
 --SKIPIF--
-<?php chdir(dirname(__FILE__)); require_once './skipif.inc'; ?>
+<?php require_once dirname(__FILE__) . '/skipif.inc'; ?>
 --FILE--
 <?php
-require_once './include.inc';
+require_once dirname(__FILE__) . '/include.inc';
 require_once 'DB.php';
 
 error_reporting(E_ALL);

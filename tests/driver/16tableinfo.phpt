@@ -55,7 +55,7 @@ error_reporting = 2047
 
 error_reporting(E_ALL);
 chdir(dirname(__FILE__));
-require_once './skipif.inc';
+require_once dirname(__FILE__) . '/skipif.inc';
 $tableInfo = $dbh->tableInfo('ajkdslfajoijkadie');
 if (DB::isError($tableInfo) && $tableInfo->code == DB_ERROR_NOT_CAPABLE) {
     die("skip $tableInfo->message");
@@ -70,7 +70,7 @@ if (DB::isError($tableInfo) && $tableInfo->code == DB_ERROR_NOT_CAPABLE) {
 /**
  * Connect to the database and make the phptest table.
  */
-require_once './mktable.inc';
+require_once dirname(__FILE__) . '/mktable.inc';
 
 /**
  * Local error callback handler.

@@ -4,7 +4,7 @@ DB_driver::transaction test
 error_reporting = 2047
 --SKIPIF--
 <?php
-chdir(dirname(__FILE__)); require_once './skipif.inc';
+require_once dirname(__FILE__) . '/skipif.inc';
 if (!$dbh->features['transactions']) {
     die('skip this driver does not support transactions');
 }
@@ -12,8 +12,8 @@ if (!$dbh->features['transactions']) {
 --FILE--
 <?php
 $needinnodb = true;
-require_once './mktable.inc';
-require_once '../transactions.inc';
+require_once dirname(__FILE__) . '/mktable.inc';
+require_once dirname(__FILE__) . '/../transactions.inc';
 ?>
 --EXPECT--
 1) after autocommit: bing one.  ops=ok
