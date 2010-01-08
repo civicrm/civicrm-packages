@@ -89,6 +89,7 @@ ibase:
 
 oci8:
 * Fix replacement of values in last_query for :bind's numbered over 10. Bug 14603.
+* Unset $_prepared_queries in freePrepared().  Bug 14271.
 
 Changes since 1.7.13:
 

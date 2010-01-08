@@ -452,6 +452,7 @@ class DB_oci8 extends DB_common
         if (isset($this->prepare_types[(int)$stmt])) {
             unset($this->prepare_types[(int)$stmt]);
             unset($this->manip_query[(int)$stmt]);
+            unset($this->_prepared_queries[(int)$stmt]);
         } else {
             return false;
         }
