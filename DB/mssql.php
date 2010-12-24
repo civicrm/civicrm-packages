@@ -624,6 +624,27 @@ class DB_mssql extends DB_common
     }
 
     // }}}
+    // {{{ escapeSimple()
+
+    /**
+     * Escapes a string in a manner suitable for SQL Server.
+     *
+     * @param string $str  the string to be escaped
+     * @return string  the escaped string
+     *
+     * @see DB_common::quoteSmart()
+     * @since Method available since Release 1.6.0
+     */
+    function escapeSimple($str)
+    {
+        return str_replace(
+            array("'", "\\\r\n", "\\\n"),
+            array("''", "\\\\\r\n\r\n", "\\\\\n\n"),
+            $str
+        );
+    }
+
+    // }}}
     // {{{ quoteIdentifier()
 
     /**

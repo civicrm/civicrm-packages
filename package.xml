@@ -65,7 +65,7 @@ DB is compatible with both PHP 4 and PHP 5.
   <email>cox@idecnet.com</email>
   <active>yes</active>
  </developer>
- <date>pending</date>
+ <date>2010-12-24</date>
  <version>
   <release>1.7.14RC2</release>
   <api>1.7.14RC2</api>
@@ -90,6 +90,9 @@ ibase:
 
 ifx:
 * Use PCRE rather than ereg. Bug 17722, patch by Olle Jonsson.
+
+mssql:
+* Fix escaping of string values with lines ending in a backslash character. Bug 16617.
 
 oci8:
 * Fix replacement of values in last_query for :bind's numbered over 10. Bug 14603.
