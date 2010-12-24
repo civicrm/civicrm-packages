@@ -800,7 +800,7 @@ $quirks = array(
         1 => array(
             'type' => 'INTEGER',
             'len' => 0,
-            'flags' => 'primary_key not_null',
+            'flags' => 'primary_key auto_increment not_null',
         ),
         2 => array(
             'type' => 'CLOB',

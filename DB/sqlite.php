@@ -829,6 +829,9 @@ class DB_sqlite extends DB_common
             $flags = '';
             if ($id[$i]['pk']) {
                 $flags .= 'primary_key ';
+                if (strtoupper($type) == 'INTEGER') {
+                    $flags .= 'auto_increment ';
+                }
             }
             if ($id[$i]['notnull']) {
                 $flags .= 'not_null ';
