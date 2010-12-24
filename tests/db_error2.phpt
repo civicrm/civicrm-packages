@@ -9,16 +9,16 @@ require_once 'DB.php';
 
 error_reporting(E_ALL);
 
-function myfunc(&$obj) {
+function myfunc($obj) {
     print 'myfunc here, obj='
           . strtolower($obj->toString()) . "\n";
 }
-function myfunc2(&$obj) {
+function myfunc2($obj) {
     print 'myfunc2 here, obj='
           . strtolower($obj->toString()) . "\n";
 }
 class myclass {
-    function myfunc(&$obj) {
+    function myfunc($obj) {
         print 'myclass::myfunc here, obj='
           . strtolower($obj->toString()) . "\n";
     }
