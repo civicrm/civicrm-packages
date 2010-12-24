@@ -94,6 +94,9 @@ ifx:
 mssql:
 * Fix escaping of string values with lines ending in a backslash character. Bug 16617.
 
+pgsql:
+* Implement rudimentary support for WITH...SELECT queries. Bug 17136.
+
 oci8:
 * Fix replacement of values in last_query for :bind's numbered over 10. Bug 14603.
 * Unset $_prepared_queries in freePrepared().  Bug 14271.

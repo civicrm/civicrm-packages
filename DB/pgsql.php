@@ -348,12 +348,12 @@ class DB_pgsql extends DB_common
          * CREATE, DECLARE, DELETE, DROP TABLE, EXPLAIN, FETCH,
          * GRANT, INSERT, LISTEN, LOAD, LOCK, MOVE, NOTIFY, RESET,
          * REVOKE, ROLLBACK, SELECT, SELECT INTO, SET, SHOW,
-         * UNLISTEN, UPDATE, VACUUM
+         * UNLISTEN, UPDATE, VACUUM, WITH
          */
         if ($ismanip) {
             $this->affected = @pg_affected_rows($result);
             return DB_OK;
-        } elseif (preg_match('/^\s*\(*\s*(SELECT|EXPLAIN|FETCH|SHOW)\s/si',
+        } elseif (preg_match('/^\s*\(*\s*(SELECT|EXPLAIN|FETCH|SHOW|WITH)\s/si',
                              $query))
         {
             $this->row[(int)$result] = 0; // reset the row counter.
