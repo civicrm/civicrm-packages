@@ -82,6 +82,7 @@ Changes since 1.7.14RC1:
 
 All drivers:
 * Fixed SKIP block in the 20locale.phpt test.
+* Fixed non-persistent connections to really be non-persistent when unserialising. Bug 15115.
 
 ibase:
 * Changed the order of regular expressions applied when mapping errors so that constraint violations in PHP 4.4 are actually reported as constraint violations and not table not found errors.
