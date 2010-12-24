@@ -88,6 +88,9 @@ ibase:
 * Changed the order of regular expressions applied when mapping errors so that constraint violations in PHP 4.4 are actually reported as constraint violations and not table not found errors.
 * Fixed a test that should have been skipped in PHP 4.4.
 
+ifx:
+* Use PCRE rather than ereg. Bug 17722, patch by Olle Jonsson.
+
 oci8:
 * Fix replacement of values in last_query for :bind's numbered over 10. Bug 14603.
 * Unset $_prepared_queries in freePrepared().  Bug 14271.
