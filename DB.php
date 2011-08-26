@@ -591,7 +591,7 @@ class DB
      */
     function isError($value)
     {
-        return is_a($value, 'DB_Error');
+        return is_object($value) && is_a($value, 'DB_Error');		
     }
 
     // }}}

@@ -1249,7 +1249,7 @@ class DB_common extends PEAR
             return $query;
         }
         $result = $this->query($query, $params);
-        if (is_a($result, 'DB_result')) {
+        if (is_object($result) && is_a($result, 'DB_result')) {
             $result->setOption('limit_from', $from);
             $result->setOption('limit_count', $count);
         }
