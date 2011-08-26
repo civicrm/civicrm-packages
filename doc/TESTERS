@@ -24,15 +24,12 @@ Obtain PHP's Test Framework
 ---------------------------
 If you don't have PHP's test framework, you need to obtain it.  These
 steps include changing the working directory, downloading run-tests.php
-via CVS and copying the file into place.  Change the revision flag in the
-CVS command as appropriate for your present version of PHP.
+via SVN and copying the file into place.  Change the branch in the
+SVN command as appropriate for your present version of PHP.
 
  cd c:/progra~1/php
- cvs -d :pserver:cvsread@cvs.php.net:/repository login   # password is phpfi
- cvs -d :pserver:cvsread@cvs.php.net:/repository co -r PHP_4_3 \
-     -d test php-src/run-tests.php
- cp test/run-tests.php .
- rm -rf test
+ svn checkout \
+   https://svn.php.net/repository/php/php-src/branches/PHP_5_3/run-tests.php
 
 
 Obtain DB and its Test Framework
@@ -53,14 +50,15 @@ Obtain DB and its Test Framework
 
    cd pear/tests/DB/tests
 
-* VIA CVS:
+* VIA SVN:
 
   Create a location to store the test installation of DB and its
   test scripts.
 
-   mkdir d:/peartest
-   cd d:/peartest
-   cvs -d :pserver:cvsread@cvs.php.net:/repository co -P pear/DB
+   d:
+   mkdir peartest
+   svn checkout https://svn.php.net/repository/pear/packages/DB/trunk peartest
+   cd peartest
 
   We assume you already have the PEAR base package installed.  If
   you don't, you will need to do so, but the instructions for
@@ -76,7 +74,7 @@ Copy the Starter Shell Script and Edit the Paths
 ------------------------------------------------
 To make starting up each test run easier, we have included two shell
 scripts.  The original files are named "run.cvs".  They need to be
-renamed to "run" so CVS won't bother you with tracking them.  Then,
+renamed to "run" so SVN won't bother you with tracking them.  Then,
 the paths and file names in them need to be set to those used by
 your system.
 
@@ -94,7 +92,7 @@ Copy the Setup File and Edit the DSN's
 --------------------------------------
 The test suite contains a file that stores the DSN's needed to
 connect to your database.  The original file is "setup.inc.cvs"
-and it needs to be renamed "setup.inc" so CVS won't track it.
+and it needs to be renamed "setup.inc" so SVN won't track it.
 Then you'll need to edit the DSN's in it.
 
  cp setup.inc.cvs setup.inc
@@ -122,7 +120,7 @@ Each test that fails generates a .php (which you can execute), a .exp
 from the .exp and .out files).
 
 If you run the tests, please report or fill the TEST CONFORMANCE table
-in the STATUS document.  Before any commit to CVS be sure to run the
+in the STATUS document.  Before any commit to SVN be sure to run the
 tests and nothing got broken with the change.
 
 If you get the message "SKIP", means that the test it's not executed.
