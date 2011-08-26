@@ -87,12 +87,10 @@ your system.
 
 Copy the Setup File and Edit the DSN's
 --------------------------------------
-The test suite contains a file that stores the DSN's needed to
-connect to your database.  The original file is "setup.inc.cvs"
-and it needs to be renamed "setup.inc" so SVN won't track it.
-Then you'll need to edit the DSN's in it.
+The test suite contains a file in the driver directory that stores
+the DSN's needed to connect to your database. Then you'll need to
+edit the DSN's in it.
 
- cp setup.inc.cvs setup.inc
  vi setup.inc
 
 
