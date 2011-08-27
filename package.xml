@@ -57,30 +57,29 @@ DB is compatible with both PHP 4 and PHP 5.
   <name>Stig Bakken</name>
   <user>ssb</user>
   <email>stig@php.net</email>
-  <active>yes</active>
+  <active>no</active>
  </developer>
  <developer>
   <name>Tomas V.V.Cox</name>
   <user>cox</user>
   <email>cox@idecnet.com</email>
-  <active>yes</active>
+  <active>no</active>
  </developer>
- <date>2010-12-24</date>
+ <date>2011-08-27</date>
  <version>
-  <release>1.7.14RC2</release>
-  <api>1.7.14RC2</api>
+  <release>1.7.14</release>
+  <api>1.7.14</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-This long, long overdue release candidate of DB fixes a number of minor issues reported since the release of DB 1.7.13 along with some issues in DB 1.7.14RC1 that have been exposed by a more comprehensive testing platform than was previously available.
-
-Changes since 1.7.14RC1:
+Changes since 1.7.13:
 
 All drivers:
+* Made the definition of DB_common::raiseError() compatible with PEAR::raiseError() by adding dummy parameters.  Request 11581.
 * Fixed SKIP block in the 20locale.phpt test.
 * Fixed non-persistent connections to really be non-persistent when unserialising. Bug 15115.
 
@@ -88,35 +87,25 @@ ibase:
 * Changed the order of regular expressions applied when mapping errors so that constraint violations in PHP 4.4 are actually reported as constraint violations and not table not found errors.
 * Fixed a test that should have been skipped in PHP 4.4.
 
+
 ifx:
 * Use PCRE rather than ereg. Bug 17722, patch by Olle Jonsson.
 
 mssql:
-* Fix escaping of string values with lines ending in a backslash character. Bug 16617.
-
-pgsql:
-* Implement rudimentary support for WITH...SELECT queries. Bug 17136.
-
-oci8:
-* Fix replacement of values in last_query for :bind's numbered over 10. Bug 14603.
-* Unset $_prepared_queries in freePrepared().  Bug 14271.
-
-sqlite:
-* Implement auto_increment support in tableInfo(). Request 13193.
-
-Changes since 1.7.13:
-
-All drivers:
-* Made the definition of DB_common::raiseError() compatible with PEAR::raiseError() by adding dummy parameters.  Request 11581.
+* Fix escaping of string values with lines ending in a backslash character. Bug 16117.
 
 oci8:
 * Fix for last_query reconstruction with lots of placeholders.  Bug 12418, patch by Nicholas Evans.
+* Fix replacement of values in last_query for :bind's numbered over 10. Bug 14603.
+* Unset $_prepared_queries in freePrepared().  Bug 14271.
 
 pgsql:
 * Added special-case to handle SAVEPOINT queries as manip queries.  Bug 12260.
+* Implement rudimentary support for WITH...SELECT queries. Bug 17136.
 
 sqlite:
 * Added support for another error message in the SQLite driver.  Bug 12105, patch by Adam Ashley.
+* Implement auto_increment support in tableInfo(). Request 13193.
  </notes>
  <contents>
   <dir name="/">
@@ -199,7 +188,7 @@ sqlite:
      <file name="mktable.inc" role="test" />
      <file name="multiconnect.php" role="test" />
      <file name="run.cvs" role="test" />
-     <file name="setup.inc.cvs" role="test">
+     <file name="setup.inc" role="test">
       <tasks:replace from="@include_path@" to="php_dir" type="pear-config" />
      </file>
      <file name="skipif.inc" role="test" />
