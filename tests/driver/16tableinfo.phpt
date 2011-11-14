@@ -1,7 +1,5 @@
 --TEST--
 DB_driver::tableInfo
---INI--
-error_reporting = 2047
 --SKIPIF--
 <?php
 
