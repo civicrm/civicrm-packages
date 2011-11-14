@@ -106,10 +106,24 @@ $dsns = array(
     // 'sybase'   => 'sybase://sa@somehost/pubs',
 
     // 'mysql'    => 'mysql://root@localhost/test',
-     'mysqli'   => 'mysqli://test:oEu32mf53728@unix(/var/run/mysqld/mysqld.sock)/test',
+    // 'mysqli'   => 'mysqli://root@localhost/test', // $_ENV overrides if set.
     // 'oci8'     => 'oci8://system:manager@',
     // 'access'   => 'odbc(access)://admin@/SystemDsnName',
     // 'db2'      => 'odbc(db2)://db2inst1:XXXX@/SAMPLE',
     // 'pgsql'    => 'pgsql://postgres@localhost/test',
     //'sqlite'   => 'sqlite://dummy:@localhost/' . getcwd() . DIRECTORY_SEPARATOR . 'test.db?mode=0644',
 );
+
+if (!empty($_ENV['MYSQL_TEST_USER'])) {
+    $dsn = 'mysqli://' . $_ENV['MYSQL_TEST_USER'] . ':' . $_ENV['MYSQL_TEST_PASSWD'];
+    if (empty($_ENV['MYSQL_TEST_SOCKET'])) {
+        $dsn .= '@' . $_ENV['MYSQL_TEST_HOST'];
+        if (!empty($_ENV['MYSQL_TEST_PORT'])) {
+            $dsn .= ':' . $_ENV['MYSQL_TEST_PORT'];
+        }
+    } else {
+        $dsn .= '@unix(' . $_ENV['MYSQL_TEST_SOCKET'] . ')';
+    }
+    $dsn .= '/' . $_ENV['MYSQL_TEST_DB'];
+    $dsns['mysqli'] = $dsn;
+}
