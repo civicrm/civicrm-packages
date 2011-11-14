@@ -1,7 +1,5 @@
 --TEST--
 DB_driver::transaction test
---INI--
-error_reporting = 2047
 --SKIPIF--
 <?php
 require_once dirname(__FILE__) . '/skipif.inc';

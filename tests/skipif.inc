@@ -21,7 +21,7 @@
  */
 
 /**
- * Set up the include_path, error_reporting and PATH_SEPARATOR
+ * Set up the include_path and PATH_SEPARATOR
  */
 require_once dirname(__FILE__) . '/include.inc';
 

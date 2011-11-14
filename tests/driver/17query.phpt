@@ -1,7 +1,5 @@
 --TEST--
 DB_driver::query
---INI--
-error_reporting = 2047
 --SKIPIF--
 <?php
 

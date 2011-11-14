@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Sets the include_path, error_reporting and PATH_SEPARATOR for tests
+ * Sets the include_path and PATH_SEPARATOR for tests
  * in the DB/tests directory
  *
  * PHP versions 4 and 5
@@ -20,8 +20,6 @@
  * @version    $Id$
  * @link       http://pear.php.net/package/DB
  */
-
-error_reporting(E_ALL);
 
 if (!defined('PATH_SEPARATOR')) {
     if (stristr(PHP_OS, 'WIN')) {

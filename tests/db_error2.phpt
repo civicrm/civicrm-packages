@@ -7,8 +7,6 @@ DB::Error 2
 require_once dirname(__FILE__) . '/include.inc';
 require_once 'DB.php';
 
-error_reporting(E_ALL);
-
 function myfunc($obj) {
     print 'myfunc here, obj='
           . strtolower($obj->toString()) . "\n";

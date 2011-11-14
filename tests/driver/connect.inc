@@ -20,8 +20,6 @@
  * @link       http://pear.php.net/package/DB
  */
 
-error_reporting(E_ALL);
-
 // Setting of $options and requiring DB are done in setup.inc
 
 /**

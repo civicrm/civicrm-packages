@@ -22,8 +22,6 @@
  * @link       http://pear.php.net/package/DB
  */
 
-error_reporting(E_ALL);
-
 /**
  * Local error callback handler
  *

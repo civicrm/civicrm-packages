@@ -106,10 +106,10 @@ $dsns = array(
     // 'sybase'   => 'sybase://sa@somehost/pubs',
 
     // 'mysql'    => 'mysql://root@localhost/test',
-    // 'mysqli'   => 'mysqli://root@localhost/test',
+     'mysqli'   => 'mysqli://test:oEu32mf53728@unix(/var/run/mysqld/mysqld.sock)/test',
     // 'oci8'     => 'oci8://system:manager@',
     // 'access'   => 'odbc(access)://admin@/SystemDsnName',
     // 'db2'      => 'odbc(db2)://db2inst1:XXXX@/SAMPLE',
     // 'pgsql'    => 'pgsql://postgres@localhost/test',
-    'sqlite'   => 'sqlite://dummy:@localhost/' . getcwd() . DIRECTORY_SEPARATOR . 'test.db?mode=0644',
+    //'sqlite'   => 'sqlite://dummy:@localhost/' . getcwd() . DIRECTORY_SEPARATOR . 'test.db?mode=0644',
 );

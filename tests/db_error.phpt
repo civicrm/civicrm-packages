@@ -35,7 +35,6 @@ function test_error_handler($errno, $errmsg, $file, $line, $vars) {
     print "\n$prefix: $errmsg in " . basename($file) . " on line XXX\n";
 }
 
-error_reporting(E_ALL);
 set_error_handler('test_error_handler');
 
 print "testing different error codes...\n";
