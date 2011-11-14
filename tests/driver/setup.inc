@@ -115,7 +115,8 @@ $dsns = array(
 );
 
 if (!empty($_ENV['MYSQL_TEST_USER'])) {
-    $dsn = 'mysqli://' . $_ENV['MYSQL_TEST_USER'] . ':' . $_ENV['MYSQL_TEST_PASSWD'];
+    $dsn = 'mysqli://' . rawurlencode($_ENV['MYSQL_TEST_USER'])
+        . ':' . rawurlencode($_ENV['MYSQL_TEST_PASSWD']);
     if (empty($_ENV['MYSQL_TEST_SOCKET'])) {
         $dsn .= '@' . $_ENV['MYSQL_TEST_HOST'];
         if (!empty($_ENV['MYSQL_TEST_PORT'])) {
@@ -124,6 +125,6 @@ if (!empty($_ENV['MYSQL_TEST_USER'])) {
     } else {
         $dsn .= '@unix(' . $_ENV['MYSQL_TEST_SOCKET'] . ')';
     }
-    $dsn .= '/' . $_ENV['MYSQL_TEST_DB'];
+    $dsn .= '/' . rawurlencode($_ENV['MYSQL_TEST_DB']);
     $dsns['mysqli'] = $dsn;
 }
