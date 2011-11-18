@@ -1255,8 +1255,7 @@ $array[0]['table'] = strtolower($array[0]['table']);
 $array[0]['name'] = strtolower($array[0]['name']);
 
 print "\ncolumn 0:\n";
-examineArrayData($array, 0, false);
-
+examineArrayData($array, $expected01, 0, false);
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 drop_table($dbh, 'phptest');
