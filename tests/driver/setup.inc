@@ -115,16 +115,19 @@ $dsns = array(
 );
 
 if (!empty($_ENV['MYSQL_TEST_USER'])) {
-    $dsn = 'mysqli://' . rawurlencode($_ENV['MYSQL_TEST_USER'])
-        . ':' . rawurlencode($_ENV['MYSQL_TEST_PASSWD']);
-    if (empty($_ENV['MYSQL_TEST_SOCKET'])) {
-        $dsn .= '@' . $_ENV['MYSQL_TEST_HOST'];
-        if (!empty($_ENV['MYSQL_TEST_PORT'])) {
-            $dsn .= ':' . $_ENV['MYSQL_TEST_PORT'];
-        }
-    } else {
-        $dsn .= '@unix(' . $_ENV['MYSQL_TEST_SOCKET'] . ')';
-    }
-    $dsn .= '/' . rawurlencode($_ENV['MYSQL_TEST_DB']);
-    $dsns['mysqli'] = $dsn;
+    $dsns['mysqli'] = array(
+        'phptype' => 'mysqli',
+        'username' => $_ENV['MYSQL_TEST_USER'],
+        'password' => $_ENV['MYSQL_TEST_PASSWD'],
+        'database' => $_ENV['MYSQL_TEST_DB'],
+
+        'hostspec' => empty($_ENV['MYSQL_TEST_HOST'])
+                ? null : $_ENV['MYSQL_TEST_HOST'],
+
+        'port' => empty($_ENV['MYSQL_TEST_PORT'])
+                ? null : $_ENV['MYSQL_TEST_PORT'],
+
+        'socket' => empty($_ENV['MYSQL_TEST_SOCKET'])
+                ? null : $_ENV['MYSQL_TEST_SOCKET'],
+    );
 }
