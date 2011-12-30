@@ -539,7 +539,8 @@ class DB
         if (!class_exists($classname)) {
             $tmp = PEAR::raiseError(null, DB_ERROR_NOT_FOUND, null, null,
                                     "Unable to include the DB/{$type}.php"
-                                    . " file for '$dsn'",
+                                    . " file for '"
+                                    . DB::getDSNString($dsn, true) . "'",
                                     'DB_Error', true);
             return $tmp;
         }

@@ -65,10 +65,10 @@ DB is compatible with both PHP 4 and PHP 5.
   <email>cox@idecnet.com</email>
   <active>no</active>
  </developer>
- <date>2011-08-27</date>
+ <date>xxx</date>
  <version>
-  <release>1.7.14</release>
-  <api>1.7.14</api>
+  <release>1.7.15</release>
+  <api>1.7.15</api>
  </version>
  <stability>
   <release>stable</release>
@@ -76,36 +76,7 @@ DB is compatible with both PHP 4 and PHP 5.
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-Changes since 1.7.13:
-
-All drivers:
-* Made the definition of DB_common::raiseError() compatible with PEAR::raiseError() by adding dummy parameters.  Request 11581.
-* Fixed SKIP block in the 20locale.phpt test.
-* Fixed non-persistent connections to really be non-persistent when unserialising. Bug 15115.
-
-ibase:
-* Changed the order of regular expressions applied when mapping errors so that constraint violations in PHP 4.4 are actually reported as constraint violations and not table not found errors.
-* Fixed a test that should have been skipped in PHP 4.4.
-
-
-ifx:
-* Use PCRE rather than ereg. Bug 17722, patch by Olle Jonsson.
-
-mssql:
-* Fix escaping of string values with lines ending in a backslash character. Bug 16117.
-
-oci8:
-* Fix for last_query reconstruction with lots of placeholders.  Bug 12418, patch by Nicholas Evans.
-* Fix replacement of values in last_query for :bind's numbered over 10. Bug 14603.
-* Unset $_prepared_queries in freePrepared().  Bug 14271.
-
-pgsql:
-* Added special-case to handle SAVEPOINT queries as manip queries.  Bug 12260.
-* Implement rudimentary support for WITH...SELECT queries. Bug 17136.
-
-sqlite:
-* Added support for another error message in the SQLite driver.  Bug 12105, patch by Adam Ashley.
-* Implement auto_increment support in tableInfo(). Request 13193.
+* Fix array to string conversion in connect() when class does not exist.
  </notes>
  <contents>
   <dir name="/">
