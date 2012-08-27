@@ -51,7 +51,6 @@ DB_driver::tableInfo
  * @see      DB_common::tableInfo()
  */
 
-error_reporting(E_ALL);
 chdir(dirname(__FILE__));
 require_once dirname(__FILE__) . '/skipif.inc';
 $tableInfo = $dbh->tableInfo('ajkdslfajoijkadie');
