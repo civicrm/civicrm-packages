@@ -69,7 +69,10 @@ var CKBUILDER_CONFIG = {
 		'richcombo' : 1,
 		'listblock' : 1,
 		'fakeobjects' : 1,
-		'menubutton' : 1
+		'menubutton' : 1,
+		'panelbutton' : 1,
+		'colorbutton' : 1,
+		'font' : 1
 	},
 	languages : {
 		'af' : 1,
