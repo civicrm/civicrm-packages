@@ -754,8 +754,12 @@ class PHPUnit_TextUI_Command
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
+        /* $GLOBALS['mysql_pass_need_password'] allows us to get password if
+         * needed later, after including civicrm.settings.php.
+         */
+        $GLOBALS['mysql_pass_need_password'] = FALSE;
 	if ( empty( $GLOBALS['mysql_pass'] ) && substr($this->arguments['test'], 0, 8) != 'WebTest_' ) {
-	    $GLOBALS['mysql_pass'] = self::getPassword( 'Password' );
+	    $GLOBALS['mysql_pass_need_password'] = TRUE;
 	}
 
         if ($skeletonClass || $skeletonTest) {
