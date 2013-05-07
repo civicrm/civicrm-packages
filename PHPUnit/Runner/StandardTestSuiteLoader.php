@@ -128,13 +128,21 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         if (class_exists($suiteClassName, FALSE)) {
             $class = new ReflectionClass($suiteClassName);
 
-            $filePath =
-              $GLOBALS['base_dir'] . DIRECTORY_SEPARATOR .
-              'tests'   . DIRECTORY_SEPARATOR .
-              'phpunit' . DIRECTORY_SEPARATOR .
-              $suiteClassFile;
-            if ($class->getFileName() == realpath($filePath)) {
-                return $class;
+            $include_paths = explode(PATH_SEPARATOR, get_include_path());
+            foreach ($include_paths as $include_path) {
+              foreach (
+                array(
+                  $include_path . DIRECTORY_SEPARATOR,
+                  $include_path . DIRECTORY_SEPARATOR .
+                    'tests' . DIRECTORY_SEPARATOR .
+                    'phpunit' . DIRECTORY_SEPARATOR
+                ) as $path)
+              {
+                $filePath = $path . $suiteClassFile;
+                if ($class->getFileName() == realpath($filePath)) {
+                  return $class;
+                }
+              }
             }
         }
 
