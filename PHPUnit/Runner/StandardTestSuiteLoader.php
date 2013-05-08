@@ -133,15 +133,15 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
               'tests'   . DIRECTORY_SEPARATOR .
               'phpunit' . DIRECTORY_SEPARATOR .
               $suiteClassFile;
-            $extra_paths = explode(PATH_SEPARATOR, ini_get('include_path'));           	
             if ($class->getFileName() == realpath($filePath)) {
                 return $class;
             }
             // Also check the include path - used for testing extensions
-            foreach($extra_paths as $path) {
+            $extra_paths = explode(PATH_SEPARATOR, ini_get('include_path'));
+            foreach ($extra_paths as $path) {
             	$filePath = $path . DIRECTORY_SEPARATOR . $suiteClassFile;
             	if ($class->getFileName() == realpath($filePath)) {
-            		return $class;
+                    return $class;
             	}
             }
         }
