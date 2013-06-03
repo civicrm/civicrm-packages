@@ -2114,11 +2114,11 @@ class TCPDF {
 	 * <li>L or Landscape</li>
 	 * <li>'' (empty string) for automatic orientation</li>
 	 * </ul>
-	 * @protected
+	 * @public
 	 * @since 3.0.015 (2008-06-06)
 	 * @see getPageSizeFromFormat()
 	 */
-	protected function setPageFormat($format, $orientation='P') {
+	public function setPageFormat($format, $orientation='P') {
 		if (!empty($format) AND isset($this->pagedim[$this->page])) {
 			// remove inherited values
 			unset($this->pagedim[$this->page]);
