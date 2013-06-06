@@ -1511,8 +1511,45 @@ class Smarty
      */
     function _get_compile_path($resource_name)
     {
-        return $this->_get_auto_filename($this->compile_dir, $resource_name,
-                                         $this->_compile_id) . '.php';
+        $compilePath = $this->_get_auto_filename( $this->compile_dir,
+                                                  $resource_name,
+                                                  $this->_compile_id );
+        $compilePath .= '.php';
+
+        //for 'string:' resource smarty might going to fail to create
+        //compile file, so make sure we should have valid path, CRM-5890
+        $matches = array( );
+        if ( preg_match( '/^(\s+)?string:/', $resource_name, $matches ) ) {
+            if ( !$this->validateCompilePath( $compilePath ) ) {
+                $compilePath = $this->_get_auto_filename( $this->compile_dir,
+                                                          time().rand(),
+                                                          $this->_compile_id );
+                $compilePath .= '.php';
+            }
+        }
+
+        return $compilePath;
+    }
+
+    /**
+     *  do check can smarty create a file w/ given path.
+     */
+    function validateCompilePath( $compilePath ) {
+        //first check for directory.
+        $dirname = dirname( $compilePath );
+        if ( !is_dir( $dirname ) ) {
+            require_once(SMARTY_CORE_DIR . 'core.create_dir_structure.php');
+            smarty_core_create_dir_structure( array('dir' => $dirname ), $this );
+        }
+
+        $isValid = false;
+        if ( $fd = @fopen( $compilePath, 'wb') ) {
+            $isValid = true;
+            @fclose( $fd );
+            @unlink($compilePath);
+        }
+
+        return $isValid;
     }
 
     /**
