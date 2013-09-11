@@ -197,10 +197,10 @@ $.Autocompleter = function(input, options) {
 		$(input.form).unbind(".autocomplete");
 	}).bind("input", function() {
         // needed for chinese input? see CRM-6135 and http://plugins.jquery.com/node/14682 
-        // this breaks "delay" though, so lets only use it with chinese minChars setting 
-        if (options.minChars <= 1) { 
-            onChange(0, true); 
-        } 
+        // this breaks "delay" though, so lets only use it for chinese values
+        if (CRM.config.lcMessages === 'zh_CN' || CRM.config.lcMessages === 'zh_TW') {
+          onChange(0, true);
+        }       
   });
 	
 	function selectCurrent() {
