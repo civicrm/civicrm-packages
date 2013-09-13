@@ -22,8 +22,8 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
     );
     $cases[] = array(
       "CRM-1234",
-      "CRM-1234",
-      array("CRM-1234:\n  http://example.com/jira/browse/CRM-1234")
+      "CRM-1234 - http://example.com/jira/browse/CRM-1234",
+      array()
     );
     $cases[] = array(
       "Hello CRM-1234",
@@ -122,14 +122,20 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
     );
     $cases[] = array(
       "CRM-1234",
-      "CRM-1234",
+      "CRM-1234 - Four digit ticket\n\nhttp://example.com/jira/browse/CRM-1234",
+      array(),
+      array($webResponses['CRM-1234'], $webResponses['schema'])
+    );
+    $cases[] = array(
+      "CRM-1234 - Foo",
+      "CRM-1234 - Foo",
       array("CRM-1234: Four digit ticket\n  http://example.com/jira/browse/CRM-1234"),
       array($webResponses['CRM-1234'], $webResponses['schema'])
     );
     $cases[] = array( // unknown ticket ID
       "CRM-78901",
-      "CRM-78901",
-      array("CRM-78901:\n  http://example.com/jira/browse/CRM-78901"),
+      "CRM-78901 - http://example.com/jira/browse/CRM-78901",
+      array(),
       array($webResponses['invalid'])
     );
     $cases[] = array(
