@@ -20,6 +20,41 @@ class JiraFilter extends AbstractWordFilter {
     $this->jiraCache = array();
   }
 
+  public function filter(CommitMessage $message) {
+    $words = $this->parseWords(trim($message->getMessage(), "\r\n\t "));
+    if (count($words) == 1) {
+      $message->setMessage($this->filterStandaloneWord($words[0]));
+    } else {
+      parent::filter($message);
+    }
+  }
+
+  /**
+   * Given a single-word commit, filter the one word
+   *
+   * @param $word
+   * @return string
+   */
+  public function filterStandaloneWord($word) {
+    if (preg_match($this->wordPattern, $word)) {
+      $issue = $this->getIssue($word);
+      if ($issue) {
+        return ($word . ' - ' . $issue->getSummary() . "\n\n" . $this->createIssueUrl($word));
+      }
+      else {
+        return ($word . ' - ' . $this->createIssueUrl($word));
+      }
+    }
+    return $word;
+  }
+
+  /**
+   * Filter each word in the commit message separately.
+   *
+   * @param CommitMessage $message
+   * @param $word
+   * @return mixed
+   */
   public function filterWord(CommitMessage $message, $word) {
     if (preg_match($this->wordPattern, $word)) {
       $issue = $this->getIssue($word);
@@ -28,7 +63,7 @@ class JiraFilter extends AbstractWordFilter {
       } else {
         $title = $word . ':';
       }
-      $message->addLinkNote($this->url . '/browse/' . $word, $title);
+      $message->addLinkNote($this->createIssueUrl($word), $title);
     }
     return $word;
   }
@@ -53,5 +88,13 @@ class JiraFilter extends AbstractWordFilter {
       }
     }
     return $this->jiraCache[$key];
+  }
+
+  /**
+   * @param string $issueKey
+   * @return string
+   */
+  protected function createIssueUrl($issueKey) {
+    return $this->url . '/browse/' . $issueKey;
   }
 }
