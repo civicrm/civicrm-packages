@@ -21,31 +21,46 @@ class JiraFilter extends AbstractWordFilter {
   }
 
   public function filter(CommitMessage $message) {
-    $words = $this->parseWords(trim($message->getMessage(), "\r\n\t "));
-    if (count($words) == 1) {
-      $message->setMessage($this->filterStandaloneWord($words[0]));
-    } else {
-      parent::filter($message);
+    // If message is a single line with 1-2 real words and 1 JIRA issue,
+    // then use filterShortMessage
+    $trimmedMessage = trim($message->getMessage(), "\r\n\t ");
+    if (substr_count($trimmedMessage, "\n") == 0) {
+      $words = $this->parseWords($trimmedMessage);
+      if (count($words) >= 1 && count($words) <= 3) {
+        $issueKeys = array_filter($words, array($this, 'isIssueKey'));
+        if (count($issueKeys) == 1) {
+          $message->setMessage($this->filterShortMessage($words));
+          return;
+        }
+      }
     }
+
+    // Otherwise, use standard filter+footnotes
+    parent::filter($message);
   }
 
   /**
-   * Given a single-word commit, filter the one word
+   * Given a short commit message with single issue reference, add
+   * the JIRA title to summary line.
    *
-   * @param $word
+   * @param array $words
    * @return string
    */
-  public function filterStandaloneWord($word) {
-    if (preg_match($this->wordPattern, $word)) {
-      $issue = $this->getIssue($word);
-      if ($issue) {
-        return ($word . ' - ' . $issue->getSummary() . "\n\n" . $this->createIssueUrl($word));
-      }
-      else {
-        return ($word . ' - ' . $this->createIssueUrl($word));
+  public function filterShortMessage($words) {
+    $suffix = '';
+    foreach ($words as $word) {
+      if ($this->isIssueKey($word)) {
+        $issue = $this->getIssue($word);
+        if ($issue) {
+          $suffix = ' - ' . $issue->getSummary() . "\n\n" . $this->createIssueUrl($word);
+        }
+        else {
+          $suffix = ' - ' . $this->createIssueUrl($word);
+        }
+        break;
       }
     }
-    return $word;
+    return implode('', $words) . $suffix;
   }
 
   /**
@@ -56,7 +71,7 @@ class JiraFilter extends AbstractWordFilter {
    * @return mixed
    */
   public function filterWord(CommitMessage $message, $word) {
-    if (preg_match($this->wordPattern, $word)) {
+    if ($this->isIssueKey($word)) {
       $issue = $this->getIssue($word);
       if ($issue) {
         $title = $word . ': ' . $issue->getSummary();
@@ -96,5 +111,9 @@ class JiraFilter extends AbstractWordFilter {
    */
   protected function createIssueUrl($issueKey) {
     return $this->url . '/browse/' . $issueKey;
+  }
+
+  protected function isIssueKey($word) {
+    return preg_match($this->wordPattern, $word);
   }
 }
