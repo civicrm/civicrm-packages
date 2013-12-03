@@ -4,6 +4,14 @@ namespace CRM\GitFootnote;
 class JiraFilterTest extends \PHPUnit_Framework_TestCase {
 
   /**
+   * @param \Jira_Api|NULL $jiraApi
+   * @return \CRM\GitFootnote\JiraFilter
+   */
+  function createJiraFilter($jiraApi = NULL) {
+    return new JiraFilter('/^CRM-[0-9]+$/', 'http://example.com/jira', $jiraApi);
+  }
+
+  /**
    * Data provider for basic test-cases which exercise parsing logic without
    * any support from web services
    */
@@ -61,6 +69,16 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
       array("CRM-1234:\n  http://example.com/jira/browse/CRM-1234", "CRM-567:\n  http://example.com/jira/browse/CRM-567")
     );
     $cases[] = array(
+      "Follow up to CRM-1234/github #24",
+      "Follow up to CRM-1234/github #24",
+      array("CRM-1234:\n  http://example.com/jira/browse/CRM-1234")
+    );
+    $cases[] = array(
+      "fix CRM-1234/CRM-567",
+      "fix CRM-1234/CRM-567",
+      array("CRM-1234:\n  http://example.com/jira/browse/CRM-1234", "CRM-567:\n  http://example.com/jira/browse/CRM-567")
+    );
+    $cases[] = array(
       "Hello\nCRM-1234",
       "Hello\nCRM-1234",
       array("CRM-1234:\n  http://example.com/jira/browse/CRM-1234")
@@ -90,6 +108,27 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
       "ACRM-1234 Hello",
       array()
     );
+    $cases[] = array(
+      "Sometimes we might put in the full URL -- http://example.com/jira/browse/CRM-13872 -- because we don't know about git-footnote",
+      "Sometimes we might put in the full URL -- http://example.com/jira/browse/CRM-13872 -- because we don't know about git-footnote",
+      array() // Don't really care whether footnote is reproduced at bottom; just want to know it doesn't crash
+    );
+    $cases[] = array(
+      "CRM-13872 - Sometimes we might put in the full URL -- http://example.com/jira/browse/CRM-13872 -- because we don't know about git-footnote",
+      "CRM-13872 - Sometimes we might put in the full URL -- http://example.com/jira/browse/CRM-13872 -- because we don't know about git-footnote",
+      array() // Don't really care whether footnote is reproduced at bottom; just want to know it doesn't crash
+    );
+
+    // "git commit --amend" to add extra ticket reference
+    $cases[] = array(
+      "Hello, CRM-1234... and also... CRM-567!\n\n----------------------------------------\n* CRM-1234: http://example.com/jira/browse/CRM-1234",
+      "Hello, CRM-1234... and also... CRM-567!\n\n----------------------------------------\n* CRM-1234: http://example.com/jira/browse/CRM-1234",
+      array("CRM-567:\n  http://example.com/jira/browse/CRM-567")
+      // Current behavior isn't great because we wind up with two horizontal bars. Would be better to parse old footnotes when instantiating CommitMessage
+      //"Hello, CRM-1234... and also... CRM-567!\n\n----------------------------------------\n* CRM-1234: http://example.com/jira/browse/CRM-1234",
+      //"Hello, CRM-1234... and also... CRM-567!",
+      //array(("CRM-1234:\n  http://example.com/jira/browse/CRM-1234", "CRM-567:\n  http://example.com/jira/browse/CRM-567")
+    );
     return $cases;
   }
 
@@ -100,10 +139,28 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
    */
   function testOfflineCases($messageBody, $expectedBody, $expectedNotes) {
     $message = new CommitMessage($messageBody);
-    $filter = new JiraFilter('/^CRM-[0-9]+/', 'http://example.com/jira');
-    $filter->filter($message);
+    $this->createJiraFilter()->filter($message);
     $this->assertEquals($expectedBody, $message->getMessage());
     $this->assertEquals($expectedNotes, array_values($message->getNotes()));
+  }
+
+  /**
+   * Content should stable across multiple executions
+   *
+   * @dataProvider offlineCases
+   * @param string $messageBody
+   * @param array $expectedNotes footnotes that should be produced
+   */
+  function testReprocessOfflineCases($messageBody, $expectedBody, $expectedNotes) {
+    // Ignore $expectedBody, $expectedNotes; these are evaluated elsewhere (testOfflineCases).
+    // This test is only about stability of output.
+
+    $message = new CommitMessage($messageBody);
+    $this->createJiraFilter()->filter($message);
+
+    $message2 = new CommitMessage($message->toString());
+    $this->createJiraFilter()->filter($message2);
+    $this->assertEquals(rtrim($message2->toString(), "\n"), rtrim($message->toString(), "\n"));
   }
 
   /**
@@ -188,8 +245,7 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
       $jiraClient
     );
 
-    $filter = new JiraFilter('/^CRM-[0-9]+/', 'http://example.com/jira', $jiraApi);
-    $filter->filter($message);
+    $this->createJiraFilter($jiraApi)->filter($message);
     $this->assertEquals($expectedBody, $message->getMessage());
     $this->assertEquals($expectedNotes, array_values($message->getNotes()));
   }

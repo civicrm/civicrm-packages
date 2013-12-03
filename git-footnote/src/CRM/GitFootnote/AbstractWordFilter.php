@@ -16,7 +16,7 @@ abstract class AbstractWordFilter implements Filter {
   }
 
   public function parseWords($messageText) {
-    return preg_split('/([ ,;\"\'\<\>!\?\.\(\)\[\]\r\n\t]+)/', $messageText, -1, PREG_SPLIT_DELIM_CAPTURE);
+    return preg_split('/([ ,;:\/\"\'\<\>!\?\.\(\)\[\]\r\n\t]+)/', $messageText, -1, PREG_SPLIT_DELIM_CAPTURE);
   }
 
   public abstract function filterWord(CommitMessage $message, $word);

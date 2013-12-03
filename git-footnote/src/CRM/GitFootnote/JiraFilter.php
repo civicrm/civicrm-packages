@@ -78,7 +78,11 @@ class JiraFilter extends AbstractWordFilter {
       } else {
         $title = $word . ':';
       }
-      $message->addLinkNote($this->createIssueUrl($word), $title);
+      $url = $this->createIssueUrl($word);
+      // CRM-13872 - Workaround to avoid duplicate footnotes when amending a commit message
+      if (strpos($message->getMessage(), $url) === FALSE) {
+        $message->addLinkNote($url, $title);
+      }
     }
     return $word;
   }
