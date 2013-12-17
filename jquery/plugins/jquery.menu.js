@@ -893,7 +893,7 @@
 				}
 			});
 		},
-		menu : function(options, items)
+		menuBar : function(options, items)
 		{
 			return this.each(function()
 			{
