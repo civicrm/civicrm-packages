@@ -320,21 +320,3 @@ li.blue {
 .dp-highlighter .string { color: blue; background-color: inherit; }
 .dp-highlighter .keyword { color: #069; font-weight: bold; background-color: inherit; }
 .dp-highlighter .preprocessor { color: gray; background-color: inherit; }
-
-/** Added by civicrm */
-
-#civicrm-menu li#crm-qsearch {
-    padding: 0 3px 2px 0;
-    height: 20px;
-    margin:0px 5px 0 5px;
-	}
-
-li#crm-qsearch input {
-    background-color:#ffffff;
-    border: 1px solid black;
-	}
-
-li#menu-logout {
-    float: right;
-    border-left: 1px solid #5D5D5D;
-	}
