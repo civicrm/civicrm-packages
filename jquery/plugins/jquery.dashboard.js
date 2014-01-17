@@ -526,7 +526,7 @@
         widget.element.attr('id', 'widget-' + widget.id).addClass(widget.classes);
         throbber.remove();
         // Build and add the widget's DOM element.
-        $(widgetHTML()).appendTo(widget.element);
+        $(widget.element).append(widgetHTML()).trigger('crmLoad');
         // Save the content element so that external scripts can reload it easily.
         widget.contentElement = $('.widget-content', widget.element);
         $.each(widget.controls, widget.addControl);
@@ -546,7 +546,7 @@
         var html = '';
         html += '<div class="widget-wrapper">';
         html += '  <div class="widget-controls"><h3 class="widget-header">' + widget.title + '</h3></div>';
-        html += '  <div class="widget-content">' + widget.content + '</div>';
+        html += '  <div class="widget-content crm-ajax-container">' + widget.content + '</div>';
         html += '</div>';
         return html;
       }
