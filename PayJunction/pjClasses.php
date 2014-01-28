@@ -193,8 +193,10 @@ class pjpgHttpsPost
       $ch = curl_init($url); 
       curl_setopt($ch, CURLOPT_HEADER, FALSE); 
       curl_setopt($ch, CURLOPT_POST, TRUE); 
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $request); 
-      curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+      if (ini_get('open_basedir') == '' && ini_get('safe_mode') == 'Off') {
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
+      }
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
       $content = curl_exec($ch); 
