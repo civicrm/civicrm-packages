@@ -411,29 +411,7 @@
         if (!widget.fullscreenUrl) {
           return;
         }
-
-        $('<div id="crm-dashlet-container"></div>')
-            .html('<div class="crm-container"><div id="crm-dashlet-fullscreen-content">Loading...</div></div>')
-            .dialog({
-                autoOpen: true,
-                title: widget.title,
-                modal: true,
-                height: 'auto',
-                width: 'auto',
-                position: [100,125],
-                close: function(event, ui) {
-                    cj(this).dialog("destroy");
-                    $('#crm-dashlet-container').remove();
-                    $('#crm-dashlet-fullscreen-content').remove();
-                }
-            });
-
-        $.ajax({
-            url: widget.fullscreenUrl,
-            success: function ( content ) {
-                $('#crm-dashlet-fullscreen-content').html(content).crmAccordions();
-            }
-        }); 
+        CRM.loadPage(widget.fullscreenUrl).crmAccordions();
       };
       
       // Exit fullscreen mode.
