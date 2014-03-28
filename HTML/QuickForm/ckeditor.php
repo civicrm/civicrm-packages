@@ -68,7 +68,7 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
             $uploadUrl = $config->userFrameworkResourceURL . 'packages/kcfinder/upload.php';
  
             $html = parent::toHtml() . "<script type='text/javascript'>
-                cj( function( ) {
+                CRM.$(function($) {
                     cj('#{$elementId}').removeClass();
                     if ( CKEDITOR.instances['{$elementId}'] ) {
                         CKEDITOR.remove(CKEDITOR.instances['{$elementId}']);
