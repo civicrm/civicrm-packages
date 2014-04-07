@@ -1,12 +1,25 @@
 Table of Contents
 =================
+ + Introduction
  + License Abbreviations
+ + How-To: Composer
  + How-To: PEAR install instructions
  + How-To: Manual upgrade of a forked package
  + Package List: PEAR
  + Package List: Manually installed
  + Package List: Payment processors
  + Package List: Unknown status
+
+
+Introduction
+============
+
+The "packages" directory (aka civicrm-packages.git) is a collection of
+third-party libraries required by CiviCRM.  Some of the libraries have are
+downloaded and added by hand; other libraries are added using tools.  This
+file provides all the notes about how/where to download/upgrade third-party
+library.
+
 
 License Abbreviations
 =====================
@@ -27,8 +40,30 @@ License Abbreviations
   X11       X11 (a.k.a. MIT) license
 
 
+How-To: Composer
+================
+
+(This describes CiviCRM 4.5+ but not 5.x; for 5.x, the composer.json may
+move to civicrm-core.git.)
+
+If a PHP package is distribtued via composer, then you can use composer to
+download / add / remove / upgrade packages.  See https://getcomposer.org/
+for instructions.
+
+There are a few additional rules for using composer with
+civicrm-packages.git:
+
+ + The list of specific packages is in "composer.json" (not "VERSIONS").
+ + The "vendor" directory is committed as part of civicrm-packages.git.
+ + One must never make changes directly in the "vendor" directory -- only
+   make changes to "composer.json".
+ + If some files from the original package are not required (eg tests,
+   examples, or documentation), then add tem to ".gitignore".
+
+
 How-To: PEAR install instructions
 =================================
+
 pear config-set download_dir /tmp
 pear config-set bin_dir   packages/bin
 pear config-set doc_dir   packages/doc
@@ -45,6 +80,7 @@ pear install Archive_Tar  # etc., in the main CiviCRM dir
 
 How-To: Manual upgrade of a forked package
 ==========================================
+
 1. download old version of upstream and overwrite packages with it (pear install Archive_Tar-1.3.3)
 2. if there are differences, it means we patched the package – do a *reverse* diff and save to a patch file (git diff -R > /tmp/Archive_Tar.diff)
 3. download current version and overwrite
