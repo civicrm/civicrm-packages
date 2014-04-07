@@ -1,4 +1,29 @@
-Licensing info in this file:
+Table of Contents
+=================
+ + Introduction
+ + License Abbreviations
+ + How-To: Composer
+ + How-To: PEAR install instructions
+ + How-To: Manual upgrade of a forked package
+ + Package List: PEAR
+ + Package List: Manually installed
+ + Package List: Payment processors
+ + Package List: Unknown status
+
+
+Introduction
+============
+
+The "packages" directory (aka civicrm-packages.git) is a collection of
+third-party libraries required by CiviCRM.  Some of the libraries have are
+downloaded and added by hand; other libraries are added using tools.  This
+file provides all the notes about how/where to download/upgrade third-party
+library.
+
+
+License Abbreviations
+=====================
+
   Apache 2  Apache License 2.0
   BSD 2-cl. two-clause BSD license
   BSD 3-cl. three-clause BSD license
@@ -15,8 +40,30 @@ Licensing info in this file:
   X11       X11 (a.k.a. MIT) license
 
 
-PEAR install instructions
-=========================
+How-To: Composer
+================
+
+(This describes CiviCRM 4.5+ but not 5.x; for 5.x, the composer.json may
+move to civicrm-core.git.)
+
+If a PHP package is distribtued via composer, then you can use composer to
+download / add / remove / upgrade packages.  See https://getcomposer.org/
+for instructions.
+
+There are a few additional rules for using composer with
+civicrm-packages.git:
+
+ + The list of specific packages is in "composer.json" (not "VERSIONS").
+ + The "vendor" directory is committed as part of civicrm-packages.git.
+ + One must never make changes directly in the "vendor" directory -- only
+   make changes to "composer.json".
+ + If some files from the original package are not required (eg tests,
+   examples, or documentation), then add tem to ".gitignore".
+
+
+How-To: PEAR install instructions
+=================================
+
 pear config-set download_dir /tmp
 pear config-set bin_dir   packages/bin
 pear config-set doc_dir   packages/doc
@@ -31,8 +78,9 @@ pear config-set www_dir   packages/www
 pear install Archive_Tar  # etc., in the main CiviCRM dir
 
 
-Upgrade procedure
-=================
+How-To: Manual upgrade of a forked package
+==========================================
+
 1. download old version of upstream and overwrite packages with it (pear install Archive_Tar-1.3.3)
 2. if there are differences, it means we patched the package – do a *reverse* diff and save to a patch file (git diff -R > /tmp/Archive_Tar.diff)
 3. download current version and overwrite
@@ -41,8 +89,8 @@ Upgrade procedure
 6. update this file and commit
 
 
-PEAR
-====
+Package List: PEAR
+==================
 Archive_Tar                   1.3.3      BSD 2-cl.
 Auth_SASL                     1.0.3      BSD 3-cl.
 Console_Getopt                1.2.3      PHP 3.0
@@ -83,8 +131,8 @@ XML_RPC                       1.5.3      PHP 3
 XML_Util                      1.2.1      BSD 3-cl.
 
 
-NON-PEAR
-========
+Package List: Manually installed
+================================
 PHP gettext    1.0.7      GPL 2+      http://savannah.nongnu.org/projects/php-gettext/
 PHPIDS         0.7        LGPL 3+     http://phpids.org/
 Smarty         2.6.27     LGPL 2.1+   http://smarty.php.net/                                        local changes ( use only lib )
@@ -110,8 +158,8 @@ Underscore     1.4.3      X11/MIT     http://underscorejs.org/
 CKEditor       4.0.1      GPL 3/LGPL 3/MPL 1.1
 
 
-payment processors for CiviCRM
-==============================
+Package List: Payment processors
+================================
 IATS             AGPL 3   in Services/IATS
 Moneris                   by adixon, in Services/mpgClasses.php
 PayJunction      AGPL 3   by Phase2 Technology
@@ -119,8 +167,8 @@ PaymentExpress   AGPL 3   by Lucas Baker
 eWAY             AGPL 3   by Dolphin Software
 
 
-Unknown status
-==============
+Package List: Unknown status
+============================
 Facebook      BSD 2-cl.
 Google        Apache 2/GPL 2+
 TinyMCE       LGPL 2.1
