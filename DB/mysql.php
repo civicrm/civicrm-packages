@@ -111,7 +111,8 @@ class DB_mysql extends DB_common
         1146 => DB_ERROR_NOSUCHTABLE,
         1216 => DB_ERROR_CONSTRAINT,
         1217 => DB_ERROR_CONSTRAINT,
-        1356 => DB_ERROR_DIVZERO,
+        1356 => DB_ERROR_INVALID_VIEW,
+        1365 => DB_ERROR_DIVZERO,
         1451 => DB_ERROR_CONSTRAINT,
         1452 => DB_ERROR_CONSTRAINT,
     );

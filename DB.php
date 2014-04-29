@@ -182,6 +182,11 @@ define('DB_ERROR_NOSUCHDB', -27);
  * Tried to insert a null value into a column that doesn't allow nulls
  */
 define('DB_ERROR_CONSTRAINT_NOT_NULL',-29);
+
+/**
+ * Invalid view or no permissions
+ */
+define('DB_ERROR_INVALID_VIEW', -100);
 /**#@-*/
 
 
@@ -671,6 +676,7 @@ class DB
                 DB_ERROR_INVALID_DATE       => 'invalid date or time',
                 DB_ERROR_INVALID_DSN        => 'invalid DSN',
                 DB_ERROR_INVALID_NUMBER     => 'invalid number',
+                DB_ERROR_INVALID_VIEW       => 'invalid view',
                 DB_ERROR_MISMATCH           => 'mismatch',
                 DB_ERROR_NEED_MORE_DATA     => 'insufficient data supplied',
                 DB_ERROR_NODBSELECTED       => 'no database selected',
