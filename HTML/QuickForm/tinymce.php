@@ -144,7 +144,11 @@ class HTML_QuickForm_TinyMCE extends HTML_QuickForm_textarea
 
             // tinymce is wierd, it needs to be loaded initially along with jquery
             $html = null;
-            $html .= '<div id="' . $this->_attributes['id'] .'-plain" class="$elementId replace-plain" tabindex=0><a href="#"><span class="icon edit-icon">Click to edit</span></a>' . $this->getFrozenHtml() . '</div>' . parent::toHtml();
+            $click = $this->getAttribute('click_wysiwyg');
+            if ($click) {
+              $html .= '<div id="' . $this->_attributes['id'] .'-plain" class="$elementId replace-plain" tabindex=0><a href="#"><span class="icon edit-icon">Click to edit</span></a>' . $this->getFrozenHtml() . '</div>';
+            }
+            $html .= parent::toHtml();
 
             $html .= sprintf( '<script type="text/javascript">
         var configArray = [{
@@ -182,7 +186,7 @@ class HTML_QuickForm_TinyMCE extends HTML_QuickForm_textarea
 
         tinyMCE.settings = configArray[0];');
 
-        if ($this->getAttribute('click_wysiwyg')) {
+        if ($click) {
           $html .= sprintf('
           CRM.$(function($) {
             $("#' . $this->_attributes['id'] . '").hide();
