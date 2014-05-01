@@ -7,6 +7,7 @@
   },
   "require": {
     "symfony/dependency-injection": "2.3.*",
-    "symfony/event-dispatcher": "2.3.*"
+    "symfony/event-dispatcher": "2.3.*",
+    "psr/log": "1.0.0"
   }
 }
