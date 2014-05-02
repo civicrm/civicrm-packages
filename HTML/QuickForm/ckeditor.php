@@ -104,7 +104,7 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
               CRM.$(function($) {
                 $('#{$elementId}').hide();
                 var openWysiwyg = function() {
-                  $('#{$elementId}-plain').remove();
+                  var restorePlain = $('#{$elementId}-plain').detach();
                   $('#{$elementId}').removeClass();
                   if ( CKEDITOR.instances['{$elementId}'] ) {
                       CKEDITOR.remove(CKEDITOR.instances['{$elementId}']);
@@ -124,6 +124,13 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
                       editor.config.filebrowserUploadUrl      = '".$uploadUrl."?cms=civicrm&type=files';
                       editor.config.filebrowserImageUploadUrl = '".$uploadUrl."?cms=civicrm&type=images';
                       editor.config.filebrowserFlashUploadUrl = '".$uploadUrl."?cms=civicrm&type=flash';
+                      editor.on( 'blur', function( e ) {
+                        this.updateElement();
+                        this.destroy(true);
+                        $('#{$elementId}').before(restorePlain);
+                        $('#{$elementId}-plain').html($('#{$elementId}').val());
+                        $('#{$elementId}').hide();
+                      })
                   }
                 };
                 $('#{$elementId}-plain').click(openWysiwyg);
