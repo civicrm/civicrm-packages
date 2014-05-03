@@ -87,7 +87,7 @@ $.Autocompleter = function(input, options) {
 			return false;
 		}
 	});
-	
+
 	// only opera doesn't trigger keydown multiple times while pressed, others don't work with keypress at all
 	$input.bind(($.browser.opera ? "keypress" : "keydown") + ".autocomplete", function(event) {
 		// track last key pressed
