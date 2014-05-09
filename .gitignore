@@ -2,3 +2,5 @@
 *.bak
 vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher/Tests
 vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/Tests
+bower_components/jquery/
+bower_components/jquery-ui/
