@@ -60,6 +60,16 @@ civicrm-packages.git:
  + If some files from the original package are not required (eg tests,
    examples, or documentation), then add tem to ".gitignore".
 
+How-To: Use Bower
+=================
+
+If a Javascript package is distributed via Bower, then you can use
+bower to download / add / remove / upgrade packages. See http://bower.io/
+for instructions.
+
+The extra rules for 'bower' are identical to the rules for 'composer',
+except that the canonical list is in "bower.json" (not "composer.json"), and
+the source files are in "bower_components" (not "vendor").
 
 How-To: PEAR install instructions
 =================================
