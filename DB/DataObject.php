@@ -1182,6 +1182,20 @@ class DB_DataObject extends DB_DataObject_Overload
                     )) . " ";
                 continue;
             }
+
+            // CiviCRM hack CRM-14476: Extend CaseType API to return/save XML
+            // https://issues.civicrm.org/jira/browse/CRM-14476
+            if ($v & DB_DATAOBJECT_TXT) {
+                $rightq .= $this->_quote((string) $this->$k ) . ' ';
+                continue;
+            }
+
+            if ($v & DB_DATAOBJECT_BLOB) {
+               $rightq .= $this->_quote( $this->$k ) . ' ';
+               continue;
+            }
+            // CRM-14476 hack ends
+
             if (is_numeric($this->$k)) {
                 $rightq .=" {$this->$k} ";
                 continue;
@@ -1443,6 +1457,20 @@ class DB_DataObject extends DB_DataObject_Overload
                     )) . ' ';
                 continue;
             }
+
+            // CiviCRM hack CRM-14476: Extend CaseType API to return/save XML
+            // https://issues.civicrm.org/jira/browse/CRM-14476
+            if ($v & DB_DATAOBJECT_TXT) {
+                $settings .= "$kSql = " . $this->_quote((string) $this->$k ) . ' ';
+                continue;
+            }
+
+            if ($v & DB_DATAOBJECT_BLOB) {
+              $settings .= "$kSql = " . $this->_quote($this->$k ) . ' ';
+              continue;
+            }
+            // CRM-14725 ends
+
             if (is_numeric($this->$k)) {
                 $settings .= "$kSql = {$this->$k} ";
                 continue;
@@ -2771,7 +2799,8 @@ class DB_DataObject extends DB_DataObject_Overload
             }
 
 
-            if ($v & DB_DATAOBJECT_STR) {
+            if ($v & DB_DATAOBJECT_STR ||
+                $v & DB_DATAOBJECT_TXT) {
                 $this->whereAdd(" $kSql  = " . $this->_quote((string) (
                         ($v & DB_DATAOBJECT_BOOL) ?
                             // this is thanks to the braindead idea of postgres to
