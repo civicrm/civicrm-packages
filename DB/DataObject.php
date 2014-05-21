@@ -1026,6 +1026,11 @@ class DB_DataObject extends DB_DataObject_Overload
                 continue;
             }
 
+           if ($v & DB_DATAOBJECT_BLOB) {
+              $rightq .= $this->_quote( $this->$k ) . ' ';
+              continue;
+           }
+
 
             if (is_numeric($this->$k)) {
                 $rightq .=" {$this->$k} ";
