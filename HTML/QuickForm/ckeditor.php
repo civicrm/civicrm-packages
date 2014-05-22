@@ -8,8 +8,8 @@ require_once('HTML/QuickForm/textarea.php');
  * CKeditor is a WYSIWYG HTML editor which can be obtained from
  * http://ckeditor.com. I tried to resemble the integration instructions
  * as much as possible, so the examples from the docs should work with this one.
- * 
- * @author       Kurund Jalmi 
+ *
+ * @author       Kurund Jalmi
  * @access       public
  */
 class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
@@ -21,7 +21,7 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
      * @access public
      */
     var $width = '94%';
-    
+
     /**
      * The height of the editor in pixels or percent
      *
@@ -29,7 +29,7 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
      * @access public
      */
     var $height = '400';
-            
+
     /**
      * Class constructor
      *
@@ -49,7 +49,7 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
         if ( is_array($attributes) && array_key_exists( 'rows', $attributes ) && $attributes['rows'] <= 4 ) {
             $this->height = 175;
         }
-    }    
+    }
 
     /**
      * Add js to to convert normal textarea to ckeditor
@@ -61,12 +61,12 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
     {
         if ($this->_flagFrozen) {
             return $this->getFrozenHtml();
-        } else {
+        } elseif (!$this->getAttribute('click_wysiwyg')) {
             $elementId = $this->getAttribute('id');
             $config = CRM_Core_Config::singleton( );
             $browseUrl = $config->userFrameworkResourceURL . 'packages/kcfinder/browse.php';
             $uploadUrl = $config->userFrameworkResourceURL . 'packages/kcfinder/upload.php';
- 
+
             $html = parent::toHtml() . "<script type='text/javascript'>
                 CRM.$(function($) {
                     cj('#{$elementId}').removeClass();
@@ -89,15 +89,61 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
                         editor.config.filebrowserImageUploadUrl = '".$uploadUrl."?cms=civicrm&type=images';
                         editor.config.filebrowserFlashUploadUrl = '".$uploadUrl."?cms=civicrm&type=flash';
                     }
-                }); 
+                });
             </script>";
             return $html;
         }
+        else {
+          $elementId = $this->getAttribute('id');
+          $plain = '<div id="' . $elementId .'-plain" class="$elementId replace-plain" tabindex=0><a href="#"><span class="icon edit-icon">Click to edit</span></a>' . $this->getFrozenHtml() . '</div>' . parent::toHtml();
+          $config = CRM_Core_Config::singleton( );
+          $browseUrl = $config->userFrameworkResourceURL . 'packages/kcfinder/browse.php';
+          $uploadUrl = $config->userFrameworkResourceURL . 'packages/kcfinder/upload.php';
+
+          $html = $plain . "<script type='text/javascript'>
+              CRM.$(function($) {
+                $('#{$elementId}').hide();
+                var openWysiwyg = function() {
+                  var restorePlain = $('#{$elementId}-plain').detach();
+                  $('#{$elementId}').removeClass();
+                  if ( CKEDITOR.instances['{$elementId}'] ) {
+                      CKEDITOR.remove(CKEDITOR.instances['{$elementId}']);
+                  }
+                  if ( $('#{$elementId}').val( ) == '' ) $('#{$elementId}').val('&nbsp;');
+                  CKEDITOR.replace( '{$elementId}' );
+                  var editor = CKEDITOR.instances['{$elementId}'];
+                  if ( editor ) {
+                      editor.on( 'key', function( evt ){
+                          global_formNavigate = false;
+                      } );
+                      editor.config.width              = '".$this->width."';
+                      editor.config.height             = '".$this->height."';
+                      editor.config.filebrowserBrowseUrl      = '".$browseUrl."?cms=civicrm&type=files';
+                      editor.config.filebrowserImageBrowseUrl = '".$browseUrl."?cms=civicrm&type=images';
+                      editor.config.filebrowserFlashBrowseUrl = '".$browseUrl."?cms=civicrm&type=flash';
+                      editor.config.filebrowserUploadUrl      = '".$uploadUrl."?cms=civicrm&type=files';
+                      editor.config.filebrowserImageUploadUrl = '".$uploadUrl."?cms=civicrm&type=images';
+                      editor.config.filebrowserFlashUploadUrl = '".$uploadUrl."?cms=civicrm&type=flash';
+                      editor.on( 'blur', function( e ) {
+                        this.updateElement();
+                        this.destroy(true);
+                        $('#{$elementId}').before(restorePlain);
+                        $('#{$elementId}-plain').html($('#{$elementId}').val());
+                        $('#{$elementId}').hide();
+                      })
+                  }
+                };
+                $('#{$elementId}-plain').click(openWysiwyg);
+                $('#{$elementId}-plain').keypress(openWysiwyg);
+              });
+          </script>";
+          return $html;
+        }
     }
-    
+
     /**
      * Returns the htmlarea content in HTML
-     * 
+     *
      * @access public
      * @return string
      */
