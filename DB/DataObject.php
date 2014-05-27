@@ -1293,6 +1293,10 @@ class DB_DataObject extends DB_DataObject_Overload
                 continue;
             }
 
+            if ($v & DB_DATAOBJECT_BLOB) {
+              $settings .= "$kSql = " . $this->_quote($this->$k ) . ' ';
+              continue;
+            }
 
             if (is_numeric($this->$k)) {
                 $settings .= "$kSql = {$this->$k} ";
@@ -1302,7 +1306,6 @@ class DB_DataObject extends DB_DataObject_Overload
             // - V2 may store additional data about float/int
             $settings .= "$kSql = " . intval($this->$k) . ' ';
         }
-
 
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
             $this->debug("got keys as ".serialize($keys),3);
