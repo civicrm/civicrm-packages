@@ -77,9 +77,6 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
                     CKEDITOR.replace( '{$elementId}' );
                     var editor = CKEDITOR.instances['{$elementId}'];
                     if ( editor ) {
-                        editor.on( 'key', function( evt ){
-                            global_formNavigate = false;
-                        } );
                         editor.config.width              = '".$this->width."';
                         editor.config.height             = '".$this->height."';
                         editor.config.filebrowserBrowseUrl      = '".$browseUrl."?cms=civicrm&type=files';
@@ -113,9 +110,6 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
                   CKEDITOR.replace( '{$elementId}' );
                   var editor = CKEDITOR.instances['{$elementId}'];
                   if ( editor ) {
-                      editor.on( 'key', function( evt ){
-                          global_formNavigate = false;
-                      } );
                       editor.config.width              = '".$this->width."';
                       editor.config.height             = '".$this->height."';
                       editor.config.filebrowserBrowseUrl      = '".$browseUrl."?cms=civicrm&type=files';

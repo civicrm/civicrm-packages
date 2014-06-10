@@ -178,9 +178,6 @@ class HTML_QuickForm_TinyMCE extends HTML_QuickForm_textarea
                     cj("#" + ed.editorId + "_tbl").css("height", height);
                     cj("#" + ed.editorId + "_ifr").css("height", height);
                 });
-                ed.onKeyUp.add(function(ed, l) {
-                    global_formNavigate = false;
-                });
         }'.$this->getConfigString().'
         }];
 
