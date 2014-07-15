@@ -1141,11 +1141,6 @@ class DB_DataObject extends DB_DataObject_Overload
             ) {
                 continue;
             }
-            // dont insert data into mysql timestamps
-            // use query() if you really want to do this!!!!
-            if ($v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
-                continue;
-            }
 
             if ($leftq) {
                 $leftq  .= ', ';
@@ -1170,6 +1165,23 @@ class DB_DataObject extends DB_DataObject_Overload
                 $rightq .= " NULL ";
                 continue;
             }
+
+            // CRM-14986 starts
+            if (($v & DB_DATAOBJECT_DATE) || ($v & DB_DATAOBJECT_TIME) || $v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
+              if (strpos($this->$k, '-') !== FALSE) {
+                /*
+                 * per CRM-14986 we have been having ongoing problems with the format returned from $dao->find(TRUE) NOT
+                 * being acceptable for an immediate save. This has resulted in the codebase being smattered with
+                 * instances of CRM_Utils_Date::isoToMysql for date fields retrieved in this way
+                 * which seems both risky (have to remember to do it for every field) & cludgey.
+                 * doing it here should be safe as only fields with a '-' in them will be affected - if they are
+                 *  already formatted or empty then this line will not be hit
+                 */
+                $this->$k = CRM_Utils_Date::isoToMysql($this->$k);
+              }
+            }
+            // CRM-14986 ends
+
             // DATE is empty... on a col. that can be null..
             // note: this may be usefull for time as well..
             if (!$this->$k &&
@@ -1417,13 +1429,6 @@ class DB_DataObject extends DB_DataObject_Overload
                 continue;
             }
 
-             // dont insert data into mysql timestamps
-            // use query() if you really want to do this!!!!
-            if ($v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
-                continue;
-            }
-
-
             if ($settings)  {
                 $settings .= ', ';
             }
@@ -1447,6 +1452,23 @@ class DB_DataObject extends DB_DataObject_Overload
                 $settings .= "$kSql = NULL ";
                 continue;
             }
+
+            // CRM-14986 starts
+            if (($v & DB_DATAOBJECT_DATE) || ($v & DB_DATAOBJECT_TIME) || $v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
+              if (strpos($this->$k, '-') !== FALSE) {
+               /*
+                * per CRM-14986 we have been having ongoing problems with the format returned from $dao->find(TRUE) NOT
+                * being acceptable for an immediate save. This has resulted in the codebase being smattered with
+                * instances of CRM_Utils_Date::isoToMysql for date fields retrieved in this way
+                * which seems both risky (have to remember to do it for every field) & cludgey.
+                * doing it here should be safe as only fields with a '-' in them will be affected - if they are
+                *  already formatted or empty then this line will not be hit
+                */
+                $this->$k = CRM_Utils_Date::isoToMysql($this->$k);
+              }
+            }
+            // CRM-14986 ends
+
             // DATE is empty... on a col. that can be null..
             // note: this may be usefull for time as well..
             if (!$this->$k &&
