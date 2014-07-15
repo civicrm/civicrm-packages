@@ -1262,7 +1262,7 @@ class DB_DataObject extends DB_DataObject_Overload
                 continue;
             }
           if (($v & DB_DATAOBJECT_DATE) || ($v & DB_DATAOBJECT_TIME)) {
-            if (strpos($this->$k, '-') != FALSE) {
+            if (strpos($this->$k, '-') !== FALSE) {
              /*
               * per CRM-14986 we have been having ongoing problems with the format returned from $dao->find(TRUE) NOT
               * being acceptable for an immediate save. This has resulted in the codebase being smattered with
