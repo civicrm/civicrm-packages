@@ -1,7 +1,6 @@
 {
   "autoload": {
     "psr-0": {
-      "CRM_": "../",
       "Civi\\": ["../", "tests/phpunit/"]
     }
   },

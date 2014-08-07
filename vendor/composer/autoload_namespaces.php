@@ -10,5 +10,4 @@ return array(
     'Symfony\\Component\\DependencyInjection\\' => array($vendorDir . '/symfony/dependency-injection'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Civi\\' => array($baseDir . '/..', $baseDir . '/tests/phpunit'),
-    'CRM_' => array($baseDir . '/..'),
 );
