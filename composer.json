@@ -1,7 +1,7 @@
 {
   "autoload": {
     "psr-0": {
-      "Civi\\": ["../", "tests/phpunit/"]
+      "Civi\\": ["../", "../tests/phpunit/"]
     }
   },
   "require": {
