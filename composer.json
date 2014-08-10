@@ -1,8 +1,7 @@
 {
   "autoload": {
     "psr-0": {
-      "CRM_": "../",
-      "Civi\\": ["../", "tests/phpunit/"]
+      "Civi\\": ["../", "../tests/phpunit/"]
     }
   },
   "require": {
