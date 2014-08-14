@@ -6,8 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
     'Symfony\\Component\\DependencyInjection\\' => array($vendorDir . '/symfony/dependency-injection'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
+    'PHPUnit_' => array($baseDir . '/'),
     'Civi\\' => array($baseDir . '/..', $baseDir . '/../tests/phpunit'),
 );
