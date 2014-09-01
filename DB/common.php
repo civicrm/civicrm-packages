@@ -2264,6 +2264,9 @@ class DB_common extends PEAR
         }
     }
 
+    function lastInsertId() {
+        throw new \RuntimeException("Not implemented: " . get_class($this) . '::lastInsertId');
+    }
     // }}}
     // {{{ lastInsertId()
 

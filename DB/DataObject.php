@@ -4673,9 +4673,12 @@ class DB_DataObject extends DB_DataObject_Overload
      * @param   int     $v  level
      * @access  public
      * @return  none
+     *
+     * CRM-15212 fix visibility.
      */
-    static function debugLevel($v = null)
+    public static function debugLevel($v = null)
     {
+        // CRM-15212. ends
         global $_DB_DATAOBJECT;
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
             DB_DataObject::_loadConfig();
@@ -4756,7 +4759,7 @@ class DB_DataObject extends DB_DataObject_Overload
      * @access   public
      * @return   object an error object
      */
-    function _loadConfig()
+    public static function _loadConfig()
     {
         global $_DB_DATAOBJECT;
 
@@ -4929,7 +4932,6 @@ class DB_DataObject extends DB_DataObject_Overload
 
     function _get_table() { return $this->table(); }
     function _get_keys()  { return $this->keys();  }
-
 
 
 
