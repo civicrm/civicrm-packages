@@ -94,6 +94,9 @@ function authenticate_drupal($config) {
 
   // correct base_url so it points to Drupal root
   $pos = strpos($base_url, '/sites/');
+  if (!$pos) {
+    $pos = strpos($base_url, '/profiles/');
+  }
   $base_url = substr($base_url, 0, $pos); // drupal root absolute url
   
   CRM_Utils_System::loadBootStrap(CRM_Core_DAO::$_nullArray,true,false);
