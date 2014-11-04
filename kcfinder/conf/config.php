@@ -108,11 +108,11 @@ $_CONFIG = array(
 
 // THE FOLLOWING SETTINGS CANNOT BE OVERRIDED WITH SESSION SETTINGS
 
-    '_normalizeFilenames' => false,
-    '_check4htaccess' => true,
-    //'_tinyMCEPath' => "/tiny_mce",
+    '_normalizeFilenames' => true,
+    '_check4htaccess' => false,
+    '_tinyMCEPath' => "../tinymce/jscripts/tiny_mce/",
 
-    '_sessionVar' => "KCFINDER",
+    '_sessionVar' => &$_SESSION['KCFINDER'],
     //'_sessionLifetime' => 30,
     //'_sessionDir' => "/full/directory/path",
     //'_sessionDomain' => ".mysite.com",
