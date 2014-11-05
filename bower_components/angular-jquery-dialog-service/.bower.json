@@ -1,0 +1,13 @@
+{
+  "name": "angular-jquery-dialog-service",
+  "homepage": "https://github.com/totten/angular-jquery-dialog-service",
+  "_release": "dad7bd0a99",
+  "_resolution": {
+    "type": "branch",
+    "branch": "jquery-closure",
+    "commit": "dad7bd0a99408e851683dbfc18f89f57aeff9c14"
+  },
+  "_source": "git://github.com/totten/angular-jquery-dialog-service.git",
+  "_target": "jquery-closure",
+  "_originalSource": "totten/angular-jquery-dialog-service"
+}
