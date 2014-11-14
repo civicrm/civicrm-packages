@@ -118,7 +118,12 @@ class uploader {
                 ini_set('session.save_path', $_CONFIG['_sessionDir']);
             if (isset($_CONFIG['_sessionDomain']))
                 ini_set('session.cookie_domain', $_CONFIG['_sessionDomain']);
-            session_start();
+            switch ($this->cms) {
+              case "drupal": break;
+              // ADDED for CIVICRM integration
+              case "civicrm": break;
+              default: session_start(); break;
+            }
         }
 
         // LOAD SESSION CONFIGURATION IF EXISTS
