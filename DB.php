@@ -639,6 +639,7 @@ class DB
                 . 'CREATE|DROP|'
                 . 'LOAD DATA|SELECT .* INTO .* FROM|COPY|'
                 . 'ALTER|GRANT|REVOKE|'
+                . 'SAVEPOINT|ROLLBACK|'
                 . 'LOCK|UNLOCK';
         if (preg_match('/^\s*"?(' . $manips . ')\s+/i', $query)) {
             return true;
