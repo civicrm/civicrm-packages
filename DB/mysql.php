@@ -773,17 +773,6 @@ class DB_mysql extends DB_common
     }
 
     // }}}
-    // {{{ quote()
-
-    /**
-     * @deprecated  Deprecated in release 1.6.0
-     */
-    function quote($str = null)
-    {
-        return $this->quoteSmart($str);
-    }
-
-    // }}}
     // {{{ escapeSimple()
 
     /**

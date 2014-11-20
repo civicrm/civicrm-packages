@@ -261,11 +261,7 @@ class DB_common extends PEAR
      */
     function quoteString($string)
     {
-        $string = $this->quote($string);
-        if ($string{0} == "'") {
-            return substr($string, 1, -1);
-        }
-        return $string;
+        return $this->quoteSmart($string);
     }
 
     // }}}
@@ -284,8 +280,7 @@ class DB_common extends PEAR
      */
     function quote($string = null)
     {
-        return ($string === null) ? 'NULL'
-                                  : "'" . str_replace("'", "''", $string) . "'";
+        return $this->quoteSmart($string);
     }
 
     // }}}

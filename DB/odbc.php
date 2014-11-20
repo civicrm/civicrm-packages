@@ -481,18 +481,6 @@ class DB_odbc extends DB_common
     }
 
     // }}}
-    // {{{ quote()
-
-    /**
-     * @deprecated  Deprecated in release 1.6.0
-     * @internal
-     */
-    function quote($str = null)
-    {
-        return $this->quoteSmart($str);
-    }
-
-    // }}}
     // {{{ nextId()
 
     /**
