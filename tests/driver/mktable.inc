@@ -127,7 +127,7 @@ switch ($type) {
         $chrd = 'VARCHAR(20)';
         $default = "DEFAULT 'def' NOT NULL";
         if (!empty($needinnodb)) {
-            $tabletype = 'TYPE=INNODB';
+            $tabletype = 'ENGINE=InnoDB';
         } else {
             $tabletype = '';
         }

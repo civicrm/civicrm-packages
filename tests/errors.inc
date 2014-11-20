@@ -188,11 +188,11 @@ switch ($dbh->phptype) {
     case 'mysqli':
         $res = $dbh->query('CREATE TABLE a (a INT NOT NULL, '
                     . 'PRIMARY KEY (a)) '
-                    . 'TYPE=INNODB');
+                    . 'ENGINE=InnoDB');
         $res = $dbh->query('CREATE TABLE b (b INT, '
                     . 'INDEX par_ind (b), '
                     . 'FOREIGN KEY (b) REFERENCES a (a)) '
-                    . 'TYPE=INNODB');
+                    . 'ENGINE=InnoDB');
         $dbh->popErrorHandling();
         break;
 
