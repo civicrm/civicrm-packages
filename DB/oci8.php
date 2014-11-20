@@ -6,7 +6,7 @@
  * The PEAR DB driver for PHP's oci8 extension
  * for interacting with Oracle databases
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:

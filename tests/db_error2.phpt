@@ -59,7 +59,7 @@ $e = $dbh->raiseError("return testing error");
 print strtolower($e->toString()) . "\n";
 
 print "global default: ";
-PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "myfunc2");
+@PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, "myfunc2");
 $e = $dbh->raiseError("global default test");
 
 $dbh->setErrorHandling(PEAR_ERROR_PRINT);

@@ -38,7 +38,7 @@ if ($dbms == 'mssql') {
     ini_set('mssql.textsize', 4096);
 }
 
-$dbh =& DB::connect($dsn, $options);
+$dbh = DB::connect($dsn, $options);
 if (DB::isError($dbh)) {
     die('connect.inc: ' . $dbh->toString());
 }

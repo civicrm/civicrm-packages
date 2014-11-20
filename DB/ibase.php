@@ -9,7 +9,7 @@
  * While this class works with PHP 4, PHP's InterBase extension is
  * unstable in PHP 4.  Use PHP 5.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:

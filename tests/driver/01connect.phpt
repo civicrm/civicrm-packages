@@ -64,7 +64,7 @@ foreach ($test_array_dsn as $key => $value) {
     }
 }
 
-$dbha =& DB::connect($test_array_dsn, $options);
+$dbha = DB::connect($test_array_dsn, $options);
 check_dbh($dbha, '$dbha');
 
 

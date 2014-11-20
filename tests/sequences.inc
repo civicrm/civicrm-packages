@@ -115,9 +115,9 @@ if (!DB::isError($d)) {
 // 5) test that the sequence is handled right when the table is empty
 
 // Backend with real sequences may don't like that
-PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
+@PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
 $dbh->query('DELETE FROM test_seq');
-PEAR::popErrorHandling();
+@PEAR::popErrorHandling();
 $e = $dbh->nextID('test');
 if (DB::isError($d)) {
     print 'e: ' . $d->getDebugInfo() . "\n\n";

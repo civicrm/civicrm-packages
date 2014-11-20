@@ -6,7 +6,7 @@
  * The PEAR DB driver for PHP's pgsql extension
  * for interacting with PostgreSQL databases
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -472,7 +472,7 @@ class DB_pgsql extends DB_common
      * @deprecated  Deprecated in release 1.6.0
      * @internal
      */
-    function quote($str)
+    function quote($str = null)
     {
         return $this->quoteSmart($str);
     }

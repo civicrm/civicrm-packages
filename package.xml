@@ -38,7 +38,7 @@ extension, but it can&apos;t be used
 interchangeably because dbase doesn&apos;t
 support many standard DBMS features.
 
-DB is compatible with both PHP 4 and PHP 5.
+DB is compatible with PHP 5.
 
  </description>
  <lead>
@@ -65,10 +65,10 @@ DB is compatible with both PHP 4 and PHP 5.
   <email>cox@idecnet.com</email>
   <active>no</active>
  </developer>
- <date>xxx</date>
+ <date>2014-11-20</date>
  <version>
-  <release>1.7.15</release>
-  <api>1.7.15</api>
+  <release>1.8.0</release>
+  <api>1.8.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -76,6 +76,7 @@ DB is compatible with both PHP 4 and PHP 5.
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
+* E_STRICT compliance, require PHP 5.
 * Fix array to string conversion in connect() when class does not exist.
  </notes>
  <contents>
@@ -193,7 +194,7 @@ DB is compatible with both PHP 4 and PHP 5.
  <dependencies>
   <required>
    <php>
-    <min>4.2.0</min>
+    <min>5.0.0</min>
    </php>
    <pearinstaller>
     <min>1.4.0b1</min>
