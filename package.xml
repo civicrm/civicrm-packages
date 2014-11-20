@@ -67,8 +67,8 @@ DB is compatible with PHP 5.
  </developer>
  <date>2014-11-20</date>
  <version>
-  <release>1.8.0</release>
-  <api>1.8.0</api>
+  <release>1.8.1</release>
+  <api>1.8.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -76,8 +76,7 @@ DB is compatible with PHP 5.
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-* E_STRICT compliance, require PHP 5.
-* Fix array to string conversion in connect() when class does not exist.
+* Fix bug #19785 (Ensure calling quote() is safe)
  </notes>
  <contents>
   <dir name="/">
