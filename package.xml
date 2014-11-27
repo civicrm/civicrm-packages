@@ -65,10 +65,10 @@ DB is compatible with PHP 5.
   <email>cox@idecnet.com</email>
   <active>no</active>
  </developer>
- <date>2014-11-20</date>
+ <date>2014-11-27</date>
  <version>
-  <release>1.8.1</release>
-  <api>1.8.1</api>
+  <release>1.8.2</release>
+  <api>1.8.2</api>
  </version>
  <stability>
   <release>stable</release>
@@ -76,7 +76,7 @@ DB is compatible with PHP 5.
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-* Fix bug #19785 (Ensure calling quote() is safe)
+* Fix bug #20447 (Have quoteString() remove quotes like it used to)
  </notes>
  <contents>
   <dir name="/">
