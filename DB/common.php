@@ -261,7 +261,11 @@ class DB_common extends PEAR
      */
     function quoteString($string)
     {
-        return $this->quoteSmart($string);
+        $string = $this->quoteSmart($string);
+        if ($string{0} == "'") {
+            return substr($string, 1, -1);
+        }
+        return $string;
     }
 
     // }}}
