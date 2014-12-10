@@ -99,6 +99,11 @@ angular.module('dialogService', []).service('dialogService',
 				dialog.ref.dialog("close");
 			};
 
+			this.setButtons = function(id, buttons) {
+				var dialog = getExistingDialog(id);
+				dialog.ref.dialog("option", 'buttons', buttons);
+			};
+
 			function cleanup (id) {
 
 				// Get the dialog and throw exception if not found
