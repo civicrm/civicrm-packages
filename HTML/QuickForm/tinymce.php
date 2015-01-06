@@ -146,7 +146,7 @@ class HTML_QuickForm_TinyMCE extends HTML_QuickForm_textarea
             $html = null;
             $click = $this->getAttribute('click_wysiwyg');
             if ($click) {
-              $html .= '<div id="' . $this->_attributes['id'] .'-plain" class="$elementId replace-plain" tabindex=0><a href="#"><span class="icon edit-icon">Click to edit</span></a>' . $this->getFrozenHtml() . '</div>';
+              $html .= '<div id="' . $this->_attributes['id'] .'-plain" class="$elementId replace-plain" tabindex=0><a href="#"><span class="icon ui-icon-pencil">Click to edit</span></a>' . $this->getFrozenHtml() . '</div>';
             }
             $html .= parent::toHtml();
 
