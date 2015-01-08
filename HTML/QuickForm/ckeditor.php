@@ -92,7 +92,7 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
         }
         else {
           $elementId = $this->getAttribute('id');
-          $plain = '<div id="' . $elementId .'-plain" class="$elementId replace-plain" tabindex=0><a href="#"><span class="icon edit-icon">Click to edit</span></a>' . $this->getFrozenHtml() . '</div>' . parent::toHtml();
+          $plain = '<div id="' . $elementId .'-plain" class="replace-plain" tabindex="0" title="'. ts('Click to edit') .'">' . $this->getFrozenHtml() . '</div>' . parent::toHtml();
           $config = CRM_Core_Config::singleton( );
           $browseUrl = $config->userFrameworkResourceURL . 'packages/kcfinder/browse.php';
           $uploadUrl = $config->userFrameworkResourceURL . 'packages/kcfinder/upload.php';
