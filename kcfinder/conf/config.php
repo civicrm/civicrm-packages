@@ -112,7 +112,7 @@ $_CONFIG = array(
     '_check4htaccess' => false,
     '_tinyMCEPath' => "../tinymce/jscripts/tiny_mce/",
 
-    '_sessionVar' => &$_SESSION['KCFINDER'],
+    '_sessionVar' => 'KCFINDER',
     //'_sessionLifetime' => 30,
     //'_sessionDir' => "/full/directory/path",
     //'_sessionDomain' => ".mysite.com",
