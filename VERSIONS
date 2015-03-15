@@ -2,7 +2,6 @@ Table of Contents
 =================
  + Introduction
  + License Abbreviations
- + How-To: Composer
  + How-To: PEAR install instructions
  + How-To: Manual upgrade of a forked package
  + Package List: PEAR
@@ -39,37 +38,6 @@ License Abbreviations
   PHP 3     PHP License 3.*
   X11       X11 (a.k.a. MIT) license
 
-
-How-To: Composer
-================
-
-(This describes CiviCRM 4.5+ but not 5.x; for 5.x, the composer.json may
-move to civicrm-core.git.)
-
-If a PHP package is distribtued via composer, then you can use composer to
-download / add / remove / upgrade packages.  See https://getcomposer.org/
-for instructions.
-
-There are a few additional rules for using composer with
-civicrm-packages.git:
-
- + The list of specific packages is in "composer.json" (not "VERSIONS").
- + The "vendor" directory is committed as part of civicrm-packages.git.
- + One must never make changes directly in the "vendor" directory -- only
-   make changes to "composer.json".
- + If some files from the original package are not required (eg tests,
-   examples, or documentation), then add tem to ".gitignore".
-
-How-To: Use Bower
-=================
-
-If a Javascript package is distributed via Bower, then you can use
-bower to download / add / remove / upgrade packages. See http://bower.io/
-for instructions.
-
-The extra rules for 'bower' are identical to the rules for 'composer',
-except that the canonical list is in "bower.json" (not "composer.json"), and
-the source files are in "bower_components" (not "vendor").
 
 How-To: PEAR install instructions
 =================================
