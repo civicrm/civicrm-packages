@@ -85,6 +85,7 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
                         editor.config.filebrowserUploadUrl      = '".$uploadUrl."?cms=civicrm&type=files';
                         editor.config.filebrowserImageUploadUrl = '".$uploadUrl."?cms=civicrm&type=images';
                         editor.config.filebrowserFlashUploadUrl = '".$uploadUrl."?cms=civicrm&type=flash';
+                        editor.on('contentDom', function(){ cj(editor.container.$).addClass('crmCke'); });
                     }
                 });
             </script>";
@@ -118,6 +119,7 @@ class HTML_QuickForm_CKeditor extends HTML_QuickForm_textarea
                       editor.config.filebrowserUploadUrl      = '".$uploadUrl."?cms=civicrm&type=files';
                       editor.config.filebrowserImageUploadUrl = '".$uploadUrl."?cms=civicrm&type=images';
                       editor.config.filebrowserFlashUploadUrl = '".$uploadUrl."?cms=civicrm&type=flash';
+                      editor.on('contentDom', function(){ cj(editor.container.$).addClass('crmCke'); });
                       editor.on( 'blur', function( e ) {
                         this.updateElement();
                         this.destroy(true);
