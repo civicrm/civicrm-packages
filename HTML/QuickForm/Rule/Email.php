@@ -51,6 +51,15 @@ class HTML_QuickForm_Rule_Email extends HTML_QuickForm_Rule
      */
     function validate($email, $checkDomain = false)
     {
+        if (function_exists('idn_to_ascii')) {
+          if ($parts = explode('@', $email)) {
+            if (sizeof($parts) == 2) {
+              $parts[1] = idn_to_ascii($parts[1]);
+              $email = implode('@', $parts);
+            }
+          }
+        }
+
         // Fix for bug #10799: add 'D' modifier to regex
         if (preg_match($this->regex . 'D', $email)) {
             if ($checkDomain && function_exists('checkdnsrr')) {
