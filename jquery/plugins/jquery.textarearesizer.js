@@ -18,7 +18,7 @@
 $(document).ready(function() {
 	cj('#crm-container textarea.huge:not(.textarea-processed), #crm-container textarea.form-textarea:not(.textarea-processed)').each(function() {
         $this = cj(this);
-		if ($this.parents('div.civicrm-drupal-wysiwyg').length == 0) 
+		if ($this.parents('div.civicrm-drupal-wysiwyg').length == 0)
         $this.TextAreaResizer();
     });
 });
