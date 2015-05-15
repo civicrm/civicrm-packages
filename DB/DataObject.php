@@ -1236,13 +1236,6 @@ class DB_DataObject extends DB_DataObject_Overload
                 continue;
             }
 
-             // dont insert data into mysql timestamps
-            // use query() if you really want to do this!!!!
-            if ($v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
-                continue;
-            }
-
-
             if ($settings)  {
                 $settings .= ', ';
             }
@@ -1266,7 +1259,7 @@ class DB_DataObject extends DB_DataObject_Overload
                 $settings .= "$kSql = NULL ";
                 continue;
             }
-          if (($v & DB_DATAOBJECT_DATE) || ($v & DB_DATAOBJECT_TIME)) {
+          if (($v & DB_DATAOBJECT_DATE) || ($v & DB_DATAOBJECT_TIME) || $v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
             if (strpos($this->$k, '-') !== FALSE) {
              /*
               * per CRM-14986 we have been having ongoing problems with the format returned from $dao->find(TRUE) NOT
