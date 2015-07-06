@@ -569,7 +569,7 @@ $quirks = array(
         ),
         2 => array(
             'type' => 'blob',
-            'len' => 65535,
+            'len' => 196605,
             'flags' => 'blob',
         ),
         3 => array(
@@ -579,7 +579,7 @@ $quirks = array(
         ),
         4 => array(
             'type' => 'string',
-            'len' => 2,
+            'len' => 6,
             'flags' => 'not_null',
         ),
         5 => array(
@@ -589,7 +589,7 @@ $quirks = array(
         ),
         9 => array(
             'type' => 'string',
-            'len' => 20,
+            'len' => 60,
             'flags' => '',
         ),
     ),

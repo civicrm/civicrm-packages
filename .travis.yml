@@ -1,0 +1,21 @@
+language: php
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7
+matrix:
+  allow_failures:
+    - php: 7
+env:
+  global:
+    - MYSQL_TEST_USER=root
+    - MYSQL_TEST_PASSWD=
+    - MYSQL_TEST_DB=pear_db
+    - MYSQL_TEST_HOST=127.0.0.1
+before_script:
+  - mysql -e 'CREATE DATABASE pear_db;'
+script:
+  - pear run-tests -r tests/
+  - for i in `find tests/ -name '*.out'`; do echo "$i"; cat "$i"; done

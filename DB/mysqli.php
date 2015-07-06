@@ -1031,6 +1031,10 @@ class DB_mysqli extends DB_common
                                     ? $this->mysqli_types[$tmp->type]
                                     : 'unknown',
                 // http://bugs.php.net/?id=36579
+                //  Doc Bug #36579: mysqli_fetch_field length handling
+                // https://bugs.php.net/bug.php?id=62426
+                //  Bug #62426: mysqli_fetch_field_direct returns incorrect
+                //  length on UTF8 fields
                 'len'   => $tmp->length,
                 'flags' => $flags,
             );
