@@ -114,20 +114,20 @@ $dsns = array(
     //'sqlite'   => 'sqlite://dummy:@localhost/' . getcwd() . DIRECTORY_SEPARATOR . 'test.db?mode=0644',
 );
 
-if (!empty($_ENV['MYSQL_TEST_USER'])) {
+if (getenv('MYSQL_TEST_USER') !== '') {
     $dsns['mysqli'] = array(
         'phptype' => 'mysqli',
-        'username' => $_ENV['MYSQL_TEST_USER'],
-        'password' => $_ENV['MYSQL_TEST_PASSWD'],
-        'database' => $_ENV['MYSQL_TEST_DB'],
+        'username' => getenv('MYSQL_TEST_USER'),
+        'password' => getenv('MYSQL_TEST_PASSWD'),
+        'database' => getenv('MYSQL_TEST_DB'),
 
-        'hostspec' => empty($_ENV['MYSQL_TEST_HOST'])
-                ? null : $_ENV['MYSQL_TEST_HOST'],
+        'hostspec' => getenv('MYSQL_TEST_HOST') !== ''
+            ? null : getenv('MYSQL_TEST_HOST'),
 
-        'port' => empty($_ENV['MYSQL_TEST_PORT'])
-                ? null : $_ENV['MYSQL_TEST_PORT'],
+        'port' => getenv('MYSQL_TEST_PORT') !== ''
+            ? null : getenv('MYSQL_TEST_PORT'),
 
-        'socket' => empty($_ENV['MYSQL_TEST_SOCKET'])
-                ? null : $_ENV['MYSQL_TEST_SOCKET'],
+        'socket' => getenv('MYSQL_TEST_SOCKET') !== ''
+            ? null : getenv('MYSQL_TEST_SOCKET'),
     );
 }
