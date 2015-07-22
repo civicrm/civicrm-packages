@@ -10,3 +10,6 @@ DB/msql.php
 DB/oci8.php
 DB/sqlite.php
 DB/sybase.php
+XML/RPC.php
+XML/RPC/Dump.php
+XML/RPC/Server.php
