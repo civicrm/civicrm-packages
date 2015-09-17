@@ -90,7 +90,7 @@ class pjpgHttpsPost
       $dc_number                   = $pjTxn['pan'];
       $dc_expiration_month         = substr($pjTxn['expdate'],4,2);
       $dc_expiration_year          = substr($pjTxn['expdate'],0,4);
-      $dc_verification_number      = "000";
+      $dc_verification_number      = $pjTxn['cavv'];
 
       // transaction
       $dc_transaction_amount       = $pjTxn['amount'];
