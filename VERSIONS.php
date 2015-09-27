@@ -148,5 +148,4 @@
  * ============================
  * Facebook      BSD 2-cl.
  * Google        Apache 2/GPL 2+
- * TinyMCE       LGPL 2.1
  */
