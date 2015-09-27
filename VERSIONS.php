@@ -121,7 +121,6 @@
  * Smarty         2.6.27     LGPL 2.1+   http://smarty.php.net/                                        local changes ( use only lib )
  * Smarty Gettext 1.0b1      LGPL 2.1+   http://smarty.incutio.com/?page=SmartyGettext
  * TCPDF          6.0.020    GPL 3+      http://www.tcpdf.org/                                         doc, examples, images and most of fonts removed
- * dompdf         0.6.0.beta3 LGPL 2.1+  http://code.google.com/p/dompdf/                              local changes (removed tests and index.php)
  * eZ Components  2009.1.2   BSD 3-cl.   http://ezcomponents.org/                                      local changes
  * html2text      0.9.1      GPL 3+      http://roundcube.net/download             copied from program/lib/Roundcube/rcube_html2text.php
  * reCAPTCHA      1.10       X11         http://recaptcha.net/
@@ -136,14 +135,10 @@
  * Marionette     1.0.0-rc2  X11/MIT     http://marionettejs.com/
  * Moment.js      2.5..0     X11/MIT     http://momentjs.com/
  * Simple HTML DOM 1.5       X11/MIT     http://simplehtmldom.sourceforge.net/
- * Underscore     1.4.3      X11/MIT     http://underscorejs.org/
- * CKEditor       4.0.1      GPL 3/LGPL 3/MPL 1.1
  *
  *
  * Package List: Payment processors
  * ================================
- * IATS             AGPL 3   in Services/IATS
- * Moneris                   by adixon, in Services/mpgClasses.php
  * PayJunction      AGPL 3   by Phase2 Technology
  * PaymentExpress   AGPL 3   by Lucas Baker
  * eWAY             AGPL 3   by Dolphin Software
@@ -154,6 +149,4 @@
  * Facebook      BSD 2-cl.
  * Google        Apache 2/GPL 2+
  * TinyMCE       LGPL 2.1
- * jQuery        GPL 2/X11
- *
  */
