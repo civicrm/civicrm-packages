@@ -3,7 +3,7 @@ DB_driver::freeResult
 --SKIPIF--
 <?php
 require_once dirname(__FILE__) . '/skipif.inc';
-die("skip for everyone, note that phptype = $dbh->phptype");
+if (version_compare(PHP_VERSION, '7', '>=')) die ('skip PHP 7 eliminates resources');
 if ($dbh->phptype == 'mysqli') die ('skip mysqli returns result objects rather than resources');
 ?>
 --FILE--
@@ -14,6 +14,8 @@ $res = $dbh->query('SELECT * FROM phptest');
 
 if (DB::isError($res)) {
     echo "Result is a DB_Error.\n";
+    drop_table($dbh, 'phptest');
+    exit;
 }
 
 if (is_resource($res->result)) {
