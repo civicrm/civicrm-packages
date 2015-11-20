@@ -3,7 +3,7 @@ DB_driver::freeResult
 --SKIPIF--
 <?php
 require_once dirname(__FILE__) . '/skipif.inc';
-if (version_compare(PHP_VERSION, '7', '>=')) die("skip PHP 7 phptype $dbh->phptype");
+die("skip for everyone, note that phptype = $dbh->phptype");
 if ($dbh->phptype == 'mysqli') die ('skip mysqli returns result objects rather than resources');
 ?>
 --FILE--
