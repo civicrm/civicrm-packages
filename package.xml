@@ -38,7 +38,7 @@ extension, but it can&apos;t be used
 interchangeably because dbase doesn&apos;t
 support many standard DBMS features.
 
-DB is compatible with PHP 5.
+DB is compatible with PHP 5 and PHP 7.
 
  </description>
  <lead>
@@ -65,10 +65,10 @@ DB is compatible with PHP 5.
   <email>cox@idecnet.com</email>
   <active>no</active>
  </developer>
- <date>2014-11-27</date>
+ <date>2015-11-20</date>
  <version>
-  <release>1.8.2</release>
-  <api>1.8.2</api>
+  <release>1.9.0</release>
+  <api>1.9.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -76,7 +76,7 @@ DB is compatible with PHP 5.
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-* Fix bug #20447 (Have quoteString() remove quotes like it used to)
+* Support PHP 7
  </notes>
  <contents>
   <dir name="/">
