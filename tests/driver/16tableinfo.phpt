@@ -1272,6 +1272,15 @@ examineArrayData($array, $expected01, 0, false);
 
 $dbh->setErrorHandling(PEAR_ERROR_RETURN);
 drop_table($dbh, 'phptest');
+
+print "=== DEBUG TRAVIS CI ENVIRONMENT ===\n";
+$t = $dbh->getCol('SHOW CREATE TABLE phptest_fk', 1);
+print $t[0] . "\n";
+print "======\n";
+$t = $dbh->getCol('SELECT VERSION()', 0);
+print $t[0] . "\n";
+print "======\n";
+
 drop_table($dbh, 'phptest_fk');
 
 ?>
