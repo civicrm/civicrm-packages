@@ -3,16 +3,12 @@ DB_driver::freeResult
 --SKIPIF--
 <?php
 require_once dirname(__FILE__) . '/skipif.inc';
+if (version_compare(PHP_VERSION, '7', '>=')) die("skip PHP 7 phptype $dbh->phptype");
 if ($dbh->phptype == 'mysqli') die ('skip mysqli returns result objects rather than resources');
 ?>
 --FILE--
 <?php
 require_once dirname(__FILE__) . '/mktable.inc';
-
-if (version_compare(PHP_VERSION, '7', '>=')) {
-echo "TEMPORARY TRAVIS DEBUG OF PHPTYPE: ";
-var_dump($dbh->phptype);
-}
 
 $res = $dbh->query('SELECT * FROM phptest');
 
