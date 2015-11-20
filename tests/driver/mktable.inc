@@ -123,15 +123,14 @@ switch ($type) {
     case 'mysql':
     case 'mysqli':
         $null = 'NULL';
-        $chrc = 'VARCHAR(255)';
-        $chrd = 'VARCHAR(20)';
+        $chrc = 'VARCHAR(255) CHARACTER SET ascii';
+        $chrd = 'VARCHAR(20) CHARACTER SET ascii';
         $default = "DEFAULT 'def' NOT NULL";
         if (!empty($needinnodb)) {
             $tabletype = 'ENGINE=InnoDB';
         } else {
             $tabletype = '';
         }
-        $tabletype .= ' CHARACTER SET=ascii';
         break;
     default:
         $null = 'NULL';
