@@ -7,6 +7,11 @@ if ($dbh->phptype == 'mysqli') die ('skip mysqli returns result objects rather t
 ?>
 --FILE--
 <?php
+if (version_compare(PHP_VERSION, '7', '>=')) {
+echo "TEMPORARY TRAVIS DEBUG OF PHPTYPE: ";
+var_dump($dbh->phptype);
+}
+
 require_once dirname(__FILE__) . '/mktable.inc';
 
 $res = $dbh->query('SELECT * FROM phptest');
