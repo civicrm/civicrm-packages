@@ -179,6 +179,16 @@ class DB_mssql extends DB_common
     // {{{ constructor
 
     /**
+     * Class named constructor in case someone is calling it directly
+     *
+     * @return void
+     */
+    function DB_mssql()
+    {
+        $this->__construct();
+    }
+
+    /**
      * This constructor calls <kbd>parent::__construct()</kbd>
      *
      * @return void

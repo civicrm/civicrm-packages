@@ -141,6 +141,16 @@ class DB_common extends PEAR
     // {{{ DB_common
 
     /**
+     * Class named constructor in case someone is calling it directly
+     *
+     * @return void
+     */
+    function DB_common()
+    {
+        $this->__construct();
+    }
+
+    /**
      * This constructor calls <kbd>$this->PEAR('DB_Error')</kbd>
      *
      * @return void

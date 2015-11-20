@@ -949,6 +949,17 @@ class DB_Error extends PEAR_Error
     // {{{ constructor
 
     /**
+     * Class named constructor in case someone is calling it directly
+     *
+     * @return void
+     */
+    function DB_Error($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
+                      $level = E_USER_NOTICE, $debuginfo = null)
+    {
+        $this->__construct($code, $mode, $level, $debuginfo);
+    }
+
+    /**
      * DB_Error constructor
      *
      * @param mixed $code       DB error code, or string with error message

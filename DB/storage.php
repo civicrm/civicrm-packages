@@ -79,6 +79,16 @@ class DB_storage extends PEAR
     // {{{ constructor
 
     /**
+     * Class named constructor in case someone is calling it directly
+     *
+     * @return void
+     */
+    function DB_storage($table, $keycolumn, &$dbh, $validator = null)
+    {
+        $this->__construct($table, $keycolumn, $dbh, $validator);
+    }
+
+    /**
      * Constructor
      *
      * @param $table string the name of the database table
