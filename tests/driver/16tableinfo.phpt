@@ -509,7 +509,7 @@ $quirks = array(
     ),
 
     'mysql:mysql' => array(
-        'charset' => 'CHARACTER SET=ascii',
+        'charset' => 'CHARACTER SET ascii',
         'clob' => 'TEXT',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -556,7 +556,7 @@ $quirks = array(
     ),
 
     'mysqli:mysqli' => array(
-        'charset' => 'CHARACTER SET=ascii',
+        'charset' => 'CHARACTER SET ascii',
         'clob' => 'TEXT',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -958,13 +958,13 @@ switch ($dbh->phptype) {
             CREATE TABLE phptest_fk (
                 a INTEGER NOT NULL,
                 fk INTEGER NOT NULL,
-                cc {$quirks[$quirk_key]['clob']} $null,
+                cc {$quirks[$quirk_key]['clob']} {$quirks[$quirk_key]['charset']} $null,
                 d {$quirks[$quirk_key]['date']} NOT NULL,
-                e CHAR(2) $default_e NOT NULL,
+                e CHAR(2) {$quirks[$quirk_key]['charset']} $default_e NOT NULL,
                 f $decimal $null,
                 PRIMARY KEY (fk),
                 UNIQUE (a, d)
-            ) {$quirks[$quirk_key]['charset']}
+            ) CHARACTER SET utf8
         ");
 }
 
@@ -1276,6 +1276,10 @@ drop_table($dbh, 'phptest');
 print "=== DEBUG TRAVIS CI ENVIRONMENT ===\n";
 $t = $dbh->getCol('SHOW CREATE TABLE phptest_fk', 1);
 print $t[0] . "\n";
+print "======\n";
+$t = $dbh->getCol('SELECT VERSION()', 0);
+print $t[0] . "\n";
+print "======\n";
 
 drop_table($dbh, 'phptest_fk');
 
