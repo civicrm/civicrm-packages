@@ -131,6 +131,7 @@ switch ($type) {
         } else {
             $tabletype = '';
         }
+        $tabletype .= ' CHARACTER SET=ascii';
         break;
     default:
         $null = 'NULL';

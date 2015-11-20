@@ -223,6 +223,7 @@ $dbh->setErrorHandling(PEAR_ERROR_CALLBACK, 'pe');
 
 $quirks = array(
     'fbsql:fbsql' => array(
+        'charset' => '',
         'clob' => 'CHAR(29)',
         'date' => 'DATE',
         'dateliteral' => ' DATE ',
@@ -269,6 +270,7 @@ $quirks = array(
     ),
 
     'ibase:ibase' => array(
+        'charset' => '',
         'clob' => 'VARCHAR(50)',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -315,6 +317,7 @@ $quirks = array(
     ),
 
     'ibase:firebird' => array(
+        'charset' => '',
         'clob' => 'VARCHAR(50)',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -361,6 +364,7 @@ $quirks = array(
     ),
 
     'ifx:ifx' => array(
+        'charset' => '',
         'clob' => 'CHAR(29)',
         'date' => 'CHAR(10)',
         'dateliteral' => '',
@@ -407,6 +411,7 @@ $quirks = array(
     ),
 
     'msql:msql' => array(
+        'charset' => '',
         'clob' => 'TEXT(255)',
         'date' => 'CHAR(10)',
         'dateliteral' => '',
@@ -455,6 +460,7 @@ $quirks = array(
     ),
 
     'mssql:mssql' => array(
+        'charset' => '',
         'clob' => 'TEXT',
         'date' => 'SMALLDATETIME',
         'dateliteral' => '',
@@ -503,6 +509,7 @@ $quirks = array(
     ),
 
     'mysql:mysql' => array(
+        'charset' => 'CHARACTER SET=ascii',
         'clob' => 'TEXT',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -549,6 +556,7 @@ $quirks = array(
     ),
 
     'mysqli:mysqli' => array(
+        'charset' => 'CHARACTER SET=ascii',
         'clob' => 'TEXT',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -569,7 +577,7 @@ $quirks = array(
         ),
         2 => array(
             'type' => 'blob',
-            'len' => 196605,
+            'len' => 65535,
             'flags' => 'blob',
         ),
         3 => array(
@@ -579,7 +587,7 @@ $quirks = array(
         ),
         4 => array(
             'type' => 'string',
-            'len' => 6,
+            'len' => 2,
             'flags' => 'not_null',
         ),
         5 => array(
@@ -589,12 +597,13 @@ $quirks = array(
         ),
         9 => array(
             'type' => 'string',
-            'len' => 60,
+            'len' => 20,
             'flags' => '',
         ),
     ),
 
     'oci8:oci8' => array(
+        'charset' => '',
         'clob' => 'CLOB',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -642,6 +651,7 @@ $quirks = array(
     ),
 
     'odbc:access' => array(
+        'charset' => '',
         'clob' => 'TEXT',
         'date' => 'DATETIME',
         'dateliteral' => '',
@@ -688,6 +698,7 @@ $quirks = array(
     ),
 
     'odbc:db2' => array(
+        'charset' => '',
         'clob' => 'CLOB',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -734,6 +745,7 @@ $quirks = array(
     ),
 
     'pgsql:pgsql' => array(
+        'charset' => '',
         'clob' => 'TEXT',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -781,6 +793,7 @@ $quirks = array(
     ),
 
     'sqlite:sqlite' => array(
+        'charset' => '',
         'clob' => 'CLOB',
         'date' => 'DATE',
         'dateliteral' => '',
@@ -827,6 +840,7 @@ $quirks = array(
     ),
 
     'sybase:sybase' => array(
+        'charset' => '',
         'clob' => 'TEXT',
         'date' => 'SMALLDATETIME',
         'dateliteral' => '',
@@ -950,7 +964,7 @@ switch ($dbh->phptype) {
                 f $decimal $null,
                 PRIMARY KEY (fk),
                 UNIQUE (a, d)
-            )
+            ) {$quirks[$quirk_key]['charset']}
         ");
 }
 
