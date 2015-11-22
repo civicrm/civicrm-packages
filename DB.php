@@ -974,10 +974,10 @@ class DB_Error extends PEAR_Error
                       $level = E_USER_NOTICE, $debuginfo = null)
     {
         if (is_int($code)) {
-            $this->PEAR_Error('DB Error: ' . DB::errorMessage($code), $code,
+            parent::__construct('DB Error: ' . DB::errorMessage($code), $code,
                               $mode, $level, $debuginfo);
         } else {
-            $this->PEAR_Error("DB Error: $code", DB_ERROR,
+            parent::__construct("DB Error: $code", DB_ERROR,
                               $mode, $level, $debuginfo);
         }
     }
