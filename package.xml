@@ -65,9 +65,9 @@ DB is compatible with PHP 5 and PHP 7.
   <email>cox@idecnet.com</email>
   <active>no</active>
  </developer>
- <date>2015-11-20</date>
+ <date>2015-11-23</date>
  <version>
-  <release>1.9.0</release>
+  <release>1.9.1</release>
   <api>1.9.0</api>
  </version>
  <stability>
@@ -76,7 +76,7 @@ DB is compatible with PHP 5 and PHP 7.
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-* Support PHP 7
+* Eliminate "Redefining already defined constructor"
  </notes>
  <contents>
   <dir name="/">
@@ -201,7 +201,7 @@ DB is compatible with PHP 5 and PHP 7.
    <package>
     <name>PEAR</name>
     <channel>pear.php.net</channel>
-    <min>1.0b1</min>
+    <min>1.10.0</min>
    </package>
   </required>
  </dependencies>
