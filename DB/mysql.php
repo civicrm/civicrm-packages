@@ -162,16 +162,6 @@ class DB_mysql extends DB_common
     // {{{ constructor
 
     /**
-     * Class named constructor in case someone is calling it directly
-     *
-     * @return void
-     */
-    function DB_mysql()
-    {
-        $this->__construct();
-    }
-
-    /**
      * This constructor calls <kbd>parent::__construct()</kbd>
      *
      * @return void

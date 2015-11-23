@@ -152,16 +152,6 @@ class DB_sqlite extends DB_common
     // {{{ constructor
 
     /**
-     * Class named constructor in case someone is calling it directly
-     *
-     * @return void
-     */
-    function DB_sqlite()
-    {
-        $this->__construct();
-    }
-
-    /**
      * This constructor calls <kbd>parent::__construct()</kbd>
      *
      * @return void
