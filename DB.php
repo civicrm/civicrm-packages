@@ -949,17 +949,6 @@ class DB_Error extends PEAR_Error
     // {{{ constructor
 
     /**
-     * Class named constructor in case someone is calling it directly
-     *
-     * @return void
-     */
-    function DB_Error($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
-                      $level = E_USER_NOTICE, $debuginfo = null)
-    {
-        $this->__construct($code, $mode, $level, $debuginfo);
-    }
-
-    /**
      * DB_Error constructor
      *
      * @param mixed $code       DB error code, or string with error message
@@ -982,6 +971,20 @@ class DB_Error extends PEAR_Error
         }
     }
 
+    /**
+     * Workaround to both avoid the "Redefining already defined constructor"
+     * PHP error and provide backward compatibility in case someone is calling
+     * DB_Error() dynamically
+     */
+    public function __call($method, $arguments)
+    {
+        if ($method == 'DB_Error') {
+            return call_user_func_array(array($this, '__construct'), $arguments);
+        }
+        trigger_error(
+            'Call to undefined method DB_Error::' . $method . '()', E_USER_ERROR
+        );
+    }
     // }}}
 }
 

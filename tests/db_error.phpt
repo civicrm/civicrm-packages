@@ -45,6 +45,10 @@ $e = new DB_Error(DB_ERROR); print strtolower($e->toString())."\n";
 $e = new DB_Error(DB_ERROR_SYNTAX); print strtolower($e->toString())."\n";
 $e = new DB_Error(DB_ERROR_DIVZERO); print strtolower($e->toString())."\n";
 
+print "testing instantiated method...\n";
+$e = new DB_Error;
+$e->DB_Error("test instantiated"); print strtolower($e->toString())."\n";
+
 print "testing different error modes...\n";
 $e = new DB_Error(DB_ERROR, PEAR_ERROR_PRINT); print strtolower($e->toString())."\n";
 $e = new DB_Error(DB_ERROR_SYNTAX, PEAR_ERROR_TRIGGER);
@@ -53,7 +57,6 @@ print "testing different error serverities...\n";
 $e = new DB_Error(DB_ERROR_SYNTAX, PEAR_ERROR_TRIGGER, E_USER_NOTICE);
 $e = new DB_Error(DB_ERROR_SYNTAX, PEAR_ERROR_TRIGGER, E_USER_WARNING);
 $e = new DB_Error(DB_ERROR_SYNTAX, PEAR_ERROR_TRIGGER, E_USER_ERROR);
-
 ?>
 --GET--
 --POST--
@@ -65,6 +68,8 @@ testing different error codes...
 [db_error: message="db error: unknown error" code=-1 mode=return level=notice prefix="" info=""]
 [db_error: message="db error: syntax error" code=-2 mode=return level=notice prefix="" info=""]
 [db_error: message="db error: division by zero" code=-13 mode=return level=notice prefix="" info=""]
+testing instantiated method...
+[db_error: message="db error: test instantiated" code=-1 mode=return level=notice prefix="" info=""]
 testing different error modes...
 DB Error: unknown error[db_error: message="db error: unknown error" code=-1 mode=print level=notice prefix="" info=""]
 
