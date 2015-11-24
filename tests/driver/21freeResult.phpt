@@ -3,8 +3,6 @@ DB_driver::freeResult
 --SKIPIF--
 <?php
 require_once dirname(__FILE__) . '/skipif.inc';
-if (version_compare(PHP_VERSION, '7', '>=')) die ('skip PHP 7 eliminates resources');
-if ($dbh->phptype == 'mysqli') die ('skip mysqli returns result objects rather than resources');
 ?>
 --FILE--
 <?php
@@ -18,15 +16,8 @@ if (DB::isError($res)) {
     exit;
 }
 
-if (is_resource($res->result)) {
-    echo "Result includes resource.\n";
-} else {
-    echo "Result does not include a resource!\n";
-    print_r($res->result);
-}
-
 if ($dbh->freeResult($res->result)) {
-    echo "Resource was freed successfully.\n";
+    echo "Result was freed successfully.\n";
 } else {
     echo "Error freeing result.\n";
 }
@@ -34,5 +25,4 @@ if ($dbh->freeResult($res->result)) {
 drop_table($dbh, 'phptest');
 ?>
 --EXPECT--
-Result includes resource.
-Resource was freed successfully.
+Result was freed successfully.
