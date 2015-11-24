@@ -7,7 +7,6 @@ php:
   - 7
 matrix:
   allow_failures:
-    - php: 7
 env:
   global:
     - MYSQL_TEST_USER=root
