@@ -1,10 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link http://www.dompdf.com/
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
+ * @link    http://dompdf.github.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: table_frame_reflower.cls.php 465 2012-01-30 21:58:11Z fabien.menager $
  */
 
 /**
@@ -14,6 +13,12 @@
  * @package dompdf
  */
 class Table_Frame_Reflower extends Frame_Reflower {
+  /**
+   * Frame for this reflower
+   *
+   * @var Table_Frame_Decorator
+   */
+  protected $_frame;
 
   /**
    * Cache of results between call to get_min_max_width and assign_widths
@@ -61,7 +66,7 @@ class Table_Frame_Reflower extends Frame_Reflower {
     // Calculate padding & border fudge factor
     $left = $style->margin_left;
     $right = $style->margin_right;
-
+    
     $centered = ( $left === "auto" && $right === "auto" );
 
     $left  = $left  === "auto" ? 0 : $style->length_in_pt($left, $cb["w"]);
@@ -72,12 +77,12 @@ class Table_Frame_Reflower extends Frame_Reflower {
     if ( !$centered ) {
       $delta += $style->length_in_pt(array(
         $style->padding_left,
-                                                         $style->border_left_width,
-                                                         $style->border_right_width,
+        $style->border_left_width,
+        $style->border_right_width,
         $style->padding_right), 
       $cb["w"]);
     }
-
+    
     $min_table_width = $style->length_in_pt( $style->min_width, $cb["w"] - $delta );
 
     // min & max widths already include borders & padding
@@ -114,7 +119,7 @@ class Table_Frame_Reflower extends Frame_Reflower {
     $style->width = $width;
 
     $cellmap = $this->_frame->get_cellmap();
-
+    
     if ( $cellmap->is_columns_locked() ) {
       return;
     }
@@ -147,12 +152,15 @@ class Table_Frame_Reflower extends Frame_Reflower {
       //
       // 4. Both absolute and percentage widths have been specified.
 
+      $increment = 0;
+
       // Case 1:
       if ( $absolute_used == 0 && $percent_used == 0 ) {
         $increment = $width - $min_width;
 
-        foreach (array_keys($columns) as $i)
+        foreach (array_keys($columns) as $i) {
           $cellmap->set_column_width($i, $columns[$i]["min-width"] + $increment * ($columns[$i]["max-width"] / $max_width));
+        }
         return;
       }
 
@@ -355,7 +363,10 @@ class Table_Frame_Reflower extends Frame_Reflower {
   }
   //........................................................................
 
-  function reflow(Frame_Decorator $block = null) {
+  /**
+   * @param Block_Frame_Decorator $block
+   */
+  function reflow(Block_Frame_Decorator $block = null) {
     /**
      * @var Table_Frame_Decorator
      */
@@ -420,19 +431,19 @@ class Table_Frame_Reflower extends Frame_Reflower {
         $right = $diff;
       }
       else {
-      $left = $right = $diff / 2;
+        $left = $right = $diff / 2;
       }
       
       $style->margin_left = "$left pt";
       $style->margin_right = "$right pt";
 
     } else {
-        if($left === "auto") {
-          $left = $style->length_in_pt($cb["w"] - $right - $width, $cb["w"]);
-        }
-        if($right === "auto") {
-          $left = $style->length_in_pt($left, $cb["w"]);
-        }
+      if ( $left === "auto" ) {
+        $left = $style->length_in_pt($cb["w"] - $right - $width, $cb["w"]);
+      }
+      if ( $right === "auto" ) {
+        $left = $style->length_in_pt($left, $cb["w"]);
+      }
     }
 
     list($x, $y) = $frame->get_position();

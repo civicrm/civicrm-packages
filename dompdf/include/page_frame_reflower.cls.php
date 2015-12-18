@@ -1,11 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link http://www.dompdf.com/
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @link    http://dompdf.github.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: page_frame_reflower.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
 /**
@@ -29,22 +28,8 @@ class Page_Frame_Reflower extends Frame_Reflower {
    * @var Canvas
    */
   private $_canvas;
-  
-  /**
-   * The stacking context, containing all z-indexed frames
-   * @var array
-   */
-  private $_stacking_context = array();
 
   function __construct(Page_Frame_Decorator $frame) { parent::__construct($frame); }
-  
-  /**
-   * @param $frame Frame
-   * @return void
-   */
-  function add_frame_to_stacking_context(Frame $frame, $z_index) {
-    $this->_stacking_context[$z_index][] = $frame;
-  }
   
   function apply_page_style(Frame $frame, $page_number){
     $style = $frame->get_style();
@@ -60,11 +45,11 @@ class Page_Frame_Reflower extends Frame_Reflower {
       // FIXME RTL
       if ( $odd && isset($page_styles[":right"]) ) {
         $style->merge($page_styles[":right"]);
-  }
-  
+      }
+      
       if ( $odd && isset($page_styles[":odd"]) ) {
         $style->merge($page_styles[":odd"]);
-  }
+      }
   
       // FIXME RTL
       if ( !$odd && isset($page_styles[":left"]) ) {
@@ -89,7 +74,7 @@ class Page_Frame_Reflower extends Frame_Reflower {
    * Paged layout:
    * http://www.w3.org/TR/CSS21/page.html
    */
-  function reflow(Frame_Decorator $block = null) {
+  function reflow(Block_Frame_Decorator $block = null) {
     $fixed_children = array();
     $prev_child = null;
     $child = $this->_frame->get_first_child();
@@ -97,21 +82,21 @@ class Page_Frame_Reflower extends Frame_Reflower {
     
     while ($child) {
       $this->apply_page_style($this->_frame, $current_page + 1);
-
+      
       $style = $this->_frame->get_style();
   
-    // Pages are only concerned with margins
-    $cb = $this->_frame->get_containing_block();
-    $left   = $style->length_in_pt($style->margin_left,   $cb["w"]);
-    $right  = $style->length_in_pt($style->margin_right,  $cb["w"]);
-    $top    = $style->length_in_pt($style->margin_top,    $cb["h"]);
-    $bottom = $style->length_in_pt($style->margin_bottom, $cb["h"]);
-    
-    $content_x = $cb["x"] + $left;
-    $content_y = $cb["y"] + $top;
-    $content_width = $cb["w"] - $left - $right;
-    $content_height = $cb["h"] - $top - $bottom;
-    
+      // Pages are only concerned with margins
+      $cb = $this->_frame->get_containing_block();
+      $left   = $style->length_in_pt($style->margin_left,   $cb["w"]);
+      $right  = $style->length_in_pt($style->margin_right,  $cb["w"]);
+      $top    = $style->length_in_pt($style->margin_top,    $cb["h"]);
+      $bottom = $style->length_in_pt($style->margin_bottom, $cb["h"]);
+      
+      $content_x = $cb["x"] + $left;
+      $content_y = $cb["y"] + $top;
+      $content_width = $cb["w"] - $left - $right;
+      $content_height = $cb["h"] - $top - $bottom;
+      
       // Only if it's the first page, we save the nodes with a fixed position
       if ($current_page == 0) {
         $children = $child->get_children();
@@ -141,24 +126,8 @@ class Page_Frame_Reflower extends Frame_Reflower {
       // Check for begin render callback
       $this->_check_callbacks("begin_page_render", $child);
       
-      $renderer = $this->_frame->get_renderer();
-
       // Render the page
-      $renderer->render($child);
-      
-      Renderer::$stacking_first_pass = false;
-      
-      // http://www.w3.org/TR/CSS21/visuren.html#z-index
-      ksort($this->_stacking_context);
-      
-      foreach( $this->_stacking_context as $_frames ) {
-        foreach ( $_frames as $_frame ) {
-          $renderer->render($_frame);
-        }
-      }
-      
-      Renderer::$stacking_first_pass = true;
-      $this->_stacking_context = array();
+      $this->_frame->get_renderer()->render($child);
       
       // Check for end render callback
       $this->_check_callbacks("end_page_render", $child);

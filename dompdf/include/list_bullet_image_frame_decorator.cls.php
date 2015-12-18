@@ -1,11 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link http://www.dompdf.com/
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
+ * @link    http://dompdf.github.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: list_bullet_image_frame_decorator.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
 /**
@@ -49,13 +48,14 @@ class List_Bullet_Image_Frame_Decorator extends Frame_Decorator {
     $frame->get_node()->setAttribute("src", $url);
     $this->_img = new Image_Frame_Decorator($frame, $dompdf);
     parent::__construct($this->_img, $dompdf);
-    list($width, $height) = dompdf_getimagesize($this->_img->get_image_url());
+    list($width, $height) = dompdf_getimagesize($this->_img->get_image_url(), $dompdf->get_http_context());
 
     // Resample the bullet image to be consistent with 'auto' sized images
     // See also Image_Frame_Reflower::get_min_max_width
     // Tested php ver: value measured in px, suffix "px" not in value: rtrim unnecessary.
-    $this->_width = (((float)rtrim($width, "px")) * 72) / DOMPDF_DPI;
-    $this->_height = (((float)rtrim($height, "px")) * 72) / DOMPDF_DPI;
+    $dpi = $this->_dompdf->get_option("dpi");
+    $this->_width = ((float)rtrim($width, "px") * 72) / $dpi;
+    $this->_height = ((float)rtrim($height, "px") * 72) / $dpi;
  
     //If an image is taller as the containing block/box, the box should be extended.
     //Neighbour elements are overwriting the overlapping image areas.
@@ -139,5 +139,5 @@ class List_Bullet_Image_Frame_Decorator extends Frame_Decorator {
   function get_image_url() {
     return $this->_img->get_image_url();
   }
-
-  }
+  
+}
