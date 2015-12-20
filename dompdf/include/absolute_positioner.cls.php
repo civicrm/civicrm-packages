@@ -1,10 +1,9 @@
 <?php
 /**
  * @package dompdf
- * @link http://www.dompdf.com/
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
+ * @link    http://dompdf.github.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: absolute_positioner.cls.php 460 2012-01-26 07:17:46Z fabien.menager $
  */
 
 /**
@@ -18,9 +17,9 @@ class Absolute_Positioner extends Positioner {
 
     $frame = $this->_frame;
     $style = $frame->get_style();
-
+    
     $p = $frame->find_positionned_parent();
-
+    
     list($x, $y, $w, $h) = $frame->get_containing_block();
 
     $top    = $style->length_in_pt($style->top,    $h);
@@ -32,7 +31,7 @@ class Absolute_Positioner extends Positioner {
       // Get the parent's padding box (see http://www.w3.org/TR/CSS21/visuren.html#propdef-top)
       list($x, $y, $w, $h) = $p->get_padding_box();
     }
-
+    
     list($width, $height) = array($frame->get_margin_width(), $frame->get_margin_height());
     
     $orig_style = $this->_frame->get_original_style();
@@ -56,7 +55,8 @@ class Absolute_Positioner extends Positioner {
     if ( $left === "auto" ) {
       if ( $right === "auto" ) {
         // A or E - Keep the frame at the same position
-    }
+        $x = $x + $frame->find_block_parent()->get_current_line_box()->w;
+      }
       else {
         if ( $orig_width === "auto" ) {
           // C
@@ -71,8 +71,8 @@ class Absolute_Positioner extends Positioner {
     else {
       if ( $right === "auto" ) {
         // B or F
-      $x += $left;
-    }
+        $x += $left;
+      }
       else {
         if ( $orig_width === "auto" ) {
           // D - TODO change width
@@ -84,12 +84,12 @@ class Absolute_Positioner extends Positioner {
         }
       }
     }
-
+    
     // The same vertically
     if ( $top === "auto" ) {
       if ( $bottom === "auto" ) {
         // A or E - Keep the frame at the same position
-        $y = $frame->get_parent()->get_current_line_box()->y;
+        $y = $frame->find_block_parent()->get_current_line_box()->y;
       }
       else {
         if ( $orig_height === "auto" ) {
