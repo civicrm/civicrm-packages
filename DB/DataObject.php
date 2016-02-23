@@ -2482,12 +2482,26 @@ class DB_DataObject extends DB_DataObject_Overload
             $queries[] = array($query, $diff);
         }
 
-        if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
-            $t= explode(' ',microtime());
-            $_DB_DATAOBJECT['QUERYENDTIME'] = $t[0]+$t[1];
-            $this->debug('QUERY DONE IN  '.($t[0]+$t[1]-$time)." seconds", 'query',1);
+        $action = strtolower(substr(trim($string),0,6));
+
+        if (!empty($_DB_DATAOBJECT['CONFIG']['debug']) || defined('CIVICRM_DEBUG_LOG_QUERY')) {
+          $timeTaken = sprintf("%0.6f", microtime(TRUE) - $time);
+          $message =  "QUERY DONE IN $timeTaken  seconds.";
+          if (in_array($action, array('insert', 'update', 'delete')) && $_DB_driver == 'DB') {
+            $message .= " " . $DB->affectedRows() . " row(s)s subject to $action action";
+          }
+          elseif (is_a($result, 'DB_result') && method_exists($result, 'numrows')) {
+            $message .= " Result is {$result->numRows()} rows by {$result->numCols()} columns.";
+          }
+          if (defined('CIVICRM_DEBUG_LOG_QUERY')) {
+            CRM_Core_Error::debug_log_message($message);
+          }
+          else {
+            $this->debug($message, 'query', 1);
+          }
         }
-        switch (strtolower(substr(trim($string),0,6))) {
+
+        switch ($action) {
             case 'insert':
             case 'update':
             case 'delete':
