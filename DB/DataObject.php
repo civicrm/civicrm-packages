@@ -2486,7 +2486,8 @@ class DB_DataObject extends DB_DataObject_Overload
 
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug']) || defined('CIVICRM_DEBUG_LOG_QUERY')) {
           $timeTaken = sprintf("%0.6f", microtime(TRUE) - $time);
-          $message =  "QUERY DONE IN $timeTaken  seconds.";
+          $alertLevel = $this->getAlertLevel($timeTaken);
+          $message =  "$alertLevel QUERY DONE IN $timeTaken  seconds.";
           if (in_array($action, array('insert', 'update', 'delete')) && $_DB_driver == 'DB') {
             $message .= " " . $DB->affectedRows() . " row(s)s subject to $action action";
           }
@@ -4292,7 +4293,30 @@ class DB_DataObject extends DB_DataObject_Overload
     function _get_table() { return $this->table(); }
     function _get_keys()  { return $this->keys();  }
 
-
+  /**
+   * Get a string to append to the query log depending on time taken.
+   *
+   * This is to allow easier grepping for slow queries.
+   *
+   * @param float $timeTaken
+   *
+   * @return string
+   */
+  public function getAlertLevel($timeTaken) {
+    if ($timeTaken >= 20) {
+      return '****';
+    }
+    if ($timeTaken > 10) {
+      return '***';
+    }
+    if ($timeTaken > 5) {
+      return '**';
+    }
+    if ($timeTaken > 1) {
+      return '*';
+    }
+    return '';
+  }
 
 
 }
