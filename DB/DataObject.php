@@ -2370,6 +2370,7 @@ class DB_DataObject extends DB_DataObject_Overload
         global $_DB_DATAOBJECT, $queries, $user;
         $this->_connect();
 
+        // Logging the query first makes sure it gets logged even if it fails.
         CRM_Core_Error::debug_query($string);
         $DB = &$_DB_DATAOBJECT['CONNECTIONS'][$this->_database_dsn_md5];
 
@@ -2431,8 +2432,11 @@ class DB_DataObject extends DB_DataObject_Overload
         for ($tries = 0;$tries < 3;$tries++) {
 
             if ($_DB_driver == 'DB') {
-
+                if ($tries) {
+                  CRM_Core_Error::debug_log_message('Attempt: ' . $tries + 1 . ' at query : ' . $string);
+                }
                 $result = $DB->query($string);
+
             } else {
                 switch (strtolower(substr(trim($string),0,6))) {
 
@@ -2487,15 +2491,22 @@ class DB_DataObject extends DB_DataObject_Overload
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug']) || defined('CIVICRM_DEBUG_LOG_QUERY')) {
           $timeTaken = sprintf("%0.6f", microtime(TRUE) - $time);
           $alertLevel = $this->getAlertLevel($timeTaken);
-          $message =  "$alertLevel QUERY DONE IN $timeTaken  seconds.";
+
+          $message = "$alertLevel QUERY DONE IN $timeTaken  seconds.";
           if (in_array($action, array('insert', 'update', 'delete')) && $_DB_driver == 'DB') {
             $message .= " " . $DB->affectedRows() . " row(s)s subject to $action action";
           }
           elseif (is_a($result, 'DB_result') && method_exists($result, 'numrows')) {
-            $message .= " Result is {$result->numRows()} rows by {$result->numCols()} columns.";
+            $message .= " Result is {$result->numRows()} rows by {$result->numCols()} columns. ";
+          }
+          elseif ($result === 1) {
+            $message .= " No further information is available for this type of query";
+          }
+          else {
+            echo $message .= " not quite sure why this query does not have more info";
           }
           if (defined('CIVICRM_DEBUG_LOG_QUERY')) {
-            CRM_Core_Error::debug_log_message($message);
+            CRM_Core_Error::debug_log_message($message, FALSE, 'sql_log');
           }
           else {
             $this->debug($message, 'query', 1);
@@ -4304,16 +4315,16 @@ class DB_DataObject extends DB_DataObject_Overload
    */
   public function getAlertLevel($timeTaken) {
     if ($timeTaken >= 20) {
-      return '****';
+      return '(very-very-very-slow)';
     }
     if ($timeTaken > 10) {
-      return '***';
+      return '(very-very-slow)';
     }
     if ($timeTaken > 5) {
-      return '**';
+      return '(very-slow)';
     }
     if ($timeTaken > 1) {
-      return '*';
+      return '(slow)';
     }
     return '';
   }
