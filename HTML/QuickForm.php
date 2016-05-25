@@ -2008,7 +2008,7 @@ class HTML_QuickForm extends HTML_Common
      * @return bool     whether $value is an error
      * @static
      */
-    function isError($value)
+    public static function isError($value)
     {
         return (is_object($value) && is_a($value, 'html_quickform_error'));
     } // end func isError
@@ -2024,7 +2024,7 @@ class HTML_QuickForm extends HTML_Common
      * @return  string  error message
      * @static
      */
-    function errorMessage($value)
+    static function errorMessage($value)
     {
         // make the variable static so that it only has to do the defining on the first call
         static $errorMessages;
