@@ -408,7 +408,7 @@ class Net_Curl
      * @access public
      * @return void
      */
-    function Net_Curl($url = '', $userAgent = '')
+    function __construct($url = '', $userAgent = '')
     {
         $this->__construct($url, $userAgent);
     }

@@ -50,7 +50,7 @@ class pjpgHttpsPost
    var $pjpgRequest;
    var $pjpgResponse;
    
-   function pjpgHttpsPost( $pjpgRequestOBJ )
+   function __construct( $pjpgRequestOBJ )
    {
       $this->pjpgRequest=$pjpgRequestOBJ;
 
@@ -240,7 +240,7 @@ class pjpgRequest
                        );
    var $txnArray;
 
-   function pjpgRequest($txn)
+   function __construct($txn)
    {
       if(is_array($txn))
       {
@@ -277,7 +277,7 @@ class pjpgCustInfo
    var $email;
    var $instructions; 
  
-   function pjpgCustInfo($custinfo=0,$billing=0,$shipping=0,$items=0)
+   function __construct($custinfo=0,$billing=0,$shipping=0,$items=0)
    {
       if($custinfo)
       {
@@ -335,7 +335,7 @@ class pjpgRecur{
  var $recurTemplate = array('recur_unit','start_now','start_date',
                             'num_recurs','period','recur_amount');
  
- function pjpgRecur($params)
+ function __construct($params)
  { 
     $this->params = $params;
     
@@ -355,7 +355,7 @@ class pjpgTransaction
    var $custInfo = null;
    var $recur = null;
 
-   function pjpgTransaction($txn)
+   function __construct($txn)
    {
       $this->txn=$txn; 
    }
