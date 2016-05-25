@@ -144,7 +144,7 @@ class DB_dbase extends DB_common
      *
      * @return void
      */
-    function DB_dbase()
+    function __construct()
     {
         $this->DB_common();
     }

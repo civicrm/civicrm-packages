@@ -244,7 +244,7 @@ class Mail_smtpmx extends Mail {
      * @param array Hash containing any parameters different from the defaults
      * @see __construct()
      */
-    function Mail_smtpmx($params)
+    function __construct($params)
     {
         $this->__construct($params);
         register_shutdown_function(array(&$this, '__destruct'));

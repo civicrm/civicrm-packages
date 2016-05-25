@@ -157,7 +157,7 @@ class DB_odbc extends DB_common
      *
      * @return void
      */
-    function DB_odbc()
+    function __construct()
     {
         $this->DB_common();
     }
