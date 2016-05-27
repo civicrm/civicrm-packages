@@ -321,7 +321,7 @@ class PxPayRequest extends PxPayMessage
 	var $AppletType;
 	
 	#Constructor
- 	function __construct(){
+	function __construct(){
 		$this->PxPayMessage();
 		
 	}
