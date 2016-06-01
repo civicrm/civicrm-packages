@@ -202,10 +202,10 @@ class pjpgHttpsPost
 
 
       // Build response array
-      $content = array_values (split (chr (28), $content));
+      $content = array_values (explode (chr (28), $content));
       while ($key_value = next ($content))
       {
-         list ($key, $value) = split ("=", $key_value);
+         list ($key, $value) = explode ("=", $key_value);
          $response[$key] = $value;
       }
 
