@@ -152,7 +152,7 @@ class PEAR
      * @access public
      * @return void
      */
-    function PEAR($error_class = null)
+    function __construct($error_class = null)
     {
         $classname = strtolower(get_class($this));
         if ($this->_debug) {
@@ -508,7 +508,7 @@ class PEAR
      * @see PEAR::setErrorHandling
      * @since PHP 4.0.5
      */
-    function &raiseError($message = null,
+    static function raiseError($message = null,
                          $code = null,
                          $mode = null,
                          $options = null,
@@ -579,7 +579,7 @@ class PEAR
      * @param string $message
      *
      */
-    function &throwError($message = null,
+    static function throwError($message = null,
                          $code = null,
                          $userinfo = null)
     {
@@ -863,7 +863,7 @@ class PEAR_Error
      * @access public
      *
      */
-    function PEAR_Error($message = 'unknown error', $code = null,
+    function __construct($message = 'unknown error', $code = null,
                         $mode = null, $options = null, $userinfo = null)
     {
         if ($mode === null) {

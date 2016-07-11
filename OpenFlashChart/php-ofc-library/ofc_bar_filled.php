@@ -4,7 +4,7 @@ include_once 'ofc_bar_base.php';
 
 class bar_filled_value extends bar_value
 {
-	function bar_filled_value( $top, $bottom=null )
+	function __construct( $top, $bottom=null )
 	{
 		parent::bar_value( $top, $bottom );	
 	}
@@ -18,7 +18,7 @@ class bar_filled_value extends bar_value
 
 class bar_filled extends bar_base
 {
-	function bar_filled( $colour=null, $outline_colour=null )
+	function __construct( $colour=null, $outline_colour=null )
 	{
 		$this->type      = "bar_filled";
 		parent::bar_base();
