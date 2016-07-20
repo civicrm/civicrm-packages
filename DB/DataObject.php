@@ -2474,7 +2474,6 @@ class DB_DataObject extends DB_DataObject_Overload
             return $this->raiseError($result);
         }
 
-
         $action = strtolower(substr(trim($string),0,6));
 
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug']) || defined('CIVICRM_DEBUG_LOG_QUERY')) {
@@ -2501,7 +2500,7 @@ class DB_DataObject extends DB_DataObject_Overload
             $this->debug($message, 'query', 1);
           }
         }
-        switch $action {
+        switch ($action) {
             case 'insert':
             case 'update':
             case 'delete':
