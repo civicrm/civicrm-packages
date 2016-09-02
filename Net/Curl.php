@@ -407,12 +407,12 @@ class Net_Curl
      *
      * @access public
      * @return void
-     */
-    function __construct($url = '', $userAgent = '')
+     *
+    function Net_Curl($url = '', $userAgent = '')
     {
         $this->__construct($url, $userAgent);
     }
-    // }}}
+    // }}} */
 
     // {{{ execute()
     /**
