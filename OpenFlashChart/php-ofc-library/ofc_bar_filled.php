@@ -6,7 +6,7 @@ class bar_filled_value extends bar_value
 {
 	function __construct( $top, $bottom=null )
 	{
-		parent::bar_value( $top, $bottom );	
+		parent::__construct( $top, $bottom );	
 	}
 	
 	function set_outline_colour( $outline_colour )
@@ -21,7 +21,7 @@ class bar_filled extends bar_base
 	function __construct( $colour=null, $outline_colour=null )
 	{
 		$this->type      = "bar_filled";
-		parent::bar_base();
+		parent::__construct();
 		
 		if( isset( $colour ) )
 			$this->set_colour( $colour );

@@ -11,7 +11,7 @@ class s_star extends star
 	 */
 	function __construct($colour, $size)
 	{
-		parent::star();
+		parent::__construct();
 		$this->colour($colour)->size($size);
 	}
 }
@@ -24,7 +24,7 @@ class s_box extends anchor
 	 */
 	function __construct($colour, $size)
 	{
-		parent::anchor();
+		parent::__construct();
 		$this->colour($colour)->size($size)->rotation(45)->sides(4);
 	}
 }
@@ -37,7 +37,7 @@ class s_hollow_dot extends hollow_dot
 	 */
 	function __construct($colour, $size)
 	{
-		parent::hollow_dot();
+		parent::__construct();
 		$this->colour($colour)->size($size);
 	}
 }

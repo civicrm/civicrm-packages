@@ -31,7 +31,7 @@ class candle extends bar_base
 	function __construct($colour, $negative_colour=null)
 	{
 		$this->type      = "candle";
-		parent::bar_base();
+		parent::__construct();
 		
 		$this->set_colour( $colour );
 		if(!is_null($negative_colour))

@@ -7,7 +7,7 @@ class bar_stack extends bar_base
 	function __construct()
 	{
 		$this->type      = "bar_stack";
-		parent::bar_base();
+		parent::__construct();
 	}
 	
 	function append_stack( $v )

@@ -28,7 +28,7 @@ class bar extends bar_base
 	function __construct()
 	{
 		$this->type      = "bar";
-		parent::bar_base();
+		parent::__construct();
 	}
 }
 
