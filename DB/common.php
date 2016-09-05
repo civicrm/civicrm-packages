@@ -1873,7 +1873,7 @@ class DB_common extends PEAR
      *
      * @see PEAR_Error
      */
-    static function raiseError($code = DB_ERROR, $mode = null, $options = null,
+    function raiseError($code = DB_ERROR, $mode = null, $options = null,
         $userinfo = null, $nativecode = null,
         $argToMatchParentSignature1 = null,
         $argToMatchParentSignature2 = null)
