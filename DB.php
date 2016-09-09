@@ -524,6 +524,9 @@ class DB
      */
     static function &connect($dsn, $options = array())
     {
+        if (!strstr($dsn, 'mysqli') && function_exists('mysqli_connect')) {
+          $dsn = str_replace('mysql', 'mysqli', $dsn);
+        }
         $dsninfo = DB::parseDSN($dsn);
         $type = $dsninfo['phptype'];
 
