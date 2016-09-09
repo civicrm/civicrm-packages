@@ -742,6 +742,15 @@ class DB
      */
 	 static function parseDSN($dsn)
     {
+        if (defined('DB_DSN_MODE') && DB_DSN_MODE === 'auto') {
+            if (extension_loaded('mysqli')) {
+                $dsn = preg_replace('/^mysql:/', 'mysqli:', $dsn);
+            }
+            else {
+                $dsn = preg_replace('/^mysqli:/', 'mysql:', $dsn);
+            }
+        }
+
         $parsed = array(
             'phptype'  => false,
             'dbsyntax' => false,
