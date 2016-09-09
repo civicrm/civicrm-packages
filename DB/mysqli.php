@@ -1081,6 +1081,10 @@ class DB_mysqli extends DB_common
 
     // }}}
 
+    function lastInsertId() {
+        return mysqli_insert_id($this->connection);
+    }
+
 }
 
 /*
