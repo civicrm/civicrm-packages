@@ -498,7 +498,11 @@ class DB_mysqli extends DB_common
      */
     function freeResult($result)
     {
-        return is_resource($result) ? mysqli_free_result($result) : false;
+        if (!$result instanceof mysqli_result) {
+            return false;
+        }
+        mysqli_free_result($result);
+        return true;
     }
 
     // }}}

@@ -4261,18 +4261,12 @@ class DB_DataObject extends DB_DataObject_Overload
     {
         global $_DB_DATAOBJECT;
 
-        if (isset($_DB_DATAOBJECT['RESULTS'][$this->_DB_resultid])) {
-            if ( is_resource( $_DB_DATAOBJECT['RESULTS'][$this->_DB_resultid]->result ) ) {
-                mysql_free_result( $_DB_DATAOBJECT['RESULTS'][$this->_DB_resultid]->result );
-            }
-            unset($_DB_DATAOBJECT['RESULTS'][$this->_DB_resultid]);
-        }
-
         if (isset($_DB_DATAOBJECT['RESULTFIELDS'][$this->_DB_resultid])) {
             unset($_DB_DATAOBJECT['RESULTFIELDS'][$this->_DB_resultid]);
         }
         if (isset($_DB_DATAOBJECT['RESULTS'][$this->_DB_resultid])) {
             unset($_DB_DATAOBJECT['RESULTS'][$this->_DB_resultid]);
+            $_DB_DATAOBJECT['RESULTS'][$this->_DB_resultid]->free();
         }
         // clear the staticGet cache as well.
         $this->_clear_cache();
