@@ -75,7 +75,16 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    private
      */
     var $_persistantFreeze = false;
-    
+
+    /**
+     * @var string
+     */
+    var $_suffix = '';
+    /**
+     * @var string
+     */
+    var $_prefix = '';
+
     // }}}
     // {{{ constructor
     
@@ -192,6 +201,38 @@ class HTML_QuickForm_element extends HTML_Common
         // interface
         return null;
     } // end func getValue
+
+    /**
+     * @return string
+     */
+    function getSuffix()
+    {
+        return $this->_suffix;
+    }
+
+    /**
+     * @return string
+     */
+    function getPrefix()
+    {
+        return $this->_prefix;
+    }
+
+    /**
+     * @param string $markup
+     */
+    function setSuffix($markup)
+    {
+        $this->_suffix = $markup;
+    }
+
+    /**
+     * @param string $markup
+     */
+    function setPrefix($markup)
+    {
+        $this->_prefix = $markup;
+    }
     
     // }}}
     // {{{ freeze()

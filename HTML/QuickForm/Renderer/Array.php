@@ -260,7 +260,7 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
     * Creates an array representing an element
     *
     * @access private
-    * @param  HTML_QuickForm_element    element being processed
+    * @param  HTML_QuickForm_element    $element being processed
     * @param  bool                      Whether an element is required
     * @param  string                    Error associated with the element
     * @return array
@@ -273,6 +273,8 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
             'type'      => $element->getType(),
             'frozen'    => $element->isFrozen(),
             'required'  => $required,
+            'prefix'    => $element->getPrefix(),
+            'suffix'    => $element->getsuffix(),
             'error'     => $error
         );
 

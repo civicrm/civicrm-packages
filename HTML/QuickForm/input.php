@@ -149,9 +149,9 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
     function toHtml()
     {
         if ($this->_flagFrozen) {
-            return $this->getFrozenHtml();
+            return $this->getPrefix() . $this->getFrozenHtml() . $this->getSuffix();
         } else {
-            return $this->_getTabs() . '<input' . $this->_getAttrString($this->_attributes) . ' />';
+            return $this->_getTabs() . $this->getPrefix() . '<input' . $this->_getAttrString($this->_attributes) . ' />' . $this->getSuffix();
         }
     } //end func toHtml
 

@@ -304,7 +304,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
         $renderer = new HTML_QuickForm_Renderer_Default();
         $renderer->setElementTemplate('{element}');
         $this->accept($renderer);
-        return $renderer->toHtml();
+        return $this->getPrefix() . $renderer->toHtml() . $this->getSuffix();
     } //end func toHtml
 
     // }}}
