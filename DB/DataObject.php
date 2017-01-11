@@ -4293,6 +4293,10 @@ class DB_DataObject extends DB_DataObject_Overload
 
 
 
+  public function lastInsertId() {
+    $DB = &$_DB_DATAOBJECT['CONNECTIONS'][$this->_database_dsn_md5];
+    return $DB->lastInsertId();
+  }
 
 }
 // technially 4.3.2RC1 was broken!!
