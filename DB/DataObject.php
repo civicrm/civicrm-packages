@@ -968,11 +968,6 @@ class DB_DataObject extends DB_DataObject_Overload
             if (!isset($this->$k)) {
                 continue;
             }
-            // dont insert data into mysql timestamps
-            // use query() if you really want to do this!!!!
-            if ($v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
-                continue;
-            }
 
             if ($leftq) {
                 $leftq  .= ', ';
