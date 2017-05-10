@@ -183,6 +183,14 @@ class Net_SMTP
         }
         $this->pipelining = $pipelining;
 
+        if (!isset($socket_options['ssl'])) {
+            if (!is_array($socket_options)) $socket_options = array();
+            $caConfig = CA_Config_Stream::singleton();
+            if ($caConfig->isEnableSSL()) {
+                $socket_options['ssl'] = $caConfig->toStreamOptions();
+            }
+        }
+
         $this->_socket = new Net_Socket();
         $this->_socket_options = $socket_options;
         $this->_timeout = $timeout;
