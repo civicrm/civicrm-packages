@@ -583,6 +583,7 @@ class Net_Socket extends PEAR {
             if (!is_resource($this->fp)) {
                 return $this->raiseError('not connected');
             }
+            // CRM-18408 TLS warnings are hidden by @ below.
             return @stream_socket_enable_crypto($this->fp, $enabled, $type);
         } else {
             return $this->raiseError('Net_Socket::enableCrypto() requires php version >= 5.1.0');
