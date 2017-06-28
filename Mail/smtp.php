@@ -36,7 +36,7 @@
  *
  * @category    HTTP
  * @package     HTTP_Request
- * @author      Jon Parise <jon@php.net> 
+ * @author      Jon Parise <jon@php.net>
  * @author      Chuck Hagenbuch <chuck@horde.org>
  * @copyright   2010 Chuck Hagenbuch
  * @license     http://opensource.org/licenses/bsd-license.php New BSD License
@@ -270,13 +270,6 @@ class Mail_smtp extends Mail {
         }
         list($from, $textHeaders) = $headerElements;
 
-        /* Since few MTAs are going to allow this header to be forged
-         * unless it's in the MAIL FROM: exchange, we'll use
-         * Return-Path instead of From: if it's set. */
-        if (!empty($headers['Return-Path'])) {
-            $from = $headers['Return-Path'];
-        }
-
         if (!isset($from)) {
             $this->_smtp->rset();
             return PEAR::raiseError('No From: address has been provided',
@@ -293,6 +286,13 @@ class Mail_smtp extends Mail {
             $error = $this->_error("Failed to set sender: $from", $res);
             $this->_smtp->rset();
             return PEAR::raiseError($error, PEAR_MAIL_SMTP_ERROR_SENDER);
+        }
+
+        /* Since few MTAs are going to allow this header to be forged
+         * unless it's in the MAIL FROM: exchange, we'll use
+         * Return-Path instead of From: if it's set. */
+        if (!empty($headers['Return-Path'])) {
+            $from = $headers['Return-Path'];
         }
 
         $recipients = $this->parseRecipients($recipients);
