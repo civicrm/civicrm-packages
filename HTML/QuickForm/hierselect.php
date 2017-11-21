@@ -362,7 +362,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
             if ($js != '') {
                 $js .= ",\n";
             }
-            $js .= '"'.$optValue.'":"'.json_encode($options).'"';
+            $js .= '"'.$optValue.'":'.json_encode($options);
         }
     }
 
