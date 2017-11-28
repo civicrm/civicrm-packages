@@ -2647,12 +2647,33 @@ class DB_DataObject extends DB_DataObject_Overload
         $t= explode(' ',microtime());
         $_DB_DATAOBJECT['QUERYENDTIME'] = $time = $t[0]+$t[1];
 
-
-        for ($tries = 0;$tries < 3;$tries++) {
-
-            if ($_DB_driver == 'DB') {
-
-                $result = $DB->query($string);
+      $maxTries = defined('CIVICRM_DEADLOCK_RETRIES') ? CIVICRM_DEADLOCK_RETRIES : 3;
+      for ($tries = 0;$tries < $maxTries;$tries++) {
+        if ($_DB_driver == 'DB') {
+          try {
+            $result = $DB->query($string);
+          }
+          catch (PEAR_Exception $e) {
+            if ($tries == 0) {
+              // The original sin was what triggered the retry. Sometimes the retry fails because mysql has done an internal rollback
+              // of previous queries in the transaction so it has essentially failed to recover from the deadlock. If we can't
+              // recover we should return the original error.
+              $firstError = $e;
+            }
+            // CRM-21489 If we have caught a DB lock - let it go around the loop until our tries limit is hit.
+            // else rethrow the exception. The 2 locks we are looking at are mysql code 1205 (lock) and
+            // 1213 (deadlock).
+            $dbErrorMessage = $e->getCause()->getUserInfo();
+            if (!stristr($dbErrorMessage, 'nativecode=1205') && !stristr($dbErrorMessage, 'nativecode=1213')) {
+              throw $firstError;
+            }
+            $message = (stristr($dbErrorMessage, 'nativecode=1213') ? 'Database deadlock encountered' : 'Database lock encountered');
+            if (($tries + 1) === $maxTries) {
+              throw new CRM_Core_Exception($message, 0, array('sql' => $string, 'trace' => $firstError->getTrace()));
+            }
+            CRM_Core_Error::debug_log_message("Retrying after $message hit on attempt " . ($tries + 1) . ' at query : ' . $string);
+            continue;
+          }
             } else {
                 switch (strtolower(substr(trim($string),0,6))) {
 
@@ -2669,6 +2690,7 @@ class DB_DataObject extends DB_DataObject_Overload
             }
 
             // see if we got a failure.. - try again a few times..
+            // See CRM-21489 for why Eileen believes this is never hit.
             if (!is_object($result) || !is_a($result,'PEAR_Error')) {
                 break;
             }
