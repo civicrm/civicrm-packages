@@ -1202,7 +1202,8 @@ class DB_common extends PEAR
      */
     function &query($query, $params = array())
     {
-        if (!empty($params)) {
+        $params = (array)$params;
+        if (count($params)) {
             $sth = $this->prepare($query);
             if (DB::isError($sth)) {
                 return $sth;
@@ -1341,7 +1342,8 @@ class DB_common extends PEAR
             }
         }
         // modifyLimitQuery() would be nice here, but it causes BC issues
-        if (!empty($params)) {
+        $params = (array)$params;
+        if (count($params)) {
             $sth = $this->prepare($query);
             if (DB::isError($sth)) {
                 return $sth;
@@ -1649,7 +1651,8 @@ class DB_common extends PEAR
             }
         }
 
-        if (!empty($params)) {
+        $params = (array)$params;
+        if (count($params)) {
             $sth = $this->prepare($query);
 
             if (DB::isError($sth)) {
