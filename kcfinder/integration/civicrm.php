@@ -43,7 +43,6 @@ function checkAuthentication() {
     $civicrm_root  = dirname(dirname(getcwd()));
     $authenticated = false;
     require_once "{$civicrm_root}/civicrm.config.php";
-    require_once 'CRM/Core/Config.php';
 
     $config = CRM_Core_Config::singleton();
 
@@ -69,8 +68,12 @@ function checkAuthentication() {
     }
 
     $_SESSION['KCFINDER']['disabled'] = false;
-    $_SESSION['KCFINDER']['uploadURL'] = $config->imageUploadURL;
-    $_SESSION['KCFINDER']['uploadDir'] = $config->imageUploadDir;
+    // Use realpath to convert any symlnks. The reason we need to do this
+    // is that kcfinder does a check which is effectively
+    // if ($config->imageUploadDir !== realpath($config->imageUploadDir)
+    // then spit the dummy.
+    $_SESSION['KCFINDER']['uploadURL'] = realpath($config->imageUploadURL);
+    $_SESSION['KCFINDER']['uploadDir'] = realpath($config->imageUploadDir);
 
     $authenticated = true;
     chdir( $current_cwd );
@@ -99,7 +102,7 @@ function authenticate_drupal($config) {
   }
   $base_url = substr($base_url, 0, $pos); // drupal root absolute url
 
-  CRM_Utils_System::loadBootStrap(CRM_Core_DAO::$_nullArray,true,false);
+  CRM_Utils_System::loadBootStrap([],true,false);
 
   // check if user has access permission...
   if (CRM_Core_Permission::check('access CiviCRM')) {
