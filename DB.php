@@ -451,7 +451,7 @@ class DB
      *
      * @see DB_common::setOption()
      */
-    function &factory($type, $options = false)
+    public function &factory($type, $options = false)
     {
         if (!is_array($options)) {
             $options = array('persistent' => $options);
@@ -478,7 +478,7 @@ class DB
 
         foreach ($options as $option => $value) {
             $test = $obj->setOption($option, $value);
-            if (DB::isError($test)) {
+            if (self::isError($test)) {
                 return $test;
             }
         }
@@ -522,9 +522,9 @@ class DB
      *
      * @uses DB::parseDSN(), DB_common::setOption(), PEAR::isError()
      */
-    static function &connect($dsn, $options = array())
+    public static function &connect($dsn, $options = array())
     {
-        $dsninfo = DB::parseDSN($dsn);
+        $dsninfo = self::parseDSN($dsn);
         $type = $dsninfo['phptype'];
 
         if (!is_array($options)) {
@@ -556,13 +556,13 @@ class DB
 
         foreach ($options as $option => $value) {
             $test = $obj->setOption($option, $value);
-            if (DB::isError($test)) {
+            if (self::isError($test)) {
                 return $test;
             }
         }
 
         $err = $obj->connect($dsninfo, $obj->getOption('persistent'));
-        if (DB::isError($err)) {
+        if (self::isError($err)) {
             if (is_array($dsn)) {
                 $err->addUserInfo(DB::getDSNString($dsn, true));
             } else {
@@ -582,7 +582,7 @@ class DB
      *
      * @return string  the DB API version number
      */
-    function apiVersion()
+    public function apiVersion()
     {
         return '1.7.13';
     }
@@ -597,7 +597,7 @@ class DB
      *
      * @return bool  whether $value is DB_Error object
      */
-    static function isError($value)
+    public static function isError($value)
     {
         return is_a($value, 'DB_Error');
     }
@@ -612,7 +612,7 @@ class DB
      *
      * @return bool  whether $value is a DB_<driver> object
      */
-    function isConnection($value)
+    public function isConnection($value)
     {
         return (is_object($value) &&
                 is_subclass_of($value, 'db_common') &&
@@ -633,7 +633,7 @@ class DB
      *
      * @return boolean  whether $query is a data manipulation query
      */
-    static function isManip($query)
+    public static function isManip($query)
     {
         $manips = 'INSERT|UPDATE|DELETE|REPLACE|'
                 . 'CREATE|DROP|'
@@ -658,7 +658,7 @@ class DB
      * @return string  the error message or false if the error code was
      *                  not recognized
      */
-    static function errorMessage($value)
+    public static function errorMessage($value)
     {
         static $errorMessages;
         if (!isset($errorMessages)) {
@@ -695,7 +695,7 @@ class DB
             );
         }
 
-        if (DB::isError($value)) {
+        if (self::isError($value)) {
             $value = $value->getCode();
         }
 
@@ -729,7 +729,7 @@ class DB
      *  phptype
      * </code>
      *
-     * @param string $dsn Data Source Name to be parsed
+     * @param string|array $dsn Data Source Name to be parsed
      *
      * @return array an associative array with the following keys:
      *  + phptype:  Database backend used in PHP (mysql, odbc etc.)
@@ -740,7 +740,7 @@ class DB
      *  + username: User name for login
      *  + password: Password for login
      */
-	 static function parseDSN($dsn)
+	 public static function parseDSN($dsn)
     {
         if (defined('DB_DSN_MODE') && DB_DSN_MODE === 'auto') {
             if (extension_loaded('mysqli')) {
@@ -790,7 +790,7 @@ class DB
             $parsed['dbsyntax'] = $str;
         }
 
-        if (!count($dsn)) {
+        if (($dsn instanceof \Countable /*|| is_array($dsn)*/) && !count($dsn)) {
             return $parsed;
         }
 
@@ -829,7 +829,7 @@ class DB
         }
 
         // process the different protocol options
-        $parsed['protocol'] = (!empty($proto)) ? $proto : 'tcp';
+        $parsed['protocol'] = !empty($proto) ? $proto : 'tcp';
         $proto_opts = rawurldecode($proto_opts);
         if (strpos($proto_opts, ':') !== false) {
             list($proto_opts, $parsed['port']) = explode(':', $proto_opts);
@@ -878,11 +878,11 @@ class DB
      * @param boolean true to hide the password, false to include it
      * @return string
      */
-    function getDSNString($dsn, $hidePassword) {
+    public function getDSNString($dsn, $hidePassword) {
         /* Calling parseDSN will ensure that we have all the array elements
          * defined, and means that we deal with strings and array in the same
          * manner. */
-        $dsnArray = DB::parseDSN($dsn);
+        $dsnArray = self::parseDSN($dsn);
 
         if ($hidePassword) {
             $dsnArray['password'] = 'PASSWORD';
@@ -977,7 +977,7 @@ class DB_Error extends PEAR_Error
      *
      * @see PEAR_Error
      */
-    function __construct($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
+    public function __construct($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
                       $level = E_USER_NOTICE, $debuginfo = null)
     {
         if (is_int($code)) {
@@ -1018,20 +1018,20 @@ class DB_result
      * @var boolean
      * @see DB_common::$options
      */
-    var $autofree;
+    public $autofree;
 
     /**
      * A reference to the DB_<driver> object
      * @var object
      */
-    var $dbh;
+    public $dbh;
 
     /**
      * The current default fetch mode
      * @var integer
      * @see DB_common::$fetchmode
      */
-    var $fetchmode;
+    public $fetchmode;
 
     /**
      * The name of the class into which results should be fetched when
@@ -1040,26 +1040,26 @@ class DB_result
      * @var string
      * @see DB_common::$fetchmode_object_class
      */
-    var $fetchmode_object_class;
+    public $fetchmode_object_class;
 
     /**
      * The number of rows to fetch from a limit query
      * @var integer
      */
-    var $limit_count = null;
+    public $limit_count;
 
     /**
      * The row to start fetching from in limit queries
      * @var integer
      */
-    var $limit_from = null;
+    public $limit_from;
 
     /**
      * The execute parameters that created this result
      * @var array
      * @since Property available since Release 1.7.0
      */
-    var $parameters;
+    public $parameters;
 
     /**
      * The query string that created this result
@@ -1069,19 +1069,19 @@ class DB_result
      * @var string
      * @since Property available since Release 1.7.0
      */
-    var $query;
+    public $query;
 
     /**
      * The query result resource id created by PHP
      * @var resource
      */
-    var $result;
+    public $result;
 
     /**
      * The present row being dealt with
      * @var integer
      */
-    var $row_counter = null;
+    public $row_counter;
 
     /**
      * The prepared statement resource id created by PHP in $dbh
@@ -1098,7 +1098,7 @@ class DB_result
      * @var resource
      * @since Property available since Release 1.7.0
      */
-    var $statement;
+    public $statement;
 
 
     // }}}
@@ -1113,7 +1113,7 @@ class DB_result
      *
      * @return void
      */
-    function __construct(&$dbh, $result, $options = array())
+    public function __construct(&$dbh, $result, $options = array())
     {
         $this->autofree    = $dbh->options['autofree'];
         $this->dbh         = &$dbh;
@@ -1136,7 +1136,7 @@ class DB_result
      *
      * @return void
      */
-    function setOption($key, $value = null)
+    public function setOption($key, $value = null)
     {
         switch ($key) {
             case 'limit_from':
@@ -1177,7 +1177,7 @@ class DB_result
      *
      * @see DB_common::setOption(), DB_common::setFetchMode()
      */
-    function &fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
+    public function &fetchRow($fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
     {
         if ($fetchmode === DB_FETCHMODE_DEFAULT) {
             $fetchmode = $this->fetchmode;
@@ -1186,7 +1186,7 @@ class DB_result
             $fetchmode = DB_FETCHMODE_ASSOC;
             $object_class = $this->fetchmode_object_class;
         }
-        if (is_null($rownum) && $this->limit_from !== null) {
+        if (null === $rownum && $this->limit_from !== null) {
             if ($this->row_counter === null) {
                 $this->row_counter = $this->limit_from;
                 // Skip rows
@@ -1259,7 +1259,7 @@ class DB_result
      *
      * @see DB_common::setOption(), DB_common::setFetchMode()
      */
-    function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
+    public function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
     {
         if ($fetchmode === DB_FETCHMODE_DEFAULT) {
             $fetchmode = $this->fetchmode;
@@ -1268,7 +1268,7 @@ class DB_result
             $fetchmode = DB_FETCHMODE_ASSOC;
             $object_class = $this->fetchmode_object_class;
         }
-        if (is_null($rownum) && $this->limit_from !== null) {
+        if (null === $rownum && $this->limit_from !== null) {
             if ($this->row_counter === null) {
                 $this->row_counter = $this->limit_from;
                 // Skip rows
@@ -1320,7 +1320,7 @@ class DB_result
      *
      * @return int  the number of columns.  A DB_Error object on failure.
      */
-    function numCols()
+    public function numCols()
     {
         return $this->dbh->numCols($this->result);
     }
@@ -1333,7 +1333,7 @@ class DB_result
      *
      * @return int  the number of rows.  A DB_Error object on failure.
      */
-    function numRows()
+    public function numRows()
     {
         if ($this->dbh->features['numrows'] === 'emulate'
             && $this->dbh->options['portability'] & DB_PORTABILITY_NUMROWS)
@@ -1366,7 +1366,7 @@ class DB_result
         if (($this->dbh->features['limit'] === 'emulate'
              && $this->limit_from !== null)
             || $this->dbh->phptype == 'fbsql') {
-            $limit_count = is_null($this->limit_count) ? $count : $this->limit_count;
+            $limit_count = null === $this->limit_count ? $count : $this->limit_count;
             if ($count < $this->limit_from) {
                 $count = 0;
             } elseif ($count < ($this->limit_from + $limit_count)) {
@@ -1387,7 +1387,7 @@ class DB_result
      *
      * @return bool  true if a new result is available or false if not
      */
-    function nextResult()
+    public function nextResult()
     {
         return $this->dbh->nextResult($this->result);
     }
@@ -1400,7 +1400,7 @@ class DB_result
      *
      * @return bool  true on success.  A DB_Error object on failure.
      */
-    function free()
+    public function free()
     {
         $err = $this->dbh->freeResult($this->result);
         $this->result = false;
@@ -1415,7 +1415,7 @@ class DB_result
      * @see DB_common::tableInfo()
      * @deprecated Method deprecated some time before Release 1.2
      */
-    function tableInfo($mode = null)
+    public function tableInfo($mode = null)
     {
         if (is_string($mode)) {
             return $this->dbh->raiseError(DB_ERROR_NEED_MORE_DATA);
@@ -1433,7 +1433,7 @@ class DB_result
      *
      * @since Method available since Release 1.7.0
      */
-    function getQuery()
+    public function getQuery()
     {
         return $this->query;
     }
@@ -1446,7 +1446,7 @@ class DB_result
      *
      * @return integer  the current row being looked at.  Starts at 1.
      */
-    function getRowCounter()
+    public function getRowCounter()
     {
         return $this->row_counter;
     }
@@ -1479,11 +1479,11 @@ class DB_row
     /**
      * The constructor places a row's data into properties of this object
      *
-     * @param array  the array containing the row's data
+     * @param array $arr  the array containing the row's data
      *
      * @return void
      */
-    function __construct(&$arr)
+    public function __construct(&$arr)
     {
         foreach ($arr as $key => $value) {
             $this->$key = &$arr[$key];
