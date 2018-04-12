@@ -226,10 +226,10 @@ class Validate
             } elseif ((strlen($date) == 10) && ($date6 < strtotime("now"))) {
                 $datevalid = true;
             }
-            if (self::email($matches['name'])) {
+            if ($this->email($matches['name'])) {
                 $namevalid = true;
             } else {
-                $namevalid = self::email('info@' . $matches['name']);
+                $namevalid = $this->email('info@' . $matches['name']);
             }
             return $datevalid && $namevalid;
         } else {
@@ -669,7 +669,7 @@ class Validate
             && in_array("tag", $allowed_schemes)
             && strpos($url, "tag:") === 0
         ) {
-            return self::__uriRFC4151($url);
+            return $this->__uriRFC4151($url);
         }
 
         if (preg_match(

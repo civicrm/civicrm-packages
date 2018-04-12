@@ -110,16 +110,16 @@ class GatewayResponse
 #                                                                                   #
 #####################################################################################
 
-      $this->txError             = self::GetNodeValue('ewayTrxnError', $Xml);
-      $this->txStatus            = self::GetNodeValue('ewayTrxnStatus', $Xml);
-      $this->txTransactionNumber = self::GetNodeValue('ewayTrxnNumber', $Xml);
-      $this->txOption1           = self::GetNodeValue('ewayTrxnOption1', $Xml);
-      $this->txOption2           = self::GetNodeValue('ewayTrxnOption2', $Xml);
-      $this->txOption3           = self::GetNodeValue('ewayTrxnOption3', $Xml);
-      $amount                    = self::GetNodeValue('ewayReturnAmount', $Xml);
-      $this->txAuthCode          = self::GetNodeValue('ewayAuthCode', $Xml);
-      $this->txInvoiceReference  = self::GetNodeValue('ewayTrxnReference', $Xml);
-      $this->txBeagleScore       = self::GetNodeValue('ewayBeagleScore', $Xml);
+      $this->txError             = $this->GetNodeValue('ewayTrxnError', $Xml);
+      $this->txStatus            = $this->GetNodeValue('ewayTrxnStatus', $Xml);
+      $this->txTransactionNumber = $this->GetNodeValue('ewayTrxnNumber', $Xml);
+      $this->txOption1           = $this->GetNodeValue('ewayTrxnOption1', $Xml);
+      $this->txOption2           = $this->GetNodeValue('ewayTrxnOption2', $Xml);
+      $this->txOption3           = $this->GetNodeValue('ewayTrxnOption3', $Xml);
+      $amount                    = $this->GetNodeValue('ewayReturnAmount', $Xml);
+      $this->txAuthCode          = $this->GetNodeValue('ewayAuthCode', $Xml);
+      $this->txInvoiceReference  = $this->GetNodeValue('ewayTrxnReference', $Xml);
+      $this->txBeagleScore       = $this->GetNodeValue('ewayBeagleScore', $Xml);
       $this->txAmount = (int) $amount;
    }
 
