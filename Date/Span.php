@@ -303,7 +303,7 @@ class Date_Span
             $vars = array();
             $pm = 'am';
             $day = $hour = $minute = $second = 0;
-            for ($i = 0; $i < strlen($format); $i++) {
+            for ($i = 0, $iMax = strlen($format); $i < $iMax; $i++) {
                 $char = $format{$i};
                 if ($char == '%') {
                     $nextchar = $format{++$i};
@@ -634,7 +634,7 @@ class Date_Span
             $format = $GLOBALS['_DATE_SPAN_FORMAT'];
         }
         $output = '';
-        for ($i = 0; $i < strlen($format); $i++) {
+        for ($i = 0, $iMax = strlen($format); $i < $iMax; $i++) {
             $char = $format{$i};
             if ($char == '%') {
                 $nextchar = $format{++$i};

@@ -637,7 +637,7 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
         $fp = ($bCli and $sFile == STDIN) ? STDIN : fopen($sFile, 'r');
         do {
             $data = fread($fp, 8192);
-            if (strlen($data) == 0) {
+            if ('' === $data) {
                 break;
             }
             $this->sText.= $data;
@@ -869,8 +869,8 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
      */
     private function processCallback($aMatch)
     {
-        if (stristr('php_beautifier', $aMatch[1]) and method_exists($this, $aMatch[3])) {
-            if (preg_match('/^(set|add)/i', $aMatch[3]) and !stristr('file', $aMatch[3])) {
+        if (false !== stripos('php_beautifier', $aMatch[1]) and method_exists($this, $aMatch[3])) {
+            if (preg_match('/^(set|add)/i', $aMatch[3]) and false === stripos('file', $aMatch[3])) {
                 eval('$this->' . $aMatch[2] . ';');
                 return true;
             }
@@ -1477,7 +1477,7 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
         $pop = 0;
         for ($i = count($this->aOut) -1 ; $i >= 0 ; $i--) { // go backwards
             $cNow = &$this->aOut[$i];
-            if (strlen(trim($cNow)) == 0) { // only space
+            if ('' === trim($cNow)) { // only space
                 array_pop($this->aOut); // delete it!
                 $pop++;
             } else { // we find something!

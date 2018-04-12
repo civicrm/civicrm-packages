@@ -183,7 +183,7 @@ class HTML_QuickForm_Renderer_ObjectFlexy extends HTML_QuickForm_Renderer_Object
                     $keys = substr_replace($keys, '', 0, strlen($this->_currentGroup->keys));
                 }
             }
-        } elseif (0 == strlen($ret->name)) {
+        } elseif ('' === $ret->name) {
             $keys = '->{\'element_' . $this->_elementIdx . '\'}';
         } else {
             $keys = '->{\'' . str_replace(array('\\', '\''), array('\\\\', '\\\''), $ret->name) . '\'}';

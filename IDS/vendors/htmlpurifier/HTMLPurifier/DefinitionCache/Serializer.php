@@ -130,7 +130,7 @@ class HTMLPurifier_DefinitionCache_Serializer extends
             if ($filename[0] === '.') {
                 continue;
             }
-            $key = substr($filename, 0, strlen($filename) - 4);
+            $key = substr($filename, 0, -4);
             if ($this->isOld($key, $config)) {
                 unlink($dir . '/' . $filename);
             }

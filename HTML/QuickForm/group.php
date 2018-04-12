@@ -172,7 +172,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
 
             } else {
                 $elementName = $this->_elements[$key]->getName();
-                $index       = strlen($elementName) ? $elementName : $key;
+                $index       = '' !== $elementName ? $elementName : $key;
                 if (is_array($value)) {
                     if (isset($value[$index])) {
                         $this->_elements[$key]->onQuickFormEvent('setGroupValue', $value[$index], $this);
@@ -444,7 +444,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
             if ($this->_appendName) {
                 $elementName = $element->getName();
                 if (isset($elementName)) {
-                  $newName = $name . '['. (strlen($elementName)? $elementName: $key) .']';
+                  $newName = $name . '['. ('' !== $elementName ? $elementName: $key) . ']';
                   $newID   = str_replace(array(']', '['), array('', '_'), $newName);
                   $element->setName($newName);
                   $element->updateAttributes( array( 'id' => $newID ) );

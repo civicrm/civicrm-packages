@@ -313,9 +313,9 @@ class DB_odbc extends DB_common
             return null;
         }
         if ($fetchmode !== DB_FETCHMODE_ORDERED) {
-            for ($i = 0; $i < count($arr); $i++) {
+            foreach ($arr as $i => $iValue) {
                 $colName = @odbc_field_name($result, $i+1);
-                $a[$colName] = $arr[$i];
+                $a[$colName] = $iValue;
             }
             if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE) {
                 $a = array_change_key_case($a, CASE_LOWER);

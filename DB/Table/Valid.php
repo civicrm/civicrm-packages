@@ -59,9 +59,9 @@ require_once 'DB/Table.php';
 */
 if (! isset($GLOBALS['_DB_TABLE']['valid'])) {
     $GLOBALS['_DB_TABLE']['valid'] = array(
-        'smallint' => array(pow(-2, 15), pow(+2, 15) - 1),
-        'integer' => array(pow(-2, 31), pow(+2, 31) - 1),
-        'bigint' => array(pow(-2, 63), pow(+2, 63) - 1)
+        'smallint' => array(-2 ** 15, (+2 ** 15) - 1),
+        'integer' => array(-2 ** 31, (+2 ** 31) - 1),
+        'bigint' => array(-2 ** 63, (+2 ** 63) - 1)
     );
 }
 
@@ -331,9 +331,9 @@ class DB_Table_Valid {
         // hh:ii:ss
         // 01234567
         $h  = substr($value, 0, 2);
-        $s1 = substr($value, 2, 1);
+        $s1 = $value[2];
         $i  = substr($value, 3, 2);
-        $s2 = substr($value, 5, 1);
+        $s2 = $value[5];
         $s  = substr($value, 6, 2);
         
         // time check
@@ -374,9 +374,9 @@ class DB_Table_Valid {
         // yyyy-mm-dd
         // 0123456789
         $y  = substr($value, 0, 4);
-        $s1 = substr($value, 4, 1);
+        $s1 = $value[4];
         $m  = substr($value, 5, 2);
-        $s2 = substr($value, 7, 1);
+        $s2 = $value[7];
         $d  = substr($value, 8, 2);
         
         // date check
@@ -413,7 +413,7 @@ class DB_Table_Valid {
         // yyyy-mm-dd hh:ii:ss
         // 0123456789012345678
         $date = substr($value, 0, 10);
-        $sep = substr($value, 10, 1);
+        $sep = $value[10];
         $time = substr($value, 11, 8);
 
         if (strlen($value) != 19 || $sep != ' ' ||

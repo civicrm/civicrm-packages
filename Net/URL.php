@@ -373,20 +373,18 @@ class Net_URL
     public function resolvePath($path)
     {
         $path = explode('/', str_replace('//', '/', $path));
-
-        for ($i=0; $i<count($path); $i++) {
-            if ($path[$i] == '.') {
+        foreach ($path as $i => $iValue) {
+            if ($iValue == '.') {
                 unset($path[$i]);
                 $path = array_values($path);
                 $i--;
 
-            } elseif ($path[$i] == '..' AND ($i > 1 OR ($i == 1 AND $path[0] != '') ) ) {
-                unset($path[$i]);
-                unset($path[$i-1]);
+            } elseif ($iValue == '..' AND ($i > 1 OR ($i == 1 AND $path[0] != '') ) ) {
+                unset($path[$i], $path[$i - 1]);
                 $path = array_values($path);
                 $i -= 2;
 
-            } elseif ($path[$i] == '..' AND $i == 1 AND $path[0] == '') {
+            } elseif ($iValue == '..' AND $i == 1 AND $path[0] == '') {
                 unset($path[$i]);
                 $path = array_values($path);
                 $i--;

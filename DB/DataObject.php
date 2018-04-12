@@ -179,7 +179,7 @@ $GLOBALS['_DB_DATAOBJECT']['QUERYENDTIME'] = 0;
 // NOTE: Overload SEGFAULTS ON PHP4 + Zend Optimizer (see define before..)
 // these two are BC/FC handlers for call in PHP4/5
 
-if (substr(PHP_VERSION,0,1) > 4) {
+if (PHP_VERSION[0] > 4) {
     /**
      * Class DB_DataObject_Overload
      */
@@ -444,12 +444,14 @@ class DB_DataObject extends DB_DataObject_Overload
             ($_DB_DATAOBJECT['CONFIG']['db_driver'] == 'DB')) {
             /* PEAR DB specific */
 
-            if (isset($this->_query['limit_start']) && strlen($this->_query['limit_start'] . $this->_query['limit_count'])) {
+            if (isset($this->_query['limit_start']) && '' !== $this->_query['limit_start']
+                                                              . $this->_query['limit_count']) {
                 $sql = $DB->modifyLimitQuery($sql,$this->_query['limit_start'], $this->_query['limit_count']);
             }
         } else {
             /* theoretically MDB2! */
-            if (isset($this->_query['limit_start']) && strlen($this->_query['limit_start'] . $this->_query['limit_count'])) {
+            if (isset($this->_query['limit_start']) && '' !== $this->_query['limit_start']
+                                                              . $this->_query['limit_count']) {
               $DB->setLimit($this->_query['limit_count'],$this->_query['limit_start']);
           }
         }
@@ -1458,7 +1460,8 @@ class DB_DataObject extends DB_DataObject_Overload
 
             // add limit..
 
-            if (isset($this->_query['limit_start']) && strlen($this->_query['limit_start'] . $this->_query['limit_count'])) {
+            if (isset($this->_query['limit_start']) && '' !== $this->_query['limit_start']
+                                                              . $this->_query['limit_count']) {
 
                 if (!isset($_DB_DATAOBJECT['CONFIG']['db_driver']) ||
                     ($_DB_DATAOBJECT['CONFIG']['db_driver'] == 'DB')) {
@@ -2670,7 +2673,7 @@ class DB_DataObject extends DB_DataObject_Overload
             $_DB_DATAOBJECT['CONFIG']['class_prefix'] : '';
         $class = $p . preg_replace('/[^A-Z0-9]/i','_',ucfirst($table));
 
-        $ce = substr(PHP_VERSION,0,1) > 4 ? class_exists($class,false) : class_exists($class);
+        $ce = PHP_VERSION[0] > 4 ? class_exists($class,false) : class_exists($class);
         $class = $ce ? $class  : $this->_autoloadClass($class);
         return $class;
     }
@@ -2723,7 +2726,7 @@ class DB_DataObject extends DB_DataObject_Overload
 
 
         if ($table === '') {
-            if (is_a($this,'DB_DataObject') && strlen($this->__table)) {
+            if (is_a($this,'DB_DataObject') && '' !== $this->__table) {
                 $table = $this->__table;
             } else {
                 return $this->raiseError(
@@ -2736,7 +2739,7 @@ class DB_DataObject extends DB_DataObject_Overload
         $p = isset($_DB_DATAOBJECT['CONFIG']['class_prefix']) ?
             $_DB_DATAOBJECT['CONFIG']['class_prefix'] : '';
         $class = $p . preg_replace('/[^A-Z0-9]/i','_',ucfirst($table));
-        $ce = substr(PHP_VERSION,0,1) > 4 ? class_exists($class,false) : class_exists($class);
+        $ce = PHP_VERSION[0] > 4 ? class_exists($class,false) : class_exists($class);
 
         $class = $ce ? $class  : $this->_autoloadClass($class);
 
@@ -2825,7 +2828,7 @@ class DB_DataObject extends DB_DataObject_Overload
         include_once $file;
 
 
-        $ce = substr(PHP_VERSION,0,1) > 4 ? class_exists($class,false) : class_exists($class);
+        $ce = PHP_VERSION[0] > 4 ? class_exists($class,false) : class_exists($class);
 
         if (!$ce) {
             $this->raiseError(
@@ -3385,7 +3388,7 @@ class DB_DataObject extends DB_DataObject_Overload
                  $obj->__table ;
 
         $dbPrefix  = '';
-        if (strlen($obj->_database) && in_array($DB->dsn['phptype'],array('mysql','mysqli'))) {
+        if ('' !== $obj->_database && in_array($DB->dsn['phptype'],array('mysql','mysqli'))) {
             $dbPrefix = ($quoteIdentifiers
                          ? $DB->quoteIdentifier($obj->_database)
                          : $obj->_database) . '.';
@@ -3505,7 +3508,7 @@ class DB_DataObject extends DB_DataObject_Overload
 
         // fix for #2216
         // add the joinee object's conditions to the ON clause instead of the WHERE clause
-        if ($useWhereAsOn && strlen($cond)) {
+        if ($useWhereAsOn && '' !== $cond) {
             $appendJoin = ' AND ' . $cond . ' ' . $appendJoin;
         }
 
@@ -3798,7 +3801,7 @@ class DB_DataObject extends DB_DataObject_Overload
             }
 
             // if the string is empty.. assume it is ok..
-            if (!is_object($this->$key) && !is_array($this->$key) && !strlen((string) $this->$key)) {
+            if (!is_object($this->$key) && !is_array($this->$key) && '' === (string)$this->$key) {
                 continue;
             }
 
@@ -3937,7 +3940,7 @@ class DB_DataObject extends DB_DataObject_Overload
             foreach($array as $k) {
                 $case[strtolower($k)] = $k;
             }
-            if ((substr(PHP_VERSION,0,1) == 5) && isset($case[strtolower($element)])) {
+            if ((PHP_VERSION[0] == 5) && isset($case[strtolower($element)])) {
                 trigger_error('PHP5 set/get calls should match the case of the variable',E_USER_WARNING);
                 $element = strtolower($element);
             }

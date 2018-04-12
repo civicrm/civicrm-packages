@@ -632,9 +632,7 @@ class IDS_Monitor
      */
     public function setExceptions($exceptions)
     {
-        if (!is_array($exceptions)) {
-            $exceptions = array($exceptions);
-        }
+        $exceptions = (array)$exceptions;
 
         $this->exceptions = $exceptions;
     }
@@ -659,9 +657,7 @@ class IDS_Monitor
      */
     public function setHtml($html)
     {
-        if (!is_array($html)) {
-            $html = array($html);
-        }
+        $html = (array)$html;
 
         $this->html = $html;
     }
@@ -702,9 +698,7 @@ class IDS_Monitor
      */
     public function setJson($json)
     {
-        if (!is_array($json)) {
-            $json = array($json);
-        }
+        $json = (array)$json;
 
         $this->json = $json;
     }

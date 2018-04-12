@@ -432,10 +432,10 @@ class Mail_mime
             $filename = $name;
         }
 
-        if (!strlen($filename)) {
+        if ('' === $filename) {
             $msg = "The supplied filename for the attachment can't be empty";
-            $err = PEAR::raiseError($msg);
-            return $err;
+
+            return PEAR::raiseError($msg);
         }
         $filename = $this->_basename($filename);
 
@@ -885,8 +885,8 @@ class Mail_mime
         $null        = null;
         $attachments = count($this->_parts)                 ? true : false;
         $html_images = count($this->_html_images)           ? true : false;
-        $html        = strlen($this->_htmlbody)             ? true : false;
-        $text        = (!$html && strlen($this->_txtbody))  ? true : false;
+        $html        = '' !== $this->_htmlbody;
+        $text        = ( ! $html && '' !== $this->_txtbody);
 
         switch (true) {
         case $text && !$attachments:
@@ -895,7 +895,7 @@ class Mail_mime
 
         case !$text && !$html && $attachments:
             $message =& $this->_addMixedPart();
-            for ($i = 0; $i < count($this->_parts); $i++) {
+            foreach ($this->_parts as $i => $iValue) {
                 $this->_addAttachmentPart($message, $this->_parts[$i]);
             }
             break;
@@ -903,7 +903,7 @@ class Mail_mime
         case $text && $attachments:
             $message =& $this->_addMixedPart();
             $this->_addTextPart($message, $this->_txtbody);
-            for ($i = 0; $i < count($this->_parts); $i++) {
+            foreach ($this->_parts as $i => $iValue) {
                 $this->_addAttachmentPart($message, $this->_parts[$i]);
             }
             break;
@@ -930,7 +930,7 @@ class Mail_mime
 
                 $ht =& $this->_addRelatedPart($message);
                 $this->_addHtmlPart($ht);
-                for ($i = 0; $i < count($this->_html_images); $i++) {
+                foreach ($this->_html_images as $i => $iValue) {
                     $this->_addHtmlImagePart($ht, $this->_html_images[$i]);
                 }
             } else {
@@ -939,7 +939,7 @@ class Mail_mime
                 //    * image...
                 $message =& $this->_addRelatedPart($null);
                 $this->_addHtmlPart($message);
-                for ($i = 0; $i < count($this->_html_images); $i++) {
+                foreach ($this->_html_images as $i => $iValue) {
                     $this->_addHtmlImagePart($message, $this->_html_images[$i]);
                 }
             }
@@ -973,7 +973,7 @@ class Mail_mime
             } else {
                 $this->_addHtmlPart($message);
             }
-            for ($i = 0; $i < count($this->_parts); $i++) {
+            foreach ($this->_parts as $i => $iValue) {
                 $this->_addAttachmentPart($message, $this->_parts[$i]);
             }
             break;
@@ -988,10 +988,10 @@ class Mail_mime
                 $rel =& $this->_addRelatedPart($message);
             }
             $this->_addHtmlPart($rel);
-            for ($i = 0; $i < count($this->_html_images); $i++) {
+            foreach ($this->_html_images as $i => $iValue) {
                 $this->_addHtmlImagePart($rel, $this->_html_images[$i]);
             }
-            for ($i = 0; $i < count($this->_parts); $i++) {
+            foreach ($this->_parts as $i => $iValue) {
                 $this->_addAttachmentPart($message, $this->_parts[$i]);
             }
             break;
@@ -1335,11 +1335,11 @@ class Mail_mime
     public function _basename($filename)
     {
         // basename() is not unicode safe and locale dependent
-        if (stristr(PHP_OS, 'win') || stristr(PHP_OS, 'netware')) {
+        if (false !== stripos(PHP_OS, 'win') || false !== stripos(PHP_OS, 'netware')) {
             return preg_replace('/^.*[\\\\\\/]/', '', $filename);
-        } else {
-            return preg_replace('/^.*[\/]/', '', $filename);
         }
+
+        return preg_replace('/^.*[\/]/', '', $filename);
     }
 
     /**
@@ -1352,8 +1352,8 @@ class Mail_mime
     {
         $attachments = count($this->_parts)                 ? true : false;
         $html_images = count($this->_html_images)           ? true : false;
-        $html        = strlen($this->_htmlbody)             ? true : false;
-        $text        = (!$html && strlen($this->_txtbody))  ? true : false;
+        $html        = '' !== $this->_htmlbody;
+        $text        = ( ! $html && '' !== $this->_txtbody);
         $headers     = array();
 
         // See get()

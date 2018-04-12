@@ -432,18 +432,17 @@ class DB_dbase extends DB_common
             $line = fread($db, 32);
             while (!feof($db)) {
                 $line = fread($db, 32);
-                if (substr($line, 0, 1) == chr(13)) {
+                if ($line[0] == chr(13)) {
                     break;
-                } else {
-                    $pos = strpos(substr($line, 0, 10), chr(0));
-                    $pos = ($pos == 0 ? 10 : $pos);
-                    $id[$i] = array(
-                        'name'   => substr($line, 0, $pos),
-                        'type'   => $this->types[substr($line, 11, 1)],
-                        'length' => ord(substr($line, 16, 1)),
-                        'precision' => ord(substr($line, 17, 1)),
-                    );
                 }
+                $pos    = strpos(substr($line, 0, 10), chr(0));
+                $pos    = ($pos == 0 ? 10 : $pos);
+                $id[$i] = array(
+                    'name'   => substr($line, 0, $pos),
+                    'type'   => $this->types[$line[11]],
+                    'length' => ord($line[16]),
+                    'precision' => ord($line[17]),
+                );
                 $i++;
             }
 

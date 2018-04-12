@@ -143,9 +143,9 @@ class Date_Calc
         $output = '';
 
         for ($strpos = 0, $strposMax = strlen($format); $strpos < $strposMax; $strpos++) {
-            $char = substr($format, $strpos, 1);
+            $char = $format[$strpos];
             if ($char == '%') {
-                $nextchar = substr($format, $strpos + 1, 1);
+                $nextchar = $format[$strpos + 1];
                 switch($nextchar) {
                     case 'a':
                         $output .= self::getWeekdayAbbrname($day, $month, $year);

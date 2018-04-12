@@ -320,7 +320,7 @@ class HTML_QuickForm_date extends HTML_QuickForm_group
             return $str;
         }
         $trimmed = ltrim($str, '0');
-        return strlen($trimmed)? $trimmed: '0';
+        return '' !== $trimmed ? $trimmed: '0';
     }
 
     // }}}

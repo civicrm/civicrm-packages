@@ -138,7 +138,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      */
     public function toHtml()
     {
-        if (0 == strlen($this->_text)) {
+        if ('' === $this->_text) {
             $label = '';
         } elseif ($this->_flagFrozen) {
             $label = $this->_text;

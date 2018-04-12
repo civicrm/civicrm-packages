@@ -2364,7 +2364,7 @@ class DB_Table_Database extends DB_Table_Base
                         }
                     } else {
                         $fdata = array();
-                        for ($i=0; $i < count($rkey); $i++) {
+                        for ($i=0, $iMax = count($rkey); $i < $iMax; $i++) {
                             $rcol = $rkey[$i];
                             $fcol = $fkey[$i];
                             if (array_key_exists($rcol, $data)) {
@@ -2848,7 +2848,7 @@ class DB_Table_Database extends DB_Table_Base
                                 if (is_string($fkey)) {
                                     $joins[] = "$table1.$fkey = $table2.$rkey";
                                 } else {
-                                    for ($i=0; $i < count($fkey); $i++ ) {
+                                    for ($i=0, $iMax = count($fkey); $i < $iMax; $i++ ) {
                                         $fcol = $fkey[$i];
                                         $rcol = $rkey[$i];
                                         $joins[] = 
@@ -2876,7 +2876,7 @@ class DB_Table_Database extends DB_Table_Base
                                 if (is_string($fkey)) {
                                     $joins[] = "$table2.$fkey = $table1.$rkey";
                                 } else {
-                                    for ($i=0; $i < count($fkey); $i++ ) {
+                                    for ($i=0, $iMax = count($fkey); $i < $iMax; $i++ ) {
                                         $fcol = $fkey[$i];
                                         $rcol = $rkey[$i];
                                         $joins[] = 
@@ -2912,7 +2912,7 @@ class DB_Table_Database extends DB_Table_Base
                                 if (is_string($fkey1)) {
                                     $joins[] = "$link.$fkey1 = $table1.$rkey1";
                                 } else {
-                                    for ($i=0; $i < count($fkey1); $i++ ) {
+                                    for ($i=0, $iMax = count($fkey1); $i < $iMax; $i++ ) {
                                         $fcol1 = $fkey1[$i];
                                         $rcol1 = $rkey1[$i];
                                         $joins[] = 
@@ -2925,7 +2925,7 @@ class DB_Table_Database extends DB_Table_Base
                                 if (is_string($fkey2)) {
                                     $joins[] = "$link.$fkey2 = $table2.$rkey2";
                                 } else {
-                                    for ($i=0; $i < count($fkey2); $i++ ) {
+                                    for ($i=0, $iMax = count($fkey2); $i < $iMax; $i++ ) {
                                         $fcol2 = $fkey2[$i];
                                         $rcol2 = $rkey2[$i];
                                         $joins[] = 
@@ -3117,19 +3117,19 @@ class DB_Table_Database extends DB_Table_Base
                 if (null !== $value) {
                     $value = (string) $this->quote($data[$data_key]);
                     return "$filt_key = $value";
-                } else {
-                    return '';
                 }
-            } else {
+
                 return '';
             }
+
+            return '';
         } elseif (is_array($data_key)) {
             if (!is_array($filt_key)) {
                 return $this->throwError(
                           DB_TABLE_DATABASE_ERR_FILT_KEY);
             }
             $filter = array();
-            for ($i=0; $i < count($data_key); $i++) {
+            for ($i=0, $iMax = count($data_key); $i < $iMax; $i++) {
                 $data_col = $data_key[$i];
                 $filt_col = $filt_key[$i];
                 if (array_key_exists($data_col, $data)) {

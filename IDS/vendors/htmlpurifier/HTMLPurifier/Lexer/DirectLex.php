@@ -411,7 +411,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
 
             if ( $same_quote && $open_quote) {
                 // well behaved
-                $value = substr($quoted_value, 1, strlen($quoted_value) - 2);
+                $value = substr($quoted_value, 1, -2);
             } else {
                 // not well behaved
                 if ($open_quote) {

@@ -921,15 +921,16 @@ class HTTP_Request
         $path = $this->_url->path . $querystring;
         $url  = $host . $port . $path;
 
-        if (!strlen($url)) {
+        if ('' === $url) {
             $url = '/';
         }
 
         $request = $this->_method . ' ' . $url . ' HTTP/' . $this->_http . "\r\n";
 
         if (in_array($this->_method, $this->_bodyDisallowed) ||
-            (0 == strlen($this->_body) && (HTTP_REQUEST_METHOD_POST != $this->_method ||
-             (empty($this->_postData) && empty($this->_postFiles)))))
+            ('' === $this->_body
+             && (HTTP_REQUEST_METHOD_POST != $this->_method ||
+                 (empty($this->_postData) && empty($this->_postFiles)))))
         {
             $this->removeHeader('Content-Type');
         } else {
@@ -1349,7 +1350,7 @@ class HTTP_Response
             $cookie['name']  = trim(substr($elements[0], 0, $pos));
             $cookie['value'] = trim(substr($elements[0], $pos + 1));
 
-            for ($i = 1; $i < count($elements); $i++) {
+            for ($i = 1, $iMax = count($elements); $i < $iMax; $i++) {
                 if (false === strpos($elements[$i], '=')) {
                     $elName  = trim($elements[$i]);
                     $elValue = null;
@@ -1441,11 +1442,11 @@ class HTTP_Response
         if (18 > $length || strcmp(substr($data, 0, 2), "\x1f\x8b")) {
             return $data;
         }
-        $method = ord(substr($data, 2, 1));
+        $method = ord($data[2]);
         if (8 != $method) {
             return PEAR::raiseError('_decodeGzip(): unknown compression method', HTTP_REQUEST_ERROR_GZIP_METHOD);
         }
-        $flags = ord(substr($data, 3, 1));
+        $flags = ord($data[3]);
         if ($flags & 224) {
             return PEAR::raiseError('_decodeGzip(): reserved bits are set', HTTP_REQUEST_ERROR_GZIP_DATA);
         }

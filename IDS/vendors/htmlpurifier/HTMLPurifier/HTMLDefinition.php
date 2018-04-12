@@ -458,7 +458,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
             if (!$attr) {
                 continue;
             }
-            $attr = substr($attr, 0, strlen($attr) - 1); // remove trailing ]
+            $attr = substr($attr, 0, -1); // remove trailing ]
             $attr = explode('|', $attr);
             foreach ($attr as $key) {
                 $attributes["$element.$key"] = true;

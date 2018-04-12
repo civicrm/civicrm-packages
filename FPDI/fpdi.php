@@ -559,8 +559,8 @@ class FPDI extends FPDF_TPL
     			// structure and move on.
 
     			$this->_straightOut('[');
-                for ($i = 0; $i < count($value[1]); $i++) {
-    				$this->_writeValue($value[1][$i]);
+    			foreach ($value[1] as $i => $iValue) {
+    			    $this->_writeValue($value[1][$i]);
     			}
 
     			$this->_out(']');

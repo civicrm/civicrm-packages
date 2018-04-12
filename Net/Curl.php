@@ -384,11 +384,11 @@ class Net_Curl
      */
     public function __construct($url = '', $userAgent = '')
     {
-        if (is_string($url) && strlen($url)) {
+        if (is_string($url) && '' !== $url) {
             $this->url = $url;
         }
 
-        if (is_string($userAgent) && strlen($userAgent)) {
+        if (is_string($userAgent) && '' !== $userAgent) {
             $this->userAgent = $userAgent;
         }
     }
@@ -513,7 +513,7 @@ class Net_Curl
             }
 
         if (is_bool($this->verifyPeer) && $this->verifyPeer == true) {
-            if (isset($this->caInfo) && strlen($this->caInfo)) {
+            if (isset($this->caInfo) && '' !== $this->caInfo) {
                 if (file_exists($this->caInfo)) {
                     if (!$this->setOption(CURLOPT_CAINFO, $this->caInfo)) {
                         return PEAR::raiseError('Error setting CURLOPT_CAINFO');
@@ -654,12 +654,11 @@ class Net_Curl
         $info = $this->getInfo();
         if (!isset($info['http_code'])) {
             return PEAR::raiseError('Unknown or invalid HTTP response');
-        } else {
-            $type = substr($info['http_code'], 0, 1);
-            if ($type != 2 && $type != 3) {
-                return PEAR::raiseError('Unexpected HTTP code: ' .
-                                        $info['http_code']);
-            }
+        }
+        $type = $info['http_code'][0];
+        if ($type != 2 && $type != 3) {
+            return PEAR::raiseError('Unexpected HTTP code: ' .
+                                    $info['http_code']);
         }
 
         return $ret;

@@ -201,7 +201,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
             $ret['error'] = $error;
         }
         // create keys for elements grouped by native group or name
-        if (strstr($ret['name'], '[') or $this->_currentGroup) {
+        if (false !== strpos($ret['name'], '[') or $this->_currentGroup) {
             // Fix for bug #8123: escape backslashes and quotes to prevent errors 
             // in eval(). The code below seems to handle the case where element
             // name has unbalanced square brackets. Dunno whether we really

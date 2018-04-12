@@ -822,7 +822,7 @@ class XML_Util
      */
     public function splitQualifiedName($qname, $defaultNs = null)
     {
-        if (strstr($qname, ':')) {
+        if (false !== strpos($qname, ':')) {
             $tmp = explode(':', $qname);
             return array(
                 'namespace' => $tmp[0],

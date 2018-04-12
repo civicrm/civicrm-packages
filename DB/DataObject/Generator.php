@@ -412,10 +412,10 @@ class DB_DataObject_Generator extends DB_DataObject
             if (count($treffer) < 1) {
                 continue;
             }
-            for ($i = 0; $i < count($treffer); $i++) {
+            foreach ($treffer as $i => $iValue) {
                 $fk[$this->table][$treffer[$i][1]] = $treffer[$i][2] . ':' . $treffer[$i][3];
             }
-            
+
         }
 
         $links_ini = '';
@@ -637,7 +637,7 @@ class DB_DataObject_Generator extends DB_DataObject
                 continue;
             }
             
-            if (!strlen(trim($t->name))) {
+            if ('' === trim($t->name)) {
                 continue; // is this a bug?
             }
             
@@ -791,7 +791,7 @@ class DB_DataObject_Generator extends DB_DataObject
             $oldcontents = '';
             if (file_exists($outfilename)) {
                 // file_get_contents???
-                $oldcontents = implode('',file($outfilename));
+                $oldcontents = file_get_contents($outfilename);
             }
             
             $out = $this->_generateClassTable($oldcontents);
@@ -873,7 +873,7 @@ class DB_DataObject_Generator extends DB_DataObject
         $options = PEAR::getStaticProperty('DB_DataObject','options');
         
         
-        $var = (substr(phpversion(),0,1) > 4) ? 'public' : 'var';
+        $var = (PHP_VERSION[0] > 4) ? 'public' : 'var';
         $var = !empty($options['generator_var_keyword']) ? $options['generator_var_keyword'] : $var;
         
         
@@ -905,7 +905,7 @@ class DB_DataObject_Generator extends DB_DataObject
         $connections = array();
         $sets = array();
         foreach($defs as $t) {
-            if (!strlen(trim($t->name))) {
+            if ('' === trim($t->name)) {
                 continue;
             }
             if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $t->name)) {
@@ -941,7 +941,7 @@ class DB_DataObject_Generator extends DB_DataObject
         // and replace them with $x = clone($y);
         // due to the change in the PHP5 clone design.
         
-        if ( substr(phpversion(),0,1) < 5) {
+        if (PHP_VERSION[0] < 5) {
             $body .= "\n";
             $body .= "    /* ZE2 compatibility trick*/\n";
             $body .= "    function __clone() { return \$this;}\n";
@@ -990,7 +990,7 @@ class DB_DataObject_Generator extends DB_DataObject
         
         if (!empty($options['generator_add_validate_stubs'])) {
             foreach($defs as $t) {
-                if (!strlen(trim($t->name))) {
+                if ('' === trim($t->name)) {
                     continue;
                 }
                 $validate_fname = 'validate' . $this->getMethodNameFromColumnName($t->name);
@@ -1040,7 +1040,7 @@ class DB_DataObject_Generator extends DB_DataObject
             '/(\n|\r\n)\s*###START_AUTOCODE(\n|\r\n).*(\n|\r\n)\s*###END_AUTOCODE(\n|\r\n)/s',
             $body,$input);
         
-        if (!strlen($ret)) {
+        if ('' === $ret) {
             return PEAR::raiseError(
                 "PREG_REPLACE failed to replace body, - you probably need to set these in your php.ini\n".
                 "pcre.backtrack_limit=1000000\n".
@@ -1281,7 +1281,7 @@ class DB_DataObject_Generator extends DB_DataObject
             // build mehtod name
             $methodName = 'get' . $this->getMethodNameFromColumnName($t->name);
 
-            if (!strlen(trim($t->name)) || preg_match("/function[\s]+[&]?$methodName\(/i", $input)) {
+            if ('' === trim($t->name) || preg_match("/function[\s]+[&]?$methodName\(/i", $input)) {
                 continue;
             }
 
@@ -1292,7 +1292,7 @@ class DB_DataObject_Generator extends DB_DataObject
                                                              : "    * @return   {$t->type}\n";
             $getters .= "    * @access   public\n";
             $getters .= "    */\n";
-            $getters .= (substr(phpversion(),0,1) > 4) ? '    public '
+            $getters .= (PHP_VERSION[0] > 4) ? '    public '
                                                        : '    ';
             $getters .= "function $methodName() {\n";
             $getters .= "        return \$this->{$t->name};\n";
@@ -1334,7 +1334,7 @@ class DB_DataObject_Generator extends DB_DataObject
             // build mehtod name
             $methodName = 'set' . $this->getMethodNameFromColumnName($t->name);
 
-            if (!strlen(trim($t->name)) || preg_match("/function[\s]+[&]?$methodName\(/i", $input)) {
+            if ('' === trim($t->name) || preg_match("/function[\s]+[&]?$methodName\(/i", $input)) {
                 continue;
             }
 
@@ -1344,7 +1344,7 @@ class DB_DataObject_Generator extends DB_DataObject
             $setters .= "    * @param    mixed   input value\n";
             $setters .= "    * @access   public\n";
             $setters .= "    */\n";
-            $setters .= (substr(phpversion(),0,1) > 4) ? '    public '
+            $setters .= (PHP_VERSION[0] > 4) ? '    public '
                                                        : '    ';
             $setters .= "function $methodName(\$value) {\n";
             $setters .= "        \$this->{$t->name} = \$value;\n";
@@ -1541,7 +1541,7 @@ class DB_DataObject_Generator extends DB_DataObject
                 
                  
                 default:    // hopefully eveything else...  - numbers etc.
-                    if (!strlen($ar['Default'])) {
+                    if ('' === $ar['Default']) {
                         continue;
                     }
                     if (is_numeric($ar['Default'])) {

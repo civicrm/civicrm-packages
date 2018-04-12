@@ -757,7 +757,7 @@ class HTML_QuickForm extends HTML_Common
      * @param bool      $appendName         (optional)specify whether the group name should be
      *                                      used in the form element name ex: group[element]
      *
-     * @return   HTML_QuickForm_group       reference to a newly added group
+     * @return \HTML_QuickForm_Element|\HTML_QuickForm_group
      * @since    2.8
      * @access   public
      * @throws \HTML_QuickForm_Error
@@ -766,7 +766,7 @@ class HTML_QuickForm extends HTML_Common
     {
         static $anonGroups = 1;
 
-        if (0 == strlen($name)) {
+        if ('' === $name) {
             $name       = 'qf_group_' . $anonGroups++;
             $appendName = false;
         }
@@ -1271,9 +1271,7 @@ class HTML_QuickForm extends HTML_Common
         if ($element == '__ALL__') {
             $this->_submitValues = $this->_recursiveFilter($filter, $this->_submitValues);
         } else {
-            if (!is_array($element)) {
-                $element = array($element);
-            }
+            $element = (array)$element;
             foreach ($element as $elName) {
                 $value = $this->getSubmitValue($elName);
                 if (null !== $value) {

@@ -35,15 +35,9 @@ class HTMLPurifier_DoctypeRegistry
     public function register($doctype, $xml = true, $modules = array(),
         $tidy_modules = array(), $aliases = array(), $dtd_public = null, $dtd_system = null
     ) {
-        if (!is_array($modules)) {
-            $modules = array($modules);
-        }
-        if (!is_array($tidy_modules)) {
-            $tidy_modules = array($tidy_modules);
-        }
-        if (!is_array($aliases)) {
-            $aliases = array($aliases);
-        }
+        $modules = (array)$modules;
+        $tidy_modules = (array)$tidy_modules;
+        $aliases = (array)$aliases;
         if (!is_object($doctype)) {
             $doctype = new HTMLPurifier_Doctype(
                 $doctype, $xml, $modules, $tidy_modules, $aliases, $dtd_public, $dtd_system

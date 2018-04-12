@@ -245,7 +245,7 @@ EOS;
 
             $js .= $this->_js;
             $js .= 'var ' . $arrayName . " = new Array();\n";
-            for ($i = 0; $i < count($this->_options); $i++) {
+            foreach ($this->_options as $i => $iValue) {
                 $js .= $arrayName . '[' . $i . "] = '" . strtr($this->_options[$i], $jsEscape) . "';\n";
             }
             $js .= "//]]>\n</script>";

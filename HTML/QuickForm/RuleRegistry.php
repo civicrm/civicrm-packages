@@ -178,8 +178,8 @@ class HTML_QuickForm_RuleRegistry
         } else {
             $jsValue = "  value = new Array();\n";
             $jsReset = '';
-            for ($i = 0; $i < count($element); $i++) {
-                list($tmp_value, $tmp_reset) = $this->_getJsValue($element[$i], $element[$i]->getName(), $reset, $i);
+            foreach ($element as $i => $iValue) {
+                list($tmp_value, $tmp_reset) = $this->_getJsValue($element[$i], $iValue->getName(), $reset, $i);
                 $jsValue .= "\n" . $tmp_value;
                 $jsReset .= $tmp_reset;
             }
