@@ -77,8 +77,8 @@ class image_gmagick extends image {
                 $x = round(($width - $w) / 2);
                 $y = round(($height - $h) / 2);
                 $img = new \Gmagick();
-                $img->newImage($width, $height, $background);
-                $img->compositeImage($this->image, 1, $x, $y);
+                $img->newimage($width, $height, $background);
+                $img->compositeimage($this->image, 1, $x, $y);
             } catch (\Exception $e) {
                 return false;
             }
@@ -199,8 +199,8 @@ class image_gmagick extends image {
     public function watermark($file, $left=false, $top=false) {
         try {
             $wm = new \Gmagick($file);
-            $w = $wm->getImageWidth();
-            $h = $wm->getImageHeight();
+            $w = $wm->getimagewidth();
+            $h = $wm->getimageheight();
         } catch (\Exception $e) {
             return false;
         }
@@ -240,7 +240,7 @@ class image_gmagick extends image {
     protected function getBlankImage($width, $height) {
         try {
             $img = new \Gmagick();
-            $img->newImage($width, $height, "none");
+            $img->newimage($width, $height, "none");
         } catch (\Exception $e) {
             return false;
         }
@@ -263,8 +263,8 @@ class image_gmagick extends image {
 
         } elseif (is_object($image) && ($image instanceof \Gmagick)) {
             try {
-                $w = $image->getImageWidth();
-                $h = $image->getImageHeight();
+                $w = $image->getimagewidth();
+                $h = $image->getimageheight();
             } catch (\Exception $e) {
                 return false;
             }
@@ -275,8 +275,8 @@ class image_gmagick extends image {
         } elseif (is_string($image)) {
             try {
                 $image = new \Gmagick($image);
-                $w = $image->getImageWidth();
-                $h = $image->getImageHeight();
+                $w = $image->getimagewidth();
+                $h = $image->getimageheight();
             } catch (\Exception $e) {
                 return false;
             }

@@ -433,7 +433,7 @@ class HTTP_Request
     */
     public function getUrl()
     {
-        return empty($this->_url)? '': $this->_url->getUrl();
+        return empty($this->_url)? '': $this->_url->getURL();
     }
 
     /**

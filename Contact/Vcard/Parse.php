@@ -721,7 +721,7 @@ class Contact_Vcard_Parse
      */
     public function _parseORG($text)
     {
-        $tmp  = $this->splitbySemi($text);
+        $tmp  = $this->splitBySemi($text);
         $list = array();
         foreach ($tmp as $val) {
             $list[] = array($val);

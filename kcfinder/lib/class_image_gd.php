@@ -468,7 +468,7 @@ class image_gd extends image {
         if ($color === false) {
             return false;
         }
-        return imageFilledRectangle($this->image, $x1, $y1, $x2, $y2, $color);
+        return imagefilledrectangle($this->image, $x1, $y1, $x2, $y2, $color);
     }
 
     /**

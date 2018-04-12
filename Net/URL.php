@@ -191,7 +191,7 @@ class Net_URL
                         break;
 
                     case 'query':
-                        $this->querystring = $this->_parseRawQueryString($value);
+                        $this->querystring = $this->_parseRawQuerystring($value);
                         break;
 
                     case 'fragment':
@@ -272,7 +272,7 @@ class Net_URL
     */
     public function addRawQueryString($querystring)
     {
-        $this->querystring = $this->_parseRawQueryString($querystring);
+        $this->querystring = $this->_parseRawQuerystring($querystring);
     }
 
     /**

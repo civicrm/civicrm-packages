@@ -3920,7 +3920,7 @@ class DB_DataObject extends DB_DataObject_Overload
         /* php5 version which segfaults on 5.0.3 */
         if (class_exists('ReflectionClass')) {
             $reflection = new ReflectionClass($class);
-            $array = array_keys($reflection->getdefaultProperties());
+            $array = array_keys($reflection->getDefaultProperties());
         }
 
         if (!in_array($element,$array)) {

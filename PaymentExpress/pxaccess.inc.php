@@ -379,7 +379,7 @@ class PxAccess
 		$resp = trim($this->decrypt_tripledes($enc, $this->Des_Key));
 		$xml = substr($resp, 0, strlen($resp)-8);
 	    $mac = substr($resp, -8);
-		$checkmac = $this->makeMac($xml, $this->Mac_Key);
+		$checkmac = $this->makeMAC($xml, $this->Mac_Key);
 		if($mac != $checkmac){
 			$xml = '<success>0</success><ResponseText>Response MAC Invalid</ResponseText>';
 		}

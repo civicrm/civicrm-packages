@@ -325,7 +325,7 @@ class pjpgCustInfo
     public function setInstructions($instructions)
    {
       $this->instructions=$instructions;
-      $this->setCustinfo(array(email=>$this->email,instructions=>$instructions));
+      $this->setCustInfo(array(email =>$this->email, instructions =>$instructions));
    }
 
     /**
