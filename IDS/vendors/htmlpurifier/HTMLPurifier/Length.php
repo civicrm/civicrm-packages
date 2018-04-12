@@ -45,7 +45,7 @@ class HTMLPurifier_Length
      * @warning Does not perform validation.
      * @return \HTMLPurifier_Length|string
      */
-    static public function make($s) {
+    public static function make($s) {
         if ($s instanceof HTMLPurifier_Length) {
             return $s;
         }

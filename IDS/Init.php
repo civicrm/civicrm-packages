@@ -100,7 +100,7 @@ class IDS_Init
      * 
      * @return void
      */
-    public final function __clone() 
+    final public function __clone()
     {
     }
 

@@ -33,5 +33,5 @@ abstract class AbstractWordFilter implements Filter {
      *
      * @return mixed
      */
-    public abstract function filterWord(CommitMessage $message, $word);
+    abstract public function filterWord(CommitMessage $message, $word);
 }

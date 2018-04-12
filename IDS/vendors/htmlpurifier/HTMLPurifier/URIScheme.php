@@ -39,7 +39,7 @@ abstract class HTMLPurifier_URIScheme
      * @param $context HTMLPurifier_Context object
      * @return Bool success or failure
      */
-    public abstract function doValidate(&$uri, $config, $context);
+    abstract public function doValidate(&$uri, $config, $context);
 
     /**
      * Public interface for validating components of a URI.  Performs a

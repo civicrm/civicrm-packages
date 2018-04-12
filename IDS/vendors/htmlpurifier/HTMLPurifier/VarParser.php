@@ -181,7 +181,7 @@ class HTMLPurifier_VarParser
      *
      * @return string
      */
-    static public function getTypeName($type) {
+    public static function getTypeName($type) {
         static $lookup;
         if (!$lookup) {
             // Lazy load the alternative lookup table

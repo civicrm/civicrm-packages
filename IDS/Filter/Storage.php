@@ -88,7 +88,7 @@ class IDS_Filter_Storage
      *
      * @throws \Exception if unsupported filter type is given
      */
-    public final function __construct(IDS_Init $init) 
+    final public function __construct(IDS_Init $init)
     {
         if ($init->config) {
 
@@ -125,7 +125,7 @@ class IDS_Filter_Storage
      * 
      * @return object $this
      */
-    public final function setFilterSet($filterSet) 
+    final public function setFilterSet($filterSet)
     {
         foreach ($filterSet as $filter) {
             $this->addFilter($filter);
@@ -139,7 +139,7 @@ class IDS_Filter_Storage
      *
      * @return array
      */
-    public final function getFilterSet() 
+    final public function getFilterSet()
     {
         return $this->filterSet;
     }
@@ -151,7 +151,7 @@ class IDS_Filter_Storage
      *
      * @return object $this
      */
-    public final function addFilter(IDS_Filter $filter) 
+    final public function addFilter(IDS_Filter $filter)
     {
         $this->filterSet[] = $filter;
         return $this;
