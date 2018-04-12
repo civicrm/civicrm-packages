@@ -107,19 +107,27 @@ abstract class HTMLPurifier_AttrDef
                 if (ctype_xdigit($string[$i])) {
                     $code = $string[$i];
                     for ($a = 1, $i++; $i < $c && $a < 6; $i++, $a++) {
-                        if (!ctype_xdigit($string[$i])) break;
+                        if (!ctype_xdigit($string[$i])) {
+                            break;
+                        }
                         $code .= $string[$i];
                     }
                     // We have to be extremely careful when adding
                     // new characters, to make sure we're not breaking
                     // the encoding.
                     $char = HTMLPurifier_Encoder::unichr(hexdec($code));
-                    if (HTMLPurifier_Encoder::cleanUTF8($char) === '') continue;
+                    if (HTMLPurifier_Encoder::cleanUTF8($char) === '') {
+                        continue;
+                    }
                     $ret .= $char;
-                    if ($i < $c && trim($string[$i]) !== '') $i--;
+                    if ($i < $c && trim($string[$i]) !== '') {
+                        $i--;
+                    }
                     continue;
                 }
-                if ($string[$i] === "\n") continue;
+                if ($string[$i] === "\n") {
+                    continue;
+                }
             }
             $ret .= $string[$i];
         }

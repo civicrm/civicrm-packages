@@ -15,7 +15,9 @@ class HTMLPurifier_AttrTransform_SafeObject extends HTMLPurifier_AttrTransform
      * @return \Assoc
      */
     public function transform($attr, $config, $context) {
-        if (!isset($attr['type'])) $attr['type'] = 'application/x-shockwave-flash';
+        if (!isset($attr['type'])) {
+            $attr['type'] = 'application/x-shockwave-flash';
+        }
         return $attr;
     }
 }

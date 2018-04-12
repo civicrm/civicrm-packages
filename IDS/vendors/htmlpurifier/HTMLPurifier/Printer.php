@@ -116,7 +116,9 @@ class HTMLPurifier_Printer
      * @return string
      */
     protected function row($name, $value) {
-        if (is_bool($value)) $value = $value ? 'On' : 'Off';
+        if (is_bool($value)) {
+            $value = $value ? 'On' : 'Off';
+        }
         return
             $this->start('tr') . "\n" .
                 $this->element('th', $name) . "\n" .
@@ -147,14 +149,20 @@ class HTMLPurifier_Printer
      * @return string
      */
     protected function listify($array, $polite = false) {
-        if (empty($array)) return 'None';
+        if (empty($array)) {
+            return 'None';
+        }
         $ret = '';
         $i = count($array);
         foreach ($array as $value) {
             $i--;
             $ret .= $value;
-            if ($i > 0 && !($polite && $i == 1)) $ret .= ', ';
-            if ($polite && $i == 1) $ret .= 'and ';
+            if ($i > 0 && !($polite && $i == 1)) {
+                $ret .= ', ';
+            }
+            if ($polite && $i == 1) {
+                $ret .= 'and ';
+            }
         }
         return $ret;
     }
@@ -168,9 +176,13 @@ class HTMLPurifier_Printer
      */
     protected function getClass($obj, $sec_prefix = '') {
         static $five = null;
-        if ($five === null) $five = version_compare(PHP_VERSION, '5', '>=');
+        if ($five === null) {
+            $five = version_compare(PHP_VERSION, '5', '>=');
+        }
         $prefix = 'HTMLPurifier_' . $sec_prefix;
-        if (!$five) $prefix = strtolower($prefix);
+        if (!$five) {
+            $prefix = strtolower($prefix);
+        }
         $class = str_replace($prefix, '', get_class($obj));
         $lclass = strtolower($class);
         $class .= '(';
@@ -199,7 +211,9 @@ class HTMLPurifier_Printer
                 break;
             case 'css_importantdecorator':
                 $class .= $this->getClass($obj->def, $sec_prefix);
-                if ($obj->allow) $class .= ', !important';
+                if ($obj->allow) {
+                    $class .= ', !important';
+                }
                 break;
         }
         $class .= ')';

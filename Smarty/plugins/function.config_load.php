@@ -60,10 +60,12 @@ function smarty_function_config_load($params, &$smarty)
                          'get_source' => false);
         $smarty->_parse_resource_name($_params);
         $_file_path = $_params['resource_type'] . ':' . $_params['resource_name'];
-        if (isset($_section))
-            $_compile_file = $smarty->_get_compile_path($_file_path.'|'.$_section);
-        else
+        if (isset($_section)) {
+            $_compile_file = $smarty->_get_compile_path($_file_path . '|' . $_section);
+        }
+        else {
             $_compile_file = $smarty->_get_compile_path($_file_path);
+        }
 
         if($smarty->force_compile || !file_exists($_compile_file)) {
             $_compile = true;

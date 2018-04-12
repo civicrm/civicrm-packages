@@ -70,7 +70,9 @@ class HTMLPurifier_VarParser
             }
         }
         $var = $this->parseImplementation($var, $type, $allow_null);
-        if ($allow_null && $var === null) return null;
+        if ($allow_null && $var === null) {
+            return null;
+        }
         // These are basic checks, to make sure nothing horribly wrong
         // happened in our implementations.
         switch ($type) {
@@ -78,27 +80,45 @@ class HTMLPurifier_VarParser
             case (self::ISTRING):
             case (self::TEXT):
             case (self::ITEXT):
-                if (!is_string($var)) break;
-                if ($type == self::ISTRING || $type == self::ITEXT) $var = strtolower($var);
+                if (!is_string($var)) {
+                    break;
+                }
+                if ($type == self::ISTRING || $type == self::ITEXT) {
+                    $var = strtolower($var);
+                }
                 return $var;
             case (self::INT):
-                if (!is_int($var)) break;
+                if (!is_int($var)) {
+                    break;
+                }
                 return $var;
             case (self::FLOAT):
-                if (!is_float($var)) break;
+                if (!is_float($var)) {
+                    break;
+                }
                 return $var;
             case (self::BOOL):
-                if (!is_bool($var)) break;
+                if (!is_bool($var)) {
+                    break;
+                }
                 return $var;
             case (self::LOOKUP):
             case (self::ALIST):
             case (self::HASH):
-                if (!is_array($var)) break;
+                if (!is_array($var)) {
+                    break;
+                }
                 if ($type === self::LOOKUP) {
-                    foreach ($var as $k) if ($k !== true) $this->error('Lookup table contains value other than true');
+                    foreach ($var as $k) {
+                        if ($k !== true) {
+                            $this->error('Lookup table contains value other than true');
+                        }
+                    }
                 } elseif ($type === self::ALIST) {
                     $keys = array_keys($var);
-                    if (array_keys($keys) !== $keys) $this->error('Indices for list are not uniform');
+                    if (array_keys($keys) !== $keys) {
+                        $this->error('Indices for list are not uniform');
+                    }
                 }
                 return $var;
             case (self::MIXED):
@@ -167,7 +187,9 @@ class HTMLPurifier_VarParser
             // Lazy load the alternative lookup table
             $lookup = array_flip(HTMLPurifier_VarParser::$types);
         }
-        if (!isset($lookup[$type])) return 'unknown';
+        if (!isset($lookup[$type])) {
+            return 'unknown';
+        }
         return $lookup[$type];
     }
 

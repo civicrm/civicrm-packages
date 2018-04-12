@@ -96,7 +96,9 @@ class HTMLPurifier_LanguageFactory
         } else {
             $code = $this->validator->validate($code, $config, $context);
         }
-        if ($code === false) $code = 'en'; // malformed code becomes English
+        if ($code === false) {
+            $code = 'en';
+        } // malformed code becomes English
 
         $pcode = str_replace('-', '_', $code); // make valid PHP classname
         static $depth = 0; // recursion protection
@@ -149,7 +151,9 @@ class HTMLPurifier_LanguageFactory
         static $languages_seen = array(); // recursion guard
 
         // abort if we've already loaded it
-        if (isset($this->cache[$code])) return;
+        if (isset($this->cache[$code])) {
+            return;
+        }
 
         // generate filename
         $filename = $this->dir . '/Language/messages/' . $code . '.php';

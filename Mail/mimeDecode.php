@@ -327,8 +327,9 @@ class Mail_mimeDecode extends PEAR
                     for ($i = 0; $i < count($parts); $i++) {
                         list($part_header, $part_body) = $this->_splitBodyHeader($parts[$i]);
                         $part = $this->_decode($part_header, $part_body, $default_ctype);
-                        if($part === false)
+                        if($part === false) {
                             $part = $this->raiseError($this->_error);
+                        }
                         $return->parts[] = $part;
                     }
                     break;
@@ -346,8 +347,9 @@ class Mail_mimeDecode extends PEAR
                     break;
 
                 default:
-                    if(!isset($content_transfer_encoding['value']))
+                    if(!isset($content_transfer_encoding['value'])) {
                         $content_transfer_encoding['value'] = '7bit';
+                    }
                     $this->_include_bodies ? $return->body = ($this->_decode_bodies ? $this->_decodeBody($body, $content_transfer_encoding['value']) : $body) : null;
                     break;
             }
@@ -444,8 +446,9 @@ class Mail_mimeDecode extends PEAR
             foreach ($headers as $value) {
                 $hdr_name = substr($value, 0, $pos = strpos($value, ':'));
                 $hdr_value = substr($value, $pos+1);
-                if($hdr_value[0] == ' ')
+                if($hdr_value[0] == ' ') {
                     $hdr_value = substr($hdr_value, 1);
+                }
 
                 $return[] = array(
                                   'name'  => $hdr_name,
@@ -571,8 +574,9 @@ class Mail_mimeDecode extends PEAR
                 case 'q':
                     $text = str_replace('_', ' ', $text);
                     preg_match_all('/=([a-f0-9]{2})/i', $text, $matches);
-                    foreach($matches[1] as $value)
-                        $text = str_replace('='.$value, chr(hexdec($value)), $text);
+                    foreach($matches[1] as $value) {
+                        $text = str_replace('=' . $value, chr(hexdec($value)), $text);
+                    }
                     break;
             }
 

@@ -38,9 +38,13 @@ class HTMLPurifier_StringHashParser
      * @return array|bool
      */
     public function parseFile($file) {
-        if (!file_exists($file)) return false;
+        if (!file_exists($file)) {
+            return false;
+        }
         $fh = fopen($file, 'r');
-        if (!$fh) return false;
+        if (!$fh) {
+            return false;
+        }
         $ret = $this->parseHandle($fh);
         fclose($fh);
         return $ret;
@@ -52,10 +56,14 @@ class HTMLPurifier_StringHashParser
      * @return array|bool
 */
     public function parseMultiFile($file) {
-        if (!file_exists($file)) return false;
+        if (!file_exists($file)) {
+            return false;
+        }
         $ret = array();
         $fh = fopen($file, 'r');
-        if (!$fh) return false;
+        if (!$fh) {
+            return false;
+        }
         while (!feof($fh)) {
             $ret[] = $this->parseHandle($fh);
         }
@@ -81,17 +89,25 @@ class HTMLPurifier_StringHashParser
         $ret     = array();
         do {
             $line = fgets($fh);
-            if ($line === false) break;
+            if ($line === false) {
+                break;
+            }
             $line = rtrim($line, "\n\r");
-            if (!$state && $line === '') continue;
-            if ($line === '----') break;
+            if (!$state && $line === '') {
+                continue;
+            }
+            if ($line === '----') {
+                break;
+            }
             if (strncmp('--#', $line, 3) === 0) {
                 // Comment
                 continue;
             } elseif (strncmp('--', $line, 2) === 0) {
                 // Multiline declaration
                 $state = trim($line, '- ');
-                if (!isset($ret[$state])) $ret[$state] = '';
+                if (!isset($ret[$state])) {
+                    $ret[$state] = '';
+                }
                 continue;
             } elseif (!$state) {
                 $single = true;

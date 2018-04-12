@@ -103,7 +103,10 @@ class Structures_Graph {
      */
     public function addNode(&$newNode) {
         // We only add nodes
-        if (!is_a($newNode, 'Structures_Graph_Node')) return Pear::raiseError('Structures_Graph::addNode received an object that is not a Structures_Graph_Node', STRUCTURES_GRAPH_ERROR_GENERIC);
+        if (!is_a($newNode, 'Structures_Graph_Node')) {
+            return Pear::raiseError('Structures_Graph::addNode received an object that is not a Structures_Graph_Node',
+              STRUCTURES_GRAPH_ERROR_GENERIC);
+        }
         // Graphs are node *sets*, so duplicates are forbidden. We allow nodes that are exactly equal, but disallow equal references.
         foreach($this->_nodes as $key => $node) {
             /*
@@ -116,10 +119,15 @@ class Structures_Graph {
             $this->_nodes[$key] = true;
             if ($node === true) {
                 $this->_nodes[$key] = false;
-                if ($node === false) $referenceIsEqualFlag = true;
+                if ($node === false) {
+                    $referenceIsEqualFlag = true;
+                }
             }
             $this->_nodes[$key] = $savedData;
-            if ($referenceIsEqualFlag) return Pear::raiseError('Structures_Graph::addNode received an object that is a duplicate for this dataset', STRUCTURES_GRAPH_ERROR_GENERIC);
+            if ($referenceIsEqualFlag) {
+                return Pear::raiseError('Structures_Graph::addNode received an object that is a duplicate for this dataset',
+                  STRUCTURES_GRAPH_ERROR_GENERIC);
+            }
         }
         $this->_nodes[] =& $newNode;
         $newNode->setGraph($this);

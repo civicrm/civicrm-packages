@@ -23,9 +23,15 @@ class HTMLPurifier_PercentEncoder
      */
     public function __construct($preserve = false) {
         // unreserved letters, ought to const-ify
-        for ($i = 48; $i <= 57;  $i++) $this->preserve[$i] = true; // digits
-        for ($i = 65; $i <= 90;  $i++) $this->preserve[$i] = true; // upper-case
-        for ($i = 97; $i <= 122; $i++) $this->preserve[$i] = true; // lower-case
+        for ($i = 48; $i <= 57;  $i++) {
+            $this->preserve[$i] = true;
+        } // digits
+        for ($i = 65; $i <= 90;  $i++) {
+            $this->preserve[$i] = true;
+        } // upper-case
+        for ($i = 97; $i <= 122; $i++) {
+            $this->preserve[$i] = true;
+        } // lower-case
         $this->preserve[45] = true; // Dash         -
         $this->preserve[46] = true; // Period       .
         $this->preserve[95] = true; // Underscore   _
@@ -73,7 +79,9 @@ class HTMLPurifier_PercentEncoder
      * @return mixed|string
      */
     public function normalize($string) {
-        if ($string == '') return '';
+        if ($string == '') {
+            return '';
+        }
         $parts = explode('%', $string);
         $ret = array_shift($parts);
         foreach ($parts as $part) {

@@ -3684,35 +3684,43 @@ class DB_DataObject extends DB_DataObject_Overload
 
             if (!isset($this->$k)) {
                 if (!$hideEmpty) {
-                    if ($format === null)
+                    if ($format === null) {
                         $ret[$k] = '';
-                    else
-                        $ret[sprintf($format,$k)] = '';
+                    }
+                    else {
+                        $ret[sprintf($format, $k)] = '';
+                    }
                 }
                 continue;
             }
             // call the overloaded getXXXX() method. - except getLink and getLinks
             if (method_exists($this,'get'.$k) && !in_array(strtolower($k),array('links','link'))) {
-                if ($format === null)
-                    $ret[$k] = $this->{'get'.$k}();
-                else
-                    $ret[sprintf($format,$k)] = $this->{'get'.$k}();
+                if ($format === null) {
+                    $ret[$k] = $this->{'get' . $k}();
+                }
+                else {
+                    $ret[sprintf($format, $k)] = $this->{'get' . $k}();
+                }
                 continue;
             }
             // should this call toValue() ???
-            if ($format === null)
+            if ($format === null) {
                 $ret[$k] = $this->$k;
-            else
-                $ret[sprintf($format,$k)] = $this->$k;
+            }
+            else {
+                $ret[sprintf($format, $k)] = $this->$k;
+            }
         }
         if (!$this->_link_loaded) {
             return $ret;
         }
         foreach($this->_link_loaded as $k) {
-            if ($format === null)
+            if ($format === null) {
                 $ret[$k] = $this->$k->toArray();
-            else
-                $ret[sprintf($format,$k)] = $this->$k->toArray();
+            }
+            else {
+                $ret[sprintf($format, $k)] = $this->$k->toArray();
+            }
         }
 
         return $ret;

@@ -27,7 +27,9 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
             $elements = array_flip($elements);
             foreach ($elements as $i => $x) {
                 $elements[$i] = true;
-                if (empty($i)) unset($elements[$i]); // remove blank
+                if (empty($i)) {
+                    unset($elements[$i]);
+                } // remove blank
             }
         }
         $this->elements = $elements;
@@ -47,7 +49,9 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
         $this->whitespace = false;
 
         // if there are no tokens, delete parent node
-        if (empty($tokens_of_children)) return false;
+        if (empty($tokens_of_children)) {
+            return false;
+        }
 
         // the new set of children
         $result = array();
@@ -112,12 +116,16 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
                 // drop silently
             }
         }
-        if (empty($result)) return false;
+        if (empty($result)) {
+            return false;
+        }
         if ($all_whitespace) {
             $this->whitespace = true;
             return false;
         }
-        if ($tokens_of_children == $result) return true;
+        if ($tokens_of_children == $result) {
+            return true;
+        }
         return $result;
     }
 }

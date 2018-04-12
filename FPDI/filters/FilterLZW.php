@@ -108,8 +108,9 @@ class FilterLZW
     {
         $this->_sTable = array();
 
-        for ($i = 0; $i < 256; $i++)
+        for ($i = 0; $i < 256; $i++) {
             $this->_sTable[$i] = chr($i);
+        }
 
         $this->_tIdx = 258;
         $this->_bitsToGet = 9;

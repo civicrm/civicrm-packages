@@ -198,7 +198,9 @@ class Structures_Graph_Node {
     * @access	public
     */
     public function unsetMetadata($key) {
-        if (array_key_exists($key, $this->_metadata)) unset($this->_metadata[$key]);
+        if (array_key_exists($key, $this->_metadata)) {
+            unset($this->_metadata[$key]);
+        }
     }
     /* }}} */
 
@@ -243,10 +245,19 @@ class Structures_Graph_Node {
      */
     public function connectTo(&$destinationNode) {
         // We only connect to nodes
-        if (!is_a($destinationNode, 'Structures_Graph_Node')) return Pear::raiseError('Structures_Graph_Node::connectTo received an object that is not a Structures_Graph_Node', STRUCTURES_GRAPH_ERROR_GENERIC);
+        if (!is_a($destinationNode, 'Structures_Graph_Node')) {
+            return Pear::raiseError('Structures_Graph_Node::connectTo received an object that is not a Structures_Graph_Node',
+              STRUCTURES_GRAPH_ERROR_GENERIC);
+        }
         // Nodes must already be in graphs to be connected
-        if ($this->_graph == null) return Pear::raiseError('Structures_Graph_Node::connectTo Tried to connect a node that is not in a graph', STRUCTURES_GRAPH_ERROR_GENERIC);
-        if ($destinationNode->getGraph() == null) return Pear::raiseError('Structures_Graph_Node::connectTo Tried to connect to a node that is not in a graph', STRUCTURES_GRAPH_ERROR_GENERIC);
+        if ($this->_graph == null) {
+            return Pear::raiseError('Structures_Graph_Node::connectTo Tried to connect a node that is not in a graph',
+              STRUCTURES_GRAPH_ERROR_GENERIC);
+        }
+        if ($destinationNode->getGraph() == null) {
+            return Pear::raiseError('Structures_Graph_Node::connectTo Tried to connect to a node that is not in a graph',
+              STRUCTURES_GRAPH_ERROR_GENERIC);
+        }
         // Connect here
         $this->_connectTo($destinationNode);
         // If graph is undirected, connect back
@@ -313,12 +324,18 @@ class Structures_Graph_Node {
     * @access	public
     */
     public function inDegree() {
-        if ($this->_graph == null) return 0;
-        if (!$this->_graph->isDirected()) return $this->outDegree();
+        if ($this->_graph == null) {
+            return 0;
+        }
+        if (!$this->_graph->isDirected()) {
+            return $this->outDegree();
+        }
         $result = 0;
         $graphNodes =& $this->_graph->getNodes();
         foreach (array_keys($graphNodes) as $key) {
-            if ($graphNodes[$key]->connectsTo($this)) $result++;
+            if ($graphNodes[$key]->connectsTo($this)) {
+                $result++;
+            }
         }
         return $result;
         
@@ -337,7 +354,9 @@ class Structures_Graph_Node {
     * @access	public
     */
     public function outDegree() {
-        if ($this->_graph == null) return 0;
+        if ($this->_graph == null) {
+            return 0;
+        }
         return sizeof($this->_arcs);
     }
     /* }}} */

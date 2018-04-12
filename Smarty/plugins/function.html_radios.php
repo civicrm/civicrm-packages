@@ -100,15 +100,18 @@ function smarty_function_html_radios($params, &$smarty)
         }
     }
 
-    if (!isset($options) && !isset($values))
-        return ''; /* raise error here? */
+    if (!isset($options) && !isset($values)) {
+        return '';
+    } /* raise error here? */
 
     $_html_result = array();
 
     if (isset($options)) {
 
-        foreach ($options as $_key=>$_val)
-            $_html_result[] = smarty_function_html_radios_output($name, $_key, $_val, $selected, $extra, $separator, $labels, $label_ids);
+        foreach ($options as $_key=>$_val) {
+            $_html_result[] = smarty_function_html_radios_output($name, $_key, $_val, $selected, $extra, $separator,
+              $labels, $label_ids);
+        }
 
     } else {
 
@@ -153,13 +156,17 @@ function smarty_function_html_radios_output($name, $value, $output, $selected, $
         . smarty_function_escape_special_chars($name) . '" value="'
         . smarty_function_escape_special_chars($value) . '"';
 
-   if ($labels && $label_ids) $_output .= ' id="' . $_id . '"';
+   if ($labels && $label_ids) {
+       $_output .= ' id="' . $_id . '"';
+   }
 
     if ((string)$value==$selected) {
         $_output .= ' checked="checked"';
     }
     $_output .= $extra . ' />' . $output;
-    if ($labels) $_output .= '</label>';
+    if ($labels) {
+        $_output .= '</label>';
+    }
     $_output .=  $separator;
 
     return $_output;

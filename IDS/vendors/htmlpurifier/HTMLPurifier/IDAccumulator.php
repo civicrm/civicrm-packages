@@ -35,7 +35,9 @@ class HTMLPurifier_IDAccumulator
      * @return Bool status, true if success, false if there's a dupe
      */
     public function add($id) {
-        if (isset($this->ids[$id])) return false;
+        if (isset($this->ids[$id])) {
+            return false;
+        }
         return $this->ids[$id] = true;
     }
 

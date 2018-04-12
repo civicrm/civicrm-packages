@@ -40,7 +40,9 @@ class HTMLPurifier_URIParser
         $matches = array();
         $result = preg_match($r_URI, $uri, $matches);
 
-        if (!$result) return false; // *really* invalid URI
+        if (!$result) {
+            return false;
+        } // *really* invalid URI
 
         // seperate out parts
         $scheme     = !empty($matches[1]) ? $matches[2] : null;

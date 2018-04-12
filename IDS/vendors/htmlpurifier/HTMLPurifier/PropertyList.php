@@ -35,9 +35,13 @@ class HTMLPurifier_PropertyList
      * @throws \HTMLPurifier_Exception
      */
     public function get($name) {
-        if ($this->has($name)) return $this->data[$name];
+        if ($this->has($name)) {
+            return $this->data[$name];
+        }
         // possible performance bottleneck, convert to iterative if necessary
-        if ($this->parent) return $this->parent->get($name);
+        if ($this->parent) {
+            return $this->parent->get($name);
+        }
         throw new HTMLPurifier_Exception("Key '$name' not found");
     }
 
@@ -65,8 +69,12 @@ class HTMLPurifier_PropertyList
      * @param null $name
 */
     public function reset($name = null) {
-        if ($name == null) $this->data = array();
-        else unset($this->data[$name]);
+        if ($name == null) {
+            $this->data = array();
+        }
+        else {
+            unset($this->data[$name]);
+        }
     }
 
     /**
@@ -78,7 +86,9 @@ class HTMLPurifier_PropertyList
      * @return array
      */
     public function squash($force = false) {
-        if ($this->cache !== null && !$force) return $this->cache;
+        if ($this->cache !== null && !$force) {
+            return $this->cache;
+        }
         if ($this->parent) {
             return $this->cache = array_merge($this->parent->squash($force), $this->data);
         } else {

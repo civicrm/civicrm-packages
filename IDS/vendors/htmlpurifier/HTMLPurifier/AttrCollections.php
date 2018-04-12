@@ -52,17 +52,25 @@ class HTMLPurifier_AttrCollections
      * @param &$attr Reference to attribute array
      */
     public function performInclusions(&$attr) {
-        if (!isset($attr[0])) return;
+        if (!isset($attr[0])) {
+            return;
+        }
         $merge = $attr[0];
         $seen  = array(); // recursion guard
         // loop through all the inclusions
         for ($i = 0; isset($merge[$i]); $i++) {
-            if (isset($seen[$merge[$i]])) continue;
+            if (isset($seen[$merge[$i]])) {
+                continue;
+            }
             $seen[$merge[$i]] = true;
             // foreach attribute of the inclusion, copy it over
-            if (!isset($this->info[$merge[$i]])) continue;
+            if (!isset($this->info[$merge[$i]])) {
+                continue;
+            }
             foreach ($this->info[$merge[$i]] as $key => $value) {
-                if (isset($attr[$key])) continue; // also catches more inclusions
+                if (isset($attr[$key])) {
+                    continue;
+                } // also catches more inclusions
                 $attr[$key] = $value;
             }
             if (isset($this->info[$merge[$i]][0])) {
@@ -87,9 +95,13 @@ class HTMLPurifier_AttrCollections
 
         foreach ($attr as $def_i => $def) {
             // skip inclusions
-            if ($def_i === 0) continue;
+            if ($def_i === 0) {
+                continue;
+            }
 
-            if (isset($processed[$def_i])) continue;
+            if (isset($processed[$def_i])) {
+                continue;
+            }
 
             // determine whether or not attribute is required
             if ($required = (strpos($def_i, '*') !== false)) {

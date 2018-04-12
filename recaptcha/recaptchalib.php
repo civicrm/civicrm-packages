@@ -46,8 +46,9 @@ define("RECAPTCHA_VERIFY_SERVER", "www.google.com");
  */
 function _recaptcha_qsencode ($data) {
         $req = "";
-        foreach ( $data as $key => $value )
-                $req .= $key . '=' . urlencode( stripslashes($value) ) . '&';
+        foreach ( $data as $key => $value ) {
+            $req .= $key . '=' . urlencode(stripslashes($value)) . '&';
+        }
 
         // Cut the last '&'
         $req=substr($req,0,strlen($req)-1);
@@ -83,8 +84,9 @@ function _recaptcha_http_post($host, $path, $data, $port = 80) {
 
         fwrite($fs, $http_request);
 
-        while ( !feof($fs) )
-                $response .= fgets($fs, 1160); // One TCP-IP packet
+        while ( !feof($fs) ) {
+            $response .= fgets($fs, 1160);
+        } // One TCP-IP packet
         fclose($fs);
         $response = explode("\r\n\r\n", $response, 2);
 

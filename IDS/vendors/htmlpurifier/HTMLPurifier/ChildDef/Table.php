@@ -19,7 +19,9 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
      * @return array|bool
      */
     public function validateChildren($tokens_of_children, $config, $context) {
-        if (empty($tokens_of_children)) return false;
+        if (empty($tokens_of_children)) {
+            return false;
+        }
 
         // this ensures that the loop gets run one last time before closing
         // up. It's a little bit of a hack, but it works! Just make sure you
@@ -64,7 +66,9 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
                             $content[] = $collection;
                             break;
                         case 'caption':
-                            if ($caption !== false) break;
+                            if ($caption !== false) {
+                                break;
+                            }
                             $caption = $collection;
                             break;
                         case 'thead':
@@ -95,7 +99,9 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
             }
 
             // terminate
-            if ($token === false) break;
+            if ($token === false) {
+                break;
+            }
 
             if ($is_child) {
                 // determine what we're dealing with
@@ -127,14 +133,28 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
             }
         }
 
-        if (empty($content)) return false;
+        if (empty($content)) {
+            return false;
+        }
 
         $ret = array();
-        if ($caption !== false) $ret = array_merge($ret, $caption);
-        if ($cols !== false)    foreach ($cols as $token_array) $ret = array_merge($ret, $token_array);
-        if ($thead !== false)   $ret = array_merge($ret, $thead);
-        if ($tfoot !== false)   $ret = array_merge($ret, $tfoot);
-        foreach ($content as $token_array) $ret = array_merge($ret, $token_array);
+        if ($caption !== false) {
+            $ret = array_merge($ret, $caption);
+        }
+        if ($cols !== false) {
+            foreach ($cols as $token_array) {
+                $ret = array_merge($ret, $token_array);
+            }
+        }
+        if ($thead !== false) {
+            $ret = array_merge($ret, $thead);
+        }
+        if ($tfoot !== false) {
+            $ret = array_merge($ret, $tfoot);
+        }
+        foreach ($content as $token_array) {
+            $ret = array_merge($ret, $token_array);
+        }
         if (!empty($collection) && $is_collecting == false){
             // grab the trailing space
             $ret = array_merge($ret, $collection);

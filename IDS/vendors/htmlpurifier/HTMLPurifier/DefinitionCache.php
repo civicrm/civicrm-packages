@@ -43,16 +43,22 @@ abstract class HTMLPurifier_DefinitionCache
      * @return bool
      */
     public function isOld($key, $config) {
-        if (substr_count($key, ',') < 2) return true;
+        if (substr_count($key, ',') < 2) {
+            return true;
+        }
         list($version, $hash, $revision) = explode(',', $key, 3);
         $compare = version_compare($version, $config->version);
         // version mismatch, is always old
-        if ($compare != 0) return true;
+        if ($compare != 0) {
+            return true;
+        }
         // versions match, ids match, check revision number
         if (
             $hash == $config->getBatchSerial($this->type) &&
             $revision < $config->get($this->type . '.DefinitionRev')
-        ) return true;
+        ) {
+            return true;
+        }
         return false;
     }
 

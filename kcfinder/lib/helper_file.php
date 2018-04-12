@@ -115,8 +115,9 @@ class file {
 
     public static function isWritable($filename) {
         $filename = path::normalize($filename);
-        if (!is_file($filename) || (false === ($fp = @fopen($filename, 'a+'))))
+        if (!is_file($filename) || (false === ($fp = @fopen($filename, 'a+')))) {
             return false;
+        }
         fclose($fp);
         return true;
     }
@@ -177,10 +178,13 @@ class file {
   * @return string */
 
     public static function getInexistantFilename($filename, $dir=null, $tpl=null) {
-        if ($tpl === null)  $tpl = "{name}({sufix}){ext}";
+        if ($tpl === null) {
+            $tpl = "{name}({sufix}){ext}";
+        }
         $fullPath = ($dir === null);
-        if ($fullPath)
+        if ($fullPath) {
             $dir = path::normalize(dirname($filename));
+        }
         else {
             $fdir = dirname($filename);
             $dir = strlen($fdir)
@@ -193,8 +197,9 @@ class file {
         $tpl = str_replace('{name}', $name, $tpl);
         $tpl = str_replace('{ext}', (strlen($ext) ? ".$ext" : ""), $tpl);
         $i = 1; $file = "$dir/$filename";
-        while (file_exists($file))
+        while (file_exists($file)) {
             $file = "$dir/" . str_replace('{sufix}', $i++, $tpl);
+        }
 
         return $fullPath
             ? $file
@@ -210,8 +215,11 @@ class file {
 
     public static function normalizeFilename($filename) {
         $string = htmlentities($filename, ENT_QUOTES, 'UTF-8');
-        if (strpos($string, '&') !== false)
-            $filename = html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $string), ENT_QUOTES, 'UTF-8');
+        if (strpos($string, '&') !== false) {
+            $filename
+              = html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i',
+              '$1', $string), ENT_QUOTES, 'UTF-8');
+        }
         $filename = trim(preg_replace('~[^0-9a-z\.\- ]~i', "_", $filename));
         return $filename;
     }

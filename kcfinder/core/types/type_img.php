@@ -34,8 +34,9 @@ class type_img {
 
         $img = image::factory($driver, $file);
 
-        if ($img->initError)
+        if ($img->initError) {
             return "Unknown image format/encoding.";
+        }
 
         return true;
     }

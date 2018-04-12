@@ -18,11 +18,15 @@ class HTMLPurifier_AttrDef_HTML_Nmtokens extends HTMLPurifier_AttrDef
         $string = trim($string);
 
         // early abort: '' and '0' (strings that convert to false) are invalid
-        if (!$string) return false;
+        if (!$string) {
+            return false;
+        }
 
         $tokens = $this->split($string, $config, $context);
         $tokens = $this->filter($tokens, $config, $context);
-        if (empty($tokens)) return false;
+        if (empty($tokens)) {
+            return false;
+        }
         return implode(' ', $tokens);
 
     }

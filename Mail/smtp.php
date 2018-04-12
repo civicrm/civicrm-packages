@@ -190,16 +190,36 @@ class Mail_smtp extends Mail {
      */
     public function __construct($params)
     {
-        if (isset($params['host'])) $this->host = $params['host'];
-        if (isset($params['port'])) $this->port = $params['port'];
-        if (isset($params['auth'])) $this->auth = $params['auth'];
-        if (isset($params['username'])) $this->username = $params['username'];
-        if (isset($params['password'])) $this->password = $params['password'];
-        if (isset($params['localhost'])) $this->localhost = $params['localhost'];
-        if (isset($params['timeout'])) $this->timeout = $params['timeout'];
-        if (isset($params['debug'])) $this->debug = (bool)$params['debug'];
-        if (isset($params['persist'])) $this->persist = (bool)$params['persist'];
-        if (isset($params['pipelining'])) $this->pipelining = (bool)$params['pipelining'];
+        if (isset($params['host'])) {
+            $this->host = $params['host'];
+        }
+        if (isset($params['port'])) {
+            $this->port = $params['port'];
+        }
+        if (isset($params['auth'])) {
+            $this->auth = $params['auth'];
+        }
+        if (isset($params['username'])) {
+            $this->username = $params['username'];
+        }
+        if (isset($params['password'])) {
+            $this->password = $params['password'];
+        }
+        if (isset($params['localhost'])) {
+            $this->localhost = $params['localhost'];
+        }
+        if (isset($params['timeout'])) {
+            $this->timeout = $params['timeout'];
+        }
+        if (isset($params['debug'])) {
+            $this->debug = (bool)$params['debug'];
+        }
+        if (isset($params['persist'])) {
+            $this->persist = (bool)$params['persist'];
+        }
+        if (isset($params['pipelining'])) {
+            $this->pipelining = (bool)$params['pipelining'];
+        }
 
         // Deprecated options
         if (isset($params['verp'])) {

@@ -143,8 +143,9 @@ class GatewayResponse
       $pos1 = stripos($strXML, $OpeningNodeName);
       $pos2 = stripos($strXML, $ClosingNodeName);
       
-      if ( ($pos1 === false) || ($pos2 === false) )
-         return '';
+      if ( ($pos1 === false) || ($pos2 === false) ) {
+          return '';
+      }
          
       $pos1 += strlen($OpeningNodeName);
       $len   = $pos2 - $pos1;

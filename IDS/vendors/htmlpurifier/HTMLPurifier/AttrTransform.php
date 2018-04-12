@@ -48,7 +48,9 @@ abstract class HTMLPurifier_AttrTransform
      * @return null
      */
     public function confiscateAttr(&$attr, $key) {
-        if (!isset($attr[$key])) return null;
+        if (!isset($attr[$key])) {
+            return null;
+        }
         $value = $attr[$key];
         unset($attr[$key]);
         return $value;

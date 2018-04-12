@@ -25,7 +25,9 @@ class HTMLPurifier_AttrDef_CSS_TextDecoration extends HTMLPurifier_AttrDef
 
         $string = strtolower($this->parseCDATA($string));
 
-        if ($string === 'none') return $string;
+        if ($string === 'none') {
+            return $string;
+        }
 
         $parts = explode(' ', $string);
         $final = '';
@@ -35,7 +37,9 @@ class HTMLPurifier_AttrDef_CSS_TextDecoration extends HTMLPurifier_AttrDef
             }
         }
         $final = rtrim($final);
-        if ($final === '') return false;
+        if ($final === '') {
+            return false;
+        }
         return $final;
 
     }

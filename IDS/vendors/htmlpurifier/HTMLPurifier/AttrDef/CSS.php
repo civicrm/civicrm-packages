@@ -43,8 +43,12 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
         $context->register('CurrentCSSProperty', $property);
 
         foreach ($declarations as $declaration) {
-            if (!$declaration) continue;
-            if (!strpos($declaration, ':')) continue;
+            if (!$declaration) {
+                continue;
+            }
+            if (!strpos($declaration, ':')) {
+                continue;
+            }
             list($property, $value) = explode(':', $declaration, 2);
             $property = trim($property);
             $value    = trim($value);
@@ -54,14 +58,18 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
                     $ok = true;
                     break;
                 }
-                if (ctype_lower($property)) break;
+                if (ctype_lower($property)) {
+                    break;
+                }
                 $property = strtolower($property);
                 if (isset($definition->info[$property])) {
                     $ok = true;
                     break;
                 }
             } while(0);
-            if (!$ok) continue;
+            if (!$ok) {
+                continue;
+            }
             // inefficient call, since the validator will do this again
             if (strtolower(trim($value)) !== 'inherit') {
                 // inherit works for everything (but only on the base property)
@@ -70,7 +78,9 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
             } else {
                 $result = 'inherit';
             }
-            if ($result === false) continue;
+            if ($result === false) {
+                continue;
+            }
             $propvalues[$property] = $result;
         }
 

@@ -50,7 +50,9 @@ abstract class HTMLPurifier_URIScheme
      * @return Bool success or failure
      */
     public function validate(&$uri, $config, $context) {
-        if ($this->default_port == $uri->port) $uri->port = null;
+        if ($this->default_port == $uri->port) {
+            $uri->port = null;
+        }
         // kludge: browsers do funny things when the scheme but not the
         // authority is set
         if (!$this->may_omit_host &&

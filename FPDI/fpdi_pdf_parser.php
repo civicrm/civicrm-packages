@@ -136,8 +136,9 @@ class fpdi_pdf_parser extends pdf_parser
     	// parent object.
         if (isset($obj[1][1]['/Resources'])) {
     		$res = $this->resolveObject($obj[1][1]['/Resources']);
-    		if ($res[0] == pdf_parser::TYPE_OBJECT)
-                return $res[1];
+    		if ($res[0] == pdf_parser::TYPE_OBJECT) {
+            return $res[1];
+        }
             return $res;
     	}
 
@@ -146,8 +147,9 @@ class fpdi_pdf_parser extends pdf_parser
         }
 
         $res = $this->_getPageResources($obj[1][1]['/Parent']);
-        if ($res[0] == pdf_parser::TYPE_OBJECT)
+        if ($res[0] == pdf_parser::TYPE_OBJECT) {
             return $res[1];
+        }
         return $res;
     }
 
@@ -308,8 +310,9 @@ class fpdi_pdf_parser extends pdf_parser
     	$obj = $this->resolveObject($obj);
     	if (isset($obj[1][1]['/Rotate'])) {
     		$res = $this->resolveObject($obj[1][1]['/Rotate']);
-    		if ($res[0] == pdf_parser::TYPE_OBJECT)
-                return $res[1];
+    		if ($res[0] == pdf_parser::TYPE_OBJECT) {
+            return $res[1];
+        }
             return $res;
     	}
 
@@ -318,8 +321,9 @@ class fpdi_pdf_parser extends pdf_parser
         }
 
         $res = $this->_getPageRotation($obj[1][1]['/Parent']);
-        if ($res[0] == pdf_parser::TYPE_OBJECT)
+        if ($res[0] == pdf_parser::TYPE_OBJECT) {
             return $res[1];
+        }
 
         return $res;
     }

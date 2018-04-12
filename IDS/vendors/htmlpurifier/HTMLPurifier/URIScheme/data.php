@@ -42,10 +42,14 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier_URIScheme {
                 if (substr($cur, 0, 8) == 'charset=') {
                     // doesn't match if there are arbitrary spaces, but
                     // whatever dude
-                    if ($charset !== null) continue; // garbage
+                    if ($charset !== null) {
+                        continue;
+                    } // garbage
                     $charset = substr($cur, 8); // not used
                 } else {
-                    if ($content_type !== null) continue; // garbage
+                    if ($content_type !== null) {
+                        continue;
+                    } // garbage
                     $content_type = $cur;
                 }
             }
@@ -75,7 +79,9 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier_URIScheme {
             set_error_handler(array($this, 'muteErrorHandler'));
             $info = getimagesize($file);
             restore_error_handler();
-            if ($info == false) return false;
+            if ($info == false) {
+                return false;
+            }
             $image_code = $info[2];
         } else {
             trigger_error("could not find exif_imagetype or getimagesize functions", E_USER_ERROR);
@@ -84,7 +90,9 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier_URIScheme {
         if ($real_content_type != $content_type) {
             // we're nice guys; if the content type is something else we
             // support, change it over
-            if (empty($this->allowed_types[$real_content_type])) return false;
+            if (empty($this->allowed_types[$real_content_type])) {
+                return false;
+            }
             $content_type = $real_content_type;
         }
         // ok, it's kosher, rewrite what we need

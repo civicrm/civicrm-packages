@@ -47,7 +47,9 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
      */
     public function addFilter($filter, $config) {
         $r = $filter->prepare($config);
-        if ($r === false) return; // null is ok, for backwards compat
+        if ($r === false) {
+            return;
+        } // null is ok, for backwards compat
         if ($filter->post) {
             $this->postFilters[$filter->name] = $filter;
         } else {
@@ -86,9 +88,13 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
             $parser = new HTMLPurifier_URIParser();
             $this->base = $parser->parse($base_uri);
             $this->defaultScheme = $this->base->scheme;
-            if (null === $this->host) $this->host = $this->base->host;
+            if (null === $this->host) {
+                $this->host = $this->base->host;
+            }
         }
-        if (null === $this->defaultScheme) $this->defaultScheme = $config->get('URI.DefaultScheme');
+        if (null === $this->defaultScheme) {
+            $this->defaultScheme = $config->get('URI.DefaultScheme');
+        }
     }
 
     /**
@@ -101,7 +107,9 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
     public function filter(&$uri, $config, $context) {
         foreach ($this->filters as $name => $f) {
             $result = $f->filter($uri, $config, $context);
-            if (!$result) return false;
+            if (!$result) {
+                return false;
+            }
         }
         return true;
     }
@@ -116,7 +124,9 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
     public function postFilter(&$uri, $config, $context) {
         foreach ($this->postFilters as $name => $f) {
             $result = $f->filter($uri, $config, $context);
-            if (!$result) return false;
+            if (!$result) {
+                return false;
+            }
         }
         return true;
     }

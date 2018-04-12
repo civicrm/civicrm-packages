@@ -57,7 +57,9 @@ class HTMLPurifier_Token {
      * @param $c
      */
     public function rawPosition($l, $c) {
-        if ($c === -1) $l++;
+        if ($c === -1) {
+            $l++;
+        }
         $this->line = $l;
         $this->col  = $c;
     }

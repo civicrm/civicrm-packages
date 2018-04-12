@@ -15,7 +15,9 @@ class HTMLPurifier_URIFilter_DisableExternalResources extends HTMLPurifier_URIFi
      * @return bool
      */
     public function filter(&$uri, $config, $context) {
-        if (!$context->get('EmbeddedURI', true)) return true;
+        if (!$context->get('EmbeddedURI', true)) {
+            return true;
+        }
         return parent::filter($uri, $config, $context);
     }
 }

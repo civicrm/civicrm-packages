@@ -230,11 +230,21 @@ class Mail_smtpmx extends Mail {
             $this->_port = getservbyname('smtp', 'tcp');
         }
 
-        if (isset($params['timeout'])) $this->timeout = $params['timeout'];
-        if (isset($params['verp'])) $this->verp = $params['verp'];
-        if (isset($params['test'])) $this->test = $params['test'];
-        if (isset($params['peardebug'])) $this->test = $params['peardebug'];
-        if (isset($params['netdns'])) $this->withNetDns = $params['netdns'];
+        if (isset($params['timeout'])) {
+            $this->timeout = $params['timeout'];
+        }
+        if (isset($params['verp'])) {
+            $this->verp = $params['verp'];
+        }
+        if (isset($params['test'])) {
+            $this->test = $params['test'];
+        }
+        if (isset($params['peardebug'])) {
+            $this->test = $params['peardebug'];
+        }
+        if (isset($params['netdns'])) {
+            $this->withNetDns = $params['netdns'];
+        }
     }
 
     /**

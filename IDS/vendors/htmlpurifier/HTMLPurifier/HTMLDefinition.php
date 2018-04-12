@@ -207,20 +207,36 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
         foreach ($this->manager->modules as $module) {
             foreach($module->info_tag_transform as $k => $v) {
-                if ($v === false) unset($this->info_tag_transform[$k]);
-                else $this->info_tag_transform[$k] = $v;
+                if ($v === false) {
+                    unset($this->info_tag_transform[$k]);
+                }
+                else {
+                    $this->info_tag_transform[$k] = $v;
+                }
             }
             foreach($module->info_attr_transform_pre as $k => $v) {
-                if ($v === false) unset($this->info_attr_transform_pre[$k]);
-                else $this->info_attr_transform_pre[$k] = $v;
+                if ($v === false) {
+                    unset($this->info_attr_transform_pre[$k]);
+                }
+                else {
+                    $this->info_attr_transform_pre[$k] = $v;
+                }
             }
             foreach($module->info_attr_transform_post as $k => $v) {
-                if ($v === false) unset($this->info_attr_transform_post[$k]);
-                else $this->info_attr_transform_post[$k] = $v;
+                if ($v === false) {
+                    unset($this->info_attr_transform_post[$k]);
+                }
+                else {
+                    $this->info_attr_transform_post[$k] = $v;
+                }
             }
             foreach ($module->info_injector as $k => $v) {
-                if ($v === false) unset($this->info_injector[$k]);
-                else $this->info_injector[$k] = $v;
+                if ($v === false) {
+                    unset($this->info_injector[$k]);
+                }
+                else {
+                    $this->info_injector[$k] = $v;
+                }
             }
         }
 
@@ -272,7 +288,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
         if (is_array($allowed_elements)) {
             foreach ($this->info as $name => $d) {
-                if(!isset($allowed_elements[$name])) unset($this->info[$name]);
+                if(!isset($allowed_elements[$name])) {
+                    unset($this->info[$name]);
+                }
                 unset($allowed_elements[$name]);
             }
             // emit errors
@@ -301,7 +319,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
                         unset($allowed_attributes_mutable[$key]);
                     }
                 }
-                if ($delete) unset($this->info_global_attr[$attr]);
+                if ($delete) {
+                    unset($this->info_global_attr[$attr]);
+                }
             }
 
             foreach ($this->info as $tag => $info) {
@@ -379,8 +399,12 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
             }
         }
         foreach ($forbidden_attributes as $key => $v) {
-            if (strlen($key) < 2) continue;
-            if ($key[0] != '*') continue;
+            if (strlen($key) < 2) {
+                continue;
+            }
+            if ($key[0] != '*') {
+                continue;
+            }
             if ($key[1] == '.') {
                 trigger_error("Error with $key: *.attr syntax not supported for HTML.ForbiddenAttributes; use attr instead", E_USER_WARNING);
             }
@@ -418,7 +442,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
         $chunks = preg_split('/(,|[\n\r]+)/', $list);
         foreach ($chunks as $chunk) {
-            if (empty($chunk)) continue;
+            if (empty($chunk)) {
+                continue;
+            }
             // remove TinyMCE element control characters
             if (!strpos($chunk, '[')) {
                 $element = $chunk;
@@ -426,8 +452,12 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
             } else {
                 list($element, $attr) = explode('[', $chunk);
             }
-            if ($element !== '*') $elements[$element] = true;
-            if (!$attr) continue;
+            if ($element !== '*') {
+                $elements[$element] = true;
+            }
+            if (!$attr) {
+                continue;
+            }
             $attr = substr($attr, 0, strlen($attr) - 1); // remove trailing ]
             $attr = explode('|', $attr);
             foreach ($attr as $key) {

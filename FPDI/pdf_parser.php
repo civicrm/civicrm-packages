@@ -250,8 +250,9 @@ class pdf_parser
         if ($this->_pdfVersion === null) {
             fseek($this->_f, 0);
             preg_match('/\d\.\d/', fread($this->_f, 16), $m);
-            if (isset($m[0]))
+            if (isset($m[0])) {
                 $this->_pdfVersion = $m[0];
+            }
         }
 
         return $this->_pdfVersion;
@@ -386,12 +387,14 @@ class pdf_parser
                     case 2:
                         $start = (int)$pieces[0];
                         $end   = $start + (int)$pieces[1];
-                        if ($end > $result['maxObject'])
+                        if ($end > $result['maxObject']) {
                             $result['maxObject'] = $end;
+                        }
                         break;
                     case 3:
-                        if (!isset($result['xref'][$start]))
+                        if (!isset($result['xref'][$start])) {
                             $result['xref'][$start] = array();
+                        }
 
                         if (!array_key_exists($gen = (int) $pieces[1], $result['xref'][$start])) {
                             $result['xref'][$start][$gen] = $pieces[2] == 'n' ? (int) $pieces[0] : null;
@@ -551,10 +554,12 @@ class pdf_parser
                 $c->reset($startPos = $tempPos + $tempOffset);
 
                 $e = 0; // ensure line breaks in front of the stream
-                if ($c->buffer[0] == chr(10) || $c->buffer[0] == chr(13))
+                if ($c->buffer[0] == chr(10) || $c->buffer[0] == chr(13)) {
                     $e++;
-                if ($c->buffer[1] == chr(10) && $c->buffer[0] != chr(10))
+                }
+                if ($c->buffer[1] == chr(10) && $c->buffer[0] != chr(10)) {
                     $e++;
+                }
 
                 if ($this->_currentObj[1][1]['/Length'][0] == self::TYPE_OBJREF) {
                     $tmpLength = $this->resolveObject($this->_currentObj[1][1]['/Length']);
@@ -607,10 +612,12 @@ class pdf_parser
                         array_push($c->stack, $tok2);
                     }
 
-                    if ($token === (string)((int)$token))
+                    if ($token === (string)((int)$token)) {
                         return array(self::TYPE_NUMERIC, (int)$token);
-                    else
+                    }
+                    else {
                         return array(self::TYPE_REAL, (float)$token);
+                    }
                 } else if ($token == 'true' || $token == 'false') {
                     return array(self::TYPE_BOOLEAN, $token == 'true');
                 } else if ($token == 'null') {

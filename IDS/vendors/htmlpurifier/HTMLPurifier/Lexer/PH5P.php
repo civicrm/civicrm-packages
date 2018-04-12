@@ -3673,7 +3673,9 @@ class HTML5TreeConstructer {
             // Remove leading hyphens and numbers
             $token['name'] = ltrim($token['name'], '-0..9');
             // In theory, this should ever be needed, but just in case
-            if ($token['name'] === '') $token['name'] = 'span'; // arbitrary generic choice
+            if ($token['name'] === '') {
+                $token['name'] = 'span';
+            } // arbitrary generic choice
         }
         
         $el = $this->dom->createElement($token['name']);
@@ -3728,10 +3730,12 @@ class HTML5TreeConstructer {
                 }
             }
 
-            if(isset($table) && $this->foster_parent->isSameNode($table->parentNode))
+            if(isset($table) && $this->foster_parent->isSameNode($table->parentNode)) {
                 $this->foster_parent->insertBefore($node, $table);
-            else
+            }
+            else {
                 $this->foster_parent->appendChild($node);
+            }
 
             $this->foster_parent = null;
         }
@@ -3911,17 +3915,21 @@ class HTML5TreeConstructer {
      */
     private function getElementCategory($node) {
         $name = $node->tagName;
-        if(in_array($name, $this->special))
+        if(in_array($name, $this->special)) {
             return self::SPECIAL;
+        }
 
-        elseif(in_array($name, $this->scoping))
+        elseif(in_array($name, $this->scoping)) {
             return self::SCOPING;
+        }
 
-        elseif(in_array($name, $this->formatting))
+        elseif(in_array($name, $this->formatting)) {
             return self::FORMATTING;
+        }
 
-        else
+        else {
             return self::PHRASING;
+        }
     }
 
     /**

@@ -1012,8 +1012,9 @@ class DB_pgsql extends DB_common
             if (in_array($num_field + 1, $keys)) {
                 $flags .= ($row[0] == 't' && $row[1] == 'f') ? 'unique_key ' : '';
                 $flags .= ($row[1] == 't') ? 'primary_key ' : '';
-                if (count($keys) > 1)
+                if (count($keys) > 1) {
                     $flags .= 'multiple_key ';
+                }
             }
         }
 

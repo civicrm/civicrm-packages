@@ -34,13 +34,17 @@ class httpCache {
 
     public static function file($file, $type=null, $expire=null, array $headers=null) {
         $mtime = @filemtime($file);
-        if ($mtime !== false) self::checkMTime($mtime);
+        if ($mtime !== false) {
+            self::checkMTime($mtime);
+        }
 
         if ($type === null) {
             $magic = ((substr($type, 0, 1) == "/") || preg_match('/^[a-z]\:/i', $type))
                 ? $type : null;
             $type = file::getMimeType($file, $magic);
-            if (!$type) $type = null;
+            if (!$type) {
+                $type = null;
+            }
         }
 
         self::content(@file_get_contents($file), $mtime, $type, $expire, $headers, false);
@@ -55,9 +59,15 @@ class httpCache {
   * @param bool $checkMTime */
 
     public static function content($content, $mtime, $type=null, $expire=null, array $headers=null, $checkMTime=true) {
-        if ($checkMTime) self::checkMTime($mtime);
-        if ($type === null) $type = self::DEFAULT_TYPE;
-        if ($expire === null) $expire = self::DEFAULT_EXPIRE;
+        if ($checkMTime) {
+            self::checkMTime($mtime);
+        }
+        if ($type === null) {
+            $type = self::DEFAULT_TYPE;
+        }
+        if ($expire === null) {
+            $expire = self::DEFAULT_EXPIRE;
+        }
         $size = strlen($content);
         $expires = gmdate("D, d M Y H:i:s", time() + $expire) . " GMT";
         header("Content-Type: $type");
@@ -65,7 +75,11 @@ class httpCache {
         header("Cache-Control: max-age=$expire");
         header("Pragma: !invalid");
         header("Content-Length: $size");
-        if ($headers !== null) foreach ($headers as $header) header($header);
+        if ($headers !== null) {
+            foreach ($headers as $header) {
+                header($header);
+            }
+        }
         echo $content;
     }
 
@@ -90,11 +104,14 @@ class httpCache {
             $client_mtime = @strtotime($client_mtime[0]);
             if ($client_mtime >= $mtime) {
                 header('HTTP/1.1 304 Not Modified');
-                if (is_array($sendHeaders) && count($sendHeaders))
-                    foreach ($sendHeaders as $header)
+                if (is_array($sendHeaders) && count($sendHeaders)) {
+                    foreach ($sendHeaders as $header) {
                         header($header);
-                elseif ($sendHeaders !== null)
+                    }
+                }
+                elseif ($sendHeaders !== null) {
                     header($sendHeaders);
+                }
                 die;
             }
         }

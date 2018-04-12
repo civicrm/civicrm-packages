@@ -47,7 +47,9 @@ class HTMLPurifier_ConfigSchema_Validator
         // arrays, so we don't use the identical !== comparison
         foreach ($interchange->directives as $i => $directive) {
             $id = $directive->id->toString();
-            if ($i != $id) $this->error(false, "Integrity violation: key '$i' does not match internal id '$id'");
+            if ($i != $id) {
+                $this->error(false, "Integrity violation: key '$i' does not match internal id '$id'");
+            }
             $this->validateDirective($directive);
         }
         return true;
@@ -123,7 +125,9 @@ class HTMLPurifier_ConfigSchema_Validator
      * @throws \HTMLPurifier_ConfigSchema_Exception
 */
     public function validateDirectiveAllowed($d) {
-        if (null === $d->allowed) return;
+        if (null === $d->allowed) {
+            return;
+        }
         $this->with($d, 'allowed')
             ->assertNotEmpty()
             ->assertIsLookup(); // handled by InterchangeBuilder
@@ -132,7 +136,9 @@ class HTMLPurifier_ConfigSchema_Validator
         }
         $this->context[] = 'allowed';
         foreach ($d->allowed as $val => $x) {
-            if (!is_string($val)) $this->error("value $val", 'must be a string');
+            if (!is_string($val)) {
+                $this->error("value $val", 'must be a string');
+            }
         }
         array_pop($this->context);
     }
@@ -144,13 +150,19 @@ class HTMLPurifier_ConfigSchema_Validator
      * @throws \HTMLPurifier_ConfigSchema_Exception
 */
     public function validateDirectiveValueAliases($d) {
-        if (null === $d->valueAliases) return;
+        if (null === $d->valueAliases) {
+            return;
+        }
         $this->with($d, 'valueAliases')
             ->assertIsArray(); // handled by InterchangeBuilder
         $this->context[] = 'valueAliases';
         foreach ($d->valueAliases as $alias => $real) {
-            if (!is_string($alias)) $this->error("alias $alias", 'must be a string');
-            if (!is_string($real))  $this->error("alias target $real from alias '$alias'",  'must be a string');
+            if (!is_string($alias)) {
+                $this->error("alias $alias", 'must be a string');
+            }
+            if (!is_string($real)) {
+                $this->error("alias target $real from alias '$alias'", 'must be a string');
+            }
             if ($alias === $real) {
                 $this->error("alias '$alias'", "must not be an alias to itself");
             }
@@ -212,8 +224,12 @@ class HTMLPurifier_ConfigSchema_Validator
      * @throws \HTMLPurifier_ConfigSchema_Exception
 */
     protected function error($target, $msg) {
-        if ($target !== false) $prefix = ucfirst($target) . ' in ' .  $this->getFormattedContext();
-        else $prefix = ucfirst($this->getFormattedContext());
+        if ($target !== false) {
+            $prefix = ucfirst($target) . ' in ' . $this->getFormattedContext();
+        }
+        else {
+            $prefix = ucfirst($this->getFormattedContext());
+        }
         throw new HTMLPurifier_ConfigSchema_Exception(trim($prefix . ' ' . $msg));
     }
 

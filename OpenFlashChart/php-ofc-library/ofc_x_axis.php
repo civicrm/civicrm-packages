@@ -164,8 +164,9 @@ class x_axis
 		$x_axis_labels->set_labels( $a );
 		$this->labels = $x_axis_labels;
 		
-		if( isset( $this->steps ) )
-			$x_axis_labels->set_steps( $this->steps );
+		if( isset( $this->steps ) ) {
+        $x_axis_labels->set_steps($this->steps);
+    }
 	}
 
     /**

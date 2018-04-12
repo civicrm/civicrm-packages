@@ -67,8 +67,9 @@ class FilterASCII85
             if ($state == 5) {
                 $state = 0;
                 $r = 0;
-                for ($j = 0; $j < 5; ++$j)
+                for ($j = 0; $j < 5; ++$j) {
                     $r = $r * 85 + $chn[$j];
+                }
                 $out .= chr($r >> 24);
                 $out .= chr($r >> 16);
                 $out .= chr($r >> 8);

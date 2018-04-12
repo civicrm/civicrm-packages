@@ -201,7 +201,9 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         // NamedNodeMap is documented very well, so we're using undocumented
         // features, namely, the fact that it implements Iterator and
         // has a ->length attribute
-        if ($node_map->length === 0) return array();
+        if ($node_map->length === 0) {
+            return array();
+        }
         $array = array();
         foreach ($node_map as $attr) {
             $array[$attr->name] = $attr->value;
@@ -250,8 +252,12 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
 
         if (!empty($def->doctype->dtdPublic) || !empty($def->doctype->dtdSystem)) {
             $ret .= '<!DOCTYPE html ';
-            if (!empty($def->doctype->dtdPublic)) $ret .= 'PUBLIC "' . $def->doctype->dtdPublic . '" ';
-            if (!empty($def->doctype->dtdSystem)) $ret .= '"' . $def->doctype->dtdSystem . '" ';
+            if (!empty($def->doctype->dtdPublic)) {
+                $ret .= 'PUBLIC "' . $def->doctype->dtdPublic . '" ';
+            }
+            if (!empty($def->doctype->dtdSystem)) {
+                $ret .= '"' . $def->doctype->dtdSystem . '" ';
+            }
             $ret .= '>';
         }
 

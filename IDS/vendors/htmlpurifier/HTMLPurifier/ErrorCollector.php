@@ -64,7 +64,9 @@ class HTMLPurifier_ErrorCollector
         }
         if (null !== $attr) {
             $subst['$CurrentAttr.Name'] = $attr;
-            if (isset($token->attr[$attr])) $subst['$CurrentAttr.Value'] = $token->attr[$attr];
+            if (isset($token->attr[$attr])) {
+                $subst['$CurrentAttr.Value'] = $token->attr[$attr];
+            }
         }
 
         if (empty($args)) {
@@ -73,7 +75,9 @@ class HTMLPurifier_ErrorCollector
             $msg = $this->locale->formatMessage($msg, $args);
         }
 
-        if (!empty($subst)) $msg = strtr($msg, $subst);
+        if (!empty($subst)) {
+            $msg = strtr($msg, $subst);
+        }
 
         // (numerically indexed)
         $error = array(
@@ -93,7 +97,9 @@ class HTMLPurifier_ErrorCollector
         //  "syntax" type, if $value is null
         $new_struct = new HTMLPurifier_ErrorStruct();
         $new_struct->type = HTMLPurifier_ErrorStruct::TOKEN;
-        if ($token) $new_struct->value = clone $token;
+        if ($token) {
+            $new_struct->value = clone $token;
+        }
         if (is_int($line) && is_int($col)) {
             if (isset($this->lines[$line][$col])) {
                 $struct = $this->lines[$line][$col];
@@ -155,13 +161,17 @@ class HTMLPurifier_ErrorCollector
         $ret = array();
 
         $this->generator = new HTMLPurifier_Generator($config, $this->context);
-        if ($errors === null) $errors = $this->errors;
+        if ($errors === null) {
+            $errors = $this->errors;
+        }
 
         // 'At line' message needs to be removed
 
         // generation code for new structure goes here. It needs to be recursive.
         foreach ($this->lines as $line => $col_array) {
-            if ($line == -1) continue;
+            if ($line == -1) {
+                continue;
+            }
             foreach ($col_array as $col => $struct) {
                 $this->_renderStruct($ret, $struct, $line, $col);
             }

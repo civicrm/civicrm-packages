@@ -46,11 +46,15 @@ class HTMLPurifier_Length
      * @return \HTMLPurifier_Length|string
      */
     static public function make($s) {
-        if ($s instanceof HTMLPurifier_Length) return $s;
+        if ($s instanceof HTMLPurifier_Length) {
+            return $s;
+        }
         $n_length = strspn($s, '1234567890.+-');
         $n = substr($s, 0, $n_length);
         $unit = substr($s, $n_length);
-        if ($unit === '') $unit = false;
+        if ($unit === '') {
+            $unit = false;
+        }
         return new HTMLPurifier_Length($n, $unit);
     }
 
@@ -59,14 +63,24 @@ class HTMLPurifier_Length
      */
     protected function validate() {
         // Special case:
-        if ($this->n === '+0' || $this->n === '-0') $this->n = '0';
-        if ($this->n === '0' && $this->unit === false) return true;
-        if (!ctype_lower($this->unit)) $this->unit = strtolower($this->unit);
-        if (!isset(HTMLPurifier_Length::$allowedUnits[$this->unit])) return false;
+        if ($this->n === '+0' || $this->n === '-0') {
+            $this->n = '0';
+        }
+        if ($this->n === '0' && $this->unit === false) {
+            return true;
+        }
+        if (!ctype_lower($this->unit)) {
+            $this->unit = strtolower($this->unit);
+        }
+        if (!isset(HTMLPurifier_Length::$allowedUnits[$this->unit])) {
+            return false;
+        }
         // Hack:
         $def = new HTMLPurifier_AttrDef_CSS_Number();
         $result = $def->validate($this->n, false, false);
-        if ($result === false) return false;
+        if ($result === false) {
+            return false;
+        }
         $this->n = $result;
         return true;
     }
@@ -75,7 +89,9 @@ class HTMLPurifier_Length
      * Returns string representation of number.
      */
     public function toString() {
-        if (!$this->isValid()) return false;
+        if (!$this->isValid()) {
+            return false;
+        }
         return $this->n . $this->unit;
     }
 
@@ -93,7 +109,9 @@ class HTMLPurifier_Length
      * Returns true if this length unit is valid.
      */
     public function isValid() {
-        if ($this->isValid === null) $this->isValid = $this->validate();
+        if ($this->isValid === null) {
+            $this->isValid = $this->validate();
+        }
         return $this->isValid;
     }
 
@@ -108,11 +126,15 @@ class HTMLPurifier_Length
      * @return bool|string
      */
     public function compareTo($l) {
-        if ($l === false) return false;
+        if ($l === false) {
+            return false;
+        }
         if ($l->unit !== $this->unit) {
             $converter = new HTMLPurifier_UnitConverter();
             $l = $converter->convert($l, $this->unit);
-            if ($l === false) return false;
+            if ($l === false) {
+                return false;
+            }
         }
         return $this->n - $l->n;
     }

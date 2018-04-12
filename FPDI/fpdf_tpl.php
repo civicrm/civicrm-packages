@@ -95,14 +95,18 @@ class FPDF_TPL extends fpdi_bridge
             throw new LogicException("You have to add at least a page first!");
         }
 
-        if ($x == null)
+        if ($x == null) {
             $x = 0;
-        if ($y == null)
+        }
+        if ($y == null) {
             $y = 0;
-        if ($w == null)
+        }
+        if ($w == null) {
             $w = $this->w;
-        if ($h == null)
+        }
+        if ($h == null) {
             $h = $this->h;
+        }
 
         // Save settings
         $this->tpl++;
@@ -180,8 +184,9 @@ class FPDF_TPL extends fpdi_bridge
             $this->FontSize = $tpl['o_FontSize'];
 
             $fontKey = $this->FontFamily . $this->FontStyle;
-            if ($fontKey)
+            if ($fontKey) {
                 $this->CurrentFont =& $this->fonts[$fontKey];
+            }
 
             return $this->tpl;
         } else {
@@ -275,8 +280,9 @@ class FPDF_TPL extends fpdi_bridge
      */
     public function getTemplateSize($tplIdx, $w = 0, $h = 0)
     {
-        if (!isset($this->_tpls[$tplIdx]))
+        if (!isset($this->_tpls[$tplIdx])) {
             return false;
+        }
 
         $tpl = $this->_tpls[$tplIdx];
         $_w = $tpl['w'];
@@ -287,10 +293,12 @@ class FPDF_TPL extends fpdi_bridge
             $h = $_h;
         }
 
-        if ($w == 0)
+        if ($w == 0) {
             $w = $h * $_w / $_h;
-        if($h == 0)
+        }
+        if($h == 0) {
             $h = $w * $_h / $_w;
+        }
 
         return array("w" => $w, "h" => $h);
     }
@@ -535,13 +543,15 @@ class FPDF_TPL extends fpdi_bridge
                     $this->_out('/XObject <<');
 
                     if (isset($res['images'])) {
-                        foreach($res['images'] as $image)
+                        foreach($res['images'] as $image) {
                             $this->_out('/I' . $image['i'] . ' ' . $image['n'] . ' 0 R');
+                        }
                     }
 
                     if (isset($res['tpls'])) {
-                        foreach($res['tpls'] as $i => $_tpl)
+                        foreach($res['tpls'] as $i => $_tpl) {
                             $this->_out($this->tplPrefix . $i . ' ' . $_tpl['n'] . ' 0 R');
+                        }
                     }
 
                     $this->_out('>>');

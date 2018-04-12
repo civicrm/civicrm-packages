@@ -28,7 +28,9 @@ class fastImage
      */
     public function __construct($uri = null)
   {
-    if ($uri) $this->load($uri);
+    if ($uri) {
+        $this->load($uri);
+    }
   }
 
     /**
@@ -36,7 +38,9 @@ class fastImage
      */
     public function load($uri)
   {
-    if ($this->handle) $this->close();
+    if ($this->handle) {
+        $this->close();
+    }
 
     $this->uri = $uri;
     // Joy - this is a fix for URLs missing "http:"
@@ -64,7 +68,9 @@ class fastImage
 
   public function close()
   {
-    if (is_resource($this->handle)) fclose($this->handle);
+    if (is_resource($this->handle)) {
+        fclose($this->handle);
+    }
   }
 
     /**
@@ -180,7 +186,9 @@ class fastImage
         break;
       case 'started':
         $b = $this->getByte();
-        if ($b === false) return false;
+        if ($b === false) {
+            return false;
+        }
 
         $state = $b == 0xFF ? 'sof' : 'started';
         break;

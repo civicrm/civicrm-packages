@@ -13,8 +13,9 @@ class dot_base
 	public function __construct($type, $value=null)
 	{
 		$this->type = $type;
-		if( isset( $value ) )
-			$this->value( $value );
+		if( isset( $value ) ) {
+        $this->value($value);
+    }
 	}
 	
 	/**

@@ -43,7 +43,9 @@ class HTMLPurifier_URISchemeRegistry
      * @throws \HTMLPurifier_Exception
      */
     public function getScheme($scheme, $config, $context) {
-        if (!$config) $config = HTMLPurifier_Config::createDefault();
+        if (!$config) {
+            $config = HTMLPurifier_Config::createDefault();
+        }
 
         // important, otherwise attacker could include arbitrary file
         $allowed_schemes = $config->get('URI.AllowedSchemes');
@@ -53,11 +55,17 @@ class HTMLPurifier_URISchemeRegistry
             return;
         }
 
-        if (isset($this->schemes[$scheme])) return $this->schemes[$scheme];
-        if (!isset($allowed_schemes[$scheme])) return;
+        if (isset($this->schemes[$scheme])) {
+            return $this->schemes[$scheme];
+        }
+        if (!isset($allowed_schemes[$scheme])) {
+            return;
+        }
 
         $class = 'HTMLPurifier_URIScheme_' . $scheme;
-        if (!class_exists($class)) return;
+        if (!class_exists($class)) {
+            return;
+        }
         $this->schemes[$scheme] = new $class();
         return $this->schemes[$scheme];
     }

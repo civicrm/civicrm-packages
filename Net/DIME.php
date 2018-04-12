@@ -288,7 +288,9 @@ class Net_DIME_Record {
         $pad = 0;
         if ($len) {
             $pad = $len % 4;
-            if ($pad) $pad = 4 - $pad;
+            if ($pad) {
+                $pad = 4 - $pad;
+            }
         }
         return $len + $pad;
     }

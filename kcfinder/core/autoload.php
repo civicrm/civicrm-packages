@@ -15,26 +15,33 @@
 spl_autoload_register(function($path) {
     $path = explode("\\", $path);
 
-    if (count($path) == 1)
+    if (count($path) == 1) {
         return;
+    }
 
     list($ns, $class) = $path;
 
     if ($ns == "kcfinder") {
 
-        if ($class == "uploader")
+        if ($class == "uploader") {
             require "core/class/uploader.php";
-        elseif ($class == "browser")
+        }
+        elseif ($class == "browser") {
             require "core/class/browser.php";
-        elseif ($class == "minifier")
+        }
+        elseif ($class == "minifier") {
             require "core/class/minifier.php";
+        }
 
-        elseif (file_exists("core/types/$class.php"))
+        elseif (file_exists("core/types/$class.php")) {
             require "core/types/$class.php";
-        elseif (file_exists("lib/class_$class.php"))
+        }
+        elseif (file_exists("lib/class_$class.php")) {
             require "lib/class_$class.php";
-        elseif (file_exists("lib/helper_$class.php"))
+        }
+        elseif (file_exists("lib/helper_$class.php")) {
             require "lib/helper_$class.php";
+        }
     }
 });
 

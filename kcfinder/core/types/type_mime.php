@@ -28,17 +28,20 @@ class type_mime {
      * @return bool|string
      */
     public function checkFile($file, array $config) {
-        if (!class_exists("finfo"))
+        if (!class_exists("finfo")) {
             return "Fileinfo PECL extension is missing.";
+        }
 
-        if (!isset($config['params']))
+        if (!isset($config['params'])) {
             return "Undefined MIME types.";
+        }
 
         $finfo = strlen($config['mime_magic'])
             ? new \finfo(FILEINFO_MIME, $config['mime_magic'])
             : new \finfo(FILEINFO_MIME);
-        if (!$finfo)
+        if (!$finfo) {
             return "Opening fileinfo database failed.";
+        }
 
         $type = $finfo->file($file);
         $type = substr($type, 0, strrpos($type, ";"));

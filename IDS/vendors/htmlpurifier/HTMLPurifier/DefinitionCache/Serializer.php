@@ -14,10 +14,16 @@ class HTMLPurifier_DefinitionCache_Serializer extends
      * @return bool|Number|void
      */
     public function add($def, $config) {
-        if (!$this->checkDefType($def)) return;
+        if (!$this->checkDefType($def)) {
+            return;
+        }
         $file = $this->generateFilePath($config);
-        if (file_exists($file)) return false;
-        if (!$this->_prepareDir($config)) return false;
+        if (file_exists($file)) {
+            return false;
+        }
+        if (!$this->_prepareDir($config)) {
+            return false;
+        }
         return $this->_write($file, serialize($def), $config);
     }
 
@@ -28,9 +34,13 @@ class HTMLPurifier_DefinitionCache_Serializer extends
      * @return bool|Number|void
      */
     public function set($def, $config) {
-        if (!$this->checkDefType($def)) return;
+        if (!$this->checkDefType($def)) {
+            return;
+        }
         $file = $this->generateFilePath($config);
-        if (!$this->_prepareDir($config)) return false;
+        if (!$this->_prepareDir($config)) {
+            return false;
+        }
         return $this->_write($file, serialize($def), $config);
     }
 
@@ -41,10 +51,16 @@ class HTMLPurifier_DefinitionCache_Serializer extends
      * @return bool|Number|void
      */
     public function replace($def, $config) {
-        if (!$this->checkDefType($def)) return;
+        if (!$this->checkDefType($def)) {
+            return;
+        }
         $file = $this->generateFilePath($config);
-        if (!file_exists($file)) return false;
-        if (!$this->_prepareDir($config)) return false;
+        if (!file_exists($file)) {
+            return false;
+        }
+        if (!$this->_prepareDir($config)) {
+            return false;
+        }
         return $this->_write($file, serialize($def), $config);
     }
 
@@ -55,7 +71,9 @@ class HTMLPurifier_DefinitionCache_Serializer extends
      */
     public function get($config) {
         $file = $this->generateFilePath($config);
-        if (!file_exists($file)) return false;
+        if (!file_exists($file)) {
+            return false;
+        }
         return unserialize(file_get_contents($file));
     }
 
@@ -66,7 +84,9 @@ class HTMLPurifier_DefinitionCache_Serializer extends
      */
     public function remove($config) {
         $file = $this->generateFilePath($config);
-        if (!file_exists($file)) return false;
+        if (!file_exists($file)) {
+            return false;
+        }
         return unlink($file);
     }
 
@@ -76,12 +96,18 @@ class HTMLPurifier_DefinitionCache_Serializer extends
      * @return bool
      */
     public function flush($config) {
-        if (!$this->_prepareDir($config)) return false;
+        if (!$this->_prepareDir($config)) {
+            return false;
+        }
         $dir = $this->generateDirectoryPath($config);
         $dh  = opendir($dir);
         while (false !== ($filename = readdir($dh))) {
-            if (empty($filename)) continue;
-            if ($filename[0] === '.') continue;
+            if (empty($filename)) {
+                continue;
+            }
+            if ($filename[0] === '.') {
+                continue;
+            }
             unlink($dir . '/' . $filename);
         }
     }
@@ -92,14 +118,22 @@ class HTMLPurifier_DefinitionCache_Serializer extends
      * @return bool
      */
     public function cleanup($config) {
-        if (!$this->_prepareDir($config)) return false;
+        if (!$this->_prepareDir($config)) {
+            return false;
+        }
         $dir = $this->generateDirectoryPath($config);
         $dh  = opendir($dir);
         while (false !== ($filename = readdir($dh))) {
-            if (empty($filename)) continue;
-            if ($filename[0] === '.') continue;
+            if (empty($filename)) {
+                continue;
+            }
+            if ($filename[0] === '.') {
+                continue;
+            }
             $key = substr($filename, 0, strlen($filename) - 4);
-            if ($this->isOld($key, $config)) unlink($dir . '/' . $filename);
+            if ($this->isOld($key, $config)) {
+                unlink($dir . '/' . $filename);
+            }
         }
     }
 
@@ -203,7 +237,9 @@ class HTMLPurifier_DefinitionCache_Serializer extends
      */
     private function _testPermissions($dir, $chmod) {
         // early abort, if it is writable, everything is hunky-dory
-        if (is_writable($dir)) return true;
+        if (is_writable($dir)) {
+            return true;
+        }
         if (!is_dir($dir)) {
             // generally, you'll want to handle this beforehand
             // so a more specific error message can be given
@@ -216,7 +252,9 @@ class HTMLPurifier_DefinitionCache_Serializer extends
             if (fileowner($dir) === posix_getuid()) {
                 // we can chmod it ourselves
                 $chmod = $chmod | 0700;
-                if (chmod($dir, $chmod)) return true;
+                if (chmod($dir, $chmod)) {
+                    return true;
+                }
             } elseif (filegroup($dir) === posix_getgid()) {
                 $chmod = $chmod | 0070;
             } else {

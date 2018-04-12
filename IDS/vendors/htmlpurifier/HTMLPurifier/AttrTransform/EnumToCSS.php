@@ -43,12 +43,16 @@ class HTMLPurifier_AttrTransform_EnumToCSS extends HTMLPurifier_AttrTransform {
      */
     public function transform($attr, $config, $context) {
 
-        if (!isset($attr[$this->attr])) return $attr;
+        if (!isset($attr[$this->attr])) {
+            return $attr;
+        }
 
         $value = trim($attr[$this->attr]);
         unset($attr[$this->attr]);
 
-        if (!$this->caseSensitive) $value = strtolower($value);
+        if (!$this->caseSensitive) {
+            $value = strtolower($value);
+        }
 
         if (!isset($this->enumToCSS[$value])) {
             return $attr;

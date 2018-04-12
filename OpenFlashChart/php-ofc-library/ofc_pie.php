@@ -87,8 +87,9 @@ class pie_value
      */
 	public function add_animation( $animation )
 	{
-		if( !isset( $this->animate ) )
-			$this->animate = array();
+		if( !isset( $this->animate ) ) {
+        $this->animate = array();
+    }
 			
 		$this->animate[] = $animation;
 		
@@ -203,8 +204,9 @@ class pie
 */
 	public function set_animate( $bool )
 	{
-		if( $bool )
-			$this->add_animation( new pie_fade() );
+		if( $bool ) {
+        $this->add_animation(new pie_fade());
+    }
 
   }
 
@@ -215,8 +217,9 @@ class pie
 */
 	public function add_animation( $animation )
 	{
-		if( !isset( $this->animate ) )
-			$this->animate = array();
+		if( !isset( $this->animate ) ) {
+        $this->animate = array();
+    }
 			
 		$this->animate[] = $animation;
 		

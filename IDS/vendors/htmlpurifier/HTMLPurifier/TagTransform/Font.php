@@ -73,11 +73,17 @@ class HTMLPurifier_TagTransform_Font extends HTMLPurifier_TagTransform
             if ($attr['size'] !== '') {
                 if ($attr['size']{0} == '+' || $attr['size']{0} == '-') {
                     $size = (int) $attr['size'];
-                    if ($size < -2) $attr['size'] = '-2';
-                    if ($size > 4)  $attr['size'] = '+4';
+                    if ($size < -2) {
+                        $attr['size'] = '-2';
+                    }
+                    if ($size > 4) {
+                        $attr['size'] = '+4';
+                    }
                 } else {
                     $size = (int) $attr['size'];
-                    if ($size > 7) $attr['size'] = '7';
+                    if ($size > 7) {
+                        $attr['size'] = '7';
+                    }
                 }
             }
             if (isset($this->_size_lookup[$attr['size']])) {

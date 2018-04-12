@@ -99,8 +99,9 @@ class FPDI extends FPDF_TPL
     public function setSourceFile($filename)
     {
         $_filename = realpath($filename);
-        if (false !== $_filename)
+        if (false !== $_filename) {
             $filename = $_filename;
+        }
 
         $this->currentFilename = $filename;
         
@@ -204,13 +205,16 @@ class FPDI extends FPDF_TPL
          * TrimBox: Default -> CropBox
          * ArtBox: Default -> CropBox
          */
-        if (!isset($pageBoxes[$boxName]) && ($boxName == '/BleedBox' || $boxName == '/TrimBox' || $boxName == '/ArtBox'))
+        if (!isset($pageBoxes[$boxName]) && ($boxName == '/BleedBox' || $boxName == '/TrimBox' || $boxName == '/ArtBox')) {
             $boxName = '/CropBox';
-        if (!isset($pageBoxes[$boxName]) && $boxName == '/CropBox')
+        }
+        if (!isset($pageBoxes[$boxName]) && $boxName == '/CropBox') {
             $boxName = '/MediaBox';
+        }
         
-        if (!isset($pageBoxes[$boxName]))
+        if (!isset($pageBoxes[$boxName])) {
             return false;
+        }
             
         $this->lastUsedPageBox = $boxName;
         
@@ -246,8 +250,9 @@ class FPDI extends FPDF_TPL
             $tpl['w'] = $steps % 2 == 0 ? $_w : $_h;
             $tpl['h'] = $steps % 2 == 0 ? $_h : $_w;
             
-            if ($angle < 0)
-            	$angle += 360;
+            if ($angle < 0) {
+                $angle += 360;
+            }
             
         	$tpl['_rotationAngle'] = $angle * -1;
         }
@@ -442,8 +447,9 @@ class FPDI extends FPDF_TPL
 
                     if (isset($res['fonts']) && count($res['fonts'])) {
                         $this->_out('/Font <<');
-                        foreach ($res['fonts'] as $font)
+                        foreach ($res['fonts'] as $font) {
                             $this->_out('/F' . $font['i'] . ' ' . $font['n'] . ' 0 R');
+                        }
                         $this->_out('>>');
                     }
                     if (isset($res['images']) && count($res['images']) ||
@@ -451,12 +457,14 @@ class FPDI extends FPDF_TPL
                     {
                         $this->_out('/XObject <<');
                         if (isset($res['images'])) {
-                            foreach ($res['images'] as $image)
+                            foreach ($res['images'] as $image) {
                                 $this->_out('/I' . $image['i'] . ' ' . $image['n'] . ' 0 R');
+                            }
                         }
                         if (isset($res['tpls'])) {
-                            foreach ($res['tpls'] as $i => $_tpl)
+                            foreach ($res['tpls'] as $i => $_tpl) {
                                 $this->_out($this->tplPrefix . $i . ' ' . $_tpl['n'] . ' 0 R');
+                            }
                         }
                         $this->_out('>>');
                     }

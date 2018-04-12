@@ -99,7 +99,9 @@ class HTMLPurifier_ConfigSchema {
     public function add($key, $default, $type, $allow_null) {
         $obj = new stdclass();
         $obj->type = is_int($type) ? $type : HTMLPurifier_VarParser::$types[$type];
-        if ($allow_null) $obj->allow_null = true;
+        if ($allow_null) {
+            $obj->allow_null = true;
+        }
         $this->info[$key] = $obj;
         $this->defaults[$key] = $default;
         $this->defaultPlist->set($key, $default);

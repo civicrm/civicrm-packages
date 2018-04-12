@@ -13,7 +13,9 @@ class HTMLPurifier_Injector_Linkify extends HTMLPurifier_Injector
      * @param $token
      */
     public function handleText(&$token) {
-        if (!$this->allowsElement('a')) return;
+        if (!$this->allowsElement('a')) {
+            return;
+        }
 
         if (strpos($token->data, '://') === false) {
             // our really quick heuristic failed, abort
@@ -33,7 +35,9 @@ class HTMLPurifier_Injector_Linkify extends HTMLPurifier_Injector
         // $l = is link
         for ($i = 0, $c = count($bits), $l = false; $i < $c; $i++, $l = !$l) {
             if (!$l) {
-                if ($bits[$i] === '') continue;
+                if ($bits[$i] === '') {
+                    continue;
+                }
                 $token[] = new HTMLPurifier_Token_Text($bits[$i]);
             } else {
                 $token[] = new HTMLPurifier_Token_Start('a', array('href' => $bits[$i]));

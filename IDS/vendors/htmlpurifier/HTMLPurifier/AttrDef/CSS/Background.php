@@ -38,7 +38,9 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
 
         // regular pre-processing
         $string = $this->parseCDATA($string);
-        if ($string === '') return false;
+        if ($string === '') {
+            return false;
+        }
 
         // munge rgb() decl if necessary
         $string = $this->mungeRgb($string);
@@ -57,17 +59,25 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
         $none = false;
 
         foreach ($bits as $bit) {
-            if ($bit === '') continue;
+            if ($bit === '') {
+                continue;
+            }
             foreach ($caught as $key => $status) {
                 if ($key != 'position') {
-                    if ($status !== false) continue;
+                    if ($status !== false) {
+                        continue;
+                    }
                     $r = $this->info['background-' . $key]->validate($bit, $config, $context);
                 } else {
                     $r = $bit;
                 }
-                if ($r === false) continue;
+                if ($r === false) {
+                    continue;
+                }
                 if ($key == 'position') {
-                    if ($caught[$key] === false) $caught[$key] = '';
+                    if ($caught[$key] === false) {
+                        $caught[$key] = '';
+                    }
                     $caught[$key] .= $r . ' ';
                 } else {
                     $caught[$key] = $r;
@@ -77,7 +87,9 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
             }
         }
 
-        if (!$i) return false;
+        if (!$i) {
+            return false;
+        }
         if ($caught['position'] !== false) {
             $caught['position'] = $this->info['background-position']->
                 validate($caught['position'], $config, $context);
@@ -85,11 +97,15 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
 
         $ret = array();
         foreach ($caught as $value) {
-            if ($value === false) continue;
+            if ($value === false) {
+                continue;
+            }
             $ret[] = $value;
         }
 
-        if (empty($ret)) return false;
+        if (empty($ret)) {
+            return false;
+        }
         return implode(' ', $ret);
 
     }

@@ -69,7 +69,9 @@ class Structures_Graph_Manipulator_AcyclicTest {
         $result = 0;
         $graphNodes =& $node->_graph->getNodes();
         foreach (array_keys($graphNodes) as $key) {
-            if ((!$graphNodes[$key]->getMetadata('acyclic-test-visited')) && $graphNodes[$key]->connectsTo($node)) $result++;
+            if ((!$graphNodes[$key]->getMetadata('acyclic-test-visited')) && $graphNodes[$key]->connectsTo($node)) {
+                $result++;
+            }
         }
         return $result;
         
@@ -113,10 +115,16 @@ class Structures_Graph_Manipulator_AcyclicTest {
 
         // If graph is a DAG, there should be no non-visited nodes. Let's try to prove otherwise
         $result = true;
-        foreach($nodeKeys as $key) if (!$nodes[$key]->getMetadata('acyclic-test-visited')) $result = false;
+        foreach($nodeKeys as $key) {
+            if ( ! $nodes[$key]->getMetadata('acyclic-test-visited')) {
+                $result = false;
+            }
+        }
         
         // Cleanup visited marks
-        foreach($nodeKeys as $key) $nodes[$key]->unsetMetadata('acyclic-test-visited');
+        foreach($nodeKeys as $key) {
+            $nodes[$key]->unsetMetadata('acyclic-test-visited');
+        }
 
         return $result;
     }
@@ -134,8 +142,13 @@ class Structures_Graph_Manipulator_AcyclicTest {
      */
     public function isAcyclic(&$graph) {
         // We only test graphs
-        if (!is_a($graph, 'Structures_Graph')) return Pear::raiseError('Structures_Graph_Manipulator_AcyclicTest::isAcyclic received an object that is not a Structures_Graph', STRUCTURES_GRAPH_ERROR_GENERIC);
-        if (!$graph->isDirected()) return false; // Only directed graphs may be acyclic
+        if (!is_a($graph, 'Structures_Graph')) {
+            return Pear::raiseError('Structures_Graph_Manipulator_AcyclicTest::isAcyclic received an object that is not a Structures_Graph',
+              STRUCTURES_GRAPH_ERROR_GENERIC);
+        }
+        if (!$graph->isDirected()) {
+            return false;
+        } // Only directed graphs may be acyclic
 
         return Structures_Graph_Manipulator_AcyclicTest::_isAcyclic($graph);
     }

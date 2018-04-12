@@ -68,15 +68,17 @@ function smarty_function_html_options($params, &$smarty)
         }
     }
 
-    if (!isset($options) && !isset($values))
-        return ''; /* raise error here? */
+    if (!isset($options) && !isset($values)) {
+        return '';
+    } /* raise error here? */
 
     $_html_result = '';
 
     if (isset($options)) {
         
-        foreach ($options as $_key=>$_val)
+        foreach ($options as $_key=>$_val) {
             $_html_result .= smarty_function_html_options_optoutput($_key, $_val, $selected);
+        }
 
     } else {
         
@@ -106,8 +108,9 @@ function smarty_function_html_options_optoutput($key, $value, $selected) {
     if(!is_array($value)) {
         $_html_result = '<option label="' . smarty_function_escape_special_chars($value) . '" value="' .
             smarty_function_escape_special_chars($key) . '"';
-        if (in_array((string)$key, $selected))
+        if (in_array((string)$key, $selected)) {
             $_html_result .= ' selected="selected"';
+        }
         $_html_result .= '>' . smarty_function_escape_special_chars($value) . '</option>' . "\n";
     } else {
         $_html_result = smarty_function_html_options_optgroup($key, $value, $selected);

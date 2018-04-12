@@ -10,9 +10,15 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
 
     public function __construct() {
         $this->mask = '- ';
-        for ($c = 'a'; $c <= 'z'; $c++) $this->mask .= $c;
-        for ($c = 'A'; $c <= 'Z'; $c++) $this->mask .= $c;
-        for ($c = '0'; $c <= '9'; $c++) $this->mask .= $c; // cast-y, but should be fine
+        for ($c = 'a'; $c <= 'z'; $c++) {
+            $this->mask .= $c;
+        }
+        for ($c = 'A'; $c <= 'Z'; $c++) {
+            $this->mask .= $c;
+        }
+        for ($c = '0'; $c <= '9'; $c++) {
+            $this->mask .= $c;
+        } // cast-y, but should be fine
         // special bytes used by UTF-8
         for ($i = 0x80; $i <= 0xFF; $i++) {
             // We don't bother excluding invalid bytes in this range,
@@ -61,7 +67,9 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
         $final = '';
         foreach($fonts as $font) {
             $font = trim($font);
-            if ($font === '') continue;
+            if ($font === '') {
+                continue;
+            }
             // match a generic name
             if (isset($generic_names[$font])) {
                 if ($allowed_fonts === null || isset($allowed_fonts[$font])) {
@@ -72,9 +80,13 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
             // match a quoted name
             if ($font[0] === '"' || $font[0] === "'") {
                 $length = strlen($font);
-                if ($length <= 2) continue;
+                if ($length <= 2) {
+                    continue;
+                }
                 $quote = $font[0];
-                if ($font[$length - 1] !== $quote) continue;
+                if ($font[$length - 1] !== $quote) {
+                    continue;
+                }
                 $font = substr($font, 1, $length - 2);
             }
 
@@ -195,7 +207,9 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
             $final .= "'$font', ";
         }
         $final = rtrim($final, ', ');
-        if ($final === '') return false;
+        if ($final === '') {
+            return false;
+        }
         return $final;
     }
 

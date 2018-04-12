@@ -23,10 +23,18 @@ class HTMLPurifier_ConfigDef_Directive extends HTMLPurifier_ConfigDef
         $allowed = null,
         $aliases = null
     ) {
-        if (       $type !== null)        $this->type = $type;
-        if ( $allow_null !== null)  $this->allow_null = $allow_null;
-        if (    $allowed !== null)     $this->allowed = $allowed;
-        if (    $aliases !== null)     $this->aliases = $aliases;
+        if (       $type !== null) {
+            $this->type = $type;
+        }
+        if ( $allow_null !== null) {
+            $this->allow_null = $allow_null;
+        }
+        if (    $allowed !== null) {
+            $this->allowed = $allowed;
+        }
+        if (    $aliases !== null) {
+            $this->aliases = $aliases;
+        }
     }
     
     /**

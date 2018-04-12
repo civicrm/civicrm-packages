@@ -40,8 +40,9 @@ class bar_value
 	{
 		$this->top = $top;
 		
-		if( isset( $bottom ) )
-			$this->bottom = $bottom;
+		if( isset( $bottom ) ) {
+        $this->bottom = $bottom;
+    }
 	}
 
     /**

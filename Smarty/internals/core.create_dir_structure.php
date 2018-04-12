@@ -37,7 +37,9 @@ function smarty_core_create_dir_structure($params, &$smarty)
                 /* leading "//" for network volume, or "[letter]:/" for full path */
                 $_new_dir = $_root_dir[1];
                 /* remove drive-letter from _dir_parts */
-                if (isset($_root_dir[3])) array_shift($_dir_parts);
+                if (isset($_root_dir[3])) {
+                    array_shift($_dir_parts);
+                }
 
             } else {
                 $_new_dir = str_replace('\\', '/', getcwd()).'/';

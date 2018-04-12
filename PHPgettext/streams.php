@@ -93,8 +93,9 @@ class StringReader {
     public function read($bytes) {
     $data = substr($this->_str, $this->_pos, $bytes);
     $this->_pos += $bytes;
-    if (strlen($this->_str)<$this->_pos)
-      $this->_pos = strlen($this->_str);
+    if (strlen($this->_str)<$this->_pos) {
+        $this->_pos = strlen($this->_str);
+    }
 
     return $data;
   }
@@ -106,8 +107,9 @@ class StringReader {
      */
     public function seekto($pos) {
     $this->_pos = $pos;
-    if (strlen($this->_str)<$this->_pos)
-      $this->_pos = strlen($this->_str);
+    if (strlen($this->_str)<$this->_pos) {
+        $this->_pos = strlen($this->_str);
+    }
     return $this->_pos;
   }
 
@@ -176,7 +178,9 @@ class FileReader {
       $this->_pos = ftell($this->_fd);
 
       return $data;
-    } else return '';
+    } else {
+        return '';
+    }
   }
 
     /**

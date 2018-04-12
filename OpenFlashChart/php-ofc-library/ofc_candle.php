@@ -55,8 +55,9 @@ class candle extends bar_base
 		parent::__construct();
 		
 		$this->set_colour( $colour );
-		if(null !== $negative_colour)
-			$this->{'negative-colour'} = $negative_colour;
+		if(null !== $negative_colour) {
+        $this->{'negative-colour'} = $negative_colour;
+    }
 	}
 }
 

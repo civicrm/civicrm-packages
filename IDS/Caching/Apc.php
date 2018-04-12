@@ -120,9 +120,10 @@ class IDS_Caching_Apc implements IDS_Caching_Interface
      */
     public function setCache(array $data) 
     {
-        if(!$this->isCached)
-            apc_store($this->config['key_prefix'] . '.storage', 
-            	$data, $this->config['expiration_time']);
+        if(!$this->isCached) {
+            apc_store($this->config['key_prefix'] . '.storage',
+              $data, $this->config['expiration_time']);
+        }
         return $this;
     }
 

@@ -259,9 +259,15 @@ class HTMLPurifier_Encoder
         }
         // set up the actual character
         $ret = '';
-        if($w) $ret .= chr($w);
-        if($z) $ret .= chr($z);
-        if($y) $ret .= chr($y);
+        if($w) {
+            $ret .= chr($w);
+        }
+        if($z) {
+            $ret .= chr($z);
+        }
+        if($y) {
+            $ret .= chr($y);
+        }
         $ret .= chr($x);
 
         return $ret;
@@ -276,9 +282,13 @@ class HTMLPurifier_Encoder
 */
     public static function convertToUTF8($str, $config, $context) {
         $encoding = $config->get('Core.Encoding');
-        if ($encoding === 'utf-8') return $str;
+        if ($encoding === 'utf-8') {
+            return $str;
+        }
         static $iconv = null;
-        if ($iconv === null) $iconv = function_exists('iconv');
+        if ($iconv === null) {
+            $iconv = function_exists('iconv');
+        }
         set_error_handler(array('HTMLPurifier_Encoder', 'muteErrorHandler'));
         if ($iconv && !$config->get('Test.ForceNoIconv')) {
             $str = iconv($encoding, 'utf-8//IGNORE', $str);
@@ -313,9 +323,13 @@ class HTMLPurifier_Encoder
 */
     public static function convertFromUTF8($str, $config, $context) {
         $encoding = $config->get('Core.Encoding');
-        if ($encoding === 'utf-8') return $str;
+        if ($encoding === 'utf-8') {
+            return $str;
+        }
         static $iconv = null;
-        if ($iconv === null) $iconv = function_exists('iconv');
+        if ($iconv === null) {
+            $iconv = function_exists('iconv');
+        }
         if ($escape = $config->get('Core.EscapeNonASCIICharacters')) {
             $str = HTMLPurifier_Encoder::convertToASCIIDumbLossless($str);
         }
@@ -325,7 +339,9 @@ class HTMLPurifier_Encoder
             $ascii_fix = HTMLPurifier_Encoder::testEncodingSupportsASCII($encoding);
             if (!$escape && !empty($ascii_fix)) {
                 $clear_fix = array();
-                foreach ($ascii_fix as $utf8 => $native) $clear_fix[$utf8] = '';
+                foreach ($ascii_fix as $utf8 => $native) {
+                    $clear_fix[$utf8] = '';
+                }
                 $str = strtr($str, $clear_fix);
             }
             $str = strtr($str, array_flip($ascii_fix));
@@ -405,7 +421,9 @@ class HTMLPurifier_Encoder
     public static function testEncodingSupportsASCII($encoding, $bypass = false) {
         static $encodings = array();
         if (!$bypass) {
-            if (isset($encodings[$encoding])) return $encodings[$encoding];
+            if (isset($encodings[$encoding])) {
+                return $encodings[$encoding];
+            }
             $lenc = strtolower($encoding);
             switch ($lenc) {
                 case 'shift_jis':
@@ -413,11 +431,15 @@ class HTMLPurifier_Encoder
                 case 'johab':
                     return array("\xE2\x82\xA9" => '\\');
             }
-            if (strpos($lenc, 'iso-8859-') === 0) return array();
+            if (strpos($lenc, 'iso-8859-') === 0) {
+                return array();
+            }
         }
         $ret = array();
         set_error_handler(array('HTMLPurifier_Encoder', 'muteErrorHandler'));
-        if (iconv('UTF-8', $encoding, 'a') === false) return false;
+        if (iconv('UTF-8', $encoding, 'a') === false) {
+            return false;
+        }
         for ($i = 0x20; $i <= 0x7E; $i++) { // all printable ASCII chars
             $c = chr($i); // UTF-8 char
             $r = iconv('UTF-8', "$encoding//IGNORE", $c); // initial conversion

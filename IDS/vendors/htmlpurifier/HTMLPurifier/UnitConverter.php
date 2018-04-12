@@ -86,7 +86,9 @@ class HTMLPurifier_UnitConverter
      */
     public function convert($length, $to_unit) {
 
-        if (!$length->isValid()) return false;
+        if (!$length->isValid()) {
+            return false;
+        }
 
         $n    = $length->getN();
         $unit = $length->getUnit();
@@ -97,15 +99,23 @@ class HTMLPurifier_UnitConverter
 
         $state = $dest_state = false;
         foreach (self::$units as $k => $x) {
-            if (isset($x[$unit])) $state = $k;
-            if (isset($x[$to_unit])) $dest_state = $k;
+            if (isset($x[$unit])) {
+                $state = $k;
+            }
+            if (isset($x[$to_unit])) {
+                $dest_state = $k;
+            }
         }
-        if (!$state || !$dest_state) return false;
+        if (!$state || !$dest_state) {
+            return false;
+        }
 
         // Some calculations about the initial precision of the number;
         // this will be useful when we need to do final rounding.
         $sigfigs = $this->getSigFigs($n);
-        if ($sigfigs < $this->outputPrecision) $sigfigs = $this->outputPrecision;
+        if ($sigfigs < $this->outputPrecision) {
+            $sigfigs = $this->outputPrecision;
+        }
 
         // BCMath's internal precision deals only with decimals. Use
         // our default if the initial number has no decimals, or increase
@@ -162,14 +172,18 @@ class HTMLPurifier_UnitConverter
         }
 
         // Post-condition: $unit == $to_unit
-        if ($unit !== $to_unit) return false;
+        if ($unit !== $to_unit) {
+            return false;
+        }
 
         // Useful for debugging:
         //echo "<pre>n";
         //echo "$n\nsigfigs = $sigfigs\nnew_log = $new_log\nlog = $log\nrp = $rp\n</pre>\n";
 
         $n = $this->round($n, $sigfigs);
-        if (strpos($n, '.') !== false) $n = rtrim($n, '0');
+        if (strpos($n, '.') !== false) {
+            $n = rtrim($n, '0');
+        }
         $n = rtrim($n, '.');
 
         return new HTMLPurifier_Length($n, $unit);
@@ -187,7 +201,9 @@ class HTMLPurifier_UnitConverter
             $sigfigs = strlen(rtrim($n, '0'));
         } else {
             $sigfigs = strlen(ltrim($n, '0.')); // eliminate extra decimal character
-            if ($dp !== 0) $sigfigs--;
+            if ($dp !== 0) {
+                $sigfigs--;
+            }
         }
         return $sigfigs;
     }
@@ -202,8 +218,12 @@ class HTMLPurifier_UnitConverter
      * @return string
      */
     private function add($s1, $s2, $scale) {
-        if ($this->bcmath) return bcadd($s1, $s2, $scale);
-        else return $this->scale($s1 + $s2, $scale);
+        if ($this->bcmath) {
+            return bcadd($s1, $s2, $scale);
+        }
+        else {
+            return $this->scale($s1 + $s2, $scale);
+        }
     }
 
     /**
@@ -214,8 +234,12 @@ class HTMLPurifier_UnitConverter
      * @return string
 */
     private function mul($s1, $s2, $scale) {
-        if ($this->bcmath) return bcmul($s1, $s2, $scale);
-        else return $this->scale($s1 * $s2, $scale);
+        if ($this->bcmath) {
+            return bcmul($s1, $s2, $scale);
+        }
+        else {
+            return $this->scale($s1 * $s2, $scale);
+        }
     }
 
     /**
@@ -226,8 +250,12 @@ class HTMLPurifier_UnitConverter
      * @return string
 */
     private function div($s1, $s2, $scale) {
-        if ($this->bcmath) return bcdiv($s1, $s2, $scale);
-        else return $this->scale($s1 / $s2, $scale);
+        if ($this->bcmath) {
+            return bcdiv($s1, $s2, $scale);
+        }
+        else {
+            return $this->scale($s1 / $s2, $scale);
+        }
     }
 
     /**

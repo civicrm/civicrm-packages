@@ -99,12 +99,16 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                     $depth++;
                     // skip token assignment on first iteration, this is the
                     // token we currently are on
-                    if ($depth == 1) continue;
+                    if ($depth == 1) {
+                        continue;
+                    }
                 } elseif ($tokens[$j] instanceof HTMLPurifier_Token_End) {
                     $depth--;
                     // skip token assignment on last iteration, this is the
                     // end token of the token we're currently on
-                    if ($depth == 0) break;
+                    if ($depth == 0) {
+                        break;
+                    }
                 }
                 $child_tokens[] = $tokens[$j];
             }
@@ -206,7 +210,9 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                 $stack[] = $i;
 
                 // register exclusions if there are any
-                if (!empty($excludes)) $exclude_stack[] = $excludes;
+                if (!empty($excludes)) {
+                    $exclude_stack[] = $excludes;
+                }
 
                 // move cursor to next possible start node
                 $i++;
@@ -275,7 +281,9 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                 $stack[] = $i;
 
                 // register exclusions if there are any
-                if (!empty($excludes)) $exclude_stack[] = $excludes;
+                if (!empty($excludes)) {
+                    $exclude_stack[] = $excludes;
+                }
 
                 // move cursor to next possible start node
                 $i++;

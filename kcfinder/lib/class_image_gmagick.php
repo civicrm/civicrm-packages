@@ -35,8 +35,12 @@ class image_gmagick extends image {
      * @return bool
      */
     public function resize($width, $height) {//
-        if (!$width) $width = 1;
-        if (!$height) $height = 1;
+        if (!$width) {
+            $width = 1;
+        }
+        if (!$height) {
+            $height = 1;
+        }
         try {
             $this->image->scaleImage($width, $height);
         } catch (\Exception $e) {
@@ -55,8 +59,12 @@ class image_gmagick extends image {
      * @return bool
      */
     public function resizeFit($width, $height, $background=false) {//
-        if (!$width) $width = 1;
-        if (!$height) $height = 1;
+        if (!$width) {
+            $width = 1;
+        }
+        if (!$height) {
+            $height = 1;
+        }
 
         try {
             $this->image->scaleImage($width, $height, true);
@@ -97,42 +105,56 @@ class image_gmagick extends image {
      * @return bool
      */
     public function resizeCrop($width, $height, $offset=false) {
-        if (!$width) $width = 1;
-        if (!$height) $height = 1;
+        if (!$width) {
+            $width = 1;
+        }
+        if (!$height) {
+            $height = 1;
+        }
 
         if (($this->width / $this->height) > ($width / $height)) {
             $h = $height;
             $w = ($this->width * $h) / $this->height;
             $y = 0;
             if ($offset !== false) {
-                if ($offset > 0)
+                if ($offset > 0) {
                     $offset = -$offset;
-                if (($w + $offset) <= $width)
+                }
+                if (($w + $offset) <= $width) {
                     $offset = $width - $w;
+                }
                 $x = $offset;
-            } else
+            } else {
                 $x = ($width - $w) / 2;
+            }
 
         } else {
             $w = $width;
             $h = ($this->height * $w) / $this->width;
             $x = 0;
             if ($offset !== false) {
-                if ($offset > 0)
+                if ($offset > 0) {
                     $offset = -$offset;
-                if (($h + $offset) <= $height)
+                }
+                if (($h + $offset) <= $height) {
                     $offset = $height - $h;
+                }
                 $y = $offset;
-            } else
+            } else {
                 $y = ($height - $h) / 2;
+            }
         }
 
         $x = round($x);
         $y = round($y);
         $w = round($w);
         $h = round($h);
-        if (!$w) $w = 1;
-        if (!$h) $h = 1;
+        if (!$w) {
+            $w = 1;
+        }
+        if (!$h) {
+            $h = 1;
+        }
 
         try {
             $this->image->scaleImage($w, $h);
@@ -217,8 +239,9 @@ class image_gmagick extends image {
         if ((($x + $w) > $this->width) ||
             (($y + $h) > $this->height) ||
             ($x < 0) || ($y < 0)
-        )
+        ) {
             return false;
+        }
 
         try {
             $this->image->compositeImage($wm, 1, $x, $y);
@@ -284,8 +307,9 @@ class image_gmagick extends image {
             $height = $h;
             return $image;
 
-        } else
+        } else {
             return false;
+        }
     }
 
 
@@ -329,8 +353,9 @@ class image_gmagick extends image {
             return false;
         }
         $method = "optimize_$type";
-        if (method_exists($this, $method) && !$this->$method($options))
+        if (method_exists($this, $method) && !$this->$method($options)) {
             return false;
+        }
 
         if (!isset($options['file'])) {
             if (!headers_sent()) {

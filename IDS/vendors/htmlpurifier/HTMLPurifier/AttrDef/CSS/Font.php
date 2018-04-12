@@ -51,7 +51,9 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
 
         // regular pre-processing
         $string = $this->parseCDATA($string);
-        if ($string === '') return false;
+        if ($string === '') {
+            return false;
+        }
 
         // check if it's one of the keywords
         $lowercase_string = strtolower($string);
@@ -66,13 +68,17 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
         $final = ''; // output
 
         for ($i = 0, $size = count($bits); $i < $size; $i++) {
-            if ($bits[$i] === '') continue;
+            if ($bits[$i] === '') {
+                continue;
+            }
             switch ($stage) {
 
                 // attempting to catch font-style, font-variant or font-weight
                 case 0:
                     foreach ($stage_1 as $validator_name) {
-                        if (isset($caught[$validator_name])) continue;
+                        if (isset($caught[$validator_name])) {
+                            continue;
+                        }
                         $r = $this->info[$validator_name]->validate(
                                                 $bits[$i], $config, $context);
                         if ($r !== false) {
@@ -82,8 +88,12 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
                         }
                     }
                     // all three caught, continue on
-                    if (count($caught) >= 3) $stage = 1;
-                    if ($r !== false) break;
+                    if (count($caught) >= 3) {
+                        $stage = 1;
+                    }
+                    if ($r !== false) {
+                        break;
+                    }
 
                 // attempting to catch font-size and perhaps line-height
                 case 1:
@@ -108,7 +118,9 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
                         if ($line_height === false) {
                             // we need to scroll forward
                             for ($j = $i + 1; $j < $size; $j++) {
-                                if ($bits[$j] === '') continue;
+                                if ($bits[$j] === '') {
+                                    continue;
+                                }
                                 if ($bits[$j] === '/') {
                                     if ($found_slash) {
                                         return false;

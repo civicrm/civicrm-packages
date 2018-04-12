@@ -44,11 +44,13 @@ class bar_filled extends bar_base
 		$this->type      = "bar_filled";
 		parent::__construct();
 		
-		if( isset( $colour ) )
-			$this->set_colour( $colour );
+		if( isset( $colour ) ) {
+        $this->set_colour($colour);
+    }
 		
-		if( isset( $outline_colour ) )
-			$this->set_outline_colour( $outline_colour );
+		if( isset( $outline_colour ) ) {
+        $this->set_outline_colour($outline_colour);
+    }
 	}
 
     /**

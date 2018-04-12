@@ -74,7 +74,9 @@ class HTMLPurifier_Generator
      * @return Generated HTML
      */
     public function generateFromTokens($tokens) {
-        if (!$tokens) return '';
+        if (!$tokens) {
+            return '';
+        }
 
         // Basic algorithm
         $html = '';
@@ -107,8 +109,12 @@ class HTMLPurifier_Generator
         // Normalize newlines to system defined value
         if ($this->config->get('Core.NormalizeNewlines')) {
             $nl = $this->config->get('Output.Newline');
-            if ($nl === null) $nl = PHP_EOL;
-            if ($nl !== "\n") $html = str_replace("\n", $nl, $html);
+            if ($nl === null) {
+                $nl = PHP_EOL;
+            }
+            if ($nl !== "\n") {
+                $html = str_replace("\n", $nl, $html);
+            }
         }
         return $html;
     }
@@ -168,7 +174,9 @@ class HTMLPurifier_Generator
      * @return \Generated|string
 */
     public function generateScriptFromToken($token) {
-        if (!$token instanceof HTMLPurifier_Token_Text) return $this->generateFromToken($token);
+        if (!$token instanceof HTMLPurifier_Token_Text) {
+            return $this->generateFromToken($token);
+        }
         // Thanks <http://lachy.id.au/log/2005/05/script-comments>
         $data = preg_replace('#//\s*$#', '', $token->data);
         return '<!--//--><![CDATA[//><!--' . "\n" . trim($data) . "\n" . '//--><!]]>';
@@ -184,11 +192,15 @@ class HTMLPurifier_Generator
 */
     public function generateAttributes($assoc_array_of_attributes, $element = false) {
         $html = '';
-        if ($this->_sortAttr) ksort($assoc_array_of_attributes);
+        if ($this->_sortAttr) {
+            ksort($assoc_array_of_attributes);
+        }
         foreach ($assoc_array_of_attributes as $key => $value) {
             if (!$this->_xhtml) {
                 // Remove namespaced attributes
-                if (strpos($key, ':') !== false) continue;
+                if (strpos($key, ':') !== false) {
+                    continue;
+                }
                 // Check if we should minimize the attribute: val="val" -> val
                 if ($element && !empty($this->_def->info[$element]->attr[$key]->minimized)) {
                     $html .= $key . ' ';
@@ -241,7 +253,9 @@ class HTMLPurifier_Generator
     public function escape($string, $quote = null) {
         // Workaround for APC bug on Mac Leopard reported by sidepodcast
         // http://htmlpurifier.org/phorum/read.php?3,4823,4846
-        if ($quote === null) $quote = ENT_COMPAT;
+        if ($quote === null) {
+            $quote = ENT_COMPAT;
+        }
         return htmlspecialchars($string, $quote, 'UTF-8');
     }
 

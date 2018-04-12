@@ -184,7 +184,9 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
                         // State 3.2.1: ...</p><div>
                         //                     -----
 
-                        if (!is_array($token)) $token = array($token);
+                        if (!is_array($token)) {
+                            $token = array($token);
+                        }
                         array_unshift($token, new HTMLPurifier_Token_Text("\n\n"));
                     } else {
                         // State 3.1.2: ...</p>\n\n{p}<b>
@@ -312,8 +314,12 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
      */
     private function _pLookAhead() {
         $this->current($i, $current);
-        if ($current instanceof HTMLPurifier_Token_Start) $nesting = 1;
-        else $nesting = 0;
+        if ($current instanceof HTMLPurifier_Token_Start) {
+            $nesting = 1;
+        }
+        else {
+            $nesting = 0;
+        }
         $ok = false;
         while ($this->forwardUntilEndToken($i, $current, $nesting)) {
             $result = $this->_checkNeedsP($current);

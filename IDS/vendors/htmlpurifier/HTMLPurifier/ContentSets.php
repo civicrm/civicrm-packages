@@ -32,7 +32,9 @@ class HTMLPurifier_ContentSets
      * @param $modules List of HTMLPurifier_HTMLModule
      */
     public function __construct($modules) {
-        if (!is_array($modules)) $modules = array($modules);
+        if (!is_array($modules)) {
+            $modules = array($modules);
+        }
         // populate content_sets based on module hints
         // sorry, no way of overloading
         foreach ($modules as $module_i => $module) {
@@ -74,7 +76,9 @@ class HTMLPurifier_ContentSets
      * @param $module Module that defined the ElementDef
      */
     public function generateChildDef(&$def, $module) {
-        if (!empty($def->child)) return; // already done!
+        if (!empty($def->child)) {
+            return;
+        } // already done!
         $content_model = $def->content_model;
         if (is_string($content_model)) {
             // Assume that $this->keys is alphanumeric
@@ -135,7 +139,9 @@ class HTMLPurifier_ContentSets
         if ($module->defines_child_def) { // save a func call
             $return = $module->getChildDef($def);
         }
-        if ($return !== false) return $return;
+        if ($return !== false) {
+            return $return;
+        }
         // error-out
         trigger_error(
             'Could not determine which ChildDef class to instantiate',

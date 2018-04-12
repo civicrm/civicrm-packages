@@ -44,7 +44,9 @@ class HTMLPurifier_URI
         $registry = HTMLPurifier_URISchemeRegistry::instance();
         if ($this->scheme !== null) {
             $scheme_obj = $registry->getScheme($this->scheme, $config, $context);
-            if (!$scheme_obj) return false; // invalid scheme, clean it out
+            if (!$scheme_obj) {
+                return false;
+            } // invalid scheme, clean it out
         } else {
             // no scheme: retrieve the default one
             $def = $config->getDefinition('URI');
@@ -79,7 +81,9 @@ class HTMLPurifier_URI
         if (null !== $this->host) {
             $host_def = new HTMLPurifier_AttrDef_URI_Host();
             $this->host = $host_def->validate($this->host, $config, $context);
-            if ($this->host === false) $this->host = null;
+            if ($this->host === false) {
+                $this->host = null;
+            }
         }
 
         // validate scheme
@@ -186,9 +190,13 @@ class HTMLPurifier_URI
         // (http:///foo-bar).
         if (null !== $this->host) {
             $authority = '';
-            if(null !== $this->userinfo) $authority .= $this->userinfo . '@';
+            if(null !== $this->userinfo) {
+                $authority .= $this->userinfo . '@';
+            }
             $authority .= $this->host;
-            if(null !== $this->port)     $authority .= ':' . $this->port;
+            if(null !== $this->port) {
+                $authority .= ':' . $this->port;
+            }
         }
 
         // Reconstruct the result
@@ -198,11 +206,19 @@ class HTMLPurifier_URI
         // differently than http:///foo), so unfortunately we have to
         // defer to the schemes to do the right thing.
         $result = '';
-        if (null !== $this->scheme)    $result .= $this->scheme . ':';
-        if (null !== $authority)       $result .= '//' . $authority;
+        if (null !== $this->scheme) {
+            $result .= $this->scheme . ':';
+        }
+        if (null !== $authority) {
+            $result .= '//' . $authority;
+        }
         $result .= $this->path;
-        if (null !== $this->query)     $result .= '?' . $this->query;
-        if (null !== $this->fragment)  $result .= '#' . $this->fragment;
+        if (null !== $this->query) {
+            $result .= '?' . $this->query;
+        }
+        if (null !== $this->fragment) {
+            $result .= '#' . $this->fragment;
+        }
 
         return $result;
     }

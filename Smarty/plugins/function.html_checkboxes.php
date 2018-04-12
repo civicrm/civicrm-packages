@@ -95,16 +95,19 @@ function smarty_function_html_checkboxes($params, &$smarty)
         }
     }
 
-    if (!isset($options) && !isset($values))
-        return ''; /* raise error here? */
+    if (!isset($options) && !isset($values)) {
+        return '';
+    } /* raise error here? */
 
     settype($selected, 'array');
     $_html_result = array();
 
     if (isset($options)) {
 
-        foreach ($options as $_key=>$_val)
-            $_html_result[] = smarty_function_html_checkboxes_output($name, $_key, $_val, $selected, $extra, $separator, $labels);
+        foreach ($options as $_key=>$_val) {
+            $_html_result[] = smarty_function_html_checkboxes_output($name, $_key, $_val, $selected, $extra, $separator,
+              $labels);
+        }
 
 
     } else {
@@ -136,7 +139,9 @@ function smarty_function_html_checkboxes($params, &$smarty)
  */
 function smarty_function_html_checkboxes_output($name, $value, $output, $selected, $extra, $separator, $labels) {
     $_output = '';
-    if ($labels) $_output .= '<label>';
+    if ($labels) {
+        $_output .= '<label>';
+    }
     $_output .= '<input type="checkbox" name="'
         . smarty_function_escape_special_chars($name) . '[]" value="'
         . smarty_function_escape_special_chars($value) . '"';
@@ -145,7 +150,9 @@ function smarty_function_html_checkboxes_output($name, $value, $output, $selecte
         $_output .= ' checked="checked"';
     }
     $_output .= $extra . ' />' . $output;
-    if ($labels) $_output .= '</label>';
+    if ($labels) {
+        $_output .= '</label>';
+    }
     $_output .=  $separator;
 
     return $_output;

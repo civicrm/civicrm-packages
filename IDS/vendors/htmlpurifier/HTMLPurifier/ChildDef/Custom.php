@@ -69,7 +69,9 @@ class HTMLPurifier_ChildDef_Custom extends HTMLPurifier_ChildDef
         $list_of_children = '';
         $nesting = 0; // depth into the nest
         foreach ($tokens_of_children as $token) {
-            if (!empty($token->is_whitespace)) continue;
+            if (!empty($token->is_whitespace)) {
+                continue;
+            }
 
             $is_child = ($nesting == 0); // direct
 

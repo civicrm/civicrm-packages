@@ -236,7 +236,9 @@ class HTMLPurifier_Printer_HTMLDefinition extends HTMLPurifier_Printer
         ksort($array);
         $list = array();
         foreach ($array as $name => $discard) {
-            if ($name !== '#PCDATA' && !isset($this->def->info[$name])) continue;
+            if ($name !== '#PCDATA' && !isset($this->def->info[$name])) {
+                continue;
+            }
             $list[] = $name;
         }
         return $this->listify($list);
@@ -270,7 +272,9 @@ class HTMLPurifier_Printer_HTMLDefinition extends HTMLPurifier_Printer
         ksort($array);
         $list = array();
         foreach ($array as $name => $obj) {
-            if ($obj === false) continue;
+            if ($obj === false) {
+                continue;
+            }
             $list[] = "$name&nbsp;=&nbsp;<i>" . $this->getClass($obj, 'AttrDef_') . '</i>';
         }
         return $this->listify($list);

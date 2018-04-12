@@ -127,7 +127,9 @@ class HTMLPurifier_Lexer
             }
         }
 
-        if (!$inst) throw new HTMLPurifier_Exception('No lexer was instantiated');
+        if (!$inst) {
+            throw new HTMLPurifier_Exception('No lexer was instantiated');
+        }
 
         // once PHP DOM implements native line numbers, or we
         // hack out something using XSLT, remove this stipulation
@@ -178,13 +180,17 @@ class HTMLPurifier_Lexer
     public function parseData($string) {
 
         // following functions require at least one character
-        if ($string === '') return '';
+        if ($string === '') {
+            return '';
+        }
 
         // subtracts amps that cannot possibly be escaped
         $num_amp = substr_count($string, '&') - substr_count($string, '& ') -
             ($string[strlen($string)-1] === '&' ? 1 : 0);
 
-        if (!$num_amp) return $string; // abort if no entities
+        if (!$num_amp) {
+            return $string;
+        } // abort if no entities
         $num_esc_amp = substr_count($string, '&amp;');
         $string = strtr($string, $this->_special_entity2str);
 
@@ -192,7 +198,9 @@ class HTMLPurifier_Lexer
         $num_amp_2 = substr_count($string, '&') - substr_count($string, '& ') -
             ($string[strlen($string)-1] === '&' ? 1 : 0);
 
-        if ($num_amp_2 <= $num_esc_amp) return $string;
+        if ($num_amp_2 <= $num_esc_amp) {
+            return $string;
+        }
 
         // hmm... now we have some uncommon entities. Use the callback.
         $string = $this->_entity_parser->substituteSpecialEntities($string);

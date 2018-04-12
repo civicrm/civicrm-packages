@@ -32,10 +32,14 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
      * @return bool
      */
     public function filter(&$uri, $config, $context) {
-        if ($context->get('EmbeddedURI', true) && !$this->doEmbed) return true;
+        if ($context->get('EmbeddedURI', true) && !$this->doEmbed) {
+            return true;
+        }
 
         $scheme_obj = $uri->getSchemeObj($config, $context);
-        if (!$scheme_obj) return true; // ignore unknown schemes, maybe another postfilter did it
+        if (!$scheme_obj) {
+            return true;
+        } // ignore unknown schemes, maybe another postfilter did it
         if (null === $uri->host || empty($scheme_obj->browsable)) {
             return true;
         }
@@ -51,7 +55,9 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
         $new_uri = $this->parser->parse($new_uri);
         // don't redirect if the target host is the same as the
         // starting host
-        if ($uri->host === $new_uri->host) return true;
+        if ($uri->host === $new_uri->host) {
+            return true;
+        }
         $uri = $new_uri; // overwrite
         return true;
     }
@@ -71,7 +77,9 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
         $this->replace['%m'] = $context->get('CurrentAttr', true);
         $this->replace['%p'] = $context->get('CurrentCSSProperty', true);
         // not always available
-        if ($this->secretKey) $this->replace['%t'] = sha1($this->secretKey . ':' . $string);
+        if ($this->secretKey) {
+            $this->replace['%t'] = sha1($this->secretKey . ':' . $string);
+        }
     }
 
 }

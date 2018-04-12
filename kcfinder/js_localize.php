@@ -26,8 +26,9 @@ if (!isset($_GET['lng']) || ($_GET['lng'] == 'en') ||
 $file = "lang/" . $_GET['lng'] . ".php";
 $mtime = @filemtime($file);
 
-if ($mtime)
+if ($mtime) {
     httpCache::checkMTime($mtime, "Content-Type: text/javascript");
+}
 
 require $file;
 header("Content-Type: text/javascript");
@@ -38,8 +39,9 @@ $i = 0;
 foreach ($lang as $english => $native) {
     if (substr($english, 0, 1) != "_") {
         echo "'" . text::jsValue($english) . "':\"" . text::jsValue($native) . "\"";
-        if (++$i < count($lang))
+        if (++$i < count($lang)) {
             echo ",";
+        }
     }
 }
 

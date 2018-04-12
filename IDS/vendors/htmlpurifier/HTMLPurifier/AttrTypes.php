@@ -54,8 +54,12 @@ class HTMLPurifier_AttrTypes
     public function get($type) {
 
         // determine if there is any extra info tacked on
-        if (strpos($type, '#') !== false) list($type, $string) = explode('#', $type, 2);
-        else $string = '';
+        if (strpos($type, '#') !== false) {
+            list($type, $string) = explode('#', $type, 2);
+        }
+        else {
+            $string = '';
+        }
 
         if (!isset($this->info[$type])) {
             trigger_error('Cannot retrieve undefined attribute type ' . $type, E_USER_ERROR);

@@ -96,7 +96,9 @@ abstract class HTMLPurifier_Injector
         // still test checkNeeded, so be careful. Maybe get rid of that
         // dependency.
         $result = $this->checkNeeded($config);
-        if ($result !== false) return $result;
+        if ($result !== false) {
+            return $result;
+        }
         $this->currentNesting =& $context->get('CurrentNesting');
         $this->inputTokens    =& $context->get('InputTokens');
         $this->inputIndex     =& $context->get('InputIndex');
@@ -113,11 +115,19 @@ abstract class HTMLPurifier_Injector
     public function checkNeeded($config) {
         $def = $config->getHTMLDefinition();
         foreach ($this->needed as $element => $attributes) {
-            if (is_int($element)) $element = $attributes;
-            if (!isset($def->info[$element])) return $element;
-            if (!is_array($attributes)) continue;
+            if (is_int($element)) {
+                $element = $attributes;
+            }
+            if (!isset($def->info[$element])) {
+                return $element;
+            }
+            if (!is_array($attributes)) {
+                continue;
+            }
             foreach ($attributes as $name) {
-                if (!isset($def->info[$element]->attr[$name])) return "$element.$name";
+                if (!isset($def->info[$element]->attr[$name])) {
+                    return "$element.$name";
+                }
             }
         }
         return false;
@@ -143,7 +153,9 @@ abstract class HTMLPurifier_Injector
         for ($i = count($this->currentNesting) - 2; $i >= 0; $i--) {
             $node = $this->currentNesting[$i];
             $def  = $this->htmlDefinition->info[$node->name];
-            if (isset($def->excludes[$name])) return false;
+            if (isset($def->excludes[$name])) {
+                return false;
+            }
         }
         return true;
     }
@@ -161,9 +173,15 @@ abstract class HTMLPurifier_Injector
      * @return bool
      */
     protected function forward(&$i, &$current) {
-        if ($i === null) $i = $this->inputIndex + 1;
-        else $i++;
-        if (!isset($this->inputTokens[$i])) return false;
+        if ($i === null) {
+            $i = $this->inputIndex + 1;
+        }
+        else {
+            $i++;
+        }
+        if (!isset($this->inputTokens[$i])) {
+            return false;
+        }
         $current = $this->inputTokens[$i];
         return true;
     }
@@ -179,11 +197,19 @@ abstract class HTMLPurifier_Injector
 */
     protected function forwardUntilEndToken(&$i, &$current, &$nesting) {
         $result = $this->forward($i, $current);
-        if (!$result) return false;
-        if ($nesting === null) $nesting = 0;
-        if     ($current instanceof HTMLPurifier_Token_Start) $nesting++;
+        if (!$result) {
+            return false;
+        }
+        if ($nesting === null) {
+            $nesting = 0;
+        }
+        if     ($current instanceof HTMLPurifier_Token_Start) {
+            $nesting++;
+        }
         elseif ($current instanceof HTMLPurifier_Token_End) {
-            if ($nesting <= 0) return false;
+            if ($nesting <= 0) {
+                return false;
+            }
             $nesting--;
         }
         return true;
@@ -202,9 +228,15 @@ abstract class HTMLPurifier_Injector
      * @return bool
      */
     protected function backward(&$i, &$current) {
-        if ($i === null) $i = $this->inputIndex - 1;
-        else $i--;
-        if ($i < 0) return false;
+        if ($i === null) {
+            $i = $this->inputIndex - 1;
+        }
+        else {
+            $i--;
+        }
+        if ($i < 0) {
+            return false;
+        }
         $current = $this->inputTokens[$i];
         return true;
     }
@@ -219,7 +251,9 @@ abstract class HTMLPurifier_Injector
      * @param &$current Current token variable. Do NOT use $token, as that variable is also a reference
      */
     protected function current(&$i, &$current) {
-        if ($i === null) $i = $this->inputIndex;
+        if ($i === null) {
+            $i = $this->inputIndex;
+        }
         $current = $this->inputTokens[$i];
     }
 

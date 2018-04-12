@@ -36,18 +36,24 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
         //      If the URI scheme defines a default for host, then that
         //      default applies when the host subcomponent is undefined
         //      or when the registered name is empty (zero length).
-        if ($string === '') return '';
+        if ($string === '') {
+            return '';
+        }
         if ($length > 1 && $string[0] === '[' && $string[$length-1] === ']') {
             //IPv6
             $ip = substr($string, 1, $length - 2);
             $valid = $this->ipv6->validate($ip, $config, $context);
-            if ($valid === false) return false;
+            if ($valid === false) {
+                return false;
+            }
             return '['. $valid . ']';
         }
 
         // need to do checks on unusual encodings too
         $ipv4 = $this->ipv4->validate($string, $config, $context);
-        if ($ipv4 !== false) return $ipv4;
+        if ($ipv4 !== false) {
+            return $ipv4;
+        }
 
         // A regular domain name.
 
@@ -65,7 +71,9 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
         $toplabel      = "$a($and*$an)?";
         // hostname    = *( domainlabel "." ) toplabel [ "." ]
         $match = preg_match("/^($domainlabel\.)*$toplabel\.?$/i", $string);
-        if (!$match) return false;
+        if (!$match) {
+            return false;
+        }
 
         return $string;
     }

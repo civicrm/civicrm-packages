@@ -36,7 +36,9 @@ class HTMLPurifier_AttrDef_CSS_ListStyle extends HTMLPurifier_AttrDef
 
         // regular pre-processing
         $string = $this->parseCDATA($string);
-        if ($string === '') return false;
+        if ($string === '') {
+            return false;
+        }
 
         // assumes URI doesn't have spaces in it
         $bits = explode(' ', strtolower($string)); // bits to process
@@ -50,16 +52,30 @@ class HTMLPurifier_AttrDef_CSS_ListStyle extends HTMLPurifier_AttrDef
         $none = false;
 
         foreach ($bits as $bit) {
-            if ($i >= 3) return; // optimization bit
-            if ($bit === '') continue;
+            if ($i >= 3) {
+                return;
+            } // optimization bit
+            if ($bit === '') {
+                continue;
+            }
             foreach ($caught as $key => $status) {
-                if ($status !== false) continue;
+                if ($status !== false) {
+                    continue;
+                }
                 $r = $this->info['list-style-' . $key]->validate($bit, $config, $context);
-                if ($r === false) continue;
+                if ($r === false) {
+                    continue;
+                }
                 if ($r === 'none') {
-                    if ($none) continue;
-                    else $none = true;
-                    if ($key == 'image') continue;
+                    if ($none) {
+                        continue;
+                    }
+                    else {
+                        $none = true;
+                    }
+                    if ($key == 'image') {
+                        continue;
+                    }
                 }
                 $caught[$key] = $r;
                 $i++;
@@ -67,20 +83,30 @@ class HTMLPurifier_AttrDef_CSS_ListStyle extends HTMLPurifier_AttrDef
             }
         }
 
-        if (!$i) return false;
+        if (!$i) {
+            return false;
+        }
 
         $ret = array();
 
         // construct type
-        if ($caught['type']) $ret[] = $caught['type'];
+        if ($caught['type']) {
+            $ret[] = $caught['type'];
+        }
 
         // construct image
-        if ($caught['image']) $ret[] = $caught['image'];
+        if ($caught['image']) {
+            $ret[] = $caught['image'];
+        }
 
         // construct position
-        if ($caught['position']) $ret[] = $caught['position'];
+        if ($caught['position']) {
+            $ret[] = $caught['position'];
+        }
 
-        if (empty($ret)) return false;
+        if (empty($ret)) {
+            return false;
+        }
         return implode(' ', $ret);
 
     }

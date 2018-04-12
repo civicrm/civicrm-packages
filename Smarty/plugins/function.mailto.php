@@ -70,8 +70,9 @@ function smarty_function_mailto($params, &$smarty)
             case 'cc':
             case 'bcc':
             case 'followupto':
-                if (!empty($value))
-                    $mail_parms[] = $var.'='.str_replace($search,$replace,rawurlencode($value));
+                if (!empty($value)) {
+                    $mail_parms[] = $var . '=' . str_replace($search, $replace, rawurlencode($value));
+                }
                 break;
                 
             case 'subject':

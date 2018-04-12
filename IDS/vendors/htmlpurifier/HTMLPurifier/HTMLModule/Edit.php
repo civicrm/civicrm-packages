@@ -37,7 +37,9 @@ class HTMLPurifier_HTMLModule_Edit extends HTMLPurifier_HTMLModule
      * @return bool|\HTMLPurifier_ChildDef_Chameleon
      */
     public function getChildDef($def) {
-        if ($def->content_model_type != 'chameleon') return false;
+        if ($def->content_model_type != 'chameleon') {
+            return false;
+        }
         $value = explode('!', $def->content_model);
         return new HTMLPurifier_ChildDef_Chameleon($value[0], $value[1]);
     }

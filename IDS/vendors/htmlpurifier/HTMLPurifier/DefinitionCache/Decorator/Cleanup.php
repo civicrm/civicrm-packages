@@ -25,7 +25,9 @@ class HTMLPurifier_DefinitionCache_Decorator_Cleanup extends
      */
     public function add($def, $config) {
         $status = parent::add($def, $config);
-        if (!$status) parent::cleanup($config);
+        if (!$status) {
+            parent::cleanup($config);
+        }
         return $status;
     }
 
@@ -37,7 +39,9 @@ class HTMLPurifier_DefinitionCache_Decorator_Cleanup extends
      */
     public function set($def, $config) {
         $status = parent::set($def, $config);
-        if (!$status) parent::cleanup($config);
+        if (!$status) {
+            parent::cleanup($config);
+        }
         return $status;
     }
 
@@ -49,7 +53,9 @@ class HTMLPurifier_DefinitionCache_Decorator_Cleanup extends
      */
     public function replace($def, $config) {
         $status = parent::replace($def, $config);
-        if (!$status) parent::cleanup($config);
+        if (!$status) {
+            parent::cleanup($config);
+        }
         return $status;
     }
 
@@ -60,7 +66,9 @@ class HTMLPurifier_DefinitionCache_Decorator_Cleanup extends
      */
     public function get($config) {
         $ret = parent::get($config);
-        if (!$ret) parent::cleanup($config);
+        if (!$ret) {
+            parent::cleanup($config);
+        }
         return $ret;
     }
 

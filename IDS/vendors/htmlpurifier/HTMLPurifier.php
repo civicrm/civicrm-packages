@@ -153,8 +153,12 @@ class HTMLPurifier
         unset($filter_flags['Custom']);
         $filters = array();
         foreach ($filter_flags as $filter => $flag) {
-            if (!$flag) continue;
-            if (strpos($filter, '.') !== false) continue;
+            if (!$flag) {
+                continue;
+            }
+            if (strpos($filter, '.') !== false) {
+                continue;
+            }
             $class = "HTMLPurifier_Filter_$filter";
             $filters[] = new $class;
         }

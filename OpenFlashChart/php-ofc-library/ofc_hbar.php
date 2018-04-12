@@ -18,8 +18,9 @@ class hbar_value
 			$this->left = $left;
 			$this->right = $right;
 		}
-		else
-			$this->right = $left;
+		else {
+        $this->right = $left;
+    }
 	}
 
     /**
@@ -78,8 +79,9 @@ class hbar
      */
     public function set_values( $v )
 	{
-		foreach( $v as $val )
-			$this->append_value( new hbar_value( $val ) );
+		foreach( $v as $val ) {
+        $this->append_value(new hbar_value($val));
+    }
 	}
 
     /**

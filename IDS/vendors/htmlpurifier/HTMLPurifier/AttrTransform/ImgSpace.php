@@ -32,12 +32,16 @@ class HTMLPurifier_AttrTransform_ImgSpace extends HTMLPurifier_AttrTransform {
      */
     public function transform($attr, $config, $context) {
 
-        if (!isset($attr[$this->attr])) return $attr;
+        if (!isset($attr[$this->attr])) {
+            return $attr;
+        }
 
         $width = $this->confiscateAttr($attr, $this->attr);
         // some validation could happen here
 
-        if (!isset($this->css[$this->attr])) return $attr;
+        if (!isset($this->css[$this->attr])) {
+            return $attr;
+        }
 
         $style = '';
         foreach ($this->css[$this->attr] as $suffix) {

@@ -21,7 +21,9 @@ class HTMLPurifier_AttrDef_URI_IPv4 extends HTMLPurifier_AttrDef
      */
     public function validate($aIP, $config, $context) {
 
-        if (!$this->ip4) $this->_loadRegex();
+        if (!$this->ip4) {
+            $this->_loadRegex();
+        }
 
         if (preg_match('#^' . $this->ip4 . '$#s', $aIP))
         {

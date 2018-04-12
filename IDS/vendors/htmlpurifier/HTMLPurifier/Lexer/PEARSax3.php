@@ -104,7 +104,9 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
             return true;
         }
         $this->tokens[] = new HTMLPurifier_Token_End($name);
-        if (!empty($this->stack)) array_pop($this->stack);
+        if (!empty($this->stack)) {
+            array_pop($this->stack);
+        }
         return true;
     }
 
@@ -159,7 +161,9 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
      * @return mixed|void
 */
     public function muteStrictErrorHandler($errno, $errstr, $errfile=null, $errline=null, $errcontext=null) {
-        if ($errno == E_STRICT) return;
+        if ($errno == E_STRICT) {
+            return;
+        }
         return call_user_func($this->parent_handler, $errno, $errstr, $errfile, $errline, $errcontext);
     }
 

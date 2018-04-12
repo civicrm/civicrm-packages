@@ -17,8 +17,9 @@
 
 function smarty_core_rm_auto($params, &$smarty)
 {
-    if (!@is_dir($params['auto_base']))
-      return false;
+    if (!@is_dir($params['auto_base'])) {
+        return false;
+    }
 
     if(!isset($params['auto_id']) && !isset($params['auto_source'])) {
         $_params = array(
@@ -34,8 +35,9 @@ function smarty_core_rm_auto($params, &$smarty)
         if(isset($params['auto_source'])) {
             if (isset($params['extensions'])) {
                 $_res = false;
-                foreach ((array)$params['extensions'] as $_extension)
-                    $_res |= $smarty->_unlink($_tname.$_extension, $params['exp_time']);
+                foreach ((array)$params['extensions'] as $_extension) {
+                    $_res |= $smarty->_unlink($_tname . $_extension, $params['exp_time']);
+                }
             } else {
                 $_res = $smarty->_unlink($_tname, $params['exp_time']);
             }

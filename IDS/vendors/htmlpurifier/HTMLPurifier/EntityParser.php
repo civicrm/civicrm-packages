@@ -85,11 +85,15 @@ class HTMLPurifier_EntityParser
             $code = $is_hex ? hexdec($matches[1]) : (int) $matches[2];
 
             // abort for special characters
-            if (isset($this->_special_dec2str[$code]))  return $entity;
+            if (isset($this->_special_dec2str[$code])) {
+                return $entity;
+            }
 
             return HTMLPurifier_Encoder::unichr($code);
         } else {
-            if (isset($this->_special_ent2dec[$matches[3]])) return $entity;
+            if (isset($this->_special_ent2dec[$matches[3]])) {
+                return $entity;
+            }
             if (!$this->_entity_lookup) {
                 $this->_entity_lookup = HTMLPurifier_EntityLookup::instance();
             }

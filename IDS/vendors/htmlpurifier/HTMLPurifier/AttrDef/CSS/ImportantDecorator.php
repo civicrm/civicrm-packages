@@ -39,7 +39,9 @@ class HTMLPurifier_AttrDef_CSS_ImportantDecorator extends HTMLPurifier_AttrDef
             }
         }
         $string = $this->def->validate($string, $config, $context);
-        if ($this->allow && $is_important) $string .= ' !important';
+        if ($this->allow && $is_important) {
+            $string .= ' !important';
+        }
         return $string;
     }
 }

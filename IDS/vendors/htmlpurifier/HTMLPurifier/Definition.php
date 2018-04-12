@@ -40,7 +40,9 @@ abstract class HTMLPurifier_Definition
      * @param $config HTMLPurifier_Config instance
      */
     public function setup($config) {
-        if ($this->setup) return;
+        if ($this->setup) {
+            return;
+        }
         $this->setup = true;
         $this->doSetup($config);
     }

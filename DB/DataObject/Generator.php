@@ -921,7 +921,9 @@ class DB_DataObject_Generator extends DB_DataObject
             
             
             $padding = (30 - strlen($t->name));
-            if ($padding < 2) $padding =2;
+            if ($padding < 2) {
+                $padding = 2;
+            }
             $p =  str_repeat(' ',$padding) ;
             
             $length = empty($t->len) ? '' : '('.$t->len.')';

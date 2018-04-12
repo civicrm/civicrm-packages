@@ -80,7 +80,9 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
         $activated_levels = array();
         for ($i = 1, $c = count($this->levels); $i < $c; $i++) {
             $activated_levels[] = $this->levels[$i];
-            if ($this->levels[$i] == $level) break;
+            if ($this->levels[$i] == $level) {
+                break;
+            }
         }
         if ($i == $c) {
             trigger_error(
@@ -105,7 +107,9 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
      * @param $fixes
 */
     public function makeFixesForLevel($fixes) {
-        if (!isset($this->defaultLevel)) return;
+        if (!isset($this->defaultLevel)) {
+            return;
+        }
         if (!isset($this->fixesForLevel[$this->defaultLevel])) {
             trigger_error(
                 'Default level ' . $this->defaultLevel . ' does not exist',
@@ -176,17 +180,27 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
     public function getFixType($name) {
         // parse it
         $property = $attr = null;
-        if (strpos($name, '#') !== false) list($name, $property) = explode('#', $name);
-        if (strpos($name, '@') !== false) list($name, $attr)     = explode('@', $name);
+        if (strpos($name, '#') !== false) {
+            list($name, $property) = explode('#', $name);
+        }
+        if (strpos($name, '@') !== false) {
+            list($name, $attr) = explode('@', $name);
+        }
 
         // figure out the parameters
         $params = array();
-        if ($name !== '')    $params['element'] = $name;
-        if (null !== $attr) $params['attr'] = $attr;
+        if ($name !== '') {
+            $params['element'] = $name;
+        }
+        if (null !== $attr) {
+            $params['attr'] = $attr;
+        }
 
         // special case: attribute transform
         if (null !== $attr) {
-            if (null === $property) $property = 'pre';
+            if (null === $property) {
+                $property = 'pre';
+            }
             $type = 'attr_transform_' . $property;
             return array($type, $params);
         }

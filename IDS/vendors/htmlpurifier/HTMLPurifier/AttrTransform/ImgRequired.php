@@ -22,7 +22,9 @@ class HTMLPurifier_AttrTransform_ImgRequired extends HTMLPurifier_AttrTransform
 
         $src = true;
         if (!isset($attr['src'])) {
-            if ($config->get('Core.RemoveInvalidImg')) return $attr;
+            if ($config->get('Core.RemoveInvalidImg')) {
+                return $attr;
+            }
             $attr['src'] = $config->get('Attr.DefaultInvalidImage');
             $src = false;
         }

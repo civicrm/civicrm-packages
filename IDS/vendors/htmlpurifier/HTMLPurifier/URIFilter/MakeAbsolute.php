@@ -48,7 +48,9 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
      * @return bool
      */
     public function filter(&$uri, $config, $context) {
-        if (null === $this->base) return true; // abort early
+        if (null === $this->base) {
+            return true;
+        } // abort early
         if (
             $uri->path === '' && null === $uri->scheme
             && null === $uri->host
@@ -61,7 +63,9 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
         }
         if (null !== $uri->scheme) {
             // absolute URI already: don't change
-            if (null !== $uri->host) return true;
+            if (null !== $uri->host) {
+                return true;
+            }
             $scheme_obj = $uri->getSchemeObj($config, $context);
             if (!$scheme_obj) {
                 // scheme not recognized
@@ -94,9 +98,15 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
         }
         // re-combine
         $uri->scheme = $this->base->scheme;
-        if (null === $uri->userinfo) $uri->userinfo = $this->base->userinfo;
-        if (null === $uri->host)     $uri->host = $this->base->host;
-        if (null === $uri->port)     $uri->port = $this->base->port;
+        if (null === $uri->userinfo) {
+            $uri->userinfo = $this->base->userinfo;
+        }
+        if (null === $uri->host) {
+            $uri->host = $this->base->host;
+        }
+        if (null === $uri->port) {
+            $uri->port = $this->base->port;
+        }
         return true;
     }
 
@@ -113,7 +123,9 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
         for ($i = 0; isset($stack[$i]); $i++) {
             $is_folder = false;
             // absorb an internally duplicated slash
-            if ($stack[$i] == '' && $i && isset($stack[$i+1])) continue;
+            if ($stack[$i] == '' && $i && isset($stack[$i+1])) {
+                continue;
+            }
             if ($stack[$i] == '..') {
                 if (!empty($result)) {
                     $segment = array_pop($result);
@@ -138,7 +150,9 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
             }
             $result[] = $stack[$i];
         }
-        if ($is_folder) $result[] = '';
+        if ($is_folder) {
+            $result[] = '';
+        }
         return $result;
     }
 }

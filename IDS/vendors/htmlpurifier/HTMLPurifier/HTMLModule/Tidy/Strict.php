@@ -25,7 +25,9 @@ class HTMLPurifier_HTMLModule_Tidy_Strict extends HTMLPurifier_HTMLModule_Tidy_X
      * @return bool|\HTMLPurifier_ChildDef_StrictBlockquote
      */
     public function getChildDef($def) {
-        if ($def->content_model_type != 'strictblockquote') return parent::getChildDef($def);
+        if ($def->content_model_type != 'strictblockquote') {
+            return parent::getChildDef($def);
+        }
         return new HTMLPurifier_ChildDef_StrictBlockquote($def->content_model);
     }
 }

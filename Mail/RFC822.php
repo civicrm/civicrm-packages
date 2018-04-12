@@ -152,11 +152,21 @@ class Mail_RFC822 {
      */
     public function __construct($address = null, $default_domain = null, $nest_groups = null, $validate = null, $limit = null)
     {
-        if (isset($address))        $this->address        = $address;
-        if (isset($default_domain)) $this->default_domain = $default_domain;
-        if (isset($nest_groups))    $this->nestGroups     = $nest_groups;
-        if (isset($validate))       $this->validate       = $validate;
-        if (isset($limit))          $this->limit          = $limit;
+        if (isset($address)) {
+            $this->address = $address;
+        }
+        if (isset($default_domain)) {
+            $this->default_domain = $default_domain;
+        }
+        if (isset($nest_groups)) {
+            $this->nestGroups = $nest_groups;
+        }
+        if (isset($validate)) {
+            $this->validate = $validate;
+        }
+        if (isset($limit)) {
+            $this->limit = $limit;
+        }
     }
 
     /**
@@ -179,11 +189,21 @@ class Mail_RFC822 {
             return $obj->parseAddressList();
         }
 
-        if (isset($address))        $this->address        = $address;
-        if (isset($default_domain)) $this->default_domain = $default_domain;
-        if (isset($nest_groups))    $this->nestGroups     = $nest_groups;
-        if (isset($validate))       $this->validate       = $validate;
-        if (isset($limit))          $this->limit          = $limit;
+        if (isset($address)) {
+            $this->address = $address;
+        }
+        if (isset($default_domain)) {
+            $this->default_domain = $default_domain;
+        }
+        if (isset($nest_groups)) {
+            $this->nestGroups = $nest_groups;
+        }
+        if (isset($validate)) {
+            $this->validate = $validate;
+        }
+        if (isset($limit)) {
+            $this->limit = $limit;
+        }
 
         $this->structure  = array();
         $this->addresses  = array();
@@ -194,7 +214,9 @@ class Mail_RFC822 {
         $this->address = preg_replace('/\r?\n/', "\r\n", $this->address);
         $this->address = preg_replace('/\r\n(\t| )+/', ' ', $this->address);
 
-        while ($this->address = $this->_splitAddresses($this->address));
+        while ($this->address = $this->_splitAddresses($this->address)) {
+            ;
+        }
 
         if ($this->address === false || isset($this->error)) {
             require_once 'PEAR.php';
@@ -428,10 +450,12 @@ class Mail_RFC822 {
     {
         $parts = explode($char, $string);
         for ($i = 0; $i < count($parts); $i++){
-            if (substr($parts[$i], -1) == '\\' || $this->_hasUnclosedQuotes($parts[$i]))
+            if (substr($parts[$i], -1) == '\\' || $this->_hasUnclosedQuotes($parts[$i])) {
                 $num--;
-            if (isset($parts[$i + 1]))
+            }
+            if (isset($parts[$i + 1])) {
                 $parts[$i + 1] = $parts[$i] . $char . $parts[$i + 1];
+            }
         }
 
         return $num;
@@ -545,8 +569,9 @@ class Mail_RFC822 {
         $phrase_parts = array();
         while (count($parts) > 0){
             $phrase_parts[] = $this->_splitCheck($parts, ' ');
-            for ($i = 0; $i < $this->index + 1; $i++)
+            for ($i = 0; $i < $this->index + 1; $i++) {
                 array_shift($parts);
+            }
         }
 
         foreach ($phrase_parts as $part) {
@@ -559,7 +584,9 @@ class Mail_RFC822 {
             }
 
             // Otherwise it's an atom:
-            if (!$this->_validateAtom($part)) return false;
+            if (!$this->_validateAtom($part)) {
+                return false;
+            }
         }
 
         return true;
@@ -775,7 +802,9 @@ class Mail_RFC822 {
 
         foreach ($domains as $domain) {
             $domain = str_replace('@', '', trim($domain));
-            if (!$this->_validateDomain($domain)) return false;
+            if (!$this->_validateDomain($domain)) {
+                return false;
+            }
         }
 
         return $route;
@@ -798,13 +827,15 @@ class Mail_RFC822 {
 
         while (count($subdomains) > 0) {
             $sub_domains[] = $this->_splitCheck($subdomains, '.');
-            for ($i = 0; $i < $this->index + 1; $i++)
+            for ($i = 0; $i < $this->index + 1; $i++) {
                 array_shift($subdomains);
+            }
         }
 
         foreach ($sub_domains as $sub_domain) {
-            if (!$this->_validateSubdomain(trim($sub_domain)))
+            if (!$this->_validateSubdomain(trim($sub_domain))) {
                 return false;
+            }
         }
 
         // Managed to get here, so return input.
@@ -822,9 +853,13 @@ class Mail_RFC822 {
     public function _validateSubdomain($subdomain)
     {
         if (preg_match('|^\[(.*)]$|', $subdomain, $arr)){
-            if (!$this->_validateDliteral($arr[1])) return false;
+            if (!$this->_validateDliteral($arr[1])) {
+                return false;
+            }
         } else {
-            if (!$this->_validateAtom($subdomain)) return false;
+            if (!$this->_validateAtom($subdomain)) {
+                return false;
+            }
         }
 
         // Got here, so return successful.
@@ -869,8 +904,12 @@ class Mail_RFC822 {
             $domain     = $this->default_domain;
         }
 
-        if (($local_part = $this->_validateLocalPart($local_part)) === false) return false;
-        if (($domain     = $this->_validateDomain($domain)) === false) return false;
+        if (($local_part = $this->_validateLocalPart($local_part)) === false) {
+            return false;
+        }
+        if (($domain     = $this->_validateDomain($domain)) === false) {
+            return false;
+        }
 
         // Got here so return successful.
         return array('local_part' => $local_part, 'domain' => $domain);
@@ -905,7 +944,9 @@ class Mail_RFC822 {
                 return false;
             }
 
-            if ($this->_validatePhrase(trim($word)) === false) return false;
+            if ($this->_validatePhrase(trim($word)) === false) {
+                return false;
+            }
         }
 
         // Managed to get here, so return the input.

@@ -218,7 +218,9 @@ class Log
                         $level = PEAR_LOG_DEBUG)
     {
         static $instances;
-        if (!isset($instances)) $instances = array();
+        if (!isset($instances)) {
+            $instances = array();
+        }
 
         $signature = serialize(array($handler, $name, $ident, $conf, $level));
         if (!isset($instances[$signature])) {

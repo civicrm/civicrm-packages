@@ -310,7 +310,9 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
         $allowed_properties = $config->get('CSS.AllowedProperties');
         if ($allowed_properties !== null) {
             foreach ($this->info as $name => $d) {
-                if(!isset($allowed_properties[$name])) unset($this->info[$name]);
+                if(!isset($allowed_properties[$name])) {
+                    unset($this->info[$name]);
+                }
                 unset($allowed_properties[$name]);
             }
             // emit errors

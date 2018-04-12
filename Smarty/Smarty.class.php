@@ -593,8 +593,9 @@ class Smarty
                 }
             }
         } else {
-            if ($tpl_var != '')
+            if ($tpl_var != '') {
                 $this->_tpl_vars[$tpl_var] = $value;
+            }
         }
     }
 
@@ -606,8 +607,9 @@ class Smarty
      */
     public function assign_by_ref($tpl_var, &$value)
     {
-        if ($tpl_var != '')
+        if ($tpl_var != '') {
             $this->_tpl_vars[$tpl_var] = &$value;
+        }
     }
 
     /**
@@ -682,11 +684,14 @@ class Smarty
      */
     public function clear_assign($tpl_var)
     {
-        if (is_array($tpl_var))
-            foreach ($tpl_var as $curr_var)
+        if (is_array($tpl_var)) {
+            foreach ($tpl_var as $curr_var) {
                 unset($this->_tpl_vars[$curr_var]);
-        else
+            }
+        }
+        else {
             unset($this->_tpl_vars[$tpl_var]);
+        }
     }
 
     /**
@@ -929,8 +934,9 @@ class Smarty
 
             case 'pre':
             case 'post':
-                if (!isset($this->_plugins[$type . 'filter'][$name]))
+                if (!isset($this->_plugins[$type . 'filter'][$name])) {
                     $this->_plugins[$type . 'filter'][$name] = false;
+                }
                 break;
         }
     }
@@ -947,11 +953,13 @@ class Smarty
     public function clear_cache($tpl_file = null, $cache_id = null, $compile_id = null, $exp_time = null)
     {
 
-        if (!isset($compile_id))
+        if (!isset($compile_id)) {
             $compile_id = $this->compile_id;
+        }
 
-        if (!isset($tpl_file))
+        if (!isset($tpl_file)) {
             $compile_id = null;
+        }
 
         $_auto_id = $this->_get_auto_id($cache_id, $compile_id);
 
@@ -992,11 +1000,13 @@ class Smarty
      */
     public function is_cached($tpl_file, $cache_id = null, $compile_id = null)
     {
-        if (!$this->caching)
+        if (!$this->caching) {
             return false;
+        }
 
-        if (!isset($compile_id))
+        if (!isset($compile_id)) {
             $compile_id = $this->compile_id;
+        }
 
         $_params = array(
             'tpl_file' => $tpl_file,
@@ -1217,10 +1227,12 @@ class Smarty
                         if (@count($this->_cache_info['insert_tags']) == 0
                             && !$this->_cache_serials
                             && $_gmt_mtime == $_last_modified_date) {
-                            if (php_sapi_name()=='cgi')
+                            if (php_sapi_name()=='cgi') {
                                 header('Status: 304 Not Modified');
-                            else
+                            }
+                            else {
                                 header('HTTP/1.1 304 Not Modified');
+                            }
 
                         } else {
                             header('Last-Modified: '.$_gmt_mtime);
@@ -1342,11 +1354,13 @@ class Smarty
      * @return object
      */
     public function &get_registered_object($name) {
-        if (!isset($this->_reg_objects[$name]))
-        $this->_trigger_fatal_error("'$name' is not a registered object");
+        if (!isset($this->_reg_objects[$name])) {
+            $this->_trigger_fatal_error("'$name' is not a registered object");
+        }
 
-        if (!is_object($this->_reg_objects[$name][0]))
-        $this->_trigger_fatal_error("registered '$name' is not an object");
+        if (!is_object($this->_reg_objects[$name][0])) {
+            $this->_trigger_fatal_error("registered '$name' is not an object");
+        }
 
         return $this->_reg_objects[$name][0];
     }
@@ -1583,10 +1597,12 @@ class Smarty
 
         $_return = false;
         $_params = array('resource_name' => $params['resource_name']) ;
-        if (isset($params['resource_base_path']))
+        if (isset($params['resource_base_path'])) {
             $_params['resource_base_path'] = $params['resource_base_path'];
-        else
+        }
+        else {
             $_params['resource_base_path'] = $this->template_dir;
+        }
 
         if ($this->_parse_resource_name($_params)) {
             $_resource_type = $_params['resource_type'];
@@ -1637,8 +1653,9 @@ class Smarty
         } else if ($_return && $this->security) {
             require_once(SMARTY_CORE_DIR . 'core.is_secure.php');
             if (!smarty_core_is_secure($_params, $this)) {
-                if (!$params['quiet'])
+                if (!$params['quiet']) {
                     $this->trigger_error('(secure mode) accessing "' . $params['resource_name'] . '" is not allowed');
+                }
                 $params['source_content'] = null;
                 $params['resource_timestamp'] = null;
                 return false;
@@ -1743,10 +1760,12 @@ class Smarty
     public function _dequote($string)
     {
         if ((substr($string, 0, 1) == "'" || substr($string, 0, 1) == '"') &&
-            substr($string, -1) == substr($string, 0, 1))
+            substr($string, -1) == substr($string, 0, 1)) {
             return substr($string, 1, -1);
-        else
+        }
+        else {
             return $string;
+        }
     }
 
 
@@ -1831,12 +1850,15 @@ class Smarty
      * @return string|null
      */
     public function _get_auto_id($cache_id=null, $compile_id=null) {
-    if (isset($cache_id))
-        return (isset($compile_id)) ? $cache_id . '|' . $compile_id  : $cache_id;
-    elseif(isset($compile_id))
+    if (isset($cache_id)) {
+        return (isset($compile_id)) ? $cache_id . '|' . $compile_id : $cache_id;
+    }
+    elseif(isset($compile_id)) {
         return $compile_id;
-    else
+    }
+    else {
         return null;
+    }
     }
 
     /**

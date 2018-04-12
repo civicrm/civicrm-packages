@@ -51,8 +51,12 @@ class HTMLPurifier_Printer_ConfigForm extends HTMLPurifier_Printer
      * @param $rows Integer rows of textarea, null to use default
      */
     public function setTextareaDimensions($cols = null, $rows = null) {
-        if ($cols) $this->fields['default']->cols = $cols;
-        if ($rows) $this->fields['default']->rows = $rows;
+        if ($cols) {
+            $this->fields['default']->cols = $cols;
+        }
+        if ($rows) {
+            $this->fields['default']->rows = $rows;
+        }
     }
 
     /**
@@ -163,7 +167,9 @@ class HTMLPurifier_Printer_ConfigForm extends HTMLPurifier_Printer
                     // component printers must create an element with this id
                     $attr
                 );
-            if ($this->docURL) $ret .= $this->end('a');
+            if ($this->docURL) {
+                $ret .= $this->end('a');
+            }
             $ret .= $this->end('th');
 
             $ret .= $this->start('td');
@@ -175,7 +181,9 @@ class HTMLPurifier_Printer_ConfigForm extends HTMLPurifier_Printer
                     $type = $def->type;
                     $allow_null = isset($def->allow_null);
                 }
-                if (!isset($this->fields[$type])) $type = 0; // default
+                if (!isset($this->fields[$type])) {
+                    $type = 0;
+                } // default
                 $type_obj = $this->fields[$type];
                 if ($allow_null) {
                     $type_obj = new HTMLPurifier_Printer_ConfigForm_NullDecorator($type_obj);
@@ -241,7 +249,9 @@ class HTMLPurifier_Printer_ConfigForm_NullDecorator extends HTMLPurifier_Printer
             // modify inline javascript slightly
             $attr['onclick'] = "toggleWriteability('$name:Yes_$ns.$directive',checked);toggleWriteability('$name:No_$ns.$directive',checked)";
         }
-        if ($value === null) $attr['checked'] = 'checked';
+        if ($value === null) {
+            $attr['checked'] = 'checked';
+        }
         $ret .= $this->elementEmpty('input', $attr);
         $ret .= $this->text(' or ');
         $ret .= $this->elementEmpty('br');
@@ -312,12 +322,16 @@ class HTMLPurifier_Printer_ConfigForm_default extends HTMLPurifier_Printer {
             'name' => "$name"."[$ns.$directive]",
             'id' => "$name:$ns.$directive"
         );
-        if ($value === null) $attr['disabled'] = 'disabled';
+        if ($value === null) {
+            $attr['disabled'] = 'disabled';
+        }
         if (isset($def->allowed)) {
             $ret .= $this->start('select', $attr);
             foreach ($def->allowed as $val => $b) {
                 $attr = array();
-                if ($value == $val) $attr['selected'] = 'selected';
+                if ($value == $val) {
+                    $attr['selected'] = 'selected';
+                }
                 $ret .= $this->element('option', $val, $attr);
             }
             $ret .= $this->end('select');
@@ -377,8 +391,12 @@ class HTMLPurifier_Printer_ConfigForm_bool extends HTMLPurifier_Printer {
             'id' => "$name:Yes_$ns.$directive",
             'value' => '1'
         );
-        if ($value === true) $attr['checked'] = 'checked';
-        if ($value === null) $attr['disabled'] = 'disabled';
+        if ($value === true) {
+            $attr['checked'] = 'checked';
+        }
+        if ($value === null) {
+            $attr['disabled'] = 'disabled';
+        }
         $ret .= $this->elementEmpty('input', $attr);
 
         $ret .= $this->start('label', array('for' => "$name:No_$ns.$directive"));
@@ -392,8 +410,12 @@ class HTMLPurifier_Printer_ConfigForm_bool extends HTMLPurifier_Printer {
             'id' => "$name:No_$ns.$directive",
             'value' => '0'
         );
-        if ($value === false) $attr['checked'] = 'checked';
-        if ($value === null) $attr['disabled'] = 'disabled';
+        if ($value === false) {
+            $attr['checked'] = 'checked';
+        }
+        if ($value === null) {
+            $attr['disabled'] = 'disabled';
+        }
         $ret .= $this->elementEmpty('input', $attr);
 
         $ret .= $this->end('div');

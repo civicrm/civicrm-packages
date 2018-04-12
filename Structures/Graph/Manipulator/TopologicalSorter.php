@@ -72,7 +72,9 @@ class Structures_Graph_Manipulator_TopologicalSorter {
         $result = 0;
         $graphNodes =& $node->_graph->getNodes();
         foreach (array_keys($graphNodes) as $key) {
-            if ((!$graphNodes[$key]->getMetadata('topological-sort-visited')) && $graphNodes[$key]->connectsTo($node)) $result++;
+            if ((!$graphNodes[$key]->getMetadata('topological-sort-visited')) && $graphNodes[$key]->connectsTo($node)) {
+                $result++;
+            }
         }
         return $result;
         
@@ -116,7 +118,9 @@ class Structures_Graph_Manipulator_TopologicalSorter {
         } while (sizeof($leafNodes) > 0);
 
         // Cleanup visited marks
-        foreach($nodeKeys as $key) $nodes[$key]->unsetMetadata('topological-sort-visited');
+        foreach($nodeKeys as $key) {
+            $nodes[$key]->unsetMetadata('topological-sort-visited');
+        }
     }
     /* }}} */
 
@@ -135,8 +139,14 @@ class Structures_Graph_Manipulator_TopologicalSorter {
 */
     public function sort(&$graph) {
         // We only sort graphs
-        if (!is_a($graph, 'Structures_Graph')) return Pear::raiseError('Structures_Graph_Manipulator_TopologicalSorter::sort received an object that is not a Structures_Graph', STRUCTURES_GRAPH_ERROR_GENERIC);
-        if (!Structures_Graph_Manipulator_AcyclicTest::isAcyclic($graph)) return Pear::raiseError('Structures_Graph_Manipulator_TopologicalSorter::sort received an graph that has cycles', STRUCTURES_GRAPH_ERROR_GENERIC);
+        if (!is_a($graph, 'Structures_Graph')) {
+            return Pear::raiseError('Structures_Graph_Manipulator_TopologicalSorter::sort received an object that is not a Structures_Graph',
+              STRUCTURES_GRAPH_ERROR_GENERIC);
+        }
+        if (!Structures_Graph_Manipulator_AcyclicTest::isAcyclic($graph)) {
+            return Pear::raiseError('Structures_Graph_Manipulator_TopologicalSorter::sort received an graph that has cycles',
+              STRUCTURES_GRAPH_ERROR_GENERIC);
+        }
 
         Structures_Graph_Manipulator_TopologicalSorter::_sort($graph);
         $result = array();
@@ -145,7 +155,9 @@ class Structures_Graph_Manipulator_TopologicalSorter {
         $nodes =& $graph->getNodes();
         $nodeKeys = array_keys($nodes);
         foreach($nodeKeys as $key) {
-            if (!array_key_exists($nodes[$key]->getMetadata('topological-sort-level'), $result)) $result[$nodes[$key]->getMetadata('topological-sort-level')] = array();
+            if (!array_key_exists($nodes[$key]->getMetadata('topological-sort-level'), $result)) {
+                $result[$nodes[$key]->getMetadata('topological-sort-level')] = array();
+            }
             $result[$nodes[$key]->getMetadata('topological-sort-level')][] =& $nodes[$key];
             $nodes[$key]->unsetMetadata('topological-sort-level');
         }
