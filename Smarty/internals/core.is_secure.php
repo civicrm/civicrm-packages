@@ -56,4 +56,4 @@ function smarty_core_is_secure($params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

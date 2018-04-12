@@ -309,4 +309,4 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
         return $this->sPreOutputFile;
     }
 }
-?>
+

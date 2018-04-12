@@ -150,4 +150,4 @@ class Structures_Graph_Manipulator_TopologicalSorter {
     /* }}} */
 }
 /* }}} */
-?>
+

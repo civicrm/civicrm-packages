@@ -76,4 +76,4 @@ class HTML_QuickForm_reset extends HTML_QuickForm_input
     // }}}
 
 } //end class HTML_QuickForm_reset
-?>
+

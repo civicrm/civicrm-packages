@@ -33,4 +33,3 @@
 class Exception_PHP_Beautifier_Filter extends PEAR_Exception
 {
 }
-?>

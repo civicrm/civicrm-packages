@@ -904,4 +904,4 @@ class XML_Util
         return PEAR::raiseError($msg, $code);
     }
 }
-?>
+

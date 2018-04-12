@@ -125,4 +125,3 @@ $lang = array(
     "Failed to upload {filename}!" => "Error al carregar {filename}",
 );
 
-?>

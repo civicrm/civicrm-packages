@@ -83,4 +83,3 @@ class PHP_Beautifier_Batch_Output_Files extends PHP_Beautifier_Batch_Output {
         return true;
     }
 }
-?>

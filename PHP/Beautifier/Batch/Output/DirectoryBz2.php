@@ -45,4 +45,3 @@ class PHP_Beautifier_Batch_Output_DirectoryBz2 extends PHP_Beautifier_Batch_Dire
         return new Archive_Tar($sFileName.'.tar.bz2', 'bz2');
     }
 }
-?>

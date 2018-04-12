@@ -242,4 +242,3 @@ $lang = array(
     "Download files" => "Laai lêers af",
 );
 
-?>

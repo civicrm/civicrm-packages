@@ -2222,4 +2222,4 @@ class Contact_Vcard_Build extends PEAR
         }
     }
 }
-?>
+

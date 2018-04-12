@@ -919,4 +919,3 @@ class browser extends uploader {
     }
 }
 
-?>

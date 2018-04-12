@@ -62,4 +62,3 @@ abstract class PHP_Beautifier_Batch_Output_DirectoryTar extends PHP_Beautifier_B
     {
     }
 }
-?>

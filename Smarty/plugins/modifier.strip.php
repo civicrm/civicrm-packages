@@ -30,4 +30,4 @@ function smarty_modifier_strip($text, $replace = ' ')
 
 /* vim: set expandtab: */
 
-?>
+

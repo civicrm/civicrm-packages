@@ -435,4 +435,3 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }    
 }
-?>

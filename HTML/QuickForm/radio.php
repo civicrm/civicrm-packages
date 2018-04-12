@@ -268,4 +268,4 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
 
     // }}}
 } //end class HTML_QuickForm_radio
-?>
+

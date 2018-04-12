@@ -103,4 +103,4 @@ function smarty_function_cycle($params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

@@ -41,4 +41,3 @@ class PHP_Beautifier_Batch_Output_FilesBz2 extends PHP_Beautifier_Batch_Output_F
     protected $sExt = 'tar.bz2';
     
 }
-?>

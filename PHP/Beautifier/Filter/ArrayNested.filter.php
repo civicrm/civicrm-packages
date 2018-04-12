@@ -81,4 +81,3 @@ class PHP_Beautifier_Filter_ArrayNested extends PHP_Beautifier_Filter
         }
     }
 }
-?>

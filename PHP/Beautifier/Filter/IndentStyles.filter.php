@@ -224,4 +224,3 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
         return $sMethod . "_" . $this->aAllowedStyles[$sStyle];
     }
 }
-?>

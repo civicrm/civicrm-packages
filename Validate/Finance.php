@@ -100,4 +100,4 @@ class Validate_Finance
     } // end func banknoteEuro
 
 } // end class Validate_Finance
-?>
+

@@ -45,4 +45,4 @@ function _smarty_regex_replace_check($search)
 
 /* vim: set expandtab: */
 
-?>
+

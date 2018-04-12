@@ -3899,4 +3899,4 @@ class HTML5TreeConstructer {
         return $this->dom;
     }
 }
-?>
+

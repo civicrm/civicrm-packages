@@ -62,4 +62,3 @@ class PHP_Beautifier_Batch_Output_FilesTar extends PHP_Beautifier_Batch_Output {
         }
     }
 }
-?>

@@ -74,4 +74,4 @@ class HTML_QuickForm_html extends HTML_QuickForm_static
     // }}}
 
 } //end class HTML_QuickForm_html
-?>
+

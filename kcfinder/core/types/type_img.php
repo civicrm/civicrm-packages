@@ -30,4 +30,3 @@ class type_img {
     }
 }
 
-?>

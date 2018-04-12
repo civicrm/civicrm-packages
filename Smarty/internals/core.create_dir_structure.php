@@ -76,4 +76,4 @@ function smarty_core_create_dir_structure($params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

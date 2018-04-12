@@ -235,4 +235,4 @@ interface PHP_Beautifier_Interface {
     */
     public function save($sFile = null);
 }
-?>
+

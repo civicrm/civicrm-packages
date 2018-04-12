@@ -584,4 +584,4 @@ class System_Command_Error extends PEAR_Error
     
     // }}}
 }
-?>
+

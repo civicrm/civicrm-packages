@@ -48,4 +48,4 @@ class IT_Error extends PEAR_Error {
   } // end func IT_Error
   
 } // end class IT_Error
-?>
+

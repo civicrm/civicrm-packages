@@ -77,4 +77,4 @@ function smarty_function_counter($params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

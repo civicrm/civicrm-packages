@@ -79,4 +79,3 @@ class HTML_QuickForm_Rule
         return array('', '');
     }
 }
-?>

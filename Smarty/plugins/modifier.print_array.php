@@ -96,4 +96,4 @@ function smarty_modifier_print_array($var, $depth = 0, $length = 40)
 
 /* vim: set expandtab: */
 
-?>
+

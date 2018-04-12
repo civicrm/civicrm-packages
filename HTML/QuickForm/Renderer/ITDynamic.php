@@ -297,4 +297,4 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_headerBlock = $blockName;
     }
 }
-?>
+

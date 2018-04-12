@@ -827,4 +827,4 @@ class HTML_Template_ITX extends HTML_Template_IT
     } // end func warning
 
 } // end class HTML_Template_ITX
-?>
+

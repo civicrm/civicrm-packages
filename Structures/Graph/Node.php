@@ -335,4 +335,4 @@ class Structures_Graph_Node {
     }
     /* }}} */
 }
-?>
+

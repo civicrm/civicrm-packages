@@ -147,4 +147,3 @@ class PHP_Beautifier_Filter_ListClassFunction extends PHP_Beautifier_Filter
         }
     }
 }
-?>

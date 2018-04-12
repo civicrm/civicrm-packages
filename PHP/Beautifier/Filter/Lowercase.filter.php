@@ -119,4 +119,3 @@ class PHP_Beautifier_Filter_Lowercase extends PHP_Beautifier_Filter
         }
     }
 }
-?>

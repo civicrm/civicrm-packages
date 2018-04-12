@@ -79,4 +79,4 @@ class HTML_QuickForm_Rule_Email extends HTML_QuickForm_Rule
     } // end func getValidationScript
 
 } // end class HTML_QuickForm_Rule_Email
-?>
+

@@ -151,4 +151,4 @@ class Structures_Graph {
     }
     /* }}} */
 }
-?>
+

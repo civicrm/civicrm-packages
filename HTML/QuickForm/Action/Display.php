@@ -84,4 +84,4 @@ class HTML_QuickForm_Action_Display extends HTML_QuickForm_Action
         $page->display();
     }
 }
-?>
+

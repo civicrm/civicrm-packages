@@ -86,4 +86,4 @@ class HTML_QuickForm_submit extends HTML_QuickForm_input
 
     // }}}
 } //end class HTML_QuickForm_submit
-?>
+

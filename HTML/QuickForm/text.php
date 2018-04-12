@@ -95,4 +95,4 @@ class HTML_QuickForm_text extends HTML_QuickForm_input
     // }}}
     
 } //end class HTML_QuickForm_text
-?>
+

@@ -283,4 +283,4 @@ class HTML_QuickForm_advcheckbox extends HTML_QuickForm_checkbox
     }
     // }}}
 } //end class HTML_QuickForm_advcheckbox
-?>
+

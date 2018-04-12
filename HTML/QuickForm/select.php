@@ -624,4 +624,4 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
 
     // }}}
 } //end class HTML_QuickForm_select
-?>
+

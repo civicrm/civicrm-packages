@@ -20,4 +20,4 @@ function smarty_core_get_microtime($params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

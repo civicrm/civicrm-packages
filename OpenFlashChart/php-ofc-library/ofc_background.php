@@ -49,4 +49,3 @@ class inner_bg_grad
 
 	
 }
-?>

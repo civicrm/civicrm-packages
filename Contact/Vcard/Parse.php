@@ -765,4 +765,4 @@ class Contact_Vcard_Parse
         );
     }
 }
-?>
+

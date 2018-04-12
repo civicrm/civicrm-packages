@@ -486,4 +486,4 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
         $this->_templates = array();
     } // end func clearAllTemplates
 } // end class HTML_QuickForm_Renderer_Default
-?>
+

@@ -9,4 +9,3 @@ $theme = basename(dirname(__FILE__));
 $min = new minifier("css");
 $min->minify("cache/theme_$theme.css");
 
-?>

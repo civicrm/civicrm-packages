@@ -197,4 +197,4 @@ class HTML_QuickForm_link extends HTML_QuickForm_static
     // }}}
 
 } //end class HTML_QuickForm_textarea
-?>
+

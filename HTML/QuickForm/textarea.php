@@ -226,4 +226,4 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
     // }}}
 
 } //end class HTML_QuickForm_textarea
-?>
+

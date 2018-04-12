@@ -70,4 +70,4 @@ class HTML_QuickForm_Action_Next extends HTML_QuickForm_Action
     }
 }
 
-?>
+

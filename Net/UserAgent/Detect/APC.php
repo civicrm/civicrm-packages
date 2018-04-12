@@ -177,4 +177,4 @@ class Net_UserAgent_Detect_APC extends Net_UserAgent_Detect
         }
     }
 }
-?>
+

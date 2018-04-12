@@ -37,4 +37,4 @@ function smarty_compiler_assign($tag_attrs, &$compiler)
 
 /* vim: set expandtab: */
 
-?>
+

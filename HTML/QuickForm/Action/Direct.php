@@ -59,4 +59,4 @@ class HTML_QuickForm_Action_Direct extends HTML_QuickForm_Action
         }
     }
 }
-?>
+

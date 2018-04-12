@@ -968,4 +968,4 @@ class PEAR_ErrorStack {
 }
 $stack = &PEAR_ErrorStack::singleton('PEAR_ErrorStack');
 $stack->pushCallback(array('PEAR_ErrorStack', '_handleError'));
-?>
+

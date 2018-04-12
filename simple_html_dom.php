@@ -2229,4 +2229,3 @@ class simple_html_dom
     public function loadFile() {$args = func_get_args();$this->load_file($args);}
 }
 
-?>

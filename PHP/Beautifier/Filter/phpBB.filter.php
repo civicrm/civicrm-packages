@@ -96,4 +96,3 @@ class PHP_Beautifier_Filter_phpBB extends PHP_Beautifier_Filter
         $this->iNestedIfs = 0;
     }
 }
-?>

@@ -501,4 +501,4 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
         return $ret;
     }
 } // end class HTML_QuickForm_Renderer_ITStatic
-?>
+

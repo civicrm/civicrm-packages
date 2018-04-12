@@ -197,4 +197,4 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
         $this->oBeaut->addNewLineIndent();
     }
 }
-?>
+

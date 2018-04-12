@@ -129,4 +129,3 @@ $lang = array(
     "Warning" => "Warnung"
 );
 
-?>

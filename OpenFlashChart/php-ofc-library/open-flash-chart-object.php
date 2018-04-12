@@ -106,4 +106,3 @@ function _ofc( $width, $height, $url, $use_swfobject, $base )
     
     return implode("\n",$out);
 }
-?>

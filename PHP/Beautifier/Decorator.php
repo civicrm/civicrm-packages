@@ -48,4 +48,3 @@ abstract class PHP_Beautifier_Decorator implements PHP_Beautifier_Interface {
         }
     }
 }
-?>

@@ -254,4 +254,3 @@ abstract class PHP_Beautifier_Filter
         return $sOut;
     }
 }
-?>

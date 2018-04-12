@@ -47,4 +47,4 @@ function smarty_core_smarty_include_php($params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

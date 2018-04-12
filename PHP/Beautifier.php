@@ -1426,4 +1426,3 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
         return $this->isPreviousTokenConstant(T_VARIABLE) or $this->isPreviousTokenConstant(T_OBJECT_OPERATOR) or ($this->isPreviousTokenConstant(T_STRING) and $this->getPreviousTokenConstant(2) == T_OBJECT_OPERATOR) or $this->getMode('double_quote');
     }
 }
-?>

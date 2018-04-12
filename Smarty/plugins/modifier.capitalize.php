@@ -40,4 +40,4 @@ function smarty_modifier_capitalize_ucfirst($string, $uc_digits = null)
 }
 
 
-?>
+

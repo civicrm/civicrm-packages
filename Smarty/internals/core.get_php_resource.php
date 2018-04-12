@@ -77,4 +77,4 @@ function smarty_core_get_php_resource(&$params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

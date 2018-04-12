@@ -250,4 +250,3 @@ abstract class image {
 
 }
 
-?>

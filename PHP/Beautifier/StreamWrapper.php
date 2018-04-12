@@ -50,4 +50,3 @@ interface PHP_Beautifier_StreamWrapper_Interface {
     public function dir_closedir();
 }
 require_once ('StreamWrapper/Tarz.php');
-?>

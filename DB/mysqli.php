@@ -1072,4 +1072,4 @@ class DB_mysqli extends DB_common
  * End:
  */
 
-?>
+

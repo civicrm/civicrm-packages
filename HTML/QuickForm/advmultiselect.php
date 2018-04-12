@@ -1177,4 +1177,4 @@ if (class_exists('HTML_QuickForm')) {
     HTML_QuickForm::registerElementType('advmultiselect',
         'HTML/QuickForm/advmultiselect.php', 'HTML_QuickForm_advmultiselect');
 }
-?>
+

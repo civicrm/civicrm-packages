@@ -22,4 +22,3 @@ $lang = array(
     '_dateTimeSmall' => "%m/%d/%Y %I:%M %p",
 );
 
-?>

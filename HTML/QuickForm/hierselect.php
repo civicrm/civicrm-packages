@@ -484,4 +484,4 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
 
     // }}}    
 } // end class HTML_QuickForm_hierselect
-?>
+

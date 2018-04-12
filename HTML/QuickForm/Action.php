@@ -52,4 +52,4 @@ class HTML_QuickForm_Action
     }
 }
 
-?>
+

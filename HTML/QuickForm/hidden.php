@@ -93,4 +93,4 @@ class HTML_QuickForm_hidden extends HTML_QuickForm_input
     // }}}
 
 } //end class HTML_QuickForm_hidden
-?>
+

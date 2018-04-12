@@ -16,4 +16,3 @@
  */
 
 require_once 'Pager.php';
-?>

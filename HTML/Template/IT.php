@@ -998,4 +998,4 @@ class HTML_Template_IT
                 $errorMessages[$value] : $errorMessages[IT_ERROR];
     }
 } // end class IntegratedTemplate
-?>
+

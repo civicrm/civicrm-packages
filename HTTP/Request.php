@@ -1518,4 +1518,4 @@ class HTTP_Response
         return $unpacked;
     }
 } // End class HTTP_Response
-?>
+

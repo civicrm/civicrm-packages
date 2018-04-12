@@ -124,4 +124,3 @@ $lang = array(
     "Failed to upload {filename}!" => "Neizdevās augšupielādēt {filename}!",
 );
 
-?>

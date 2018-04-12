@@ -32,4 +32,4 @@ function smarty_core_write_compiled_resource($params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

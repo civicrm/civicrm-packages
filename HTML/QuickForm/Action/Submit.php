@@ -64,4 +64,3 @@ class HTML_QuickForm_Action_Submit extends HTML_QuickForm_Action
     }
 }
 
-?>

@@ -128,4 +128,4 @@ $lang = array(
     "Confirmation" => "Xác nhận",
     "Warning" => "Cảnh báo",);
 
-?>
+

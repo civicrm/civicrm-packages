@@ -91,4 +91,3 @@ class PHP_Beautifier_Filter_NewLines extends PHP_Beautifier_Filter
         return PHP_Beautifier_Filter::BYPASS;
     }
 }
-?>

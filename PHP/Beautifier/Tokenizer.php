@@ -39,4 +39,4 @@ interface PHP_Beautifier_Tokeniker_Interface {
     public function __construct($sText);
     public function getTokens();
 }
-?>
+
