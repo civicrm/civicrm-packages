@@ -167,11 +167,8 @@ class IDS_Filter_Storage
     {
         $filters = false;
 
-        if ($this->cacheSettings) {
-        
-            if ($this->cache) {
-                $filters = $this->cache->getCache();
-            }
+        if ($this->cacheSettings && $this->cache) {
+            $filters = $this->cache->getCache();
         }
 
         return $filters;
@@ -200,15 +197,13 @@ class IDS_Filter_Storage
             /*
              * If they aren't, parse the source file
              */
-            if (!$filters) {
-                if (file_exists($this->source)) {
-                    if (LIBXML_VERSION >= 20621) {
-                        $filters = simplexml_load_file($this->source,
-                                                       null,
-                                                       LIBXML_COMPACT);
-                    } else {
-                        $filters = simplexml_load_file($this->source);
-                    }
+            if ( ! $filters && file_exists($this->source)) {
+                if (LIBXML_VERSION >= 20621) {
+                    $filters = simplexml_load_file($this->source,
+                                                   null,
+                                                   LIBXML_COMPACT);
+                } else {
+                    $filters = simplexml_load_file($this->source);
                 }
             }
 

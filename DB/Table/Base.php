@@ -560,10 +560,8 @@ class DB_Table_Base
         }
 
         // Use Table name as default 'from' if child class is DB_TABLE
-        if ($this->_primary_subclass == 'DB_TABLE') {
-            if (!isset($query['from'])) {
-                $count_query['from'] = $this->table;
-            }
+        if ($this->_primary_subclass == 'DB_TABLE' && ! isset($query['from'])) {
+            $count_query['from'] = $this->table;
         }
 
         // If the query is a stored query in $this->sql, then create a corresponding

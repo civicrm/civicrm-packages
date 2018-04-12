@@ -217,16 +217,15 @@ class IDS_Log_Email implements IDS_Log_Interface
         */
         $dir = $this->tmp_path;
         $numPrefixChars = strlen($this->file_prefix);
-        $files = scandir($dir);
+        $files = scandir($dir, SCANDIR_SORT_NONE);
         foreach ($files as $file) {
-            if (is_file($dir . DIRECTORY_SEPARATOR . $file)) {
-                if (substr($file, 0, $numPrefixChars) == $this->file_prefix) {
+            if (is_file($dir . DIRECTORY_SEPARATOR . $file)
+                && substr($file, 0, $numPrefixChars) == $this->file_prefix) {
                     $lastModified = filemtime($dir . DIRECTORY_SEPARATOR . $file);
                     if ((time() - $lastModified) > 3600) {
                         unlink($dir . DIRECTORY_SEPARATOR . $file);
                     }
                 }
-            }
         }
 
         /*
@@ -308,10 +307,8 @@ class IDS_Log_Email implements IDS_Log_Interface
     public function execute(IDS_Report $data)
     {
 
-        if ($this->safemode) {
-            if ($this->isSpamAttempt()) {
-                return false;
-            }
+        if ($this->safemode && $this->isSpamAttempt()) {
+            return false;
         }
 
         /*

@@ -49,10 +49,8 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
         }
 
         foreach($tokens as $token) {
-            if ($remove_until) {
-                if (empty($token->is_tag) || $token->name !== $remove_until) {
-                    continue;
-                }
+            if ($remove_until && (empty($token->is_tag) || $token->name !== $remove_until)) {
+                continue;
             }
             if (!empty( $token->is_tag )) {
                 // DEFINITION CALL
@@ -130,11 +128,9 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                     $token = new HTMLPurifier_Token_Text($data);
                 } elseif ($trusted) {
                     // keep, but perform comment cleaning
-                    if ($e) {
-                        // perform check whether or not there's a trailing hyphen
-                        if (substr($token->data, -1) == '-') {
-                            $e->send(E_NOTICE, 'Strategy_RemoveForeignElements: Trailing hyphen in comment removed');
-                        }
+                    // perform check whether or not there's a trailing hyphen
+                    if ($e && substr($token->data, -1) == '-') {
+                        $e->send(E_NOTICE, 'Strategy_RemoveForeignElements: Trailing hyphen in comment removed');
                     }
                     $token->data = rtrim($token->data, '-');
                     $found_double_hyphen = false;

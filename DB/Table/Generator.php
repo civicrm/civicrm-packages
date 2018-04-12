@@ -676,10 +676,8 @@ class DB_Table_Generator
                     $col['scope'] = 2;
                 }
             }
-            if (isset($t['notnull'])) {
-                if ($t['notnull']) {
-                    $col['require'] = true;
-                }
+            if (isset($t['notnull']) && $t['notnull']) {
+                $col['require'] = true;
             }
             if (isset($t['autoincrement'])) {
                 $this->auto_inc_col[$table] = $name;
@@ -694,20 +692,18 @@ class DB_Table_Generator
                 }
             }
             $require = isset($col['require']) ? $col['require'] : false;
-            if ($require) {
-                if (isset($t['default'])) {
-                    $default = $t['default'];
-                    $type    = $col['type'];
-                    if (in_array($type,
-                                 array('smallint', 'integer', 'bigint'))) {
-                        $default = (int) $default;
-                    } elseif (in_array($type, array('single', 'double'))) {
-                        $default = (float) $default;
-                    } elseif ($type == 'boolean') {
-                        $default = (int) $default ? 1 : 0;
-                    }
-                    $col['default'] = $default;
+            if ($require && isset($t['default'])) {
+                $default = $t['default'];
+                $type    = $col['type'];
+                if (in_array($type,
+                             array('smallint', 'integer', 'bigint'))) {
+                    $default = (int) $default;
+                } elseif (in_array($type, array('single', 'double'))) {
+                    $default = (float) $default;
+                } elseif ($type == 'boolean') {
+                    $default = (int) $default ? 1 : 0;
                 }
+                $col['default'] = $default;
             }
             $this->col[$table][$name] = $col;
 

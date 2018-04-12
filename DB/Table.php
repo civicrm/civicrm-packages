@@ -2285,43 +2285,41 @@ class DB_Table extends DB_Table_Base
             $s[] = DB_Table_XML::closeTag('index', $indent);
         }
         // Foreign key references (if $this->_database is not null)
-        if ($this->_database) {
-            if (isset($this->_database->_ref[$this->table])) {
-                $refs = $this->_database->_ref[$this->table];
-                foreach ($refs as $rtable => $def) {
-                    $fkey = $def['fkey']; // foreign key of referencing table
-                    $rkey = $def['rkey']; // referenced/primary key
-                    if (is_string($fkey)) {
-                        $fkey = array($fkey);
-                    }
-                    if (is_string($rkey)) {
-                        $rkey = array($rkey);
-                    }
-                    $on_delete = $def['on_delete']; // on-delete action
-                    $on_update = $def['on_update']; // on-update action
-                    $s[] = DB_Table_XML::openTag('foreign', $indent);
-                    foreach ($fkey as $fcol) {
-                        $s[] = DB_Table_XML::lineElement('field', $fcol, $indent);
-                    }
-                    $s[] = DB_Table_XML::openTag('references', $indent);
-                    $s[] = DB_Table_XML::lineElement('table', $rtable, $indent);
-                    if ($rkey) {
-                        foreach ($rkey as $rcol) {
-                            $s[] = DB_Table_XML::lineElement('field', $rcol,
-                                                             $indent);
-                        }
-                    }
-                    $s[] = DB_Table_XML::closeTag('references', $indent);
-                    if ($on_delete) {
-                        $s[] = DB_Table_XML::lineElement('ondelete', $on_delete,
-                                                         $indent);
-                    }
-                    if ($on_update) {
-                        $s[] = DB_Table_XML::lineElement('onupdate', $on_update,
-                                                         $indent);
-                    }
-                    $s[] = DB_Table_XML::closeTag('foreign', $indent);
+        if ($this->_database && isset($this->_database->_ref[$this->table])) {
+            $refs = $this->_database->_ref[$this->table];
+            foreach ($refs as $rtable => $def) {
+                $fkey = $def['fkey']; // foreign key of referencing table
+                $rkey = $def['rkey']; // referenced/primary key
+                if (is_string($fkey)) {
+                    $fkey = array($fkey);
                 }
+                if (is_string($rkey)) {
+                    $rkey = array($rkey);
+                }
+                $on_delete = $def['on_delete']; // on-delete action
+                $on_update = $def['on_update']; // on-update action
+                $s[] = DB_Table_XML::openTag('foreign', $indent);
+                foreach ($fkey as $fcol) {
+                    $s[] = DB_Table_XML::lineElement('field', $fcol, $indent);
+                }
+                $s[] = DB_Table_XML::openTag('references', $indent);
+                $s[] = DB_Table_XML::lineElement('table', $rtable, $indent);
+                if ($rkey) {
+                    foreach ($rkey as $rcol) {
+                        $s[] = DB_Table_XML::lineElement('field', $rcol,
+                                                         $indent);
+                    }
+                }
+                $s[] = DB_Table_XML::closeTag('references', $indent);
+                if ($on_delete) {
+                    $s[] = DB_Table_XML::lineElement('ondelete', $on_delete,
+                                                     $indent);
+                }
+                if ($on_update) {
+                    $s[] = DB_Table_XML::lineElement('onupdate', $on_update,
+                                                     $indent);
+                }
+                $s[] = DB_Table_XML::closeTag('foreign', $indent);
             }
         }
         $s[] = DB_Table_XML::closeTag('declaration', $indent);

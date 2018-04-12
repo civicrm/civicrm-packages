@@ -62,14 +62,9 @@ abstract class HTMLPurifier_URIScheme
             (null === $uri->scheme && $uri->host === '')
         ) {
             do {
-                if (null === $uri->scheme) {
-                    if (substr($uri->path, 0, 2) != '//') {
-                        $uri->host = null;
-                        break;
-                    }
-                    // URI is '////path', so we cannot nullify the
-                    // host to preserve semantics.  Try expanding the
-                    // hostname instead (fall through)
+                if (null === $uri->scheme && substr($uri->path, 0, 2) != '//') {
+                    $uri->host = null;
+                    break;
                 }
                 // first see if we can manually insert a hostname
                 $host = $config->get('URI.Host');

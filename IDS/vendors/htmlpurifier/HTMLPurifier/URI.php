@@ -96,8 +96,8 @@ class HTMLPurifier_URI
         }
 
         // validate port
-        if (null !== $this->port) {
-            if ($this->port < 1 || $this->port > 65535) $this->port = null;
+        if (null !== $this->port && ($this->port < 1 || $this->port > 65535)) {
+            $this->port = null;
         }
 
         // validate path

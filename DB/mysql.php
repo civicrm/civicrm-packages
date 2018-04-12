@@ -287,10 +287,8 @@ class DB_mysql extends DB_common
         $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
-        if ($this->_db) {
-            if (!@mysql_select_db($this->_db, $this->connection)) {
-                return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
-            }
+        if ($this->_db && ! @mysql_select_db($this->_db, $this->connection)) {
+            return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
         }
         if (!$this->autocommit && $ismanip) {
             if ($this->transaction_opcount == 0) {
@@ -358,10 +356,8 @@ class DB_mysql extends DB_common
      */
     public function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
-        if ($rownum !== null) {
-            if (!@mysql_data_seek($result, $rownum)) {
-                return null;
-            }
+        if ($rownum !== null && ! @mysql_data_seek($result, $rownum)) {
+            return null;
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $arr = @mysql_fetch_array($result, MYSQL_ASSOC);
@@ -489,10 +485,8 @@ class DB_mysql extends DB_common
     public function commit()
     {
         if ($this->transaction_opcount > 0) {
-            if ($this->_db) {
-                if (!@mysql_select_db($this->_db, $this->connection)) {
-                    return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
-                }
+            if ($this->_db && ! @mysql_select_db($this->_db, $this->connection)) {
+                return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
             }
             $result = @mysql_query('COMMIT', $this->connection);
             $result = @mysql_query('SET AUTOCOMMIT=1', $this->connection);
@@ -515,10 +509,8 @@ class DB_mysql extends DB_common
     public function rollback()
     {
         if ($this->transaction_opcount > 0) {
-            if ($this->_db) {
-                if (!@mysql_select_db($this->_db, $this->connection)) {
-                    return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
-                }
+            if ($this->_db && ! @mysql_select_db($this->_db, $this->connection)) {
+                return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
             }
             $result = @mysql_query('ROLLBACK', $this->connection);
             $result = @mysql_query('SET AUTOCOMMIT=1', $this->connection);
@@ -804,14 +796,13 @@ class DB_mysql extends DB_common
      */
     public function modifyQuery($query)
     {
-        if ($this->options['portability'] & DB_PORTABILITY_DELETE_COUNT) {
-            // "DELETE FROM table" gives 0 affected rows in MySQL.
-            // This little hack lets you know how many rows were deleted.
-            if (preg_match('/^\s*DELETE\s+FROM\s+(\S+)\s*$/i', $query)) {
+        // "DELETE FROM table" gives 0 affected rows in MySQL.
+        // This little hack lets you know how many rows were deleted.
+        if ($this->options['portability'] & DB_PORTABILITY_DELETE_COUNT
+            && preg_match('/^\s*DELETE\s+FROM\s+(\S+)\s*$/i', $query)) {
                 $query = preg_replace('/^\s*DELETE\s+FROM\s+(\S+)\s*$/',
                                       'DELETE FROM \1 WHERE 1=1', $query);
             }
-        }
         return $query;
     }
 
@@ -913,10 +904,8 @@ class DB_mysql extends DB_common
     {
         if (is_string($result)) {
             // Fix for bug #11580.
-            if ($this->_db) {
-                if (!@mysql_select_db($this->_db, $this->connection)) {
-                    return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
-                }
+            if ($this->_db && ! @mysql_select_db($this->_db, $this->connection)) {
+                return $this->mysqlRaiseError(DB_ERROR_NODBSELECTED);
             }
 
             /*

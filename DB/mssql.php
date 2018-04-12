@@ -322,10 +322,8 @@ class DB_mssql extends DB_common
      */
     public function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
-        if ($rownum !== null) {
-            if (!@mssql_data_seek($result, $rownum)) {
-                return null;
-            }
+        if ($rownum !== null && ! @mssql_data_seek($result, $rownum)) {
+            return null;
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $arr = @mssql_fetch_assoc($result);

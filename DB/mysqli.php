@@ -367,10 +367,8 @@ class DB_mysqli extends DB_common
         $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
         $query = $this->modifyQuery($query);
-        if ($this->_db) {
-            if (!@mysqli_select_db($this->connection, $this->_db)) {
-                return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
-            }
+        if ($this->_db && ! @mysqli_select_db($this->connection, $this->_db)) {
+            return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
         }
         if (!$this->autocommit && $ismanip) {
             if ($this->transaction_opcount == 0) {
@@ -434,10 +432,8 @@ class DB_mysqli extends DB_common
      */
     public function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
-        if ($rownum !== null) {
-            if (!@mysqli_data_seek($result, $rownum)) {
-                return null;
-            }
+        if ($rownum !== null && ! @mysqli_data_seek($result, $rownum)) {
+            return null;
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $arr = @mysqli_fetch_array($result, MYSQLI_ASSOC);
@@ -569,10 +565,8 @@ class DB_mysqli extends DB_common
     public function commit()
     {
         if ($this->transaction_opcount > 0) {
-            if ($this->_db) {
-                if (!@mysqli_select_db($this->connection, $this->_db)) {
-                    return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
-                }
+            if ($this->_db && ! @mysqli_select_db($this->connection, $this->_db)) {
+                return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
             }
             $result = @mysqli_query($this->connection, 'COMMIT');
             $result = @mysqli_query($this->connection, 'SET AUTOCOMMIT=1');
@@ -595,10 +589,8 @@ class DB_mysqli extends DB_common
     public function rollback()
     {
         if ($this->transaction_opcount > 0) {
-            if ($this->_db) {
-                if (!@mysqli_select_db($this->connection, $this->_db)) {
-                    return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
-                }
+            if ($this->_db && ! @mysqli_select_db($this->connection, $this->_db)) {
+                return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
             }
             $result = @mysqli_query($this->connection, 'ROLLBACK');
             $result = @mysqli_query($this->connection, 'SET AUTOCOMMIT=1');
@@ -952,10 +944,8 @@ class DB_mysqli extends DB_common
     {
         if (is_string($result)) {
             // Fix for bug #11580.
-            if ($this->_db) {
-                if (!@mysqli_select_db($this->connection, $this->_db)) {
-                    return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
-                }
+            if ($this->_db && ! @mysqli_select_db($this->connection, $this->_db)) {
+                return $this->mysqliRaiseError(DB_ERROR_NODBSELECTED);
             }
 
             /*

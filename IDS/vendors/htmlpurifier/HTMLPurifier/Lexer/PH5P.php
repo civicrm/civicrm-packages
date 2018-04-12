@@ -1129,10 +1129,8 @@ class HTML5 {
                     $this->char++;
 
                     if(in_array($id, $this->entities)) {
-                        if ($e_name[$c-1] !== ';') {
-                            if ($c < $len && $e_name[$c] == ';') {
-                                $this->char++; // consume extra semicolon
-                            }
+                        if ($e_name[$c - 1] !== ';' && $c < $len && $e_name[$c] == ';') {
+                            $this->char++; // consume extra semicolon
                         }
                         $entity = $id;
                         break;

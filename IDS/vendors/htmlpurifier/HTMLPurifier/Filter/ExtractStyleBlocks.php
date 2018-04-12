@@ -39,7 +39,9 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
      */
     public function preFilter($html, $config, $context) {
         $tidy = $config->get('Filter.ExtractStyleBlocks.TidyImpl');
-        if ($tidy !== null) $this->_tidy = $tidy;
+        if ($tidy !== null) {
+            $this->_tidy = $tidy;
+        }
         $html = preg_replace_callback('#<style(?:\s.*)?>(.+)</style>#isU', array($this, 'styleCallback'), $html);
         $style_blocks = $this->_styleMatches;
         $this->_styleMatches = array(); // reset
@@ -84,9 +86,11 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
             $new_decls = array();
             foreach ($decls as $selector => $style) {
                 $selector = trim($selector);
-                if ($selector === '') continue; // should not happen
-                if ($selector[0] === '+') {
-                    if ($selector !== '' && $selector[0] === '+') continue;
+                if ($selector === '') {
+                    continue;
+                } // should not happen
+                if ($selector[0] === '+' && $selector !== '' && $selector[0] === '+') {
+                    continue;
                 }
                 if (!empty($scopes)) {
                     $new_selector = array(); // because multiple ones are possible
@@ -105,8 +109,12 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
                     }
                     $def = $css_definition->info[$name];
                     $ret = $def->validate($value, $config, $context);
-                    if ($ret === false) unset($style[$name]);
-                    else $style[$name] = $ret;
+                    if ($ret === false) {
+                        unset($style[$name]);
+                    }
+                    else {
+                        $style[$name] = $ret;
+                    }
                 }
                 $new_decls[$selector] = $style;
             }

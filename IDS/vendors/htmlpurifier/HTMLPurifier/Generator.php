@@ -124,22 +124,18 @@ class HTMLPurifier_Generator
 
         } elseif ($token instanceof HTMLPurifier_Token_Start) {
             $attr = $this->generateAttributes($token->attr, $token->name);
-            if ($this->_flashCompat) {
-                if ($token->name == "object") {
-                    $flash = new stdclass();
-                    $flash->attr = $token->attr;
-                    $flash->param = array();
-                    $this->_flashStack[] = $flash;
-                }
+            if ($this->_flashCompat && $token->name == "object") {
+                $flash = new stdclass();
+                $flash->attr = $token->attr;
+                $flash->param = array();
+                $this->_flashStack[] = $flash;
             }
             return '<' . $token->name . ($attr ? ' ' : '') . $attr . '>';
 
         } elseif ($token instanceof HTMLPurifier_Token_End) {
             $_extra = '';
-            if ($this->_flashCompat) {
-                if ($token->name == "object" && !empty($this->_flashStack)) {
-                    // doesn't do anything for now
-                }
+            if ($this->_flashCompat && $token->name == "object" && ! empty($this->_flashStack)) {
+                // doesn't do anything for now
             }
             return $_extra . '</' . $token->name . '>';
 
@@ -217,15 +213,12 @@ class HTMLPurifier_Generator
             // this, since this transformation is not necesary if you
             // don't process user input with innerHTML or you don't plan
             // on supporting Internet Explorer.
-            if ($this->_innerHTMLFix) {
-                if (strpos($value, '`') !== false) {
-                    // check if correct quoting style would not already be
-                    // triggered
-                    if (strcspn($value, '"\' <>') === strlen($value)) {
-                        // protect!
-                        $value .= ' ';
-                    }
-                }
+
+            // check if correct quoting style would not already be
+            // triggered
+            if ($this->_innerHTMLFix && strpos($value, '`') !== false && strcspn($value, '"\' <>') === strlen($value)) {
+                // protect!
+                $value .= ' ';
             }
             $html .= $key.'="'.$this->escape($value).'" ';
         }

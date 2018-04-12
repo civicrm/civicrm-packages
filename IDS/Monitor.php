@@ -257,18 +257,15 @@ class IDS_Monitor
     {
 
         if (!is_array($value)) {
-            if (is_string($value)) {
-
-                if ($filter = $this->_detect($key, $value)) {
-                    include_once 'IDS/Event.php';
-                    $this->report->addEvent(
-                        new IDS_Event(
-                            $key,
-                            $value,
-                            $filter
-                        )
-                    );
-                }
+            if (is_string($value) && $filter = $this->_detect($key, $value)) {
+                include_once 'IDS/Event.php';
+                $this->report->addEvent(
+                    new IDS_Event(
+                        $key,
+                        $value,
+                        $filter
+                    )
+                );
             }
         } else {
             foreach ($value as $subKey => $subValue) {
@@ -362,10 +359,8 @@ class IDS_Monitor
              * defined tags
              */
             if (is_array($this->tags)) {
-                if (array_intersect($this->tags, $filter->getTags())) {
-                    if ($this->_match($key, $value, $filter)) {
-                        $filters[] = $filter;
-                    }
+                if (array_intersect($this->tags, $filter->getTags()) && $this->_match($key, $value, $filter)) {
+                    $filters[] = $filter;
                 }
             } else {
                 if ($this->_match($key, $value, $filter)) {
@@ -619,10 +614,8 @@ class IDS_Monitor
      */
     private function _match($key, $value, $filter)
     {
-        if ($this->scanKeys) {
-            if ($filter->match($key)) {
-                return true;
-            }
+        if ($this->scanKeys && $filter->match($key)) {
+            return true;
         }
 
         if ($filter->match($value)) {

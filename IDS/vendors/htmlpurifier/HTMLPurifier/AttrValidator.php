@@ -32,12 +32,16 @@ class HTMLPurifier_AttrValidator
 
         // initialize CurrentToken if necessary
         $current_token =& $context->get('CurrentToken', true);
-        if (!$current_token) $context->register('CurrentToken', $token);
+        if (!$current_token) {
+            $context->register('CurrentToken', $token);
+        }
 
         if (
             !$token instanceof HTMLPurifier_Token_Start &&
             !$token instanceof HTMLPurifier_Token_Empty
-        ) return $token;
+        ) {
+            return $token;
+        }
 
         // create alias to global definition array, see also $defs
         // DEFINITION CALL
@@ -50,8 +54,8 @@ class HTMLPurifier_AttrValidator
         // nothing currently utilizes this
         foreach ($definition->info_attr_transform_pre as $transform) {
             $attr = $transform->transform($o = $attr, $config, $context);
-            if ($e) {
-                if ($attr != $o) $e->send(E_NOTICE, 'AttrValidator: Attributes transformed', $o, $attr);
+            if ($e && $attr != $o) {
+                $e->send(E_NOTICE, 'AttrValidator: Attributes transformed', $o, $attr);
             }
         }
 
@@ -59,8 +63,8 @@ class HTMLPurifier_AttrValidator
         // ex. <p align="right"> to <p style="text-align:right;">
         foreach ($definition->info[$token->name]->attr_transform_pre as $transform) {
             $attr = $transform->transform($o = $attr, $config, $context);
-            if ($e) {
-                if ($attr != $o) $e->send(E_NOTICE, 'AttrValidator: Attributes transformed', $o, $attr);
+            if ($e && $attr != $o) {
+                $e->send(E_NOTICE, 'AttrValidator: Attributes transformed', $o, $attr);
             }
         }
 
@@ -107,7 +111,9 @@ class HTMLPurifier_AttrValidator
             if ($result === false || $result === null) {
                 // this is a generic error message that should replaced
                 // with more specific ones when possible
-                if ($e) $e->send(E_ERROR, 'AttrValidator: Attribute removed');
+                if ($e) {
+                    $e->send(E_ERROR, 'AttrValidator: Attribute removed');
+                }
 
                 // remove the attribute
                 unset($attr[$attr_key]);
@@ -136,23 +142,25 @@ class HTMLPurifier_AttrValidator
         // global (error reporting untested)
         foreach ($definition->info_attr_transform_post as $transform) {
             $attr = $transform->transform($o = $attr, $config, $context);
-            if ($e) {
-                if ($attr != $o) $e->send(E_NOTICE, 'AttrValidator: Attributes transformed', $o, $attr);
+            if ($e && $attr != $o) {
+                $e->send(E_NOTICE, 'AttrValidator: Attributes transformed', $o, $attr);
             }
         }
 
         // local (error reporting untested)
         foreach ($definition->info[$token->name]->attr_transform_post as $transform) {
             $attr = $transform->transform($o = $attr, $config, $context);
-            if ($e) {
-                if ($attr != $o) $e->send(E_NOTICE, 'AttrValidator: Attributes transformed', $o, $attr);
+            if ($e && $attr != $o) {
+                $e->send(E_NOTICE, 'AttrValidator: Attributes transformed', $o, $attr);
             }
         }
 
         $token->attr = $attr;
 
         // destroy CurrentToken if we made it ourselves
-        if (!$current_token) $context->destroy('CurrentToken');
+        if (!$current_token) {
+            $context->destroy('CurrentToken');
+        }
 
     }
 
