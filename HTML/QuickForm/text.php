@@ -53,7 +53,7 @@ class HTML_QuickForm_text extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $elementLabel=null, $attributes=null)
+    public function __construct($elementName=null, $elementLabel=null, $attributes=null)
     {
         parent::__construct($elementName, $elementLabel, $attributes);
         $this->_persistantFreeze = true;
@@ -71,7 +71,7 @@ class HTML_QuickForm_text extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function setSize($size)
+    public function setSize($size)
     {
         $this->updateAttributes(array('size'=>$size));
     } //end func setSize
@@ -87,7 +87,7 @@ class HTML_QuickForm_text extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function setMaxlength($maxlength)
+    public function setMaxlength($maxlength)
     {
         $this->updateAttributes(array('maxlength'=>$maxlength));
     } //end func setMaxlength

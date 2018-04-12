@@ -44,12 +44,12 @@ define('VALIDATE_SPACE',        '\s');
 define('VALIDATE_ALPHA_LOWER',  'a-z');
 define('VALIDATE_ALPHA_UPPER',  'A-Z');
 define('VALIDATE_ALPHA',        VALIDATE_ALPHA_LOWER . VALIDATE_ALPHA_UPPER);
-define('VALIDATE_EALPHA_LOWER', VALIDATE_ALPHA_LOWER . 'áéíóúýàèìòùäëïöüÿâêîôûãñõ¨åæç½ðøþß');
-define('VALIDATE_EALPHA_UPPER', VALIDATE_ALPHA_UPPER . 'ÁÉÍÓÚÝÀÈÌÒÙÄËÏÖÜ¾ÂÊÎÔÛÃÑÕ¦ÅÆÇ¼ÐØÞ');
+define('VALIDATE_EALPHA_LOWER', VALIDATE_ALPHA_LOWER . 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('VALIDATE_EALPHA_UPPER', VALIDATE_ALPHA_UPPER . 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¦ï¿½ï¿½Ç¼ï¿½ï¿½ï¿½');
 define('VALIDATE_EALPHA',       VALIDATE_EALPHA_LOWER . VALIDATE_EALPHA_UPPER);
 define('VALIDATE_PUNCTUATION',  VALIDATE_SPACE . '\.,;\:&"\'\?\!\(\)');
 define('VALIDATE_NAME',         VALIDATE_EALPHA . VALIDATE_SPACE . "'" . "-");
-define('VALIDATE_STREET',       VALIDATE_NUM . VALIDATE_NAME . "/\\ºª\.");
+define('VALIDATE_STREET',       VALIDATE_NUM . VALIDATE_NAME . "/\\ï¿½ï¿½\.");
 
 define('VALIDATE_ITLD_EMAILS',  1);
 define('VALIDATE_GTLD_EMAILS',  2);
@@ -88,7 +88,7 @@ class Validate
      * @access protected
      * @var    array     $_iTld (International top-level domains)
      */
-    var $_itld = array(
+    public $_itld = array(
         'arpa',
         'root',
     );
@@ -102,7 +102,7 @@ class Validate
      * @access protected
      * @var    array     $_gTld (Generic top-level domains)
      */
-    var $_gtld = array(
+    public $_gtld = array(
         'aero',
         'biz',
         'cat',
@@ -136,7 +136,7 @@ class Validate
      * @access protected
      * @var    array     $_ccTld (Country Code Top-Level Domain)
      */
-    var $_cctld = array(
+    public $_cctld = array(
         'ac',
         'ad','ae','af','ag',
         'ai','al','am','an',
@@ -212,7 +212,7 @@ class Validate
      *
      * @access private
      */
-    function __uriRFC4151($uri)
+    public function __uriRFC4151($uri)
     {
         $datevalid = false;
         if (preg_match(
@@ -253,7 +253,7 @@ class Validate
      *
      * @access public
      */
-    function number($number, $options = array())
+    public function number($number, $options = array())
     {
         $decimal = $dec_prec = $min = $max = null;
         if (is_array($options)) {
@@ -291,7 +291,7 @@ class Validate
      *
      * @access  private
      */
-    function __stringToUtf7($string)
+    public function __stringToUtf7($string)
     {
         $return = '';
         $utf7   = array(
@@ -369,7 +369,7 @@ class Validate
      *
      * @access private
      */
-    function __emailRFC822(&$email, &$options)
+    public function __emailRFC822(&$email, &$options)
     {
         static $address   = null;
         static $uncomment = null;
@@ -438,7 +438,7 @@ class Validate
      *
      * @return bool True if validating succeeds
      */
-    function _fullTLDValidation($email, $options)
+    public function _fullTLDValidation($email, $options)
     {
         $validate = array();
         if(!empty($options["VALIDATE_ITLD_EMAILS"])) array_push($validate, 'itld');
@@ -473,7 +473,7 @@ class Validate
      *
      * @return true or false (Depending on if it validates or if it does not)
      */
-    function executeFullEmailValidation($email, $arrayOfTLDs)
+    public function executeFullEmailValidation($email, $arrayOfTLDs)
     {
         $emailEnding = explode('.', $email);
         $emailEnding = $emailEnding[count($emailEnding)-1];
@@ -508,7 +508,7 @@ class Validate
      *
      * @access public
      */
-    function email($email, $options = null)
+    public function email($email, $options = null)
     {
         $check_domain = false;
         $use_rfc822   = false;
@@ -597,7 +597,7 @@ class Validate
      *
      * @access public
      */
-    function string($string, $options)
+    public function string($string, $options)
     {
         $format     = null;
         $min_length = 0;
@@ -659,7 +659,7 @@ class Validate
      *
      * @access public
      */
-    function uri($url, $options = null)
+    public function uri($url, $options = null)
     {
         $strict = ';/?:@$,';
         $domain_check = false;
@@ -735,7 +735,7 @@ class Validate
      *
      * @access public
      */
-    function date($date, $options)
+    public function date($date, $options)
     {
         $max    = false;
         $min    = false;
@@ -918,7 +918,7 @@ class Validate
      * @access private
      * @return string
      */
-    function _substr(&$date, $num, $opt = false)
+    public function _substr(&$date, $num, $opt = false)
     {
         if ($opt && strlen($date) >= $opt && preg_match('/^[0-9]{'.$opt.'}/', $date, $m)) {
             $ret = $m[0];
@@ -929,7 +929,7 @@ class Validate
         return $ret;
     }
 
-    function _modf($val, $div)
+    public function _modf($val, $div)
     {
         if (function_exists('bcmod')) {
             return bcmod($val, $div);
@@ -951,7 +951,7 @@ class Validate
      *
      * @return int returns product of number digits with weights
      */
-    function _multWeights($number, &$weights)
+    public function _multWeights($number, &$weights)
     {
         if (!is_array($weights)) {
             return -1;
@@ -982,7 +982,7 @@ class Validate
      *
      * @return  int -1 calculated control number is returned
      */
-    function _getControlNumber($number, &$weights, $modulo = 10, $subtract = 0, $allow_high = false)
+    public function _getControlNumber($number, &$weights, $modulo = 10, $subtract = 0, $allow_high = false)
     {
         // calc sum
         $sum = Validate::_multWeights($number, $weights);
@@ -1012,7 +1012,7 @@ class Validate
      *
      * @return  bool true if valid, false if not
      */
-    function _checkControlNumber($number, &$weights, $modulo = 10, $subtract = 0)
+    public function _checkControlNumber($number, &$weights, $modulo = 10, $subtract = 0)
     {
         if (strlen($number) < count($weights)) {
             return false;
@@ -1049,7 +1049,7 @@ class Validate
      *
      * @access public
      */
-    function multiple(&$data, &$val_type, $remove = false)
+    public function multiple(&$data, &$val_type, $remove = false)
     {
         $keys  = array_keys($data);
         $valid = array();

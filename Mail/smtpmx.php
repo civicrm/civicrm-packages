@@ -66,14 +66,14 @@ class Mail_smtpmx extends Mail {
      * @var object
      * @access private
      */
-    var $_smtp = null;
+    public $_smtp = null;
 
     /**
      * The port the SMTP server is on.
      * @var integer
      * @see getservicebyname()
      */
-    var $port = 25;
+    public $port = 25;
 
     /**
      * Hostname or domain that will be sent to the remote SMTP server in the
@@ -82,28 +82,28 @@ class Mail_smtpmx extends Mail {
      * @var string
      * @see posix_uname()
      */
-    var $mailname = 'localhost';
+    public $mailname = 'localhost';
 
     /**
      * SMTP connection timeout value.  NULL indicates no timeout.
      *
      * @var integer
      */
-    var $timeout = 10;
+    public $timeout = 10;
 
     /**
      * use either PEAR:Net_DNS or getmxrr
      *
      * @var boolean
      */
-    var $withNetDns = true;
+    public $withNetDns = true;
 
     /**
      * PEAR:Net_DNS_Resolver
      *
      * @var object
      */
-    var $resolver;
+    public $resolver;
 
     /**
      * Whether to use VERP or not. If not a boolean, the string value
@@ -111,28 +111,28 @@ class Mail_smtpmx extends Mail {
      *
      * @var mixed boolean or string
      */
-    var $verp = false;
+    public $verp = false;
 
     /**
      * Whether to use VRFY or not.
      *
      * @var boolean $vrfy
      */
-    var $vrfy = false;
+    public $vrfy = false;
 
     /**
      * Switch to test mode - don't send emails for real
      *
      * @var boolean $debug
      */
-    var $test = false;
+    public $test = false;
 
     /**
      * Turn on Net_SMTP debugging?
      *
      * @var boolean $peardebug
      */
-    var $debug = false;
+    public $debug = false;
 
     /**
      * internal error codes
@@ -146,7 +146,7 @@ class Mail_smtpmx extends Mail {
      *       for each code. This avoids conflicts with error codes from different
      *       classes. How can I use unique error codes and stay conform with PEAR?
      */
-    var $errorCode = array(
+    public $errorCode = array(
         'not_connected' => array(
             'code'  => 1,
             'msg'   => 'Could not connect to any mail server ({HOST}) at port {PORT} to send mail to {RCPT}.'
@@ -211,7 +211,7 @@ class Mail_smtpmx extends Mail {
      *              defaults.
      * @see _Mail_smtpmx()
      */
-    function __construct($params)
+    public function __construct($params)
     {
         if (isset($params['mailname'])) {
             $this->mailname = $params['mailname'];
@@ -254,7 +254,7 @@ class Mail_smtpmx extends Mail {
      * Destructor implementation to ensure that we disconnect from any
      * potentially-alive persistent SMTP connections.
      */
-    function __destruct()
+    public function __destruct()
     {
         if (is_object($this->_smtp)) {
             $this->_smtp->disconnect();
@@ -271,7 +271,7 @@ class Mail_smtpmx extends Mail {
      * @param string $body The full text of the message body,
      * @return mixed Returns true on success, or a PEAR_Error
      */
-    function send($recipients, $headers, $body)
+    public function send($recipients, $headers, $body)
     {
         if (!is_array($headers)) {
             return PEAR::raiseError('$headers must be an array');
@@ -408,7 +408,7 @@ class Mail_smtpmx extends Mail {
      * @param string $host mail host
      * @return mixed sorted
      */
-    function _getMx($host)
+    public function _getMx($host)
     {
         $mx = array();
 
@@ -450,7 +450,7 @@ class Mail_smtpmx extends Mail {
      * @access private
      * @return boolean true on success
      */
-    function _loadNetDns()
+    public function _loadNetDns()
     {
         if (is_object($this->resolver)) {
             return true;
@@ -478,7 +478,7 @@ class Mail_smtpmx extends Mail {
      * @param array $info optional information in associative array
      * @see _errorCode
      */
-    function _raiseError($id, $info = array())
+    public function _raiseError($id, $info = array())
     {
         $code = $this->errorCode[$id]['code'];
         $msg = $this->errorCode[$id]['msg'];

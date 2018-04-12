@@ -46,14 +46,14 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @var      string
     * @access   private
     */
-    var $_html;
+    public $_html;
 
    /**
     * Header Template string
     * @var      string
     * @access   private
     */
-    var $_headerTemplate = 
+    public $_headerTemplate = 
         "\n\t<tr>\n\t\t<td style=\"white-space: nowrap; background-color: #CCCCCC;\" align=\"left\" valign=\"top\" colspan=\"2\"><b>{header}</b></td>\n\t</tr>";
 
    /**
@@ -61,7 +61,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @var      string
     * @access   private
     */
-    var $_elementTemplate = 
+    public $_elementTemplate = 
         "\n\t<tr>\n\t\t<td align=\"right\" valign=\"top\"><!-- BEGIN required --><span style=\"color: #ff0000\">*</span><!-- END required --><b>{label}</b></td>\n\t\t<td valign=\"top\" align=\"left\"><!-- BEGIN error --><span style=\"color: #ff0000\">{error}</span><br /><!-- END error -->\t{element}</td>\n\t</tr>";
 
    /**
@@ -69,7 +69,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @var      string
     * @access   private
     */
-    var $_formTemplate = 
+    public $_formTemplate = 
         "\n<form{attributes}>\n<div>\n{hidden}<table border=\"0\">\n{content}\n</table>\n</div>\n</form>";
 
    /**
@@ -77,7 +77,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @var      string
     * @access   private
     */
-    var $_requiredNoteTemplate = 
+    public $_requiredNoteTemplate = 
         "\n\t<tr>\n\t\t<td></td>\n\t<td align=\"left\" valign=\"top\">{requiredNote}</td>\n\t</tr>";
 
    /**
@@ -85,7 +85,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @var      array
     * @access   private
     */
-    var $_templates = array();
+    public $_templates = array();
 
    /**
     * Array containing the templates for group wraps.
@@ -96,63 +96,63 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @var      array
     * @access   private
     */
-    var $_groupWraps = array();
+    public $_groupWraps = array();
 
    /**
     * Array containing the templates for elements within groups
     * @var      array
     * @access   private
     */
-    var $_groupTemplates = array();
+    public $_groupTemplates = array();
 
    /**
     * True if we are inside a group 
     * @var      bool
     * @access   private
     */
-    var $_inGroup = false;
+    public $_inGroup = false;
 
    /**
     * Array with HTML generated for group elements
     * @var      array
     * @access   private
     */
-    var $_groupElements = array();
+    public $_groupElements = array();
 
    /**
     * Template for an element inside a group
     * @var      string
     * @access   private
     */
-    var $_groupElementTemplate = '';
+    public $_groupElementTemplate = '';
 
    /**
     * HTML that wraps around the group elements
     * @var      string
     * @access   private
     */
-    var $_groupWrap = '';
+    public $_groupWrap = '';
 
    /**
     * HTML for the current group
     * @var      string
     * @access   private
     */
-    var $_groupTemplate = '';
+    public $_groupTemplate = '';
     
    /**
     * Collected HTML of the hidden fields
     * @var      string
     * @access   private
     */
-    var $_hiddenHtml = '';
+    public $_hiddenHtml = '';
 
    /**
     * Constructor
     *
     * @access public
     */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     } // end constructor
@@ -163,7 +163,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @access public
     * @return string
     */
-    function toHtml()
+    public function toHtml()
     {
         // _hiddenHtml is cleared in finishForm(), so this only matters when
         // finishForm() was not called (e.g. group::toHtml(), bug #3511)
@@ -177,7 +177,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function startForm(&$form)
+    public function startForm(&$form)
     {
         $this->_html = '';
         $this->_hiddenHtml = '';
@@ -191,7 +191,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function finishForm(&$form)
+    public function finishForm(&$form)
     {
         // add a required note, if one is needed
         if (!empty($form->_required) && !$form->_freezeAll) {
@@ -219,7 +219,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function renderHeader(&$header)
+    public function renderHeader(&$header)
     {
         $name = $header->getName();
         if (!empty($name) && isset($this->_templates[$name])) {
@@ -240,7 +240,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @see      renderElement()
     * @return   string      Html for element
     */
-    function _prepareTemplate($name, $label, $required, $error)
+    public function _prepareTemplate($name, $label, $required, $error)
     {
         if (is_array($label)) {
             $nameLabel = array_shift($label);
@@ -289,7 +289,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @access public
     * @return void
     */
-    function renderElement(&$element, $required, $error)
+    public function renderElement(&$element, $required, $error)
     {
         // make sure that all elements are id'ed even in a group!
         
@@ -322,7 +322,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @access public
     * @return void
     */
-    function renderHidden(&$element)
+    public function renderHidden(&$element)
     {
         $this->_hiddenHtml .= $element->toHtml() . "\n";
     } // end func renderHidden
@@ -334,7 +334,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @access public
     * @return void
     */
-    function renderHtml(&$data)
+    public function renderHtml(&$data)
     {
         $this->_html .= $data->toHtml();
     } // end func renderHtml
@@ -348,7 +348,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @access public
     * @return void
     */
-    function startGroup(&$group, $required, $error)
+    public function startGroup(&$group, $required, $error)
     {
         $name = $group->getName();
         $this->_groupTemplate        = $this->_prepareTemplate($name, $group->getLabel(), $required, $error);
@@ -365,17 +365,17 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function finishGroup(&$group)
+    public function finishGroup(&$group)
     {
         $separator = $group->_separator;
         if (is_array($separator)) {
             $count = count($separator);
             $html  = '';
-            for ($i = 0; $i < count($this->_groupElements); $i++) {
-                $html .= (0 == $i? '': $separator[($i - 1) % $count]) . $this->_groupElements[$i];
+            foreach ($this->_groupElements as $i => $iValue) {
+                $html .= (0 == $i? '': $separator[($i - 1) % $count]) . $iValue;
             }
         } else {
-            if (is_null($separator)) {
+            if (null === $separator) {
                 $separator = '&nbsp;';
             }
             $html = implode((string)$separator, $this->_groupElements);
@@ -395,9 +395,9 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
      * @access      public
      * @return      void
      */
-    function setElementTemplate($html, $element = null)
+    public function setElementTemplate($html, $element = null)
     {
-        if (is_null($element)) {
+        if (null === $element) {
             $this->_elementTemplate = $html;
         } else {
             $this->_templates[$element] = $html;
@@ -417,7 +417,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
      * @access      public
      * @return      void
      */
-    function setGroupTemplate($html, $group)
+    public function setGroupTemplate($html, $group)
     {
         $this->_groupWraps[$group] = $html;
     } // end func setGroupTemplate
@@ -430,7 +430,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
      * @access      public
      * @return      void
      */
-    function setGroupElementTemplate($html, $group)
+    public function setGroupElementTemplate($html, $group)
     {
         $this->_groupTemplates[$group] = $html;
     } // end func setGroupElementTemplate
@@ -442,7 +442,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
      * @access      public
      * @return      void
      */
-    function setHeaderTemplate($html)
+    public function setHeaderTemplate($html)
     {
         $this->_headerTemplate = $html;
     } // end func setHeaderTemplate
@@ -454,7 +454,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
      * @access    public
      * @return    void
      */
-    function setFormTemplate($html)
+    public function setFormTemplate($html)
     {
         $this->_formTemplate = $html;
     } // end func setFormTemplate
@@ -466,7 +466,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
      * @access      public
      * @return      void
      */
-    function setRequiredNoteTemplate($html)
+    public function setRequiredNoteTemplate($html)
     {
         $this->_requiredNoteTemplate = $html;
     } // end func setRequiredNoteTemplate
@@ -478,7 +478,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
      * @access  public
      * @return  void
      */
-    function clearAllTemplates()
+    public function clearAllTemplates()
     {
         $this->setElementTemplate('{element}');
         $this->setFormTemplate("\n\t<form{attributes}>{content}\n\t</form>\n");

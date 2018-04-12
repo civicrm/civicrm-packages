@@ -81,7 +81,7 @@ class DB_Table_Manager_mysqli {
     * 
     */
     
-    var $_db = null;
+    public $_db;
 
 
     /**
@@ -91,7 +91,7 @@ class DB_Table_Manager_mysqli {
      * @return mixed data array on success, a PEAR error on failure
      * @access public
      */
-    function listTableIndexes($table)
+    public function listTableIndexes($table)
     {
         $key_name = 'Key_name';
         $non_unique = 'Non_unique';
@@ -121,7 +121,7 @@ class DB_Table_Manager_mysqli {
      * @return mixed data array on success, a PEAR error on failure
      * @access public
      */
-    function listTableConstraints($table)
+    public function listTableConstraints($table)
     {
         $key_name = 'Key_name';
         $non_unique = 'Non_unique';
@@ -157,7 +157,7 @@ class DB_Table_Manager_mysqli {
      * @return mixed data array on success, a PEAR error on failure
      * @access public
      */
-    function getTableIndexDefinition($table, $index_name)
+    public function getTableIndexDefinition($table, $index_name)
     {
         $result = $this->_db->query("SHOW INDEX FROM $table");
         if (PEAR::isError($result)) {
@@ -194,7 +194,7 @@ class DB_Table_Manager_mysqli {
      * @return mixed data array on success, a PEAR error on failure
      * @access public
      */
-    function getTableConstraintDefinition($table, $index_name)
+    public function getTableConstraintDefinition($table, $index_name)
     {
         $result = $this->_db->query("SHOW INDEX FROM $table");
         if (PEAR::isError($result)) {
@@ -236,7 +236,7 @@ class DB_Table_Manager_mysqli {
      * @return mixed DB_OK on success, a PEAR error on failure
      * @access public
      */
-    function dropIndex($table, $name)
+    public function dropIndex($table, $name)
     {
         $table = $this->_db->quoteIdentifier($table);
         $name = $this->_db->quoteIdentifier($name);
@@ -252,7 +252,7 @@ class DB_Table_Manager_mysqli {
      * @return mixed DB_OK on success, a PEAR error on failure
      * @access public
      */
-    function dropConstraint($table, $name)
+    public function dropConstraint($table, $name)
     {
         $table = $this->_db->quoteIdentifier($table);
         if (strtolower($name) == 'primary') {
@@ -353,7 +353,7 @@ class DB_Table_Manager_mysqli {
      *
      * @return mixed DB_OK on success, a PEAR error on failure
      */
-    function alterTable($name, $changes, $check)
+    public function alterTable($name, $changes, $check)
     {
         foreach ($changes as $change_name => $change) {
             switch ($change_name) {
@@ -437,4 +437,4 @@ class DB_Table_Manager_mysqli {
 
 }
 
-?>
+

@@ -54,7 +54,7 @@ class Mail_mail extends Mail {
      * Any arguments to pass to the mail() function.
      * @var string
      */
-    var $_params = '';
+    public $_params = '';
 
     /**
      * Constructor.
@@ -64,7 +64,7 @@ class Mail_mail extends Mail {
      *
      * @param array $params Extra arguments for the mail() function.
      */
-    function __construct($params = null)
+    public function __construct($params = null)
     {
         // The other mail implementations accept parameters as arrays.
         // In the interest of being consistent, explode an array into
@@ -112,7 +112,7 @@ class Mail_mail extends Mail {
      *
      * @access public
      */
-    function send($recipients, $headers, $body)
+    public function send($recipients, $headers, $body)
     {
         if (defined('CIVICRM_MAIL_LOG')) {
           CRM_Utils_Mail::logger($recipients, $headers, $body);

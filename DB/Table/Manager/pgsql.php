@@ -81,7 +81,7 @@ class DB_Table_Manager_pgsql {
     * 
     */
     
-    var $_db = null;
+    public $_db;
 
 
     /**
@@ -91,9 +91,9 @@ class DB_Table_Manager_pgsql {
      * @return mixed data array on success, a PEAR error on failure
      * @access public
      */
-    function listTableIndexes($table)
+    public function listTableIndexes($table)
     {
-        $subquery = "SELECT indexrelid FROM pg_index, pg_class";
+        $subquery = 'SELECT indexrelid FROM pg_index, pg_class';
         $subquery.= " WHERE pg_class.relname='$table' AND pg_class.oid=pg_index.indrelid AND indisunique != 't' AND indisprimary != 't'";
         $query = "SELECT relname FROM pg_class WHERE oid IN ($subquery)";
         $indexes = $this->_db->getCol($query);
@@ -118,9 +118,9 @@ class DB_Table_Manager_pgsql {
      * @return mixed data array on success, a PEAR error on failure
      * @access public
      */
-    function listTableConstraints($table)
+    public function listTableConstraints($table)
     {
-        $subquery = "SELECT indexrelid FROM pg_index, pg_class";
+        $subquery = 'SELECT indexrelid FROM pg_index, pg_class';
         $subquery.= " WHERE pg_class.relname='$table' AND pg_class.oid=pg_index.indrelid AND (indisunique = 't' OR indisprimary = 't')";
         $query = "SELECT relname FROM pg_class WHERE oid IN ($subquery)";
         $constraints = $this->_db->getCol($query);
@@ -146,10 +146,10 @@ class DB_Table_Manager_pgsql {
      * @return mixed data array on success, a PEAR error on failure
      * @access public
      */
-    function getTableIndexDefinition($table, $index_name)
+    public function getTableIndexDefinition($table, $index_name)
     {
-        $query = "SELECT relname, indkey FROM pg_index, pg_class
-            WHERE pg_class.relname = ".$this->_db->quoteSmart($index_name)." AND pg_class.oid = pg_index.indexrelid
+        $query = 'SELECT relname, indkey FROM pg_index, pg_class
+            WHERE pg_class.relname = ' . $this->_db->quoteSmart($index_name) . " AND pg_class.oid = pg_index.indexrelid
                AND indisunique != 't' AND indisprimary != 't'";
         $row = $this->_db->getRow($query, null, DB_FETCHMODE_ASSOC);
         if (PEAR::isError($row)) {
@@ -163,7 +163,7 @@ class DB_Table_Manager_pgsql {
         $index_column_numbers = explode(' ', $row['indkey']);
 
         foreach ($index_column_numbers as $number) {
-            $definition['fields'][$columns[($number - 1)]] = array('sorting' => 'ascending');
+            $definition['fields'][$columns[$number - 1]] = array('sorting' => 'ascending');
         }
         return $definition;
     }
@@ -177,10 +177,10 @@ class DB_Table_Manager_pgsql {
      * @return mixed data array on success, a PEAR error on failure
      * @access public
      */
-    function getTableConstraintDefinition($table, $index_name)
+    public function getTableConstraintDefinition($table, $index_name)
     {
-        $query = "SELECT relname, indisunique, indisprimary, indkey FROM pg_index, pg_class
-            WHERE pg_class.relname = ".$this->_db->quoteSmart($index_name)." AND pg_class.oid = pg_index.indexrelid
+        $query = 'SELECT relname, indisunique, indisprimary, indkey FROM pg_index, pg_class
+            WHERE pg_class.relname = ' . $this->_db->quoteSmart($index_name) . " AND pg_class.oid = pg_index.indexrelid
               AND (indisunique = 't' OR indisprimary = 't')";
         $row = $this->_db->getRow($query, null, DB_FETCHMODE_ASSOC);
         if (PEAR::isError($row)) {
@@ -199,7 +199,7 @@ class DB_Table_Manager_pgsql {
         $index_column_numbers = explode(' ', $row['indkey']);
 
         foreach ($index_column_numbers as $number) {
-            $definition['fields'][$columns[($number - 1)]] = array('sorting' => 'ascending');
+            $definition['fields'][$columns[$number - 1]] = array('sorting' => 'ascending');
         }
         return $definition;
     }
@@ -211,7 +211,7 @@ class DB_Table_Manager_pgsql {
      * @return mixed data array on success, a PEAR error on failure
      * @access private
      */
-    function _listTableFields($table)
+    public function _listTableFields($table)
     {
         $table = $this->_db->quoteIdentifier($table);
         $result2 = $this->_db->query("SELECT * FROM $table");
@@ -237,7 +237,7 @@ class DB_Table_Manager_pgsql {
      * @return mixed DB_OK on success, a PEAR error on failure
      * @access public
      */
-    function dropIndex($table, $name)
+    public function dropIndex($table, $name)
     {
         $name = $this->_db->quoteIdentifier($name);
         return $this->_db->query("DROP INDEX $name");
@@ -252,7 +252,7 @@ class DB_Table_Manager_pgsql {
      * @return mixed DB_OK on success, a PEAR error on failure
      * @access public
      */
-    function dropConstraint($table, $name)
+    public function dropConstraint($table, $name)
     {
         $table = $this->_db->quoteIdentifier($table);
         $name = $this->_db->quoteIdentifier($name);
@@ -348,7 +348,7 @@ class DB_Table_Manager_pgsql {
      *
      * @return mixed DB_OK on success, a PEAR error on failure
      */
-    function alterTable($name, $changes, $check)
+    public function alterTable($name, $changes, $check)
     {
         foreach ($changes as $change_name => $change) {
             switch ($change_name) {
@@ -437,4 +437,4 @@ class DB_Table_Manager_pgsql {
 
 }
 
-?>
+

@@ -43,7 +43,7 @@ class HTML_QuickForm_Action_Jump extends HTML_QuickForm_Action
     * @return   array   Array of the form array('foo', '?bar)
     * @access   private
     */
-    function _splitUri($uri)
+    public function _splitUri($uri)
     {
         if (false === ($qm = strpos($uri, '?'))) {
             return array($uri, '');
@@ -59,7 +59,7 @@ class HTML_QuickForm_Action_Jump extends HTML_QuickForm_Action
     * @return   string  Path component of the URL with '.' and '..' segments removed
     * @access   private
     */
-    function _normalizePath($path)
+    public function _normalizePath($path)
     {
         $pathAry = explode('/', $path);
         $i       = 1;
@@ -100,7 +100,7 @@ class HTML_QuickForm_Action_Jump extends HTML_QuickForm_Action
     * @return   string  Absolute URL
     * @access   private
     */
-    function _resolveRelativeURL($url)
+    public function _resolveRelativeURL($url)
     {
         $https  = !empty($_SERVER['HTTPS']) && ('off' != $_SERVER['HTTPS']);
         $scheme = ($https? 'https:': 'http:');
@@ -130,7 +130,7 @@ class HTML_QuickForm_Action_Jump extends HTML_QuickForm_Action
         }
     }
 
-    function perform(&$page, $actionName)
+    public function perform(&$page, $actionName)
     {
         // check whether the page is valid before trying to go to it
         if ($page->controller->isModal()) {

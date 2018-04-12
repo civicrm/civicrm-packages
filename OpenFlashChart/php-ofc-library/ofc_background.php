@@ -9,7 +9,7 @@ header("Pragma: no-cache");
  */
 class inner_bg_grad
 {
-	function __construct()
+	public function __construct()
 	{
 		$this->alpha    = array(1,1);
 		$this->ratio    = array(0,255);
@@ -17,32 +17,32 @@ class inner_bg_grad
 		$this->fillType    = 'linear';
 	}
 	
-	function set_fillType( $text='linear' )
+	public function set_fillType( $text='linear' )
 	{
 		$this->fillType = $text;
 	}
 
-	function set_colour1( $text='' )
+	public function set_colour1( $text='' )
 	{
 		$this->colour1 = $text;
 	}
 	
-	function set_colour2( $text='' )
+	public function set_colour2( $text='' )
 	{
 		$this->colour2 = $text;
 	}
 
-	function set_alpha( $text=array(1,1) )
+	public function set_alpha( $text=array(1,1) )
 	{
 		$this->alpha = $text;
 	}
 	
-	function set_ratio( $text=array(0,255) )
+	public function set_ratio( $text=array(0,255) )
 	{
 		$this->ratio = $text;
 	}	
 	
-	function set_angle( $text='0' )
+	public function set_angle( $text='0' )
 	{
 		$this->angle = $text;
 	}

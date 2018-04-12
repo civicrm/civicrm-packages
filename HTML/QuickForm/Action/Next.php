@@ -36,7 +36,7 @@ require_once 'HTML/QuickForm/Action.php';
  */
 class HTML_QuickForm_Action_Next extends HTML_QuickForm_Action
 {
-    function perform(&$page, $actionName)
+    public function perform(&$page, $actionName)
     {
         // save the form values and validation status to the session
         $page->isFormBuilt() or $page->buildForm();

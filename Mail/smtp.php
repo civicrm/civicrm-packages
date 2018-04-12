@@ -79,26 +79,26 @@ class Mail_smtp extends Mail {
      * @var object
      * @access private
      */
-    var $_smtp = null;
+    public $_smtp = null;
 
     /**
      * The list of service extension parameters to pass to the Net_SMTP
      * mailFrom() command.
      * @var array
      */
-    var $_extparams = array();
+    public $_extparams = array();
 
     /**
      * The SMTP host to connect to.
      * @var string
      */
-    var $host = 'localhost';
+    public $host = 'localhost';
 
     /**
      * The port the SMTP server is on.
      * @var integer
      */
-    var $port = 25;
+    public $port = 25;
 
     /**
      * Should SMTP authentication be used?
@@ -111,19 +111,19 @@ class Mail_smtp extends Mail {
      *
      * @var mixed
      */
-    var $auth = false;
+    public $auth = false;
 
     /**
      * The username to use if the SMTP server requires authentication.
      * @var string
      */
-    var $username = '';
+    public $username = '';
 
     /**
      * The password to use if the SMTP server requires authentication.
      * @var string
      */
-    var $password = '';
+    public $password = '';
 
     /**
      * Hostname or domain that will be sent to the remote SMTP server in the
@@ -131,21 +131,21 @@ class Mail_smtp extends Mail {
      *
      * @var string
      */
-    var $localhost = 'localhost';
+    public $localhost = 'localhost';
 
     /**
      * SMTP connection timeout value.  NULL indicates no timeout.
      *
      * @var integer
      */
-    var $timeout = null;
+    public $timeout = null;
 
     /**
      * Turn on Net_SMTP debugging?
      *
      * @var boolean $debug
      */
-    var $debug = false;
+    public $debug = false;
 
     /**
      * Indicates whether or not the SMTP connection should persist over
@@ -153,7 +153,7 @@ class Mail_smtp extends Mail {
      *
      * @var boolean
      */
-    var $persist = false;
+    public $persist = false;
 
     /**
      * Use SMTP command pipelining (specified in RFC 2920) if the SMTP server
@@ -161,7 +161,7 @@ class Mail_smtp extends Mail {
      * default, use the default value supplied by Net_SMTP.
      * @var bool
      */
-    var $pipelining;
+    public $pipelining;
 
     /**
      * Constructor.
@@ -188,7 +188,7 @@ class Mail_smtp extends Mail {
      *              defaults.
      * @access public
      */
-    function __construct($params)
+    public function __construct($params)
     {
         if (isset($params['host'])) $this->host = $params['host'];
         if (isset($params['port'])) $this->port = $params['port'];
@@ -213,7 +213,7 @@ class Mail_smtp extends Mail {
      * Destructor implementation to ensure that we disconnect from any
      * potentially-alive persistent SMTP connections.
      */
-    function _Mail_smtp()
+    public function _Mail_smtp()
     {
         $this->disconnect();
     }
@@ -242,7 +242,7 @@ class Mail_smtp extends Mail {
      *               failure.
      * @access public
      */
-    function send($recipients, $headers, $body)
+    public function send($recipients, $headers, $body)
     {
         if (defined('CIVICRM_MAIL_LOG')) {
           CRM_Utils_Mail::logger($recipients, $headers, $body);
@@ -286,7 +286,7 @@ class Mail_smtp extends Mail {
         $params = null;
         if (!empty($this->_extparams)) {
             foreach ($this->_extparams as $key => $val) {
-                $params .= ' ' . $key . (is_null($val) ? '' : '=' . $val);
+                $params .= ' ' . $key . (null === $val ? '' : '=' . $val);
             }
         }
         if (PEAR::isError($res = $this->_smtp->mailFrom($from, ltrim($params)))) {
@@ -346,7 +346,7 @@ class Mail_smtp extends Mail {
      * @since  1.2.0
      * @access public
      */
-    function &getSMTPObject()
+    public function &getSMTPObject()
     {
         if (is_object($this->_smtp) !== false) {
             return $this->_smtp;
@@ -402,7 +402,7 @@ class Mail_smtp extends Mail {
      * @since 1.2.0
      * @access public
      */
-    function addServiceExtensionParameter($keyword, $value = null)
+    public function addServiceExtensionParameter($keyword, $value = null)
     {
         $this->_extparams[$keyword] = $value;
     }
@@ -415,7 +415,7 @@ class Mail_smtp extends Mail {
      * @since  1.1.9
      * @access public
      */
-    function disconnect()
+    public function disconnect()
     {
         /* If we have an SMTP object, disconnect and destroy it. */
         if (is_object($this->_smtp) && $this->_smtp->disconnect()) {
@@ -437,7 +437,7 @@ class Mail_smtp extends Mail {
      * @since  1.1.7
      * @access private
      */
-    function _error($text, &$error)
+    public function _error($text, &$error)
     {
         /* Split the SMTP response into a code and a response string. */
         list($code, $response) = $this->_smtp->getResponse();

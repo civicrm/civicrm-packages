@@ -5,7 +5,7 @@
  */
 class x_axis_label
 {
-	function __construct( $text, $colour, $size, $rotate )
+	public function __construct( $text, $colour, $size, $rotate )
 	{
 		$this->set_text( $text );
 		$this->set_colour( $colour );
@@ -13,32 +13,32 @@ class x_axis_label
 		$this->set_rotate( $rotate );
 	}
 	
-	function set_text( $text )
+	public function set_text( $text )
 	{
 		$this->text = $text;
 	}
 	
-	function set_colour( $colour )
+	public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
 	
-	function set_size( $size )
+	public function set_size( $size )
 	{
 		$this->size = $size;
 	}
 	
-	function set_rotate( $rotate )
+	public function set_rotate( $rotate )
 	{
 		$this->rotate = $rotate;
 	}
 	
-	function set_vertical()
+	public function set_vertical()
 	{
 		$this->rotate = "vertical";
 	}
 	
-	function set_visible()
+	public function set_visible()
 	{
 		$this->visible = true;
 	}

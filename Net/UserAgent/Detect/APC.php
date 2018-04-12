@@ -47,7 +47,7 @@ require_once 'Net/UserAgent/Detect.php';
  */
 class Net_UserAgent_Detect_APC extends Net_UserAgent_Detect
 {
-    var $key = '';
+    public $key = '';
 
     /**
      * Class constructor
@@ -56,7 +56,7 @@ class Net_UserAgent_Detect_APC extends Net_UserAgent_Detect
      * @param mixed  $in_detect       (optional) The level of checking to do. 
      * @param mixed  $ua_cache_window Unknown
      */
-    function __construct($in_userAgent = null, $in_detect = null,
+    public function __construct($in_userAgent = null, $in_detect = null,
                                       $ua_cache_window = 600)
     {
         $data     = '';
@@ -117,7 +117,7 @@ class Net_UserAgent_Detect_APC extends Net_UserAgent_Detect
      * @access public 
      * @return object Net_UserAgent_Detect instance
      */
-    function &singleton($in_userAgent = null, $in_detect = null) 
+    public function &singleton($in_userAgent = null, $in_detect = null)
     {
         static $instance;
 
@@ -135,7 +135,7 @@ class Net_UserAgent_Detect_APC extends Net_UserAgent_Detect
      *
      * @return bool
      */
-    function cacheRestore($cache) 
+    public function cacheRestore($cache)
     {
         if (is_array($cache)) {
             foreach ($cache as $prop => $value) {
@@ -154,7 +154,7 @@ class Net_UserAgent_Detect_APC extends Net_UserAgent_Detect
      *
      * @return void
      */
-    function cacheSave() 
+    public function cacheSave()
     {
         if ($this->key) {
             $items = array('browser',

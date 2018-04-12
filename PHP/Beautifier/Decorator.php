@@ -32,11 +32,11 @@
 */
 abstract class PHP_Beautifier_Decorator implements PHP_Beautifier_Interface {
     protected $oBeaut;
-    function __construct(PHP_Beautifier_Interface $oBeaut) 
+    public function __construct(PHP_Beautifier_Interface $oBeaut)
     {
         $this->oBeaut = $oBeaut;
     }
-    function __call($sMethod, $aArgs) 
+    public function __call($sMethod, $aArgs)
     {
         if (!method_exists($this->oBeaut, $sMethod)) {
             throw (new Exception("Method '$sMethod' doesn't exists"));

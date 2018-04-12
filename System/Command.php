@@ -68,7 +68,7 @@ class System_Command {
      * @var array
      * @access private
      */
-    var $options = array();
+    public $options = array();
 
     /**
      * Array of available shells to use to execute the command
@@ -76,7 +76,7 @@ class System_Command {
      * @var array
      * @access private
      */
-    var $shells = array();
+    public $shells = array();
 
     /**
      * Array of available control operators used between commands
@@ -84,7 +84,7 @@ class System_Command {
      * @var array
      * @access private
      */
-    var $controlOperators = array();
+    public $controlOperators = array();
 
     /**
      * The system command to be executed
@@ -92,7 +92,7 @@ class System_Command {
      * @var string
      * @access private
      */
-    var $systemCommand = null;
+    public $systemCommand = null;
 
     /**
      * Previously added part to the command string
@@ -100,7 +100,7 @@ class System_Command {
      * @var string
      * @access private
      */
-    var $previousElement = null;
+    public $previousElement = null;
 
     /**
      * Directory for writing stderr output
@@ -108,7 +108,7 @@ class System_Command {
      * @var string
      * @access private
      */
-    var $tmpDir = null;
+    public $tmpDir = null;
 
     /**
      * To allow the pear error object to accumulate when building
@@ -118,7 +118,7 @@ class System_Command {
      * @var int
      * @access private
      */
-    var $commandStatus = 0;
+    public $commandStatus = 0;
     
     /**
      * Hold initialization PEAR_Error
@@ -126,7 +126,7 @@ class System_Command {
      * @var object
      * @access private
      **/
-    var $_initError = null;
+    public $_initError = null;
         
     // }}}
     // {{{ constructor
@@ -138,7 +138,7 @@ class System_Command {
      * 
      * @access public
      */
-    function __construct($in_shell = null)
+    public function __construct($in_shell = null)
     {
         // Defining constants
         $this->options = array(
@@ -230,7 +230,7 @@ class System_Command {
      * @access public
      * @return bool true if succes, else false
      */
-    function setOption($in_option, $in_setting)
+    public function setOption($in_option, $in_setting)
     {
     	if ($this->_initError) {
             return $this->_initError;
@@ -293,13 +293,13 @@ class System_Command {
      * @access public
      * @return boolean true on success {or System_Command_Error Exception}
      */
-    function pushCommand($in_command)
+    public function pushCommand($in_command)
     {
     	if ($this->_initError) {
             return $this->_initError;
         }
         
-        if (!is_null($this->previousElement) && !in_array($this->previousElement, $this->controlOperators)) {
+        if (null !== $this->previousElement && !in_array($this->previousElement, $this->controlOperators)) {
             $this->commandStatus = -1;
             $error = PEAR::raiseError(null, SYSTEM_COMMAND_COMMAND_PLACEMENT, null, E_USER_WARNING, null, 'System_Command_Error', true);
         }
@@ -338,7 +338,7 @@ class System_Command {
      * @access public
      * @return boolean true on success {or System_Command_Error Exception}
      */
-    function pushOperator($in_operator)
+    public function pushOperator($in_operator)
     {
     	if ($this->_initError) {
             return $this->_initError;
@@ -346,7 +346,7 @@ class System_Command {
 
         $operator = isset($this->controlOperators[$in_operator]) ? $this->controlOperators[$in_operator] : $in_operator;
 
-        if (is_null($this->previousElement) || in_array($this->previousElement, $this->controlOperators)) {
+        if (null === $this->previousElement || in_array($this->previousElement, $this->controlOperators)) {
             $this->commandStatus = -1;
             $error = PEAR::raiseError(null, SYSTEM_COMMAND_OPERATOR_PLACEMENT, null, E_USER_WARNING, null, 'System_Command_Error', true);
         }
@@ -370,14 +370,14 @@ class System_Command {
      *
      * @access public
      */
-    function execute() 
+    public function execute()
     {
     	if ($this->_initError) {
             return $this->_initError;
         }
 
         // if the command is empty or if the last element was a control operator, we can't continue
-        if (is_null($this->previousElement) || $this->commandStatus == -1 || in_array($this->previousElement, $this->controlOperators)) {
+        if (null === $this->previousElement || $this->commandStatus == -1 || in_array($this->previousElement, $this->controlOperators)) {
             return PEAR::raiseError(null, SYSTEM_COMMAND_INVALID_COMMAND, null, E_USER_WARNING, $this->systemCommand, 'System_Command_Error', true);
         }
 
@@ -455,7 +455,7 @@ class System_Command {
      * @access private
      * @return string returns the full path if found, false if not
      */
-    function which($in_cmd)
+    public function which($in_cmd)
     {
         // only pass non-empty strings to System::which()
         if (!is_string($in_cmd) || '' === $in_cmd) {
@@ -475,7 +475,7 @@ class System_Command {
      * @access public
      * @return void
      */
-    function reset()
+    public function reset()
     {
         $this->previousElement = null;
         $this->systemCommand = null;
@@ -493,7 +493,7 @@ class System_Command {
      * @return string error message, or false if the error code was
      * not recognized
      */
-    function errorMessage($in_value)
+    public function errorMessage($in_value)
     {
         static $errorMessages;
         if (!isset($errorMessages)) {
@@ -533,7 +533,7 @@ class System_Command {
      *
      * @access public
      */
-    function isError($in_value)
+    public function isError($in_value)
     {
         return (is_object($in_value) &&
                 (strtolower(get_class($in_value)) == 'system_command_error' ||
@@ -567,12 +567,12 @@ class System_Command_Error extends PEAR_Error
      * Message in front of the error message
      * @var string $error_message_prefix
      */
-    var $error_message_prefix = 'System_Command Error: ';
+    public $error_message_prefix = 'System_Command Error: ';
 
     // }}}
     // {{{ constructor
 
-    function __construct($code = SYSTEM_COMMAND_ERROR, $mode = PEAR_ERROR_RETURN,
+    public function __construct($code = SYSTEM_COMMAND_ERROR, $mode = PEAR_ERROR_RETURN,
               $level = E_USER_NOTICE, $debuginfo = null)
     {
         if (is_int($code)) {

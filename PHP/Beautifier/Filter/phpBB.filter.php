@@ -47,14 +47,14 @@ class PHP_Beautifier_Filter_phpBB extends PHP_Beautifier_Filter
         $oBeaut->setIndentNumber(1);
         $oBeaut->setNewLine(PHP_EOL);
     }
-    function t_open_brace($sTag)
+    public function t_open_brace($sTag)
     {
         $this->oBeaut->addNewLineIndent();
         $this->oBeaut->add($sTag);
         $this->oBeaut->incIndent();
         $this->oBeaut->addNewLineIndent();
     }
-    function t_close_brace($sTag)
+    public function t_close_brace($sTag)
     {
         if ($this->oBeaut->getMode('string_index') or $this->oBeaut->getMode('double_quote')) {
             $this->oBeaut->add($sTag);
@@ -66,7 +66,7 @@ class PHP_Beautifier_Filter_phpBB extends PHP_Beautifier_Filter
             $this->oBeaut->addNewLineIndent();
         }
     }
-    function t_else($sTag)
+    public function t_else($sTag)
     {
         $this->oBeaut->add($sTag);
         if (!$this->oBeaut->isNextTokenContent('{')) {
@@ -77,7 +77,7 @@ class PHP_Beautifier_Filter_phpBB extends PHP_Beautifier_Filter
             $this->iNestedIfs++;
         }
     }
-    function t_semi_colon($sTag)
+    public function t_semi_colon($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add($sTag);
@@ -91,7 +91,7 @@ class PHP_Beautifier_Filter_phpBB extends PHP_Beautifier_Filter
             $this->oBeaut->addNewLineIndent();
         }
     }
-    function preProcess()
+    public function preProcess()
     {
         $this->iNestedIfs = 0;
     }

@@ -41,7 +41,7 @@ class HTML_QuickForm_RuleRegistry
      * @var     array
      * @access  private
      */
-    var $_rules = array();
+    public $_rules = array();
 
 
     /**
@@ -54,7 +54,7 @@ class HTML_QuickForm_RuleRegistry
      * @static
      * @return    HTML_QuickForm_RuleRegistry
      */
-    static function &singleton()
+    public static function &singleton()
     {
         static $obj;
         if (!isset($obj)) {
@@ -84,7 +84,7 @@ class HTML_QuickForm_RuleRegistry
      * @access    public
      * @return    void
      */
-    function registerRule($ruleName, $type, $data1, $data2 = null)
+    public function registerRule($ruleName, $type, $data1, $data2 = null)
     {
         $type = strtolower($type);
         if ($type == 'regex') {
@@ -117,7 +117,7 @@ class HTML_QuickForm_RuleRegistry
      * @access    public
      * @return    HTML_QuickForm_Rule
      */
-    function &getRule($ruleName)
+    public function &getRule($ruleName)
     {
         list($class, $path) = $GLOBALS['_HTML_QuickForm_registered_rules'][$ruleName];
 
@@ -142,7 +142,7 @@ class HTML_QuickForm_RuleRegistry
      * @access    public
      * @return    mixed    true if no error found, int of valid values (when an array of values is given) or false if error
      */
-    function validate($ruleName, $values, $options = null, $multiple = false)
+    public function validate($ruleName, $values, $options = null, $multiple = false)
     {
         $rule =& $this->getRule($ruleName);
 
@@ -169,7 +169,7 @@ class HTML_QuickForm_RuleRegistry
      * @access    public
      * @return    string    JavaScript for the rule
      */
-    function getValidationScript(&$element, $elementName, $ruleData)
+    public function getValidationScript(&$element, $elementName, $ruleData)
     {
         $reset =  (isset($ruleData['reset'])) ? $ruleData['reset'] : false;
         $rule  =& $this->getRule($ruleData['type']);
@@ -223,7 +223,7 @@ class HTML_QuickForm_RuleRegistry
     *                                   multielement rules)
     * @return array     first item is value javascript, second is reset
     */
-    function _getJsValue(&$element, $elementName, $reset = false, $index = null)
+    public function _getJsValue(&$element, $elementName, $reset = false, $index = null)
     {
         $jsIndex = isset($index)? '[' . $index . ']': '';
         $tmp_reset = $reset? "    var field = frm.elements['$elementName'];\n": '';

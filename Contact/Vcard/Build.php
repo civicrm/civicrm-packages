@@ -77,7 +77,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @var array
      */
-    var $value = array();
+    public $value = array();
 
     /**
      * Parameters for vCard components.
@@ -85,7 +85,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @var array
      */
-    var $param = array();
+    public $param = array();
 
     /**
      * Tracks which component (N, ADR, TEL, etc) value was last set or added.
@@ -94,7 +94,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @var string
      */
-    var $autoparam = null;
+    public $autoparam;
 
     /**
      * Constructor.
@@ -107,7 +107,7 @@ class Contact_Vcard_Build extends PEAR
      * @return void
      * @see Contact_Vcard_Build::fetch()
      */
-    function __construct($version = '3.0')
+    public function __construct($version = '3.0')
     {
         parent::__construct();
         $this->setErrorHandling(PEAR_ERROR_PRINT);
@@ -130,7 +130,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return mixed Void on success, or a PEAR_Error object on failure.
      */
-    function escape(&$text)
+    public function escape(&$text)
     {
         if (is_object($text)) {
 
@@ -210,7 +210,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return mixed Void on success, or a PEAR_Error object on failure.
      */
-    function addParam($param_name, $param_value, $comp = null, $iter = null)
+    public function addParam($param_name, $param_value, $comp = null, $iter = null)
     {
         // if component is not specified, default to the last component
         // that was set or added.
@@ -264,7 +264,7 @@ class Contact_Vcard_Build extends PEAR
      * PEAR_Error object if not.
      *
      */
-    function validateParam($name, $text, $comp = null, $iter = null)
+    public function validateParam($name, $text, $comp = null, $iter = null)
     {
         $name = strtoupper($name);
         $text = strtoupper($text);
@@ -453,7 +453,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string
      */
-    function getParam($comp, $iter = 0)
+    public function getParam($comp, $iter = 0)
     {
         $comp = strtoupper($comp);
         $text = '';
@@ -506,7 +506,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function reset($version = null)
+    public function reset($version = null)
     {
         $prev = $this->value['VERSION'][0][0][0];
 
@@ -538,7 +538,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setValue($comp, $iter, $part, $text)
+    public function setValue($comp, $iter, $part, $text)
     {
         $comp = strtoupper($comp);
         settype($text, 'array');
@@ -563,7 +563,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function addValue($comp, $iter, $part, $text)
+    public function addValue($comp, $iter, $part, $text)
     {
         $comp = strtoupper($comp);
 
@@ -592,7 +592,7 @@ class Contact_Vcard_Build extends PEAR
      *         repetitions in the component-iteration part (or specific
      *         repetition within the part).
      */
-    function getValue($comp, $iter = 0, $part = 0, $rept = null)
+    public function getValue($comp, $iter = 0, $part = 0, $rept = null)
     {
         if ($rept === null &&
             is_array($this->value[$comp][$iter][$part]) ) {
@@ -632,7 +632,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setName($family, $given, $addl, $prefix, $suffix)
+    public function setName($family, $given, $addl, $prefix, $suffix)
     {
         $this->autoparam = 'N';
         $this->setValue('N', 0, VCARD_N_FAMILY, $family);
@@ -650,7 +650,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The first N component-interation of the vCard.
      */
-    function getName()
+    public function getName()
     {
         return $this->getMeta('N', 0) .
             $this->getValue('N', 0, VCARD_N_FAMILY) . ';' .
@@ -671,7 +671,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return mixed Void on success, or a PEAR_Error object on failure.
      */
-    function setFormattedName($text = null)
+    public function setFormattedName($text = null)
     {
         $this->autoparam = 'FN';
 
@@ -722,7 +722,7 @@ class Contact_Vcard_Build extends PEAR
      * @return string The FN value of the vCard.
      * @uses   self::getMeta()
      */
-    function getFormattedName()
+    public function getFormattedName()
     {
         return $this->getMeta('FN', 0) . $this->getValue('FN', 0, 0);
     }
@@ -735,7 +735,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return mixed Void on success, or a PEAR_Error object on failure.
      */
-    function setVersion($text = '3.0')
+    public function setVersion($text = '3.0')
     {
         $this->autoparam = 'VERSION';
         if ($text != '3.0' && $text != '2.1') {
@@ -751,7 +751,7 @@ class Contact_Vcard_Build extends PEAR
      * @uses   self::getMeta()
      * @return string The data-source of the vCard.
      */
-    function getVersion()
+    public function getVersion()
     {
         return $this->getMeta('VERSION', 0) . $this->getValue('VERSION', 0);
     }
@@ -764,7 +764,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setSource($text)
+    public function setSource($text)
     {
         $this->autoparam = 'SOURCE';
         $this->setValue('SOURCE', 0, 0, $text);
@@ -776,7 +776,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The data-source of the vCard.
      */
-    function getSource()
+    public function getSource()
     {
         return $this->getMeta('SOURCE', 0) . $this->getValue('SOURCE', 0, 0);
     }
@@ -791,7 +791,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return mixed Void on success, or a PEAR_Error object on failure.
      */
-    function setSourceName($text = null)
+    public function setSourceName($text = null)
     {
         $this->autoparam = 'NAME';
 
@@ -814,7 +814,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The data-source name of the vCard.
      */
-    function getSourceName()
+    public function getSourceName()
     {
         return $this->getMeta('NAME', 0) . $this->getValue('NAME', 0, 0);
     }
@@ -829,7 +829,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setPhoto($text, $url = false)
+    public function setPhoto($text, $url = false)
     {
         if ($url === false) {
             $this->autoparam = 'PHOTO';
@@ -847,7 +847,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component or false if no photo is set.
      */
-    function getPhoto()
+    public function getPhoto()
     {
         if (isset($this->value['PHOTO'])) {
             return $this->getMeta('PHOTO') . $this->getValue('PHOTO', 0, 0);
@@ -868,7 +868,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setLogo($text)
+    public function setLogo($text)
     {
         $this->autoparam = 'LOGO';
         $this->setValue('LOGO', 0, 0, $text);
@@ -881,7 +881,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getLogo()
+    public function getLogo()
     {
         return $this->getMeta('LOGO') . $this->getValue('LOGO', 0, 0);
     }
@@ -895,7 +895,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setSound($text)
+    public function setSound($text)
     {
         $this->autoparam = 'SOUND';
         $this->setValue('SOUND', 0, 0, $text);
@@ -908,7 +908,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getSound()
+    public function getSound()
     {
         return $this->getMeta('SOUND') . $this->getValue('SOUND', 0, 0);
     }
@@ -922,7 +922,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setKey($text)
+    public function setKey($text)
     {
         $this->autoparam = 'KEY';
         $this->setValue('KEY', 0, 0, $text);
@@ -935,7 +935,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getKey()
+    public function getKey()
     {
         return $this->getMeta('KEY') . $this->getValue('KEY', 0, 0);
     }
@@ -949,7 +949,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setBirthday($text)
+    public function setBirthday($text)
     {
         $this->autoparam = 'BDAY';
         $this->setValue('BDAY', 0, 0, $text);
@@ -962,7 +962,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getBirthday()
+    public function getBirthday()
     {
         return $this->getMeta('BDAY') . $this->getValue('BDAY', 0, 0);
     }
@@ -976,7 +976,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setTZ($text)
+    public function setTZ($text)
     {
         $this->autoparam = 'TZ';
         $this->setValue('TZ', 0, 0, $text);
@@ -989,7 +989,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getTZ()
+    public function getTZ()
     {
         return $this->getMeta('TZ') . $this->getValue('TZ', 0, 0);
     }
@@ -1003,7 +1003,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setMailer($text)
+    public function setMailer($text)
     {
         $this->autoparam = 'MAILER';
         $this->setValue('MAILER', 0, 0, $text);
@@ -1016,7 +1016,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getMailer()
+    public function getMailer()
     {
         return $this->getMeta('MAILER') . $this->getValue('MAILER', 0, 0);
     }
@@ -1030,7 +1030,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setNote($text)
+    public function setNote($text)
     {
         $this->autoparam = 'NOTE';
         $this->setValue('NOTE', 0, 0, $text);
@@ -1043,7 +1043,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getNote()
+    public function getNote()
     {
         return $this->getMeta('NOTE') . $this->getValue('NOTE', 0, 0);
     }
@@ -1057,7 +1057,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setTitle($text)
+    public function setTitle($text)
     {
         $this->autoparam = 'TITLE';
         $this->setValue('TITLE', 0, 0, $text);
@@ -1070,7 +1070,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getTitle()
+    public function getTitle()
     {
         return $this->getMeta('TITLE') . $this->getValue('TITLE', 0, 0);
     }
@@ -1084,7 +1084,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setRole($text)
+    public function setRole($text)
     {
         $this->autoparam = 'ROLE';
         $this->setValue('ROLE', 0, 0, $text);
@@ -1097,7 +1097,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getRole()
+    public function getRole()
     {
         return $this->getMeta('ROLE') . $this->getValue('ROLE', 0, 0);
     }
@@ -1111,7 +1111,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setURL($text)
+    public function setURL($text)
     {
         $this->autoparam = 'URL';
         $this->setValue('URL', 0, 0, $text);
@@ -1124,7 +1124,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getURL()
+    public function getURL()
     {
         return $this->getMeta('URL') . $this->getValue('URL', 0, 0);
     }
@@ -1138,7 +1138,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setClass($text)
+    public function setClass($text)
     {
         $this->autoparam = 'CLASS';
         $this->setValue('CLASS', 0, 0, $text);
@@ -1151,7 +1151,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getClass()
+    public function getClass()
     {
         return $this->getMeta('CLASS') . $this->getValue('CLASS', 0, 0);
     }
@@ -1165,7 +1165,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setSortString($text)
+    public function setSortString($text)
     {
         $this->autoparam = 'SORT-STRING';
         $this->setValue('SORT-STRING', 0, 0, $text);
@@ -1178,7 +1178,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getSortString()
+    public function getSortString()
     {
         return $this->getMeta('SORT-STRING') . $this->getValue('SORT-STRING', 0, 0);
     }
@@ -1192,7 +1192,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setProductID($text)
+    public function setProductID($text)
     {
         $this->autoparam = 'PRODID';
         $this->setValue('PRODID', 0, 0, $text);
@@ -1205,7 +1205,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getProductID()
+    public function getProductID()
     {
         return $this->getMeta('PRODID') . $this->getValue('PRODID', 0, 0);
     }
@@ -1220,7 +1220,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setRevision($text)
+    public function setRevision($text)
     {
         $this->autoparam = 'REV';
         $this->setValue('REV', 0, 0, $text);
@@ -1233,7 +1233,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getRevision()
+    public function getRevision()
     {
         return $this->getMeta('REV') . $this->getValue('REV', 0, 0);
     }
@@ -1247,7 +1247,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setUniqueID($text)
+    public function setUniqueID($text)
     {
         $this->autoparam = 'UID';
         $this->setValue('UID', 0, 0, $text);
@@ -1260,7 +1260,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getUniqueID()
+    public function getUniqueID()
     {
         return $this->getMeta('UID') . $this->getValue('UID', 0, 0);
     }
@@ -1274,7 +1274,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setAgent($text)
+    public function setAgent($text)
     {
         $this->autoparam = 'AGENT';
         $this->setValue('AGENT', 0, 0, $text);
@@ -1287,7 +1287,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getAgent()
+    public function getAgent()
     {
         return $this->getMeta('AGENT') . $this->getValue('AGENT', 0, 0);
     }
@@ -1304,7 +1304,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function setGeo($lat, $lon)
+    public function setGeo($lat, $lon)
     {
         $this->autoparam = 'GEO';
         $this->setValue('GEO', 0, VCARD_GEO_LAT, $lat);
@@ -1318,7 +1318,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getGeo()
+    public function getGeo()
     {
         return $this->getMeta('GEO', 0) .
             $this->getValue('GEO', 0, VCARD_GEO_LAT, 0) . ';' .
@@ -1354,7 +1354,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function addAddress($pob, $extend, $street, $locality, $region,
+    public function addAddress($pob, $extend, $street, $locality, $region,
         $postcode, $country)
     {
         $this->autoparam = 'ADR';
@@ -1378,7 +1378,7 @@ class Contact_Vcard_Build extends PEAR
      * @return mixed The value of this component iteration, or a
      *         PEAR_Error if the iteration is not valid.
      */
-    function getAddress($iter)
+    public function getAddress($iter)
     {
         if (! is_integer($iter) || $iter < 0) {
             return $this->raiseError('ADR iteration number not valid.');
@@ -1402,7 +1402,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function addLabel($text)
+    public function addLabel($text)
     {
         $this->autoparam = 'LABEL';
         $iter            = $this->countIter('LABEL');
@@ -1420,7 +1420,7 @@ class Contact_Vcard_Build extends PEAR
      * @return mixed The value of this component, or a PEAR_Error if
      *         the iteration number is not valid.
      */
-    function getLabel($iter)
+    public function getLabel($iter)
     {
         if (! is_integer($iter) || $iter < 0) {
             return $this->raiseError('LABEL iteration number not valid.');
@@ -1442,7 +1442,7 @@ class Contact_Vcard_Build extends PEAR
      * @return mixed  void on success, PEAR_Error on failure
      * @uses   self::_getTelephoneType()
      */
-    function addTelephone($text, $type = 'phone')
+    public function addTelephone($text, $type = 'phone')
     {
         $autoparam = $this->_getTelephoneType($type);
         if (PEAR::isError($autoparam)) {
@@ -1468,7 +1468,7 @@ class Contact_Vcard_Build extends PEAR
      *         iteration number is not valid.
      * @uses   self::_getTelephoneType()
      */
-    function getTelephone($iter, $type = 'phone')
+    public function getTelephone($iter, $type = 'phone')
     {
         $autoparam = $this->_getTelephoneType($type);
         if (PEAR::isError($autoparam)) {
@@ -1492,7 +1492,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function addEmail($text)
+    public function addEmail($text)
     {
         $this->autoparam = 'EMAIL';
         $iter            = $this->countIter('EMAIL');
@@ -1512,7 +1512,7 @@ class Contact_Vcard_Build extends PEAR
      * iteration number is not valid.
      *
      */
-    function getEmail($iter)
+    public function getEmail($iter)
     {
         if (! is_integer($iter) || $iter < 0) {
             return $this->raiseError('EMAIL iteration number not valid.');
@@ -1532,7 +1532,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function addNickname($text)
+    public function addNickname($text)
     {
         $this->autoparam = 'NICKNAME';
         $this->addValue('NICKNAME', 0, 0, $text);
@@ -1546,7 +1546,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getNickname()
+    public function getNickname()
     {
         return $this->getMeta('NICKNAME') . $this->getValue('NICKNAME', 0, 0);
     }
@@ -1562,7 +1562,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function addCategories($text)
+    public function addCategories($text)
     {
         $this->autoparam = 'CATEGORIES';
         $this->addValue('CATEGORIES', 0, 0, $text);
@@ -1576,7 +1576,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The value of this component.
      */
-    function getCategories()
+    public function getCategories()
     {
         return $this->getMeta('CATEGORIES', 0) .
             $this->getValue('CATEGORIES', 0, 0);
@@ -1600,7 +1600,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void
      */
-    function addOrganization($text)
+    public function addOrganization($text)
     {
         $this->autoparam = 'ORG';
 
@@ -1621,7 +1621,7 @@ class Contact_Vcard_Build extends PEAR
      * @return string The value of this component.
      * @access public
      */
-    function getOrganization()
+    public function getOrganization()
     {
         $text = $this->getMeta('ORG', 0);
 
@@ -1661,7 +1661,7 @@ class Contact_Vcard_Build extends PEAR
      * @see    Contact_Vcard_Parse::fromFile()
      * @see    Contact_Vcard_Parse::fromText()
      */
-    function setFromArray($src)
+    public function setFromArray($src)
     {
         // reset to a blank values and params
         $this->value = array();
@@ -1711,7 +1711,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string A properly formatted vCard text block.
      */
-    function fetch()
+    public function fetch()
     {
         // vCard version is required
         if (! is_array($this->value['VERSION'])) {
@@ -1984,7 +1984,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return void or Pear_Error in case of an error.
      */
-    function send($filename, $disposition = 'attachment', $charset = 'us-ascii')
+    public function send($filename, $disposition = 'attachment', $charset = 'us-ascii')
     {
         $vcard = $this->fetch();
         if (PEAR::isError($vcard)) {
@@ -2017,7 +2017,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return string The line prefix metadata.
      */
-    function getMeta($comp, $iter = 0)
+    public function getMeta($comp, $iter = 0)
     {
         $params = $this->getParam($comp, $iter);
 
@@ -2044,7 +2044,7 @@ class Contact_Vcard_Build extends PEAR
      *
      * @return array  the recoded and properly tagged lines
      */
-    function charsetRecode($lines) {
+    public function charsetRecode($lines) {
 
         $charsets = array('US-ASCII', 'ISO-8859-1', 'CP1250');
 
@@ -2100,7 +2100,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return int The number of iterations for that type.
      */
-    function countIter($type)
+    public function countIter($type)
     {
         if (!isset($this->value[$type])) {
             return 0;
@@ -2119,7 +2119,7 @@ class Contact_Vcard_Build extends PEAR
      * @access public
      * @return int The number of repetitions for that type and iteration.
      */
-    function countRept($type, $rept)
+    public function countRept($type, $rept)
     {
         if (!isset($this->value[$type][$rept])) {
             return 0;
@@ -2133,7 +2133,7 @@ class Contact_Vcard_Build extends PEAR
      * @access private
      * @return boolean true
      */
-    function _Contact_Vcard_Build()
+    public function _Contact_Vcard_Build()
     {
         return true;
     }
@@ -2155,7 +2155,7 @@ class Contact_Vcard_Build extends PEAR
      * @access protected
      * @return void
      */
-    function _setValue($comp, $iter, $part, $rept, $text)
+    public function _setValue($comp, $iter, $part, $rept, $text)
     {
         $this->value[strtoupper($comp)][$iter][$part][$rept] = $text;
     }
@@ -2176,7 +2176,7 @@ class Contact_Vcard_Build extends PEAR
      * @access protected
      * @return void
      */
-    function _setParam($comp, $iter, $part, $rept, $text)
+    public function _setParam($comp, $iter, $part, $rept, $text)
     {
         $this->param[strtoupper($comp)][$iter][$part][$rept] = $text;
     }
@@ -2195,7 +2195,7 @@ class Contact_Vcard_Build extends PEAR
      * @ses    self::getTelephone()
      * @since  1.1.2
      */
-    function _getTelephoneType($type)
+    public function _getTelephoneType($type)
     {
         switch ($type) {
 

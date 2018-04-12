@@ -71,7 +71,7 @@ class Net_Curl
      * @var string $url
      * @access public
      */
-    var $url;
+    public $url;
 
     /**
      * The Username for standard HTTP Authentication
@@ -79,7 +79,7 @@ class Net_Curl
      * @var string $username
      * @access public
      */
-    var $username = '';
+    public $username = '';
 
     /**
      * The Password for standard HTTP Authentication
@@ -87,7 +87,7 @@ class Net_Curl
      * @var string $password
      * @access public
      */
-    var $password = '';
+    public $password = '';
 
     /**
      * The SSL version for the transfer
@@ -95,7 +95,7 @@ class Net_Curl
      * @var integer $sslVersion
      * @access public
      */
-    var $sslVersion;
+    public $sslVersion;
 
     /**
      * The filename of the SSL certificate
@@ -103,7 +103,7 @@ class Net_Curl
      * @var string $sslCert
      * @access public
      */
-    var $sslCert;
+    public $sslCert;
 
     /**
      * The password corresponding to the certificate
@@ -112,7 +112,7 @@ class Net_Curl
      * @var string $sslCertPasswd
      * @access public
      */
-    var $sslCertPasswd;
+    public $sslCertPasswd;
 
     /**
      * User Agent string when making an HTTP request
@@ -120,7 +120,7 @@ class Net_Curl
      * @var string $userAgent
      * @access public
      */
-    var $userAgent;
+    public $userAgent;
 
     /**
      * Whether or not to include the header in the results
@@ -128,7 +128,7 @@ class Net_Curl
      *
      * @var boolean $header
      */
-    var $header = false;
+    public $header = false;
 
     /**
      * Whether or not to output debug information while executing a
@@ -137,7 +137,7 @@ class Net_Curl
      * @var boolean $verbose
      * @access public
      */
-    var $verbose = false;
+    public $verbose = false;
 
     /**
      * Whether or not to display a progress meter for the current transfer
@@ -145,7 +145,7 @@ class Net_Curl
      * @var boolean $progress
      * @access public
      */
-    var $progress = false;
+    public $progress = false;
 
     /**
      * Whether or not to suppress error messages
@@ -153,7 +153,7 @@ class Net_Curl
      * @var boolean $mute
      * @access public
      */
-    var $mute = false;
+    public $mute = false;
 
     /**
      * Whether or not to follow HTTP Location headers.
@@ -161,7 +161,7 @@ class Net_Curl
      * @var boolean $followLocation
      * @access public
      */
-    var $followLocation = true;
+    public $followLocation = true;
 
     /**
      * Whether or not to follow HTTP Location headers.
@@ -170,7 +170,7 @@ class Net_Curl
      * @access public
      * @deprecated
      */
-    var $follow_location = false;
+    public $follow_location = false;
 
     /**
      * Time allowed for current transfer, in seconds.  0 means no limit
@@ -178,7 +178,7 @@ class Net_Curl
      * @var int $timeout
      * @access public
      */
-    var $timeout = 0;
+    public $timeout = 0;
 
     /**
      * Whether or not to return the results of the
@@ -187,7 +187,7 @@ class Net_Curl
      * @var boolean $returnTransfer
      * @access public
      */
-    var $returnTransfer = true;
+    public $returnTransfer = true;
 
     /**
      * Whether or not to return the results of the
@@ -197,7 +197,7 @@ class Net_Curl
      * @access public
      * @deprecated
      */
-    var $return_transfer = false;
+    public $return_transfer = false;
 
     /**
      * The type of transfer to perform (ie. 'POST', 'GET', 'PUT', etc)
@@ -205,7 +205,7 @@ class Net_Curl
      * @var string $type
      * @access public
      */
-    var $type;
+    public $type;
 
     /**
      * The file to upload (PUT, or FTP methods)
@@ -213,7 +213,7 @@ class Net_Curl
      * @var string $file
      * @access public
      */
-    var $file;
+    public $file;
 
     /**
      * The file size of the file pointed to by the $file
@@ -222,7 +222,7 @@ class Net_Curl
      * @var integer $fileSize
      * @access public
      */
-    var $fileSize;
+    public $fileSize;
 
     /**
      * The file size of the file pointed to by the $file
@@ -232,7 +232,7 @@ class Net_Curl
      * @access public
      * @deprecated
      */
-    var $file_size = false;
+    public $file_size = false;
 
 
     /**
@@ -241,7 +241,7 @@ class Net_Curl
      * @var array $cookies
      * @access public
      */
-    var $cookies = array();
+    public $cookies = array();
 
     /**
      * Additional HTTP headers to send to the remote site
@@ -249,7 +249,7 @@ class Net_Curl
      * @var array $httpHeaders
      * @access public
      */
-    var $httpHeaders = null;
+    public $httpHeaders = null;
 
     /**
      * Additional HTTP headers to send to the remote site
@@ -258,7 +258,7 @@ class Net_Curl
      * @access public
      * @deprecated
      */
-    var $http_headers = false;
+    public $http_headers = false;
 
     /**
      * The fields to send in a 'POST' request
@@ -266,7 +266,7 @@ class Net_Curl
      * @var array $fields
      * @access public
      */
-    var $fields;
+    public $fields;
 
     /**
      * The proxy server to go through
@@ -274,7 +274,7 @@ class Net_Curl
      * @var string $proxy
      * @access public
      */
-    var $proxy;
+    public $proxy;
 
     /**
      * The username for the Proxy server
@@ -282,7 +282,7 @@ class Net_Curl
      * @var string $proxyUser
      * @access public
      */
-    var $proxyUser;
+    public $proxyUser;
 
     /**
      * The password for the Proxy server
@@ -290,7 +290,7 @@ class Net_Curl
      * @var string $proxyPassword
      * @access public
      */
-    var $proxyPassword;
+    public $proxyPassword;
 
     /**
      * $verifyPeer
@@ -305,7 +305,7 @@ class Net_Curl
      * @var boolean $verifyPeer
      * @access public
      */
-    var $verifyPeer = true;
+    public $verifyPeer = true;
 
     /**
      * $verifyHost
@@ -318,7 +318,7 @@ class Net_Curl
      * @var bool $verifyHost
      * @access public
      */
-    var $verifyHost = 2;
+    public $verifyHost = 2;
 
     /**
      * $caInfo
@@ -332,7 +332,7 @@ class Net_Curl
      * @var string $caInfo
      * @access public
      */
-    var $caInfo = '';
+    public $caInfo = '';
 
     /**
      * $caPath
@@ -343,7 +343,7 @@ class Net_Curl
      * @var string $caPath
      * @access public
      */
-    var $caPath;
+    public $caPath;
     // }}}
     // {{{ Private Properties
     /**
@@ -353,7 +353,7 @@ class Net_Curl
      * @access private
      * @see Net_Curl::create()
      */
-    var $_ch = null;
+    public $_ch = null;
 
     /**
      * The file upload resource
@@ -365,7 +365,7 @@ class Net_Curl
      * @access private
      * @see Net_Curl::execute()
      */
-    var $_fp = null;
+    public $_fp = null;
     // }}}
 
     // {{{ __construct($url = '', $userAgent = '')
@@ -382,7 +382,7 @@ class Net_Curl
      * @author Joe Stump <joe@joestump.net>
      * @return void
      */
-    function __construct($url = '', $userAgent = '')
+    public function __construct($url = '', $userAgent = '')
     {
         if (is_string($url) && strlen($url)) {
             $this->url = $url;
@@ -442,7 +442,7 @@ class Net_Curl
      * @return PEAR_Error on failure, true/result on success
      * @since  PHP 4.0.5
      */
-    function execute()
+    public function execute()
     {
         // Create cURL handle if it hasn't already been created
         if (!is_resource($this->_ch)) {
@@ -592,7 +592,7 @@ class Net_Curl
                 }
             }
 
-            if (!is_null($sets)) {
+            if (null !== $sets) {
                 $fields = implode('&', $sets);
             } else {
                 $fields = $this->fields;
@@ -701,7 +701,7 @@ class Net_Curl
      * @access public
      * @return boolean
      */
-    function setOption($option, $value)
+    public function setOption($option, $value)
     {
         if (is_resource($this->_ch)) {
             return curl_setopt($this->_ch, $option, $value);
@@ -720,7 +720,7 @@ class Net_Curl
      * @access public
      * @return mixed PEAR_Error if there is no resource, info on success
      */
-    function getInfo()
+    public function getInfo()
     {
         if (is_resource($this->_ch)) {
             return curl_getinfo($this->_ch);
@@ -738,7 +738,7 @@ class Net_Curl
      * @author Joe Stump <joe@joestump.net>
      * @return boolean TRUE on success, PEAR_Error on failure
      */
-    function create()
+    public function create()
     {
         if (!PEAR::loadExtension('curl')) {
             return PEAR::raiseError('CURL extension is not available');
@@ -767,7 +767,7 @@ class Net_Curl
      * @author David Costa <gurugeek@php.net>
      * @return void
      */
-    function verboseAll()
+    public function verboseAll()
     {
         $this->verbose  = true;
         $this->mute     = false;
@@ -785,7 +785,7 @@ class Net_Curl
      * @return void
      * @deprecated
      */
-    function verbose_all()
+    public function verbose_all()
     {
         $this->verboseAll();
         PEAR::raiseError('Net_Curl::verbose_all() is deprecated! Please use Net_Curl::verboseAll()'." <br />\n", null, PEAR_ERROR_PRINT);
@@ -801,7 +801,7 @@ class Net_Curl
      * @return void
      * @since  PHP 4.0.5
      */
-    function close()
+    public function close()
     {
         if (is_resource($this->_ch)) {
             curl_close($this->_ch);
@@ -818,7 +818,7 @@ class Net_Curl
      * @access private
      * @return void
      */
-    function _mapDeprecatedVariables() 
+    public function _mapDeprecatedVariables()
     {
         $bad = array();
         if ($this->follow_location !== false) {
@@ -866,7 +866,7 @@ class Net_Curl
      * @author Joe Stump <joe@joestump.net>
      * @see Net_Curl::close()
      */
-    function __destruct()
+    public function __destruct()
     {
         $this->close();
     }

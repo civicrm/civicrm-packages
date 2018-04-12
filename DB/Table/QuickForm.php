@@ -145,7 +145,7 @@ class DB_Table_QuickForm {
     * 
     */
     
-    function &getForm($cols, $arrayName = null, $args = array(),
+    public function &getForm($cols, $arrayName = null, $args = array(),
         $clientValidate = null, $formFilters = null)
     {
         $form = DB_Table_QuickForm::createForm($args);
@@ -194,7 +194,7 @@ class DB_Table_QuickForm {
     * 
     */
     
-    function &createForm($args = array())
+    public function &createForm($args = array())
     {
         if (isset($args['formName'])) {
             $formName = $args['formName'];
@@ -250,7 +250,7 @@ class DB_Table_QuickForm {
     * 
     */
     
-    function addElements(&$form, $cols, $arrayName = null)
+    public function addElements(&$form, $cols, $arrayName = null)
     {
         $elements = DB_Table_QuickForm::getElements($cols, $arrayName);
         $cols_keys = array_keys($cols);
@@ -327,7 +327,7 @@ class DB_Table_QuickForm {
     * 
     */
     
-    function &getElements($cols, $arrayName = null)
+    public function &getElements($cols, $arrayName = null)
     {
         $elements = array();
         
@@ -365,7 +365,7 @@ class DB_Table_QuickForm {
     * 
     */
     
-    function &getElement($col, $elemname)
+    public function &getElement($col, $elemname)
     {
         if (isset($col['qf_setvalue'])) {
             $setval = $col['qf_setvalue'];
@@ -727,7 +727,7 @@ class DB_Table_QuickForm {
     * 
     */
     
-    function &getGroup($cols, $arrayName = null)
+    public function &getGroup($cols, $arrayName = null)
     {
         $group = array();
         
@@ -765,7 +765,7 @@ class DB_Table_QuickForm {
     * 
     */
     
-    function addStaticElements(&$form, $elements)
+    public function addStaticElements(&$form, $elements)
     {
         foreach ($elements as $name => $elemDef) {
 
@@ -810,7 +810,7 @@ class DB_Table_QuickForm {
     * @return void
     *
     */
-    function addFilters(&$form, $cols, $arrayName = null,
+    public function addFilters(&$form, $cols, $arrayName = null,
         $formFilters = null)
     {
         foreach ($cols as $name => $col) {
@@ -862,7 +862,7 @@ class DB_Table_QuickForm {
     * 
     */
     
-    function addRules(&$form, $cols, $arrayName = null,
+    public function addRules(&$form, $cols, $arrayName = null,
         $clientValidate = null)
     {
         foreach ($cols as $name => $col) {
@@ -878,7 +878,7 @@ class DB_Table_QuickForm {
             
             // if clientValidate is specified, override the column
             // definition.  otherwise use the col def as it is.
-            if (! is_null($clientValidate)) {
+            if (null !== $clientValidate) {
                 // override
                 if ($clientValidate) {
                     $validate = 'client';
@@ -999,7 +999,7 @@ class DB_Table_QuickForm {
     * 
     */
     
-    function fixColDef(&$col, $elemname)
+    public function fixColDef(&$col, $elemname)
     {    
         // always have a "require" value, false if not set
         if (! isset($col['require'])) {
@@ -1170,4 +1170,4 @@ class DB_Table_QuickForm {
     }
 }
 
-?>
+

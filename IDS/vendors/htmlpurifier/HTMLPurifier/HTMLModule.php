@@ -134,13 +134,17 @@ class HTMLPurifier_HTMLModule
         // merge in attribute inclusions
         $this->mergeInAttrIncludes($attr, $attr_includes);
         // add element to content sets
-        if ($type) $this->addElementToContentSet($element, $type);
+        if ($type) {
+            $this->addElementToContentSet($element, $type);
+        }
         // create element
         $this->info[$element] = HTMLPurifier_ElementDef::create(
             $content_model, $content_model_type, $attr
         );
         // literal object $contents means direct child manipulation
-        if (!is_string($contents)) $this->info[$element]->child = $contents;
+        if (!is_string($contents)) {
+            $this->info[$element]->child = $contents;
+        }
         return $this->info[$element];
     }
 
@@ -168,8 +172,12 @@ class HTMLPurifier_HTMLModule
      *        first letter)
      */
     public function addElementToContentSet($element, $type) {
-        if (!isset($this->content_sets[$type])) $this->content_sets[$type] = '';
-        else $this->content_sets[$type] .= ' | ';
+        if (!isset($this->content_sets[$type])) {
+            $this->content_sets[$type] = '';
+        }
+        else {
+            $this->content_sets[$type] .= ' | ';
+        }
         $this->content_sets[$type] .= $element;
     }
 
@@ -183,7 +191,9 @@ class HTMLPurifier_HTMLModule
      *       and use it directly.
      */
     public function parseContents($contents) {
-        if (!is_string($contents)) return array(null, null); // defer
+        if (!is_string($contents)) {
+            return array(null, null);
+        } // defer
         switch ($contents) {
             // check for shorthand content model forms
             case 'Empty':
@@ -207,8 +217,12 @@ class HTMLPurifier_HTMLModule
      */
     public function mergeInAttrIncludes(&$attr, $attr_includes) {
         if (!is_array($attr_includes)) {
-            if (empty($attr_includes)) $attr_includes = array();
-            else $attr_includes = array($attr_includes);
+            if (empty($attr_includes)) {
+                $attr_includes = array();
+            }
+            else {
+                $attr_includes = array($attr_includes);
+            }
         }
         $attr[0] = $attr_includes;
     }
@@ -222,10 +236,14 @@ class HTMLPurifier_HTMLModule
      * @return Lookup array equivalent of list
      */
     public function makeLookup($list) {
-        if (is_string($list)) $list = func_get_args();
+        if (is_string($list)) {
+            $list = func_get_args();
+        }
         $ret = array();
         foreach ($list as $value) {
-            if (is_null($value)) continue;
+            if (null === $value) {
+                continue;
+            }
             $ret[$value] = true;
         }
         return $ret;

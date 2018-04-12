@@ -235,7 +235,7 @@ class rcube_html2text
         '-',
         '*',
         'Â£',
-        'EUR',                                  // Euro sign. € ?
+        'EUR',                                  // Euro sign. ï¿½ ?
         '|+|amp|+|',                            // Ampersand: see _converter()
         ' ',                                    // Runs of spaces, post-handling
     );
@@ -334,7 +334,7 @@ class rcube_html2text
      * @param boolean $do_links Indicate whether a table of link URLs is desired
      * @param integer $width Maximum width of the formatted text, 0 for no limit
      */
-    function __construct($source = '', $from_file = false, $do_links = true, $width = 75, $charset = 'UTF-8')
+    public function __construct($source = '', $from_file = false, $do_links = true, $width = 75, $charset = 'UTF-8')
     {
         if (!empty($source)) {
             $this->set_html($source, $from_file);
@@ -353,7 +353,7 @@ class rcube_html2text
      * @param string $source HTML content
      * @param boolean $from_file Indicates $source is a file to pull content from
      */
-    function set_html($source, $from_file = false)
+    public function set_html($source, $from_file = false)
     {
         if ($from_file && file_exists($source)) {
             $this->html = file_get_contents($source);
@@ -370,7 +370,7 @@ class rcube_html2text
      *
      * @return string Plain text
      */
-    function get_text()
+    public function get_text()
     {
         if (!$this->_converted) {
             $this->_convert();
@@ -382,7 +382,7 @@ class rcube_html2text
     /**
      * Prints the text, converted from HTML.
      */
-    function print_text()
+    public function print_text()
     {
         print $this->get_text();
     }
@@ -392,7 +392,7 @@ class rcube_html2text
      *
      * Tags should be in the form "<p>", with no corresponding closing tag.
      */
-    function set_allowed_tags($allowed_tags = '')
+    public function set_allowed_tags($allowed_tags = '')
     {
         if (!empty($allowed_tags)) {
             $this->allowed_tags = $allowed_tags;
@@ -402,7 +402,7 @@ class rcube_html2text
     /**
      * Sets a base URL to handle relative links.
      */
-    function set_base_url($url = '')
+    public function set_base_url($url = '')
     {
         if (empty($url)) {
             if (!empty($_SERVER['HTTP_HOST'])) {

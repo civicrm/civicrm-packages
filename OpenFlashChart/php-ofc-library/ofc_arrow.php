@@ -11,7 +11,7 @@ class ofc_arrow
 	 *@param $barb_length as number. Length of the barbs in pixels.
 	 *@param $stroke as number. Width of the arrow in pixels.
 	 */
-	function __construct($x, $y, $a, $b, $colour, $barb_length=10, $stroke=1)
+	public function __construct($x, $y, $a, $b, $colour, $barb_length=10, $stroke=1)
 	{
 		$this->type     = "arrow";
 		$this->start	= array("x"=>$x, "y"=>$y);
@@ -21,7 +21,7 @@ class ofc_arrow
 		$this->{"stroke"} = $stroke;
 	}
 	
-	function colour( $colour )
+	public function colour( $colour )
 	{
 		$this->colour = $colour;
 		return $this;

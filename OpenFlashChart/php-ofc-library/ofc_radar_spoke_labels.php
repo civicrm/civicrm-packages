@@ -3,12 +3,12 @@
 class radar_spoke_labels
 {
 	// $labels : array
-	function __construct( $labels )
+	public function __construct( $labels )
 	{
 		$this->labels = $labels;
 	}
 	
-	function set_colour( $colour )
+	public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}

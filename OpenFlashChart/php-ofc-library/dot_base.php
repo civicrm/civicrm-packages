@@ -10,7 +10,7 @@ class dot_base
 	 * @param $type string
 	 * @param $value integer
 	 */
-	function __construct($type, $value=null)
+	public function __construct($type, $value=null)
 	{
 		$this->type = $type;
 		if( isset( $value ) )
@@ -22,7 +22,7 @@ class dot_base
 	 * for each point.
 	 * @param $value as integer, the Y position
 	 */
-	function value( $value )
+	public function value( $value )
 	{
 		$this->value = $value;
 	}
@@ -34,7 +34,7 @@ class dot_base
 	 * @param $x as integer
 	 * @param $y as integer
 	 */
-	function position( $x, $y )
+	public function position( $x, $y )
 	{
 		$this->x = $x;
 		$this->y = $y;
@@ -43,7 +43,7 @@ class dot_base
 	/**
 	 * @param $colour is a string, HEX colour, e.g. '#FF0000' red
 	 */
-	function colour($colour)
+	public function colour($colour)
 	{
 		$this->colour = $colour;
 		return $this;
@@ -52,7 +52,7 @@ class dot_base
 	/**
 	 * The tooltip for this dot.
 	 */
-	function tooltip( $tip )
+	public function tooltip( $tip )
 	{
 		$this->tip = $tip;
 		return $this;
@@ -61,7 +61,7 @@ class dot_base
 	/**
 	 * @param $size is an integer. Size of the dot.
 	 */
-	function size($size)
+	public function size($size)
 	{
 		$tmp = 'dot-size';
 		$this->$tmp = $size;
@@ -71,7 +71,7 @@ class dot_base
 	/**
 	 * a private method
 	 */
-	function type( $type )
+	public function type( $type )
 	{
 		$this->type = $type;
 		return $this;
@@ -80,7 +80,7 @@ class dot_base
 	/**
 	 * @param $size is an integer. The size of the hollow 'halo' around the dot that masks the line.
 	 */
-	function halo_size( $size )
+	public function halo_size( $size )
 	{
 		$tmp = 'halo-size';
 		$this->$tmp = $size;
@@ -96,7 +96,7 @@ class dot_base
 	 *  will call the JS function "hello_world(index)". It passes in the index of the
 	 *  point.
 	 */
-	function on_click( $do )
+	public function on_click( $do )
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $do;
@@ -108,7 +108,7 @@ class dot_base
  */
 class hollow_dot extends dot_base
 {	
-	function __construct($value=null)
+	public function __construct($value=null)
 	{
 		parent::__construct( 'hollow-dot', $value );
 	}
@@ -122,7 +122,7 @@ class star extends dot_base
 	/**
 	 * The constructor, takes an optional $value
 	 */
-	function __construct($value=null)
+	public function __construct($value=null)
 	{
 		parent::__construct( 'star', $value );
 	}
@@ -130,7 +130,7 @@ class star extends dot_base
 	/**
 	 * @param $angle is an integer.
 	 */
-	function rotation($angle)
+	public function rotation($angle)
 	{
 		$this->rotation = $angle;
 		return $this;
@@ -139,7 +139,7 @@ class star extends dot_base
 	/**
 	 * @param $is_hollow is a boolean.
 	 */
-	function hollow($is_hollow)
+	public function hollow($is_hollow)
 	{
 		$this->hollow = $is_hollow;
 	}
@@ -153,7 +153,7 @@ class bow extends dot_base
 	/**
 	 * The constructor, takes an optional $value
 	 */
-	function __construct($value=null)
+	public function __construct($value=null)
 	{
 		parent::__construct( 'bow', $value );
 	}
@@ -162,7 +162,7 @@ class bow extends dot_base
 	 * Rotate the anchor object.
 	 * @param $angle is an integer.
 	 */
-	function rotation($angle)
+	public function rotation($angle)
 	{
 		$this->rotation = $angle;
 		return $this;
@@ -177,7 +177,7 @@ class anchor extends dot_base
 	/**
 	 * The constructor, takes an optional $value
 	 */
-	function __construct($value=null)
+	public function __construct($value=null)
 	{
 		parent::__construct( 'anchor', $value );
 	}
@@ -186,7 +186,7 @@ class anchor extends dot_base
 	 * Rotate the anchor object.
 	 * @param $angle is an integer.
 	 */
-	function rotation($angle)
+	public function rotation($angle)
 	{
 		$this->rotation = $angle;
 		return $this;
@@ -195,7 +195,7 @@ class anchor extends dot_base
 	/**
 	 * @param $sides is an integer. Number of sides this shape has.
 	 */
-	function sides($sides)
+	public function sides($sides)
 	{
 		$this->sides = $sides;
 		return $this;
@@ -210,7 +210,7 @@ class dot extends dot_base
 	/**
 	 * The constructor, takes an optional $value
 	 */
-	function __construct($value=null)
+	public function __construct($value=null)
 	{
 		parent::__construct( 'dot', $value );
 	}
@@ -224,7 +224,7 @@ class solid_dot extends dot_base
 	/**
 	 * The constructor, takes an optional $value
 	 */
-	function __construct($value=null)
+	public function __construct($value=null)
 	{
 		parent::__construct( 'solid-dot', $value );
 	}

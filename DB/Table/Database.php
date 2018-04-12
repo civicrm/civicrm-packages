@@ -424,7 +424,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    string
      * @access public
      */
-    var $name   = null;
+    public $name;
 
     /**
      * Associative array of DB_Table object references. Keys are table names.
@@ -436,7 +436,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    array
      * @access private
      */
-    var $_table = array();
+    public $_table = array();
 
     /**
      * Array in which keys are table names, values are DB_Table subclass names.
@@ -446,7 +446,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    array
      * @access private
      */
-    var $_table_subclass = array();
+    public $_table_subclass = array();
 
     /**
      * Path to directory containing DB_Table subclass declaration files
@@ -456,7 +456,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    string
      * @access private
      */
-    var $_table_subclass_path = '';
+    public $_table_subclass_path = '';
 
     /**
      * Array in which keys are table names, values are primary keys.
@@ -469,7 +469,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    array
      * @access private
      */
-    var $_primary_key = array();
+    public $_primary_key = array();
 
     /**
      * Associative array that maps column names keys to table names.
@@ -483,7 +483,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    array
      * @access private
      */
-    var $_col = array();
+    public $_col = array();
 
     /**
      * Associative array that maps names of foreign key columns to table names
@@ -497,7 +497,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    array
      * @access private
      */
-    var $_foreign_col = array();
+    public $_foreign_col = array();
 
     /**
      * Two-dimensional associative array of foreign key references. 
@@ -512,7 +512,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    array
      * @access private
      */
-    var $_ref = array();
+    public $_ref = array();
 
     /**
      * Array in which each key is the names of a referenced tables, each value 
@@ -523,7 +523,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    array
      * @access private
      */
-    var $_ref_to = array();
+    public $_ref_to = array();
 
     /**
      * Two-dimensional associative array of linking tables. 
@@ -542,7 +542,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    array
      * @access private
      */
-    var $_link = array();
+    public $_link = array();
 
     /**
      * Take on_update actions if $_act_on_update is true
@@ -552,7 +552,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    boolean
      * @access private
      */
-    var $_act_on_update = true;
+    public $_act_on_update = true;
 
     /**
      * Take on_delete actions if $_act_on_delete is true
@@ -562,7 +562,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    boolean
      * @access private
      */
-    var $_act_on_delete = true;
+    public $_act_on_delete = true;
 
     /**
      * Validate foreign keys before insert or update if $_check_fkey is true
@@ -572,7 +572,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    boolean
      * @access private
      */
-    var $_check_fkey = false;
+    public $_check_fkey = false;
 
     /**
      * If the column keys in associative array return sets are fixed case
@@ -602,7 +602,7 @@ class DB_Table_Database extends DB_Table_Base
      * @var    boolean
      * @access private
      */
-    var $_fix_case = false;
+    public $_fix_case = false;
 
     // }}}
     // {{{ Methods
@@ -622,7 +622,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return object DB_Table_Database
      * @access public
      */
-    function __construct(&$db, $name)
+    public function __construct(&$db, $name)
     {
         // Is $db an DB/MDB2 object or null?
         if (is_a($db, 'db_common')) {
@@ -664,7 +664,7 @@ class DB_Table_Database extends DB_Table_Base
      *
      * @access public
      */
-    function setDBconnection(&$db)
+    public function setDBconnection(&$db)
     {
         // Is the first argument a DB/MDB2 object ?
         if (is_subclass_of($db, 'DB_Common')) {
@@ -674,7 +674,7 @@ class DB_Table_Database extends DB_Table_Base
         } else {
             return $this->throwError(
                       DB_TABLE_DATABASE_ERR_DB_OBJECT,
-                      "setDBconnection");
+              'setDBconnection');
         }
 
         // Set db and backend for database and all of its tables
@@ -697,7 +697,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function setActOnDelete($flag = true)
+    public function setActOnDelete($flag = true)
     {
         if ($flag) {
             $this->_act_on_delete = true;
@@ -716,7 +716,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function setActOnUpdate($flag = true)
+    public function setActOnUpdate($flag = true)
     {
         if ($flag) {
             $this->_act_on_update = true;
@@ -735,7 +735,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function setCheckFKey($flag = true)
+    public function setCheckFKey($flag = true)
     {
         if ($flag) {
             $this->_check_fkey = true;
@@ -759,7 +759,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function setFixCase($flag = false) 
+    public function setFixCase($flag = false)
     {
         $flag = (bool) $flag;
         $option = $this->db->getOption('portability');
@@ -787,7 +787,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return object Reference to DB/MDB2 object
      * @access public
      */
-    function &getDBInstance() 
+    public function &getDBInstance()
     {
         return $this->db;
     }
@@ -816,9 +816,9 @@ class DB_Table_Database extends DB_Table_Base
      * 
      * @access public
      */
-    function getTable($name = null) 
+    public function getTable($name = null)
     {
-        if (is_null($name)) {
+        if (null === $name) {
             return $this->_table;
         } elseif (is_string($name)) {
             if (isset($this->_table[$name])) {
@@ -831,7 +831,7 @@ class DB_Table_Database extends DB_Table_Base
         } else {
             return $this->throwError(
                       DB_TABLE_DATABASE_ERR_TBL_NOT_STRING,
-                      "getTable");
+              'getTable');
         }
     }
 
@@ -860,9 +860,9 @@ class DB_Table_Database extends DB_Table_Base
      * 
      * @access public
      */
-    function getPrimaryKey($name = null) 
+    public function getPrimaryKey($name = null)
     {
-        if (is_null($name)) {
+        if (null === $name) {
             return $this->_primary_key;
         } elseif (is_string($name)) {
             if (isset($this->_primary_key[$name])) {
@@ -875,7 +875,7 @@ class DB_Table_Database extends DB_Table_Base
         } else {
             return $this->throwError(
                       DB_TABLE_DATABASE_ERR_TBL_NOT_STRING,
-                      "getPrimaryKey");
+              'getPrimaryKey');
         }
     }
 
@@ -917,9 +917,9 @@ class DB_Table_Database extends DB_Table_Base
      * 
      @ @see DB_Table_Database::__wakeup()
      */
-    function getTableSubclass($name = null) 
+    public function getTableSubclass($name = null)
     {
-        if (is_null($name)) {
+        if (null === $name) {
             return $this->_table_subclass;
         } elseif (is_string($name)) {
             if (isset($this->_table_subclass[$name])) {
@@ -932,7 +932,7 @@ class DB_Table_Database extends DB_Table_Base
         } else {
             return $this->throwError(
                       DB_TABLE_DATABASE_ERR_TBL_NOT_STRING,
-                      "getTableSubclass");
+              'getTableSubclass');
         }
     }
 
@@ -960,9 +960,9 @@ class DB_Table_Database extends DB_Table_Base
      *
      * @access public
      */
-    function getCol($column_name = null) 
+    public function getCol($column_name = null)
     {
-        if (is_null($column_name)) {
+        if (null === $column_name) {
             return $this->_col;
         } elseif (is_string($column_name)) {
             if (isset($this->_col[$column_name])) {
@@ -1007,9 +1007,9 @@ class DB_Table_Database extends DB_Table_Base
      * @return array  $_foreign_col property array
      * @access public
      */
-    function getForeignCol($column_name = null) 
+    public function getForeignCol($column_name = null)
     {
-        if (is_null($column_name)) {
+        if (null === $column_name) {
             return $this->_foreign_col;
         } elseif (is_string($column_name)) {
             if (isset($this->_foreign_col[$column_name])) {
@@ -1071,13 +1071,13 @@ class DB_Table_Database extends DB_Table_Base
      *
      * @access public
      */
-    function getRef($table1 = null, $table2 = null) 
+    public function getRef($table1 = null, $table2 = null)
     {
-        if (is_null($table1)) {
+        if (null === $table1) {
             return $this->_ref;
         } elseif (is_string($table1)) {
             if (isset($this->_ref[$table1])) {
-                if (is_null($table2)) {
+                if (null === $table2) {
                     return $this->_ref[$table1];
                 } elseif (is_string($table2)) {
                     if (isset($this->_ref[$table1][$table2])) {
@@ -1096,7 +1096,7 @@ class DB_Table_Database extends DB_Table_Base
                 } else {
                     return $this->throwError(
                               DB_TABLE_DATABASE_ERR_TBL_NOT_STRING,
-                              "getRef");
+                      'getRef');
                 }
             } else {
                 if (isset($this->_table[$table1])) {
@@ -1112,7 +1112,7 @@ class DB_Table_Database extends DB_Table_Base
         } else {
             return $this->throwError(
                        DB_TABLE_DATABASE_ERR_TBL_NOT_STRING,
-                       "getRef");
+              'getRef');
         }
 
     }
@@ -1144,9 +1144,9 @@ class DB_Table_Database extends DB_Table_Base
      *
      * @access public
      */
-    function getRefTo($table_name = null)
+    public function getRefTo($table_name = null)
     {
-        if (is_null($table_name)) {
+        if (null === $table_name) {
             return $this->_ref_to;
         } elseif (is_string($table_name)) {
             if (isset($this->_ref_to[$table_name])) {
@@ -1165,7 +1165,7 @@ class DB_Table_Database extends DB_Table_Base
         } else {
             return $this->throwError(
                       DB_TABLE_DATABASE_ERR_TBL_NOT_STRING,
-                      "getRefTo");
+              'getRefTo');
         }
     }
 
@@ -1218,13 +1218,13 @@ class DB_Table_Database extends DB_Table_Base
      *
      * @access public
      */
-    function getLink($table1 = null, $table2 = null) 
+    public function getLink($table1 = null, $table2 = null)
     {
-        if (is_null($table1)) {
+        if (null === $table1) {
             return $this->_link;
         } elseif (is_string($table1)) {
             if (isset($this->_link[$table1])) {
-                if (is_null($table2)) {
+                if (null === $table2) {
                     return $this->_link[$table1];
                 } elseif (is_string($table2)) {
                     if (isset($this->_link[$table1][$table2])) {
@@ -1243,7 +1243,7 @@ class DB_Table_Database extends DB_Table_Base
                 } else {
                     return $this->throwError(
                               DB_TABLE_DATABASE_ERR_TBL_NOT_STRING,
-                              "getLink");
+                      'getLink');
                 }
             } else {
                 if (isset($this->_table[$table1])) {
@@ -1259,7 +1259,7 @@ class DB_Table_Database extends DB_Table_Base
         } else {
             return $this->throwError(
                       DB_TABLE_DATABASE_ERR_TBL_NOT_STRING,
-                      "getLink");
+              'getLink');
         }
     }
 
@@ -1292,7 +1292,7 @@ class DB_Table_Database extends DB_Table_Base
      *
      * @see DB_Table_Database::getTableSubclass()
      */
-    function setTableSubclassPath($path) 
+    public function setTableSubclassPath($path)
     {
         $this->_table_subclass_path = $path; 
     }
@@ -1322,7 +1322,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return boolean true on success (PEAR_Error on failure)
      * @access public
      */
-    function addTable(&$table_obj)
+    public function addTable(&$table_obj)
     {
         // Check that $table_obj is a DB_Table object 
         // Identify subclass name, if any
@@ -1342,7 +1342,7 @@ class DB_Table_Database extends DB_Table_Base
         $this->_primary_key[$table] = null;
         foreach ($table_obj->idx as $idx_name => $idx_def) {
             if ($idx_def['type'] == 'primary') {
-                if (is_null($this->_primary_key[$table])) {
+                if (null === $this->_primary_key[$table]) {
                     $this->_primary_key[$table] = $idx_def['cols'];
                 } else {
                     // More than one primary key defined in the table
@@ -1392,7 +1392,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function deleteTable($table) 
+    public function deleteTable($table)
     {
         if (isset($this->_table[$table])) {
             $table_obj =& $this->_table[$table];
@@ -1407,7 +1407,7 @@ class DB_Table_Database extends DB_Table_Base
         // Remove columns from $_col and $_foreign_col property arrays
         foreach ($table_obj->col as $column => $def) {
             $key = array_search($table, $this->_col[$column]);
-            if (is_integer($key)) {
+            if (is_int($key)) {
                 unset($this->_col[$column][$key]);
                 if (count($this->_col[$column]) == 0) {
                     unset($this->_col[$column]);
@@ -1418,7 +1418,7 @@ class DB_Table_Database extends DB_Table_Base
             }
             if (isset($this->_foreign_col[$column])) {
                 $key = array_search($table, $this->_foreign_col[$column]);
-                if (is_integer($key)) {
+                if (is_int($key)) {
                     unset($this->_foreign_col[$column][$key]);
                     if (count($this->_foreign_col[$column]) == 0) {
                         unset($this->_foreign_col[$column]);
@@ -1442,8 +1442,7 @@ class DB_Table_Database extends DB_Table_Base
         }
 
         // Remove table from $this->_table and $this->_primary_key 
-        unset($this->_table[$table]);
-        unset($this->_primary_key[$table]);
+        unset($this->_table[$table], $this->_primary_key[$table]);
     }
 
     // }}}
@@ -1496,7 +1495,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return boolean true on success (PEAR_Error on failure)
      * @access public
      */
-    function addRef($ftable, $fkey, $rtable, $rkey = null,
+    public function addRef($ftable, $fkey, $rtable, $rkey = null,
                              $on_delete = null, $on_update = null)
     {
         // Check existence of $ftable is a key in $this->_table.
@@ -1564,7 +1563,7 @@ class DB_Table_Database extends DB_Table_Base
                           DB_TABLE_DATABASE_ERR_RKEY_COL_NUMBER,
                           "$ftable => $rtable");
             }
-            for ($i=0 ; $i < count($rkey) ; $i++) {
+            for ($i=0, $iMax = count($rkey); $i < $iMax; $i++) {
                 $fcol = $fkey[$i];
                 $rcol = $rkey[$i];
                 if (!isset($ftable_obj->col[$fcol])) {
@@ -1667,7 +1666,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */ 
-    function deleteRef($ftable, $rtable) 
+    public function deleteRef($ftable, $rtable)
     {
         // Delete from $_ref property
         if (isset($this->_ref[$ftable])) {
@@ -1689,7 +1688,7 @@ class DB_Table_Database extends DB_Table_Base
                 if (isset($this->_foreign_col[$column])) {
                     $key = array_search($ftable, 
                                         $this->_foreign_col[$column]);
-                    if (is_integer($key)) {
+                    if (is_int($key)) {
                         unset($this->_foreign_col[$column][$key]);
                         if (count($this->_foreign_col[$column]) == 0) {
                             unset($this->_foreign_col[$column]);
@@ -1749,20 +1748,18 @@ class DB_Table_Database extends DB_Table_Base
      * @return boolean true on normal completion (PEAR_Error on failure)
      * @access public
      */ 
-    function setOnDelete($ftable, $rtable, $action)
+    public function setOnDelete($ftable, $rtable, $action)
     {
         $valid_actions = 
              array(null, 'cascade', 'set null', 'set default', 'restrict');
 
-        if (isset($this->_ref[$ftable])) {
-            if (isset($this->_ref[$ftable][$rtable])) {
-                if (!in_array($action, $valid_actions)) {
-                    return $this->throwError(
-                           DB_TABLE_DATABASE_ERR_REF_ON_DELETE_ACTION,
-                           "$ftable => $rtable");
-                }
-                $this->_ref[$ftable][$rtable]['on_delete'] = $action;
+        if (isset($this->_ref[$ftable]) && isset($this->_ref[$ftable][$rtable])) {
+            if (!in_array($action, $valid_actions)) {
+                return $this->throwError(
+                       DB_TABLE_DATABASE_ERR_REF_ON_DELETE_ACTION,
+                       "$ftable => $rtable");
             }
+            $this->_ref[$ftable][$rtable]['on_delete'] = $action;
         }
         return true;
     }
@@ -1781,20 +1778,18 @@ class DB_Table_Database extends DB_Table_Base
      * @return boolean true on normal completion (PEAR_Error on failure)
      * @access public
      */ 
-    function setOnUpdate($ftable, $rtable, $action)
+    public function setOnUpdate($ftable, $rtable, $action)
     {
         $valid_actions = 
              array(null, 'cascade', 'set null', 'set default', 'restrict');
 
-        if (isset($this->_ref[$ftable])) {
-            if (isset($this->_ref[$ftable][$rtable])) {
-                if (!in_array($action, $valid_actions)) {
-                    return $this->throwError(
-                           DB_TABLE_DATABASE_ERR_REF_ON_UPDATE_ACTION,
-                           "$ftable => $rtable");
-                }
-                $this->_ref[$ftable][$rtable]['on_update'] = $action;
+        if (isset($this->_ref[$ftable]) && isset($this->_ref[$ftable][$rtable])) {
+            if (!in_array($action, $valid_actions)) {
+                return $this->throwError(
+                       DB_TABLE_DATABASE_ERR_REF_ON_UPDATE_ACTION,
+                       "$ftable => $rtable");
             }
+            $this->_ref[$ftable][$rtable]['on_update'] = $action;
         }
         return true;
     }
@@ -1819,7 +1814,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return boolean true on success (PEAR_Error on failure)
      * @access public
      */
-    function addLink($table1, $table2, $link)
+    public function addLink($table1, $table2, $link)
     {
 
         // Check for existence of all three tables
@@ -1862,19 +1857,19 @@ class DB_Table_Database extends DB_Table_Base
         }
 
         // Add $this_link[$table1][$table2]
-        if (!key_exists($table1, $this->_link)) {
+        if (!array_key_exists($table1, $this->_link)) {
             $this->_link[$table1] = array();
         }
-        if (!key_exists($table2, $this->_link[$table1])) {
+        if (!array_key_exists($table2, $this->_link[$table1])) {
             $this->_link[$table1][$table2] = array();
         }
         $this->_link[$table1][$table2][] = $link;
 
         // Add $this_link[$table2][$table1]
-        if (!key_exists($table2, $this->_link)) {
+        if (!array_key_exists($table2, $this->_link)) {
             $this->_link[$table2] = array();
         }
-        if (!key_exists($table1, $this->_link[$table2])) {
+        if (!array_key_exists($table1, $this->_link[$table2])) {
             $this->_link[$table2][$table1] = array();
         } 
         $this->_link[$table2][$table1][] = $link;
@@ -1894,7 +1889,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function addAllLinks()
+    public function addAllLinks()
     {
         foreach ($this->_table as $link => $link_obj) {
             if (isset($this->_ref[$link])) {
@@ -1941,40 +1936,36 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function deleteLink($table1, $table2, $link = null)
+    public function deleteLink($table1, $table2, $link = null)
     {
-        if (isset($this->_link[$table1])) {
-            if (isset($this->_link[$table1][$table2])) {
-                if ($link) {
-                    // Find numerical key of $link in _link[$table1][$table2]
-                    $key = array_search($link, $this->_link[$table1][$table2]);
-                    if (is_integer($key)) {
-                        unset($this->_link[$table1][$table2][$key]);
-                        if (count($this->_link[$table1][$table2]) == 0) {
-                            unset($this->_link[$table1][$table2]);
-                            unset($this->_link[$table2][$table1]);
-                            if (count($this->_link[$table1]) == 0) {
-                                unset($this->_link[$table1]);
-                            }
-                            if (count($this->_link[$table2]) == 0) {
-                                unset($this->_link[$table2]);
-                            }
-                        } else { 
-                            // Reset remaining indices sequentially from zero
-                            $new = array_values($this->_link[$table1][$table2]);
-                            $this->_link[$table1][$table2] = $new;
-                            $this->_link[$table2][$table1] = $new;
+        if (isset($this->_link[$table1]) && isset($this->_link[$table1][$table2])) {
+            if ($link) {
+                // Find numerical key of $link in _link[$table1][$table2]
+                $key = array_search($link, $this->_link[$table1][$table2]);
+                if (is_int($key)) {
+                    unset($this->_link[$table1][$table2][$key]);
+                    if (count($this->_link[$table1][$table2]) == 0) {
+                        unset($this->_link[$table1][$table2], $this->_link[$table2][$table1]);
+                        if (count($this->_link[$table1]) == 0) {
+                            unset($this->_link[$table1]);
                         }
+                        if (count($this->_link[$table2]) == 0) {
+                            unset($this->_link[$table2]);
+                        }
+                    } else {
+                        // Reset remaining indices sequentially from zero
+                        $new = array_values($this->_link[$table1][$table2]);
+                        $this->_link[$table1][$table2] = $new;
+                        $this->_link[$table2][$table1] = $new;
                     }
-                } else {
-                    unset($this->_link[$table1][$table2]);
-                    unset($this->_link[$table2][$table1]);
-                    if (count($this->_link[$table1]) == 0) {
-                        unset($this->_link[$table1]);
-                    }
-                    if (count($this->_link[$table2]) == 0) {
-                        unset($this->_link[$table2]);
-                    }
+                }
+            } else {
+                unset($this->_link[$table1][$table2], $this->_link[$table2][$table1]);
+                if (count($this->_link[$table1]) == 0) {
+                    unset($this->_link[$table1]);
+                }
+                if (count($this->_link[$table2]) == 0) {
+                    unset($this->_link[$table2]);
                 }
             }
         }
@@ -2019,7 +2010,7 @@ class DB_Table_Database extends DB_Table_Base
      *                $column is a string, $table is a string or array
      * @access public
      */
-    function validCol($col, $from = null)
+    public function validCol($col, $from = null)
     {
         $col = explode('.',trim($col));
         if (count($col) == 1) { 
@@ -2095,7 +2086,7 @@ class DB_Table_Database extends DB_Table_Base
      *
      * @see DB_Table::create()
      */
-    function createTables($flag = 'safe')
+    public function createTables($flag = 'safe')
     {
         foreach ($this->_table as $name => $table) {
             $result = $table->create($flag);
@@ -2133,7 +2124,7 @@ class DB_Table_Database extends DB_Table_Base
      *
      * @access public
      */
-    function validForeignKeys($table_name, $data)
+    public function validForeignKeys($table_name, $data)
     {
         if (isset($this->_ref[$table_name])) {
             foreach ($this->_ref[$table_name] as $rtable_name => $ref) {
@@ -2191,7 +2182,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return boolean true on success (PEAR_Error on failure)
      * @access public
      */
-    function insert($table_name, $data)
+    public function insert($table_name, $data)
     {
         // Dereference table object
         if (isset($this->_table[$table_name])) {
@@ -2224,7 +2215,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function autoValidInsert($flag = true)
+    public function autoValidInsert($flag = true)
     {
         foreach ($this->_table as $table_obj) {
            $table_obj->autoValidInsert($flag);
@@ -2253,7 +2244,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return boolean true on success (PEAR_Error on failure)
      * @access public
      */
-    function update($table_name, $data, $where)
+    public function update($table_name, $data, $where)
     {
         // Dereference table object
         if (isset($this->_table[$table_name])) {
@@ -2286,7 +2277,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function autoValidUpdate($flag = true)
+    public function autoValidUpdate($flag = true)
     {
         foreach ($this->_table as $table_obj) {
             $table_obj->autoValidUpdate($flag);
@@ -2312,7 +2303,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return boolean true on success (PEAR_Error on failure)
      * @access public
      */
-    function onUpdateAction(&$table_obj, $data, $where)
+    public function onUpdateAction(&$table_obj, $data, $where)
     {
         $table_name = $table_obj->table;
         if ($this->_act_on_update and isset($this->_ref_to[$table_name])) {
@@ -2320,7 +2311,7 @@ class DB_Table_Database extends DB_Table_Base
             foreach ($this->_ref_to[$table_name] as $ftable_name) {
                 $ref    = $this->_ref[$ftable_name][$table_name];
                 $action = isset($ref['on_update']) ? $ref['on_update'] : null;
-                if (is_null($action)) {
+                if (null === $action) {
                    continue;
                 }
                 $rtable_obj =& $this->_table[$table_name];
@@ -2420,7 +2411,7 @@ class DB_Table_Database extends DB_Table_Base
                         "$ftable_name => $table_name");
                 }
 
-                if (!is_null($fdata)) {
+                if (null !== $fdata) {
 
                     // Loop over rows to be updated from $table
                     foreach ($update_rows as $update_row) {
@@ -2486,7 +2477,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function autoRecast($flag = true)
+    public function autoRecast($flag = true)
     {
         foreach ($this->_table as $table_obj) {
             $table_obj->autoRecast($flag);
@@ -2504,7 +2495,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function autoInc($flag = true)
+    public function autoInc($flag = true)
     {
         foreach ($this->_table as $table_obj) {
             $table_obj->auto_inc = $flag;
@@ -2528,7 +2519,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return boolean true on success (PEAR_Error on failure)
      * @access public
      */
-    function delete($table_name, $where)
+    public function delete($table_name, $where)
     {
         // Dereference table object
         if (isset($this->_table[$table_name])) {
@@ -2569,7 +2560,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return boolean true on success (PEAR_Error on failure)
      * @access public
      */
-    function onDeleteAction(&$table_obj, $where)
+    public function onDeleteAction(&$table_obj, $where)
     {
         $table_name = $table_obj->table;
         if ($this->_act_on_delete and isset($this->_ref_to[$table_name])) {
@@ -2577,7 +2568,7 @@ class DB_Table_Database extends DB_Table_Base
             foreach ($this->_ref_to[$table_name] as $ftable_name) {
                 $ref    = $this->_ref[$ftable_name][$table_name];
                 $action = $ref['on_delete'];
-                if (is_null($action)) {
+                if (null === $action) {
                    continue;
                 } 
                 $ftable_obj =& $this->_table[$ftable_name];
@@ -2711,7 +2702,7 @@ class DB_Table_Database extends DB_Table_Base
      *               replaced by the values of array $keys.
      * @access private
      */
-    function _replaceKeys($data, $keys) 
+    public function _replaceKeys($data, $keys)
     {
         $new_data = array();
         $i = 0;
@@ -2777,13 +2768,13 @@ class DB_Table_Database extends DB_Table_Base
      * @return array sql query array for select statement
      * @access public
      */
-    function autoJoin($cols = null, $tables = null, $filter = null)
+    public function autoJoin($cols = null, $tables = null, $filter = null)
     {
         // initialize array containing clauses of select statement
         $query = array();
 
-        if (is_null($tables)) {
-            if (is_null($cols)) {
+        if (null === $tables) {
+            if (null === $cols) {
                 return $this->throwError(
                           DB_TABLE_DATABASE_ERR_NO_COL_NO_TBL);
             }
@@ -3097,7 +3088,7 @@ class DB_Table_Database extends DB_Table_Base
      *                database columns named in $filt_key.
      * @access private
      */
-    function _buildFKeyFilter($data, $data_key = null, $filt_key = null, 
+    public function _buildFKeyFilter($data, $data_key = null, $filt_key = null,
                               $match = 'simple')
     {
         // Check $match type value
@@ -3107,15 +3098,15 @@ class DB_Table_Database extends DB_Table_Base
         }
 
         // Simple case: Build filter from $data array alone
-        if (is_null($data_key) && is_null($filt_key)) {
+        if (null === $data_key && null === $filt_key) {
             return $this->buildFilter($data, $match);
         }
 
         // Defaults for $data_key and $filt_key:
-        if (is_null($data_key)) {
+        if (null === $data_key) {
             $data_key = array_keys($data);
         }
-        if (is_null($filt_key)) {
+        if (null === $filt_key) {
             $filt_key = $data_key;
         }
 
@@ -3127,7 +3118,7 @@ class DB_Table_Database extends DB_Table_Base
             }
             if (array_key_exists($data_key, $data)) {
                 $value = $data[$data_key];
-                if (!is_null($value)) {
+                if (null !== $value) {
                     $value = (string) $this->quote($data[$data_key]);
                     return "$filt_key = $value";
                 } else {
@@ -3147,7 +3138,7 @@ class DB_Table_Database extends DB_Table_Base
                 $filt_col = $filt_key[$i];
                 if (array_key_exists($data_col, $data)) {
                     $value = $data[$data_col];
-                    if (!is_null($value)) {
+                    if (null !== $value) {
                         if ($match == 'full' && isset($found_null)) {
                             return $this->throwError(
                                       DB_TABLE_DATABASE_ERR_FULL_KEY);
@@ -3194,7 +3185,7 @@ class DB_Table_Database extends DB_Table_Base
      * @see DB_Common::quoteSmart()
      * @see MDB2::quote()
      */
-    function quote($value)
+    public function quote($value)
     {
         if (is_bool($value)) {
            return $value ? '1' : '0';
@@ -3216,7 +3207,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return array names of all properties
      * @access public
      */
-    function __sleep()
+    public function __sleep()
     {
         $this->db      = null;
         $this->backend = null;
@@ -3259,17 +3250,15 @@ class DB_Table_Database extends DB_Table_Base
      * @return void
      * @access public
      */
-    function __wakeup()
+    public function __wakeup()
     {
         foreach ($this->_table as $name => $table_string) {
 
             // Check for subclass definition, and autoload if necessary.
             $subclass = $this->_table_subclass[$name];
-            if (!is_null($subclass)) {
-                if (!class_exists($subclass)) {
-                    $dir = $this->_table_subclass_path;
-                    require_once $dir . '/' . $subclass . '.php';
-                }
+            if (null !== $subclass && ! class_exists($subclass)) {
+                $dir = $this->_table_subclass_path;
+                require_once $dir . '/' . $subclass . '.php';
             }
             // Unserialize table
             $table_obj = unserialize($table_string);
@@ -3289,7 +3278,7 @@ class DB_Table_Database extends DB_Table_Base
      * @return string XML string representation
      * @access public
      */
-    function toXML($indent = '') {
+    public function toXML($indent = '') {
         require_once 'DB/Table/XML.php';
         $s = array();
         $s[] = DB_Table_XML::openTag('database', $indent);
@@ -3321,11 +3310,11 @@ class DB_Table_Database extends DB_Table_Base
      *
      * @access public
      */
-    function fromXML($xml_string, $conn)
+    public function fromXML($xml_string, $conn)
     {
         // Check PHP version. Throw error if not >= PHP 5.0.0
-        $version = phpversion();
-        if (version_compare($version, '5.0.0', "<")) {
+        $version = PHP_VERSION;
+        if (version_compare($version, '5.0.0', '<')) {
             return $this->throwError(
                    DB_TABLE_DATABASE_ERR_PHP_VERSION,
                    $version);
@@ -3371,7 +3360,7 @@ class DB_Table_Database extends DB_Table_Base
                     $def['default'] = $field->default;
                 }
                 if (isset($field->autoincrement)) {
-                    if (is_null($table_obj->auto_inc_col)) {
+                    if (null === $table_obj->auto_inc_col) {
                         $table_obj->auto_inc_col = $col_name;
                     } else {
                         return $this->throwError(
@@ -3492,4 +3481,4 @@ class DB_Table_Database extends DB_Table_Base
  * End:
  */
 
-?>
+

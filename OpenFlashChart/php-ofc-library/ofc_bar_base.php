@@ -4,13 +4,13 @@
 
 class bar_base
 {
-	function __construct(){}
+	public function __construct(){}
 
 	/**
 	 * @param $text as string the key text
 	 * @param $size as integer, size in pixels
 	 */
-	function set_key( $text, $size )
+	public function set_key( $text, $size )
 	{
 		$this->text = $text;
 		$tmp = 'font-size';
@@ -20,7 +20,7 @@ class bar_base
 	/**
 	 * syntatical sugar.
 	 */
-	function key( $text, $size )
+	public function key( $text, $size )
 	{
 		$this->set_key( $text, $size );
 	}
@@ -30,7 +30,7 @@ class bar_base
 	 * 	- a bar_value class. You can use this to customise the paramters of each bar.
 	 * 	- integer. This is the Y position of the top of the bar.
 	 */
-	function set_values( $v )
+	public function set_values( $v )
 	{
 		$this->values = $v;		
 	}
@@ -40,18 +40,18 @@ class bar_base
      *
      * @param string $text
      */   
-    function set_text($text)
+    public function set_text($text)
     {
         $this->text = $text;
     }
 	
-	function set_key_on_click( $action )
+	public function set_key_on_click( $action )
 	{
 		$tmp = 'key-on-click';
 		$this->$tmp = $action;
 	}
 
-	function set_group_id( $id )
+	public function set_group_id( $id )
 	{
 		$this->id = $id;
 	}
@@ -59,7 +59,7 @@ class bar_base
 	/**
 	 * see set_values
 	 */
-	function append_value( $v )
+	public function append_value( $v )
 	{
 		$this->values[] = $v;		
 	}
@@ -67,7 +67,7 @@ class bar_base
 	/**
 	 * @param $colour as string, a HEX colour, e.g. '#ff0000' red
 	 */
-	function set_colour( $colour )
+	public function set_colour( $colour )
 	{
 		$this->colour = $colour;	
 	}
@@ -75,7 +75,7 @@ class bar_base
 	/**
 	 *syntatical sugar
 	 */
-	function colour( $colour )
+	public function colour( $colour )
 	{
 		$this->set_colour( $colour );
 	}
@@ -83,7 +83,7 @@ class bar_base
 	/**
 	 * @param $alpha as real number (range 0 to 1), e.g. 0.5 is half transparent
 	 */
-	function set_alpha( $alpha )
+	public function set_alpha( $alpha )
 	{
 		$this->alpha = $alpha;	
 	}
@@ -91,7 +91,7 @@ class bar_base
 	/**
 	 * @param $tip as string, the tip to show. May contain various magic variables.
 	 */
-	function set_tooltip( $tip )
+	public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;	
 	}
@@ -99,18 +99,18 @@ class bar_base
 	/**
 	 *@param $on_show as line_on_show object
 	 */
-	function set_on_show($on_show)
+	public function set_on_show($on_show)
 	{
 		$this->{'on-show'} = $on_show;
 	}
 	
-	function set_on_click( $text )
+	public function set_on_click( $text )
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $text;
 	}
 	
-	function attach_to_right_y_axis()
+	public function attach_to_right_y_axis()
 	{
 		$this->axis = 'right';
 	}

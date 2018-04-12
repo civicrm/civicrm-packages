@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
 // +-----------------------------------------------------------------------------+
-// | Copyright (c) 2003 Sérgio Gonçalves Carvalho                                |
+// | Copyright (c) 2003 Sï¿½rgio Gonï¿½alves Carvalho                                |
 // +-----------------------------------------------------------------------------+
 // | This file is part of Structures_Graph.                                      |
 // |                                                                             |
@@ -20,7 +20,7 @@
 // | Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA                    |
 // | 02111-1307 USA                                                              |
 // +-----------------------------------------------------------------------------+
-// | Author: Sérgio Carvalho <sergio.carvalho@portugalmail.com>                  |
+// | Author: Sï¿½rgio Carvalho <sergio.carvalho@portugalmail.com>                  |
 // +-----------------------------------------------------------------------------+
 //
 /**
@@ -48,8 +48,8 @@ define('STRUCTURES_GRAPH_ERROR_GENERIC', 100);
  * directional, and can be traveled only one way. In an undirected graph, arcs
  * are bidirectional, and can be traveled both ways.
  *
- * @author		Sérgio Carvalho <sergio.carvalho@portugalmail.com> 
- * @copyright	(c) 2004 by Sérgio Carvalho
+ * @author		Sï¿½rgio Carvalho <sergio.carvalho@portugalmail.com> 
+ * @copyright	(c) 2004 by Sï¿½rgio Carvalho
  * @package Structures_Graph
  */
 /* }}} */
@@ -58,11 +58,11 @@ class Structures_Graph {
     /**
      * @access private
      */
-    var $_nodes = array();
+    public $_nodes = array();
     /**
      * @access private
      */
-    var $_directed = false;
+    public $_directed = false;
     /* }}} */
 
     /* Constructor {{{ */
@@ -73,7 +73,7 @@ class Structures_Graph {
     * @param    boolean    Set to true if the graph is directed. Set to false if it is not directed. (Optional, defaults to true)
     * @access	public
     */
-    function __construct($directed = true) {
+    public function __construct($directed = true) {
         $this->_directed = $directed;
     }
     /* }}} */
@@ -86,7 +86,7 @@ class Structures_Graph {
     * @return	boolean	 true if the graph is directed
     * @access	public
     */
-    function isDirected() {
+    public function isDirected() {
         return (boolean) $this->_directed;
     }
     /* }}} */
@@ -99,7 +99,7 @@ class Structures_Graph {
     * @param    Structures_Graph_Node   The node to be added.
     * @access	public
     */
-    function addNode(&$newNode) {
+    public function addNode(&$newNode) {
         // We only add nodes
         if (!is_a($newNode, 'Structures_Graph_Node')) return Pear::raiseError('Structures_Graph::addNode received an object that is not a Structures_Graph_Node', STRUCTURES_GRAPH_ERROR_GENERIC);
         // Graphs are node *sets*, so duplicates are forbidden. We allow nodes that are exactly equal, but disallow equal references.
@@ -133,7 +133,7 @@ class Structures_Graph {
     * @param    Structures_Graph_Node   The node to be removed from the graph
     * @access	public
     */
-    function removeNode(&$node) {
+    public function removeNode(&$node) {
     }
     /* }}} */
 
@@ -146,7 +146,7 @@ class Structures_Graph {
     * @see      Structures_Graph_Manipulator_TopologicalSorter
     * @return   array The set of nodes in this graph
     */
-    function &getNodes() {
+    public function &getNodes() {
         return $this->_nodes;
     }
     /* }}} */

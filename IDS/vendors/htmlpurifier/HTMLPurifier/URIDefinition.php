@@ -63,13 +63,13 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
     protected function setupMemberVariables($config) {
         $this->host = $config->get('URI.Host');
         $base_uri = $config->get('URI.Base');
-        if (!is_null($base_uri)) {
+        if (null !== $base_uri) {
             $parser = new HTMLPurifier_URIParser();
             $this->base = $parser->parse($base_uri);
             $this->defaultScheme = $this->base->scheme;
-            if (is_null($this->host)) $this->host = $this->base->host;
+            if (null === $this->host) $this->host = $this->base->host;
         }
-        if (is_null($this->defaultScheme)) $this->defaultScheme = $config->get('URI.DefaultScheme');
+        if (null === $this->defaultScheme) $this->defaultScheme = $config->get('URI.DefaultScheme');
     }
 
     public function filter(&$uri, $config, $context) {

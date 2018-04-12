@@ -76,7 +76,7 @@ class Mail_null extends Mail {
      *               failure.
      * @access public
      */
-    function send($recipients, $headers, $body)
+    public function send($recipients, $headers, $body)
     {
         return true;
     }

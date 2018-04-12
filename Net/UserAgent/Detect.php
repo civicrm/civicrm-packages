@@ -56,7 +56,7 @@ define('NET_USERAGENT_DETECT_ALL',      'all');
 class Net_UserAgent_Detect {
     // {{{ constructor
 
-    function __construct($in_userAgent = null, $in_detect = null)
+    public function __construct($in_userAgent = null, $in_detect = null)
     {
         $this->detect($in_userAgent, $in_detect);
     }
@@ -70,7 +70,7 @@ class Net_UserAgent_Detect {
      * @access public 
      * @return object Net_UserAgent_Detect instance
      */
-    function &singleton($in_userAgent = null, $in_detect = null) 
+    public function &singleton($in_userAgent = null, $in_detect = null)
     {
         static $instance;
        
@@ -102,7 +102,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return void
      */
-    function detect($in_userAgent = null, $in_detect = null)
+    public function detect($in_userAgent = null, $in_detect = null)
     {
         static $hasRun;
         $options = Net_UserAgent_Detect::_getStaticProperty('options');
@@ -113,8 +113,8 @@ class Net_UserAgent_Detect {
         $hasRun = true;
         // {{{ set up static properties
 
-        $in_userAgent = isset($options['userAgent']) && is_null($in_userAgent) ? $options['userAgent'] : $in_userAgent;
-        $in_detect = isset($options['detectOptions']) && is_null($in_detect) ? $options['detectOptions'] : $in_detect;
+        $in_userAgent = isset($options['userAgent']) && null === $in_userAgent ? $options['userAgent'] : $in_userAgent;
+        $in_detect = isset($options['detectOptions']) && null === $in_detect ? $options['detectOptions'] : $in_detect;
 
         // User agent string that is being analyzed
         $userAgent = Net_UserAgent_Detect::_getStaticProperty('userAgent');
@@ -179,7 +179,7 @@ class Net_UserAgent_Detect {
 
         // }}}
         // detemine what user agent we are using
-        if (is_null($in_userAgent)) {
+        if (null === $in_userAgent) {
             if (isset($_SERVER['HTTP_USER_AGENT'])) {
                 $userAgent = $_SERVER['HTTP_USER_AGENT'];
             }
@@ -202,7 +202,7 @@ class Net_UserAgent_Detect {
                 NET_USERAGENT_DETECT_OS, NET_USERAGENT_DETECT_FEATURES,
                 NET_USERAGENT_DETECT_QUIRKS, NET_USERAGENT_DETECT_ACCEPT, 
                 NET_USERAGENT_DETECT_ALL);
-        $detect = is_null($in_detect) ? NET_USERAGENT_DETECT_ALL : $in_detect;
+        $detect = null === $in_detect ? NET_USERAGENT_DETECT_ALL : $in_detect;
         settype($detect, 'array');
         foreach($detectOptions as $option) {
             if (in_array($option, $detect)) {
@@ -471,7 +471,7 @@ class Net_UserAgent_Detect {
      * @param string $in_field The option field (userAgent or detectOptions)
      * @param mixed $in_value The value for the field
      */
-    function setOption($in_field, $in_value)
+    public function setOption($in_field, $in_value)
     {
         $options = Net_UserAgent_Detect::_getStaticProperty('options');
         $options[$in_field] = $in_value;
@@ -491,7 +491,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return boolean whether or not the browser satisfies this flag
      */
-    function isBrowser($in_match)
+    public function isBrowser($in_match)
     {
         Net_UserAgent_Detect::detect();
         $browser = Net_UserAgent_Detect::_getStaticProperty('browser');
@@ -512,7 +512,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return string first flag that matches
      */
-    function getBrowser($in_expectList)
+    public function getBrowser($in_expectList)
     {
         Net_UserAgent_Detect::detect();
         $browser = Net_UserAgent_Detect::_getStaticProperty('browser');
@@ -540,9 +540,9 @@ class Net_UserAgent_Detect {
      * @access public
      * @return string vendor string matches appropriate flag
      */
-    function getBrowserString($in_vendorStrings = null)
+    public function getBrowserString($in_vendorStrings = null)
     {
-        if (is_null($in_vendorStrings)) {
+        if (null === $in_vendorStrings) {
             $in_vendorStrings = array (
                     'ie'       => 'Microsoft Internet Explorer',
                     'ie4up'    => 'Microsoft Internet Explorer 4.x',
@@ -594,7 +594,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return bool whether or not this browser is an ie browser
      */
-    function isIE()
+    public function isIE()
     {
         Net_UserAgent_Detect::detect();
         $browser = Net_UserAgent_Detect::_getStaticProperty('browser');
@@ -610,7 +610,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return bool whether or not this browser is a Netscape Navigator browser
      */
-    function isNavigator()
+    public function isNavigator()
     {
         Net_UserAgent_Detect::detect();
         $browser = Net_UserAgent_Detect::_getStaticProperty('browser');
@@ -630,7 +630,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return bool whether or not this browser is a Netscape product
      */
-    function isNetscape()
+    public function isNetscape()
     {
         Net_UserAgent_Detect::detect();
         $browser = Net_UserAgent_Detect::_getStaticProperty('browser');
@@ -651,7 +651,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return boolean whether or not the OS satisfies this flag
      */
-    function isOS($in_match)
+    public function isOS($in_match)
     {
         Net_UserAgent_Detect::detect();
         $os = Net_UserAgent_Detect::_getStaticProperty('os');
@@ -670,7 +670,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return string first flag that matches
      */
-    function getOS($in_expectList)
+    public function getOS($in_expectList)
     {
         Net_UserAgent_Detect::detect();
         $os = Net_UserAgent_Detect::_getStaticProperty('os');
@@ -698,9 +698,9 @@ class Net_UserAgent_Detect {
      * @access public
      * @return string os string matches appropriate flag
      */
-    function getOSString($in_osStrings = null)
+    public function getOSString($in_osStrings = null)
     {
-        if (is_null($in_osStrings)) {
+        if (null === $in_osStrings) {
             $in_osStrings = array(
                    'win'   => 'Microsoft Windows',
                    'wince' => 'Microsoft Windows CE',
@@ -745,7 +745,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return void
      */
-    function setQuirk($in_quirk, $in_hasQuirk = true)
+    public function setQuirk($in_quirk, $in_hasQuirk = true)
     {
         $quirks = Net_UserAgent_Detect::_getStaticProperty('quirks');
         $hasQuirk = !empty($in_hasQuirk); 
@@ -767,7 +767,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return bool whether or not browser has this quirk
      */
-    function hasQuirk($in_quirk)
+    public function hasQuirk($in_quirk)
     {
         return (bool) Net_UserAgent_Detect::getQuirk($in_quirk);
     }
@@ -787,7 +787,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return string value of the quirk, in this case usually a boolean
      */
-    function getQuirk($in_quirk)
+    public function getQuirk($in_quirk)
     {
         Net_UserAgent_Detect::detect();
         $quirks = Net_UserAgent_Detect::_getStaticProperty('quirks');
@@ -810,7 +810,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return void
      */
-    function setFeature($in_feature, $in_hasFeature = true)
+    public function setFeature($in_feature, $in_hasFeature = true)
     {
         $features = Net_UserAgent_Detect::_getStaticProperty('features');
         $features[strtolower($in_feature)] = $in_hasFeature;
@@ -831,7 +831,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return bool whether or not the current client has this feature
      */
-    function hasFeature($in_feature)
+    public function hasFeature($in_feature)
     {
         return (bool) Net_UserAgent_Detect::getFeature($in_feature);
     }
@@ -851,7 +851,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return string value of the feature requested
      */
-    function getFeature($in_feature)
+    public function getFeature($in_feature)
     {
         Net_UserAgent_Detect::detect();
         $features = Net_UserAgent_Detect::_getStaticProperty('features');
@@ -877,7 +877,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return string the first matched value
      */
-    function getAcceptType($in_expectList, $in_type)
+    public function getAcceptType($in_expectList, $in_type)
     {
         Net_UserAgent_Detect::detect();
         $type = strtolower($in_type);
@@ -911,7 +911,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return void
      */
-    function setAcceptType($in_values, $in_type)
+    public function setAcceptType($in_values, $in_type)
     {
         $type = strtolower($in_type);
 
@@ -940,7 +940,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return bool whether or not the value is accept for this type
      */
-    function hasAcceptType($in_value, $in_type)
+    public function hasAcceptType($in_value, $in_type)
     {
         return (bool) Net_UserAgent_Detect::getAcceptType((array) $in_value, $in_type);
     }
@@ -954,7 +954,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return string user agent
      */
-    function getUserAgent()
+    public function getUserAgent()
     {
         Net_UserAgent_Detect::detect();
         $userAgent = Net_UserAgent_Detect::_getStaticProperty('userAgent');
@@ -973,7 +973,7 @@ class Net_UserAgent_Detect {
      * @return mixed   A reference to the variable. If not set it will be
      *                 auto initialised to NULL.
      */
-    function &_getStaticProperty($var)
+    public function &_getStaticProperty($var)
     {
         static $properties;
         return $properties[$var];

@@ -48,7 +48,7 @@ class HTML_QuickForm_Renderer_QuickHtml extends HTML_QuickForm_Renderer_Default 
      * The array of rendered elements
      * @var array
      */
-    var $renderedElements = array();
+    public $renderedElements = array();
 
     // }}}
     // {{{ constructor
@@ -59,7 +59,7 @@ class HTML_QuickForm_Renderer_QuickHtml extends HTML_QuickForm_Renderer_Default 
      * @access public
      * @return void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         // The default templates aren't used for this renderer
@@ -77,7 +77,7 @@ class HTML_QuickForm_Renderer_QuickHtml extends HTML_QuickForm_Renderer_Default 
      * @access public
      * @return string
      */
-    function toHtml($data = '')
+    public function toHtml($data = '')
     {
         // Render any elements that haven't been rendered explicitly by elementToHtml()
         foreach (array_keys($this->renderedElements) as $key) {
@@ -107,27 +107,30 @@ class HTML_QuickForm_Renderer_QuickHtml extends HTML_QuickForm_Renderer_Default 
      * @return string The html for the QuickForm element
      * @throws HTML_QuickForm_Error
      */
-    function elementToHtml($elementName, $elementValue = null)
+    public function elementToHtml($elementName, $elementValue = null)
     {
         $elementKey = null;
         // Find the key for the element
         foreach ($this->renderedElements as $key => $data) {
             if ($data['name'] == $elementName && 
                 // See if the value must match as well
-                (is_null($elementValue) ||
+                (null === $elementValue
+                 ||
                  $data['value'] == $elementValue)) {
                 $elementKey = $key;
                 break;
             }
         }
 
-        if (is_null($elementKey)) {
-            $msg = is_null($elementValue) ? "Element $elementName does not exist." : 
+        if (null === $elementKey) {
+            $msg = null === $elementValue
+              ? "Element $elementName does not exist." :
                 "Element $elementName with value of $elementValue does not exist.";
             return PEAR::raiseError(null, QUICKFORM_UNREGISTERED_ELEMENT, null, E_USER_WARNING, $msg, 'HTML_QuickForm_Error', true);
         } else {
             if ($this->renderedElements[$elementKey]['rendered']) {
-                $msg = is_null($elementValue) ? "Element $elementName has already been rendered." : 
+                $msg = null === $elementValue
+                  ? "Element $elementName has already been rendered." :
                     "Element $elementName with value of $elementValue has already been rendered.";
                 return PEAR::raiseError(null, QUICKFORM_ERROR, null, E_USER_WARNING, $msg, 'HTML_QuickForm_Error', true);
             } else {
@@ -152,7 +155,7 @@ class HTML_QuickForm_Renderer_QuickHtml extends HTML_QuickForm_Renderer_Default 
      * @return mixed HTML string of element if $immediateRender is set, else we just add the
      *               html to the global _html string 
      */
-    function renderElement(&$element, $required, $error)
+    public function renderElement(&$element, $required, $error)
     {
         $this->_html = '';
         parent::renderElement($element, $required, $error);
@@ -176,7 +179,7 @@ class HTML_QuickForm_Renderer_QuickHtml extends HTML_QuickForm_Renderer_Default 
      * @access public
      * @return void
      */
-    function renderHidden(&$element)
+    public function renderHidden(&$element)
     {
         $this->renderedElements[] = array(
                 'name' => $element->getName(), 
@@ -196,7 +199,7 @@ class HTML_QuickForm_Renderer_QuickHtml extends HTML_QuickForm_Renderer_Default 
      * @access   public
      * @return   void
      */
-    function finishGroup(&$group)
+    public function finishGroup(&$group)
     {
         $this->_html = '';
         parent::finishGroup($group);

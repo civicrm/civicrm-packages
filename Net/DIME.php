@@ -82,16 +82,16 @@ define('NET_DIME_DATA', 8);
 class Net_DIME_Record {
 
     // these are used to hold the padded length
-    var $OPTS_LENGTH = 0;
-    var $ID_LENGTH = 0;
-    var $TYPE_LENGTH = 0;
-    var $DATA_LENGTH = 0;
-    var $_haveOpts = false;
-    var $_haveID = false;
-    var $_haveType = false;
-    var $_haveData = false;
-    var $debug = false;
-    var $padstr = "\0";
+    public $OPTS_LENGTH = 0;
+    public $ID_LENGTH   = 0;
+    public $TYPE_LENGTH = 0;
+    public $DATA_LENGTH = 0;
+    public $_haveOpts   = false;
+    public $_haveID     = false;
+    public $_haveType   = false;
+    public $_haveData   = false;
+    public $debug       = false;
+    public $padstr      = "\0";
 
     /**
      * Elements
@@ -105,15 +105,15 @@ class Net_DIME_Record {
 	 * [NET_DIME_TYPE]             : TYPE
 	 * [NET_DIME_DATA]             : DATA
      */
-    var $Elements = array(NET_DIME_FLAGS => 0,  NET_DIME_OPTS_LEN => 0,
-	                      NET_DIME_ID_LEN => 0, NET_DIME_TYPE_LEN => 0,
-     					  NET_DIME_DATA_LEN => 0,
-	 					  NET_DIME_OPTS => '',
-						  NET_DIME_ID => '',
-						  NET_DIME_TYPE => '',
-						  NET_DIME_DATA => '');
+    public $Elements = array(NET_DIME_FLAGS    => 0, NET_DIME_OPTS_LEN => 0,
+                             NET_DIME_ID_LEN   => 0, NET_DIME_TYPE_LEN => 0,
+                             NET_DIME_DATA_LEN => 0,
+                             NET_DIME_OPTS     => '',
+                             NET_DIME_ID       => '',
+                             NET_DIME_TYPE     => '',
+                             NET_DIME_DATA     => '');
 
-    function __construct($debug = false)
+    public function __construct($debug = false)
     {
         $this->debug = $debug;
         if ($debug) {
@@ -121,57 +121,57 @@ class Net_DIME_Record {
         }
     }
 
-    function setMB()
+    public function setMB()
     {
         $this->Elements[NET_DIME_FLAGS] |= 0x0400;
     }
 
-    function setME()
+    public function setME()
     {
         $this->Elements[NET_DIME_FLAGS] |= 0x0200;
     }
 
-    function setCF()
+    public function setCF()
     {
         $this->Elements[NET_DIME_FLAGS] |= 0x0100;
     }
 
-    function isChunk()
+    public function isChunk()
     {
         return $this->Elements[NET_DIME_FLAGS] & 0x0100;
     }
 
-    function isEnd()
+    public function isEnd()
     {
         return $this->Elements[NET_DIME_FLAGS] & 0x0200;
     }
 
-    function isStart()
+    public function isStart()
     {
         return $this->Elements[NET_DIME_FLAGS] & 0x0400;
     }
 
-    function getID()
+    public function getID()
     {
         return $this->Elements[NET_DIME_ID];
     }
 
-    function getType()
+    public function getType()
     {
         return $this->Elements[NET_DIME_TYPE];
     }
 
-    function getData()
+    public function getData()
     {
         return $this->Elements[NET_DIME_DATA];
     }
 
-    function getDataLength()
+    public function getDataLength()
     {
         return $this->Elements[NET_DIME_DATA_LEN];
     }
 
-    function setType($typestring, $type = NET_DIME_TYPE_UNKNOWN)
+    public function setType($typestring, $type = NET_DIME_TYPE_UNKNOWN)
     {
         $typelen = strlen($typestring) & 0xFFFF;
         $type = $type << 4;
@@ -181,14 +181,14 @@ class Net_DIME_Record {
         $this->Elements[NET_DIME_TYPE] = $typestring;
     }
 
-    function generateID()
+    public function generateID()
     {
         $id = md5(time());
         $this->setID($id);
         return $id;
     }
 
-    function setID($id)
+    public function setID($id)
     {
         $idlen = strlen($id) & 0xFFFF;
         $this->Elements[NET_DIME_ID_LEN] = $idlen;
@@ -196,7 +196,7 @@ class Net_DIME_Record {
         $this->Elements[NET_DIME_ID] = $id;
     }
 
-    function setData($data, $size = 0)
+    public function setData($data, $size = 0)
     {
         $datalen = $size ? $size : strlen($data);
         $this->Elements[NET_DIME_DATA_LEN] = $datalen;
@@ -204,7 +204,7 @@ class Net_DIME_Record {
         $this->Elements[NET_DIME_DATA] = $data;
     }
 
-    function encode()
+    public function encode()
     {
 		// Insert version.
 	    $this->Elements[NET_DIME_FLAGS] = ($this->Elements[NET_DIME_FLAGS] & 0x07FF) | (NET_DIME_VERSION << 11);
@@ -235,7 +235,7 @@ class Net_DIME_Record {
 	                   str_pad($this->Elements[NET_DIME_DATA], $this->DATA_LENGTH, $this->padstr));
     }
 
-    function _getPadLength($len)
+    public function _getPadLength($len)
     {
         $pad = 0;
         if ($len) {
@@ -245,7 +245,7 @@ class Net_DIME_Record {
         return $len + $pad;
     }
 
-    function decode($data)
+    public function decode($data)
     {
         // Real DIME decoding.
         $this->Elements[NET_DIME_FLAGS]    = (hexdec(bin2hex($data[0])) << 8)
@@ -303,7 +303,7 @@ class Net_DIME_Record {
         return substr($data, $p);
     }
 
-    function addData($data)
+    public function addData($data)
     {
         $datalen = strlen($data);
         $p = 0;
@@ -369,19 +369,19 @@ class Net_DIME_Record {
  */
 class Net_DIME_Message {
 
-    var $record_size = 4096;
-    var $parts = array();
-    var $currentPart = -1;
-    var $stream = null;
-    var $_currentRecord;
-    var $_proc = array();
-    var $type;
-    var $typestr;
-    var $mb = 1;
-    var $me = 0;
-    var $cf = 0;
-    var $id = null;
-    var $debug = false;
+    public $record_size = 4096;
+    public $parts       = array();
+    public $currentPart = -1;
+    public $stream      = null;
+    public $_currentRecord;
+    public $_proc       = array();
+    public $type;
+    public $typestr;
+    public $mb          = 1;
+    public $me          = 0;
+    public $cf          = 0;
+    public $id          = null;
+    public $debug       = false;
 
     /**
      * Constructor.
@@ -392,7 +392,7 @@ class Net_DIME_Message {
      * @param integer $record_size
      * @param boolean $debug
      */
-    function __construct($stream = null, $record_size = 4096,
+    public function __construct($stream = null, $record_size = 4096,
                               $debug = false)
     {
         $this->stream = $stream;
@@ -400,7 +400,7 @@ class Net_DIME_Message {
         $this->debug = $debug;
     }
 
-    function _makeRecord($data, $typestr = '', $id = null,
+    public function _makeRecord($data, $typestr = '', $id = null,
                          $type = NET_DIME_TYPE_UNKNOWN)
     {
         $record = new Net_DIME_Record($this->debug);
@@ -424,7 +424,7 @@ class Net_DIME_Message {
         return $record->encode();
     }
 
-    function startChunk($data, $typestr = '', $id = null,
+    public function startChunk($data, $typestr = '', $id = null,
                         $type = NET_DIME_TYPE_UNKNOWN)
     {
         $this->me = 0;
@@ -440,7 +440,7 @@ class Net_DIME_Message {
         return $this->_makeRecord($data, $this->typestr, $this->id, $this->type);
     }
 
-    function doChunk($data)
+    public function doChunk($data)
     {
         $this->me = 0;
         $this->cf = 1;
@@ -448,7 +448,7 @@ class Net_DIME_Message {
         return $this->_makeRecord($data, null, null, NET_DIME_TYPE_UNCHANGED);
     }
 
-    function endChunk()
+    public function endChunk()
     {
         $this->cf = 0;
         $data = null;
@@ -462,7 +462,7 @@ class Net_DIME_Message {
         return $rec;
     }
 
-    function endMessage()
+    public function endMessage()
     {
         $this->me = 1;
         $data = null;
@@ -483,7 +483,7 @@ class Net_DIME_Message {
      * @param string $id
      * @param integer $type    One of the NET_DIME_TYPE_* constants.
      */
-    function sendData($data, $typestr='', $id = null,
+    public function sendData($data, $typestr='', $id = null,
                       $type = NET_DIME_TYPE_UNKNOWN)
     {
         $len = strlen($data);
@@ -506,7 +506,7 @@ class Net_DIME_Message {
         fwrite($this->stream, $rec);
     }
 
-    function sendEndMessage()
+    public function sendEndMessage()
     {
         $rec = $this->endMessage();
         fwrite($this->stream, $rec);
@@ -521,7 +521,7 @@ class Net_DIME_Message {
      * @param string $id
      * @param integer $type     One of the NET_DIME_TYPE_* constants.
      */
-    function sendFile($filename, $typestr='', $id = null,
+    public function sendFile($filename, $typestr='', $id = null,
                       $type = NET_DIME_TYPE_UNKNOWN)
     {
         $f = fopen($filename, 'rb');
@@ -545,7 +545,7 @@ class Net_DIME_Message {
      * @param string $id
      * @param integer $type     One of the NET_DIME_TYPE_* constants.
      */
-    function encodeData($data, $typestr = '', $id = null,
+    public function encodeData($data, $typestr = '', $id = null,
                         $type = NET_DIME_TYPE_UNKNOWN)
     {
         $len = strlen($data);
@@ -573,7 +573,7 @@ class Net_DIME_Message {
      * the constructor.
      *
      */
-    function encodeFile($filename, $typestr = '', $id = null,
+    public function encodeFile($filename, $typestr = '', $id = null,
                         $type = NET_DIME_TYPE_UNKNOWN)
     {
         $f = fopen($filename, 'rb');
@@ -594,7 +594,7 @@ class Net_DIME_Message {
     /**
      * Creates Net_DIME_Records from provided data.
      */
-    function _processData(&$data)
+    public function _processData(&$data)
     {
         $leftover = null;
         if (!$this->_currentRecord) {
@@ -648,7 +648,7 @@ class Net_DIME_Message {
     /**
      * Decodes a DIME encode string of data.
      */
-    function decodeData(&$data)
+    public function decodeData(&$data)
     {
         while (strlen($data) >= NET_DIME_RECORD_HEADER) {
             $err = $this->_processData($data);
@@ -666,7 +666,7 @@ class Net_DIME_Message {
      * that the data is DIME encoded, such as in the case of reading an HTTP
      * response.
      */
-    function read($buf = null)
+    public function read($buf = null)
     {
         while ($data = fread($this->stream, 8192)) {
             if ($buf) {

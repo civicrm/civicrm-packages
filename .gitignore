@@ -13,3 +13,4 @@ DB/sybase.php
 XML/RPC.php
 XML/RPC/Dump.php
 XML/RPC/Server.php
+.idea/*

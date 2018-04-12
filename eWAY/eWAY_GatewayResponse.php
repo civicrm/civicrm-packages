@@ -43,23 +43,56 @@
  
 class GatewayResponse
 {
-	var $txAmount              = 0;
-	var $txTransactionNumber   = "";
-	var $txInvoiceReference    = "";
-	var $txOption1             = "";
-	var $txOption2             = "";
-	var $txOption3             = "";
-	var $txStatus              = "";
-	var $txAuthCode            = "";
-	var $txError               = "";
-    var $txBeagleScore         = "";
+    /**
+     * @var int
+     */
+    public $txAmount = 0;
+    /**
+     * @var string
+     */
+    public $txTransactionNumber = '';
+    /**
+     * @var string
+     */
+    public $txInvoiceReference = '';
+    /**
+     * @var string
+     */
+    public $txOption1 = '';
+    /**
+     * @var string
+     */
+    public $txOption2 = '';
+    /**
+     * @var string
+     */
+    public $txOption3 = '';
+    /**
+     * @var string
+     */
+    public $txStatus = '';
+    /**
+     * @var string
+     */
+    public $txAuthCode = '';
+    /**
+     * @var string
+     */
+    public $txError = '';
+    /**
+     * @var string
+     */
+    public $txBeagleScore = '';
 
-	function __construct()
+	public function __construct()
 	{
 	   // Empty Constructor
     }
-   
-	function ProcessResponse($Xml)
+
+    /**
+     * @param $Xml
+     */
+    function ProcessResponse($Xml)
 	{
 #####################################################################################
 #                                                                                   #
@@ -77,16 +110,16 @@ class GatewayResponse
 #                                                                                   #
 #####################################################################################
 
-      $this->txError             = self::GetNodeValue("ewayTrxnError", $Xml);
-      $this->txStatus            = self::GetNodeValue("ewayTrxnStatus", $Xml);
-      $this->txTransactionNumber = self::GetNodeValue("ewayTrxnNumber", $Xml);
-      $this->txOption1           = self::GetNodeValue("ewayTrxnOption1", $Xml);
-      $this->txOption2           = self::GetNodeValue("ewayTrxnOption2", $Xml);
-      $this->txOption3           = self::GetNodeValue("ewayTrxnOption3", $Xml);
-      $amount                    = self::GetNodeValue("ewayReturnAmount", $Xml);
-      $this->txAuthCode          = self::GetNodeValue("ewayAuthCode", $Xml);
-      $this->txInvoiceReference  = self::GetNodeValue("ewayTrxnReference", $Xml);
-      $this->txBeagleScore       = self::GetNodeValue("ewayBeagleScore", $Xml);
+      $this->txError             = self::GetNodeValue('ewayTrxnError', $Xml);
+      $this->txStatus            = self::GetNodeValue('ewayTrxnStatus', $Xml);
+      $this->txTransactionNumber = self::GetNodeValue('ewayTrxnNumber', $Xml);
+      $this->txOption1           = self::GetNodeValue('ewayTrxnOption1', $Xml);
+      $this->txOption2           = self::GetNodeValue('ewayTrxnOption2', $Xml);
+      $this->txOption3           = self::GetNodeValue('ewayTrxnOption3', $Xml);
+      $amount                    = self::GetNodeValue('ewayReturnAmount', $Xml);
+      $this->txAuthCode          = self::GetNodeValue('ewayAuthCode', $Xml);
+      $this->txInvoiceReference  = self::GetNodeValue('ewayTrxnReference', $Xml);
+      $this->txBeagleScore       = self::GetNodeValue('ewayBeagleScore', $Xml);
       $this->txAmount = (int) $amount;
    }
    
@@ -97,16 +130,16 @@ class GatewayResponse
    * It returns the NodeValue for a given NodeName
    * or returns and empty string.
    ************************************************************************/
-   function GetNodeValue($NodeName, &$strXML)
+   public function GetNodeValue($NodeName, &$strXML)
    {
-      $OpeningNodeName = "<" . $NodeName . ">";
-      $ClosingNodeName = "</" . $NodeName . ">";
+      $OpeningNodeName = '<' . $NodeName . '>';
+      $ClosingNodeName = '</' . $NodeName . '>';
       
       $pos1 = stripos($strXML, $OpeningNodeName);
       $pos2 = stripos($strXML, $ClosingNodeName);
       
       if ( ($pos1 === false) || ($pos2 === false) )
-         return "";
+         return '';
          
       $pos1 += strlen($OpeningNodeName);
       $len   = $pos2 - $pos1;
@@ -115,54 +148,83 @@ class GatewayResponse
       
       return ($return);
    }
-   
 
-   function TransactionNumber()
+    /**
+     * @return string
+     */
+    function TransactionNumber()
    {
       return $this->txTransactionNumber; 
    }
 
-   function InvoiceReference() 
+    /**
+     * @return string
+     */
+    function InvoiceReference()
    {
       return $this->txInvoiceReference; 
    }
 
-   function Option1() 
+    /**
+     * @return string
+     */
+    function Option1()
    {
       return $this->txOption1; 
    }
 
-   function Option2() 
+    /**
+     * @return string
+     */
+    function Option2()
    {
       return $this->txOption2; 
    }
 
-   function Option3() 
+    /**
+     * @return string
+     */
+    function Option3()
    {
       return $this->txOption3; 
    }
 
-   function AuthorisationCode()
+    /**
+     * @return string
+     */
+    function AuthorisationCode()
    {
       return $this->txAuthCode; 
    }
 
-   function Error()
+    /**
+     * @return string
+     */
+    function Error()
    {
       return $this->txError; 
-   }   
+   }
 
-   function Amount() 
+    /**
+     * @return int
+     */
+    function Amount()
    {
       return $this->txAmount; 
-   }   
+   }
 
-   function Status()
+    /**
+     * @return string
+     */
+    function Status()
    {
       return $this->txStatus;
    }
 
-   function BeagleScore ()
+    /**
+     * @return string
+     */
+    function BeagleScore ()
    {
        return $this->txBeagleScore ;
    }

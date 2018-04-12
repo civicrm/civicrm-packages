@@ -2,7 +2,7 @@
 
 class line_base
 {
-	function __construct()
+	public function __construct()
 	{
 		$this->type      = "line";
 		$this->text      = "Page views";
@@ -12,7 +12,7 @@ class line_base
 		$this->values    = array();
 	}
 	
-	function set_values( $v )
+	public function set_values( $v )
 	{
 		$this->values = $v;		
 	}
@@ -22,57 +22,57 @@ class line_base
      *
      * @param mixed $v
      */
-    function append_value($v)
+    public function append_value($v)
     {
         $this->values[] = $v;       
     }
 	
-	function set_width( $width )
+	public function set_width( $width )
 	{
 		$this->width = $width;		
 	}
 	
-	function set_colour( $colour )
+	public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
 	
-	function set_dot_size( $size )
+	public function set_dot_size( $size )
 	{
 		$tmp = 'dot-size';
 		$this->$tmp = $size;		
 	}
 	
-	function set_halo_size( $size )
+	public function set_halo_size( $size )
 	{
 		$tmp = 'halo-size';
 		$this->$tmp = $size;		
 	}
 	
-	function set_key( $text, $font_size )
+	public function set_key( $text, $font_size )
 	{
 		$this->text      = $text;
 		$tmp = 'font-size';
 		$this->$tmp = $font_size;
 	}
 	
-	function set_tooltip( $tip )
+	public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;
 	}
 	
-	function set_on_click( $text )
+	public function set_on_click( $text )
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $text;
 	}
 	
-	function loop()
+	public function loop()
 	{
 		$this->loop = true;
 	}
 	
-	function line_style( $s )
+	public function line_style( $s )
 	{
 		$tmp = "line-style";
 		$this->$tmp = $s;
@@ -83,7 +83,7 @@ class line_base
      *
      * @param string $text
      */   
-    function set_text($text)
+    public function set_text($text)
     {
         $this->text = $text;
     }

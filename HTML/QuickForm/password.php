@@ -53,7 +53,7 @@ class HTML_QuickForm_password extends HTML_QuickForm_input
      * @return    void
      * @throws    
      */
-    function __construct($elementName=null, $elementLabel=null, $attributes=null)
+    public function __construct($elementName=null, $elementLabel=null, $attributes=null)
     {
         parent::__construct($elementName, $elementLabel, $attributes);
         $this->setType('password');
@@ -70,7 +70,7 @@ class HTML_QuickForm_password extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function setSize($size)
+    public function setSize($size)
     {
         $this->updateAttributes(array('size'=>$size));
     } //end func setSize
@@ -86,7 +86,7 @@ class HTML_QuickForm_password extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function setMaxlength($maxlength)
+    public function setMaxlength($maxlength)
     {
         $this->updateAttributes(array('maxlength'=>$maxlength));
     } //end func setMaxlength
@@ -102,7 +102,7 @@ class HTML_QuickForm_password extends HTML_QuickForm_input
      * @return    string
      * @throws    
      */
-    function getFrozenHtml()
+    public function getFrozenHtml()
     {
         $value = $this->getValue();
         return ('' != $value? '**********': '&nbsp;') .

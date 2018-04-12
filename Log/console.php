@@ -23,28 +23,28 @@ class Log_console extends Log
      * @var resource
      * @access private
      */
-    var $_stream = STDOUT;
+    public $_stream = STDOUT;
 
     /**
      * Should the output be buffered or displayed immediately?
      * @var string
      * @access private
      */
-    var $_buffering = false;
+    public $_buffering = false;
 
     /**
      * String holding the buffered output.
      * @var string
      * @access private
      */
-    var $_buffer = '';
+    public $_buffer = '';
 
     /**
      * String containing the format of a log line.
      * @var string
      * @access private
      */
-    var $_lineFormat = '%1$s %2$s [%3$s] %4$s';
+    public $_lineFormat = '%1$s %2$s [%3$s] %4$s';
 
     /**
      * String containing the timestamp format.  It will be passed directly to
@@ -53,7 +53,7 @@ class Log_console extends Log
      * @var string
      * @access private
      */
-    var $_timeFormat = '%b %d %H:%M:%S';
+    public $_timeFormat = '%b %d %H:%M:%S';
 
     /**
      * Constructs a new Log_console object.
@@ -64,7 +64,7 @@ class Log_console extends Log
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function __construct($name, $ident = '', $conf = array(),
+    public function __construct($name, $ident = '', $conf = array(),
                          $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -101,7 +101,7 @@ class Log_console extends Log
     /**
      * Destructor
      */
-    function _Log_console()
+    public function _Log_console()
     {
         $this->close();
     }
@@ -112,7 +112,7 @@ class Log_console extends Log
      * @access public
      * @since Log 1.9.7
      */
-    function open()
+    public function open()
     {
         $this->_opened = true;
         return true;
@@ -126,7 +126,7 @@ class Log_console extends Log
      * @access public
      * @since Log 1.9.0
      */
-    function close()
+    public function close()
     {
         $this->flush();
         $this->_opened = false;
@@ -139,7 +139,7 @@ class Log_console extends Log
      * @access public
      * @since Log 1.8.2
      */
-    function flush()
+    public function flush()
     {
         /*
          * If output buffering is enabled, dump the contents of the buffer to
@@ -169,7 +169,7 @@ class Log_console extends Log
      * @return boolean  True on success or false on failure.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {

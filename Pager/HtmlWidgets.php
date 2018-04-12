@@ -48,7 +48,7 @@
  */
 class Pager_HtmlWidgets
 {
-    var $pager = null;
+    public $pager = null;
     
     // {{{ constructor
     
@@ -57,7 +57,7 @@ class Pager_HtmlWidgets
      *
      * @param object &$pager Pager instance
      */
-    function __construct(&$pager)
+    public function __construct(&$pager)
     {
         $this->pager =& $pager;
     }
@@ -90,7 +90,7 @@ class Pager_HtmlWidgets
      * @return string xhtml select box
      * @access public
      */
-    function getPerPageSelectBox($start=5, $end=30, $step=5, $showAllData=false, $extraParams=array())
+    public function getPerPageSelectBox($start=5, $end=30, $step=5, $showAllData=false, $extraParams=array())
     {
         // FIXME: needs POST support
         $optionText = '%d';
@@ -218,7 +218,7 @@ class Pager_HtmlWidgets
      * @return string xhtml select box
      * @access public
      */
-    function getPageSelectBox($params = array(), $extraAttributes = '')
+    public function getPageSelectBox($params = array(), $extraAttributes = '')
     {
         $optionText = '%d';
         if (array_key_exists('optionText', $params)) {

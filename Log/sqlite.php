@@ -35,29 +35,29 @@ class Log_sqlite extends Log
      * @var array
      * @access private
      */
-    var $_options = array('mode'       => 0666,
-                          'persistent' => false);
+    public $_options = array('mode'       => 0666,
+                             'persistent' => false);
 
     /**
      * Object holding the database handle.
      * @var object
      * @access private
      */
-    var $_db = null;
+    public $_db = null;
 
     /**
      * Flag indicating that we're using an existing database connection.
      * @var boolean
      * @access private
      */
-    var $_existingConnection = false;
+    public $_existingConnection = false;
 
     /**
      * String holding the database table to use.
      * @var string
      * @access private
      */
-    var $_table = 'log_table';
+    public $_table = 'log_table';
 
 
     /**
@@ -71,7 +71,7 @@ class Log_sqlite extends Log
      * @param int    $level        Log messages up to and including this level.
      * @access public
      */
-    function __construct($name, $ident = '', &$conf, $level = PEAR_LOG_DEBUG)
+    public function __construct($name, $ident = '', &$conf, $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
         $this->_table = $name;
@@ -96,7 +96,7 @@ class Log_sqlite extends Log
      * @return boolean   True on success, false on failure.
      * @access public
      */
-    function open()
+    public function open()
     {
         if (is_resource($this->_db)) {
             $this->_opened = true;
@@ -129,7 +129,7 @@ class Log_sqlite extends Log
      * @return boolean   True on success, false on failure.
      * @access public
      */
-    function close()
+    public function close()
     {
         /* We never close existing connections. */
         if ($this->_existingConnection) {
@@ -157,7 +157,7 @@ class Log_sqlite extends Log
      * @return boolean  True on success or false on failure.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {
@@ -199,7 +199,7 @@ class Log_sqlite extends Log
      * @return boolean  True on success or false on failure.
      * @access private
      */
-    function _createTable()
+    public function _createTable()
     {
         $q = "SELECT name FROM sqlite_master WHERE name='" . $this->_table .
              "' AND type='table'";

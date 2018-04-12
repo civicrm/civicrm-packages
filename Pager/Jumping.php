@@ -65,7 +65,7 @@ class Pager_Jumping extends Pager_Common
      *
      * @access public
      */
-    function __construct($options = array())
+    public function __construct($options = array())
     {
         $err = $this->setOptions($options);
         if ($err !== PAGER_OK) {
@@ -84,7 +84,7 @@ class Pager_Jumping extends Pager_Common
      *
      * @return int PageID for given offset
      */
-    function getPageIdByOffset($index)
+    public function getPageIdByOffset($index)
     {
         if (!isset($this->_pageData)) {
             $this->_generatePageData();
@@ -115,10 +115,10 @@ class Pager_Jumping extends Pager_Common
      * @return array  First and last offsets
      * @access public
      */
-    function getPageRangeByPageId($pageid = null)
+    public function getPageRangeByPageId($pageid = null)
     {
         $pageid = isset($pageid) ? (int)$pageid : $this->_currentPage;
-        if (isset($this->_pageData[$pageid]) || is_null($this->_itemData)) {
+        if (isset($this->_pageData[$pageid]) || null === $this->_itemData) {
             // I'm sure I'm missing something here, but this formula works
             // so I'm using it until I find something simpler.
             $start = ((($pageid + (($this->_delta - ($pageid % $this->_delta))) % $this->_delta) / $this->_delta) - 1) * $this->_delta +1;
@@ -153,7 +153,7 @@ class Pager_Jumping extends Pager_Common
      *
      * @return array Back/pages/next links
      */
-    function getLinks($pageID=null, $next_html='')
+    public function getLinks($pageID=null, $next_html='')
     {
         //BC hack
         if (!empty($next_html)) {
@@ -163,7 +163,7 @@ class Pager_Jumping extends Pager_Common
             $back_html = '';
         }
 
-        if (!is_null($pageID)) {
+        if (null !== $pageID) {
             $this->links = '';
             if ($this->_totalPages > $this->_delta) {
                 $this->links .= $this->_printFirstPage();
@@ -189,7 +189,7 @@ class Pager_Jumping extends Pager_Common
         $linkTags    = $this->linkTags;
         $linkTagsRaw = $this->linkTagsRaw;
 
-        if (!is_null($pageID)) {
+        if (null !== $pageID) {
             $this->_currentPage = $_sav;
         }
 
@@ -224,7 +224,7 @@ class Pager_Jumping extends Pager_Common
      * @return string Links
      * @access private
      */
-    function _getPageLinks($url = '')
+    public function _getPageLinks($url = '')
     {
         //legacy setting... the preferred way to set an option now
         //is adding it to the constuctor

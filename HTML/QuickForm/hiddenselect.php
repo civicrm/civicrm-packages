@@ -56,7 +56,7 @@ class HTML_QuickForm_hiddenselect extends HTML_QuickForm_select
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $elementLabel=null, $options=null, $attributes=null)
+    public function __construct($elementName=null, $elementLabel=null, $options=null, $attributes=null)
     {
         parent::__construct($elementName, $elementLabel, $attributes);
         $this->_persistantFreeze = true;
@@ -77,7 +77,7 @@ class HTML_QuickForm_hiddenselect extends HTML_QuickForm_select
      * @return    string
      * @throws    
      */
-    function toHtml()
+    public function toHtml()
     {
         if (empty($this->_values)) {
             return '';
@@ -108,7 +108,7 @@ class HTML_QuickForm_hiddenselect extends HTML_QuickForm_select
    /**
     * This is essentially a hidden element and should be rendered as one  
     */
-    function accept(&$renderer)
+    public function accept(&$renderer)
     {
         $renderer->renderHidden($this);
     }

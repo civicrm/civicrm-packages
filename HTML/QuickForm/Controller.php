@@ -48,31 +48,31 @@ class HTML_QuickForm_Controller
     * Contains the pages (HTML_QuickForm_Page objects) of the miultipage form
     * @var array
     */
-    var $_pages = array();
+    public $_pages = array();
 
    /**
     * Contains the mapping of actions to corresponding HTML_QuickForm_Action objects
     * @var array
     */
-    var $_actions = array();
+    public $_actions = array();
 
    /**
     * Name of the form, used to store the values in session
     * @var string
     */
-    var $_name;
+    public $_name;
 
    /**
     * Whether the form is modal
     * @var bool
     */
-    var $_modal = true;
+    public $_modal = true;
 
    /**
     * The action extracted from HTTP request: array('page', 'action')
     * @var array
     */
-    var $_actionName = null;
+    public $_actionName = null;
 
    /**
     * Class constructor.
@@ -86,7 +86,7 @@ class HTML_QuickForm_Controller
     * @param  string  form name
     * @param  bool    whether the form is modal
     */
-    function __construct($name, $modal = true)
+    public function __construct($name, $modal = true)
     {
         $this->_name  = $name;
         $this->_modal = $modal;
@@ -104,7 +104,7 @@ class HTML_QuickForm_Controller
     * @param  bool      If true, then reset the container: clear all default, constant and submitted values
     * @return array
     */
-    function &container($reset = false)
+    public function &container($reset = false)
     {
         $name = '_' . $this->_name . '_container';
         if (!isset($_SESSION[$name]) || $reset) {
@@ -134,7 +134,7 @@ class HTML_QuickForm_Controller
     * @access public
     * @throws PEAR_Error
     */
-    function run()
+    public function run()
     {
         // the names of the action and page should be saved
         list($page, $action) = $this->_actionName = $this->getActionName();
@@ -149,7 +149,7 @@ class HTML_QuickForm_Controller
     * @param  string                name of the action
     * @param  HTML_QuickForm_Action the handler for the action
     */
-    function addAction($actionName, $action)
+    public function addAction($actionName, $action)
     {
         $this->_actions[$actionName] = $action;
     }
@@ -161,7 +161,7 @@ class HTML_QuickForm_Controller
     * @access public
     * @param  HTML_QuickForm_Page
     */
-    function addPage(&$page)
+    public function addPage(&$page)
     {
         $page->controller =& $this;
         $this->_pages[$page->getAttribute('id')] =& $page;
@@ -176,7 +176,7 @@ class HTML_QuickForm_Controller
     * @return HTML_QuickForm_Page   A reference to the page
     * @throws PEAR_Error
     */
-    function &getPage($pageName)
+    public function &getPage($pageName)
     {
         if (!isset($this->_pages[$pageName])) {
             return PEAR::raiseError('HTML_QuickForm_Controller: Unknown page "' . $pageName . '"');
@@ -197,7 +197,7 @@ class HTML_QuickForm_Controller
     * @param  string                Name of the action
     * @throws PEAR_Error
     */
-    function handle(&$page, $actionName)
+    public function handle(&$page, $actionName)
     {
         if (isset($this->_actions[$actionName])) {
             return $this->_actions[$actionName]->perform($page, $actionName);
@@ -225,7 +225,7 @@ class HTML_QuickForm_Controller
     * @access public
     * @return bool
     */
-    function isModal()
+    public function isModal()
     {
         return $this->_modal;
     }
@@ -239,7 +239,7 @@ class HTML_QuickForm_Controller
     * @return bool
     * @throws PEAR_Error
     */
-    function isValid($pageName = null)
+    public function isValid($pageName = null)
     {
         $data =& $this->container();
         foreach (array_keys($this->_pages) as $key) {
@@ -284,7 +284,7 @@ class HTML_QuickForm_Controller
     * @param  string
     * @return string
     */
-    function getPrevName($pageName)
+    public function getPrevName($pageName)
     {
         $prev = null;
         foreach (array_keys($this->_pages) as $key) {
@@ -303,7 +303,7 @@ class HTML_QuickForm_Controller
     * @param  string
     * @return string
     */
-    function getNextName($pageName)
+    public function getNextName($pageName)
     {
         $prev = null;
         foreach (array_keys($this->_pages) as $key) {
@@ -322,7 +322,7 @@ class HTML_QuickForm_Controller
     * @access public
     * @return string  Name of an invalid page
     */
-    function findInvalid()
+    public function findInvalid()
     {
         $data =& $this->container();
         foreach (array_keys($this->_pages) as $key) {
@@ -341,7 +341,7 @@ class HTML_QuickForm_Controller
     * @access public
     * @return array     first element is page name, second is action name
     */
-    function getActionName()
+    public function getActionName()
     {
         if (is_array($this->_actionName)) {
             return $this->_actionName;
@@ -378,7 +378,7 @@ class HTML_QuickForm_Controller
     * @param  mixed  filter(s) to apply to default values
     * @throws PEAR_Error
     */
-    function setDefaults($defaultValues = null, $filter = null)
+    public function setDefaults($defaultValues = null, $filter = null)
     {
         if (is_array($defaultValues)) {
             $data =& $this->container();
@@ -396,7 +396,7 @@ class HTML_QuickForm_Controller
     * @param  mixed  filter(s) to apply to constant values
     * @throws PEAR_Error
     */
-    function setConstants($constantValues = null, $filter = null)
+    public function setConstants($constantValues = null, $filter = null)
     {
         if (is_array($constantValues)) {
             $data =& $this->container();
@@ -414,7 +414,7 @@ class HTML_QuickForm_Controller
     * @param    mixed   filters to apply to new values
     * @throws   PEAR_Error
     */
-    function _setDefaultsOrConstants(&$values, $newValues, $filter = null)
+    public function _setDefaultsOrConstants(&$values, $newValues, $filter = null)
     {
         if (isset($filter)) {
             if (is_array($filter) && (2 != count($filter) || !is_callable($filter))) {
@@ -443,7 +443,7 @@ class HTML_QuickForm_Controller
     * @access   private
     * @return   mixed   Processed values
     */
-    function _arrayMapRecursive($callback, $value)
+    public function _arrayMapRecursive($callback, $value)
     {
         if (!is_array($value)) {
             return call_user_func($callback, $value);
@@ -463,7 +463,7 @@ class HTML_QuickForm_Controller
     * @access public
     * @param  string  Name of a page
     */
-    function applyDefaults($pageName)
+    public function applyDefaults($pageName)
     {
         $data =& $this->container();
         if (!empty($data['defaults'])) {
@@ -482,7 +482,7 @@ class HTML_QuickForm_Controller
     * @param  string    name of the page, if not set then returns values for all pages
     * @return array
     */
-    function exportValues($pageName = null)
+    public function exportValues($pageName = null)
     {
         $data   =& $this->container();
         $values =  array();
@@ -515,7 +515,7 @@ class HTML_QuickForm_Controller
     * @param  string    name of the element in the page
     * @return mixed     value for the element
     */
-    function exportValue($pageName, $elementName)
+    public function exportValue($pageName, $elementName)
     {
         $data =& $this->container();
         return isset($data['values'][$pageName][$elementName])? $data['values'][$pageName][$elementName]: null;
@@ -528,7 +528,7 @@ class HTML_QuickForm_Controller
      * @param  string    name of the page
      * @return void
      */
-    function resetPage($pageName, $valid = null)
+    public function resetPage($pageName, $valid = null)
     {
         $data =& $this->container();
         if (isset($data['values'][$pageName]) ||

@@ -61,7 +61,7 @@ class DB_DataObject_Cast {
     * @var string       (date|blob|.....?)
     * @access public        
     */
-    var $type;
+    public $type;
         
     /**
     * Data For date representation
@@ -69,9 +69,15 @@ class DB_DataObject_Cast {
     * @var int  day/month/year
     * @access public
     */
-    var $day;
-    var $month;
-    var $year;
+    public $day;
+    /**
+     * @var
+     */
+    public $month;
+    /**
+     * @var
+     */
+    public $year;
 
     
     /**
@@ -81,7 +87,7 @@ class DB_DataObject_Cast {
     * @access public
     */
 
-    var $value;
+    public $value;
 
 
 
@@ -97,7 +103,7 @@ class DB_DataObject_Cast {
     * @access   public 
     */
   
-    function blob($value) {
+    public function blob($value) {
         $r = new DB_DataObject_Cast;
         $r->type = 'blob';
         $r->value = $value;
@@ -117,7 +123,7 @@ class DB_DataObject_Cast {
     * @access   public 
     */
   
-    function string($value) {
+    public function string($value) {
         $r = new DB_DataObject_Cast;
         $r->type = 'string';
         $r->value = $value;
@@ -135,7 +141,7 @@ class DB_DataObject_Cast {
     * @access   public 
     */
   
-    function sql($value) 
+    public function sql($value)
     {
         $r = new DB_DataObject_Cast;
         $r->type = 'sql';
@@ -164,7 +170,7 @@ class DB_DataObject_Cast {
     * @access   public 
     */
   
-    function date() 
+    public function date()
     {  
         $args = func_get_args();
         switch(count($args)) {
@@ -216,9 +222,15 @@ class DB_DataObject_Cast {
     * @var int  hour/minute/second
     * @access public
     */
-    var $hour;
-    var $minute;
-    var $second;
+    public $hour;
+    /**
+     * @var
+     */
+    public $minute;
+    /**
+     * @var
+     */
+    public $second;
 
     
     /**
@@ -239,12 +251,12 @@ class DB_DataObject_Cast {
     * @author   therion 5 at hotmail
     */
     
-    function dateTime()
+    public function dateTime()
     {
         $args = func_get_args();
         switch(count($args)) {
             case 0: // no args = now!
-                $datetime = date('Y-m-d G:i:s', mktime());
+                $datetime = date('Y-m-d G:i:s');
             
             case 1:
                 // continue on from 0 args.
@@ -302,12 +314,12 @@ class DB_DataObject_Cast {
     * @access   public 
     * @author   therion 5 at hotmail
     */
-    function time()
+    public function time()
     {
         $args = func_get_args();
         switch (count($args)) {
             case 0: // no args = now!
-                $time = date('G:i:s', mktime());
+                $time = date('G:i:s');
                 
             case 1:
                 // continue on from 0 args.
@@ -350,7 +362,7 @@ class DB_DataObject_Cast {
     * @access   public
     */
   
-    function toString($to=false,$db) 
+    public function toString($to=false,$db)
     {
         // if $this->type is not set, we are in serious trouble!!!!
         // values for to:
@@ -369,7 +381,7 @@ class DB_DataObject_Cast {
     * @return   string 
     * @access   public
     */
-    function toStringFromBlob($to,$db) 
+    public function toStringFromBlob($to,$db)
     {
         // first weed out invalid casts..
         // in blobs can only be cast to blobs.!
@@ -414,7 +426,7 @@ class DB_DataObject_Cast {
     * @return   string 
     * @access   public
     */
-    function toStringFromString($to,$db) 
+    public function toStringFromString($to,$db)
     {
         // first weed out invalid casts..
         // in blobs can only be cast to blobs.!
@@ -458,7 +470,7 @@ class DB_DataObject_Cast {
     * @return   string 
     * @access   public
     */
-    function toStringFromDate($to,$db) 
+    public function toStringFromDate($to,$db)
     {
         // first weed out invalid casts..
         // in blobs can only be cast to blobs.!
@@ -486,7 +498,7 @@ class DB_DataObject_Cast {
     * @author   therion 5 at hotmail
     */
     
-    function toStringFromDateTime($to,$db) 
+    public function toStringFromDateTime($to,$db)
     {
         // first weed out invalid casts..
         // in blobs can only be cast to blobs.!
@@ -514,7 +526,7 @@ class DB_DataObject_Cast {
     * @author   therion 5 at hotmail
     */
 
-    function toStringFromTime($to,$db) 
+    public function toStringFromTime($to,$db)
     {
         // first weed out invalid casts..
         // in blobs can only be cast to blobs.!
@@ -537,7 +549,7 @@ class DB_DataObject_Cast {
     * @return   string 
     * @access   public
     */
-    function toStringFromSql($to,$db) 
+    public function toStringFromSql($to,$db)
     {
         return $this->value; 
     }

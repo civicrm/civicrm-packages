@@ -47,7 +47,7 @@ class HTML_QuickForm_Action
     * @throws   PEAR_Error
     * @abstract
     */
-    function perform(&$page, $actionName)
+    public function perform(&$page, $actionName)
     {
     }
 }

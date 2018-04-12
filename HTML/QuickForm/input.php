@@ -52,7 +52,7 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $elementLabel=null, $attributes=null)
+    public function __construct($elementName=null, $elementLabel=null, $attributes=null)
     {
         parent::__construct($elementName, $elementLabel, $attributes);
     } //end constructor
@@ -68,7 +68,7 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function setType($type)
+    public function setType($type)
     {
         $this->_type = $type;
         $this->updateAttributes(array('type'=>$type));
@@ -85,7 +85,7 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function setName($name)
+    public function setName($name)
     {
         $this->updateAttributes(array('name'=>$name));
     } //end func setName
@@ -100,7 +100,7 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
      * @access    public
      * @return    string
      */
-    function getName()
+    public function getName()
     {
         return $this->getAttribute('name');
     } //end func getName
@@ -116,7 +116,7 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function setValue($value)
+    public function setValue($value)
     {
         $this->updateAttributes(array('value'=>$value));
     } // end func setValue
@@ -131,7 +131,7 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
      * @access    public
      * @return    string
      */
-    function getValue()
+    public function getValue()
     {
         return $this->getAttribute('value');
     } // end func getValue
@@ -146,7 +146,7 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
      * @access    public
      * @return    string
      */
-    function toHtml()
+    public function toHtml()
     {
         if ($this->_flagFrozen) {
             return $this->getFrozenHtml();
@@ -169,7 +169,7 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
      * @return    void
      * @throws    
      */
-    function onQuickFormEvent($event, $arg, &$caller)
+    public function onQuickFormEvent($event, $arg, &$caller)
     {
         // do not use submit values for button-type elements
         $type = $this->getType();
@@ -194,7 +194,7 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
    /**
     * We don't need values from button-type elements (except submit) and files
     */
-    function exportValue(&$submitValues, $assoc = false)
+    public function exportValue(&$submitValues, $assoc = false)
     {
         $type = $this->getType();
         if ('reset' == $type || 'image' == $type || 'button' == $type || 'file' == $type) {

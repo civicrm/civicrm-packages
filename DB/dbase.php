@@ -52,13 +52,13 @@ class DB_dbase extends DB_common
      * The DB driver type (mysql, oci8, odbc, etc.)
      * @var string
      */
-    var $phptype = 'dbase';
+    public $phptype = 'dbase';
 
     /**
      * The database syntax variant to be used (db2, access, etc.), if any
      * @var string
      */
-    var $dbsyntax = 'dbase';
+    public $dbsyntax = 'dbase';
 
     /**
      * The capabilities of this DB implementation
@@ -73,7 +73,7 @@ class DB_dbase extends DB_common
      *
      * @var array
      */
-    var $features = array(
+    public $features = array(
         'limit'         => false,
         'new_link'      => false,
         'numrows'       => true,
@@ -87,27 +87,26 @@ class DB_dbase extends DB_common
      * A mapping of native error codes to DB error codes
      * @var array
      */
-    var $errorcode_map = array(
-    );
+    public $errorcode_map = array();
 
     /**
      * The raw database connection created by PHP
      * @var resource
      */
-    var $connection;
+    public $connection;
 
     /**
      * The DSN information for connecting to a database
      * @var array
      */
-    var $dsn = array();
+    public $dsn = array();
 
 
     /**
      * A means of emulating result resources
      * @var array
      */
-    var $res_row = array();
+    public $res_row = array();
 
     /**
      * The quantity of results so far
@@ -116,7 +115,7 @@ class DB_dbase extends DB_common
      *
      * @var integer
      */
-    var $result = 0;
+    public $result = 0;
 
     /**
      * Maps dbase data type id's to human readable strings
@@ -127,7 +126,7 @@ class DB_dbase extends DB_common
      * @var array
      * @since Property available since Release 1.7.0
      */
-    var $types = array(
+    public $types = array(
         'C' => 'character',
         'D' => 'date',
         'L' => 'boolean',
@@ -136,21 +135,6 @@ class DB_dbase extends DB_common
     );
 
 
-    // }}}
-    // {{{ constructor
-
-    /**
-     * This constructor calls <kbd>$this->DB_common()</kbd>
-     *
-     * @return void
-     */
-    function __construct()
-    {
-        parent::__construct();
-    }
-
-    // }}}
-    // {{{ connect()
 
     /**
      * Connect to the database and create it if it doesn't exist
@@ -199,7 +183,7 @@ class DB_dbase extends DB_common
      *
      * @return int  DB_OK on success. A DB_Error object on failure.
      */
-    function connect($dsn, $persistent = false)
+    public function connect($dsn, $persistent = false)
     {
         if (!PEAR::loadExtension('dbase')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
@@ -259,7 +243,7 @@ class DB_dbase extends DB_common
      *
      * @return bool  TRUE on success, FALSE on failure
      */
-    function disconnect()
+    public function disconnect()
     {
         $ret = @dbase_close($this->connection);
         $this->connection = null;
@@ -269,7 +253,7 @@ class DB_dbase extends DB_common
     // }}}
     // {{{ &query()
 
-    function &query($query = null)
+    public function &query($query = null)
     {
         // emulate result resources
         $this->res_row[(int)$this->result] = 0;
@@ -300,7 +284,7 @@ class DB_dbase extends DB_common
      *
      * @see DB_result::fetchInto()
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
+    public function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum === null) {
             $rownum = $this->res_row[(int)$result]++;
@@ -340,7 +324,7 @@ class DB_dbase extends DB_common
      *
      * @see DB_result::free()
      */
-    function freeResult($result)
+    public function freeResult($result)
     {
         return true;
     }
@@ -361,7 +345,7 @@ class DB_dbase extends DB_common
      *
      * @see DB_result::numCols()
      */
-    function numCols($foo)
+    public function numCols($foo)
     {
         return @dbase_numfields($this->connection);
     }
@@ -382,7 +366,7 @@ class DB_dbase extends DB_common
      *
      * @see DB_result::numRows()
      */
-    function numRows($foo)
+    public function numRows($foo)
     {
         return @dbase_numrecords($this->connection);
     }
@@ -399,7 +383,7 @@ class DB_dbase extends DB_common
      * @see DB_common::quoteSmart()
      * @since Method available since release 1.7.8.
      */
-    function quoteBoolean($boolean) {
+    public function quoteBoolean($boolean) {
         return $boolean ? 'T' : 'F';
     }
      
@@ -419,7 +403,7 @@ class DB_dbase extends DB_common
      * @see DB_common::tableInfo()
      * @since Method available since Release 1.7.0
      */
-    function tableInfo($result = null, $mode = null)
+    public function tableInfo($result = null, $mode = null)
     {
         if (function_exists('dbase_get_header_info')) {
             $id = @dbase_get_header_info($this->connection);
@@ -507,4 +491,4 @@ class DB_dbase extends DB_common
  * End:
  */
 
-?>
+

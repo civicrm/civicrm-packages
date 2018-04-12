@@ -28,21 +28,21 @@ class Log_win extends Log
      * @var string
      * @access private
      */
-    var $_name = 'LogWindow';
+    public $_name = 'LogWindow';
 
     /**
      * The title of the output window.
      * @var string
      * @access private
      */
-    var $_title = 'Log Output Window';
+    public $_title = 'Log Output Window';
 
     /**
      * Mapping of log priorities to styles.
      * @var array
      * @access private
      */
-    var $_styles = array(
+    public $_styles = array(
                         PEAR_LOG_EMERG   => 'color: red;',
                         PEAR_LOG_ALERT   => 'color: orange;',
                         PEAR_LOG_CRIT    => 'color: yellow;',
@@ -58,7 +58,7 @@ class Log_win extends Log
      * @var array
      * @access private
      */
-    var $_buffer = array();
+    public $_buffer = array();
 
     /**
      * Constructs a new Log_win object.
@@ -69,7 +69,7 @@ class Log_win extends Log
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function __construct($name, $ident = '', $conf = array(),
+    public function __construct($name, $ident = '', $conf = array(),
                           $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -95,7 +95,7 @@ class Log_win extends Log
     /**
      * Destructor
      */
-    function _Log_win()
+    public function _Log_win()
     {
         if ($this->_opened || (count($this->_buffer) > 0)) {
             $this->close();
@@ -110,7 +110,7 @@ class Log_win extends Log
      *
      * @access public
      */
-    function open()
+    public function open()
     {
         if (!$this->_opened) {
             $win = $this->_name;
@@ -170,7 +170,7 @@ EOT;
      *
      * @access public
      */
-    function close()
+    public function close()
     {
         /*
          * If there are still lines waiting to be written, open the output
@@ -195,7 +195,7 @@ EOT;
      *
      * @access private
      */
-    function _drainBuffer()
+    public function _drainBuffer()
     {
         $win = $this->_name;
         foreach ($this->_buffer as $line) {
@@ -216,7 +216,7 @@ EOT;
      *
      * @access private
      */
-    function _writeln($line)
+    public function _writeln($line)
     {
         /* Add this line to our output buffer. */
         $this->_buffer[] = $line;
@@ -247,7 +247,7 @@ EOT;
      * @return boolean  True on success or false on failure.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {

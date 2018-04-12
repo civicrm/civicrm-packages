@@ -46,7 +46,7 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
     public $iSeek = 0;
     public $iSeekDir = 0;
     public $aContents = array();
-    function stream_open($sPath, $sMode, $iOptions, &$sOpenedPath) 
+    public function stream_open($sPath, $sMode, $iOptions, &$sOpenedPath)
     {
         if ($this->getTar($sPath)) {
             //ArrayNested->off()
@@ -59,7 +59,7 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
         //ArrayNested->on()
         return false;
     }
-    function getTar($sPath) 
+    public function getTar($sPath)
     {
         if (preg_match("/tarz:\/\/(.*?(\.tgz|\.tar\.gz|\.tar\.bz2|\.tar)+)(?:#\/?(.*))*/", $sPath, $aMatch)) {
             $this->sTar = $aMatch[1];
@@ -83,20 +83,20 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
             return false;
         }
     }
-    function stream_close() 
+    public function stream_close()
     {
         unset($this->oTar, $this->sText, $this->sPath, $this->iSeek);
     }
-    function stream_read($iCount) 
+    public function stream_read($iCount)
     {
         $sRet = substr($this->sText, $this->iSeek, $iCount);
         $this->iSeek+= strlen($sRet);
         return $sRet;
     }
-    function stream_write($sData) 
+    public function stream_write($sData)
     {
     }
-    function stream_eof() 
+    public function stream_eof()
     {
         // BUG in 5.0.0RC1<PHP<5.0.0.0RC4
         // DON'T USE EOF. Use ... another option :P
@@ -106,11 +106,11 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
             return $this->iSeek >= strlen($this->sText);
         }
     }
-    function stream_tell() 
+    public function stream_tell()
     {
         return $this->iSeek;
     }
-    function stream_seek($iOffset, $iWhence) 
+    public function stream_seek($iOffset, $iWhence)
     {
         switch ($iWhence) {
             case SEEK_SET:
@@ -144,16 +144,16 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
                 return false;
             }
         }
-        function stream_flush() 
+        public function stream_flush()
         {
         }
-        function stream_stat() 
+        public function stream_stat()
         {
         }
-        function unlink($sPath) 
+        public function unlink($sPath)
         {
         }
-        function dir_opendir($sPath, $iOptions) 
+        public function dir_opendir($sPath, $iOptions)
         {
             if ($this->getTar($sPath)) {
                 array_walk($this->oTar->listContent() , array(
@@ -165,7 +165,7 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
                 return false;
             }
         }
-        function dir_readdir() 
+        public function dir_readdir()
         {
             if ($this->iSeekDir >= count($this->aContents)) {
                 return false;
@@ -173,21 +173,21 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
                 return $this->aContents[$this->iSeekDir++];
             }
         }
-        function dir_rewinddir() 
+        public function dir_rewinddir()
         {
             $this->iSeekDir = 0;
         }
-        function dir_closedir() 
+        public function dir_closedir()
         {
             //unset($this->oTar, $this->aContents, $this->sPath, $this->iSeekDir);
             //return true;
             
         }
-        function getFileList($aInput) 
+        public function getFileList($aInput)
         {
             $this->aContents[] = $aInput['filename'];
         }
-        function tarFileExists($aInput) 
+        public function tarFileExists($aInput)
         {
             return ($aInput['filename'] == $this->sPath and empty($aInput['typeflag']));
         }

@@ -50,61 +50,61 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * An HTML_Template_IT or some other API compatible Template instance
     * @var object
     */
-    var $_tpl = null;
+    public $_tpl = null;
 
    /**
     * Rendered form name
     * @var string
     */
-    var $_formName = 'form';
+    public $_formName = 'form';
 
    /**
     * The errors that were not shown near concrete fields go here
     * @var array
     */
-    var $_errors = array();
+    public $_errors = array();
 
    /**
     * Show the block with required note?
     * @var bool
     */
-    var $_showRequired = false;
+    public $_showRequired = false;
 
    /**
     * Which group are we currently parsing ?
     * @var string
     */
-    var $_inGroup;
+    public $_inGroup;
 
    /**
     * Index of the element in its group
     * @var int
     */
-    var $_elementIndex = 0;
+    public $_elementIndex = 0;
 
    /**
     * If elements have been added with the same name
     * @var array
     */
-    var $_duplicateElements = array();
+    public $_duplicateElements = array();
 
    /**
     * How to handle the required tag for required fields
     * @var string
     */
-    var $_required = '{label}<font size="1" color="red">*</font>';
+    public $_required = '{label}<font size="1" color="red">*</font>';
 
    /**
     * How to handle error messages in form validation
     * @var string
     */
-    var $_error = '<font color="red">{error}</font><br />{html}';
+    public $_error = '<font color="red">{error}</font><br />{html}';
 
    /**
     * Collected HTML for hidden elements, if needed  
     * @var string
     */
-    var $_hidden = '';
+    public $_hidden = '';
    /**#@-*/
 
    /**
@@ -112,7 +112,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     *
     * @param HTML_Template_IT|HTML_Template_Sigma   Template object to use
     */
-    function __construct(&$tpl)
+    public function __construct(&$tpl)
     {
         parent::__construct();
         $this->_tpl =& $tpl;
@@ -125,7 +125,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function startForm(&$form)
+    public function startForm(&$form)
     {
         $this->_formName = $form->getAttribute('id');
 
@@ -144,7 +144,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function finishForm(&$form)
+    public function finishForm(&$form)
     {
         // display errors above form
         if (!empty($this->_errors) && $this->_tpl->blockExists($this->_formName.'_error_loop')) {
@@ -174,7 +174,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function renderHeader(&$header)
+    public function renderHeader(&$header)
     {
         $name = $header->getName();
         $varName = $this->_formName.'_header';
@@ -195,7 +195,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function renderElement(&$element, $required, $error)
+    public function renderElement(&$element, $required, $error)
     {
         $name = $element->getName();
 
@@ -269,7 +269,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function renderHidden(&$element)
+    public function renderHidden(&$element)
     {
         if ($this->_tpl->placeholderExists($this->_formName . '_hidden')) {
             $this->_hidden .= $element->toHtml();
@@ -289,7 +289,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function startGroup(&$group, $required, $error)
+    public function startGroup(&$group, $required, $error)
     {
         $name = $group->getName();
         $varName = $this->_formName.'_'.$name;
@@ -340,7 +340,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function finishGroup(&$group)
+    public function finishGroup(&$group)
     {
         $this->_inGroup = '';
     } // end func finishGroup
@@ -359,7 +359,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function setRequiredTemplate($template)
+    public function setRequiredTemplate($template)
     {
         $this->_required = $template;
     } // end func setRequiredTemplate
@@ -387,7 +387,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   public
     * @return   void
     */
-    function setErrorTemplate($template)
+    public function setErrorTemplate($template)
     {
         $this->_error = $template;
     } // end func setErrorTemplate
@@ -404,7 +404,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   private
     * @return   void
     */
-    function _renderRequired(&$label, &$html)
+    public function _renderRequired(&$label, &$html)
     {
         if ($this->_tpl->blockExists($tplBlock = $this->_formName . '_required_block')) {
             if (!empty($label) && $this->_tpl->placeholderExists($this->_formName . '_label', $tplBlock)) {
@@ -447,7 +447,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @access   private
     * @return   void
     */
-    function _renderError(&$label, &$html, $error)
+    public function _renderError(&$label, &$html, $error)
     {
         if ($this->_tpl->blockExists($tplBlock = $this->_formName . '_error_block')) {
             $this->_tpl->setVariable($this->_formName . '_error', $error);
@@ -487,7 +487,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * @param    string  Block name
     * @return   string  Block contents
     */
-    function _getTplBlock($block)
+    public function _getTplBlock($block)
     {
         $this->_tpl->parse($block);
         if (is_a($this->_tpl, 'html_template_sigma')) {

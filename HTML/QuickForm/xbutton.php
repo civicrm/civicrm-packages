@@ -42,7 +42,7 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
     * @var      string
     * @access   private
     */
-    var $_content; 
+    public $_content;
 
    /**
     * Class constructor
@@ -52,7 +52,7 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
     * @param    mixed   Either a typical HTML attribute string or an associative array
     * @access   public
     */
-    function __construct($elementName = null, $elementContent = null, $attributes = null)
+    public function __construct($elementName = null, $elementContent = null, $attributes = null)
     {
         parent::__construct($elementName, null, $attributes);
         $this->setContent($elementContent);
@@ -61,25 +61,25 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
     }
 
 
-    function toHtml()
+    public function toHtml()
     {
         return '<button' . $this->getAttributes(true) . '>' . $this->_content . '</button>';
     }
 
 
-    function getFrozenHtml()
+    public function getFrozenHtml()
     {
         return $this->toHtml();
     }
 
 
-    function freeze()
+    public function freeze()
     {
         return false;
     }
 
 
-    function setName($name)
+    public function setName($name)
     {
         $this->updateAttributes(array(
             'name' => $name 
@@ -87,13 +87,13 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
     }
 
 
-    function getName()
+    public function getName()
     {
         return $this->getAttribute('name');
     }
 
 
-    function setValue($value)
+    public function setValue($value)
     {
         $this->updateAttributes(array(
             'value' => $value
@@ -101,7 +101,7 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
     }
 
 
-    function getValue()
+    public function getValue()
     {
         return $this->getAttribute('value');
     }
@@ -112,13 +112,13 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
     *
     * @param    string  Button content (HTML to add between <button></button> tags)
     */
-    function setContent($content)
+    public function setContent($content)
     {
         $this->_content = $content;
     }
 
 
-    function onQuickFormEvent($event, $arg, &$caller)
+    public function onQuickFormEvent($event, $arg, &$caller)
     {
         if ('updateValue' != $event) {
             return parent::onQuickFormEvent($event, $arg, $caller);
@@ -141,7 +141,7 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
     * The value is only returned if the button's type is "submit" and if this
     * particlular button was clicked
     */
-    function exportValue(&$submitValues, $assoc = false)
+    public function exportValue(&$submitValues, $assoc = false)
     {
         if ('submit' == $this->getAttribute('type')) {
             return $this->_prepareValue($this->_findValue($submitValues), $assoc);

@@ -68,7 +68,7 @@ class System
      * @static
      * @access private
      */
-    function _parseArgs($argv, $short_options, $long_options = null)
+    public function _parseArgs($argv, $short_options, $long_options = null)
     {
         if (!is_array($argv) && $argv !== null) {
             $argv = preg_split('/\s+/', $argv, -1, PREG_SPLIT_NO_EMPTY);
@@ -85,7 +85,7 @@ class System
      * @static
      * @access private
      */
-    function raiseError($error)
+    public function raiseError($error)
     {
         if (PEAR::isError($error)) {
             $error = $error->getMessage();
@@ -119,7 +119,7 @@ class System
      * @static
      * @access   private
      */
-    function _dirToStruct($sPath, $maxinst, $aktinst = 0, $silent = false)
+    public function _dirToStruct($sPath, $maxinst, $aktinst = 0, $silent = false)
     {
         $struct = array('dirs' => array(), 'files' => array());
         if (($dir = @opendir($sPath)) === false) {
@@ -162,10 +162,10 @@ class System
      * @static
      * @see System::_dirToStruct()
      */
-    function _multipleToStruct($files)
+    public function _multipleToStruct($files)
     {
         $struct = array('dirs' => array(), 'files' => array());
-        settype($files, 'array');
+        $files  = (array)$files;
         foreach ($files as $file) {
             if (is_dir($file) && !is_link($file)) {
                 $tmp    = System::_dirToStruct($file, 0);
@@ -188,7 +188,7 @@ class System
      * @static
      * @access   public
      */
-    function rm($args)
+    public function rm($args)
     {
         $opts = System::_parseArgs($args, 'rf'); // "f" does nothing but I like it :-)
         if (PEAR::isError($opts)) {
@@ -216,7 +216,7 @@ class System
             }
         } else {
             foreach ($opts[1] as $file) {
-                $delete = (is_dir($file)) ? 'rmdir' : 'unlink';
+                $delete = is_dir($file) ? 'rmdir' : 'unlink';
                 if (!@$delete($file)) {
                     $ret = false;
                 }
@@ -234,7 +234,7 @@ class System
      * @static
      * @access   public
      */
-    function mkDir($args)
+    public function mkDir($args)
     {
         $opts = System::_parseArgs($args, 'pm:');
         if (PEAR::isError($opts)) {
@@ -269,19 +269,19 @@ class System
                 }
 
                 while ($newdir = array_shift($dirstack)) {
-                    if (!is_writeable(dirname($newdir))) {
+                    if (!is_writable(dirname($newdir))) {
                         $ret = false;
                         break;
                     }
 
-                    if (!mkdir($newdir, $mode)) {
+                    if ( ! mkdir($newdir, $mode) && ! is_dir($newdir)) {
                         $ret = false;
                     }
                 }
             }
         } else {
             foreach($opts[1] as $dir) {
-                if ((@file_exists($dir) || !is_dir($dir)) && !mkdir($dir, $mode)) {
+                if ((@file_exists($dir) || ! is_dir($dir)) && ! mkdir($dir, $mode) && ! is_dir($dir)) {
                     $ret = false;
                 }
             }
@@ -305,7 +305,7 @@ class System
      * @static
      * @access   public
      */
-    function &cat($args)
+    public function &cat($args)
     {
         $ret = null;
         $files = array();
@@ -379,7 +379,7 @@ class System
      * @static
      * @access  public
      */
-    function mktemp($args = null)
+    public function mktemp($args = null)
     {
         static $first_time = true;
         $opts = System::_parseArgs($args, 't:d');
@@ -395,7 +395,7 @@ class System
             }
         }
 
-        $prefix = (isset($opts[1][0])) ? $opts[1][0] : 'tmp';
+        $prefix = isset($opts[1][0]) ? $opts[1][0] : 'tmp';
         if (!isset($tmpdir)) {
             $tmpdir = System::tmpdir();
         }
@@ -407,7 +407,7 @@ class System
         $tmp = tempnam($tmpdir, $prefix);
         if (isset($tmp_is_dir)) {
             unlink($tmp); // be careful possible race condition here
-            if (!mkdir($tmp, 0700)) {
+            if ( ! mkdir($tmp, 0700) && ! is_dir($tmp)) {
                 return System::raiseError("Unable to create temporary directory $tmpdir");
             }
         }
@@ -432,7 +432,7 @@ class System
      * @static
      * @access private
      */
-    function _removeTmpFiles()
+    public function _removeTmpFiles()
     {
         if (count($GLOBALS['_System_temp_files'])) {
             $delete = $GLOBALS['_System_temp_files'];
@@ -451,7 +451,7 @@ class System
      * @static
      * @return string The temporary directory on the system
      */
-    static function tmpdir()
+    public static function tmpdir()
     {
         if (OS_WINDOWS) {
             if ($var = isset($_ENV['TMP']) ? $_ENV['TMP'] : getenv('TMP')) {
@@ -484,7 +484,7 @@ class System
      * @static
      * @author Stig Bakken <ssb@php.net>
      */
-    static function which($program, $fallback = false)
+    public static function which($program, $fallback = false)
     {
         // enforce API
         if (!is_string($program) || '' == $program) {
@@ -515,7 +515,7 @@ class System
                 array_unshift($exe_suffixes, '');
             }
             // is_executable() is not available on windows for PHP4
-            $pear_is_executable = (function_exists('is_executable')) ? 'is_executable' : 'is_file';
+            $pear_is_executable = function_exists('is_executable') ? 'is_executable' : 'is_file';
         } else {
             $exe_suffixes = array('');
             $pear_is_executable = 'is_executable';
@@ -556,7 +556,7 @@ class System
      * @static
      *
      */
-    function find($args)
+    public function find($args)
     {
         if (!is_array($args)) {
             $args = preg_split('/\s+/', $args, -1, PREG_SPLIT_NO_EMPTY);

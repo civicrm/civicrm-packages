@@ -52,7 +52,7 @@ class HTML_QuickForm_hidden extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $value='', $attributes=null)
+    public function __construct($elementName=null, $value='', $attributes=null)
     {
         parent::__construct($elementName, null, $attributes);
         $this->setType('hidden');
@@ -68,7 +68,7 @@ class HTML_QuickForm_hidden extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function freeze()
+    public function freeze()
     {
         return false;
     } //end func freeze
@@ -85,7 +85,7 @@ class HTML_QuickForm_hidden extends HTML_QuickForm_input
     * @access public
     * @return void 
     */
-    function accept(&$renderer, $required=false, $error=null)
+    public function accept(&$renderer, $required=false, $error=null)
     {
         $renderer->renderHidden($this, $required, $error);
     } // end func accept

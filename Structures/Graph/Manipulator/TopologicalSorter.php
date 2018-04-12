@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
 // +-----------------------------------------------------------------------------+
-// | Copyright (c) 2003 Sérgio Gonçalves Carvalho                                |
+// | Copyright (c) 2003 Sï¿½rgio Gonï¿½alves Carvalho                                |
 // +-----------------------------------------------------------------------------+
 // | This file is part of Structures_Graph.                                      |
 // |                                                                             |
@@ -20,7 +20,7 @@
 // | Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA                    |
 // | 02111-1307 USA                                                              |
 // +-----------------------------------------------------------------------------+
-// | Author: Sérgio Carvalho <sergio.carvalho@portugalmail.com>                  |
+// | Author: Sï¿½rgio Carvalho <sergio.carvalho@portugalmail.com>                  |
 // +-----------------------------------------------------------------------------+
 //
 /**
@@ -50,8 +50,8 @@ require_once 'Structures/Graph/Manipulator/AcyclicTest.php';
  * A graph may only be sorted topologically iff it's a DAG. You can test it
  * with the Structures_Graph_Manipulator_AcyclicTest.
  * 
- * @author		Sérgio Carvalho <sergio.carvalho@portugalmail.com> 
- * @copyright	(c) 2004 by Sérgio Carvalho
+ * @author		Sï¿½rgio Carvalho <sergio.carvalho@portugalmail.com> 
+ * @copyright	(c) 2004 by Sï¿½rgio Carvalho
  * @see     Structures_Graph_Manipulator_AcyclicTest
  * @package Structures_Graph
  */
@@ -65,7 +65,7 @@ class Structures_Graph_Manipulator_TopologicalSorter {
     * @access   private
     * @return	integer	 Number of non-visited nodes that link to this one
     */
-    function _nonVisitedInDegree(&$node) {
+    public function _nonVisitedInDegree(&$node) {
         $result = 0;
         $graphNodes =& $node->_graph->getNodes();
         foreach (array_keys($graphNodes) as $key) {
@@ -80,7 +80,7 @@ class Structures_Graph_Manipulator_TopologicalSorter {
     /**
     * @access   private
     */
-    function _sort(&$graph) {
+    public function _sort(&$graph) {
         // Mark every node as not visited
         $nodes =& $graph->getNodes();
         $nodeKeys = array_keys($nodes);
@@ -128,7 +128,7 @@ class Structures_Graph_Manipulator_TopologicalSorter {
     * @return	array	 The graph's nodes, sorted by topological order.
     * @access	public
     */
-    function sort(&$graph) {
+    public function sort(&$graph) {
         // We only sort graphs
         if (!is_a($graph, 'Structures_Graph')) return Pear::raiseError('Structures_Graph_Manipulator_TopologicalSorter::sort received an object that is not a Structures_Graph', STRUCTURES_GRAPH_ERROR_GENERIC);
         if (!Structures_Graph_Manipulator_AcyclicTest::isAcyclic($graph)) return Pear::raiseError('Structures_Graph_Manipulator_TopologicalSorter::sort received an graph that has cycles', STRUCTURES_GRAPH_ERROR_GENERIC);

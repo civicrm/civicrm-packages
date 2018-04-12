@@ -21,45 +21,45 @@ class Log_daemon extends Log
      * Integer holding the log facility to use.
      * @var string
      */
-    var $_name = LOG_DAEMON;
+    public $_name = LOG_DAEMON;
 
     /**
      * Var holding the resource pointer to the socket
      * @var resource
      */
-    var $_socket;
+    public $_socket;
 
     /**
      * The ip address or servername
      * @see http://www.php.net/manual/en/transports.php
      * @var string
      */
-    var $_ip = '127.0.0.1';
+    public $_ip = '127.0.0.1';
 
     /**
      * Protocol to use (tcp, udp, etc.)
      * @see http://www.php.net/manual/en/transports.php
      * @var string
      */
-    var $_proto = 'udp';
+    public $_proto = 'udp';
 
     /**
      * Port to connect to
      * @var int
      */
-    var $_port = 514;
+    public $_port = 514;
 
     /**
      * Maximum message length in bytes
      * @var int
      */
-    var $_maxsize = 4096;
+    public $_maxsize = 4096;
 
     /**
      * Socket timeout in seconds
      * @var int
      */
-    var $_timeout = 1;
+    public $_timeout = 1;
 
 
     /**
@@ -71,7 +71,7 @@ class Log_daemon extends Log
      * @param int    $maxLevel Maximum level at which to log.
      * @access public
      */
-    function __construct($name, $ident = '', $conf = array(),
+    public function __construct($name, $ident = '', $conf = array(),
                         $level = PEAR_LOG_DEBUG)
     {
         /* Ensure we have a valid integer value for $name. */
@@ -109,7 +109,7 @@ class Log_daemon extends Log
      *
      * @access private
      */
-    function _Log_daemon()
+    public function _Log_daemon()
     {
         $this->close();
     }
@@ -119,7 +119,7 @@ class Log_daemon extends Log
      * been opened.  This is implicitly called by log(), if necessary.
      * @access public
      */
-    function open()
+    public function open()
     {
         if (!$this->_opened) {
             $this->_opened = (bool)($this->_socket = @fsockopen(
@@ -136,7 +136,7 @@ class Log_daemon extends Log
      * Closes the connection to the system logger, if it is open.
      * @access public
      */
-    function close()
+    public function close()
     {
         if ($this->_opened) {
             $this->_opened = false;
@@ -157,7 +157,7 @@ class Log_daemon extends Log
      *                  and LOG_DEBUG.  The default is LOG_INFO.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {
@@ -211,7 +211,7 @@ class Log_daemon extends Log
      *
      * @access private
      */
-    function _toSyslog($priority)
+    public function _toSyslog($priority)
     {
         static $priorities = array(
             PEAR_LOG_EMERG   => LOG_EMERG,

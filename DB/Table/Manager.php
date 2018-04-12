@@ -238,7 +238,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function create(&$db, $table, $column_set, $index_set)
+    public function create(&$db, $table, $column_set, $index_set)
     {
         if (is_subclass_of($db, 'db_common')) {
             $backend = 'db';
@@ -270,7 +270,7 @@ class DB_Table_Manager {
         // definitions, and note column indexes as we go.
         //
         
-        if (is_null($column_set)) {
+        if (null === $column_set) {
             $column_set = array();
         }
         
@@ -286,11 +286,11 @@ class DB_Table_Manager {
             
             
             // prepare variables
-            $type    = (isset($val['type']))    ? $val['type']    : null;
-            $size    = (isset($val['size']))    ? $val['size']    : null;
-            $scope   = (isset($val['scope']))   ? $val['scope']   : null;
-            $require = (isset($val['require'])) ? $val['require'] : null;
-            $default = (isset($val['default'])) ? $val['default'] : null;
+            $type    = isset($val['type']) ? $val['type']    : null;
+            $size    = isset($val['size']) ? $val['size']    : null;
+            $scope   = isset($val['scope']) ? $val['scope']   : null;
+            $require = isset($val['require']) ? $val['require'] : null;
+            $default = isset($val['default']) ? $val['default'] : null;
 
             if ($backend == 'mdb2') {
 
@@ -332,7 +332,7 @@ class DB_Table_Manager {
         // validate the indexes.
         //
         
-        if (is_null($index_set)) {
+        if (null === $index_set) {
             $index_set = array();
         }
 
@@ -465,7 +465,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function verify(&$db, $table, $column_set, $index_set)
+    public function verify(&$db, $table, $column_set, $index_set)
     {
         if (is_subclass_of($db, 'db_common')) {
             $backend = 'db';
@@ -501,7 +501,7 @@ class DB_Table_Manager {
         }
         $tableInfoOrder = array_change_key_case($tableInfo['order'], CASE_LOWER);
 
-        if (is_null($column_set)) {
+        if (null === $column_set) {
             $column_set = array();
         }
 
@@ -544,7 +544,7 @@ class DB_Table_Manager {
             return $table_indexes;
         }
 
-        if (is_null($index_set)) {
+        if (null === $index_set) {
             $index_set = array();
         }
         
@@ -597,7 +597,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function alter(&$db, $table, $column_set, $index_set)
+    public function alter(&$db, $table, $column_set, $index_set)
     {
         $phptype = $db->phptype;
 
@@ -635,7 +635,7 @@ class DB_Table_Manager {
         }
 
         // check (and alter) columns
-        if (is_null($column_set)) {
+        if (null === $column_set) {
             $column_set = array();
         }
 
@@ -715,7 +715,7 @@ class DB_Table_Manager {
         }
 
         // check (and alter) indexes / constraints
-        if (is_null($index_set)) {
+        if (null === $index_set) {
             $index_set = array();
         }
         
@@ -845,7 +845,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function tableExists(&$db, $table)
+    public function tableExists(&$db, $table)
     {
         if (is_subclass_of($db, 'db_common')) {
             $list = $db->getListOf('tables');
@@ -889,7 +889,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function getDeclare($phptype, $coltype, $size = null, $scope = null,
+    public function getDeclare($phptype, $coltype, $size = null, $scope = null,
         $require = null, $default = null)
     {
         // validate char/varchar/decimal type declaration
@@ -937,7 +937,7 @@ class DB_Table_Manager {
         if ($phptype == 'pgsql') {  // PostgreSQL does not like 'NULL'
             $null = '';             // in ALTER TABLE
         }
-        $declare .= ($require) ? ' NOT NULL' : $null;
+        $declare .= $require ? ' NOT NULL' : $null;
         
         // set the "DEFAULT" portion
         if ($default) {
@@ -987,7 +987,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function getDeclareMDB2($coltype, $size = null, $scope = null,
+    public function getDeclareMDB2($coltype, $size = null, $scope = null,
         $require = null, $default = null, &$max_scope)
     {
         // validate char/varchar/decimal type declaration
@@ -1068,7 +1068,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function getDeclareForIndex($phptype, $type, $idxname, $table, $cols)
+    public function getDeclareForIndex($phptype, $type, $idxname, $table, $cols)
     {
         // string of column names
         $colstring = implode(', ', $cols);
@@ -1126,16 +1126,16 @@ class DB_Table_Manager {
     * 
     */
 
-    function _getColumnDefinition($backend, $phptype, $column)
+    public function _getColumnDefinition($backend, $phptype, $column)
     {
         static $max_scope;
 
         // prepare variables
-        $type    = (isset($column['type']))    ? $column['type']    : null;
-        $size    = (isset($column['size']))    ? $column['size']    : null;
-        $scope   = (isset($column['scope']))   ? $column['scope']   : null;
-        $require = (isset($column['require'])) ? $column['require'] : null;
-        $default = (isset($column['default'])) ? $column['default'] : null;
+        $type    = isset($column['type']) ? $column['type']    : null;
+        $size    = isset($column['size']) ? $column['size']    : null;
+        $scope   = isset($column['scope']) ? $column['scope']   : null;
+        $require = isset($column['require']) ? $column['require'] : null;
+        $default = isset($column['default']) ? $column['default'] : null;
 
         if ($backend == 'db') {
             return DB_Table_Manager::getDeclare($phptype, $type,
@@ -1165,7 +1165,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function _validateTypeDeclaration($coltype, $size, $scope)
+    public function _validateTypeDeclaration($coltype, $size, $scope)
     {
         // validate char and varchar: does it have a size?
         if (($coltype == 'char' || $coltype == 'varchar') &&
@@ -1202,7 +1202,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function _validateTableName($tablename)
+    public function _validateTableName($tablename)
     {
         // is the table name too long?
         if (   $GLOBALS['_DB_TABLE']['disable_length_check'] === false
@@ -1231,7 +1231,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function _validateColumnName($colname)
+    public function _validateColumnName($colname)
     {
         // column name cannot be a reserved keyword
         $reserved = in_array(
@@ -1280,7 +1280,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function _columnExists($colname, $tableInfoOrder, $mode)
+    public function _columnExists($colname, $tableInfoOrder, $mode)
     {
         if (array_key_exists($colname, $tableInfoOrder)) {
             return true;
@@ -1316,7 +1316,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function _validateColumnType($phptype, $type)
+    public function _validateColumnType($phptype, $type)
     {
         // map of valid types for the current RDBMS
         $map = $GLOBALS['_DB_TABLE']['valid_type'][$phptype];
@@ -1361,7 +1361,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function _checkColumnType($phptype, $colname, $coltype, $tableInfoOrder,
+    public function _checkColumnType($phptype, $colname, $coltype, $tableInfoOrder,
         $tableInfo, $mode)
     {
         // map of valid types for the current RDBMS
@@ -1414,7 +1414,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function _getIndexTypeAndColumns($idx_def, $idxname)
+    public function _getIndexTypeAndColumns($idx_def, $idxname)
     {
         $type = '';
         $cols = '';
@@ -1424,8 +1424,8 @@ class DB_Table_Manager {
             $cols = trim($idxname);
         } elseif (is_array($idx_def)) {
             // normal: index_name => array('type' => ..., 'cols' => ...)
-            $type = (isset($idx_def['type'])) ? $idx_def['type'] : 'normal';
-            $cols = (isset($idx_def['cols'])) ? $idx_def['cols'] : null;
+            $type = isset($idx_def['type']) ? $idx_def['type'] : 'normal';
+            $cols = isset($idx_def['cols']) ? $idx_def['cols'] : null;
         }
 
         return array($type, $cols);
@@ -1459,7 +1459,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function _validateIndexName($idxname, $table, $phptype, $type, &$cols,
+    public function _validateIndexName($idxname, $table, $phptype, $type, &$cols,
                                 $column_set, &$newIdxName)
     {
         // index name cannot be a reserved keyword
@@ -1485,7 +1485,7 @@ class DB_Table_Manager {
 
         // are there any CLOB columns, or any columns that are not
         // in the schema?
-        settype($cols, 'array');
+        $cols       = (array)$cols;
         $valid_cols = array_keys($column_set);
         foreach ($cols as $colname) {
 
@@ -1556,7 +1556,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function getIndexes(&$db, $table)
+    public function getIndexes(&$db, $table)
     {
         if (is_subclass_of($db, 'db_common')) {
             $backend = 'db';
@@ -1673,7 +1673,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function _checkIndex($idxname, $newIdxName, $type, $cols, &$table_indexes, $mode)
+    public function _checkIndex($idxname, $newIdxName, $type, $cols, &$table_indexes, $mode)
     {
         $index_found = false;
 
@@ -1732,7 +1732,7 @@ class DB_Table_Manager {
     * 
     */
 
-    function _createIndexesAndContraints($db, $backend, $table, $indexes)
+    public function _createIndexesAndContraints($db, $backend, $table, $indexes)
     {
         if ($backend == 'mdb2') {
 
@@ -2346,4 +2346,4 @@ if (! isset($GLOBALS['_DB_TABLE']['reserved'])) {
     );
 }
         
-?>
+

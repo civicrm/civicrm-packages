@@ -66,37 +66,37 @@ class DB_Table_Date {
      * the year
      * @var int
      */
-    var $year;
+    public $year;
     /**
      * the month
      * @var int
      */
-    var $month;
+    public $month;
     /**
      * the day
      * @var int
      */
-    var $day;
+    public $day;
     /**
      * the hour
      * @var int
      */
-    var $hour;
+    public $hour;
     /**
      * the minute
      * @var int
      */
-    var $minute;
+    public $minute;
     /**
      * the second
      * @var int
      */
-    var $second;
+    public $second;
     /**
      * the parts of a second
      * @var float
      */
-    var $partsecond;
+    public $partsecond;
     
     /**
      * Constructor
@@ -107,7 +107,7 @@ class DB_Table_Date {
      * @access public
      * @param string $date A date in ISO 8601 format.
      */
-    function __construct($date)
+    public function __construct($date)
     {
 		// This regex is very loose and accepts almost any butchered
 		// format you could throw at it.  e.g. 2003-10-07 19:45:15 and
@@ -152,32 +152,32 @@ class DB_Table_Date {
      * @param string format the format string for returned date/time
      * @return string date/time in given format
      */
-    function format($format)
+    public function format($format)
     {
-        $output = "";
+        $output = '';
 
-        for($strpos = 0; $strpos < strlen($format); $strpos++) {
+        for($strpos = 0, $strposMax = strlen($format); $strpos < $strposMax; $strpos++) {
             $char = substr($format,$strpos,1);
-            if ($char == "%") {
+            if ($char == '%') {
                 $nextchar = substr($format,$strpos + 1,1);
                 switch ($nextchar) {
-                case "Y":
+                case 'Y':
                     $output .= $this->year;
                     break;
-                case "m":
-                    $output .= sprintf("%02d",$this->month);
+                case 'm':
+                    $output .= sprintf('%02d',$this->month);
                     break;
-                case "d":
-                    $output .= sprintf("%02d",$this->day);
+                case 'd':
+                    $output .= sprintf('%02d',$this->day);
                     break;
-                case "H":
-                    $output .= sprintf("%02d", $this->hour);
+                case 'H':
+                    $output .= sprintf('%02d', $this->hour);
                     break;
-                case "M":
-                    $output .= sprintf("%02d",$this->minute);
+                case 'M':
+                    $output .= sprintf('%02d',$this->minute);
                     break;
-                case "S":
-                    $output .= sprintf("%02d", $this->second);
+                case 'S':
+                    $output .= sprintf('%02d', $this->second);
                     break;
                 default:
                     $output .= $char.$nextchar;
@@ -192,4 +192,4 @@ class DB_Table_Date {
     }
 }
 
-?>
+

@@ -24,42 +24,42 @@ class Log_mcal extends Log
      * @var string
      * @access private
      */
-    var $_calendar = '{localhost/mstore}';
+    public $_calendar = '{localhost/mstore}';
 
     /**
      * holding the username to use.
      * @var string
      * @access private
      */
-    var $_username = '';
+    public $_username = '';
 
     /**
      * holding the password to use.
      * @var string
      * @access private
      */
-    var $_password = '';
+    public $_password = '';
 
     /**
      * holding the options to pass to the calendar stream.
      * @var integer
      * @access private
      */
-    var $_options = 0;
+    public $_options = 0;
 
     /**
      * ResourceID of the MCAL stream.
      * @var string
      * @access private
      */
-    var $_stream = '';
+    public $_stream = '';
 
     /**
      * Integer holding the log facility to use.
      * @var string
      * @access private
      */
-    var $_name = LOG_SYSLOG;
+    public $_name = LOG_SYSLOG;
 
 
     /**
@@ -71,7 +71,7 @@ class Log_mcal extends Log
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function __construct($name, $ident = '', $conf = array(),
+    public function __construct($name, $ident = '', $conf = array(),
                       $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -89,7 +89,7 @@ class Log_mcal extends Log
      * opened. This is implicitly called by log(), if necessary.
      * @access public
      */
-    function open()
+    public function open()
     {
         if (!$this->_opened) {
             $this->_stream = mcal_open($this->_calendar, $this->_username,
@@ -104,7 +104,7 @@ class Log_mcal extends Log
      * Closes the calendar stream, if it is open.
      * @access public
      */
-    function close()
+    public function close()
     {
         if ($this->_opened) {
             mcal_close($this->_stream);
@@ -128,7 +128,7 @@ class Log_mcal extends Log
      * @return boolean  True on success or false on failure.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {

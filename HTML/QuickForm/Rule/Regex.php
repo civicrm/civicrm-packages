@@ -46,7 +46,7 @@ class HTML_QuickForm_Rule_Regex extends HTML_QuickForm_Rule
      * @var     array
      * @access  private
      */
-    var $_data = array(
+    public $_data = array(
                     'lettersonly'   => '/^[a-zA-Z]+$/',
                     'alphanumeric'  => '/^[a-zA-Z0-9]+$/',
                     'numeric'       => '/(^-?\d\d*\.\d*$)|(^-?\d\d*$)|(^-?\.\d\d*$)/',
@@ -62,7 +62,7 @@ class HTML_QuickForm_Rule_Regex extends HTML_QuickForm_Rule
      * @access    public
      * @return    boolean   true if value is valid
      */
-    function validate($value, $regex = null)
+    public function validate($value, $regex = null)
     {
         // Fix for bug #10799: add 'D' modifier to regex
         if (isset($this->_data[$this->name])) {
@@ -84,13 +84,13 @@ class HTML_QuickForm_Rule_Regex extends HTML_QuickForm_Rule
      * @param     string    $pattern    Regular expression pattern
      * @access    public
      */
-    function addData($name, $pattern)
+    public function addData($name, $pattern)
     {
         $this->_data[$name] = $pattern;
     } // end func addData
 
 
-    function getValidationScript($options = null)
+    public function getValidationScript($options = null)
     {
         $regex = isset($this->_data[$this->name]) ? $this->_data[$this->name] : $options;
 

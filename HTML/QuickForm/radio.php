@@ -47,7 +47,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      * @since     1.1
      * @access    private
      */
-    var $_text = '';
+    public $_text = '';
 
     // }}}
     // {{{ constructor
@@ -64,7 +64,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $elementLabel=null, $text=null, $value=null, $attributes=null)
+    public function __construct($elementName=null, $elementLabel=null, $text=null, $value=null, $attributes=null)
     {
 
         parent::__construct($elementName, $elementLabel, $attributes);
@@ -102,7 +102,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function setChecked($checked)
+    public function setChecked($checked)
     {
         if (!$checked) {
             $this->removeAttribute('checked');
@@ -121,7 +121,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      * @access    public
      * @return    string
      */
-    function getChecked()
+    public function getChecked()
     {
         return $this->getAttribute('checked');
     } //end func getChecked
@@ -136,7 +136,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      * @access    public
      * @return    string
      */
-    function toHtml()
+    public function toHtml()
     {
         if (0 == strlen($this->_text)) {
             $label = '';
@@ -158,7 +158,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      * @access    public
      * @return    string
      */
-    function getFrozenHtml()
+    public function getFrozenHtml()
     {
         if ($this->getChecked()) {
             return '<tt>(x)</tt>' .
@@ -179,7 +179,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function setText($text)
+    public function setText($text)
     {
         $this->_text = $text;
     } //end func setText
@@ -194,7 +194,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      * @access    public
      * @return    string
      */
-    function getText()
+    public function getText()
     {
         return $this->_text;
     } //end func getText
@@ -212,7 +212,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function onQuickFormEvent($event, $arg, &$caller)
+    public function onQuickFormEvent($event, $arg, &$caller)
     {
         switch ($event) {
             case 'updateValue':
@@ -227,7 +227,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
                         $value = $this->_findValue($caller->_defaultValues);
                     }
                 }
-                if (!is_null($value) && $value == $this->getValue()) {
+                if (null !== $value && $value == $this->getValue()) {
                     $this->setChecked(true);
                 } else {
                     $this->setChecked(false);
@@ -252,7 +252,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
    /**
     * Returns the value attribute if the radio is checked, null if it is not
     */
-    function exportValue(&$submitValues, $assoc = false)
+    public function exportValue(&$submitValues, $assoc = false)
     {
         $value = $this->_findValue($submitValues);
         if (null === $value) {

@@ -40,7 +40,7 @@ require_once 'HTML/QuickForm/Action.php';
  */
 class HTML_QuickForm_Action_Display extends HTML_QuickForm_Action
 {
-    function perform(&$page, $actionName)
+    public function perform(&$page, $actionName)
     {
         $pageName = $page->getAttribute('id');
         // If the original action was 'display' and we have values in container then we load them
@@ -81,7 +81,7 @@ class HTML_QuickForm_Action_Display extends HTML_QuickForm_Action
     * @access private
     * @param  HTML_QuickForm_Page  the page being processed
     */
-    function _renderForm(&$page)
+    public function _renderForm(&$page)
     {
         $page->display();
     }

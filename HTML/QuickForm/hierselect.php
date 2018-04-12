@@ -80,7 +80,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @var       array
      * @access    private
      */
-    var $_options = array();
+    public $_options = array();
     
     /**
      * Number of select elements on this group
@@ -88,7 +88,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @var       int
      * @access    private
      */
-    var $_nbElements = 0;
+    public $_nbElements = 0;
 
     /**
      * The javascript used to set and change the options
@@ -96,12 +96,12 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @var       string
      * @access    private
      */
-    var $_js = '';
+    public $_js = '';
     
     /**
     * The javascript array name
     */
-    var $_jsArrayName = '';
+    public $_jsArrayName = '';
 
     // }}}
     // {{{ constructor
@@ -118,7 +118,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $elementLabel=null, $attributes=null, $separator=null)
+    public function __construct($elementName=null, $elementLabel=null, $attributes=null, $separator=null)
     {
         parent::__construct($elementName, $elementLabel, null, null, null, $attributes);
         $this->_persistantFreeze = true;
@@ -141,7 +141,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @access    public
      * @return    void
      */
-    function setOptions($options)
+    public function setOptions($options)
     {
         $this->_options = $options;
 
@@ -173,7 +173,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @access    public
      * @return    void
      */
-    function setMainOptions($array)
+    public function setMainOptions($array)
     {
         $this->_options[0] = $array;
 
@@ -195,7 +195,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @access    public
      * @return    void
      */
-    function setSecOptions($array)
+    public function setSecOptions($array)
     {
         $this->_options[1] = $array;
 
@@ -225,7 +225,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @access    private
      * @return    void
      */
-    function _setOptions()
+    public function _setOptions()
     {
         $toLoad = '';
         foreach (array_keys($this->_elements) AS $key) {
@@ -255,7 +255,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @access    public
      * @return    void
      */
-    function setValue($value)
+    public function setValue($value)
     {
         $this->_nbElements = count($value);
         parent::setValue($value);
@@ -271,7 +271,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @access    private
      * @return    void
      */
-    function _createElements()
+    public function _createElements()
     {
         //hack to add id attribute for hier select
         $attributes = $this->getAttributes();
@@ -298,7 +298,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @access    private
      * @return    void
      */
-    function _setJS()
+    public function _setJS()
     {
         static $jsArrayName = null;
 
@@ -329,7 +329,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @access      private
      * @return      void
      */
-    function _setJSArray($grpName, $options, &$js, $optValue = '')
+    public function _setJSArray($grpName, $options, &$js, $optValue = '')
     {
         static $jsNameCache = array( );
         if (is_array($options)) {
@@ -375,7 +375,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @access      public
      * @return      string
      */
-    function toHtml()
+    public function toHtml()
     {
         if ($this->_flagFrozen) {
             $this->_js = '';
@@ -463,7 +463,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
     * @access public
     * @return void 
     */
-    function accept(&$renderer, $required = false, $error = null)
+    public function accept(&$renderer, $required = false, $error = null)
     {
         $renderer->renderElement($this, $required, $error);
     } // end func accept
@@ -471,7 +471,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
     // }}}
     // {{{ onQuickFormEvent()
 
-    function onQuickFormEvent($event, $arg, &$caller)
+    public function onQuickFormEvent($event, $arg, &$caller)
     {
         if ('updateValue' == $event) {
             // we need to call setValue() so that the secondary option

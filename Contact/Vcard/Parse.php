@@ -68,7 +68,7 @@ class Contact_Vcard_Parse
      * @see    self::fromText()
      * @see    self::_fromArray()
      */
-    function fromFile($filename, $decode_qp = true)
+    public function fromFile($filename, $decode_qp = true)
     {
         $text = $this->fileGetContents($filename);
 
@@ -89,7 +89,7 @@ class Contact_Vcard_Parse
      *         readable, or boolean false if not.
      * @see self::fromFile()
      */
-    function fileGetContents($filename)
+    public function fileGetContents($filename)
     {
         if (file_exists($filename) && is_readable($filename)) {
 
@@ -121,7 +121,7 @@ class Contact_Vcard_Parse
      *         source text.
      * @see self::_fromArray()
      */
-    function fromText($text, $decode_qp = true)
+    public function fromText($text, $decode_qp = true)
     {
         // convert all kinds of line endings to Unix-standard and get
         // rid of double blank lines.
@@ -157,7 +157,7 @@ class Contact_Vcard_Parse
      * @access public
      * @return void
      */
-    function convertLineEndings(&$text)
+    public function convertLineEndings(&$text)
     {
         // DOS
         $text = str_replace("\r\n", "\n", $text);
@@ -178,7 +178,7 @@ class Contact_Vcard_Parse
      * @access public
      * @return mixed An array of values, or a single string.
      */
-    function splitBySemi($text, $convertSingle = false)
+    public function splitBySemi($text, $convertSingle = false)
     {
         // we use these double-backs (\\) because they get get converted
         // to single-backs (\) by preg_split.  the quad-backs (\\\\) end
@@ -208,7 +208,7 @@ class Contact_Vcard_Parse
      * @access public
      * @return mixed An array of values, or a single string.
      */
-    function splitByComma($text, $convertSingle = false)
+    public function splitByComma($text, $convertSingle = false)
     {
         // we use these double-backs (\\) because they get get converted
         // to single-backs (\) by preg_split.  the quad-backs (\\\\) end
@@ -240,7 +240,7 @@ class Contact_Vcard_Parse
      * @access public
      * @return void
      */
-    function unescape(&$text)
+    public function unescape(&$text)
     {
         if (is_array($text)) {
             foreach ($text as $key => $val) {
@@ -267,7 +267,7 @@ class Contact_Vcard_Parse
      * @access private
      * @return boolean true
      */
-    function _Contact_Vcard_Parse()
+    public function _Contact_Vcard_Parse()
     {
         return true;
     }
@@ -287,7 +287,7 @@ class Contact_Vcard_Parse
      * @return array An array of of vCard information extracted from the
      *         source array.
      */
-    function _fromArray($source, $decode_qp = true)
+    public function _fromArray($source, $decode_qp = true)
     {
         // the info array will hold all resulting vCard information.
         $info = array();
@@ -443,7 +443,7 @@ class Contact_Vcard_Parse
      * @return string The type definition for the line.
      *
      */
-    function _getTypeDef($text)
+    public function _getTypeDef($text)
     {
         // split the text by semicolons
         $split = $this->splitBySemi($text);
@@ -461,7 +461,7 @@ class Contact_Vcard_Parse
      * @access private
      * @return mixed An array of parameters.
      */
-    function _getParams($text)
+    public function _getParams($text)
     {
         // split the text by semicolons into an array
         $split = $this->splitBySemi($text);
@@ -549,7 +549,7 @@ class Contact_Vcard_Parse
      * @access private
      * @return void
      */
-    function _decodeQp(&$params, &$text)
+    public function _decodeQp(&$params, &$text)
     {
         // loop through each parameter
         foreach ($params as $param_key => $param_val) {
@@ -594,7 +594,7 @@ class Contact_Vcard_Parse
      * @return string The proper parameter name (TYPE, ENCODING, or
      *         VALUE).
      */
-    function _getParamName($value)
+    public function _getParamName($value)
     {
         static $types = array (
             'DOM', 'INTL', 'POSTAL', 'PARCEL','HOME', 'WORK',
@@ -648,7 +648,7 @@ class Contact_Vcard_Parse
      *         itself may be an array as well if multiple comma-separated
      *         values were indicated in the vCard source.
      */
-    function _parseN($text)
+    public function _parseN($text)
     {
         // make sure there are always at least 5 elements
         $tmp = array_pad($this->splitBySemi($text), 5, '');
@@ -675,7 +675,7 @@ class Contact_Vcard_Parse
      *         value itself may be an array as well if multiple comma-
      *         separated values were indicated in the vCard source.
      */
-    function _parseADR($text)
+    public function _parseADR($text)
     {
         // make sure there are always at least 7 elements
         $tmp = array_pad($this->splitBySemi($text), 7, '');
@@ -701,7 +701,7 @@ class Contact_Vcard_Parse
      * @access private
      * @return array An array of nicknames.
      */
-    function _parseNICKNAME($text)
+    public function _parseNICKNAME($text)
     {
         return array($this->splitByComma($text));
     }
@@ -719,7 +719,7 @@ class Contact_Vcard_Parse
      *         is itself an array, which indicates primary organization and
      *         sub-organizations.
      */
-    function _parseORG($text)
+    public function _parseORG($text)
     {
         $tmp  = $this->splitbySemi($text);
         $list = array();
@@ -740,7 +740,7 @@ class Contact_Vcard_Parse
      * @access private
      * @return array An array of categories.
      */
-    function _parseCATEGORIES($text)
+    public function _parseCATEGORIES($text)
     {
         return array($this->splitByComma($text));
     }
@@ -755,7 +755,7 @@ class Contact_Vcard_Parse
      * @access private
      * @return array An array of lat-lon geocoords.
      */
-    function _parseGEO($text)
+    public function _parseGEO($text)
     {
         // make sure there are always at least 2 elements
         $tmp = array_pad($this->splitBySemi($text), 2, '');

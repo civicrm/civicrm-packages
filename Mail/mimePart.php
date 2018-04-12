@@ -81,7 +81,7 @@ class Mail_mimePart
     * @var string
     * @access private
     */
-    var $_encoding;
+    public $_encoding;
 
     /**
     * An array of subparts
@@ -89,7 +89,7 @@ class Mail_mimePart
     * @var array
     * @access private
     */
-    var $_subparts;
+    public $_subparts;
 
     /**
     * The output of this part after being built
@@ -97,7 +97,7 @@ class Mail_mimePart
     * @var string
     * @access private
     */
-    var $_encoded;
+    public $_encoded;
 
     /**
     * Headers for this part
@@ -105,7 +105,7 @@ class Mail_mimePart
     * @var array
     * @access private
     */
-    var $_headers;
+    public $_headers;
 
     /**
     * The body of this part (not encoded)
@@ -113,7 +113,7 @@ class Mail_mimePart
     * @var string
     * @access private
     */
-    var $_body;
+    public $_body;
 
     /**
     * The location of file with body of this part (not encoded)
@@ -121,7 +121,7 @@ class Mail_mimePart
     * @var string
     * @access private
     */
-    var $_body_file;
+    public $_body_file;
 
     /**
     * The end-of-line sequence
@@ -129,7 +129,7 @@ class Mail_mimePart
     * @var string
     * @access private
     */
-    var $_eol = "\r\n";
+    public $_eol = "\r\n";
 
     /**
     * Constructor.
@@ -157,7 +157,7 @@ class Mail_mimePart
     *
     * @access public
     */
-    function __construct($body = '', $params = array())
+    public function __construct($body = '', $params = array())
     {
         if (!empty($params['eol'])) {
             $this->_eol = $params['eol'];
@@ -289,7 +289,7 @@ class Mail_mimePart
      *         an indexed array. On error returns PEAR error object.
      * @access public
      */
-    function encode($boundary=null)
+    public function encode($boundary=null)
     {
         $encoded =& $this->_encoded;
 
@@ -354,7 +354,7 @@ class Mail_mimePart
      * @access public
      * @since 1.6.0
      */
-    function encodeToFile($filename, $boundary=null, $skip_head=false)
+    public function encodeToFile($filename, $boundary=null, $skip_head=false)
     {
         if (file_exists($filename) && !is_writable($filename)) {
             $err = PEAR::raiseError('File is not writeable: ' . $filename);
@@ -392,7 +392,7 @@ class Mail_mimePart
      * @return array True on sucess or PEAR error object
      * @access private
      */
-    function _encodePartToFile($fh, $boundary=null, $skip_head=false)
+    public function _encodePartToFile($fh, $boundary=null, $skip_head=false)
     {
         $eol = $this->_eol;
 
@@ -451,7 +451,7 @@ class Mail_mimePart
      *                       otherwise you will not be able to add further subparts.
      * @access public
      */
-    function &addSubpart($body, $params)
+    public function &addSubpart($body, $params)
     {
         $this->_subparts[] = new Mail_mimePart($body, $params);
         return $this->_subparts[count($this->_subparts) - 1];
@@ -467,7 +467,7 @@ class Mail_mimePart
      * @return string
      * @access private
      */
-    function _getEncodedData($data, $encoding)
+    public function _getEncodedData($data, $encoding)
     {
         switch ($encoding) {
         case 'quoted-printable':
@@ -497,7 +497,7 @@ class Mail_mimePart
      * @return string Encoded data or PEAR error object
      * @access private
      */
-    function _getEncodedDataFromFile($filename, $encoding, $fh=null)
+    public function _getEncodedDataFromFile($filename, $encoding, $fh=null)
     {
         if (!is_readable($filename)) {
             $err = PEAR::raiseError('Unable to read file: ' . $filename);
@@ -574,7 +574,7 @@ class Mail_mimePart
      *
      * @access private
      */
-    function _quotedPrintableEncode($input , $line_max = 76)
+    public function _quotedPrintableEncode($input , $line_max = 76)
     {
         $eol = $this->_eol;
         /*
@@ -591,8 +591,7 @@ class Mail_mimePart
         $lines  = preg_split("/\r?\n/", $input);
         $escape = '=';
         $output = '';
-
-        while (list($idx, $line) = each($lines)) {
+        foreach ($lines as $idx => $line) {
             $newline = '';
             $i = 0;
 
@@ -601,7 +600,7 @@ class Mail_mimePart
                 $dec  = ord($char);
                 $i++;
 
-                if (($dec == 32) && (!isset($line[$i]))) {
+                if (($dec == 32) && !isset($line[$i])) {
                     // convert space at eol only
                     $char = '=20';
                 } elseif ($dec == 9 && isset($line[$i])) {
@@ -651,7 +650,7 @@ class Mail_mimePart
      *
      * @access private
      */
-    function _buildHeaderParam($name, $value, $charset=null, $language=null,
+    public function _buildHeaderParam($name, $value, $charset=null, $language=null,
         $encoding=null, $maxLength=75
     ) {
         // RFC 2045:
@@ -725,7 +724,7 @@ class Mail_mimePart
      * @return string Parameter line
      * @access private
      */
-    function _buildRFC2047Param($name, $value, $charset,
+    public function _buildRFC2047Param($name, $value, $charset,
         $encoding='quoted-printable', $maxLength=76
     ) {
         // WARNING: RFC 2047 says: "An 'encoded-word' MUST NOT be used in
@@ -796,7 +795,7 @@ class Mail_mimePart
      * @access public
      * @since 1.6.1
      */
-    static function encodeHeader($name, $value, $charset='ISO-8859-1',
+    public static function encodeHeader($name, $value, $charset='ISO-8859-1',
         $encoding='quoted-printable', $eol="\r\n"
     ) {
         // Structured headers
@@ -931,7 +930,7 @@ class Mail_mimePart
      * @return array            String tokens array
      * @access private
      */
-    static function _explodeQuotedString($delimiter, $string)
+    public static function _explodeQuotedString($delimiter, $string)
     {
         $result = array();
         $strlen = strlen($string);
@@ -964,7 +963,7 @@ class Mail_mimePart
      * @access public
      * @since 1.6.1
      */
-    static function encodeHeaderValue($value, $charset, $encoding, $prefix_len=0, $eol="\r\n")
+    public static function encodeHeaderValue($value, $charset, $encoding, $prefix_len=0, $eol="\r\n")
     {
         // #17311: Use multibyte aware method (requires mbstring extension)
         if ($result = Mail_mimePart::encodeMB($value, $charset, $encoding, $prefix_len, $eol)) {
@@ -1064,7 +1063,7 @@ class Mail_mimePart
      * @access public
      * @since 1.6.0
      */
-    function encodeQP($str)
+    public function encodeQP($str)
     {
         // Bug #17226 RFC 2047 restricts some characters
         // if the word is inside a phrase, permitted chars are only:
@@ -1094,7 +1093,7 @@ class Mail_mimePart
      * @access public
      * @since 1.8.0
      */
-    static function encodeMB($str, $charset, $encoding, $prefix_len=0, $eol="\r\n")
+    public static function encodeMB($str, $charset, $encoding, $prefix_len=0, $eol="\r\n")
     {
         if (!function_exists('mb_substr') || !function_exists('mb_strlen')) {
             return;
@@ -1192,7 +1191,7 @@ class Mail_mimePart
      * @return string        Encoded character string
      * @access private
      */
-    static function _qpReplaceCallback($matches)
+    public static function _qpReplaceCallback($matches)
     {
         return sprintf('=%02X', ord($matches[1]));
     }
@@ -1206,7 +1205,7 @@ class Mail_mimePart
      * @return string        Encoded character string
      * @access private
      */
-    static function _encodeReplaceCallback($matches)
+    public static function _encodeReplaceCallback($matches)
     {
         return sprintf('%%%02X', ord($matches[1]));
     }

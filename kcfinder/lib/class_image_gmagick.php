@@ -16,7 +16,7 @@ namespace kcfinder;
 
 class image_gmagick extends image {
 
-    static $MIMES = array(
+    public static $MIMES = array(
         //'tif' => "image/tiff"
     );
 
@@ -234,11 +234,11 @@ class image_gmagick extends image {
 
     // PSEUDO-ABSTRACT STATIC METHODS
 
-    static function available() {
+    public static function available() {
         return class_exists("Gmagick");
     }
 
-    static function checkImage($file) {
+    public static function checkImage($file) {
         try {
             $img = new \Gmagick($file);
         } catch (\Exception $e) {

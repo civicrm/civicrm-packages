@@ -2,12 +2,12 @@
 
 class y_axis_base
 {
-	function __construct(){}
+	public function __construct(){}
 	
 	/**
 	 * @param $s as integer, thickness of the Y axis line
 	 */
-	function set_stroke( $s )
+	public function set_stroke( $s )
 	{
 		$this->stroke = $s;
 	}
@@ -15,24 +15,24 @@ class y_axis_base
 	/**
 	 * @param $val as integer. The length of the ticks in pixels
 	 */
-	function set_tick_length( $val )
+	public function set_tick_length( $val )
 	{
 		$tmp = 'tick-length';
 		$this->$tmp = $val;
 	}
 	
-	function set_colours( $colour, $grid_colour )
+	public function set_colours( $colour, $grid_colour )
 	{
 		$this->set_colour( $colour );
 		$this->set_grid_colour( $grid_colour );
 	}
 	
-	function set_colour( $colour )
+	public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
 	
-	function set_grid_colour( $colour )
+	public function set_grid_colour( $colour )
 	{
 		$tmp = 'grid-colour';
 		$this->$tmp = $colour;
@@ -47,7 +47,7 @@ class y_axis_base
 	 * @param $max as integer
 	 * @param $steps as integer.
 	 */
-	function set_range( $min, $max, $steps=1 )
+	public function set_range( $min, $max, $steps=1 )
 	{
 		$this->min = $min;
 		$this->max = $max;
@@ -57,7 +57,7 @@ class y_axis_base
 	/**
 	 * Sugar for set_range
 	 */
-	function range( $min, $max, $steps=1 )
+	public function range( $min, $max, $steps=1 )
 	{
 		$this->set_range( $min, $max, $steps );
 		return $this;
@@ -66,7 +66,7 @@ class y_axis_base
 	/**
 	 * @param $off as Boolean. If true the Y axis is nudged up half a step.
 	 */
-	function set_offset( $off )
+	public function set_offset( $off )
 	{
 		$this->offset = $off?1:0;
 	}
@@ -75,7 +75,7 @@ class y_axis_base
 	 * @param $y_axis_labels as an y_axis_labels object
 	 * Use this to customize the labels (colour, font, etc...)
 	 */
-	function set_labels( $y_axis_labels )
+	public function set_labels( $y_axis_labels )
 	{
 		$this->labels = $y_axis_labels;
 	}
@@ -83,13 +83,13 @@ class y_axis_base
 	/**
 	 * Pass in some text for each label. This can contain magic variables "#val#" which
 	 * will get replaced with the value for that Y axis label. Useful for:
-	 * - "£#val#"
+	 * - "ï¿½#val#"
 	 * - "#val#%"
 	 * - "#val# million"
 	 * 
 	 * @param $text as string.
 	 */
-	function set_label_text( $text )
+	public function set_label_text( $text )
 	{
 		$tmp = new y_axis_labels();
 		$tmp->set_text( $text );
@@ -101,7 +101,7 @@ class y_axis_base
 	 *
 	 * Only show every $steps label, e.g. every 10th
 	 */
-	function set_steps( $steps )
+	public function set_steps( $steps )
 	{
 		$this->steps = $steps;	
 	}
@@ -109,12 +109,12 @@ class y_axis_base
 	/**
 	 * Make the labels show vertical
 	 */
-	function set_vertical()
+	public function set_vertical()
 	{
 		$this->rotate = "vertical";
 	}
 
-	function set_logScale( $logScale)
+	public function set_logScale( $logScale)
 	{
 		$tmp = 'log-scale';
 		$this->$tmp = $logScale;

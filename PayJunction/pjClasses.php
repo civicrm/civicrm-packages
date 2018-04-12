@@ -47,10 +47,10 @@
  */
 class pjpgHttpsPost
 { 
-   var $pjpgRequest;
-   var $pjpgResponse;
+   public $pjpgRequest;
+   public $pjpgResponse;
    
-   function __construct( $pjpgRequestOBJ )
+   public function __construct( $pjpgRequestOBJ )
    {
       $this->pjpgRequest=$pjpgRequestOBJ;
 
@@ -94,9 +94,9 @@ class pjpgHttpsPost
 
       // transaction
       $dc_transaction_amount       = $pjTxn['amount'];
-      $dc_notes                    = "No Comment";
-      $dc_transaction_type         = "AUTHORIZATION_CAPTURE";
-      $dc_version                  = "1.2";
+      $dc_notes                    = 'No Comment';
+      $dc_transaction_type         = 'AUTHORIZATION_CAPTURE';
+      $dc_version                  = '1.2';
 
       // billing address
       $dc_address                  = $pjBilling['address'];
@@ -128,68 +128,65 @@ class pjpgHttpsPost
       if ($dc_schedule_create == true)
       {
          // assign to "true" value
-         $dc_schedule_create = "true";
+         $dc_schedule_create = 'true';
 
          $post_array = array(
-            "dc_logon"                    => $dc_logon,
-            "dc_password"                 => $dc_password,
-            "dc_first_name"               => $dc_first_name,
-            "dc_last_name"                => $dc_last_name,
-            "dc_expiration_month"         => $dc_expiration_month,
-            "dc_expiration_year"          => $dc_expiration_year,
-            "dc_number"                   => $dc_number,
-            "dc_verification_number"      => $dc_verification_number,
-            "dc_transaction_amount"       => $dc_transaction_amount,
-            "dc_transaction_type"         => $dc_transaction_type,
-            "dc_version"                  => $dc_version,
-            "dc_address"                  => $dc_address,
-            "dc_city"                     => $dc_city,
-            "dc_state"                    => $dc_state,
-            "dc_zipcode"                  => $dc_zipcode,
-            "dc_country"                  => $dc_country,
-            "dc_schedule_create"          => $dc_schedule_create,
-            "dc_schedule_limit"           => $dc_schedule_limit,
-            "dc_schedule_periodic_number" => $dc_schedule_periodic_number,
-            "dc_schedule_periodic_type"   => $dc_schedule_periodic_type,
-            "dc_schedule_start"           => $dc_schedule_start 
+           'dc_logon'                    => $dc_logon,
+           'dc_password'                 => $dc_password,
+           'dc_first_name'               => $dc_first_name,
+           'dc_last_name'                => $dc_last_name,
+           'dc_expiration_month'         => $dc_expiration_month,
+           'dc_expiration_year'          => $dc_expiration_year,
+           'dc_number'                   => $dc_number,
+           'dc_verification_number'      => $dc_verification_number,
+           'dc_transaction_amount'       => $dc_transaction_amount,
+           'dc_transaction_type'         => $dc_transaction_type,
+           'dc_version'                  => $dc_version,
+           'dc_address'                  => $dc_address,
+           'dc_city'                     => $dc_city,
+           'dc_state'                    => $dc_state,
+           'dc_zipcode'                  => $dc_zipcode,
+           'dc_country'                  => $dc_country,
+           'dc_schedule_create'          => $dc_schedule_create,
+           'dc_schedule_limit'           => $dc_schedule_limit,
+           'dc_schedule_periodic_number' => $dc_schedule_periodic_number,
+           'dc_schedule_periodic_type'   => $dc_schedule_periodic_type,
+           'dc_schedule_start'           => $dc_schedule_start
             );
       }
       // one time transaction
       else
       {
          $post_array = array(
-            "dc_logon"                    => $dc_logon,
-            "dc_password"                 => $dc_password,
-            "dc_first_name"               => $dc_first_name,
-            "dc_last_name"                => $dc_last_name,
-            "dc_expiration_month"         => $dc_expiration_month,
-            "dc_expiration_year"          => $dc_expiration_year,
-            "dc_number"                   => $dc_number,
-            "dc_verification_number"      => $dc_verification_number,
-            "dc_transaction_amount"       => $dc_transaction_amount,
-            "dc_transaction_type"         => $dc_transaction_type,
-            "dc_version"                  => $dc_version,
-            "dc_address"                  => $dc_address,
-            "dc_city"                     => $dc_city,
-            "dc_state"                    => $dc_state,
-            "dc_zipcode"                  => $dc_zipcode,
-            "dc_country"                  => $dc_country
+           'dc_logon'               => $dc_logon,
+           'dc_password'            => $dc_password,
+           'dc_first_name'          => $dc_first_name,
+           'dc_last_name'           => $dc_last_name,
+           'dc_expiration_month'    => $dc_expiration_month,
+           'dc_expiration_year'     => $dc_expiration_year,
+           'dc_number'              => $dc_number,
+           'dc_verification_number' => $dc_verification_number,
+           'dc_transaction_amount'  => $dc_transaction_amount,
+           'dc_transaction_type'    => $dc_transaction_type,
+           'dc_version'             => $dc_version,
+           'dc_address'             => $dc_address,
+           'dc_city'                => $dc_city,
+           'dc_state'               => $dc_state,
+           'dc_zipcode'             => $dc_zipcode,
+           'dc_country'             => $dc_country
             );
       }        
 
 
       reset($post_array);
 
-      $request = "";
-      while (list ($key, $val) = each($post_array))
-      {
-         $request .= $key . "=" . urlencode($val) . "&";
-      }
-
-
-      /*
-       * PayJunction service request and response
-       */ 
+      $request = '';
+       foreach ($post_array as $key => $val) {
+          $request .= $key . '=' . urlencode($val) . '&';
+       }
+       /*
+        * PayJunction service request and response
+        */
       $ch = curl_init($url); 
       curl_setopt($ch, CURLOPT_HEADER, FALSE); 
       curl_setopt($ch, CURLOPT_POST, TRUE); 
@@ -205,7 +202,7 @@ class pjpgHttpsPost
       $content = array_values (explode (chr (28), $content));
       while ($key_value = next ($content))
       {
-         list ($key, $value) = explode ("=", $key_value);
+         list ($key, $value) = explode ('=', $key_value);
          $response[$key] = $value;
       }
 
@@ -213,7 +210,7 @@ class pjpgHttpsPost
    }
 
 
-   function getPJpgResponse()
+   public function getPJpgResponse()
    {
       return $this->pjpgResponse;
    }
@@ -224,23 +221,23 @@ class pjpgHttpsPost
 
 class pjpgRequest
 {
-   var $txnTypes =array(purchase=> array('order_id','cust_id', 'amount', 'pan', 'expdate', 'crypt_type'),
-                      refund => array('order_id', 'amount', 'txn_number', 'crypt_type'),
-                      ind_refund => array('order_id','cust_id', 'amount','pan','expdate', 'crypt_type'),
-                      preauth =>array('order_id','cust_id', 'amount', 'pan', 'expdate', 'crypt_type'),
-                      completion => array('order_id', 'comp_amount','txn_number', 'crypt_type'),
-                      purchasecorrection => array('order_id', 'txn_number', 'crypt_type'),
-                      opentotals => array('ecr_number'),
-                      batchclose => array('ecr_number'),
-                      batchcloseall => array(),
-                      cavv_purchase=> array('order_id','cust_id', 'amount', 'pan', 
+   public $txnTypes =array(purchase           => array('order_id','cust_id', 'amount', 'pan', 'expdate', 'crypt_type'),
+                           refund             => array('order_id', 'amount', 'txn_number', 'crypt_type'),
+                           ind_refund         => array('order_id','cust_id', 'amount','pan','expdate', 'crypt_type'),
+                           preauth            =>array('order_id','cust_id', 'amount', 'pan', 'expdate', 'crypt_type'),
+                           completion         => array('order_id', 'comp_amount','txn_number', 'crypt_type'),
+                           purchasecorrection => array('order_id', 'txn_number', 'crypt_type'),
+                           opentotals         => array('ecr_number'),
+                           batchclose         => array('ecr_number'),
+                           batchcloseall      => array(),
+                           cavv_purchase      => array('order_id','cust_id', 'amount', 'pan',
                                         'expdate', 'cavv'),
-                      cavv_preauth =>array('order_id','cust_id', 'amount', 'pan',         
+                           cavv_preauth       =>array('order_id','cust_id', 'amount', 'pan',
                                         'expdate', 'cavv')
                        );
-   var $txnArray;
+   public $txnArray;
 
-   function __construct($txn)
+   public function __construct($txn)
    {
       if(is_array($txn))
       {
@@ -259,7 +256,7 @@ class pjpgRequest
 
 class pjpgCustInfo
 {
-   var $level3template = array(cust_info=>                   
+   public $level3template = array(cust_info =>
            array('email','instructions',
                  billing => array ('first_name', 'last_name', 'company_name', 'address',
                                     'city', 'province', 'postal_code', 'country', 
@@ -273,11 +270,11 @@ class pjpgCustInfo
                 )
            );
                                      
-   var $level3data;
-   var $email;
-   var $instructions; 
+   public $level3data;
+   public $email;
+   public $instructions;
  
-   function __construct($custinfo=0,$billing=0,$shipping=0,$items=0)
+   public function __construct($custinfo=0,$billing=0,$shipping=0,$items=0)
    {
       if($custinfo)
       {
@@ -285,34 +282,34 @@ class pjpgCustInfo
       } 
    }
  
-   function setCustInfo($custinfo)
+   public function setCustInfo($custinfo)
    {
       $this->level3data['cust_info']=array($custinfo);
    }
 
-   function setEmail($email)
+   public function setEmail($email)
    {
       $this->email=$email;
       $this->setCustInfo(array(email=>$email,instructions=>$this->instructions));
    }
 
-   function setInstructions($instructions)
+   public function setInstructions($instructions)
    {
       $this->instructions=$instructions;
       $this->setCustinfo(array(email=>$this->email,instructions=>$instructions));
    }
  
-   function setShipping($shipping)
+   public function setShipping($shipping)
    {
       $this->level3data['shipping']=array($shipping);
    } 
  
-   function setBilling($billing)
+   public function setBilling($billing)
    {
       $this->level3data['billing']=array($billing);
    } 
 
-   function setItems($items)
+   public function setItems($items)
    {
       if(! $this->level3data['item'])   
       {
@@ -331,11 +328,11 @@ class pjpgCustInfo
 
 class pjpgRecur{
 
- var $params;
- var $recurTemplate = array('recur_unit','start_now','start_date',
+ public $params;
+ public $recurTemplate = array('recur_unit','start_now','start_date',
                             'num_recurs','period','recur_amount');
  
- function __construct($params)
+ public function __construct($params)
  { 
     $this->params = $params;
     
@@ -351,37 +348,37 @@ class pjpgRecur{
 
 class pjpgTransaction 
 {
-   var $txn;
-   var $custInfo = null;
-   var $recur = null;
+   public $txn;
+   public $custInfo = null;
+   public $recur    = null;
 
-   function __construct($txn)
+   public function __construct($txn)
    {
       $this->txn=$txn; 
    }
 
-   function getCustInfo()
+   public function getCustInfo()
    {
       return $this->custInfo;
    }
 
-   function setCustInfo($custInfo)
+   public function setCustInfo($custInfo)
    {
       $this->custInfo = $custInfo;
       array_push($this->txn,$custInfo);
    }
 
-   function getRecur()
+   public function getRecur()
    {
       return $this->recur;
    }
 
-   function setRecur($recur)
+   public function setRecur($recur)
    {
       $this->recur = $recur;
    }
 
-   function getTransaction()
+   public function getTransaction()
    {
       return $this->txn;
    } 

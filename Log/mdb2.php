@@ -38,49 +38,49 @@ class Log_mdb2 extends Log
      * @var mixed
      * @access private
      */
-    var $_dsn = '';
+    public $_dsn = '';
 
     /**
      * Array containing our set of DB configuration options.
      * @var array
      * @access private
      */
-    var $_options = array('persistent' => true);
+    public $_options = array('persistent' => true);
 
     /**
      * Object holding the database handle.
      * @var object
      * @access private
      */
-    var $_db = null;
+    public $_db = null;
 
     /**
      * Resource holding the prepared statement handle.
      * @var resource
      * @access private
      */
-    var $_statement = null;
+    public $_statement = null;
 
     /**
      * Flag indicating that we're using an existing database connection.
      * @var boolean
      * @access private
      */
-    var $_existingConnection = false;
+    public $_existingConnection = false;
 
     /**
      * String holding the database table to use.
      * @var string
      * @access private
      */
-    var $_table = 'log_table';
+    public $_table = 'log_table';
 
     /**
      * String holding the name of the ID sequence.
      * @var string
      * @access private
      */
-    var $_sequence = 'log_id';
+    public $_sequence = 'log_id';
 
     /**
      * Maximum length of the $ident string.  This corresponds to the size of
@@ -88,14 +88,14 @@ class Log_mdb2 extends Log
      * @var integer
      * @access private
      */
-    var $_identLimit = 16;
+    public $_identLimit = 16;
 
     /**
      * Set of field types used in the database table.
      * @var array
      * @access private
      */
-    var $_types = array(
+    public $_types = array(
         'id'        => 'integer',
         'logtime'   => 'timestamp',
         'ident'     => 'text',
@@ -112,7 +112,7 @@ class Log_mdb2 extends Log
      * @param int $level           Log messages up to and including this level.
      * @access public
      */
-    function __construct($name, $ident = '', $conf = array(),
+    public function __construct($name, $ident = '', $conf = array(),
                      $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -158,7 +158,7 @@ class Log_mdb2 extends Log
      * @return boolean   True on success, false on failure.
      * @access public
      */
-    function open()
+    public function open()
     {
         if (!$this->_opened) {
             /* Use the DSN and options to create a database connection. */
@@ -187,7 +187,7 @@ class Log_mdb2 extends Log
      * @return boolean   True on success, false on failure.
      * @access public
      */
-    function close()
+    public function close()
     {
         /* If we have a statement object, free it. */
         if (is_object($this->_statement)) {
@@ -214,7 +214,7 @@ class Log_mdb2 extends Log
      * @access  public
      * @since   Log 1.8.5
      */
-    function setIdent($ident)
+    public function setIdent($ident)
     {
         $this->_ident = substr($ident, 0, $this->_identLimit);
     }
@@ -232,7 +232,7 @@ class Log_mdb2 extends Log
      * @return boolean  True on success or false on failure.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {
@@ -307,7 +307,7 @@ class Log_mdb2 extends Log
      * @return boolean  True on success or false on failure.
      * @access private
      */
-    function _createTable()
+    public function _createTable()
     {
         $this->_db->loadModule('Manager', null, true);
         $result = $this->_db->manager->createTable(
@@ -344,7 +344,7 @@ class Log_mdb2 extends Log
      * @access  private
      * @since   Log 1.9.0
      */
-    function _prepareStatement()
+    public function _prepareStatement()
     {
         $this->_statement = &$this->_db->prepare(
                 'INSERT INTO ' . $this->_table .

@@ -25,21 +25,21 @@ class Log_firebug extends Log
      * @var string
      * @access private
      */
-    var $_buffering = false;
+    public $_buffering = false;
 
     /**
      * String holding the buffered output.
      * @var string
      * @access private
      */
-    var $_buffer = array();
+    public $_buffer = array();
 
     /**
      * String containing the format of a log line.
      * @var string
      * @access private
      */
-    var $_lineFormat = '%2$s [%3$s] %4$s';
+    public $_lineFormat = '%2$s [%3$s] %4$s';
 
     /**
      * String containing the timestamp format.  It will be passed directly to
@@ -51,14 +51,14 @@ class Log_firebug extends Log
      * @var string
      * @access private
      */
-    var $_timeFormat = '%b %d %H:%M:%S';
+    public $_timeFormat = '%b %d %H:%M:%S';
 
     /**
      * Mapping of log priorities to Firebug methods.
      * @var array
      * @access private
      */
-    var $_methods = array(
+    public $_methods = array(
                         PEAR_LOG_EMERG   => 'error',
                         PEAR_LOG_ALERT   => 'error',
                         PEAR_LOG_CRIT    => 'error',
@@ -78,7 +78,7 @@ class Log_firebug extends Log
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function __construct($name = '', $ident = 'PHP', $conf = array(),
+    public function __construct($name = '', $ident = 'PHP', $conf = array(),
                          $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -108,7 +108,7 @@ class Log_firebug extends Log
      *
      * @access  public
      */
-    function open()
+    public function open()
     {
         $this->_opened = true;
         return true;
@@ -117,7 +117,7 @@ class Log_firebug extends Log
     /**
      * Destructor
      */
-    function _Log_firebug()
+    public function _Log_firebug()
     {
         $this->close();
     }
@@ -127,7 +127,7 @@ class Log_firebug extends Log
      *
      * @access  public
      */
-    function close()
+    public function close()
     {
         $this->flush();
         $this->_opened = false;
@@ -139,7 +139,7 @@ class Log_firebug extends Log
      *
      * @access public
      */
-    function flush() {
+    public function flush() {
         if (count($this->_buffer)) {
             print '<script type="text/javascript">';
             print "\nif (('console' in window) && ('firebug' in console)) {\n";
@@ -164,7 +164,7 @@ class Log_firebug extends Log
      * @return boolean  True on success or false on failure.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {

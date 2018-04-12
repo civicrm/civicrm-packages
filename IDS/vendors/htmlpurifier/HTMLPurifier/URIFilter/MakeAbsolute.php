@@ -2,15 +2,33 @@
 
 // does not support network paths
 
+/**
+ * Class HTMLPurifier_URIFilter_MakeAbsolute
+ */
 class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
 {
+    /**
+     * @var string
+     */
     public $name = 'MakeAbsolute';
+    /**
+     * @var
+     */
     protected $base;
+    /**
+     * @var array
+     */
     protected $basePathStack = array();
+
+    /**
+     * @param $config
+     *
+     * @return bool
+     */
     public function prepare($config) {
         $def = $config->getDefinition('URI');
         $this->base = $def->base;
-        if (is_null($this->base)) {
+        if (null === $this->base) {
             trigger_error('URI.MakeAbsolute is being ignored due to lack of value for URI.Base configuration', E_USER_WARNING);
             return false;
         }
@@ -21,19 +39,29 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
         $this->basePathStack = $stack;
         return true;
     }
+
+    /**
+     * @param \Reference $uri
+     * @param \Instance  $config
+     * @param \Instance  $context
+     *
+     * @return bool
+     */
     public function filter(&$uri, $config, $context) {
-        if (is_null($this->base)) return true; // abort early
+        if (null === $this->base) return true; // abort early
         if (
-            $uri->path === '' && is_null($uri->scheme) &&
-            is_null($uri->host) && is_null($uri->query) && is_null($uri->fragment)
+            $uri->path === '' && null === $uri->scheme
+            && null === $uri->host
+            && null === $uri->query
+            && null === $uri->fragment
         ) {
             // reference to current document
             $uri = clone $this->base;
             return true;
         }
-        if (!is_null($uri->scheme)) {
+        if (null !== $uri->scheme) {
             // absolute URI already: don't change
-            if (!is_null($uri->host)) return true;
+            if (null !== $uri->host) return true;
             $scheme_obj = $uri->getSchemeObj($config, $context);
             if (!$scheme_obj) {
                 // scheme not recognized
@@ -45,7 +73,7 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
             }
             // special case: had a scheme but always is hierarchical and had no authority
         }
-        if (!is_null($uri->host)) {
+        if (null !== $uri->host) {
             // network path, don't bother
             return true;
         }
@@ -55,7 +83,7 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
             // relative path, needs more complicated processing
             $stack = explode('/', $uri->path);
             $new_stack = array_merge($this->basePathStack, $stack);
-            if ($new_stack[0] !== '' && !is_null($this->base->host)) {
+            if ($new_stack[0] !== '' && null !== $this->base->host) {
                 array_unshift($new_stack, '');
             }
             $new_stack = $this->_collapseStack($new_stack);
@@ -66,9 +94,9 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
         }
         // re-combine
         $uri->scheme = $this->base->scheme;
-        if (is_null($uri->userinfo)) $uri->userinfo = $this->base->userinfo;
-        if (is_null($uri->host))     $uri->host     = $this->base->host;
-        if (is_null($uri->port))     $uri->port     = $this->base->port;
+        if (null === $uri->userinfo) $uri->userinfo = $this->base->userinfo;
+        if (null === $uri->host)     $uri->host = $this->base->host;
+        if (null === $uri->port)     $uri->port = $this->base->port;
         return true;
     }
 

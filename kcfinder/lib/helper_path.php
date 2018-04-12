@@ -21,7 +21,7 @@ class path {
   * @param string $path
   * @return string */
 
-    static function rel2abs_url($path) {
+    public static function rel2abs_url($path) {
         if (substr($path, 0, 1) == "/") return $path;
         $dir = @getcwd();
 
@@ -46,7 +46,7 @@ class path {
   * @param string $url
   * @return string */
 
-    static function url2fullPath($url) {
+    public static function url2fullPath($url) {
         $url = self::normalize($url);
 
         $uri = isset($_SERVER['SCRIPT_NAME'])
@@ -94,7 +94,7 @@ class path {
   * @param string $path
   * @return string */
 
-    static function normalize($path) {
+    public static function normalize($path) {
 
         // Backslash to slash convert
         if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN") {
@@ -122,7 +122,7 @@ class path {
   * @param string $path
   * @return string */
 
-    static function urlPathEncode($path) {
+    public static function urlPathEncode($path) {
         $path = self::normalize($path);
         $encoded = "";
         foreach (explode("/", $path) as $dir)
@@ -135,7 +135,7 @@ class path {
   * @param string $path
   * @return string */
 
-    static function urlPathDecode($path) {
+    public static function urlPathDecode($path) {
         $path = self::normalize($path);
         $decoded = "";
         foreach (explode("/", $path) as $dir)

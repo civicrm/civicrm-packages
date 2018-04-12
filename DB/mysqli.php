@@ -55,13 +55,13 @@ class DB_mysqli extends DB_common
      * The DB driver type (mysql, oci8, odbc, etc.)
      * @var string
      */
-    var $phptype = 'mysqli';
+    public $phptype = 'mysqli';
 
     /**
      * The database syntax variant to be used (db2, access, etc.), if any
      * @var string
      */
-    var $dbsyntax = 'mysqli';
+    public $dbsyntax = 'mysqli';
 
     /**
      * The capabilities of this DB implementation
@@ -76,7 +76,7 @@ class DB_mysqli extends DB_common
      *
      * @var array
      */
-    var $features = array(
+    public $features = array(
         'limit'         => 'alter',
         'new_link'      => false,
         'numrows'       => true,
@@ -90,7 +90,7 @@ class DB_mysqli extends DB_common
      * A mapping of native error codes to DB error codes
      * @var array
      */
-    var $errorcode_map = array(
+    public $errorcode_map = array(
         1004 => DB_ERROR_CANNOT_CREATE,
         1005 => DB_ERROR_CANNOT_CREATE,
         1006 => DB_ERROR_CANNOT_CREATE,
@@ -124,13 +124,13 @@ class DB_mysqli extends DB_common
      * The raw database connection created by PHP
      * @var resource
      */
-    var $connection;
+    public $connection;
 
     /**
      * The DSN information for connecting to a database
      * @var array
      */
-    var $dsn = array();
+    public $dsn = array();
 
 
     /**
@@ -138,7 +138,7 @@ class DB_mysqli extends DB_common
      * @var bool
      * @access private
      */
-    var $autocommit = true;
+    public $autocommit = true;
 
     /**
      * The quantity of transactions begun
@@ -149,7 +149,7 @@ class DB_mysqli extends DB_common
      * @var integer
      * @access private
      */
-    var $transaction_opcount = 0;
+    public $transaction_opcount = 0;
 
     /**
      * The database specified in the DSN
@@ -159,7 +159,7 @@ class DB_mysqli extends DB_common
      * @var string
      * @access private
      */
-    var $_db = '';
+    public $_db = '';
 
     /**
      * Array for converting MYSQLI_*_FLAG constants to text values
@@ -167,7 +167,7 @@ class DB_mysqli extends DB_common
      * @access public
      * @since  Property available since Release 1.6.5
      */
-    var $mysqli_flags = array(
+    public $mysqli_flags = array(
         MYSQLI_NOT_NULL_FLAG        => 'not_null',
         MYSQLI_PRI_KEY_FLAG         => 'primary_key',
         MYSQLI_UNIQUE_KEY_FLAG      => 'unique_key',
@@ -189,7 +189,7 @@ class DB_mysqli extends DB_common
      * @access public
      * @since  Property available since Release 1.6.5
      */
-    var $mysqli_types = array(
+    public $mysqli_types = array(
         MYSQLI_TYPE_DECIMAL     => 'decimal',
         MYSQLI_TYPE_TINY        => 'tinyint',
         MYSQLI_TYPE_SHORT       => 'int',
@@ -220,22 +220,6 @@ class DB_mysqli extends DB_common
         246                     => 'decimal',
     );
 
-
-    // }}}
-    // {{{ constructor
-
-    /**
-     * This constructor calls <kbd>$this->DB_common()</kbd>
-     *
-     * @return void
-     */
-    function __construct()
-    {
-        parent::__construct();
-    }
-
-    // }}}
-    // {{{ connect()
 
     /**
      * Connect to the database server, log in and open the database
@@ -283,7 +267,7 @@ class DB_mysqli extends DB_common
      *
      * @return int  DB_OK on success. A DB_Error object on failure.
      */
-    function connect($dsn, $persistent = false)
+    public function connect($dsn, $persistent = false)
     {
         if (!PEAR::loadExtension('mysqli')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
@@ -359,7 +343,7 @@ class DB_mysqli extends DB_common
      *
      * @return bool  TRUE on success, FALSE on failure
      */
-    function disconnect()
+    public function disconnect()
     {
         $ret = @mysqli_close($this->connection);
         $this->connection = null;
@@ -378,7 +362,7 @@ class DB_mysqli extends DB_common
      *                + the DB_OK constant for other successful queries
      *                + a DB_Error object on failure
      */
-    function simpleQuery($query)
+    public function simpleQuery($query)
     {
         $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
@@ -420,7 +404,7 @@ class DB_mysqli extends DB_common
      * @return false
      * @access public
      */
-    function nextResult($result)
+    public function nextResult($result)
     {
         return false;
     }
@@ -448,7 +432,7 @@ class DB_mysqli extends DB_common
      *
      * @see DB_result::fetchInto()
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
+    public function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum !== null) {
             if (!@mysqli_data_seek($result, $rownum)) {
@@ -496,7 +480,7 @@ class DB_mysqli extends DB_common
      *
      * @see DB_result::free()
      */
-    function freeResult($result)
+    public function freeResult($result)
     {
        if (!$result instanceof mysqli_result) {
             return false;
@@ -521,7 +505,7 @@ class DB_mysqli extends DB_common
      *
      * @see DB_result::numCols()
      */
-    function numCols($result)
+    public function numCols($result)
     {
         $cols = @mysqli_num_fields($result);
         if (!$cols) {
@@ -546,7 +530,7 @@ class DB_mysqli extends DB_common
      *
      * @see DB_result::numRows()
      */
-    function numRows($result)
+    public function numRows($result)
     {
         $rows = @mysqli_num_rows($result);
         if ($rows === null) {
@@ -566,7 +550,7 @@ class DB_mysqli extends DB_common
      * @return int  DB_OK on success.  A DB_Error object if the driver
      *               doesn't support auto-committing transactions.
      */
-    function autoCommit($onoff = false)
+    public function autoCommit($onoff = false)
     {
         // XXX if $this->transaction_opcount > 0, we should probably
         // issue a warning here.
@@ -582,7 +566,7 @@ class DB_mysqli extends DB_common
      *
      * @return int  DB_OK on success.  A DB_Error object on failure.
      */
-    function commit()
+    public function commit()
     {
         if ($this->transaction_opcount > 0) {
             if ($this->_db) {
@@ -608,7 +592,7 @@ class DB_mysqli extends DB_common
      *
      * @return int  DB_OK on success.  A DB_Error object on failure.
      */
-    function rollback()
+    public function rollback()
     {
         if ($this->transaction_opcount > 0) {
             if ($this->_db) {
@@ -636,7 +620,7 @@ class DB_mysqli extends DB_common
      *
      * @return int  the number of rows.  A DB_Error object on failure.
      */
-    function affectedRows()
+    public function affectedRows()
     {
         if ($this->_last_query_manip) {
             return @mysqli_affected_rows($this->connection);
@@ -661,7 +645,7 @@ class DB_mysqli extends DB_common
      * @see DB_common::nextID(), DB_common::getSequenceName(),
      *      DB_mysqli::createSequence(), DB_mysqli::dropSequence()
      */
-    function nextId($seq_name, $ondemand = true)
+    public function nextId($seq_name, $ondemand = true)
     {
         $seqname = $this->getSequenceName($seq_name);
         do {
@@ -747,7 +731,7 @@ class DB_mysqli extends DB_common
      * @see DB_common::createSequence(), DB_common::getSequenceName(),
      *      DB_mysqli::nextID(), DB_mysqli::dropSequence()
      */
-    function createSequence($seq_name)
+    public function createSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
         $res = $this->query('CREATE TABLE ' . $seqname
@@ -773,7 +757,7 @@ class DB_mysqli extends DB_common
      * @see DB_common::dropSequence(), DB_common::getSequenceName(),
      *      DB_mysql::nextID(), DB_mysql::createSequence()
      */
-    function dropSequence($seq_name)
+    public function dropSequence($seq_name)
     {
         return $this->query('DROP TABLE ' . $this->getSequenceName($seq_name));
     }
@@ -791,7 +775,7 @@ class DB_mysqli extends DB_common
      *
      * @access private
      */
-    function _BCsequence($seqname)
+    public function _BCsequence($seqname)
     {
         // Obtain a user-level lock... this will release any previous
         // application locks, but unlike LOCK TABLES, it does not abort
@@ -847,7 +831,7 @@ class DB_mysqli extends DB_common
      * @see DB_common::quoteIdentifier()
      * @since Method available since Release 1.6.0
      */
-    function quoteIdentifier($str)
+    public function quoteIdentifier($str)
     {
         return '`' . str_replace('`', '``', $str) . '`';
     }
@@ -865,7 +849,7 @@ class DB_mysqli extends DB_common
      * @see DB_common::quoteSmart()
      * @since Method available since Release 1.6.0
      */
-    function escapeSimple($str)
+    public function escapeSimple($str)
     {
         return @mysqli_real_escape_string($this->connection, $str);
     }
@@ -889,7 +873,7 @@ class DB_mysqli extends DB_common
      *
      * @access protected
      */
-    function modifyLimitQuery($query, $from, $count, $params = array())
+    public function modifyLimitQuery($query, $from, $count, $params = array())
     {
         if (DB::isManip($query) || $this->_next_query_manip) {
             return $query . " LIMIT $count";
@@ -913,7 +897,7 @@ class DB_mysqli extends DB_common
      * @see DB_common::raiseError(),
      *      DB_mysqli::errorNative(), DB_common::errorCode()
      */
-    function mysqliRaiseError($errno = null)
+    public function mysqliRaiseError($errno = null)
     {
         if ($errno === null) {
             if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
@@ -941,7 +925,7 @@ class DB_mysqli extends DB_common
      *
      * @return int  the DBMS' error code
      */
-    function errorNative()
+    public function errorNative()
     {
         return @mysqli_errno($this->connection);
     }
@@ -964,7 +948,7 @@ class DB_mysqli extends DB_common
      *
      * @see DB_common::setOption()
      */
-    function tableInfo($result, $mode = null)
+    public function tableInfo($result, $mode = null)
     {
         if (is_string($result)) {
             // Fix for bug #11580.
@@ -1069,7 +1053,7 @@ class DB_mysqli extends DB_common
      * @access protected
      * @see DB_common::getListOf()
      */
-    function getSpecialQuery($type)
+    public function getSpecialQuery($type)
     {
         switch ($type) {
             case 'tables':
@@ -1085,7 +1069,7 @@ class DB_mysqli extends DB_common
 
     // }}}
 
-    function lastInsertId() {
+    public function lastInsertId() {
         return mysqli_insert_id($this->connection);
     }
 

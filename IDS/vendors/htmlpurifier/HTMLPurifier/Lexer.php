@@ -85,7 +85,7 @@ class HTMLPurifier_Lexer
             $inst = $lexer;
         } else {
 
-            if (is_null($lexer)) { do {
+            if (null === $lexer) { do {
                 // auto-detection algorithm
 
                 if ($needs_tracking) {

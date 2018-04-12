@@ -47,7 +47,7 @@ class HTML_QuickForm_header extends HTML_QuickForm_static
     * @access public
     * @return void
     */
-    function __construct($elementName = null, $text = null)
+    public function __construct($elementName = null, $text = null)
     {
         parent::__construct($elementName, null, $text);
         $this->_type = 'header';
@@ -63,7 +63,7 @@ class HTML_QuickForm_header extends HTML_QuickForm_static
     * @access public
     * @return void 
     */
-    function accept(&$renderer)
+    public function accept(&$renderer)
     {
         $renderer->renderHeader($this);
     } // end func accept

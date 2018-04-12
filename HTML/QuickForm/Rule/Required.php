@@ -45,7 +45,7 @@ class HTML_QuickForm_Rule_Required extends HTML_QuickForm_Rule
      * @access    public
      * @return    boolean   true if value is not empty
      */
-    function validate($value, $options = null)
+    public function validate($value, $options = null)
     {
         if ( is_array( $value ) ) {
             // check if file type, if so permit empty type
@@ -77,7 +77,7 @@ class HTML_QuickForm_Rule_Required extends HTML_QuickForm_Rule
     } // end func validate
 
 
-    function getValidationScript($options = null)
+    public function getValidationScript($options = null)
     {
         return array('', "{jsVar} == ''");
     } // end func getValidationScript

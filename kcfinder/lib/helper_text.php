@@ -20,7 +20,7 @@ class text {
   * @param string $string
   * @return string */
 
-    static function clearWhitespaces($string) {
+    public static function clearWhitespaces($string) {
         return trim(preg_replace('/\s+/s', " ", $string));
     }
 
@@ -28,7 +28,7 @@ class text {
   * @param string $string
   * @return string */
 
-    static function htmlValue($string) {
+    public static function htmlValue($string) {
         return
             str_replace('"', "&quot;",
             str_replace("'", '&#39;',
@@ -41,7 +41,7 @@ class text {
   * @param string $string
   * @return string */
 
-    static function jsValue($string) {
+    public static function jsValue($string) {
         return
             preg_replace('/\r?\n/', "\\n",
             str_replace('"', "\\\"",

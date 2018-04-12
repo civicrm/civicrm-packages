@@ -64,78 +64,78 @@ include_once 'ofc_menu.php';
 
 class open_flash_chart
 {
-	function __construct()
+	public function __construct()
 	{
 		//$this->title = new title( "Many data lines" );
 		$this->elements = array();
 	}
 	
-	function set_title( $t )
+	public function set_title( $t )
 	{
 		$this->title = $t;
 	}
 	
-	function set_x_axis( $x )
+	public function set_x_axis( $x )
 	{
 		$this->x_axis = $x;	
 	}
 	
-	function set_y_axis( $y )
+	public function set_y_axis( $y )
 	{
 		$this->y_axis = $y;
 	}
 	
-	function add_y_axis( $y )
+	public function add_y_axis( $y )
 	{
 		$this->y_axis = $y;
 	}
 
-	function set_y_axis_right( $y )
+	public function set_y_axis_right( $y )
 	{
 		$this->y_axis_right = $y;
 	}
 	
-	function add_element( $e )
+	public function add_element( $e )
 	{
 		$this->elements[] = $e;
 	}
 	
-	function set_x_legend( $x )
+	public function set_x_legend( $x )
 	{
 		$this->x_legend = $x;
 	}
 	
-	function set_legend( $legend )
+	public function set_legend( $legend )
 	{
 		$this->legend = $legend;
 	}
 
-	function set_y_legend( $y )
+	public function set_y_legend( $y )
 	{
 		$this->y_legend = $y;
 	}
 	
-	function set_bg_colour( $colour )
+	public function set_bg_colour( $colour )
 	{
 		$this->bg_colour = $colour;	
 	}
 	
-	function set_inner_bg_colour( $colour )
+	public function set_inner_bg_colour( $colour )
 	{
 		$this->inner_bg_colour = $colour;	
 	}
 	
-	function set_inner_bg_grad( $colour )
+	public function set_inner_bg_grad( $colour )
 	{
 		$this->inner_bg_grad = $colour;	
 	}
 	
-	function set_radar_axis( $radar )
+	public function set_radar_axis( $radar )
 	{
 		$this->radar_axis = $radar;
 	}
 	
-	function set_tooltip( $tooltip )
+	public function set_tooltip( $tooltip )
 	{
 		$this->tooltip = $tooltip;	
 	}
@@ -151,7 +151,7 @@ class open_flash_chart
 	 *
 	 * This needs a bit of love and attention
 	 */
-	function set_number_format($num_decimals, $is_fixed_num_decimals_forced, $is_decimal_separator_comma, $is_thousand_separator_disabled )
+	public function set_number_format($num_decimals, $is_fixed_num_decimals_forced, $is_decimal_separator_comma, $is_thousand_separator_disabled )
 	{
 		$this->num_decimals = $num_decimals;
 		$this->is_fixed_num_decimals_forced = $is_fixed_num_decimals_forced;
@@ -164,12 +164,12 @@ class open_flash_chart
 	 * 
 	 * @param $m as ofc_menu
 	 */
-	function set_menu($m)
+	public function set_menu($m)
 	{
 		$this->menu = $m;
 	}
 	
-	function toString()
+	public function toString()
 	{
 		if (function_exists('json_encode'))
 		{
@@ -182,7 +182,7 @@ class open_flash_chart
 		}
 	}
 	
-	function toPrettyString()
+	public function toPrettyString()
 	{
 		return json_format( $this->toString() );
 	}

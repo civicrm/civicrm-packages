@@ -20,7 +20,7 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
 
         $scheme_obj = $uri->getSchemeObj($config, $context);
         if (!$scheme_obj) return true; // ignore unknown schemes, maybe another postfilter did it
-        if (is_null($uri->host) || empty($scheme_obj->browsable)) {
+        if (null === $uri->host || empty($scheme_obj->browsable)) {
             return true;
         }
         // don't redirect if target host is our host

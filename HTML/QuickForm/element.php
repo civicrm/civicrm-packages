@@ -50,7 +50,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @since     1.3
      * @access    private
      */
-    var $_label = '';
+    public $_label = '';
 
     /**
      * Form element type
@@ -58,7 +58,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @since     1.0
      * @access    private
      */
-    var $_type = '';
+    public $_type = '';
 
     /**
      * Flag to tell if element is frozen
@@ -66,7 +66,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @since     1.0
      * @access    private
      */
-    var $_flagFrozen = false;
+    public $_flagFrozen = false;
 
     /**
      * Does the element support persistant data when frozen
@@ -74,7 +74,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @since     1.3
      * @access    private
      */
-    var $_persistantFreeze = false;
+    public $_persistantFreeze = false;
     
     // }}}
     // {{{ constructor
@@ -89,7 +89,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $elementLabel=null, $attributes=null)
+    public function __construct($elementName=null, $elementLabel=null, $attributes=null)
     {
         parent::__construct($attributes);
         if (isset($elementName)) {
@@ -110,7 +110,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    float
      */
-    function apiVersion()
+    public function apiVersion()
     {
         return 3.2;
     } // end func apiVersion
@@ -125,7 +125,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    string
      */
-    function getType()
+    public function getType()
     {
         return $this->_type;
     } // end func getType
@@ -141,7 +141,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    void
      */
-    function setName($name)
+    public function setName($name)
     {
         // interface method
     } //end func setName
@@ -156,7 +156,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    string
      */
-    function getName()
+    public function getName()
     {
         // interface method
     } //end func getName
@@ -172,7 +172,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    void
      */
-    function setValue($value)
+    public function setValue($value)
     {
         // interface
     } // end func setValue
@@ -187,7 +187,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    mixed
      */
-    function getValue()
+    public function getValue()
     {
         // interface
         return null;
@@ -202,7 +202,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    void
      */
-    function freeze()
+    public function freeze()
     {
         $this->_flagFrozen = true;
     } //end func freeze
@@ -217,7 +217,7 @@ class HTML_QuickForm_element extends HTML_Common
     * @return void
     * @since  3.2.4
     */
-    function unfreeze()
+    public function unfreeze()
     {
         $this->_flagFrozen = false;
     }
@@ -232,7 +232,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    string
      */
-    function getFrozenHtml()
+    public function getFrozenHtml()
     {
         $value = $this->getValue();
         return (strlen($value)? htmlspecialchars($value): '&nbsp;') .
@@ -248,7 +248,7 @@ class HTML_QuickForm_element extends HTML_Common
     * @access private
     * @return string
     */
-    function _getPersistantData()
+    public function _getPersistantData()
     {
         if (!$this->_persistantFreeze) {
             return '';
@@ -272,7 +272,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    bool
      */
-    function isFrozen()
+    public function isFrozen()
     {
         return $this->_flagFrozen;
     } // end func isFrozen
@@ -289,7 +289,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    void
      */
-    function setPersistantFreeze($persistant=false)
+    public function setPersistantFreeze($persistant=false)
     {
         $this->_persistantFreeze = $persistant;
     } //end func setPersistantFreeze
@@ -305,7 +305,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    void
      */
-    function setLabel($label)
+    public function setLabel($label)
     {
         $this->_label = $label;
     } //end func setLabel
@@ -320,7 +320,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    string
      */
-    function getLabel()
+    public function getLabel()
     {
         return $this->_label;
     } //end func getLabel
@@ -335,7 +335,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    private
      * @return    mixed
      */
-    function _findValue(&$values)
+    public function _findValue(&$values)
     {
         if (empty($values)) {
             return null;
@@ -367,7 +367,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @access    public
      * @return    void
      */
-    function onQuickFormEvent($event, $arg, &$caller)
+    public function onQuickFormEvent($event, $arg, &$caller)
     {
         switch ($event) {
             case 'createElement':
@@ -409,7 +409,7 @@ class HTML_QuickForm_element extends HTML_Common
     * @access public
     * @return void 
     */
-    function accept(&$renderer, $required=false, $error=null)
+    public function accept(&$renderer, $required=false, $error=null)
     {
         $renderer->renderElement($this, $required, $error);
     } // end func accept
@@ -426,7 +426,7 @@ class HTML_QuickForm_element extends HTML_Common
     * @access private
     * @return void 
     */
-    function _generateId()
+    public function _generateId()
     {
         static $idx = 1;
 
@@ -446,7 +446,7 @@ class HTML_QuickForm_element extends HTML_Common
     * @access public
     * @return mixed
     */
-    function exportValue(&$submitValues, $assoc = false)
+    public function exportValue(&$submitValues, $assoc = false)
     {
         $value = $this->_findValue($submitValues);
         if (null === $value) {
@@ -466,7 +466,7 @@ class HTML_QuickForm_element extends HTML_Common
     * @access private
     * @return mixed
     */
-    function _prepareValue($value, $assoc)
+    public function _prepareValue($value, $assoc)
     {
         if (null === $value) {
             return null;

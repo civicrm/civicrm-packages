@@ -27,7 +27,7 @@ class Log_syslog extends Log
      * @var integer
      * @access private
      */
-    var $_name = LOG_SYSLOG;
+    public $_name = LOG_SYSLOG;
 
     /**
      * Should we inherit the current syslog connection for this process, or
@@ -35,7 +35,7 @@ class Log_syslog extends Log
      * @var boolean
      * @access private
      */
-    var $_inherit = false;
+    public $_inherit = false;
 
     /**
      * Constructs a new syslog object.
@@ -46,7 +46,7 @@ class Log_syslog extends Log
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function __construct($name, $ident = '', $conf = array(),
+    public function __construct($name, $ident = '', $conf = array(),
                         $level = PEAR_LOG_DEBUG)
     {
         /* Ensure we have a valid integer value for $name. */
@@ -70,7 +70,7 @@ class Log_syslog extends Log
      * been opened.  This is implicitly called by log(), if necessary.
      * @access public
      */
-    function open()
+    public function open()
     {
         if (!$this->_opened) {
             $this->_opened = openlog($this->_ident, LOG_PID, $this->_name);
@@ -83,7 +83,7 @@ class Log_syslog extends Log
      * Closes the connection to the system logger, if it is open.
      * @access public
      */
-    function close()
+    public function close()
     {
         if ($this->_opened && !$this->_inherit) {
             closelog();
@@ -106,7 +106,7 @@ class Log_syslog extends Log
      * @return boolean  True on success or false on failure.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {
@@ -155,7 +155,7 @@ class Log_syslog extends Log
      *
      * @access private
      */
-    function _toSyslog($priority)
+    public function _toSyslog($priority)
     {
         static $priorities = array(
             PEAR_LOG_EMERG   => LOG_EMERG,

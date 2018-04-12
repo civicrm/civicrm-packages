@@ -13,7 +13,7 @@
  */
 class BolmerCMS{
     protected static $authenticated = false;
-    static function checkAuth() {
+    public static function checkAuth() {
         $current_cwd = getcwd();
         if ( ! self::$authenticated) {
             define('BOLMER_API_MODE', true);

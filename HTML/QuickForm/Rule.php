@@ -42,7 +42,7 @@ class HTML_QuickForm_Rule
     * @var  string
     * @access   public
     */
-    var $name;
+    public $name;
 
    /**
     * Validates a value
@@ -50,7 +50,7 @@ class HTML_QuickForm_Rule
     * @access public
     * @abstract
     */
-    function validate($value)
+    public function validate($value)
     {
         return true;
     }
@@ -61,7 +61,7 @@ class HTML_QuickForm_Rule
     * @param  string    rule name
     * @access public
     */
-    function setName($ruleName)
+    public function setName($ruleName)
     {
         $this->name = $ruleName;
     }
@@ -74,7 +74,7 @@ class HTML_QuickForm_Rule
      * @return    array     first element is code to setup validation, second is the check itself
      * @abstract
      */
-    function getValidationScript($options = null)
+    public function getValidationScript($options = null)
     {
         return array('', '');
     }

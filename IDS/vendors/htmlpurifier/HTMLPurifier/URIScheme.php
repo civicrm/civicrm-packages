@@ -55,14 +55,14 @@ abstract class HTMLPurifier_URIScheme
         // authority is set
         if (!$this->may_omit_host &&
             // if the scheme is present, a missing host is always in error
-            (!is_null($uri->scheme) && ($uri->host === '' || is_null($uri->host))) ||
+            (null !== $uri->scheme && ($uri->host === '' || null === $uri->host)) ||
             // if the scheme is not present, a *blank* host is in error,
             // since this translates into '///path' which most browsers
             // interpret as being 'http://path'.
-             (is_null($uri->scheme) && $uri->host === '')
+            (null === $uri->scheme && $uri->host === '')
         ) {
             do {
-                if (is_null($uri->scheme)) {
+                if (null === $uri->scheme) {
                     if (substr($uri->path, 0, 2) != '//') {
                         $uri->host = null;
                         break;
@@ -73,7 +73,7 @@ abstract class HTMLPurifier_URIScheme
                 }
                 // first see if we can manually insert a hostname
                 $host = $config->get('URI.Host');
-                if (!is_null($host)) {
+                if (null !== $host) {
                     $uri->host = $host;
                 } else {
                     // we can't do anything sensible, reject the URL.

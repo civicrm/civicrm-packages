@@ -47,7 +47,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @since     1.0
      * @access    private
      */
-    var $_value = null;
+    public $_value = null;
 
     // }}}
     // {{{ constructor
@@ -62,7 +62,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $elementLabel=null, $attributes=null)
+    public function __construct($elementName=null, $elementLabel=null, $attributes=null)
     {
         parent::__construct($elementName, $elementLabel, $attributes);
         $this->_persistantFreeze = true;
@@ -80,7 +80,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function setName($name)
+    public function setName($name)
     {
         $this->updateAttributes(array('name'=>$name));
     } //end func setName
@@ -95,7 +95,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @access    public
      * @return    string
      */
-    function getName()
+    public function getName()
     {
         return $this->getAttribute('name');
     } //end func getName
@@ -111,7 +111,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function setValue($value)
+    public function setValue($value)
     {
         $this->_value = $value;
     } //end func setValue
@@ -126,7 +126,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @access    public
      * @return    string
      */
-    function getValue()
+    public function getValue()
     {
         return $this->_value;
     } // end func getValue
@@ -142,7 +142,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function setWrap($wrap)
+    public function setWrap($wrap)
     {
         $this->updateAttributes(array('wrap' => $wrap));
     } //end func setWrap
@@ -158,7 +158,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function setRows($rows)
+    public function setRows($rows)
     {
         $this->updateAttributes(array('rows' => $rows));
     } //end func setRows
@@ -174,7 +174,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */ 
-    function setCols($cols)
+    public function setCols($cols)
     {
         $this->updateAttributes(array('cols' => $cols));
     } //end func setCols
@@ -189,7 +189,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @access    public
      * @return    string
      */
-    function toHtml()
+    public function toHtml()
     {
         if ($this->_flagFrozen) {
             return $this->getFrozenHtml();
@@ -212,7 +212,7 @@ class HTML_QuickForm_textarea extends HTML_QuickForm_element
      * @access    public
      * @return    string
      */
-    function getFrozenHtml()
+    public function getFrozenHtml()
     {
         $value = htmlspecialchars($this->getValue());
         if ($this->getAttribute('wrap') == 'off') {

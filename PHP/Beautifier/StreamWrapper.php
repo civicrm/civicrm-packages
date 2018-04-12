@@ -34,20 +34,20 @@
 * @version    Release: 0.1.14
 */
 interface PHP_Beautifier_StreamWrapper_Interface {
-    function stream_open($sPath, $sMode, $iOptions, &$sOpenedPath);
-    function stream_close();
-    function stream_read($iCount);
-    function stream_write($sData);
-    function stream_eof();
-    function stream_tell();
-    function stream_seek($iOffset, $iWhence);
-    function stream_flush();
-    function stream_stat();
-    function unlink($sPath);
-    function dir_opendir($sPath, $iOptions);
-    function dir_readdir();
-    function dir_rewinddir();
-    function dir_closedir();
+    public function stream_open($sPath, $sMode, $iOptions, &$sOpenedPath);
+    public function stream_close();
+    public function stream_read($iCount);
+    public function stream_write($sData);
+    public function stream_eof();
+    public function stream_tell();
+    public function stream_seek($iOffset, $iWhence);
+    public function stream_flush();
+    public function stream_stat();
+    public function unlink($sPath);
+    public function dir_opendir($sPath, $iOptions);
+    public function dir_readdir();
+    public function dir_rewinddir();
+    public function dir_closedir();
 }
 require_once ('StreamWrapper/Tarz.php');
 ?>

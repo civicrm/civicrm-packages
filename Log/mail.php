@@ -33,35 +33,35 @@ class Log_mail extends Log
      * @var string
      * @access private
      */
-    var $_recipients = '';
+    public $_recipients = '';
 
     /**
      * String holding the sender's email address.
      * @var string
      * @access private
      */
-    var $_from = '';
+    public $_from = '';
 
     /**
      * String holding the email's subject.
      * @var string
      * @access private
      */
-    var $_subject = '[Log_mail] Log message';
+    public $_subject = '[Log_mail] Log message';
 
     /**
      * String holding an optional preamble for the log messages.
      * @var string
      * @access private
      */
-    var $_preamble = '';
+    public $_preamble = '';
 
     /**
      * String containing the format of a log line.
      * @var string
      * @access private
      */
-    var $_lineFormat = '%1$s %2$s [%3$s] %4$s';
+    public $_lineFormat = '%1$s %2$s [%3$s] %4$s';
 
     /**
      * String containing the timestamp format.  It will be passed directly to
@@ -70,14 +70,14 @@ class Log_mail extends Log
      * @var string
      * @access private
      */
-    var $_timeFormat = '%b %d %H:%M:%S';
+    public $_timeFormat = '%b %d %H:%M:%S';
 
     /**
      * String holding the mail message body.
      * @var string
      * @access private
      */
-    var $_message = '';
+    public $_message = '';
 
     /**
      * Flag used to indicated that log lines have been written to the message
@@ -85,21 +85,21 @@ class Log_mail extends Log
      * @var boolean
      * @access private
      */
-    var $_shouldSend = false;
+    public $_shouldSend = false;
 
     /**
      * String holding the backend name of PEAR::Mail
      * @var string
      * @access private
      */
-    var $_mailBackend = '';
+    public $_mailBackend = '';
 
     /**
      * Array holding the params for PEAR::Mail
      * @var array
      * @access private
      */
-    var $_mailParams = array();
+    public $_mailParams = array();
 
     /**
      * Constructs a new Log_mail object.
@@ -116,7 +116,7 @@ class Log_mail extends Log
      * @param int    $level     Log messages up to and including this level.
      * @access public
      */
-    function __construct($name, $ident = '', $conf = array(),
+    public function __construct($name, $ident = '', $conf = array(),
                       $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -165,7 +165,7 @@ class Log_mail extends Log
      *
      * @access private
      */
-    function _Log_mail()
+    public function _Log_mail()
     {
         $this->close();
     }
@@ -176,7 +176,7 @@ class Log_mail extends Log
      *
      * @access public
      */
-    function open()
+    public function open()
     {
         if (!$this->_opened) {
             if (!empty($this->_preamble)) {
@@ -195,7 +195,7 @@ class Log_mail extends Log
      *
      * @access public
      */
-    function close()
+    public function close()
     {
         if ($this->_opened) {
             if ($this->_shouldSend && !empty($this->_message)) {
@@ -239,7 +239,7 @@ class Log_mail extends Log
      * @access public
      * @since Log 1.8.2
      */
-    function flush()
+    public function flush()
     {
         /*
          * It's sufficient to simply call close() to flush the output.
@@ -260,7 +260,7 @@ class Log_mail extends Log
      * @return boolean  True on success or false on failure.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {

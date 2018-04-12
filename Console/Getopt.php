@@ -63,7 +63,7 @@ class Console_Getopt {
      * @access public
      *
      */
-    function getopt2($args, $short_options, $long_options = null)
+    public function getopt2($args, $short_options, $long_options = null)
     {
         return Console_Getopt::doGetopt(2, $args, $short_options, $long_options);
     }
@@ -73,7 +73,7 @@ class Console_Getopt {
      * Preserved for backwards compatibility.
      * @see getopt2()
      */    
-    function getopt($args, $short_options, $long_options = null)
+    public function getopt($args, $short_options, $long_options = null)
     {
         return Console_Getopt::doGetopt(1, $args, $short_options, $long_options);
     }
@@ -81,7 +81,7 @@ class Console_Getopt {
     /**
      * The actual implementation of the argument parsing code.
      */
-    function doGetopt($version, $args, $short_options, $long_options = null)
+    public function doGetopt($version, $args, $short_options, $long_options = null)
     {
         // in case you pass directly readPHPArgv() as the first arg
         if (PEAR::isError($args)) {
@@ -93,7 +93,7 @@ class Console_Getopt {
         $opts     = array();
         $non_opts = array();
 
-        settype($args, 'array');
+        $args = (array)$args;
 
         if ($long_options) {
             sort($long_options);
@@ -110,7 +110,7 @@ class Console_Getopt {
         }
 
         reset($args);
-        while (list($i, $arg) = each($args)) {
+        foreach ($args as $i => $arg) {
 
             /* The special element '--' means explicit end of
                options. Treat the rest of the arguments as non-options
@@ -125,16 +125,18 @@ class Console_Getopt {
                 break;
             } elseif (strlen($arg) > 1 && $arg{1} == '-') {
                 $error = Console_Getopt::_parseLongOption(substr($arg, 2), $long_options, $opts, $args);
-                if (PEAR::isError($error))
+                if (PEAR::isError($error)) {
                     return $error;
+                }
             } elseif ($arg == '-') {
                 // - is stdin
                 $non_opts = array_merge($non_opts, array_slice($args, $i));
                 break;
             } else {
                 $error = Console_Getopt::_parseShortOption(substr($arg, 1), $short_options, $opts, $args);
-                if (PEAR::isError($error))
+                if (PEAR::isError($error)) {
                     return $error;
+                }
             }
         }
 
@@ -145,7 +147,7 @@ class Console_Getopt {
      * @access private
      *
      */
-    function _parseShortOption($arg, $short_options, &$opts, &$args)
+    public function _parseShortOption($arg, $short_options, &$opts, &$args)
     {
         for ($i = 0; $i < strlen($arg); $i++) {
             $opt = $arg{$i};
@@ -190,7 +192,7 @@ class Console_Getopt {
      * @access private
      *
      */
-    function _isShortOpt($arg)
+    public function _isShortOpt($arg)
     {
         return strlen($arg) == 2 && $arg[0] == '-' && preg_match('/[a-zA-Z]/', $arg[1]);
     }
@@ -199,7 +201,7 @@ class Console_Getopt {
      * @access private
      *
      */
-    function _isLongOpt($arg)
+    public function _isLongOpt($arg)
     {
         return strlen($arg) > 2 && $arg[0] == '-' && $arg[1] == '-' &&
             preg_match('/[a-zA-Z]+$/', substr($arg, 2));
@@ -209,7 +211,7 @@ class Console_Getopt {
      * @access private
      *
      */
-    function _parseLongOption($arg, $long_options, &$opts, &$args)
+    public function _parseLongOption($arg, $long_options, &$opts, &$args)
     {
         @list($opt, $opt_arg) = explode('=', $arg, 2);
         $opt_len = strlen($opt);
@@ -270,7 +272,7 @@ class Console_Getopt {
     * @access public
     * @return mixed the $argv PHP array or PEAR error if not registered
     */
-    function readPHPArgv()
+    public function readPHPArgv()
     {
         global $argv;
         if (!is_array($argv)) {

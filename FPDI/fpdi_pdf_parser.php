@@ -214,12 +214,12 @@ class fpdi_pdf_parser extends pdf_parser
             $box = $page[1][1][$boxIndex];
         }
         
-        if (!is_null($box) && $box[0] == pdf_parser::TYPE_OBJREF) {
+        if (null !== $box && $box[0] == pdf_parser::TYPE_OBJREF) {
             $tmp_box = $this->resolveObject($box);
             $box = $tmp_box[1];
         }
             
-        if (!is_null($box) && $box[0] == pdf_parser::TYPE_ARRAY) {
+        if (null !== $box && $box[0] == pdf_parser::TYPE_ARRAY) {
             $b = $box[1];
             return array(
                 'x' => $b[0][1] / $k,

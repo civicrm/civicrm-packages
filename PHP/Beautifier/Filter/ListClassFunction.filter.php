@@ -69,7 +69,7 @@ class PHP_Beautifier_Filter_ListClassFunction extends PHP_Beautifier_Filter
         $this->addSettingDefinition('list_functions', 'bool', 'List Functions inside the file');
         $this->addSettingDefinition('list_classes', 'bool', 'List Classes inside the file');
     }
-    function t_function($sTag) 
+    public function t_function($sTag)
     {
         if ($this->aInclude['functions']) {
             $sNext = $this->oBeaut->getNextTokenContent(1);
@@ -80,11 +80,11 @@ class PHP_Beautifier_Filter_ListClassFunction extends PHP_Beautifier_Filter
         }
         return PHP_Beautifier_Filter::BYPASS;
     }
-    function includeInList($sTag, $sValue) 
+    public function includeInList($sTag, $sValue)
     {
         $this->aInclude[$sTag] = $sValue;
     }
-    function t_class($sTag) 
+    public function t_class($sTag)
     {
         if ($this->aInclude['classes']) {
             $sClassName = $this->oBeaut->getNextTokenContent(1);
@@ -95,21 +95,21 @@ class PHP_Beautifier_Filter_ListClassFunction extends PHP_Beautifier_Filter
         }
         return PHP_Beautifier_Filter::BYPASS;
     }
-    function t_doc_comment($sTag) 
+    public function t_doc_comment($sTag)
     {
         if (strpos($sTag, 'Class and Function List') !== FALSE) {
             $this->iComment = $this->oBeaut->iCount;
         }
         return PHP_Beautifier_Filter::BYPASS;
     }
-    function t_open_tag($sTag) 
+    public function t_open_tag($sTag)
     {
-        if (is_null($this->iOpenTag)) {
+        if (null === $this->iOpenTag) {
             $this->iOpenTag = $this->oBeaut->iCount;
         }
         return PHP_Beautifier_Filter::BYPASS;
     }
-    function postProcess() 
+    public function postProcess()
     {
         $sNL = $this->oBeaut->sNewLine;
         $aOut = array(

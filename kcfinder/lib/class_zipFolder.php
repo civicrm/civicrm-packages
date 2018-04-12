@@ -20,7 +20,7 @@ class zipFolder {
     protected $root;
     protected $ignored;
 
-    function __construct($file, $folder, $ignored=null) {
+    public function __construct($file, $folder, $ignored=null) {
         $this->zip = new \ZipArchive();
 
         $this->ignored = is_array($ignored)
@@ -41,7 +41,7 @@ class zipFolder {
         $this->zip->close();
     }
 
-    function zip($folder, $parent=null) {
+    public function zip($folder, $parent=null) {
         $full_path = "{$this->root}$parent$folder";
         $zip_path = "$parent$folder";
         $this->zip->addEmptyDir($zip_path);

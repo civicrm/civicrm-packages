@@ -110,7 +110,7 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
      * Open braces in BSD style
      * @param    string  '{'
      */
-    function t_open_brace_bsd($sTag) 
+    public function t_open_brace_bsd($sTag)
     {
         $this->oBeaut->addNewLineIndent();
         $this->oBeaut->add($sTag);
@@ -121,7 +121,7 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
      * Close braces in BSD style
      * @param    string  '}'
      */
-    function t_close_brace_bsd($sTag) 
+    public function t_close_brace_bsd($sTag)
     {
         if ($this->oBeaut->getMode('string_index') or $this->oBeaut->getMode('double_quote')) {
             $this->oBeaut->add($sTag);
@@ -137,7 +137,7 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
      * Open braces in Whitesmiths style
      * @param    string  '{'
      */
-    function t_open_brace_ws($sTag) 
+    public function t_open_brace_ws($sTag)
     {
         $this->oBeaut->addNewLine();
         $this->oBeaut->incIndent();
@@ -149,7 +149,7 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
      * Close braces in Whitesmiths style
      * @param    string  '}'
      */
-    function t_close_brace_ws($sTag) 
+    public function t_close_brace_ws($sTag)
     {
         if ($this->oBeaut->getMode('string_index') or $this->oBeaut->getMode('double_quote')) {
             $this->oBeaut->add($sTag);
@@ -165,7 +165,7 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
      * Close braces in GNU style
      * @param    string  '}'
      */
-    function t_close_brace_gnu($sTag) 
+    public function t_close_brace_gnu($sTag)
     {
         if ($this->oBeaut->getMode('string_index') or $this->oBeaut->getMode('double_quote')) {
             $this->oBeaut->add($sTag);
@@ -183,7 +183,7 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
      * Open braces in GNU style
      * @param    string  '{'
      */
-    function t_open_brace_gnu($sTag) 
+    public function t_open_brace_gnu($sTag)
     {
         $iHalfSpace = floor($this->oBeaut->iIndentNumber/2);
         $this->oBeaut->addNewLineIndent();
@@ -197,7 +197,7 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
      * @param    string  else or elseif
      * @return   void|PHP_Beautifier_Filter::BYPASS
      */
-    function t_else($sTag) 
+    public function t_else($sTag)
     {
         if ($this->oBeaut->getPreviousTokenContent() == '}') {
             $this->oBeaut->removeWhitespace();

@@ -82,7 +82,7 @@ class DB_Table_Base
      * @var    object
      * @access public
      */
-    var $db = null;
+    public $db;
 
     /**
      * The backend type, which must be 'db' or 'mdb2'
@@ -90,7 +90,7 @@ class DB_Table_Base
      * @var    string
      * @access public
      */
-    var $backend = null;
+    public $backend;
 
     /**
     * If there is an error on instantiation, this captures that error.
@@ -108,7 +108,7 @@ class DB_Table_Base
     * @var    object PEAR_Error
     * @access public
     */
-    var $error = null;
+    public $error;
 
     /**
      * Baseline SELECT maps for buildSQL() and select*() methods.
@@ -116,7 +116,7 @@ class DB_Table_Base
      * @var    array
      * @access public
      */
-    var $sql = array();
+    public $sql = array();
 
     /**
      * Format of rows in sets returned by the select() method 
@@ -137,7 +137,7 @@ class DB_Table_Base
      * @var    int
      * @access public
      */
-    var $fetchmode = null;
+    public $fetchmode;
 
     /**
      * Class of objects to use for rows returned as objects by select()
@@ -151,7 +151,7 @@ class DB_Table_Base
      * @var    string
      * @access public
      */
-    var $fetchmode_object_class = null;
+    public $fetchmode_object_class;
 
     /**
      * Upper case name of primary subclass, 'DB_TABLE' or 'DB_TABLE_DATABASE'
@@ -165,7 +165,7 @@ class DB_Table_Base
      * @var    string
      * @access private
      */
-     var $_primary_subclass = null;
+     public $_primary_subclass;
 
     // }}}
     // {{{ Methods
@@ -183,7 +183,7 @@ class DB_Table_Base
      * @access public
      * @static
      */
-    function &throwError($code, $extra = null)
+    public function &throwError($code, $extra = null)
     {
         // get the error message text based on the error code
         $index = '_' . $this->_primary_subclass;
@@ -212,7 +212,7 @@ class DB_Table_Base
      * @return void
      * @access public
      */
-    function setErrorMessage($code, $message = null) {
+    public function setErrorMessage($code, $message = null) {
         $index = '_' . $this->_primary_subclass;
         if (is_array($code)) {
             foreach ($code as $single_code => $single_message) {
@@ -237,7 +237,7 @@ class DB_Table_Base
      *
      * @access public
      */
-    function buildSQL($query, $filter = null, $order = null, 
+    public function buildSQL($query, $filter = null, $order = null,
                               $start = null, $count = null)
     {
 
@@ -289,7 +289,7 @@ class DB_Table_Base
             $s[] = 'HAVING '. $query['having'];
         }
         // If $order parameter is set, override 'order' element
-        if (!is_null($order)) {
+        if (null !== $order) {
             $s[] = 'ORDER BY '. $order;
         } elseif (isset($query['order'])) {
             $s[] = 'ORDER BY ' . $query['order'];
@@ -297,7 +297,7 @@ class DB_Table_Base
         $cmd = implode("\n", $s);
         
         // add LIMIT if requested
-        if (!is_null($start) && !is_null($count)) {
+        if (null !== $start && null !== $count) {
             $db =& $this->db;
             if ($this->backend == 'mdb2') {
                 $db->setLimit($count, $start);
@@ -337,7 +337,7 @@ class DB_Table_Base
      * @see DB_Table_Base::_swapModes()
      * @access public
      */
-    function select($query, $filter = null, $order = null,
+    public function select($query, $filter = null, $order = null,
                             $start = null, $count = null, $params = array())
     {
 
@@ -394,7 +394,7 @@ class DB_Table_Base
         $this->_swapModes($fetchmode, $fetchmode_object_class);
 
         // make sure params is an array
-        if (!is_null($params)) {
+        if (null !== $params) {
             $params = (array) $params;
         }
 
@@ -441,7 +441,7 @@ class DB_Table_Base
      * @see DB_Table::_swapModes()
      * @access public
      */
-    function selectResult($query, $filter = null, $order = null,
+    public function selectResult($query, $filter = null, $order = null,
                    $start = null, $count = null, $params = array())
     {
         // Is $query a query array or a key of $this->sql ?
@@ -489,7 +489,7 @@ class DB_Table_Base
         $this->_swapModes($fetchmode, $fetchmode_object_class);
 
         // make sure params is an array
-        if (!is_null($params)) {
+        if (null !== $params) {
             $params = (array) $params;
         }
 
@@ -535,7 +535,7 @@ class DB_Table_Base
      * @see DB_Table::select()
      * @access public
      */
-    function selectCount($query, $filter = null, $order = null,
+    public function selectCount($query, $filter = null, $order = null,
                        $start = null, $count = null, $params = array())
     {
 
@@ -624,7 +624,7 @@ class DB_Table_Base
      * @return void
      * @access private
      */
-    function _swapModes($new_mode, $new_class)
+    public function _swapModes($new_mode, $new_class)
     {
         // get the old (current) mode and class
         $db =& $this->db;
@@ -637,18 +637,18 @@ class DB_Table_Base
 
         // don't need to swap anything if the new modes are both
         // null or if the old and new modes already match.
-        if ((is_null($new_mode) && is_null($new_class)) ||
+        if ((null === $new_mode && null === $new_class) ||
             ($old_mode == $new_mode && $old_class == $new_class)) {
             return;
         }
 
         // set the default new mode
-        if (is_null($new_mode)) {
+        if (null === $new_mode) {
             $new_mode = $old_mode;
         }
 
         // set the default new class
-        if (is_null($new_class)) {
+        if (null === $new_class) {
             $new_class = $old_class;
         }
 
@@ -701,7 +701,7 @@ class DB_Table_Base
      *                values of columns named by keys.
      * @access public
      */
-    function buildFilter($data, $match = 'simple')
+    public function buildFilter($data, $match = 'simple')
     {
         // Check $match type value
         if (!in_array($match, array('simple', 'partial', 'full'))) {
@@ -714,7 +714,7 @@ class DB_Table_Base
         }
         $filter = array();
         foreach ($data as $key => $value) {
-            if (!is_null($value)) {
+            if (null !== $value) {
                 if ($match == 'full' && isset($found_null)) {
                     return $this->throwError(
                               DB_TABLE_DATABASE_ERR_FULL_KEY);
@@ -752,4 +752,4 @@ class DB_Table_Base
  * End:
  */
 
-?>
+

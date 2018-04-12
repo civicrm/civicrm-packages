@@ -27,7 +27,7 @@ class Log_null extends Log
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function __construct($name, $ident = '', $conf = array(),
+    public function __construct($name, $ident = '', $conf = array(),
 					  $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -41,7 +41,7 @@ class Log_null extends Log
      * @access  public
      * @since   Log 1.9.6
      */
-    function open()
+    public function open()
     {
         $this->_opened = true;
         return true;
@@ -53,7 +53,7 @@ class Log_null extends Log
      * @access  public
      * @since   Log 1.9.6
      */
-    function close()
+    public function close()
     {
         $this->_opened = false;
         return true;
@@ -71,7 +71,7 @@ class Log_null extends Log
      * @return boolean  True on success or false on failure.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {

@@ -45,7 +45,7 @@ class HTML_QuickForm_Rule_Range extends HTML_QuickForm_Rule
      * @access    public
      * @return    boolean   true if value is valid
      */
-    function validate($value, $options)
+    public function validate($value, $options)
     {
         $length = strlen($value);
         switch ($this->name) {
@@ -56,7 +56,7 @@ class HTML_QuickForm_Rule_Range extends HTML_QuickForm_Rule
     } // end func validate
 
 
-    function getValidationScript($options = null)
+    public function getValidationScript($options = null)
     {
         switch ($this->name) {
             case 'minlength': 

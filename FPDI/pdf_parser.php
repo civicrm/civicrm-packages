@@ -432,7 +432,7 @@ class pdf_parser
      */
     protected function _readValue(&$c, $token = null)
     {
-        if (is_null($token)) {
+        if (null === $token) {
             $token = $this->_readToken($c);
         }
 

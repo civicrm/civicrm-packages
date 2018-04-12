@@ -422,7 +422,7 @@ class HTMLPurifier_Config
             // check preconditions
             $def = null;
             if ($optimized) {
-                if (is_null($this->get($type . '.DefinitionID'))) {
+                if (null === $this->get($type . '.DefinitionID')) {
                     // fatally error out if definition ID not set
                     throw new HTMLPurifier_Exception("Cannot retrieve raw version without specifying %$type.DefinitionID");
                 }
@@ -471,7 +471,7 @@ class HTMLPurifier_Config
             }
             // check invariants for creation
             if (!$optimized) {
-                if (!is_null($this->get($type . '.DefinitionID'))) {
+                if (null !== $this->get($type . '.DefinitionID')) {
                     if ($this->chatty) {
                         $this->triggerError("Due to a documentation error in previous version of HTML Purifier, your definitions are not being cached.  If this is OK, you can remove the %$type.DefinitionRev and %$type.DefinitionID declaration.  Otherwise, modify your code to use maybeGetRawDefinition, and test if the returned value is null before making any edits (if it is null, that means that a cached version is available, and no raw operations are necessary).  See <a href='http://htmlpurifier.org/docs/enduser-customize.html#optimized'>Customize</a> for more details", E_USER_WARNING);
                     } else {

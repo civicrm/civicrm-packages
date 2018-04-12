@@ -57,7 +57,7 @@ class Validate_Finance
      * @since     0.1
      * @return    boolean   true if IBAN is okay
      */
-    function iban($iban = '')
+    public function iban($iban = '')
     {
         return Validate_Finance_IBAN::validate($iban);
     } // end func iban
@@ -70,7 +70,7 @@ class Validate_Finance
      * @since     0.1
      * @return    boolean   true if Euro banknote id is okay
      */
-    function banknoteEuro($banknote = '')
+    public function banknoteEuro($banknote = '')
     {
         $euro_countrycode = array('J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 

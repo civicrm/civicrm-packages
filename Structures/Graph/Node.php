@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
 // +-----------------------------------------------------------------------------+
-// | Copyright (c) 2003 Sérgio Gonçalves Carvalho                                |
+// | Copyright (c) 2003 Sï¿½rgio Gonï¿½alves Carvalho                                |
 // +-----------------------------------------------------------------------------+
 // | This file is part of Structures_Graph.                                      |
 // |                                                                             |
@@ -20,7 +20,7 @@
 // | Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA                    |
 // | 02111-1307 USA                                                              |
 // +-----------------------------------------------------------------------------+
-// | Author: Sérgio Carvalho <sergio.carvalho@portugalmail.com>                  |
+// | Author: Sï¿½rgio Carvalho <sergio.carvalho@portugalmail.com>                  |
 // +-----------------------------------------------------------------------------+
 //
 /**
@@ -49,8 +49,8 @@ require_once 'Structures/Graph.php';
  * Regular data is accessed via getData and setData. Key indexed data is accessed
  * via getMetadata and setMetadata.
  *
- * @author		Sérgio Carvalho <sergio.carvalho@portugalmail.com> 
- * @copyright	(c) 2004 by Sérgio Carvalho
+ * @author		Sï¿½rgio Carvalho <sergio.carvalho@portugalmail.com> 
+ * @copyright	(c) 2004 by Sï¿½rgio Carvalho
  * @package Structures_Graph
  */
 /* }}} */
@@ -59,13 +59,13 @@ class Structures_Graph_Node {
     /** 
      * @access private 
      */
-    var $_data = null;
+    public $_data = null;
     /** @access private */
-    var $_metadata = array();
+    public $_metadata = array();
     /** @access private */
-    var $_arcs = array();
+    public $_arcs = array();
     /** @access private */
-    var $_graph = null;
+    public $_graph = null;
     /* }}} */
 
     /* Constructor {{{ */
@@ -75,7 +75,7 @@ class Structures_Graph_Node {
     *
     * @access	public
     */
-    function __construct() {
+    public function __construct() {
     }
     /* }}} */
 
@@ -87,7 +87,7 @@ class Structures_Graph_Node {
     * @return	Structures_Graph	Graph where node is stored
     * @access	public
     */
-    function &getGraph() {
+    public function &getGraph() {
         return $this->_graph;
     }
     /* }}} */
@@ -101,7 +101,7 @@ class Structures_Graph_Node {
     * @see      Structures_Graph::addNode()
     * @access	public
     */
-    function setGraph(&$graph) {
+    public function setGraph(&$graph) {
         $this->_graph =& $graph;
     }
     /* }}} */
@@ -116,7 +116,7 @@ class Structures_Graph_Node {
     * @return	mixed	Data stored in node
     * @access	public
     */
-    function &getData() {
+    public function &getData() {
         return $this->_data;
     }
     /* }}} */
@@ -131,7 +131,7 @@ class Structures_Graph_Node {
     * @return	mixed	Data to store in node
     * @access	public
     */
-    function setData($data) {
+    public function setData($data) {
         $this->_data =& $data;
     }
     /* }}} */
@@ -148,7 +148,7 @@ class Structures_Graph_Node {
     * @return	boolean	 
     * @access	public
     */
-    function metadataKeyExists($key) {
+    public function metadataKeyExists($key) {
         return array_key_exists($key, $this->_metadata);
     }
     /* }}} */
@@ -168,7 +168,7 @@ class Structures_Graph_Node {
     * @see      metadataKeyExists
     * @access	public
     */
-    function &getMetadata($key, $nullIfNonexistent = false) {
+    public function &getMetadata($key, $nullIfNonexistent = false) {
         if (array_key_exists($key, $this->_metadata)) {
             return $this->_metadata[$key];
         } else {
@@ -195,7 +195,7 @@ class Structures_Graph_Node {
     * @param    string  Key
     * @access	public
     */
-    function unsetMetadata($key) {
+    public function unsetMetadata($key) {
         if (array_key_exists($key, $this->_metadata)) unset($this->_metadata[$key]);
     }
     /* }}} */
@@ -213,14 +213,14 @@ class Structures_Graph_Node {
     * @param    mixed   Data 
     * @access	public
     */
-    function setMetadata($key, $data) {
+    public function setMetadata($key, $data) {
         $this->_metadata[$key] =& $data;
     }
     /* }}} */
 
     /* _connectTo {{{ */
     /** @access private */
-    function _connectTo(&$destinationNode) {
+    public function _connectTo(&$destinationNode) {
         $this->_arcs[] =& $destinationNode;
     }
     /* }}} */
@@ -235,7 +235,7 @@ class Structures_Graph_Node {
     * @param    Structures_Graph Node to connect to
     * @access	public
     */
-    function connectTo(&$destinationNode) {
+    public function connectTo(&$destinationNode) {
         // We only connect to nodes
         if (!is_a($destinationNode, 'Structures_Graph_Node')) return Pear::raiseError('Structures_Graph_Node::connectTo received an object that is not a Structures_Graph_Node', STRUCTURES_GRAPH_ERROR_GENERIC);
         // Nodes must already be in graphs to be connected
@@ -258,7 +258,7 @@ class Structures_Graph_Node {
     * @return   array   Array of nodes
     * @access	public
     */
-    function getNeighbours() {
+    public function getNeighbours() {
         return $this->_arcs;
     }
     /* }}} */
@@ -271,7 +271,7 @@ class Structures_Graph_Node {
     * @return	boolean   True if the two nodes are connected
     * @access	public
     */
-    function connectsTo(&$target) {
+    public function connectsTo(&$target) {
         $copy = $target;
         $arcKeys = array_keys($this->_arcs);
         foreach($arcKeys as $key) {
@@ -305,7 +305,7 @@ class Structures_Graph_Node {
     * @return	integer	 In degree of the node
     * @access	public
     */
-    function inDegree() {
+    public function inDegree() {
         if ($this->_graph == null) return 0;
         if (!$this->_graph->isDirected()) return $this->outDegree();
         $result = 0;
@@ -329,7 +329,7 @@ class Structures_Graph_Node {
     * @return	integer	 Out degree of the node
     * @access	public
     */
-    function outDegree() {
+    public function outDegree() {
         if ($this->_graph == null) return 0;
         return sizeof($this->_arcs);
     }

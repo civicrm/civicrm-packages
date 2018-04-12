@@ -17,10 +17,10 @@ class HTMLPurifier_URI
      * @note Automatically normalizes scheme and port
      */
     public function __construct($scheme, $userinfo, $host, $port, $path, $query, $fragment) {
-        $this->scheme = is_null($scheme) || ctype_lower($scheme) ? $scheme : strtolower($scheme);
+        $this->scheme = null === $scheme || ctype_lower($scheme) ? $scheme : strtolower($scheme);
         $this->userinfo = $userinfo;
         $this->host = $host;
-        $this->port = is_null($port) ? $port : (int) $port;
+        $this->port = null === $port ? $port : (int) $port;
         $this->path = $path;
         $this->query = $query;
         $this->fragment = $fragment;
@@ -68,7 +68,7 @@ class HTMLPurifier_URI
         $chars_pchar = $chars_sub_delims . ':@';
 
         // validate host
-        if (!is_null($this->host)) {
+        if (null !== $this->host) {
             $host_def = new HTMLPurifier_AttrDef_URI_Host();
             $this->host = $host_def->validate($this->host, $config, $context);
             if ($this->host === false) $this->host = null;
@@ -80,7 +80,7 @@ class HTMLPurifier_URI
         // URI that we don't allow into one we do.  So instead, we just
         // check if the scheme can be dropped because there is no host
         // and it is our default scheme.
-        if (!is_null($this->scheme) && is_null($this->host) || $this->host === '') {
+        if (null !== $this->scheme && null === $this->host || $this->host === '') {
             // support for relative paths is pretty abysmal when the
             // scheme is present, so axe it when possible
             $def = $config->getDefinition('URI');
@@ -90,20 +90,20 @@ class HTMLPurifier_URI
         }
 
         // validate username
-        if (!is_null($this->userinfo)) {
+        if (null !== $this->userinfo) {
             $encoder = new HTMLPurifier_PercentEncoder($chars_sub_delims . ':');
             $this->userinfo = $encoder->encode($this->userinfo);
         }
 
         // validate port
-        if (!is_null($this->port)) {
+        if (null !== $this->port) {
             if ($this->port < 1 || $this->port > 65535) $this->port = null;
         }
 
         // validate path
         $path_parts = array();
         $segments_encoder = new HTMLPurifier_PercentEncoder($chars_pchar . '/');
-        if (!is_null($this->host)) { // this catches $this->host === ''
+        if (null !== $this->host) { // this catches $this->host === ''
             // path-abempty (hier and relative)
             // http://www.example.com/my/path
             // //www.example.com/my/path (looks odd, but works, and
@@ -127,7 +127,7 @@ class HTMLPurifier_URI
                 } else {
                     $this->path = $segments_encoder->encode($this->path);
                 }
-            } elseif (!is_null($this->scheme)) {
+            } elseif (null !== $this->scheme) {
                 // path-rootless (hier)
                 // http:my/path
                 // Short circuit evaluation means we don't need to check nz
@@ -154,11 +154,11 @@ class HTMLPurifier_URI
         // qf = query and fragment
         $qf_encoder = new HTMLPurifier_PercentEncoder($chars_pchar . '/?');
 
-        if (!is_null($this->query)) {
+        if (null !== $this->query) {
             $this->query = $qf_encoder->encode($this->query);
         }
 
-        if (!is_null($this->fragment)) {
+        if (null !== $this->fragment) {
             $this->fragment = $qf_encoder->encode($this->fragment);
         }
 
@@ -176,11 +176,11 @@ class HTMLPurifier_URI
         // there is a rendering difference between a null authority
         // (http:foo-bar) and an empty string authority
         // (http:///foo-bar).
-        if (!is_null($this->host)) {
+        if (null !== $this->host) {
             $authority = '';
-            if(!is_null($this->userinfo)) $authority .= $this->userinfo . '@';
+            if(null !== $this->userinfo) $authority .= $this->userinfo . '@';
             $authority .= $this->host;
-            if(!is_null($this->port))     $authority .= ':' . $this->port;
+            if(null !== $this->port)     $authority .= ':' . $this->port;
         }
 
         // Reconstruct the result
@@ -190,11 +190,11 @@ class HTMLPurifier_URI
         // differently than http:///foo), so unfortunately we have to
         // defer to the schemes to do the right thing.
         $result = '';
-        if (!is_null($this->scheme))    $result .= $this->scheme . ':';
-        if (!is_null($authority))       $result .=  '//' . $authority;
+        if (null !== $this->scheme)    $result .= $this->scheme . ':';
+        if (null !== $authority)       $result .= '//' . $authority;
         $result .= $this->path;
-        if (!is_null($this->query))     $result .= '?' . $this->query;
-        if (!is_null($this->fragment))  $result .= '#' . $this->fragment;
+        if (null !== $this->query)     $result .= '?' . $this->query;
+        if (null !== $this->fragment)  $result .= '#' . $this->fragment;
 
         return $result;
     }

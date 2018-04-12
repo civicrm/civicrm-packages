@@ -16,7 +16,7 @@ namespace kcfinder;
 
 class image_imagick extends image {
 
-    static $MIMES = array(
+    public static $MIMES = array(
         //'tif' => "image/tiff"
     );
 
@@ -236,11 +236,11 @@ class image_imagick extends image {
 
     // PSEUDO-ABSTRACT STATIC METHODS
 
-    static function available() {
+    public static function available() {
         return class_exists("\\Imagick");
     }
 
-    static function checkImage($file) {
+    public static function checkImage($file) {
         try {
             $img = new \Imagick($file);
         } catch (\Exception $e) {

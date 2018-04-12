@@ -291,7 +291,7 @@ class FPDI extends FPDF_TPL
      */
     public function useTemplate($tplIdx, $x = null, $y = null, $w = 0, $h = 0, $adjustPageSize = false)
     {
-        if ($adjustPageSize == true && is_null($x) && is_null($y)) {
+        if ($adjustPageSize == true && null === $x && null === $y) {
             $size = $this->getTemplateSize($tplIdx, $w, $h);
             $orientation = $size['w'] > $size['h'] ? 'L' : 'P';
             $size = array($size['w'], $size['h']);
@@ -559,13 +559,11 @@ class FPDI extends FPDF_TPL
     			$this->_straightOut('<<');
 
     			reset ($value[1]);
-
-    			while (list($k, $v) = each($value[1])) {
-    				$this->_straightOut($k . ' ');
-    				$this->_writeValue($v);
-    			}
-
-    			$this->_straightOut('>>');
+            foreach ($value[1] as $k => $v) {
+                $this->_straightOut($k . ' ');
+                $this->_writeValue($v);
+            }
+            $this->_straightOut('>>');
     			break;
 
     		case pdf_parser::TYPE_OBJREF:

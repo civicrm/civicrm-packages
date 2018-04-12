@@ -63,7 +63,7 @@ class Pager_Sliding extends Pager_Common
      *
      * @access public
      */
-    function __construct($options = array())
+    public function __construct($options = array())
     {
         //set default Pager_Sliding options
         $this->_delta                 = 2;
@@ -95,7 +95,7 @@ class Pager_Sliding extends Pager_Common
      * @deprecated
      * @access public
      */
-    function getPageIdByOffset($index)
+    public function getPageIdByOffset($index)
     {
     }
 
@@ -115,13 +115,13 @@ class Pager_Sliding extends Pager_Common
      * @return array  First and last offsets
      * @access public
      */
-    function getPageRangeByPageId($pageid = null)
+    public function getPageRangeByPageId($pageid = null)
     {
         $pageid = isset($pageid) ? (int)$pageid : $this->_currentPage;
         if (!isset($this->_pageData)) {
             $this->_generatePageData();
         }
-        if (isset($this->_pageData[$pageid]) || is_null($this->_itemData)) {
+        if (isset($this->_pageData[$pageid]) || null === $this->_itemData) {
             if ($this->_expanded) {
                 $min_surplus = ($pageid <= $this->_delta) ? ($this->_delta - $pageid + 1) : 0;
                 $max_surplus = ($pageid >= ($this->_totalPages - $this->_delta)) ?
@@ -151,9 +151,9 @@ class Pager_Sliding extends Pager_Common
      * @return array back/pages/next/first/last/all links
      * @access public
      */
-    function getLinks($pageID = null, $dummy='')
+    public function getLinks($pageID = null, $dummy='')
     {
-        if (!is_null($pageID)) {
+        if (null !== $pageID) {
             $_sav = $this->_currentPage;
             $this->_currentPage = $pageID;
 
@@ -178,7 +178,7 @@ class Pager_Sliding extends Pager_Common
         $linkTags    = $this->linkTags;
         $linkTagsRaw = $this->linkTagsRaw;
 
-        if (!is_null($pageID)) {
+        if (null !== $pageID) {
             $this->_currentPage = $_sav;
         }
 
@@ -212,7 +212,7 @@ class Pager_Sliding extends Pager_Common
      * @return string Links
      * @access private
      */
-    function _getPageLinks($url = '')
+    public function _getPageLinks($url = '')
     {
         //legacy setting... the preferred way to set an option now
         //is adding it to the constuctor

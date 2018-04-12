@@ -55,10 +55,10 @@ class HTMLPurifier_ErrorCollector
 
         // perform special substitutions, also add custom parameters
         $subst = array();
-        if (!is_null($token)) {
+        if (null !== $token) {
             $args['CurrentToken'] = $token;
         }
-        if (!is_null($attr)) {
+        if (null !== $attr) {
             $subst['$CurrentAttr.Name'] = $attr;
             if (isset($token->attr[$attr])) $subst['$CurrentAttr.Value'] = $token->attr[$attr];
         }
@@ -180,7 +180,7 @@ class HTMLPurifier_ErrorCollector
                 // W3C uses an icon to indicate the severity of the error.
                 $error = $this->locale->getErrorName($severity);
                 $string .= "<span class=\"error e$severity\"><strong>$error</strong></span> ";
-                if (!is_null($line) && !is_null($col)) {
+                if (null !== $line && null !== $col) {
                     $string .= "<em class=\"location\">Line $line, Column $col: </em> ";
                 } else {
                     $string .= '<em class="location">End of Document: </em> ';

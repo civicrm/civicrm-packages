@@ -52,7 +52,7 @@ class HTML_QuickForm_button extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $value=null, $attributes=null)
+    public function __construct($elementName=null, $value=null, $attributes=null)
     {
         parent::__construct($elementName, null, $attributes);
         $this->_persistantFreeze = false;
@@ -69,7 +69,7 @@ class HTML_QuickForm_button extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function freeze()
+    public function freeze()
     {
         return false;
     } //end func freeze

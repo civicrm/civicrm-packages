@@ -178,17 +178,17 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
         // figure out the parameters
         $params = array();
         if ($name !== '')    $params['element'] = $name;
-        if (!is_null($attr)) $params['attr'] = $attr;
+        if (null !== $attr) $params['attr'] = $attr;
 
         // special case: attribute transform
-        if (!is_null($attr)) {
-            if (is_null($property)) $property = 'pre';
+        if (null !== $attr) {
+            if (null === $property) $property = 'pre';
             $type = 'attr_transform_' . $property;
             return array($type, $params);
         }
 
         // special case: tag transform
-        if (is_null($property)) {
+        if (null === $property) {
             return array('tag_transform', $params);
         }
 

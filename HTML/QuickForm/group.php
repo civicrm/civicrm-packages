@@ -49,7 +49,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @since     1.0
      * @access    private
      */
-    var $_name = '';
+    public $_name = '';
 
     /**
      * Array of grouped elements
@@ -57,7 +57,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @since     1.0
      * @access    private
      */
-    var $_elements = array();
+    public $_elements = array();
 
     /**
      * String to separate elements
@@ -65,7 +65,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @since     2.5
      * @access    private
      */
-    var $_separator = null;
+    public $_separator = null;
 
     /**
      * Required elements in this group
@@ -73,7 +73,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @since     2.5
      * @access    private
      */
-    var $_required = array();
+    public $_required = array();
 
    /**
     * Whether to change elements' names to $groupName[$elementName] or leave them as is
@@ -81,7 +81,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
     * @since    3.0
     * @access   private
     */
-    var $_appendName = true;
+    public $_appendName = true;
 
     // }}}
     // {{{ constructor
@@ -103,7 +103,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $elementLabel=null, $elements=null, $separator=null, $appendName = true, $attributes = null)
+    public function __construct($elementName=null, $elementLabel=null, $elements=null, $separator=null, $appendName = true, $attributes = null)
     {
         parent::__construct($elementName, $elementLabel, $attributes);
         $this->_type = 'group';
@@ -129,7 +129,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function setName($name)
+    public function setName($name)
     {
         $this->_name = $name;
     } //end func setName
@@ -144,7 +144,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    string
      */
-    function getName()
+    public function getName()
     {
         return $this->_name;
     } //end func getName
@@ -160,7 +160,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function setValue($value)
+    public function setValue($value)
     {
         $this->_createElementsIfNotExist();
         foreach (array_keys($this->_elements) as $key) {
@@ -194,7 +194,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    mixed
      */
-    function getValue()
+    public function getValue()
     {
         $value = null;
         foreach (array_keys($this->_elements) as $key) {
@@ -211,11 +211,11 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
             }
             if (null !== $v) {
                 $elementName = $element->getName();
-                if (is_null($elementName)) {
+                if (null === $elementName) {
                     $value = $v;
                 } else {
                     if (!is_array($value)) {
-                        $value = is_null($value)? array(): array($value);
+                        $value = null === $value ? array(): array($value);
                     }
                     if ('' === $elementName) {
                         $value[] = $v;
@@ -239,7 +239,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function setElements($elements)
+    public function setElements($elements)
     {
         $this->_elements = array_values($elements);
         if ($this->_flagFrozen) {
@@ -257,7 +257,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    array
      */
-    function &getElements()
+    public function &getElements()
     {
         $this->_createElementsIfNotExist();
         return $this->_elements;
@@ -274,7 +274,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    string    group elements type
      */
-    function getGroupType()
+    public function getGroupType()
     {
         $this->_createElementsIfNotExist();
         $prevType = '';
@@ -298,7 +298,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access      public
      * @return      string
      */
-    function toHtml()
+    public function toHtml()
     {
         include_once('HTML/QuickForm/Renderer/Default.php');
         $renderer = new HTML_QuickForm_Renderer_Default();
@@ -318,7 +318,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    mixed     string with element name, false if not found
      */
-    function getElementName($index)
+    public function getElementName($index)
     {
         $this->_createElementsIfNotExist();
         $elementName = false;
@@ -328,7 +328,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
                 $elementName = $index;
             }
             if ($this->_appendName) {
-                if (is_null($elementName)) {
+                if (null === $elementName) {
                     $elementName = $this->getName();
                 } else {
                     $elementName = $this->getName().'['.$elementName.']';
@@ -361,7 +361,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    string
      */
-    function getFrozenHtml()
+    public function getFrozenHtml()
     {
         $flags = array();
         $this->_createElementsIfNotExist();
@@ -392,7 +392,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @access    public
      * @return    void
      */
-    function onQuickFormEvent($event, $arg, &$caller)
+    public function onQuickFormEvent($event, $arg, &$caller)
     {
         switch ($event) {
             case 'updateValue':
@@ -400,7 +400,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
                 foreach (array_keys($this->_elements) as $key) {
                     if ($this->_appendName) {
                         $elementName = $this->_elements[$key]->getName();
-                        if (is_null($elementName)) {
+                        if (null === $elementName) {
                             $this->_elements[$key]->setName($this->getName());
                         } elseif ('' === $elementName) {
                             $this->_elements[$key]->setName($this->getName() . '[' . $key . ']');
@@ -433,7 +433,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
     * @access public
     * @return void
     */
-    function accept(&$renderer, $required = false, $error = null)
+    public function accept(&$renderer, $required = false, $error = null)
     {
         $this->_createElementsIfNotExist();
         $renderer->startGroup($this, $required, $error);
@@ -472,13 +472,13 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
     * As usual, to get the group's value we access its elements and call
     * their exportValue() methods
     */
-    function exportValue(&$submitValues, $assoc = false)
+    public function exportValue(&$submitValues, $assoc = false)
     {
         $value = null;
         foreach (array_keys($this->_elements) as $key) {
             $elementName = $this->_elements[$key]->getName();
             if ($this->_appendName) {
-                if (is_null($elementName)) {
+                if (null === $elementName) {
                     $this->_elements[$key]->setName($this->getName());
                 } elseif ('' === $elementName) {
                     $this->_elements[$key]->setName($this->getName() . '[' . $key . ']');
@@ -500,7 +500,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
                     $value = HTML_QuickForm::arrayMerge($value, $v);
                 } else {
                     // just like getValue(), but should work OK every time here
-                    if (is_null($elementName)) {
+                    if (null === $elementName) {
                         $value = $v;
                     } elseif ('' === $elementName) {
                         $value[] = $v;
@@ -528,7 +528,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
     * @access private
     * @abstract
     */
-    function _createElements()
+    public function _createElements()
     {
         // abstract
     }
@@ -545,7 +545,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
     *
     * @access private
     */
-    function _createElementsIfNotExist()
+    public function _createElementsIfNotExist()
     {
         if (empty($this->_elements)) {
             $this->_createElements();
@@ -558,7 +558,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
     // }}}
     // {{{ freeze()
 
-    function freeze()
+    public function freeze()
     {
         parent::freeze();
         foreach (array_keys($this->_elements) as $key) {
@@ -569,7 +569,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
     // }}}
     // {{{ unfreeze()
 
-    function unfreeze()
+    public function unfreeze()
     {
         parent::unfreeze();
         foreach (array_keys($this->_elements) as $key) {
@@ -580,7 +580,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
     // }}}
     // {{{ setPersistantFreeze()
 
-    function setPersistantFreeze($persistant = false)
+    public function setPersistantFreeze($persistant = false)
     {
         parent::setPersistantFreeze($persistant);
         foreach (array_keys($this->_elements) as $key) {

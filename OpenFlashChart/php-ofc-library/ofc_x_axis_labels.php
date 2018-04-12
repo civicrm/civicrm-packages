@@ -2,12 +2,12 @@
 
 class x_axis_labels
 {
-	function __construct(){}
+	public function __construct(){}
 	
 	/**
 	 * @param $steps which labels are generated
 	 */
-	function set_steps( $steps )
+	public function set_steps( $steps )
 	{
 		$this->steps = $steps;
 	}
@@ -15,7 +15,7 @@ class x_axis_labels
 	/**
 	 * @param $steps as integer which labels are visible
 	 */
-	function visible_steps( $steps )
+	public function visible_steps( $steps )
 	{
 		$this->{"visible-steps"} = $steps;
 		return $this;
@@ -25,12 +25,12 @@ class x_axis_labels
 	 *
 	 * @param $labels as an array of [x_axis_label or string]
 	 */
-	function set_labels( $labels )
+	public function set_labels( $labels )
 	{
 		$this->labels = $labels;
 	}
 	
-	function set_colour( $colour )
+	public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
@@ -38,7 +38,7 @@ class x_axis_labels
 	/**
 	 * font size in pixels
 	 */
-	function set_size( $size )
+	public function set_size( $size )
 	{
 		$this->size = $size;
 	}
@@ -46,7 +46,7 @@ class x_axis_labels
 	/**
 	 * rotate labels
 	 */
-	function set_vertical()
+	public function set_vertical()
 	{
 		$this->rotate = 270;
 	}
@@ -54,7 +54,7 @@ class x_axis_labels
 	/**
 	 * @param @angle as real. The angle of the text.
 	 */
-	function rotate( $angle )
+	public function rotate( $angle )
 	{
 		$this->rotate = $angle;
 	}
@@ -62,7 +62,7 @@ class x_axis_labels
 	/**
 	 * @param $text as string. Replace and magic variables with actual x axis position.
 	 */
-	function text( $text )
+	public function text( $text )
 	{
 		$this->text = $text;
 	}

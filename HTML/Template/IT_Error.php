@@ -32,7 +32,7 @@ class IT_Error extends PEAR_Error {
   * 
   * @var  string
   */
-  var $error_message_prefix = "IntegratedTemplate Error: ";
+  public $error_message_prefix = "IntegratedTemplate Error: ";
   
   /**
   * Creates an cache error object.
@@ -41,7 +41,7 @@ class IT_Error extends PEAR_Error {
   * @param  string  file where the error occured
   * @param  string  linenumber where the error occured
   */
-  function __construct($msg, $file = __FILE__, $line = __LINE__) {
+  public function __construct($msg, $file = __FILE__, $line = __LINE__) {
     
     parent::__construct(sprintf("%s [%s on line %d].", $msg, $file, $line));
     

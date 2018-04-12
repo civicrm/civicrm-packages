@@ -147,7 +147,7 @@ class PEAR_ErrorStack {
      * @var array
      * @access private
      */
-    var $_errors = array();
+    public $_errors = array();
 
     /**
      * Storage of errors by level.
@@ -157,21 +157,21 @@ class PEAR_ErrorStack {
      * @var array
      * @access private
      */
-    var $_errorsByLevel = array();
+    public $_errorsByLevel = array();
 
     /**
      * Package name this error stack represents
      * @var string
      * @access protected
      */
-    var $_package;
+    public $_package;
     
     /**
      * Determines whether a PEAR_Error is thrown upon every error addition
      * @var boolean
      * @access private
      */
-    var $_compat = false;
+    public $_compat = false;
     
     /**
      * If set to a valid callback, this will be used to generate the error
@@ -180,7 +180,7 @@ class PEAR_ErrorStack {
      * @var false|string|array
      * @access private
      */
-    var $_msgCallback = false;
+    public $_msgCallback = false;
     
     /**
      * If set to a valid callback, this will be used to generate the error
@@ -191,7 +191,7 @@ class PEAR_ErrorStack {
      * @var false|string|array
      * @access protected
      */
-    var $_contextCallback = false;
+    public $_contextCallback = false;
 
     /**
      * If set to a valid callback, this will be called every time an error
@@ -203,21 +203,21 @@ class PEAR_ErrorStack {
      * @var false|string|array
      * @access protected
      */
-    var $_errorCallback = array();
+    public $_errorCallback = array();
 
     /**
      * PEAR::Log object for logging errors
      * @var false|Log
      * @access protected
      */
-    var $_logger = false;
+    public $_logger = false;
 
     /**
      * Error messages - designed to be overridden
      * @var array
      * @abstract
      */
-    var $_errorMsgs = array();
+    public $_errorMsgs = array();
 
     /**
      * Set up a new error stack
@@ -228,7 +228,7 @@ class PEAR_ErrorStack {
      *                 defaults to {@link getFileLine()}
      * @param boolean  $throwPEAR_Error
      */
-    function __construct($package, $msgCallback = false, $contextCallback = false,
+    public function __construct($package, $msgCallback = false, $contextCallback = false,
                          $throwPEAR_Error = false)
     {
         $this->_package = $package;
@@ -279,7 +279,7 @@ class PEAR_ErrorStack {
      * Dies if the error is an exception (and would have died anyway)
      * @access private
      */
-    function _handleError($err)
+    public function _handleError($err)
     {
         if ($err['level'] == 'exception') {
             $message = $err['message'];
@@ -310,7 +310,7 @@ class PEAR_ErrorStack {
      * Set up a PEAR::Log object for this error stack
      * @param Log $log 
      */
-    function setLogger(&$log)
+    public function setLogger(&$log)
     {
         if (is_object($log) && method_exists($log, 'log') ) {
             $this->_logger = &$log;
@@ -326,7 +326,7 @@ class PEAR_ErrorStack {
      * messages for any instance
      * @param array|string Callback function/method
      */
-    function setMessageCallback($msgCallback)
+    public function setMessageCallback($msgCallback)
     {
         if (!$msgCallback) {
             $this->_msgCallback = array(&$this, 'getErrorMessage');
@@ -344,7 +344,7 @@ class PEAR_ErrorStack {
      * messages
      * @return array|string|false Callback function/method or false if none
      */
-    function getMessageCallback()
+    public function getMessageCallback()
     {
         return $this->_msgCallback;
     }
@@ -374,7 +374,7 @@ class PEAR_ErrorStack {
      * and remove the expensive call to debug_backtrace()
      * @param array|string|null Callback function/method
      */
-    function setContextCallback($contextCallback)
+    public function setContextCallback($contextCallback)
     {
         if ($contextCallback === null) {
             return $this->_contextCallback = false;
@@ -403,7 +403,7 @@ class PEAR_ErrorStack {
      * @see popCallback()
      * @param string|array $cb
      */
-    function pushCallback($cb)
+    public function pushCallback($cb)
     {
         array_push($this->_errorCallback, $cb);
     }
@@ -413,7 +413,7 @@ class PEAR_ErrorStack {
      * @see pushCallback()
      * @return array|string|false
      */
-    function popCallback()
+    public function popCallback()
     {
         if (!count($this->_errorCallback)) {
             return false;
@@ -490,7 +490,7 @@ class PEAR_ErrorStack {
      * 
      * Normally, the previous array is returned.
      */
-    function push($code, $level = 'error', $params = array(), $msg = false,
+    public function push($code, $level = 'error', $params = array(), $msg = false,
                   $repackage = false, $backtrace = false)
     {
         $context = false;
@@ -621,7 +621,7 @@ class PEAR_ErrorStack {
      * @param array $levels Error level => Log constant map
      * @access protected
      */
-    function _log($err)
+    public function _log($err)
     {
         if ($this->_logger) {
             $logger = &$this->_logger;
@@ -657,10 +657,10 @@ class PEAR_ErrorStack {
      * @since 0.4alpha it is no longer possible to specify a specific error
      * level to return - the last error pushed will be returned, instead
      */
-    function pop()
+    public function pop()
     {
         $err = @array_shift($this->_errors);
-        if (!is_null($err)) {
+        if (null !== $err) {
             @array_pop($this->_errorsByLevel[$err['level']]);
             if (!count($this->_errorsByLevel[$err['level']])) {
                 unset($this->_errorsByLevel[$err['level']]);
@@ -676,7 +676,7 @@ class PEAR_ErrorStack {
      * @return boolean
      * @since PEAR1.5.0a1
      */
-    function staticPop($package)
+    public function staticPop($package)
     {
         if ($package) {
             if (!isset($GLOBALS['_PEAR_ERRORSTACK_SINGLETON'][$package])) {
@@ -692,7 +692,7 @@ class PEAR_ErrorStack {
      * of level (string), or levels (array) have been pushed
      * @return boolean
      */
-    function hasErrors($level = false)
+    public function hasErrors($level = false)
     {
         if ($level) {
             return isset($this->_errorsByLevel[$level]);
@@ -707,7 +707,7 @@ class PEAR_ErrorStack {
      * @param string level name, to return only errors of a particular severity
      * @return array
      */
-    function getErrors($purge = false, $level = false)
+    public function getErrors($purge = false, $level = false)
     {
         if (!$purge) {
             if ($level) {
@@ -934,7 +934,7 @@ class PEAR_ErrorStack {
      * Standard Error Message Template generator from code
      * @return string
      */
-    function getErrorMessageTemplate($code)
+    public function getErrorMessageTemplate($code)
     {
         if (!isset($this->_errorMsgs[$code])) {
             return '%__msg%';
@@ -956,7 +956,7 @@ class PEAR_ErrorStack {
      * be 'message one was six'
      * @return string
      */
-    function setErrorMessageTemplate($template)
+    public function setErrorMessageTemplate($template)
     {
         $this->_errorMsgs = $template;
     }
@@ -967,7 +967,7 @@ class PEAR_ErrorStack {
      * 
      * @return PEAR_Error
      */
-    function raiseError()
+    public function raiseError()
     {
         require_once 'PEAR.php';
         $args = func_get_args();

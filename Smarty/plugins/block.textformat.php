@@ -30,7 +30,7 @@
  */
 function smarty_block_textformat($params, $content, &$smarty)
 {
-    if (is_null($content)) {
+    if (null === $content) {
         return;
     }
 

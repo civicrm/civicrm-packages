@@ -29,14 +29,14 @@ class Mail_sendmail extends Mail {
      * filesystem.
      * @var string
      */
-    var $sendmail_path = '/usr/sbin/sendmail';
+    public $sendmail_path = '/usr/sbin/sendmail';
 
     /**
      * Any extra command-line parameters to pass to the sendmail or
      * sendmail wrapper binary.
      * @var string
      */
-    var $sendmail_args = '-i';
+    public $sendmail_args = '-i';
 
     /**
      * Constructor.
@@ -56,7 +56,7 @@ class Mail_sendmail extends Mail {
      *              defaults.
      * @access public
      */
-    function __construct($params)
+    public function __construct($params)
     {
         if (isset($params['sendmail_path'])) {
             $this->sendmail_path = $params['sendmail_path'];
@@ -102,7 +102,7 @@ class Mail_sendmail extends Mail {
      *               failure.
      * @access public
      */
-    function send($recipients, $headers, $body)
+    public function send($recipients, $headers, $body)
     {
         if (defined('CIVICRM_MAIL_LOG')) {
           CRM_Utils_Mail::logger($recipients, $headers, $body);

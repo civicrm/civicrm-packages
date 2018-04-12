@@ -44,7 +44,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * @var       string
      * @access    private
      */
-    var $_text = null;
+    public $_text = null;
 
     // }}}
     // {{{ constructor
@@ -57,7 +57,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * @access    public
      * @return    void
      */
-    function __construct($elementName=null, $elementLabel=null, $text=null)
+    public function __construct($elementName=null, $elementLabel=null, $text=null)
     {
         parent::__construct($elementName, $elementLabel);
         $this->_persistantFreeze = false;
@@ -75,7 +75,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * @access    public
      * @return    void
      */
-    function setName($name)
+    public function setName($name)
     {
         $this->updateAttributes(array('name'=>$name));
     } //end func setName
@@ -89,7 +89,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * @access    public
      * @return    string
      */
-    function getName()
+    public function getName()
     {
         return $this->getAttribute('name');
     } //end func getName
@@ -104,7 +104,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * @access    public
      * @return    void
      */
-    function setText($text)
+    public function setText($text)
     {
         $this->_text = $text;
     } // end func setText
@@ -119,7 +119,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * @access    public
      * @return    void
      */
-    function setValue($text)
+    public function setValue($text)
     {
         $this->setText($text);
     } // end func setValue
@@ -133,7 +133,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * @access    public
      * @return    string
      */
-    function toHtml()
+    public function toHtml()
     {
         return $this->_getTabs() . $this->_text;
     } //end func toHtml
@@ -147,7 +147,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * @access    public
      * @return    string
      */
-    function getFrozenHtml()
+    public function getFrozenHtml()
     {
         return $this->toHtml();
     } //end func getFrozenHtml
@@ -166,7 +166,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * @return    void
      * @throws    
      */
-    function onQuickFormEvent($event, $arg, &$caller)
+    public function onQuickFormEvent($event, $arg, &$caller)
     {
         switch ($event) {
             case 'updateValue':
@@ -191,7 +191,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
    /**
     * We override this here because we don't want any values from static elements
     */
-    function exportValue(&$submitValues, $assoc = false)
+    public function exportValue(&$submitValues, $assoc = false)
     {
         return null;
     }

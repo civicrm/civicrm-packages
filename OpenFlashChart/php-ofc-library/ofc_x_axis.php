@@ -2,17 +2,17 @@
 
 class x_axis
 {
-	function __construct(){}
+	public function __construct(){}
 
 	/**
 	 * @param $stroke as integer, with of the line and ticks
 	 */
-	function set_stroke( $stroke )
+	public function set_stroke( $stroke )
 	{
 		$this->stroke = $stroke;	
 	}
 	
-	function stroke( $stroke )
+	public function stroke( $stroke )
 	{
 		$this->set_stroke( $stroke );
 		return $this;
@@ -22,7 +22,7 @@ class x_axis
 	 *@param $colour as string HEX colour
 	 *@param $grid_colour as string HEX colour
 	 */
-	function set_colours( $colour, $grid_colour )
+	public function set_colours( $colour, $grid_colour )
 	{
 		$this->set_colour( $colour );
 		$this->set_grid_colour( $grid_colour );
@@ -31,36 +31,36 @@ class x_axis
 	/**
 	 *@param $colour as string HEX colour
 	 */
-	function set_colour( $colour )
+	public function set_colour( $colour )
 	{
 		$this->colour = $colour;	
 	}
 	
-	function colour( $colour )
+	public function colour( $colour )
 	{
 		$this->set_colour($colour);
 		return $this;
 	}
 	
-	function set_tick_height( $height )
+	public function set_tick_height( $height )
 	{
 		$tmp = 'tick-height';
 		$this->$tmp      		= $height;
 	}
 	
-	function tick_height( $height )
+	public function tick_height( $height )
 	{
 		$this->set_tick_height($height);
 		return $this;
 	}
 	
-	function set_grid_colour( $colour )
+	public function set_grid_colour( $colour )
 	{
 		$tmp = 'grid-colour';
 		$this->$tmp = $colour;
 	}
 	
-	function grid_colour( $colour )
+	public function grid_colour( $colour )
 	{
 		$this->set_grid_colour($colour);
 		return $this;
@@ -70,12 +70,12 @@ class x_axis
 	 * @param $o is a boolean. If true, the X axis start half a step in
 	 * This defaults to True
 	 */
-	function set_offset( $o )
+	public function set_offset( $o )
 	{
 		$this->offset = $o?true:false;	
 	}
 	
-	function offset( $o )
+	public function offset( $o )
 	{
 		$this->set_offset($o);
 		return $this;
@@ -84,12 +84,12 @@ class x_axis
 	/**
 	 * @param $steps as integer. Which grid lines and ticks are visible.
 	 */
-	function set_steps( $steps )
+	public function set_steps( $steps )
 	{
 		$this->steps = $steps;
 	}
 	
-	function steps( $steps )
+	public function steps( $steps )
 	{
 		$this->set_steps($steps);
 		return $this;
@@ -99,7 +99,7 @@ class x_axis
 	 * @param $val as an integer, the height in pixels of the 3D bar. Mostly
 	 * used for the 3D bar chart.
 	 */
-	function set_3d( $val )
+	public function set_3d( $val )
 	{
 		$tmp = '3d';
 		$this->$tmp				= $val;		
@@ -109,7 +109,7 @@ class x_axis
 	 * @param $x_axis_labels as an x_axis_labels object
 	 * Use this to customize the labels (colour, font, etc...)
 	 */
-	function set_labels( $x_axis_labels )
+	public function set_labels( $x_axis_labels )
 	{
 		//$this->labels = $v;
 		$this->labels = $x_axis_labels;
@@ -119,7 +119,7 @@ class x_axis
 	 * Sugar syntax: helper function to make the examples simpler.
 	 * @param $a is an array of labels
 	 */
-	function set_labels_from_array( $a )
+	public function set_labels_from_array( $a )
 	{
 		$x_axis_labels = new x_axis_labels();
 		$x_axis_labels->set_labels( $a );
@@ -132,7 +132,7 @@ class x_axis
 	/**
 	 * min and max.
 	 */
-	function set_range( $min, $max )
+	public function set_range( $min, $max )
 	{
 		$this->min = $min;
 		$this->max = $max;

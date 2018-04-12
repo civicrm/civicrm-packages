@@ -534,7 +534,7 @@ class DB_Table extends DB_Table_Base
      * @access public
      * @var string
      */
-    var $table = null;
+    public $table;
     
     /**
      * DB_Table_Database instance that this table belongs to.
@@ -542,7 +542,7 @@ class DB_Table extends DB_Table_Base
      * @access private
      * @var object
      */
-    var $_database = null;
+    public $_database;
 
 
     /**
@@ -551,7 +551,7 @@ class DB_Table extends DB_Table_Base
      * @access public
      * @var array
      */
-    var $col = array();
+    public $col = array();
     
     
     /**
@@ -560,7 +560,7 @@ class DB_Table extends DB_Table_Base
      * @access public
      * @var array
      */
-    var $idx = array();
+    public $idx = array();
     
     /**
      * Name of an auto-increment column, if any. Null otherwise.
@@ -572,7 +572,7 @@ class DB_Table extends DB_Table_Base
      * @access public
      * @var string
      */
-    var $auto_inc_col = null;
+    public $auto_inc_col;
 
 
     /**
@@ -584,7 +584,7 @@ class DB_Table extends DB_Table_Base
      * @var bool
      * @access private
      */
-    var $_auto_inc = true;
+    public $_auto_inc = true;
 
 
     /**
@@ -593,7 +593,7 @@ class DB_Table extends DB_Table_Base
      * @var bool
      * @access private
      */
-    var $_valid_insert = true;
+    public $_valid_insert = true;
     
     /**
      * Whether or not to automatically validate data at update-time.
@@ -601,7 +601,7 @@ class DB_Table extends DB_Table_Base
      * @var bool
      * @access private
      */
-    var $_valid_update = true;
+    public $_valid_update = true;
     
 
     /**
@@ -610,7 +610,7 @@ class DB_Table extends DB_Table_Base
      * @var    bool
      * @access private
      */
-    var $_auto_recast = true;
+    public $_auto_recast = true;
     
     
     /**
@@ -644,7 +644,7 @@ class DB_Table extends DB_Table_Base
      * @return object DB_Table
      * @access public
      */
-    function __construct(&$db, $table = null, $create = false)
+    public function __construct(&$db, $table = null, $create = false)
     {
         // Identify the class for error handling by parent class
         $this->_primary_subclass = 'DB_TABLE';
@@ -657,16 +657,16 @@ class DB_Table extends DB_Table_Base
             $this->backend = 'mdb2';
         }
 
-        if (is_null($this->backend)) {
+        if (null === $this->backend) {
             $this->error = DB_Table::throwError(DB_TABLE_ERR_NOT_DB_OBJECT);
             return;
         }
         
         // set the class properties
         $this->db =& $db;
-        if (is_null($table)) {
+        if (null === $table) {
             // $table parameter not given => check $table class property
-            if (is_null($this->table)) {
+            if (null === $this->table) {
                 $this->error = DB_Table::throwError(DB_TABLE_ERR_TABLE_NAME_MISSING);
                 return;
             }
@@ -748,7 +748,7 @@ class DB_Table extends DB_Table_Base
      * @access public
      */
     
-    function supported($phptype, $dbsyntax = '')
+    public function supported($phptype, $dbsyntax = '')
     {
         // only Firebird is supported, not its ancestor Interbase
         if ($phptype == 'ibase' && $dbsyntax != 'firebird') {
@@ -771,7 +771,7 @@ class DB_Table extends DB_Table_Base
      * 
      * @access public
      */
-    function modeSupported($mode, $phptype)
+    public function modeSupported($mode, $phptype)
     {
         // check phptype for validity
         $supported = array_keys($GLOBALS['_DB_TABLE']['type']);
@@ -817,7 +817,7 @@ class DB_Table extends DB_Table_Base
      * @return void
      * @access public
      */
-    function setErrorMessage($code, $message = null) {
+    public function setErrorMessage($code, $message = null) {
         if (is_array($code)) {
             foreach ($code as $single_code => $single_message) {
                 $GLOBALS['_DB_TABLE']['error'][$single_code] = $single_message;
@@ -841,10 +841,10 @@ class DB_Table extends DB_Table_Base
      *               boolean false if no matching column names are found.
      * @access public
      */
-    function getColumns($col = null)
+    public function getColumns($col = null)
     {
         // by default, return all column definitions
-        if (is_null($col)) {
+        if (null === $col) {
             return $this->col;
         }
         
@@ -889,10 +889,10 @@ class DB_Table extends DB_Table_Base
      * 
      * @access public
      */
-    function getIndexes($idx = null)
+    public function getIndexes($idx = null)
     {
         // by default, return all index definitions
-        if (is_null($idx)) {
+        if (null === $idx) {
             return $this->idx;
         }
         
@@ -941,11 +941,11 @@ class DB_Table extends DB_Table_Base
      * @return void
      * @access public
      */
-    function setDatabaseInstance(&$database)
+    public function setDatabaseInstance(&$database)
     {
         if (is_a($database, 'DB_Table_Database')) {
             $this->_database =& $database;
-        } elseif (is_null($database)) {
+        } elseif (null === $database) {
             $this->_database = null;
         }
     }
@@ -985,11 +985,11 @@ class DB_Table extends DB_Table_Base
      * @see DB::autoExecute()
      * @see MDB2::autoExecute()
      */
-    function insert($data)
+    public function insert($data)
     {
         // Auto-increment if enabled and input value is null or not set
-        if ($this->_auto_inc 
-            && !is_null($this->auto_inc_col) 
+        if ($this->_auto_inc
+            && null !== $this->auto_inc_col
             && !isset($data[$this->auto_inc_col]) 
            ) {
             $column = $this->auto_inc_col;
@@ -1076,7 +1076,7 @@ class DB_Table extends DB_Table_Base
      * @return void
      * @access public
      */
-    function setAutoInc($flag = true)
+    public function setAutoInc($flag = true)
     {
         if ($flag) {
             $this->_auto_inc = true;
@@ -1097,7 +1097,7 @@ class DB_Table extends DB_Table_Base
      * @return void
      * @access public
      */
-    function autoValidInsert($flag = true)
+    public function autoValidInsert($flag = true)
     {
         if ($flag) {
             $this->_valid_insert = true;
@@ -1126,7 +1126,7 @@ class DB_Table extends DB_Table_Base
      * 
      * @see insert()
      */
-    function validInsert(&$data)
+    public function validInsert(&$data)
     {
         // loop through the data, and disallow insertion of unmapped
         // columns
@@ -1148,7 +1148,7 @@ class DB_Table extends DB_Table_Base
             // is the value allowed to be null?
             if (isset($val['require']) &&
                 $val['require'] == true &&
-                (! isset($data[$col]) || is_null($data[$col]))) {
+                ( ! isset($data[$col]) || null === $data[$col])) {
                 return $this->throwError(
                     DB_TABLE_ERR_INS_COL_REQUIRED,
                     "'$col'"
@@ -1201,7 +1201,7 @@ class DB_Table extends DB_Table_Base
      * @see DB::autoExecute()
      * @see MDB2::autoExecute()
      */
-    function update($data, $where)
+    public function update($data, $where)
     {
         // forcibly recast the data elements to their proper types?
         if ($this->_auto_recast) {
@@ -1261,7 +1261,7 @@ class DB_Table extends DB_Table_Base
      * @return void
      * @access public
      */
-    function autoValidUpdate($flag = true)
+    public function autoValidUpdate($flag = true)
     {
         if ($flag) {
             $this->_valid_update = true;
@@ -1290,7 +1290,7 @@ class DB_Table extends DB_Table_Base
      * 
      * @see update()
      */
-    function validUpdate(&$data)
+    public function validUpdate(&$data)
     {
         // loop through each data element, and check the
         // data to be updated against the column data type.
@@ -1310,8 +1310,7 @@ class DB_Table extends DB_Table_Base
             // is it allowed to be null?
             if (isset($defn['require']) &&
                 $defn['require'] == true &&
-                isset($data[$col]) &&
-                is_null($data[$col])) {
+                isset($data[$col]) && null === $data[$col]) {
                 return $this->throwError(
                     DB_TABLE_ERR_UPD_COL_REQUIRED,
                     $col
@@ -1354,7 +1353,7 @@ class DB_Table extends DB_Table_Base
      * @see DB::query()
      * @see MDB2::exec()
      */
-    function delete($where)
+    public function delete($where)
     {
         // Does a parent DB_Table_Database object exist?
         if ($this->_database) {
@@ -1397,10 +1396,10 @@ class DB_Table extends DB_Table_Base
      * @see DB::nextID()
      * @see MDB2::nextID()
      */
-    function nextID($seq_name = null)
+    public function nextID($seq_name = null)
     {
-        if (is_null($seq_name)) {
-            $seq_name = "{$this->table}";
+        if (null === $seq_name) {
+            $seq_name = (string)($this->table);
         } else {
             $seq_name = "{$this->table}_{$seq_name}";
         }
@@ -1442,7 +1441,7 @@ class DB_Table extends DB_Table_Base
      * @see DB_Common::quoteSmart()
      * @see MDB2::quote()
      */
-    function quote($val)
+    public function quote($val)
     {
         if ($this->backend == 'mdb2') {
             $val = $this->db->quote($val);
@@ -1462,7 +1461,7 @@ class DB_Table extends DB_Table_Base
      *               all values are null.
      * @access public
      */
-    function getBlankRow()
+    public function getBlankRow()
     {
         $row = array();
         
@@ -1489,7 +1488,7 @@ class DB_Table extends DB_Table_Base
      * @return void
      * @access public
      */
-    function autoRecast($flag = true)
+    public function autoRecast($flag = true)
     {
         if ($flag) {
             $this->_auto_recast = true;
@@ -1519,7 +1518,7 @@ class DB_Table extends DB_Table_Base
      * 
      * @access public
      */
-    function recast(&$data)
+    public function recast(&$data)
     {
         $keys = array_keys($data);
         
@@ -1559,7 +1558,7 @@ class DB_Table extends DB_Table_Base
             }
             
             // skip explicit NULL values
-            if (is_null($val)) {
+            if (null === $val) {
                 continue;
             }
             
@@ -1573,7 +1572,7 @@ class DB_Table extends DB_Table_Base
             case 'char':
             case 'varchar':
             case 'clob':
-                settype($val, 'string');
+                $val = (string)$val;
                 break;
                 
             case 'date':
@@ -1715,13 +1714,13 @@ class DB_Table extends DB_Table_Base
             case 'smallint':
             case 'integer':
             case 'bigint':
-                settype($val, 'integer');
+                $val = (int)$val;
                 break;
             
             case 'decimal':
             case 'single':
             case 'double':
-                settype($val, 'float');
+                $val = (float)$val;
                 break;
 
             }
@@ -1749,7 +1748,7 @@ class DB_Table extends DB_Table_Base
      * @see DB_Table_Manager::tableExists()
      * @see DB_Table_Manager::create()
      */
-    function create($flag)
+    public function create($flag)
     {
         include_once 'DB/Table/Manager.php';
 
@@ -1819,7 +1818,7 @@ class DB_Table extends DB_Table_Base
      * @see DB_Table_Manager::create()
      * @see DB_Table_Manager::alter()
      */
-    function alter()
+    public function alter()
     {
         $create = false;
         
@@ -1859,7 +1858,7 @@ class DB_Table extends DB_Table_Base
      * 
      * @see DB_Table_Manager::verify()
      */
-    function verify()
+    public function verify()
     {
         return DB_Table_Manager::verify(
             $this->db, $this->table, $this->col, $this->idx
@@ -1886,18 +1885,18 @@ class DB_Table extends DB_Table_Base
      * 
      * @see DB_Table_Valid
      */
-    function isValid($val, $col)
+    public function isValid($val, $col)
     {
         // is the value null?
-        if (is_null($val)) {
+        if (null === $val) {
             // is the column required?
             if ($this->isRequired($col)) {
                 // yes, so not valid
                 return false;
-            } else {
-                // not required, so it's valid
-                return true;
             }
+
+            // not required, so it's valid
+            return true;
         }
         
         // make sure we have the validation class
@@ -1969,7 +1968,7 @@ class DB_Table extends DB_Table_Base
      * @return boolean      True if required, false if not.
      * @access public
      */
-    function isRequired($column)
+    public function isRequired($column)
     {
         if (isset($this->col[$column]['require']) &&
             $this->col[$column]['require'] == true) {
@@ -2027,7 +2026,7 @@ class DB_Table extends DB_Table_Base
      * @see HTML_QuickForm
      * @see DB_Table_QuickForm
      */
-    function &getForm($columns = null, $array_name = null, $args = array(),
+    public function &getForm($columns = null, $array_name = null, $args = array(),
         $clientValidate = null, $formFilters = null)
     {
         include_once 'DB/Table/QuickForm.php';
@@ -2062,7 +2061,7 @@ class DB_Table extends DB_Table_Base
      * 
      * @see DB_Table_QuickForm
      */
-    function addFormElements(&$form, $columns = null, $array_name = null,
+    public function addFormElements(&$form, $columns = null, $array_name = null,
         $clientValidate = null)
     {
         include_once 'DB/Table/QuickForm.php';
@@ -2085,7 +2084,7 @@ class DB_Table extends DB_Table_Base
      * @see HTML_QuickForm
      * @see DB_Table_QuickForm
      */
-    function addStaticFormElements(&$form)
+    public function addStaticFormElements(&$form)
     {
         include_once 'DB/Table/QuickForm.php';
         DB_Table_QuickForm::addStaticElements($form, $this->frm);
@@ -2112,7 +2111,7 @@ class DB_Table extends DB_Table_Base
      * @see HTML_QuickForm
      * @see DB_Table_QuickForm
      */
-    function &getFormGroup($columns = null, $array_name = null)
+    public function &getFormGroup($columns = null, $array_name = null)
     {
         include_once 'DB/Table/QuickForm.php';
         $coldefs = $this->_getFormColDefs($columns);
@@ -2137,7 +2136,7 @@ class DB_Table extends DB_Table_Base
      * @see DB_Table_QuickForm
      */
     
-    function &getFormElement($column, $elemname)
+    public function &getFormElement($column, $elemname)
     {
         include_once 'DB/Table/QuickForm.php';
         $coldef = $this->_getFormColDefs($column);
@@ -2163,7 +2162,7 @@ class DB_Table extends DB_Table_Base
      * @see HTML_QuickForm
      * @see DB_Table_QuickForm
      */
-    function &getFormElements($cols, $array_name = null)
+    public function &getFormElements($cols, $array_name = null)
     {
         include_once 'DB/Table/QuickForm.php';
         $elements = DB_Table_QuickForm::getElements($cols, $array_name);
@@ -2185,9 +2184,9 @@ class DB_Table extends DB_Table_Base
      * @access public
      * 
      */
-    function _getFormColDefs($column_set = null)
+    public function _getFormColDefs($column_set = null)
     {
-        if (is_null($column_set)) {
+        if (null === $column_set) {
             // no columns or columns+values; just return the $this->col
             // array.
             return $this->getColumns($column_set);
@@ -2195,11 +2194,11 @@ class DB_Table extends DB_Table_Base
         
         // check to see if the keys are sequential integers.  if so,
         // the $column_set is just a list of columns.
-        settype($column_set, 'array');
-        $keys = array_keys($column_set);
+        $column_set  = (array)$column_set;
+        $keys        = array_keys($column_set);
         $all_integer = true;
         foreach ($keys as $val) {
-            if (! is_integer($val)) {
+            if (! is_int($val)) {
                 $all_integer = false;
                 break;
             }
@@ -2232,7 +2231,7 @@ class DB_Table extends DB_Table_Base
      * @return string XML string
      * @access public
      */
-    function toXML($indent = '') {
+    public function toXML($indent = '') {
         require_once 'DB/Table/XML.php';
         $s = array();
         $s[] = DB_Table_XML::openTag('table', $indent);
@@ -2331,4 +2330,4 @@ class DB_Table extends DB_Table_Base
     }
 
 }
-?>
+

@@ -89,7 +89,7 @@ class HTMLPurifier_ConfigSchema_Validator
         }
         // END - handled by InterchangeBuilder
 
-        if (!is_null($d->allowed) || !empty($d->valueAliases)) {
+        if (null !== $d->allowed || !empty($d->valueAliases)) {
             // allowed and valueAliases require that we be dealing with
             // strings, so check for that early.
             $d_int = HTMLPurifier_VarParser::$types[$d->type];
@@ -110,7 +110,7 @@ class HTMLPurifier_ConfigSchema_Validator
      * HTMLPurifier_ConfigSchema_Interchange_Directive is defined.
      */
     public function validateDirectiveAllowed($d) {
-        if (is_null($d->allowed)) return;
+        if (null === $d->allowed) return;
         $this->with($d, 'allowed')
             ->assertNotEmpty()
             ->assertIsLookup(); // handled by InterchangeBuilder
@@ -129,7 +129,7 @@ class HTMLPurifier_ConfigSchema_Validator
      * HTMLPurifier_ConfigSchema_Interchange_Directive is defined.
      */
     public function validateDirectiveValueAliases($d) {
-        if (is_null($d->valueAliases)) return;
+        if (null === $d->valueAliases) return;
         $this->with($d, 'valueAliases')
             ->assertIsArray(); // handled by InterchangeBuilder
         $this->context[] = 'valueAliases';
@@ -140,7 +140,7 @@ class HTMLPurifier_ConfigSchema_Validator
                 $this->error("alias '$alias'", "must not be an alias to itself");
             }
         }
-        if (!is_null($d->allowed)) {
+        if (null !== $d->allowed) {
             foreach ($d->valueAliases as $alias => $real) {
                 if (isset($d->allowed[$alias])) {
                     $this->error("alias '$alias'", 'must not be an allowed value');

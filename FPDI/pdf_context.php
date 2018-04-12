@@ -93,7 +93,7 @@ class pdf_context
     public function reset($pos = null, $l = 100)
     {
         if ($this->_mode == 0) {
-            if (!is_null($pos)) {
+            if (null !== $pos) {
                 fseek ($this->file, $pos);
             }
 

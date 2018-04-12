@@ -138,7 +138,7 @@ class Pager
      *
      * @access public
      */
-    function __construct($options = array())
+    public function __construct($options = array())
     {
         //this check evaluates to true on 5.0.0RC-dev,
         //so i'm using another one, for now...
@@ -166,7 +166,7 @@ class Pager
      * @static
      * @access public
      */
-    function &factory($options = array())
+    public function &factory($options = array())
     {
         $mode = (isset($options['mode']) ? ucfirst($options['mode']) : 'Jumping');
         $classname = 'Pager_' . $mode;

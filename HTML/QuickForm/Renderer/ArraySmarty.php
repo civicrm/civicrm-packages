@@ -99,33 +99,33 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * The Smarty template engine instance
     * @var object
     */
-    var $_tpl = null;
+    public $_tpl = null;
 
    /**
     * Current element index
     * @var integer
     */
-    var $_elementIdx = 0;
+    public $_elementIdx = 0;
 
     /**
     * The current element index inside a group
     * @var integer
     */
-    var $_groupElementIdx = 0;
+    public $_groupElementIdx = 0;
 
    /**
     * How to handle the required tag for required fields
     * @var string
     * @see      setRequiredTemplate()
     */
-    var $_required = '';
+    public $_required = '';
 
    /**
     * How to handle error messages in form validation
     * @var string
     * @see      setErrorTemplate()
     */
-    var $_error = '';
+    public $_error = '';
    /**#@-*/
 
    /**
@@ -136,7 +136,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @param  bool    true: collect all hidden elements into string; false: process them as usual form elements
     * @access public
     */
-    function __construct(&$tpl, $staticLabels = false, $collectHidden = true)
+    public function __construct(&$tpl, $staticLabels = false, $collectHidden = true)
     {
         parent::__construct($collectHidden, $staticLabels);
         $this->_tpl =& $tpl;
@@ -149,7 +149,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @access   public
     * @return   void
     */
-    function renderHeader(&$header)
+    public function renderHeader(&$header)
     {
         if ($name = $header->getName()) {
             $this->_ary['header'][$name] = $header->toHtml();
@@ -168,7 +168,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @access   public
     * @return   void
     */
-    function startGroup(&$group, $required, $error)
+    public function startGroup(&$group, $required, $error)
     {
         parent::startGroup($group, $required, $error);
         $this->_groupElementIdx = 1;
@@ -184,7 +184,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @param  string                    Error associated with the element
     * @return array
     */
-    function _elementToArray(&$element, $required, $error)
+    public function _elementToArray(&$element, $required, $error)
     {
         $ret = parent::_elementToArray($element, $required, $error);
 
@@ -254,7 +254,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @param array  Array representation of an element
     * @return void
     */
-    function _storeArray($elAry)
+    public function _storeArray($elAry)
     {
         if ($elAry) {
             $sKeys = $elAry['keys'];
@@ -284,7 +284,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @access   private
     * @return   void
     */
-    function _renderRequired(&$label, &$html, &$required, &$error)
+    public function _renderRequired(&$label, &$html, &$required, &$error)
     {
         $this->_tpl->assign(array(
             'label'    => $label,
@@ -315,7 +315,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @access   private
     * @return   void
     */
-    function _renderError(&$label, &$html, &$error)
+    public function _renderError(&$label, &$html, &$error)
     {
         $this->_tpl->assign(array('label' => '', 'html' => '', 'error' => $error));
         $error = $this->_tplFetch($this->_error);
@@ -339,7 +339,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @access   private
     * @return   void
     */
-    function _tplFetch($tplSource)
+    public function _tplFetch($tplSource)
     {
         if (!function_exists('smarty_function_eval')) {
             require SMARTY_DIR . '/plugins/function.eval.php';
@@ -364,7 +364,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @access   public
     * @return   void
     */
-    function setRequiredTemplate($template)
+    public function setRequiredTemplate($template)
     {
         $this->_required = $template;
     } // end func setRequiredTemplate
@@ -395,7 +395,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @access   public
     * @return   void
     */
-    function setErrorTemplate($template)
+    public function setErrorTemplate($template)
     {
         $this->_error = $template;
     } // end func setErrorTemplate

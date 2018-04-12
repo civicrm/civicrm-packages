@@ -54,13 +54,13 @@ class DB_pgsql extends DB_common
      * The DB driver type (mysql, oci8, odbc, etc.)
      * @var string
      */
-    var $phptype = 'pgsql';
+    public $phptype = 'pgsql';
 
     /**
      * The database syntax variant to be used (db2, access, etc.), if any
      * @var string
      */
-    var $dbsyntax = 'pgsql';
+    public $dbsyntax = 'pgsql';
 
     /**
      * The capabilities of this DB implementation
@@ -75,7 +75,7 @@ class DB_pgsql extends DB_common
      *
      * @var array
      */
-    var $features = array(
+    public $features = array(
         'limit'         => 'alter',
         'new_link'      => '4.3.0',
         'numrows'       => true,
@@ -89,20 +89,20 @@ class DB_pgsql extends DB_common
      * A mapping of native error codes to DB error codes
      * @var array
      */
-    var $errorcode_map = array(
+    public $errorcode_map = array(
     );
 
     /**
      * The raw database connection created by PHP
      * @var resource
      */
-    var $connection;
+    public $connection;
 
     /**
      * The DSN information for connecting to a database
      * @var array
      */
-    var $dsn = array();
+    public $dsn = array();
 
 
     /**
@@ -110,7 +110,7 @@ class DB_pgsql extends DB_common
      * @var bool
      * @access private
      */
-    var $autocommit = true;
+    public $autocommit = true;
 
     /**
      * The quantity of transactions begun
@@ -121,44 +121,28 @@ class DB_pgsql extends DB_common
      * @var integer
      * @access private
      */
-    var $transaction_opcount = 0;
+    public $transaction_opcount = 0;
 
     /**
      * The number of rows affected by a data manipulation query
      * @var integer
      */
-    var $affected = 0;
+    public $affected = 0;
 
     /**
      * The current row being looked at in fetchInto()
      * @var array
      * @access private
      */
-    var $row = array();
+    public $row = array();
 
     /**
      * The number of rows in a given result set
      * @var array
      * @access private
      */
-    var $_num_rows = array();
+    public $_num_rows = array();
 
-
-    // }}}
-    // {{{ constructor
-
-    /**
-     * This constructor calls <kbd>$this->DB_common()</kbd>
-     *
-     * @return void
-     */
-    function __construct()
-    {
-        parent::__construct();
-    }
-
-    // }}}
-    // {{{ connect()
 
     /**
      * Connect to the database server, log in and open the database
@@ -206,7 +190,7 @@ class DB_pgsql extends DB_common
      *
      * @link http://www.postgresql.org/docs/current/static/libpq.html#LIBPQ-CONNECT
      */
-    function connect($dsn, $persistent = false)
+    public function connect($dsn, $persistent = false)
     {
         if (!PEAR::loadExtension('pgsql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
@@ -299,7 +283,7 @@ class DB_pgsql extends DB_common
      *
      * @return bool  TRUE on success, FALSE on failure
      */
-    function disconnect()
+    public function disconnect()
     {
         $ret = @pg_close($this->connection);
         $this->connection = null;
@@ -318,7 +302,7 @@ class DB_pgsql extends DB_common
      *                + the DB_OK constant for other successful queries
      *                + a DB_Error object on failure
      */
-    function simpleQuery($query)
+    public function simpleQuery($query)
     {
         $ismanip = $this->_checkManip($query);
         $this->last_query = $query;
@@ -382,7 +366,7 @@ class DB_pgsql extends DB_common
      *
      * @return true if a result is available otherwise return false
      */
-    function nextResult($result)
+    public function nextResult($result)
     {
         return false;
     }
@@ -410,7 +394,7 @@ class DB_pgsql extends DB_common
      *
      * @see DB_result::fetchInto()
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
+    public function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         $result_int = (int)$result;
         $rownum = ($rownum !== null) ? $rownum : $this->row[$result_int];
@@ -454,11 +438,10 @@ class DB_pgsql extends DB_common
      *
      * @see DB_result::free()
      */
-    function freeResult($result)
+    public function freeResult($result)
     {
         if (is_resource($result)) {
-            unset($this->row[(int)$result]);
-            unset($this->_num_rows[(int)$result]);
+            unset($this->row[(int)$result], $this->_num_rows[(int)$result]);
             $this->affected = 0;
             return @pg_freeresult($result);
         }
@@ -472,7 +455,7 @@ class DB_pgsql extends DB_common
      * @deprecated  Deprecated in release 1.6.0
      * @internal
      */
-    function quote($str)
+    public function quote($str)
     {
         return $this->quoteSmart($str);
     }
@@ -489,7 +472,7 @@ class DB_pgsql extends DB_common
      * @see DB_common::quoteSmart()
      * @since Method available since release 1.7.8.
      */
-    function quoteBoolean($boolean) {
+    public function quoteBoolean($boolean) {
         return $boolean ? 'TRUE' : 'FALSE';
     }
      
@@ -509,7 +492,7 @@ class DB_pgsql extends DB_common
      * @see DB_common::quoteSmart()
      * @since Method available since Release 1.6.0
      */
-    function escapeSimple($str)
+    public function escapeSimple($str)
     {
         if (function_exists('pg_escape_string')) {
             /* This fixes an undocumented BC break in PHP 5.2.0 which changed
@@ -544,7 +527,7 @@ class DB_pgsql extends DB_common
      *
      * @see DB_result::numCols()
      */
-    function numCols($result)
+    public function numCols($result)
     {
         $cols = @pg_numfields($result);
         if (!$cols) {
@@ -569,7 +552,7 @@ class DB_pgsql extends DB_common
      *
      * @see DB_result::numRows()
      */
-    function numRows($result)
+    public function numRows($result)
     {
         $rows = @pg_numrows($result);
         if ($rows === null) {
@@ -589,7 +572,7 @@ class DB_pgsql extends DB_common
      * @return int  DB_OK on success.  A DB_Error object if the driver
      *               doesn't support auto-committing transactions.
      */
-    function autoCommit($onoff = false)
+    public function autoCommit($onoff = false)
     {
         // XXX if $this->transaction_opcount > 0, we should probably
         // issue a warning here.
@@ -605,7 +588,7 @@ class DB_pgsql extends DB_common
      *
      * @return int  DB_OK on success.  A DB_Error object on failure.
      */
-    function commit()
+    public function commit()
     {
         if ($this->transaction_opcount > 0) {
             // (disabled) hack to shut up error messages from libpq.a
@@ -627,7 +610,7 @@ class DB_pgsql extends DB_common
      *
      * @return int  DB_OK on success.  A DB_Error object on failure.
      */
-    function rollback()
+    public function rollback()
     {
         if ($this->transaction_opcount > 0) {
             $result = @pg_exec($this->connection, 'abort;');
@@ -649,7 +632,7 @@ class DB_pgsql extends DB_common
      *
      * @return int  the number of rows.  A DB_Error object on failure.
      */
-    function affectedRows()
+    public function affectedRows()
     {
         return $this->affected;
     }
@@ -670,7 +653,7 @@ class DB_pgsql extends DB_common
      * @see DB_common::nextID(), DB_common::getSequenceName(),
      *      DB_pgsql::createSequence(), DB_pgsql::dropSequence()
      */
-    function nextId($seq_name, $ondemand = true)
+    public function nextId($seq_name, $ondemand = true)
     {
         $seqname = $this->getSequenceName($seq_name);
         $repeat = false;
@@ -712,7 +695,7 @@ class DB_pgsql extends DB_common
      * @see DB_common::createSequence(), DB_common::getSequenceName(),
      *      DB_pgsql::nextID(), DB_pgsql::dropSequence()
      */
-    function createSequence($seq_name)
+    public function createSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
         $result = $this->query("CREATE SEQUENCE ${seqname}");
@@ -732,7 +715,7 @@ class DB_pgsql extends DB_common
      * @see DB_common::dropSequence(), DB_common::getSequenceName(),
      *      DB_pgsql::nextID(), DB_pgsql::createSequence()
      */
-    function dropSequence($seq_name)
+    public function dropSequence($seq_name)
     {
         return $this->query('DROP SEQUENCE '
                             . $this->getSequenceName($seq_name));
@@ -757,7 +740,7 @@ class DB_pgsql extends DB_common
      *
      * @access protected
      */
-    function modifyLimitQuery($query, $from, $count, $params = array())
+    public function modifyLimitQuery($query, $from, $count, $params = array())
     {
         return "$query LIMIT $count OFFSET $from";
     }
@@ -777,7 +760,7 @@ class DB_pgsql extends DB_common
      * @see DB_common::raiseError(),
      *      DB_pgsql::errorNative(), DB_pgsql::errorCode()
      */
-    function pgsqlRaiseError($errno = null)
+    public function pgsqlRaiseError($errno = null)
     {
         $native = $this->errorNative();
         if (!$native) {
@@ -801,7 +784,7 @@ class DB_pgsql extends DB_common
      *
      * @return string  the DBMS' error message
      */
-    function errorNative()
+    public function errorNative()
     {
         return @pg_errormessage($this->connection);
     }
@@ -815,7 +798,7 @@ class DB_pgsql extends DB_common
      * @param  string  $errormsg  error message returned from the database
      * @return integer  an error number from a DB error constant
      */
-    function errorCode($errormsg)
+    public function errorCode($errormsg)
     {
         static $error_regexps;
         if (!isset($error_regexps)) {
@@ -892,7 +875,7 @@ class DB_pgsql extends DB_common
      *
      * @see DB_common::tableInfo()
      */
-    function tableInfo($result, $mode = null)
+    public function tableInfo($result, $mode = null)
     {
         if (is_string($result)) {
             /*
@@ -977,7 +960,7 @@ class DB_pgsql extends DB_common
      *
      * @access private
      */
-    function _pgFieldFlags($resource, $num_field, $table_name)
+    public function _pgFieldFlags($resource, $num_field, $table_name)
     {
         $field_name = @pg_fieldname($resource, $num_field);
 
@@ -1053,7 +1036,7 @@ class DB_pgsql extends DB_common
      * @access protected
      * @see DB_common::getListOf()
      */
-    function getSpecialQuery($type)
+    public function getSpecialQuery($type)
     {
         switch ($type) {
             case 'tables':
@@ -1113,4 +1096,4 @@ class DB_pgsql extends DB_common
  * End:
  */
 
-?>
+

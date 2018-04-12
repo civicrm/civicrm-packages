@@ -46,27 +46,27 @@ class HTML_QuickForm_Page extends HTML_QuickForm
     * Contains the mapping of actions to corresponding HTML_QuickForm_Action objects
     * @var array
     */
-    var $_actions = array();
+    public $_actions = array();
 
    /**
     * Contains a reference to a Controller object containing this page
     * @var      HTML_QuickForm_Controller
     * @access   public
     */
-    var $controller = null;
+    public $controller = null;
 
    /**
     * Should be set to true on first call to buildForm()
     * @var bool
     */
-    var $_formBuilt = false;
+    public $_formBuilt = false;
 
    /**
     * Class constructor
     *
     * @access public
     */
-    function __construct($formName, $method = 'post', $target = '', $attributes = null)
+    public function __construct($formName, $method = 'post', $target = '', $attributes = null)
     {
         parent::__construct($formName, $method, '', $target, $attributes);
     }
@@ -79,7 +79,7 @@ class HTML_QuickForm_Page extends HTML_QuickForm
     * @param  string                name of the action
     * @param  HTML_QuickForm_Action the handler for the action
     */
-    function addAction($actionName, &$action)
+    public function addAction($actionName, &$action)
     {
         $this->_actions[$actionName] =& $action;
     }
@@ -95,7 +95,7 @@ class HTML_QuickForm_Page extends HTML_QuickForm
     * @param  string Name of the action
     * @throws PEAR_Error
     */
-    function handle($actionName)
+    public function handle($actionName)
     {
         if (isset($this->_actions[$actionName])) {
             return $this->_actions[$actionName]->perform($this, $actionName);
@@ -112,7 +112,7 @@ class HTML_QuickForm_Page extends HTML_QuickForm
     * @param  string  Name of the action
     * @return string  "name" attribute for a submit button
     */
-    function getButtonName($actionName, $subActionName = null)
+    public function getButtonName($actionName, $subActionName = null)
     {
         if ( $subActionName != null ) {
             return '_qf_' . $this->getAttribute('id') . '_' . $actionName . '_' . $subActionName;
@@ -130,7 +130,7 @@ class HTML_QuickForm_Page extends HTML_QuickForm
     * @param array  'submit' values
     * @access public
     */
-    function loadValues($values)
+    public function loadValues($values)
     {
         $this->_flagSubmitted = true;
         $this->_submitValues = $values;
@@ -152,7 +152,7 @@ class HTML_QuickForm_Page extends HTML_QuickForm
     * @access public
     * @abstract
     */
-    function buildForm()
+    public function buildForm()
     {
         $this->_formBuilt = true;
     }
@@ -164,7 +164,7 @@ class HTML_QuickForm_Page extends HTML_QuickForm
     * @access public
     * @return bool
     */
-    function isFormBuilt()
+    public function isFormBuilt()
     {
         return $this->_formBuilt;
     }
@@ -180,7 +180,7 @@ class HTML_QuickForm_Page extends HTML_QuickForm
     * @access public
     * @param  string    default action name
     */
-    function setDefaultAction($actionName)
+    public function setDefaultAction($actionName)
     {
         if ($this->elementExists('_qf_default')) {
             $element =& $this->getElement('_qf_default');
@@ -197,7 +197,7 @@ class HTML_QuickForm_Page extends HTML_QuickForm
     * @param   mixed   Array/string of element names, whose values we want. If not set then return all elements.
     * @param   bool    Whether to remove internal (_qf_...) values from the resultant array
     */
-    function exportValues($elementList = null, $filterInternal = false)
+    public function exportValues($elementList = null, $filterInternal = false)
     {
         $values = parent::exportValues($elementList);
         if ($filterInternal) {

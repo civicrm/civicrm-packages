@@ -24,14 +24,14 @@ class Log_file extends Log
      * @var string
      * @access private
      */
-    var $_filename = 'php.log';
+    public $_filename = 'php.log';
 
     /**
      * Handle to the log file.
      * @var resource
      * @access private
      */
-    var $_fp = false;
+    public $_fp = false;
 
     /**
      * Should new log entries be append to an existing log file, or should the
@@ -39,21 +39,21 @@ class Log_file extends Log
      * @var boolean
      * @access private
      */
-    var $_append = true;
+    public $_append = true;
 
     /**
      * Should advisory file locking (i.e., flock()) be used?
      * @var boolean
      * @access private
      */
-    var $_locking = false;
+    public $_locking = false;
 
     /**
      * Integer (in octal) containing the log file's permissions mode.
      * @var integer
      * @access private
      */
-    var $_mode = 0644;
+    public $_mode = 0644;
 
     /**
      * Integer (in octal) specifying the file permission mode that will be
@@ -61,14 +61,14 @@ class Log_file extends Log
      * @var integer
      * @access private
      */
-    var $_dirmode = 0755;
+    public $_dirmode = 0755;
 
     /**
      * String containing the format of a log line.
      * @var string
      * @access private
      */
-    var $_lineFormat = '%1$s %2$s [%3$s] %4$s';
+    public $_lineFormat = '%1$s %2$s [%3$s] %4$s';
 
     /**
      * String containing the timestamp format.  It will be passed directly to
@@ -77,14 +77,14 @@ class Log_file extends Log
      * @var string
      * @access private
      */
-    var $_timeFormat = '%b %d %H:%M:%S';
+    public $_timeFormat = '%b %d %H:%M:%S';
 
     /**
      * String containing the end-on-line character sequence.
      * @var string
      * @access private
      */
-    var $_eol = "\n";
+    public $_eol = "\n";
 
     /**
      * Constructs a new Log_file object.
@@ -95,7 +95,7 @@ class Log_file extends Log
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function __construct($name, $ident = '', $conf = array(),
+    public function __construct($name, $ident = '', $conf = array(),
                       $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
@@ -149,7 +149,7 @@ class Log_file extends Log
     /**
      * Destructor
      */
-    function _Log_file()
+    public function _Log_file()
     {
         if ($this->_opened) {
             $this->close();
@@ -171,7 +171,7 @@ class Log_file extends Log
      *
      * @access  private
      */
-    function _mkpath($path, $mode = 0700)
+    public function _mkpath($path, $mode = 0700)
     {
         /* Separate the last pathname component from the rest of the path. */
         $head = dirname($path);
@@ -201,7 +201,7 @@ class Log_file extends Log
      *
      * @access public
      */
-    function open()
+    public function open()
     {
         if (!$this->_opened) {
             /* If the log file's directory doesn't exist, create it. */
@@ -232,7 +232,7 @@ class Log_file extends Log
      *
      * @access public
      */
-    function close()
+    public function close()
     {
         /* If the log file is open, close it. */
         if ($this->_opened && fclose($this->_fp)) {
@@ -248,7 +248,7 @@ class Log_file extends Log
      * @access public
      * @since Log 1.8.2
      */
-    function flush()
+    public function flush()
     {
         if (is_resource($this->_fp)) {
             return fflush($this->_fp);
@@ -269,7 +269,7 @@ class Log_file extends Log
      * @return boolean  True on success or false on failure.
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {

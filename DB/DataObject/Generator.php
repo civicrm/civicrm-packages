@@ -68,7 +68,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @var array
      * @access private
      */
-    var $tables;
+    public $tables;
 
     /**
      * associative array table -> array of table row objects
@@ -76,7 +76,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @var array
      * @access private
      */
-    var $_definitions;
+    public $_definitions;
 
     /**
      * active table being output
@@ -84,7 +84,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @var string
      * @access private
      */
-    var $table; // active tablename
+    public $table; // active tablename
 
 
     /**
@@ -93,7 +93,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @access  public
      * @return  none
      */
-    function start()
+    public function start()
     {
         $options = PEAR::getStaticProperty('DB_DataObject','options');
         $db_driver = empty($options['db_driver']) ? 'DB' : $options['db_driver'];
@@ -161,7 +161,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @var    string outputbuffer for table definitions
      * @access private
      */
-    var $_newConfig;
+    public $_newConfig;
 
     /**
      * Build a list of tables;
@@ -170,7 +170,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @access  private
      * @return  none
      */
-    function _createTableList()
+    public function _createTableList()
     {
         $this->_connect();
         $options = PEAR::getStaticProperty('DB_DataObject','options');
@@ -311,7 +311,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @access  private
      * @return  none
      */
-    function generateDefinitions()
+    public function generateDefinitions()
     {
         $this->debug("Generating Definitions file:        ");
         if (!$this->tables) {
@@ -374,9 +374,9 @@ class DB_DataObject_Generator extends DB_DataObject
      * Currenly only works with mysql / mysqli
      * to use, you must set option: generate_links=true
      * 
-     * @author Pascal Schöni 
+     * @author Pascal Schï¿½ni 
      */
-    function generateForeignKeys() 
+    public function generateForeignKeys()
     {
         $options = PEAR::getStaticProperty('DB_DataObject','options');
         if (empty($options['generate_links'])) {
@@ -469,7 +469,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @access  private
      * @return  tabledef and keys array.
      */
-    function _generateDefinitionsTable()
+    public function _generateDefinitionsTable()
     {
         global $_DB_DATAOBJECT;
         $options = PEAR::getStaticProperty('DB_DataObject','options');
@@ -712,7 +712,7 @@ class DB_DataObject_Generator extends DB_DataObject
     */
     
     
-    function getClassNameFromTableName($table)
+    public function getClassNameFromTableName($table)
     {
         $options = PEAR::getStaticProperty('DB_DataObject','options');
         $class_prefix  = empty($options['class_prefix']) ? '' : $options['class_prefix'];
@@ -728,7 +728,7 @@ class DB_DataObject_Generator extends DB_DataObject
     */
     
     
-    function getFileNameFromTableName($table)
+    public function getFileNameFromTableName($table)
     {
         $options = PEAR::getStaticProperty('DB_DataObject','options');
         $base = $options['class_location'];
@@ -758,7 +758,7 @@ class DB_DataObject_Generator extends DB_DataObject
     */
     
     
-    function getMethodNameFromColumnName($col)
+    public function getMethodNameFromColumnName($col)
     {
         return ucfirst($col);
     }
@@ -770,7 +770,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * building the class files
      * for each of the tables output a file!
      */
-    function generateClasses()
+    public function generateClasses()
     {
         //echo "Generating Class files:        \n";
         $options = PEAR::getStaticProperty('DB_DataObject','options');
@@ -819,7 +819,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @var    string
      * @access private
      */
-    var $_extends = 'DB_DataObject';
+    public $_extends = 'DB_DataObject';
 
     /**
      * line to use for require('DB/DataObject.php');
@@ -827,7 +827,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @var    string
      * @access private
      */
-    var $_extendsFile = "DB/DataObject.php";
+    public $_extendsFile = "DB/DataObject.php";
 
     /**
      * class being generated
@@ -835,7 +835,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @var    string
      * @access private
      */
-    var $_className;
+    public $_className;
 
     /**
      * The table class geneation part - single file.
@@ -843,7 +843,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @access  private
      * @return  none
      */
-    function _generateClassTable($input = '')
+    public function _generateClassTable($input = '')
     {
         // title = expand me!
         $foot = "";
@@ -1057,7 +1057,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @access   public
      * @return  string added to class eg. functions.
      */
-    function derivedHookFunctions($input = "")
+    public function derivedHookFunctions($input = "")
     {
         // This is so derived generator classes can generate functions
         // It MUST NOT be changed here!!!
@@ -1074,7 +1074,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @access   public
      * @return  string added to class eg. functions.
      */
-    function derivedHookVar(&$t,$padding)
+    public function derivedHookVar(&$t,$padding)
     {
         // This is so derived generator classes can generate variabels
         // It MUST NOT be changed here!!!
@@ -1088,7 +1088,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @access public
      * @return string added to class eg. functions.
      */
-    function derivedHookPageLevelDocBlock() {
+    public function derivedHookPageLevelDocBlock() {
         return '';
     }
 
@@ -1100,7 +1100,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @access public
      * @return string added to class eg. functions.
      */
-    function derivedHookExtendsDocBlock() {
+    public function derivedHookExtendsDocBlock() {
         return '';
     }
 
@@ -1112,7 +1112,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @access public
      * @return string added to class eg. functions.
      */
-    function derivedHookClassDocBlock() {
+    public function derivedHookClassDocBlock() {
         return '';
     }
 
@@ -1131,7 +1131,7 @@ class DB_DataObject_Generator extends DB_DataObject
     * @return   object    Instance of class. or PEAR Error
     * @access   public
     */
-    function getProxyFull($database,$table) 
+    public function getProxyFull($database,$table)
     {
         
         if ($err = $this->fillTableSchema($database,$table)) {
@@ -1166,7 +1166,7 @@ class DB_DataObject_Generator extends DB_DataObject
     * @return   none | PEAR::error()
     * @access   public
     */
-    function fillTableSchema($database,$table) 
+    public function fillTableSchema($database,$table)
     {
         global $_DB_DATAOBJECT;
          // a little bit of sanity testing.
@@ -1253,7 +1253,7 @@ class DB_DataObject_Generator extends DB_DataObject
     * @return   string
     * @access   public
     */
-    function _generateGetters($input) 
+    public function _generateGetters($input)
     {
 
         $options = PEAR::getStaticProperty('DB_DataObject','options');
@@ -1306,7 +1306,7 @@ class DB_DataObject_Generator extends DB_DataObject
     * @return   string
     * @access   public
     */
-    function _generateSetters($input) 
+    public function _generateSetters($input)
     {
 
         $options = &PEAR::getStaticProperty('DB_DataObject','options');
@@ -1356,7 +1356,7 @@ class DB_DataObject_Generator extends DB_DataObject
     * @return   string
     * @access   public
     */
-    function _generateTableFunction($def) 
+    public function _generateTableFunction($def)
     {
         $defines = explode(',','INT,STR,DATE,TIME,BOOL,TXT,BLOB,NOTNULL,MYSQLTIMESTAMP');
     
@@ -1391,7 +1391,7 @@ class DB_DataObject_Generator extends DB_DataObject
     * @return   string
     * @access   public
     */
-    function _generateKeysFunction($def) 
+    public function _generateKeysFunction($def)
     {
          
         $ret = "\n" .
@@ -1417,7 +1417,7 @@ class DB_DataObject_Generator extends DB_DataObject
     * @return   string
     * @access   public
     */
-    function _generateSequenceKeyFunction($def)
+    public function _generateSequenceKeyFunction($def)
     {
     
         //print_r($def);
@@ -1497,7 +1497,7 @@ class DB_DataObject_Generator extends DB_DataObject
     * @return   string
     * @access   public
     */
-    function _generateDefaultsFunction($table,$defs)
+    public function _generateDefaultsFunction($table,$defs)
     {
         $__DB= &$GLOBALS['_DB_DATAOBJECT']['CONNECTIONS'][$this->_database_dsn_md5];
         if (!in_array($__DB->phptype, array('mysql','mysqli'))) {
@@ -1514,7 +1514,7 @@ class DB_DataObject_Generator extends DB_DataObject
             
             switch (true) {
                 
-                case (is_null( $ar['Default'])):
+                case (null === $ar['Default']):
                     $defaults[$ar['Field']]  = 'null';
                     break;
                 

@@ -139,7 +139,9 @@ class HTMLPurifier_ElementDef
                 continue;
             }
             if ($v === false) {
-                if (isset($this->attr[$k])) unset($this->attr[$k]);
+                if (isset($this->attr[$k])) {
+                    unset($this->attr[$k]);
+                }
                 continue;
             }
             $this->attr[$k] = $v;
@@ -157,9 +159,15 @@ class HTMLPurifier_ElementDef
             $this->content_model_type = $def->content_model_type;
             $this->child = false;
         }
-        if(!is_null($def->child)) $this->child = $def->child;
-        if(!is_null($def->formatting)) $this->formatting = $def->formatting;
-        if($def->descendants_are_inline) $this->descendants_are_inline = $def->descendants_are_inline;
+        if(null !== $def->child) {
+            $this->child = $def->child;
+        }
+        if(null !== $def->formatting) {
+            $this->formatting = $def->formatting;
+        }
+        if($def->descendants_are_inline) {
+            $this->descendants_are_inline = $def->descendants_are_inline;
+        }
 
     }
 
@@ -171,7 +179,9 @@ class HTMLPurifier_ElementDef
     private function _mergeAssocArray(&$a1, $a2) {
         foreach ($a2 as $k => $v) {
             if ($v === false) {
-                if (isset($a1[$k])) unset($a1[$k]);
+                if (isset($a1[$k])) {
+                    unset($a1[$k]);
+                }
                 continue;
             }
             $a1[$k] = $v;

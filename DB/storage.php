@@ -47,33 +47,33 @@ class DB_storage extends PEAR
 
     /** the name of the table (or view, if the backend database supports
         updates in views) we hold data from */
-    var $_table = null;
+    public $_table;
 
     /** which column(s) in the table contains primary keys, can be a
         string for single-column primary keys, or an array of strings
         for multiple-column primary keys */
-    var $_keycolumn = null;
+    public $_keycolumn;
 
     /** DB connection handle used for all transactions */
-    var $_dbh = null;
+    public $_dbh;
 
     /** an assoc with the names of database fields stored as properties
         in this object */
-    var $_properties = array();
+    public $_properties = array();
 
     /** an assoc with the names of the properties in this object that
         have been changed since they were fetched from the database */
-    var $_changes = array();
+    public $_changes = array();
 
     /** flag that decides if data in this object can be changed.
         objects that don't have their table's key column in their
         property lists will be flagged as read-only. */
-    var $_readonly = false;
+    public $_readonly = false;
 
     /** function or method that implements a validator for fields that
         are set, this validator function returns true if the field is
         valid, false if not */
-    var $_validator = null;
+    public $_validator;
 
     // }}}
     // {{{ constructor
@@ -94,7 +94,7 @@ class DB_storage extends PEAR
      * a reference to this object
      *
      */
-    function __construct($table, $keycolumn, &$dbh, $validator = null)
+    public function __construct($table, $keycolumn, &$dbh, $validator = null)
     {
         parent::__construct('DB_Error');
         $this->_table = $table;
@@ -115,21 +115,21 @@ class DB_storage extends PEAR
      *
      * @access private
      */
-    function _makeWhere($keyval = null)
+    public function _makeWhere($keyval = null)
     {
         if (is_array($this->_keycolumn)) {
             if ($keyval === null) {
-                for ($i = 0; $i < sizeof($this->_keycolumn); $i++) {
-                    $keyval[] = $this->{$this->_keycolumn[$i]};
+                foreach ($this->_keycolumn as $iValue) {
+                    $keyval[] = $this->{$iValue};
                 }
             }
             $whereclause = '';
-            for ($i = 0; $i < sizeof($this->_keycolumn); $i++) {
+            for ($i = 0, $iMax = count($this->_keycolumn); $i < $iMax; $i++) {
                 if ($i > 0) {
                     $whereclause .= ' AND ';
                 }
                 $whereclause .= $this->_keycolumn[$i];
-                if (is_null($keyval[$i])) {
+                if (null === $keyval[$i]) {
                     // there's not much point in having a NULL key,
                     // but we support it anyway
                     $whereclause .= ' IS NULL';
@@ -142,7 +142,7 @@ class DB_storage extends PEAR
                 $keyval = @$this->{$this->_keycolumn};
             }
             $whereclause = $this->_keycolumn;
-            if (is_null($keyval)) {
+            if (null === $keyval) {
                 // there's not much point in having a NULL key,
                 // but we support it anyway
                 $whereclause .= ' IS NULL';
@@ -164,7 +164,7 @@ class DB_storage extends PEAR
      *
      * @return int DB_OK on success, a DB error if not
      */
-    function setup($keyval)
+    public function setup($keyval)
     {
         $whereclause = $this->_makeWhere($keyval);
         $query = 'SELECT * FROM ' . $this->_table . ' WHERE ' . $whereclause;
@@ -194,25 +194,25 @@ class DB_storage extends PEAR
      * Create a new (empty) row in the configured table for this
      * object.
      */
-    function insert($newpk)
+    public function insert($newpk)
     {
         if (is_array($this->_keycolumn)) {
             $primarykey = $this->_keycolumn;
         } else {
             $primarykey = array($this->_keycolumn);
         }
-        settype($newpk, "array");
-        for ($i = 0; $i < sizeof($primarykey); $i++) {
+        $newpk = (array)$newpk;
+        for ($i = 0, $iMax = count($primarykey); $i < $iMax; $i++) {
             $pkvals[] = $this->_dbh->quote($newpk[$i]);
         }
 
         $sth = $this->_dbh->query("INSERT INTO $this->_table (" .
-                                  implode(",", $primarykey) . ") VALUES(" .
-                                  implode(",", $pkvals) . ")");
+                                  implode(',', $primarykey) . ') VALUES(' .
+                                  implode(',', $pkvals) . ')');
         if (DB::isError($sth)) {
             return $sth;
         }
-        if (sizeof($newpk) == 1) {
+        if (count($newpk) == 1) {
             $newpk = $newpk[0];
         }
         $this->setup($newpk);
@@ -225,43 +225,43 @@ class DB_storage extends PEAR
      * Output a simple description of this DB_storage object.
      * @return string object description
      */
-    function toString()
+    public function toString()
     {
         $info = strtolower(get_class($this));
-        $info .= " (table=";
+        $info .= ' (table=';
         $info .= $this->_table;
-        $info .= ", keycolumn=";
+        $info .= ', keycolumn=';
         if (is_array($this->_keycolumn)) {
-            $info .= "(" . implode(",", $this->_keycolumn) . ")";
+            $info .= '(' . implode(',', $this->_keycolumn) . ')';
         } else {
             $info .= $this->_keycolumn;
         }
-        $info .= ", dbh=";
+        $info .= ', dbh=';
         if (is_object($this->_dbh)) {
             $info .= $this->_dbh->toString();
         } else {
-            $info .= "null";
+            $info .= 'null';
         }
-        $info .= ")";
-        if (sizeof($this->_properties)) {
-            $info .= " [loaded, key=";
+        $info .= ')';
+        if (count($this->_properties)) {
+            $info .= ' [loaded, key=';
             $keyname = $this->_keycolumn;
             if (is_array($keyname)) {
-                $info .= "(";
-                for ($i = 0; $i < sizeof($keyname); $i++) {
+                $info .= '(';
+                for ($i = 0, $iMax = count($keyname); $i < $iMax; $i++) {
                     if ($i > 0) {
-                        $info .= ",";
+                        $info .= ',';
                     }
                     $info .= $this->$keyname[$i];
                 }
-                $info .= ")";
+                $info .= ')';
             } else {
                 $info .= $this->$keyname;
             }
-            $info .= "]";
+            $info .= ']';
         }
-        if (sizeof($this->_changes)) {
-            $info .= " [modified]";
+        if (count($this->_changes)) {
+            $info .= ' [modified]';
         }
         return $info;
     }
@@ -272,7 +272,7 @@ class DB_storage extends PEAR
     /**
      * Dump the contents of this object to "standard output".
      */
-    function dump()
+    public function dump()
     {
         foreach ($this->_properties as $prop => $foo) {
             print "$prop = ";
@@ -290,7 +290,7 @@ class DB_storage extends PEAR
      *              of properties/columns
      * @return object a new instance of DB_storage or a subclass of it
      */
-    function &create($table, &$data)
+    public function &create($table, &$data)
     {
         $classname = strtolower(get_class($this));
         $obj = new $classname($table);
@@ -359,7 +359,7 @@ class DB_storage extends PEAR
     /**
      * Modify an attriute value.
      */
-    function set($property, $newvalue)
+    public function set($property, $newvalue)
     {
         // only change if $property is known and object is not
         // read-only
@@ -408,7 +408,7 @@ class DB_storage extends PEAR
      * @return attribute contents, or null if the attribute name is
      * unknown
      */
-    function &get($property)
+    public function &get($property)
     {
         // only return if $property is known
         if (isset($this->_properties[$property])) {
@@ -425,9 +425,9 @@ class DB_storage extends PEAR
      * Destructor, calls DB_storage::store() if there are changes
      * that are to be kept.
      */
-    function _DB_storage()
+    public function _DB_storage()
     {
-        if (sizeof($this->_changes)) {
+        if (count($this->_changes)) {
             $this->store();
         }
         $this->_properties = array();
@@ -443,7 +443,7 @@ class DB_storage extends PEAR
      *
      * @return DB_OK or a DB error
      */
-    function store()
+    public function store()
     {
         $params = array();
         $vars = array();
@@ -473,7 +473,7 @@ class DB_storage extends PEAR
      *
      * @return mixed DB_OK or a DB error
      */
-    function remove()
+    public function remove()
     {
         if ($this->_readonly) {
             return $this->raiseError(null, DB_WARNING_READ_ONLY, null,
@@ -503,4 +503,4 @@ class DB_storage extends PEAR
  * End:
  */
 
-?>
+

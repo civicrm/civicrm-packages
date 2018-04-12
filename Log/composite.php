@@ -29,7 +29,7 @@ class Log_composite extends Log
      * @var array
      * @access private
      */
-    var $_children = array();
+    public $_children = array();
 
 
     /**
@@ -42,7 +42,7 @@ class Log_composite extends Log
      *
      * @access public
      */
-    function __construct($name, $ident = '', $conf = array(),
+    public function __construct($name, $ident = '', $conf = array(),
                            $level = PEAR_LOG_DEBUG)
     {
         $this->_ident = $ident;
@@ -55,7 +55,7 @@ class Log_composite extends Log
      *
      * @access public
      */
-    function open()
+    public function open()
     {
         /* Attempt to open each of our children. */
         $this->_opened = true;
@@ -74,7 +74,7 @@ class Log_composite extends Log
      *
      * @access public
      */
-    function close()
+    public function close()
     {
         /* Attempt to close each of our children. */
         $closed = true;
@@ -98,7 +98,7 @@ class Log_composite extends Log
      * @access public
      * @since Log 1.8.2
      */
-    function flush()
+    public function flush()
     {
         /* Attempt to flush each of our children. */
         $flushed = true;
@@ -127,7 +127,7 @@ class Log_composite extends Log
      *
      * @access public
      */
-    function log($message, $priority = null)
+    public function log($message, $priority = null)
     {
         /* If a priority hasn't been specified, use the default value. */
         if ($priority === null) {
@@ -163,7 +163,7 @@ class Log_composite extends Log
      *
      * @access public
      */
-    function isComposite()
+    public function isComposite()
     {
         return true;
     }
@@ -176,7 +176,7 @@ class Log_composite extends Log
      * @access public
      * @since  Log 1.6.7
      */
-    function setIdent($ident)
+    public function setIdent($ident)
     {
         /* Call our base class's setIdent() method. */
         parent::setIdent($ident);
@@ -196,7 +196,7 @@ class Log_composite extends Log
      *
      * @access public
      */
-    function addChild(&$child)
+    public function addChild(&$child)
     {
         /* Make sure this is a Log instance. */
         if (!is_a($child, 'Log')) {
@@ -217,7 +217,7 @@ class Log_composite extends Log
      *
      * @access public
      */
-    function removeChild($child)
+    public function removeChild($child)
     {
         if (!is_a($child, 'Log') || !isset($this->_children[$child->_id])) {
             return false;

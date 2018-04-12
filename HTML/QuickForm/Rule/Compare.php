@@ -45,7 +45,7 @@ class HTML_QuickForm_Rule_Compare extends HTML_QuickForm_Rule
     * @var array
     * @access private
     */
-    var $_operators = array(
+    public $_operators = array(
         'eq'  => '===',
         'neq' => '!==',
         'gt'  => '>',
@@ -64,7 +64,7 @@ class HTML_QuickForm_Rule_Compare extends HTML_QuickForm_Rule
     * @param  string     operator name
     * @return string     operator to use for validation
     */
-    function _findOperator($name)
+    public function _findOperator($name)
     {
         if (empty($name)) {
             return '===';
@@ -78,7 +78,7 @@ class HTML_QuickForm_Rule_Compare extends HTML_QuickForm_Rule
     }
 
 
-    function validate($values, $operator = null)
+    public function validate($values, $operator = null)
     {
         $operator = $this->_findOperator($operator);
         if ('===' != $operator && '!==' != $operator) {
@@ -91,7 +91,7 @@ class HTML_QuickForm_Rule_Compare extends HTML_QuickForm_Rule
     }
 
 
-    function getValidationScript($operator = null)
+    public function getValidationScript($operator = null)
     {
         $operator = $this->_findOperator($operator);
         if ('===' != $operator && '!==' != $operator) {

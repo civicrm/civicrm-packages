@@ -4,12 +4,12 @@ include_once 'ofc_bar_base.php';
 
 class tooltip
 {
-	function __construct(){}
+	public function __construct(){}
 	
 	/**
 	 * @param $shadow as boolean. Enable drop shadow.
 	 */
-	function set_shadow( $shadow )
+	public function set_shadow( $shadow )
 	{
 		$this->shadow = $shadow;
 	}
@@ -17,7 +17,7 @@ class tooltip
 	/**
 	 * @param $stroke as integer, border width in pixels (e.g. 5 )
 	 */
-	function set_stroke( $stroke )
+	public function set_stroke( $stroke )
 	{
 		$this->stroke = $stroke;
 	}
@@ -25,7 +25,7 @@ class tooltip
 	/**
 	 * @param $clash as bolean
 	 */
-	function set_clash( $clash )
+	public function set_clash( $clash )
 	{
 		$this->clash = $clash;
 	}
@@ -33,7 +33,7 @@ class tooltip
 	/**
 	 * @param $colour as string, HEX colour e.g. '#0000ff'
 	 */
-	function set_colour( $colour )
+	public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
@@ -41,7 +41,7 @@ class tooltip
 	/**
 	 * @param $bg as string, HEX colour e.g. '#0000ff'
 	 */
-	function set_background_colour( $bg )
+	public function set_background_colour( $bg )
 	{
 		$this->background = $bg;
 	}
@@ -49,7 +49,7 @@ class tooltip
 	/**
 	 * @param $style as string. A css style.
 	 */
-	function set_title_style( $style )
+	public function set_title_style( $style )
 	{
 		$this->title = $style;
 	}
@@ -57,17 +57,17 @@ class tooltip
 	/**
 	 * @param $style as string. A css style.
 	 */
-    function set_body_style( $style )
+    public function set_body_style( $style )
 	{
 		$this->body = $style;
 	}
 	
-	function set_proximity()
+	public function set_proximity()
 	{
 		$this->mouse = 1;
 	}
 	
-	function set_hover()
+	public function set_hover()
 	{
 		$this->mouse = 2;
 	}

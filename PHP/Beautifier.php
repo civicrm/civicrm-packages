@@ -1026,7 +1026,7 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
      * @see removeWhitespace()
      * @see PHP_Beautifier_Filter_NewLines
      */
-    function setNoDeletePreviousSpaceHack($bFlag = true)
+    public function setNoDeletePreviousSpaceHack($bFlag = true)
     {
         $this->bNdps = $bFlag;
     }
@@ -1150,7 +1150,7 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
      */
     public function addNewLine()
     {
-        if (!is_null($this->sBeforeNewLine)) {
+        if (null !== $this->sBeforeNewLine) {
             $this->aOut[] = $this->sBeforeNewLine;
             $this->sBeforeNewLine = null;
         }
@@ -1165,7 +1165,7 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
      */
     public function addNewLineIndent()
     {
-        if (!is_null($this->sBeforeNewLine)) {
+        if (null !== $this->sBeforeNewLine) {
             $this->aOut[] = $this->sBeforeNewLine;
             $this->sBeforeNewLine = null;
         }

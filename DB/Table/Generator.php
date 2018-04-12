@@ -206,7 +206,7 @@ class DB_Table_Generator
      * @var string
      * @access public
      */
-    var $name = null;
+    public $name;
 
     /**
      * The PEAR DB/MDB2 object that connects to the database.
@@ -214,7 +214,7 @@ class DB_Table_Generator
      * @var object
      * @access private
      */
-    var $db = null;
+    public $db;
 
     /**
      * The backend type. May have values 'db' or 'mdb2'
@@ -222,7 +222,7 @@ class DB_Table_Generator
      * @var string
      * @access private
      */
-    var $backend = null;
+    public $backend;
 
     /**
     * If there is an error on instantiation, this captures that error.
@@ -240,7 +240,7 @@ class DB_Table_Generator
     * @var object PEAR_Error
     * @access public
     */
-    var $error = null;
+    public $error;
 
     /**
      * Numerical array of table name strings
@@ -248,7 +248,7 @@ class DB_Table_Generator
      * @var array
      * @access public
      */
-    var $tables = array();
+    public $tables = array();
 
     /**
      * Class being extended (DB_Table or generic subclass)
@@ -256,7 +256,7 @@ class DB_Table_Generator
      * @var string
      * @access public
      */
-    var $extends = 'DB_Table';
+    public $extends = 'DB_Table';
 
     /**
      * Path to definition of the class $this->extends
@@ -264,7 +264,7 @@ class DB_Table_Generator
      * @var string
      * @access public
      */
-    var $extends_file = 'DB/Table.php';
+    public $extends_file = 'DB/Table.php';
 
     /**
      * Suffix to add to table names to obtain corresponding class names
@@ -272,7 +272,7 @@ class DB_Table_Generator
      * @var string
      * @access public
      */
-    var $class_suffix = "_Table";
+    public $class_suffix = '_Table';
 
     /**
      * Path to directory in which subclass definitions should be written
@@ -282,7 +282,7 @@ class DB_Table_Generator
      * @var string
      * @access public
      */
-    var $class_write_path = '';
+    public $class_write_path = '';
 
     /**
      * Include path to subclass definition files from database file
@@ -296,7 +296,7 @@ class DB_Table_Generator
      * @var string
      * @access public
      */
-    var $class_include_path = '';
+    public $class_include_path = '';
 
     /**
      * Array of column definitions
@@ -308,7 +308,7 @@ class DB_Table_Generator
      * @var array
      * @access public
      */
-    var $col = array();
+    public $col = array();
 
     /**
      * Array of index/constraint definitions.
@@ -320,7 +320,7 @@ class DB_Table_Generator
      * @var array
      * @access public
      */
-     var $idx = array();
+     public $idx = array();
 
     /**
      * Array of auto_increment column names
@@ -330,7 +330,7 @@ class DB_Table_Generator
      * @var array
      * @access public
      */
-     var $auto_inc_col = array();
+     public $auto_inc_col = array();
 
     /**
      * Array of primary keys
@@ -338,7 +338,7 @@ class DB_Table_Generator
      * @var array
      * @access public
      */
-     var $primary_key = array();
+     public $primary_key = array();
 
     /**
      * MDB2 'idxname_format' option, format of index names
@@ -350,7 +350,7 @@ class DB_Table_Generator
      * @var string
      * @access public
      */
-    var $idxname_format = '%s';
+    public $idxname_format = '%s';
 
     // }}}
     // {{{ function DB_Table_Generator(&$db, $name)
@@ -369,7 +369,7 @@ class DB_Table_Generator
      * @return object DB_Table_Generator
      * @access public
      */
-    function __construct(&$db, $name)
+    public function __construct(&$db, $name)
     {
         // Is $db an DB/MDB2 object or null?
         if (is_a($db, 'db_common')) {
@@ -404,7 +404,7 @@ class DB_Table_Generator
      * @access public
      * @static
      */
-    function &throwError($code, $extra = null)
+    public function &throwError($code, $extra = null)
     {
         // get the error message text based on the error code
         $text = 'DB_TABLE_GENERATOR ERROR - ' . "\n"
@@ -434,7 +434,7 @@ class DB_Table_Generator
      * @return void
      * @access public
      */
-    function setErrorMessage($code, $message = null)
+    public function setErrorMessage($code, $message = null)
     {
         if (is_array($code)) {
             foreach ($code as $single_code => $single_message) {
@@ -459,7 +459,7 @@ class DB_Table_Generator
      * @return mixed true on success, PEAR Error on failure
      * @access public
      */
-    function getTableNames()
+    public function getTableNames()
     {
 
         if ($this->backend == 'db') {
@@ -516,7 +516,7 @@ class DB_Table_Generator
      * @return mixed true on success, PEAR Error on failure
      * @access public
      */
-    function getTableDefinition($table)
+    public function getTableDefinition($table)
     {
         /*
         // postgres strip the schema bit from the
@@ -804,7 +804,7 @@ class DB_Table_Generator
      * @return string skeleton DB_Table subclass definition
      * @access public
      */
-    function buildTableClass($table, $indent = '')
+    public function buildTableClass($table, $indent = '')
     {
         $s   = array();
         $idx = array();
@@ -898,7 +898,7 @@ class DB_Table_Generator
                     $v[$name] = $v[$name] . $indent . "'cols' => '{$cols}'\n";
                 }
                 $indent    = substr($indent, 0, -4);
-                $v[$name] .= $indent . ")";
+                $v[$name] .= $indent . ')';
             }
 
             foreach ($v as $key => $value) {
@@ -953,7 +953,7 @@ class DB_Table_Generator
      *                PEAR Error on failure
      * @access public
      */
-    function buildTableClasses()
+    public function buildTableClasses()
     {
         // If $this->tables is null, call getTableNames()
         if (!$this->tables) {
@@ -995,7 +995,7 @@ class DB_Table_Generator
      * @return mixed true on success, PEAR Error on failure
      * @access public
      */
-    function generateTableClassFiles()
+    public function generateTableClassFiles()
     {
         // If $this->tables is null, call getTableNames()
         if (!$this->tables) {
@@ -1040,7 +1040,7 @@ class DB_Table_Generator
                     return $this->throwError(DB_TABLE_GENERATOR_ERR_FILE,
                             $filename);
                 }
-                fputs($file, $out);
+                fwrite($file, $out);
                 fclose($file);
             }
         }
@@ -1071,7 +1071,7 @@ class DB_Table_Generator
      * @return mixed true on success, PEAR Error on failure
      * @access public
      */
-    function generateDatabaseFile($object_name = null)
+    public function generateDatabaseFile($object_name = null)
     {
         // Set name for DB_Table_Database object
         if ($object_name) {
@@ -1193,7 +1193,7 @@ class DB_Table_Generator
                 if (!in_array($ftype, array('integer','smallint','bigint'))) {
                     continue;
                 }
-                if (preg_match("/id$/i", $col_name)) {
+                if (preg_match('/id$/i', $col_name)) {
                     $column_base = preg_replace('/_?id$/i', '', $col_name);
                     foreach ($this->tables as $rtable) {
                         if (!preg_match("/^{$rtable}$/i", $column_base)) {
@@ -1261,7 +1261,7 @@ class DB_Table_Generator
             return $this->throwError(DB_TABLE_GENERATOR_ERR_FILE, $filename);
         }
         $out = implode("\n", $d);
-        fputs($file, $out);
+        fwrite($file, $out);
         fclose($file);
 
         return true;
@@ -1282,7 +1282,7 @@ class DB_Table_Generator
      * @return string class name;
      * @access public
      */
-    function className($table)
+    public function className($table)
     {
         $name = preg_replace('/[^A-Z0-9]/i', '_', ucfirst(trim($table)));
         return  $name . $this->class_suffix;
@@ -1302,7 +1302,7 @@ class DB_Table_Generator
      * @return string variable name;
      * @access public
      */
-    function tableName($table)
+    public function tableName($table)
     {
         return preg_replace('/[^A-Z0-9]/i', '_', trim($table));
     }
@@ -1320,10 +1320,9 @@ class DB_Table_Generator
      * @return string file name
      * @access public
      */
-    function classFileName($class_name)
+    public function classFileName($class_name)
     {
-        $filename = $class_name . '.php';
-        return $filename;
+        return $class_name . '.php';
     }
 
     // }}}

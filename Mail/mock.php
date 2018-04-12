@@ -57,21 +57,21 @@ class Mail_mock extends Mail {
      * @var array
      * @access public
      */
-    var $sentMessages = array();
+    public $sentMessages = array();
 
     /**
      * Callback before sending mail.
      *
      * @var callback
      */
-    var $_preSendCallback;
+    public $_preSendCallback;
 
     /**
      * Callback after sending mai.
      *
      * @var callback
      */
-    var $_postSendCallback;
+    public $_postSendCallback;
 
     /**
      * Constructor.
@@ -84,7 +84,7 @@ class Mail_mock extends Mail {
      * @param array Hash containing any parameters.
      * @access public
      */
-    function __construct($params)
+    public function __construct($params)
     {
         if (isset($params['preSendCallback']) &&
             is_callable($params['preSendCallback'])) {
@@ -122,7 +122,7 @@ class Mail_mock extends Mail {
      *               failure.
      * @access public
      */
-    function send($recipients, $headers, $body)
+    public function send($recipients, $headers, $body)
     {
         if ($this->_preSendCallback) {
             call_user_func_array($this->_preSendCallback,

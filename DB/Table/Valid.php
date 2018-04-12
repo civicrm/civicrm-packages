@@ -95,7 +95,7 @@ class DB_Table_Valid {
     * 
     */
     
-    function isBoolean($value)
+    public function isBoolean($value)
     {
         if ($value === true || $value === false) {
             return true;
@@ -124,7 +124,7 @@ class DB_Table_Valid {
     * 
     */
     
-    function isChar($value, $colsize)
+    public function isChar($value, $colsize)
     {
     	$is_scalar = (! is_array($value) && ! is_object($value));
         $in_range = (strlen($value) <= $colsize);
@@ -147,11 +147,11 @@ class DB_Table_Valid {
     * 
     */
     
-    function isSmallint($value)
+    public function isSmallint($value)
     {
-        return is_integer($value) &&
-            ($value >= $GLOBALS['_DB_TABLE']['valid']['smallint'][0]) &&
-            ($value <= $GLOBALS['_DB_TABLE']['valid']['smallint'][1]);
+        return is_int($value) &&
+               ($value >= $GLOBALS['_DB_TABLE']['valid']['smallint'][0]) &&
+               ($value <= $GLOBALS['_DB_TABLE']['valid']['smallint'][1]);
     }
     
     
@@ -170,11 +170,11 @@ class DB_Table_Valid {
     * 
     */
     
-    function isInteger($value)
+    public function isInteger($value)
     {
-        return is_integer($value) &&
-            ($value >= $GLOBALS['_DB_TABLE']['valid']['integer'][0]) &&
-            ($value <= $GLOBALS['_DB_TABLE']['valid']['integer'][1]);
+        return is_int($value) &&
+               ($value >= $GLOBALS['_DB_TABLE']['valid']['integer'][0]) &&
+               ($value <= $GLOBALS['_DB_TABLE']['valid']['integer'][1]);
     }
     
     
@@ -193,11 +193,11 @@ class DB_Table_Valid {
     * 
     */
     
-    function isBigint($value)
+    public function isBigint($value)
     {
-        return is_integer($value) &&
-            ($value >= $GLOBALS['_DB_TABLE']['valid']['bigint'][0]) &&
-            ($value <= $GLOBALS['_DB_TABLE']['valid']['bigint'][1]);
+        return is_int($value) &&
+               ($value >= $GLOBALS['_DB_TABLE']['valid']['bigint'][0]) &&
+               ($value <= $GLOBALS['_DB_TABLE']['valid']['bigint'][1]);
     }
     
     
@@ -228,7 +228,7 @@ class DB_Table_Valid {
     * 
     */
     
-    function isDecimal($value, $colsize, $colscope)
+    public function isDecimal($value, $colsize, $colscope)
     {
         if (! is_numeric($value)) {
             return false;
@@ -284,7 +284,7 @@ class DB_Table_Valid {
     * 
     */
     
-    function isSingle($value)
+    public function isSingle($value)
     {
         return is_float($value);
     }
@@ -305,7 +305,7 @@ class DB_Table_Valid {
     * 
     */
     
-    function isDouble($value)
+    public function isDouble($value)
     {
         return is_float($value);
     }
@@ -326,7 +326,7 @@ class DB_Table_Valid {
     * 
     */
     
-    function isTime($value)
+    public function isTime($value)
     {
         // hh:ii:ss
         // 01234567
@@ -369,7 +369,7 @@ class DB_Table_Valid {
     * 
     */
     
-    function isDate($value)
+    public function isDate($value)
     {
         // yyyy-mm-dd
         // 0123456789
@@ -408,7 +408,7 @@ class DB_Table_Valid {
     * 
     */
     
-    function isTimestamp($value)
+    public function isTimestamp($value)
     {
         // yyyy-mm-dd hh:ii:ss
         // 0123456789012345678
@@ -445,10 +445,10 @@ class DB_Table_Valid {
     * 
     */
     
-    function isClob($value)
+    public function isClob($value)
     {
         return is_string($value);
     }
 }
 
-?>
+
