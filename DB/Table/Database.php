@@ -2706,7 +2706,7 @@ class DB_Table_Database extends DB_Table_Base
         foreach ($data as $old_key => $value) {
             $new_key = $keys[$i];
             $new_data[$new_key] = $value;
-            $i = $i + 1;
+            ++$i;
         }
         return $new_data;
     }
@@ -2942,7 +2942,7 @@ class DB_Table_Database extends DB_Table_Base
 
                 if ($joined) {
                     $join_tables[] = $table1;
-                    $n_remain = $n_remain - 1;
+                    --$n_remain;
                     if ($n_remain > 0) {
                         $head   = $next[$table1];
                         $tail   = $prev[$table1];

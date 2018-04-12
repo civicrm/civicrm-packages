@@ -1130,7 +1130,7 @@ class Date_Calc
         } elseif (Date_Calc::dayOfWeek($day, $month, $year) == 0) {
             $days -= 2;
         } else {
-            $days -= 1;
+            --$days;
         }
         return Date_Calc::daysToDate($days, $format);
     }
@@ -1170,7 +1170,7 @@ class Date_Calc
         } elseif (Date_Calc::dayOfWeek($day, $month, $year) == 6) {
             $days += 2;
         } else {
-            $days += 1;
+            ++$days;
         }
         return Date_Calc::daysToDate($days, $format);
     }
