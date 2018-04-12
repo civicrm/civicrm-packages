@@ -7,6 +7,13 @@
 class HTMLPurifier_Strategy_ValidateAttributes extends HTMLPurifier_Strategy
 {
 
+    /**
+     * @param array          $tokens
+     * @param \Configuration $config
+     * @param                $context
+     *
+     * @return array
+     */
     public function execute($tokens, $config, $context) {
 
         // setup validator

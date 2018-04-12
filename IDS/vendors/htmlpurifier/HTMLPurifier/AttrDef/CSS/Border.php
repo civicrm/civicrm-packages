@@ -11,6 +11,11 @@ class HTMLPurifier_AttrDef_CSS_Border extends HTMLPurifier_AttrDef
      */
     protected $info = array();
 
+    /**
+     * HTMLPurifier_AttrDef_CSS_Border constructor.
+     *
+     * @param $config
+     */
     public function __construct($config) {
         $def = $config->getCSSDefinition();
         $this->info['border-width'] = $def->info['border-width'];
@@ -18,6 +23,13 @@ class HTMLPurifier_AttrDef_CSS_Border extends HTMLPurifier_AttrDef
         $this->info['border-top-color'] = $def->info['border-top-color'];
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return string
+     */
     public function validate($string, $config, $context) {
         $string = $this->parseCDATA($string);
         $string = $this->mungeRgb($string);

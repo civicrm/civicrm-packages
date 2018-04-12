@@ -231,16 +231,16 @@ class HTML_QuickForm_checkbox extends HTML_QuickForm_input
 
     // }}}
     // {{{ onQuickFormEvent()
-
     /**
      * Called by HTML_QuickForm whenever form event is made on this element
      *
-     * @param     string    $event  Name of event
-     * @param     mixed     $arg    event arguments
-     * @param     object    &$caller calling object
+     * @param     string $event   Name of event
+     * @param     mixed  $arg     event arguments
+     * @param     object &$caller calling object
+     *
+     * @return bool
      * @since     1.0
      * @access    public
-     * @return    void
      */
     public function onQuickFormEvent($event, $arg, &$caller)
     {
@@ -273,10 +273,12 @@ class HTML_QuickForm_checkbox extends HTML_QuickForm_input
 
     // }}}
     // {{{ exportValue()
-
-   /**
-    * Return true if the checkbox is checked, null if it is not checked (getValue() returns false)
-    */
+    /**
+     * Return true if the checkbox is checked, null if it is not checked (getValue() returns false)
+     * @param      $submitValues
+     * @param bool $assoc
+     * @return mixed
+     */
     public function exportValue(&$submitValues, $assoc = false)
     {
         $value = $this->_findValue($submitValues);

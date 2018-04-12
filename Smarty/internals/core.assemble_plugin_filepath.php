@@ -4,12 +4,12 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * assemble filepath of requested plugin
  *
- * @param string $type
- * @param string $name
+ * @param $params
+ * @param $smarty
+ *
  * @return string|false
  */
 function smarty_core_assemble_plugin_filepath($params, &$smarty)

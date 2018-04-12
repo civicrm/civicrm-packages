@@ -112,6 +112,12 @@ class HTMLPurifier_ElementDef
 
     /**
      * Low-level factory constructor for creating new standalone element defs
+     *
+     * @param $content_model
+     * @param $content_model_type
+     * @param $attr
+     *
+     * @return \HTMLPurifier_ElementDef
      */
     public static function create($content_model, $content_model_type, $attr) {
         $def = new HTMLPurifier_ElementDef();
@@ -125,7 +131,8 @@ class HTMLPurifier_ElementDef
      * Merges the values of another element definition into this one.
      * Values from the new element def take precedence if a value is
      * not mergeable.
-     */
+     * @param $def
+*/
     public function mergeIn($def) {
 
         // later keys takes precedence

@@ -6,6 +6,13 @@
 class HTMLPurifier_AttrDef_CSS_Color extends HTMLPurifier_AttrDef
 {
 
+    /**
+     * @param String     $color
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string
+     */
     public function validate($color, $config, $context) {
 
         static $colors = null;

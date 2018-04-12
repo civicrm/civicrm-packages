@@ -235,8 +235,10 @@ class Mail_mimeDecode extends PEAR
      * If it finds certain content-types it will call itself in a
      * recursive fashion
      *
-     * @param string Header section
-     * @param string Body section
+     * @param        $headers
+     * @param        $body
+     * @param string $default_ctype
+     *
      * @return object Results of decoding process
      * @access private
      */
@@ -365,7 +367,9 @@ class Mail_mimeDecode extends PEAR
      * array of references to the parts, indexed by mime number.
      *
      * @param  object $structure   The structure to go through
+     * @param bool    $no_refs
      * @param  string $mime_number Internal use only.
+     * @param string  $prepend
      * @return array               Mime numbers
      */
     public function &getMimeNumbers(&$structure, $no_refs = false, $mime_number = '', $prepend = '')
@@ -511,7 +515,8 @@ class Mail_mimeDecode extends PEAR
      * This function splits the input based
      * on the given boundary
      *
-     * @param string Input to parse
+     * @param $input
+     * @param $boundary
      * @return array Contains array of resulting mime parts
      * @access private
      */

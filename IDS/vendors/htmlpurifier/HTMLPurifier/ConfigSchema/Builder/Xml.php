@@ -10,6 +10,11 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
     protected $interchange;
     private $namespace;
 
+    /**
+     * @param $html
+     *
+     * @throws \HTMLPurifier_Exception
+     */
     protected function writeHTMLDiv($html) {
         $this->startElement('div');
 
@@ -21,11 +26,19 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
         $this->endElement(); // div
     }
 
+    /**
+     * @param $var
+     *
+     * @return mixed|string
+     */
     protected function export($var) {
         if ($var === array()) return 'array()';
         return var_export($var, true);
     }
 
+    /**
+     * @param $interchange
+     */
     public function build($interchange) {
         // global access, only use as last resort
         $this->interchange = $interchange;
@@ -45,6 +58,9 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
         $this->flush();
     }
 
+    /**
+     * @param $directive
+     */
     public function buildDirective($directive) {
 
         // Kludge, although I suppose having a notion of a "root namespace"

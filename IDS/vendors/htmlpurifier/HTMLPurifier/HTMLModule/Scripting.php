@@ -20,6 +20,9 @@ class HTMLPurifier_HTMLModule_Scripting extends HTMLPurifier_HTMLModule
     public $content_sets = array('Block' => 'script | noscript', 'Inline' => 'script | noscript');
     public $safe = false;
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
         // TODO: create custom child-definition for noscript that
         // auto-wraps stray #PCDATA in a similar manner to

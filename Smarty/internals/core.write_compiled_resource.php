@@ -4,12 +4,12 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * write the compiled resource
  *
- * @param string $compile_path
- * @param string $compiled_content
+ * @param $params
+ * @param $smarty
+ *
  * @return true
  */
 function smarty_core_write_compiled_resource($params, &$smarty)

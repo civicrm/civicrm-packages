@@ -8,10 +8,22 @@ class HTMLPurifier_AttrDef_HTML_Pixels extends HTMLPurifier_AttrDef
 
     protected $max;
 
+    /**
+     * HTMLPurifier_AttrDef_HTML_Pixels constructor.
+     *
+     * @param null $max
+     */
     public function __construct($max = null) {
         $this->max = $max;
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string
+     */
     public function validate($string, $config, $context) {
 
         $string = trim($string);
@@ -36,6 +48,11 @@ class HTMLPurifier_AttrDef_HTML_Pixels extends HTMLPurifier_AttrDef
 
     }
 
+    /**
+     * @param String $string
+     *
+     * @return \HTMLPurifier_AttrDef|mixed
+     */
     public function make($string) {
         if ($string === '') $max = null;
         else $max = (int) $string;

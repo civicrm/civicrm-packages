@@ -327,12 +327,14 @@ class HTML_QuickForm_element extends HTML_Common
 
     // }}}
     // {{{ _findValue()
-
     /**
      * Tries to find the element value from the values array
-     * 
+     *
      * @since     2.7
      * @access    private
+     *
+     * @param $values
+     *
      * @return    mixed
      */
     public function _findValue(&$values)
@@ -356,17 +358,16 @@ class HTML_QuickForm_element extends HTML_Common
 
     // }}}
     // {{{ onQuickFormEvent()
-
     /**
      * Called by HTML_QuickForm whenever form event is made on this element
      *
-     * @param     string    $event  Name of event
-     * @param     mixed     $arg    event arguments
-     * @param     object    &$caller calling object
+     * @param     string $event   Name of event
+     * @param     mixed  $arg     event arguments
+     * @param     object &$caller calling object
+     * @return bool
      * @since     1.0
      * @access    public
-     * @return    void
-     */
+*/
     public function onQuickFormEvent($event, $arg, &$caller)
     {
         switch ($event) {

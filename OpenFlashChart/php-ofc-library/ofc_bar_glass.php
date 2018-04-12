@@ -2,6 +2,9 @@
 
 include_once 'ofc_bar_base.php';
 
+/**
+ * Class bar_on_show
+ */
 class bar_on_show
 {
 	/**
@@ -24,6 +27,9 @@ class bar_on_show
 	}
 }
 
+/**
+ * Class bar_value
+ */
 class bar_value
 {
 	/**
@@ -37,18 +43,27 @@ class bar_value
 		if( isset( $bottom ) )
 			$this->bottom = $bottom;
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	public function set_tooltip( $tip )
+
+    /**
+     * @param $tip
+     */
+    public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;
 	}
 }
 
+/**
+ * Class bar
+ */
 class bar extends bar_base
 {
 	public function __construct()
@@ -58,6 +73,9 @@ class bar extends bar_base
 	}
 }
 
+/**
+ * Class bar_glass
+ */
 class bar_glass extends bar_base
 {
 	public function __construct()
@@ -67,6 +85,9 @@ class bar_glass extends bar_base
 	}
 }
 
+/**
+ * Class bar_cylinder
+ */
 class bar_cylinder extends bar_base
 {
 	public function __construct()
@@ -76,6 +97,9 @@ class bar_cylinder extends bar_base
 	}
 }
 
+/**
+ * Class bar_cylinder_outline
+ */
 class bar_cylinder_outline extends bar_base
 {
 	public function __construct()
@@ -85,6 +109,9 @@ class bar_cylinder_outline extends bar_base
 	}
 }
 
+/**
+ * Class bar_rounded_glass
+ */
 class bar_rounded_glass extends bar_base
 {
 	public function __construct()
@@ -94,6 +121,9 @@ class bar_rounded_glass extends bar_base
 	}
 }
 
+/**
+ * Class bar_round
+ */
 class bar_round extends bar_base
 {
 	public function __construct()
@@ -103,6 +133,9 @@ class bar_round extends bar_base
 	}
 }
 
+/**
+ * Class bar_dome
+ */
 class bar_dome extends bar_base
 {
 	public function __construct()
@@ -112,6 +145,9 @@ class bar_dome extends bar_base
 	}
 }
 
+/**
+ * Class bar_round3d
+ */
 class bar_round3d extends bar_base
 {
 	public function __construct()
@@ -121,6 +157,9 @@ class bar_round3d extends bar_base
 	}
 }
 
+/**
+ * Class bar_3d
+ */
 class bar_3d extends bar_base
 {
 	public function __construct()

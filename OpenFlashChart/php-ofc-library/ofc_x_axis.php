@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class x_axis
+ */
 class x_axis
 {
 	public function __construct(){}
@@ -11,8 +14,13 @@ class x_axis
 	{
 		$this->stroke = $stroke;	
 	}
-	
-	public function stroke( $stroke )
+
+    /**
+     * @param $stroke
+     *
+     * @return $this
+     */
+    public function stroke( $stroke )
 	{
 		$this->set_stroke( $stroke );
 		return $this;
@@ -35,32 +43,53 @@ class x_axis
 	{
 		$this->colour = $colour;	
 	}
-	
-	public function colour( $colour )
+
+    /**
+     * @param $colour
+     *
+     * @return $this
+     */
+    public function colour( $colour )
 	{
 		$this->set_colour($colour);
 		return $this;
 	}
-	
-	public function set_tick_height( $height )
+
+    /**
+     * @param $height
+     */
+    public function set_tick_height( $height )
 	{
 		$tmp = 'tick-height';
 		$this->$tmp      		= $height;
 	}
-	
-	public function tick_height( $height )
+
+    /**
+     * @param $height
+     *
+     * @return $this
+     */
+    public function tick_height( $height )
 	{
 		$this->set_tick_height($height);
 		return $this;
 	}
-	
-	public function set_grid_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_grid_colour( $colour )
 	{
 		$tmp = 'grid-colour';
 		$this->$tmp = $colour;
 	}
-	
-	public function grid_colour( $colour )
+
+    /**
+     * @param $colour
+     *
+     * @return $this
+     */
+    public function grid_colour( $colour )
 	{
 		$this->set_grid_colour($colour);
 		return $this;
@@ -74,8 +103,13 @@ class x_axis
 	{
 		$this->offset = $o?true:false;	
 	}
-	
-	public function offset( $o )
+
+    /**
+     * @param $o
+     *
+     * @return $this
+     */
+    public function offset( $o )
 	{
 		$this->set_offset($o);
 		return $this;
@@ -88,8 +122,13 @@ class x_axis
 	{
 		$this->steps = $steps;
 	}
-	
-	public function steps( $steps )
+
+    /**
+     * @param $steps
+     *
+     * @return $this
+     */
+    public function steps( $steps )
 	{
 		$this->set_steps($steps);
 		return $this;
@@ -128,10 +167,13 @@ class x_axis
 		if( isset( $this->steps ) )
 			$x_axis_labels->set_steps( $this->steps );
 	}
-	
-	/**
-	 * min and max.
-	 */
+
+    /**
+     * min and max.
+     *
+     * @param $min
+     * @param $max
+     */
 	public function set_range( $min, $max )
 	{
 		$this->min = $min;

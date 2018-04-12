@@ -49,8 +49,13 @@ class pjpgHttpsPost
 { 
    public $pjpgRequest;
    public $pjpgResponse;
-   
-   public function __construct( $pjpgRequestOBJ )
+
+    /**
+     * pjpgHttpsPost constructor.
+     *
+     * @param $pjpgRequestOBJ
+     */
+    public function __construct( $pjpgRequestOBJ )
    {
       $this->pjpgRequest=$pjpgRequestOBJ;
 
@@ -217,8 +222,9 @@ class pjpgHttpsPost
 
 }//end class pjpgHttpsPost
 
-
-
+/**
+ * Class pjpgRequest
+ */
 class pjpgRequest
 {
    public $txnTypes =array(purchase           => array('order_id','cust_id', 'amount', 'pan', 'expdate', 'crypt_type'),
@@ -237,7 +243,12 @@ class pjpgRequest
                        );
    public $txnArray;
 
-   public function __construct($txn)
+    /**
+     * pjpgRequest constructor.
+     *
+     * @param $txn
+     */
+    public function __construct($txn)
    {
       if(is_array($txn))
       {
@@ -252,8 +263,9 @@ class pjpgRequest
 
 }//end class pjpgRequest
 
-
-
+/**
+ * Class pjpgCustInfo
+ */
 class pjpgCustInfo
 {
    public $level3template = array(cust_info =>
@@ -273,43 +285,69 @@ class pjpgCustInfo
    public $level3data;
    public $email;
    public $instructions;
- 
-   public function __construct($custinfo=0,$billing=0,$shipping=0,$items=0)
+
+    /**
+     * pjpgCustInfo constructor.
+     *
+     * @param int $custinfo
+     * @param int $billing
+     * @param int $shipping
+     * @param int $items
+     */
+    public function __construct($custinfo=0,$billing=0,$shipping=0,$items=0)
    {
       if($custinfo)
       {
          $this->setCustInfo($custinfo);
       } 
    }
- 
-   public function setCustInfo($custinfo)
+
+    /**
+     * @param $custinfo
+     */
+    public function setCustInfo($custinfo)
    {
       $this->level3data['cust_info']=array($custinfo);
    }
 
-   public function setEmail($email)
+    /**
+     * @param $email
+     */
+    public function setEmail($email)
    {
       $this->email=$email;
       $this->setCustInfo(array(email=>$email,instructions=>$this->instructions));
    }
 
-   public function setInstructions($instructions)
+    /**
+     * @param $instructions
+     */
+    public function setInstructions($instructions)
    {
       $this->instructions=$instructions;
       $this->setCustinfo(array(email=>$this->email,instructions=>$instructions));
    }
- 
-   public function setShipping($shipping)
+
+    /**
+     * @param $shipping
+     */
+    public function setShipping($shipping)
    {
       $this->level3data['shipping']=array($shipping);
-   } 
- 
-   public function setBilling($billing)
+   }
+
+    /**
+     * @param $billing
+     */
+    public function setBilling($billing)
    {
       $this->level3data['billing']=array($billing);
-   } 
+   }
 
-   public function setItems($items)
+    /**
+     * @param $items
+     */
+    public function setItems($items)
    {
       if(! $this->level3data['item'])   
       {
@@ -324,15 +362,21 @@ class pjpgCustInfo
 
 }//end class pjpgCustInfo
 
-
-
+/**
+ * Class pjpgRecur
+ */
 class pjpgRecur{
 
  public $params;
  public $recurTemplate = array('recur_unit','start_now','start_date',
                             'num_recurs','period','recur_amount');
- 
- public function __construct($params)
+
+    /**
+     * pjpgRecur constructor.
+     *
+     * @param $params
+     */
+    public function __construct($params)
  { 
     $this->params = $params;
     
@@ -344,36 +388,54 @@ class pjpgRecur{
 
 }//end class pjpgRecur
 
-
-
-class pjpgTransaction 
+/**
+ * Class pjpgTransaction
+ */
+class pjpgTransaction
 {
    public $txn;
    public $custInfo = null;
    public $recur    = null;
 
-   public function __construct($txn)
+    /**
+     * pjpgTransaction constructor.
+     *
+     * @param $txn
+     */
+    public function __construct($txn)
    {
       $this->txn=$txn; 
    }
 
-   public function getCustInfo()
+    /**
+     * @return null
+     */
+    public function getCustInfo()
    {
       return $this->custInfo;
    }
 
-   public function setCustInfo($custInfo)
+    /**
+     * @param $custInfo
+     */
+    public function setCustInfo($custInfo)
    {
       $this->custInfo = $custInfo;
       array_push($this->txn,$custInfo);
    }
 
-   public function getRecur()
+    /**
+     * @return null
+     */
+    public function getRecur()
    {
       return $this->recur;
    }
 
-   public function setRecur($recur)
+    /**
+     * @param $recur
+     */
+    public function setRecur($recur)
    {
       $this->recur = $recur;
    }

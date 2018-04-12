@@ -47,16 +47,25 @@ class ClassLoader
     private $useIncludePath = false;
     private $classMap = array();
 
+    /**
+     * @return mixed
+     */
     public function getPrefixes()
     {
         return call_user_func_array('array_merge', $this->prefixes);
     }
 
+    /**
+     * @return array
+     */
     public function getFallbackDirs()
     {
         return $this->fallbackDirs;
     }
 
+    /**
+     * @return array
+     */
     public function getClassMap()
     {
         return $this->classMap;

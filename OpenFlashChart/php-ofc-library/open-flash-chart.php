@@ -62,6 +62,9 @@ include_once 'ofc_line_style.php';
 include_once 'dot_base.php';
 include_once 'ofc_menu.php';
 
+/**
+ * Class open_flash_chart
+ */
 class open_flash_chart
 {
 	public function __construct()
@@ -69,73 +72,115 @@ class open_flash_chart
 		//$this->title = new title( "Many data lines" );
 		$this->elements = array();
 	}
-	
-	public function set_title( $t )
+
+    /**
+     * @param $t
+     */
+    public function set_title( $t )
 	{
 		$this->title = $t;
 	}
-	
-	public function set_x_axis( $x )
+
+    /**
+     * @param $x
+     */
+    public function set_x_axis( $x )
 	{
 		$this->x_axis = $x;	
 	}
-	
-	public function set_y_axis( $y )
-	{
-		$this->y_axis = $y;
-	}
-	
-	public function add_y_axis( $y )
+
+    /**
+     * @param $y
+     */
+    public function set_y_axis( $y )
 	{
 		$this->y_axis = $y;
 	}
 
-	public function set_y_axis_right( $y )
+    /**
+     * @param $y
+     */
+    public function add_y_axis( $y )
+	{
+		$this->y_axis = $y;
+	}
+
+    /**
+     * @param $y
+     */
+    public function set_y_axis_right( $y )
 	{
 		$this->y_axis_right = $y;
 	}
-	
-	public function add_element( $e )
+
+    /**
+     * @param $e
+     */
+    public function add_element( $e )
 	{
 		$this->elements[] = $e;
 	}
-	
-	public function set_x_legend( $x )
+
+    /**
+     * @param $x
+     */
+    public function set_x_legend( $x )
 	{
 		$this->x_legend = $x;
 	}
-	
-	public function set_legend( $legend )
+
+    /**
+     * @param $legend
+     */
+    public function set_legend( $legend )
 	{
 		$this->legend = $legend;
 	}
 
-	public function set_y_legend( $y )
+    /**
+     * @param $y
+     */
+    public function set_y_legend( $y )
 	{
 		$this->y_legend = $y;
 	}
-	
-	public function set_bg_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_bg_colour( $colour )
 	{
 		$this->bg_colour = $colour;	
 	}
-	
-	public function set_inner_bg_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_inner_bg_colour( $colour )
 	{
 		$this->inner_bg_colour = $colour;	
 	}
-	
-	public function set_inner_bg_grad( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_inner_bg_grad( $colour )
 	{
 		$this->inner_bg_grad = $colour;	
 	}
-	
-	public function set_radar_axis( $radar )
+
+    /**
+     * @param $radar
+     */
+    public function set_radar_axis( $radar )
 	{
 		$this->radar_axis = $radar;
 	}
-	
-	public function set_tooltip( $tooltip )
+
+    /**
+     * @param $tooltip
+     */
+    public function set_tooltip( $tooltip )
 	{
 		$this->tooltip = $tooltip;	
 	}
@@ -168,8 +213,11 @@ class open_flash_chart
 	{
 		$this->menu = $m;
 	}
-	
-	public function toString()
+
+    /**
+     * @return mixed|string
+     */
+    public function toString()
 	{
 		if (function_exists('json_encode'))
 		{
@@ -181,8 +229,11 @@ class open_flash_chart
 			return $json->encode( $this );
 		}
 	}
-	
-	public function toPrettyString()
+
+    /**
+     * @return string
+     */
+    public function toPrettyString()
 	{
 		return json_format( $this->toString() );
 	}

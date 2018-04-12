@@ -61,14 +61,14 @@ class Log_daemon extends Log
      */
     public $_timeout = 1;
 
-
     /**
      * Constructs a new syslog object.
      *
-     * @param string $name     The syslog facility.
-     * @param string $ident    The identity string.
-     * @param array  $conf     The configuration array.
-     * @param int    $maxLevel Maximum level at which to log.
+     * @param string $name  The syslog facility.
+     * @param string $ident The identity string.
+     * @param array  $conf  The configuration array.
+     * @param int    $level
+     *
      * @access public
      */
     public function __construct($name, $ident = '', $conf = array(),

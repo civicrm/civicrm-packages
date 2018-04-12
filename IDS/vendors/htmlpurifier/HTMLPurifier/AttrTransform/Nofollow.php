@@ -14,6 +14,13 @@ class HTMLPurifier_AttrTransform_Nofollow extends HTMLPurifier_AttrTransform
         $this->parser = new HTMLPurifier_URIParser();
     }
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
 
         if (!isset($attr['href'])) {

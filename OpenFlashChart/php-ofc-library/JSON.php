@@ -762,6 +762,11 @@ class Services_JSON
 
     /**
      * @todo Ultimately, this should just call PEAR::isError()
+     *
+     * @param      $data
+     * @param null $code
+     *
+     * @return bool
      */
     public function isError($data, $code = null)
     {
@@ -778,8 +783,20 @@ class Services_JSON
 
 if (class_exists('PEAR_Error')) {
 
+    /**
+     * Class Services_JSON_Error
+     */
     class Services_JSON_Error extends PEAR_Error
     {
+        /**
+         * Services_JSON_Error constructor.
+         *
+         * @param string $message
+         * @param null   $code
+         * @param null   $mode
+         * @param null   $options
+         * @param null   $userinfo
+         */
         public function __construct($message = 'unknown error', $code = null,
                                      $mode = null, $options = null, $userinfo = null)
         {
@@ -794,6 +811,15 @@ if (class_exists('PEAR_Error')) {
      */
     class Services_JSON_Error
     {
+        /**
+         * Services_JSON_Error constructor.
+         *
+         * @param string $message
+         * @param null   $code
+         * @param null   $mode
+         * @param null   $options
+         * @param null   $userinfo
+         */
         public function __construct($message = 'unknown error', $code = null,
                                      $mode = null, $options = null, $userinfo = null)
         {

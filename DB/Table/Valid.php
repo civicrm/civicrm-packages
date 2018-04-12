@@ -105,24 +105,24 @@ class DB_Table_Valid {
             return false;
         }
     }
-    
-    
+
     /**
-    * 
-    * Check if a value validates against the 'char' and 'varchar' data type.
-    * 
-    * We allow most anything here, only checking that the length is in range.
-    * 
-    * @static
-    * 
-    * @access public
-    * 
-    * @param mixed $value The value to validate.
-    * 
-    * @return boolean True if the value is valid for the data type, false
-    * if not.
-    * 
-    */
+     *
+     * Check if a value validates against the 'char' and 'varchar' data type.
+     *
+     * We allow most anything here, only checking that the length is in range.
+     *
+     * @static
+     *
+     * @access public
+     *
+     * @param mixed $value The value to validate.
+     *
+     * @param       $colsize
+     *
+     * @return boolean True if the value is valid for the data type, false
+     * if not.
+     */
     
     public function isChar($value, $colsize)
     {

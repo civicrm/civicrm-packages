@@ -118,6 +118,9 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $this->_elementType = $type;
     }
 
+    /**
+     * @param $form
+     */
     public function startForm(&$form)
     {
         $this->_obj->frozen = $form->isFrozen();
@@ -134,6 +137,9 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $this->_sectionCount = 0;
     } // end func startForm
 
+    /**
+     * @param $header
+     */
     public function renderHeader(&$header)
     {
         $hobj = new StdClass;
@@ -142,6 +148,11 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $this->_currentSection = $this->_sectionCount++;
     }
 
+    /**
+     * @param $element
+     * @param $required
+     * @param $error
+     */
     public function renderElement(&$element, $required, $error)
     {
         $elObj = $this->_elementToObject($element, $required, $error);
@@ -152,6 +163,9 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $this->_storeObject($elObj);
     } // end func renderElement
 
+    /**
+     * @param $element
+     */
     public function renderHidden(&$element)
     {
         if($this->_collectHidden) {
@@ -161,6 +175,11 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         }
     } //end func renderHidden
 
+    /**
+     * @param $group
+     * @param $required
+     * @param $error
+     */
     public function startGroup(&$group, $required, $error)
     {
         $this->_currentGroup = $this->_elementToObject($group, $required, $error);
@@ -170,6 +189,9 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         }
     } // end func startGroup
 
+    /**
+     * @param $group
+     */
     public function finishGroup(&$group)
     {
         $this->_storeObject($this->_currentGroup);
@@ -239,6 +261,10 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         }
     }
 
+    /**
+     * @param      $elementName
+     * @param null $styleName
+     */
     public function setElementStyle($elementName, $styleName = null)
     {
         if(is_array($elementName)) {
@@ -430,16 +456,27 @@ class QuickformElement
      */
     public $elements;
 
+    /**
+     * @param $type
+     *
+     * @return bool
+     */
     public function isType($type)
     {
         return ($this->type == $type);
     }
 
+    /**
+     * @return bool
+     */
     public function notFrozen()
     {
         return !$this->frozen;
     }
 
+    /**
+     * @return bool
+     */
     public function isButton()
     {
         return ($this->type == "submit" || $this->type == "reset");

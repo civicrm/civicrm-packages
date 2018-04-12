@@ -2,6 +2,9 @@
 require_once('PHPUnit/Framework.php');
 //require_once('gettext.php');
 
+/**
+ * Class ParsingTest
+ */
 class ParsingTest extends PHPUnit_Framework_TestCase
 {
   public function test_extract_plural_forms_header_from_po_header()

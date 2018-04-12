@@ -11,7 +11,14 @@
  */
 
 class HTMLPurifier_Lexer_PH5P extends HTMLPurifier_Lexer_DOMLex {
-    
+
+    /**
+     * @param String $html
+     * @param        $config
+     * @param        $context
+     *
+     * @return array|void
+     */
     public function tokenizeHTML($html, $config, $context) {
         $new_html = $this->normalize($html, $config, $context);
         $new_html = $this->wrapHTML($new_html, $config, $context);
@@ -60,6 +67,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 
+/**
+ * Class HTML5
+ */
 class HTML5 {
     private $data;
     private $char;
@@ -124,6 +134,11 @@ class HTML5 {
     const CHARACTR = 4;
     const EOF      = 5;
 
+    /**
+     * HTML5 constructor.
+     *
+     * @param $data
+     */
     public function __construct($data) {
 
         $this->data = $data;
@@ -139,16 +154,28 @@ class HTML5 {
         }
     }
 
+    /**
+     * @return \DOMDocument
+     */
     public function save() {
         return $this->tree->save();
     }
 
+    /**
+     * @return bool
+     */
     private function char() {
         return ($this->char < $this->EOF)
             ? $this->data[$this->char]
             : false;
     }
 
+    /**
+     * @param     $s
+     * @param int $l
+     *
+     * @return bool|string
+     */
     private function character($s, $l = 0) {
         if($s + $l < $this->EOF) {
             if($l === 0) {
@@ -159,6 +186,12 @@ class HTML5 {
         }
     }
 
+    /**
+     * @param $char_class
+     * @param $start
+     *
+     * @return null|string|string[]
+     */
     private function characters($char_class, $start) {
         return preg_replace('#^(['.$char_class.']+).*#s', '\\1', substr($this->data, $start));
     }
@@ -1066,6 +1099,9 @@ class HTML5 {
         }
     }
 
+    /**
+     * @return bool|string
+     */
     private function entity() {
         $start = $this->char;
 
@@ -1154,6 +1190,9 @@ class HTML5 {
         return html_entity_decode('&'.$entity.';', ENT_QUOTES, 'UTF-8');
     }
 
+    /**
+     * @param $token
+     */
     private function emitToken($token) {
         $emit = $this->tree->emitToken($token);
 
@@ -1173,6 +1212,9 @@ class HTML5 {
     }
 }
 
+/**
+ * Class HTML5TreeConstructer
+ */
 class HTML5TreeConstructer {
     public $stack = array();
 
@@ -1237,6 +1279,12 @@ class HTML5TreeConstructer {
     }
 
     // Process tag tokens
+
+    /**
+     * @param $token
+     *
+     * @return mixed|void
+     */
     public function emitToken($token) {
         switch($this->phase) {
             case self::INIT_PHASE: return $this->initPhase($token); break;
@@ -1246,6 +1294,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return mixed|void
+     */
     private function initPhase($token) {
         /* Initially, the tree construction stage must handle each token
         emitted from the tokenisation stage as follows: */
@@ -1296,6 +1349,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return mixed|void
+     */
     private function rootElementPhase($token) {
         /* After the initial phase, as each token is emitted from the tokenisation
         stage, it must be processed as described in this section. */
@@ -1343,6 +1401,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return mixed|void
+     */
     private function mainPhase($token) {
         /* Tokens in the main phase must be handled as follows: */
 
@@ -1393,6 +1456,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return bool|int
+     */
     private function beforeHead($token) {
         /* Handle the token as follows: */
 
@@ -1447,6 +1515,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return bool|int
+     */
     private function inHead($token) {
         /* Handle the token as follows: */
 
@@ -1571,6 +1644,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return bool
+     */
     private function afterHead($token) {
         /* Handle the token as follows: */
 
@@ -1627,6 +1705,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return bool
+     */
     private function inBody($token) {
         /* Handle the token as follows: */
 
@@ -2625,6 +2708,9 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     */
     private function inTable($token) {
         $clear = array('html', 'table');
 
@@ -2802,6 +2888,9 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     */
     private function inCaption($token) {
         /* An end tag whose tag name is "caption" */
         if($token['type'] === HTML5::ENDTAG && $token['name'] === 'caption') {
@@ -2870,6 +2959,9 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     */
     private function inColumnGroup($token) {
         /* A character token that is one of one of U+0009 CHARACTER TABULATION,
         U+000A LINE FEED (LF), U+000B LINE TABULATION, U+000C FORM FEED (FF),
@@ -2927,6 +3019,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return mixed|void
+     */
     private function inTableBody($token) {
         $clear = array('tbody', 'tfoot', 'thead', 'html');
 
@@ -3013,6 +3110,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return mixed
+     */
     private function inRow($token) {
         $clear = array('tr', 'html');
 
@@ -3098,6 +3200,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return mixed
+     */
     private function inCell($token) {
         /* An end tag whose tag name is one of: "td", "th" */
         if($token['type'] === HTML5::ENDTAG &&
@@ -3205,6 +3312,9 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     */
     private function inSelect($token) {
         /* Handle the token as follows: */
 
@@ -3354,6 +3464,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return bool
+     */
     private function afterBody($token) {
         /* Handle the token as follows: */
 
@@ -3393,6 +3508,9 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     */
     private function inFrameset($token) {
         /* Handle the token as follows: */
 
@@ -3456,6 +3574,9 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     */
     private function afterFrameset($token) {
         /* Handle the token as follows: */
 
@@ -3491,6 +3612,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $token
+     *
+     * @return mixed|void
+     */
     private function trailingEndPhase($token) {
         /* After the main phase, as each token is emitted from the tokenisation
         stage, it must be processed as described in this section. */
@@ -3531,6 +3657,13 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param      $token
+     * @param bool $append
+     * @param bool $check
+     *
+     * @return \DOMElement
+     */
     private function insertElement($token, $append = true, $check = false) {
         // Proprietary workaround for libxml2's limitations with tag names
         if ($check) {
@@ -3557,16 +3690,25 @@ class HTML5TreeConstructer {
         return $el;
     }
 
+    /**
+     * @param $data
+     */
     private function insertText($data) {
         $text = $this->dom->createTextNode($data);
         $this->appendToRealParent($text);
     }
 
+    /**
+     * @param $data
+     */
     private function insertComment($data) {
         $comment = $this->dom->createComment($data);
         $this->appendToRealParent($comment);
     }
 
+    /**
+     * @param $node
+     */
     private function appendToRealParent($node) {
         if($this->foster_parent === null) {
             end($this->stack)->appendChild($node);
@@ -3595,6 +3737,12 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param      $el
+     * @param bool $table
+     *
+     * @return bool
+     */
     private function elementInScope($el, $table = false) {
         if(is_array($el)) {
             foreach($el as $element) {
@@ -3644,6 +3792,9 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @return bool
+     */
     private function reconstructActiveFormattingElements() {
         /* 1. If there are no entries in the list of active formatting elements,
         then there is nothing to reconstruct; stop this algorithm. */
@@ -3736,6 +3887,9 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param array $exclude
+     */
     private function generateImpliedEndTags($exclude = array()) {
         /* When the steps below require the UA to generate implied end tags,
         then, if the current node is a dd element, a dt element, an li element,
@@ -3750,6 +3904,11 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @param $node
+     *
+     * @return int
+     */
     private function getElementCategory($node) {
         $name = $node->tagName;
         if(in_array($name, $this->special))
@@ -3765,6 +3924,9 @@ class HTML5TreeConstructer {
             return self::PHRASING;
     }
 
+    /**
+     * @param $elements
+     */
     private function clearStackToTableContext($elements) {
         /* When the steps above require the UA to clear the stack back to a
         table context, it means that the UA must, while the current node is not
@@ -3895,6 +4057,9 @@ class HTML5TreeConstructer {
         }
     }
 
+    /**
+     * @return \DOMDocument
+     */
     public function save() {
         return $this->dom;
     }

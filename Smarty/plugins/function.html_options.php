@@ -95,6 +95,13 @@ function smarty_function_html_options($params, &$smarty)
 
 }
 
+/**
+ * @param $key
+ * @param $value
+ * @param $selected
+ *
+ * @return string
+ */
 function smarty_function_html_options_optoutput($key, $value, $selected) {
     if(!is_array($value)) {
         $_html_result = '<option label="' . smarty_function_escape_special_chars($value) . '" value="' .
@@ -108,6 +115,13 @@ function smarty_function_html_options_optoutput($key, $value, $selected) {
     return $_html_result;
 }
 
+/**
+ * @param $key
+ * @param $values
+ * @param $selected
+ *
+ * @return string
+ */
 function smarty_function_html_options_optgroup($key, $values, $selected) {
     $optgroup_html = '<optgroup label="' . smarty_function_escape_special_chars($key) . '">' . "\n";
     foreach ($values as $key => $value) {

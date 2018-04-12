@@ -20,6 +20,13 @@ class HTMLPurifier_AttrDef_Switch
         $this->withoutTag = $without_tag;
     }
 
+    /**
+     * @param $string
+     * @param $config
+     * @param $context
+     *
+     * @return mixed
+     */
     public function validate($string, $config, $context) {
         $token = $context->get('CurrentToken', true);
         if (!$token || $token->name !== $this->tag) {

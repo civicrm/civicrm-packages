@@ -84,10 +84,9 @@ class IDS_Filter_Storage
      *
      * Loads filters based on provided IDS_Init settings.
      *
-     * @param object $init IDS_Init instance
-     * 
-     * @throws Exception if unsupported filter type is given
-     * @return void
+     * @param \IDS_Init $init IDS_Init instance
+     *
+     * @throws \Exception if unsupported filter type is given
      */
     public final function __construct(IDS_Init $init) 
     {
@@ -148,8 +147,8 @@ class IDS_Filter_Storage
     /**
      * Adds a filter
      *
-     * @param object $filter IDS_Filter instance
-     * 
+     * @param \IDS_Filter $filter IDS_Filter instance
+     *
      * @return object $this
      */
     public final function addFilter(IDS_Filter $filter) 

@@ -23,38 +23,74 @@
 
   // Simple class to wrap file streams, string streams, etc.
   // seek is essential, and it should be byte stream
+
+/**
+ * Class StreamReader
+ */
 class StreamReader {
   // should return a string [FIXME: perhaps return array of bytes?]
-  public function read($bytes) {
+    /**
+     * @param $bytes
+     *
+     * @return bool
+     */
+    public function read($bytes) {
     return false;
   }
 
   // should return new position
-  public function seekto($position) {
+
+    /**
+     * @param $position
+     *
+     * @return bool
+     */
+    public function seekto($position) {
     return false;
   }
 
   // returns current position
-  public function currentpos() {
+
+    /**
+     * @return bool
+     */
+    public function currentpos() {
     return false;
   }
 
   // returns length of entire stream (limit for seekto()s)
-  public function length() {
+
+    /**
+     * @return bool
+     */
+    public function length() {
     return false;
   }
 };
 
+/**
+ * Class StringReader
+ */
 class StringReader {
   public $_pos;
   public $_str;
 
-  public function __construct($str='') {
+    /**
+     * StringReader constructor.
+     *
+     * @param string $str
+     */
+    public function __construct($str='') {
     $this->_str = $str;
     $this->_pos = 0;
   }
 
-  public function read($bytes) {
+    /**
+     * @param $bytes
+     *
+     * @return bool|string
+     */
+    public function read($bytes) {
     $data = substr($this->_str, $this->_pos, $bytes);
     $this->_pos += $bytes;
     if (strlen($this->_str)<$this->_pos)
@@ -63,30 +99,48 @@ class StringReader {
     return $data;
   }
 
-  public function seekto($pos) {
+    /**
+     * @param $pos
+     *
+     * @return int
+     */
+    public function seekto($pos) {
     $this->_pos = $pos;
     if (strlen($this->_str)<$this->_pos)
       $this->_pos = strlen($this->_str);
     return $this->_pos;
   }
 
-  public function currentpos() {
+    /**
+     * @return int
+     */
+    public function currentpos() {
     return $this->_pos;
   }
 
-  public function length() {
+    /**
+     * @return int
+     */
+    public function length() {
     return strlen($this->_str);
   }
 
 };
 
-
+/**
+ * Class FileReader
+ */
 class FileReader {
   public $_pos;
   public $_fd;
   public $_length;
 
-  public function __construct($filename) {
+    /**
+     * FileReader constructor.
+     *
+     * @param $filename
+     */
+    public function __construct($filename) {
     if (file_exists($filename)) {
 
       $this->_length=filesize($filename);
@@ -102,7 +156,12 @@ class FileReader {
     }
   }
 
-  public function read($bytes) {
+    /**
+     * @param $bytes
+     *
+     * @return string
+     */
+    public function read($bytes) {
     if ($bytes) {
       fseek($this->_fd, $this->_pos);
 
@@ -120,17 +179,28 @@ class FileReader {
     } else return '';
   }
 
-  public function seekto($pos) {
+    /**
+     * @param $pos
+     *
+     * @return bool|int
+     */
+    public function seekto($pos) {
     fseek($this->_fd, $pos);
     $this->_pos = ftell($this->_fd);
     return $this->_pos;
   }
 
-  public function currentpos() {
+    /**
+     * @return int
+     */
+    public function currentpos() {
     return $this->_pos;
   }
 
-  public function length() {
+    /**
+     * @return int
+     */
+    public function length() {
     return $this->_length;
   }
 
@@ -142,8 +212,17 @@ class FileReader {
 
 // Preloads entire file in memory first, then creates a StringReader
 // over it (it assumes knowledge of StringReader internals)
+
+/**
+ * Class CachedFileReader
+ */
 class CachedFileReader extends StringReader {
-  public function __construct($filename) {
+    /**
+     * CachedFileReader constructor.
+     *
+     * @param $filename
+     */
+    public function __construct($filename) {
     if (file_exists($filename)) {
 
       $length=filesize($filename);

@@ -48,14 +48,14 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
 
     // }}}
     // {{{ constructor
-    
     /**
      * Class constructor
-     * 
-     * @param     string    $elementLabel   (optional)Label
-     * @param     string    $text           (optional)Display text
+     *
+     * @param null       $elementName
+     * @param     string $elementLabel (optional)Label
+     * @param     string $text         (optional)Display text
+     *
      * @access    public
-     * @return    void
      */
     public function __construct($elementName=null, $elementLabel=null, $text=null)
     {
@@ -154,18 +154,16 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
 
     // }}}
     // {{{ onQuickFormEvent()
-
     /**
      * Called by HTML_QuickForm whenever form event is made on this element
      *
-     * @param     string    $event  Name of event
-     * @param     mixed     $arg    event arguments
-     * @param     object    &$caller calling object
+     * @param     string $event   Name of event
+     * @param     mixed  $arg     event arguments
+     * @param     object &$caller calling object
+     * @return bool
      * @since     1.0
      * @access    public
-     * @return    void
-     * @throws    
-     */
+*/
     public function onQuickFormEvent($event, $arg, &$caller)
     {
         switch ($event) {
@@ -187,10 +185,12 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
 
     // }}}
     // {{{ exportValue()
-
-   /**
-    * We override this here because we don't want any values from static elements
-    */
+    /**
+     * We override this here because we don't want any values from static elements
+     * @param      $submitValues
+     * @param bool $assoc
+     * @return null
+*/
     public function exportValue(&$submitValues, $assoc = false)
     {
         return null;

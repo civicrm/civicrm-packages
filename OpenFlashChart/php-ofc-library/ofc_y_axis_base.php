@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class y_axis_base
+ */
 class y_axis_base
 {
 	public function __construct(){}
@@ -20,43 +23,59 @@ class y_axis_base
 		$tmp = 'tick-length';
 		$this->$tmp = $val;
 	}
-	
-	public function set_colours( $colour, $grid_colour )
+
+    /**
+     * @param $colour
+     * @param $grid_colour
+     */
+    public function set_colours( $colour, $grid_colour )
 	{
 		$this->set_colour( $colour );
 		$this->set_grid_colour( $grid_colour );
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	public function set_grid_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_grid_colour( $colour )
 	{
 		$tmp = 'grid-colour';
 		$this->$tmp = $colour;
 	}
-	
-	/**
-	 * Set min and max values, also (optionally) set the steps value.
-	 * You can reverse the chart by setting min larger than max, e.g. min = 10
-	 * and max = 0.
-	 * 
-	 * @param $min as integer
-	 * @param $max as integer
-	 * @param $steps as integer.
-	 */
+
+    /**
+     * Set min and max values, also (optionally) set the steps value.
+     * You can reverse the chart by setting min larger than max, e.g. min = 10
+     * and max = 0.
+     *
+     * @param     $min   as integer
+     * @param     $max   as integer
+     * @param int $steps as integer.
+     */
 	public function set_range( $min, $max, $steps=1 )
 	{
 		$this->min = $min;
 		$this->max = $max;
 		$this->set_steps( $steps );
 	}
-	
-	/**
-	 * Sugar for set_range
-	 */
+
+    /**
+     * Sugar for set_range
+     *
+     * @param     $min
+     * @param     $max
+     * @param int $steps
+     *
+     * @return \y_axis_base
+     */
 	public function range( $min, $max, $steps=1 )
 	{
 		$this->set_range( $min, $max, $steps );
@@ -114,7 +133,10 @@ class y_axis_base
 		$this->rotate = "vertical";
 	}
 
-	public function set_logScale( $logScale)
+    /**
+     * @param $logScale
+     */
+    public function set_logScale( $logScale)
 	{
 		$tmp = 'log-scale';
 		$this->$tmp = $logScale;

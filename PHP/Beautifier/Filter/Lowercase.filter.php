@@ -102,12 +102,26 @@ class PHP_Beautifier_Filter_Lowercase extends PHP_Beautifier_Filter
         T_BOOLEAN_AND,
     );
     private $oLog;
-    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array()) 
+
+    /**
+     * PHP_Beautifier_Filter_Lowercase constructor.
+     *
+     * @param \PHP_Beautifier $oBeaut
+     * @param array           $aSettings
+     */
+    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array())
     {
         parent::__construct($oBeaut, $aSettings);
         $this->oLog = PHP_Beautifier_Common::getLog();
     }
-    public function __call($sMethod, $aArgs) 
+
+    /**
+     * @param $sMethod
+     * @param $aArgs
+     *
+     * @return mixed|string
+     */
+    public function __call($sMethod, $aArgs)
     {
         $iToken = $this->aToken[0];
         $sContent = $this->aToken[1];

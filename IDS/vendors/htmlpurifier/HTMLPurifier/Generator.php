@@ -68,8 +68,9 @@ class HTMLPurifier_Generator
 
     /**
      * Generates HTML from an array of tokens.
+     *
      * @param $tokens Array of HTMLPurifier_Token
-     * @param $config HTMLPurifier_Config object
+     *
      * @return Generated HTML
      */
     public function generateFromTokens($tokens) {
@@ -163,7 +164,9 @@ class HTMLPurifier_Generator
      * Special case processor for the contents of script tags
      * @warning This runs into problems if there's already a literal
      *          --> somewhere inside the script contents.
-     */
+     * @param $token
+     * @return \Generated|string
+*/
     public function generateScriptFromToken($token) {
         if (!$token instanceof HTMLPurifier_Token_Text) return $this->generateFromToken($token);
         // Thanks <http://lachy.id.au/log/2005/05/script-comments>
@@ -174,11 +177,11 @@ class HTMLPurifier_Generator
     /**
      * Generates attribute declarations from attribute array.
      * @note This does not include the leading or trailing space.
-     * @param $assoc_array_of_attributes Attribute array
-     * @param $element Name of element attributes are for, used to check
-     *        attribute minimization.
+     * @param      $assoc_array_of_attributes Attribute array
+     * @param bool $element                   Name of element attributes are for, used to check
+     *                                        attribute minimization.
      * @return Generate HTML fragment for insertion.
-     */
+*/
     public function generateAttributes($assoc_array_of_attributes, $element = false) {
         $html = '';
         if ($this->_sortAttr) ksort($assoc_array_of_attributes);

@@ -314,16 +314,18 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
 
     // }}}
     // {{{ _findValue()
-
-   /**
-    * Tries to find the element value from the values array
-    *
-    * Needs to be redefined here as $_FILES is populated differently from
-    * other arrays when element name is of the form foo[bar]
-    *
-    * @access    private
-    * @return    mixed
-    */
+    /**
+     * Tries to find the element value from the values array
+     *
+     * Needs to be redefined here as $_FILES is populated differently from
+     * other arrays when element name is of the form foo[bar]
+     *
+     * @access    private
+     *
+     * @param $values
+     *
+     * @return    mixed
+     */
     public function _findValue(&$values)
     {
         if (empty($_FILES)) {

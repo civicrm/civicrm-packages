@@ -21,12 +21,20 @@ class fastImage
   private $type;
   private $handle;
 
-  public function __construct($uri = null)
+    /**
+     * fastImage constructor.
+     *
+     * @param null $uri
+     */
+    public function __construct($uri = null)
   {
     if ($uri) $this->load($uri);
   }
 
-  public function load($uri)
+    /**
+     * @param $uri
+     */
+    public function load($uri)
   {
     if ($this->handle) $this->close();
 
@@ -46,7 +54,10 @@ class fastImage
     );
   }
 
-  public function isValid()
+    /**
+     * @return bool
+     */
+    public function isValid()
   {
     return empty($this->handle) ? false : true;
   }
@@ -56,8 +67,10 @@ class fastImage
     if (is_resource($this->handle)) fclose($this->handle);
   }
 
-
-  public function getSize()
+    /**
+     * @return array|bool
+     */
+    public function getSize()
   {
     $this->strpos = 0;
     if ($this->getType())
@@ -68,8 +81,10 @@ class fastImage
     return false;
   }
 
-
-  public function getType()
+    /**
+     * @return bool|string
+     */
+    public function getType()
   {
     $this->strpos = 0;
 
@@ -93,8 +108,10 @@ class fastImage
     return $this->type;
   }
 
-
-  private function parseSize()
+    /**
+     * @return array|null
+     */
+    private function parseSize()
   {
     $this->strpos = 0;
 
@@ -113,24 +130,30 @@ class fastImage
     return null;
   }
 
-
-  private function parseSizeForPNG()
+    /**
+     * @return array
+     */
+    private function parseSizeForPNG()
   {
     $chars = $this->getChars(25);
 
     return unpack("N*", substr($chars, 16, 8));
   }
 
-
-  private function parseSizeForGIF()
+    /**
+     * @return array
+     */
+    private function parseSizeForGIF()
   {
     $chars = $this->getChars(11);
 
     return unpack("S*", substr($chars, 6, 4));
   }
 
-
-  private function parseSizeForBMP()
+    /**
+     * @return array
+     */
+    private function parseSizeForBMP()
   {
     $chars = $this->getChars(29);
     $chars = substr($chars, 14, 14);
@@ -139,8 +162,10 @@ class fastImage
     return (reset($type) == 40) ? unpack('L*', substr($chars, 4)) : unpack('L*', substr($chars, 4, 8));
   }
 
-
-  private function parseSizeForJPEG()
+    /**
+     * @return array
+     */
+    private function parseSizeForJPEG()
   {
     $state = null;
     $i = 0;
@@ -198,8 +223,12 @@ class fastImage
     }
   }
 
-
-  private function getChars($n)
+    /**
+     * @param $n
+     *
+     * @return bool|string
+     */
+    private function getChars($n)
   {
     $response = null;
 
@@ -230,8 +259,10 @@ class fastImage
     return $result;
   }
 
-
-  private function getByte()
+    /**
+     * @return mixed
+     */
+    private function getByte()
   {
     $c = $this->getChars(1);
     $b = unpack("C", $c);
@@ -239,8 +270,12 @@ class fastImage
     return reset($b);
   }
 
-
-  private function readInt($str)
+    /**
+     * @param $str
+     *
+     * @return int
+     */
+    private function readInt($str)
   {
     $size = unpack("C*", $str);
 

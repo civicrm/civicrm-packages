@@ -14,6 +14,11 @@
 
 namespace kcfinder;
 
+/**
+ * Class path
+ *
+ * @package kcfinder
+ */
 class path {
 
 /** Get the absolute URL path of the given one. Returns FALSE if the URL

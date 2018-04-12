@@ -20,6 +20,10 @@ class HTMLPurifier_ConfigSchema_Interchange
 
     /**
      * Adds a directive array to $directives
+     *
+     * @param $directive
+     *
+     * @throws \HTMLPurifier_ConfigSchema_Exception
      */
     public function addDirective($directive) {
         if (isset($this->directives[$i = $directive->id->toString()])) {

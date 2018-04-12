@@ -10,8 +10,8 @@ class HTMLPurifier_PropertyListIterator extends FilterIterator
     protected $filter;
 
     /**
-     * @param $data Array of data to iterate over
-     * @param $filter Optional prefix to only allow values of
+     * @param \Iterator $iterator
+     * @param           $filter Optional prefix to only allow values of
      */
     public function __construct(Iterator $iterator, $filter = null) {
         parent::__construct($iterator);
@@ -19,6 +19,9 @@ class HTMLPurifier_PropertyListIterator extends FilterIterator
         $this->filter = $filter;
     }
 
+    /**
+     * @return bool
+     */
     public function accept() {
         $key = $this->getInnerIterator()->key();
         if( strncmp($key, $this->filter, $this->l) !== 0 ) {

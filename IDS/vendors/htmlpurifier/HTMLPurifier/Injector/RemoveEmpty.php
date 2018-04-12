@@ -1,10 +1,19 @@
 <?php
 
+/**
+ * Class HTMLPurifier_Injector_RemoveEmpty
+ */
 class HTMLPurifier_Injector_RemoveEmpty extends HTMLPurifier_Injector
 {
 
     private $context, $config, $attrValidator, $removeNbsp, $removeNbspExceptions;
 
+    /**
+     * @param \Instance $config
+     * @param \Instance $context
+     *
+     * @return bool|void
+     */
     public function prepare($config, $context) {
         parent::prepare($config, $context);
         $this->config = $config;
@@ -14,6 +23,9 @@ class HTMLPurifier_Injector_RemoveEmpty extends HTMLPurifier_Injector
         $this->attrValidator = new HTMLPurifier_AttrValidator();
     }
 
+    /**
+     * @param $token
+     */
     public function handleElement(&$token) {
         if (!$token instanceof HTMLPurifier_Token_Start) return;
         $next = false;

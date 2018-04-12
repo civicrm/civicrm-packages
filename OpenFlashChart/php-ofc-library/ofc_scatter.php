@@ -1,8 +1,18 @@
 <?php
 
+/**
+ * Class scatter_value
+ */
 class scatter_value
 {
-	public function __construct( $x, $y, $dot_size=-1 )
+    /**
+     * scatter_value constructor.
+     *
+     * @param     $x
+     * @param     $y
+     * @param int $dot_size
+     */
+    public function __construct( $x, $y, $dot_size=-1 )
 	{
 		$this->x = $x;
 		$this->y = $y;
@@ -15,31 +25,42 @@ class scatter_value
 	}
 }
 
+/**
+ * Class scatter
+ */
 class scatter
 {
-	public function __construct( $colour )
+    /**
+     * scatter constructor.
+     *
+     * @param $colour
+     */
+    public function __construct( $colour )
 	{
 		$this->type      = "scatter";
 		$this->set_colour( $colour );
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
 
-	public function set_default_dot_style( $style )
+    /**
+     * @param $style
+     */
+    public function set_default_dot_style( $style )
 	{
 		$tmp = 'dot-style';
 		$this->$tmp = $style;	
 	}
-	
-	/**
-	 * @param $v as array, can contain any combination of:
-	 *  - integer, Y position of the point
-	 *  - any class that inherits from scatter_value
-	 *  - <b>null</b>
-	 */
+
+    /**
+     * @param $values
+     */
 	public function set_values( $values )
 	{
 		$this->values = $values;

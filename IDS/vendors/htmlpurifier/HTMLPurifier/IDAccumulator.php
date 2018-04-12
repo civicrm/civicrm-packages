@@ -17,9 +17,11 @@ class HTMLPurifier_IDAccumulator
 
     /**
      * Builds an IDAccumulator, also initializing the default blacklist
-     * @param $config Instance of HTMLPurifier_Config
+     *
+     * @param $config  Instance of HTMLPurifier_Config
      * @param $context Instance of HTMLPurifier_Context
-     * @return Fully initialized HTMLPurifier_IDAccumulator
+     *
+     * @return \HTMLPurifier_IDAccumulator initialized HTMLPurifier_IDAccumulator
      */
     public static function build($config, $context) {
         $id_accumulator = new HTMLPurifier_IDAccumulator();

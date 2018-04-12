@@ -470,7 +470,13 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
 
     // }}}
     // {{{ onQuickFormEvent()
-
+    /**
+     * @param string $event
+     * @param mixed  $arg
+     * @param object $caller
+     *
+     * @return bool|void
+     */
     public function onQuickFormEvent($event, $arg, &$caller)
     {
         if ('updateValue' == $event) {

@@ -15,6 +15,10 @@ use kcfinder\cms\BolmerCMS as CMS;
  */
 class BolmerCMS{
     protected static $authenticated = false;
+
+    /**
+     * @return bool
+     */
     public static function checkAuth() {
         $current_cwd = getcwd();
         if ( ! self::$authenticated) {

@@ -102,6 +102,10 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
 
     /**
      * Resolve dots and double-dots in a path stack
+     *
+     * @param $stack
+     *
+     * @return array
      */
     private function _collapseStack($stack) {
         $result = array();

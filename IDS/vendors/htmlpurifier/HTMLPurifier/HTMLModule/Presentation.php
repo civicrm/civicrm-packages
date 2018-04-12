@@ -15,6 +15,9 @@ class HTMLPurifier_HTMLModule_Presentation extends HTMLPurifier_HTMLModule
 
     public $name = 'Presentation';
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
         $this->addElement('hr',     'Block',  'Empty',  'Common');
         $this->addElement('sub',    'Inline', 'Inline', 'Common');

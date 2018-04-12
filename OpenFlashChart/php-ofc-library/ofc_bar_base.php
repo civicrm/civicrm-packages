@@ -2,6 +2,9 @@
 
 /* this is a base class */
 
+/**
+ * Class bar_base
+ */
 class bar_base
 {
 	public function __construct(){}
@@ -16,10 +19,13 @@ class bar_base
 		$tmp = 'font-size';
 		$this->$tmp = $size;
 	}
-	
-	/**
-	 * syntatical sugar.
-	 */
+
+    /**
+     * syntatical sugar.
+     *
+     * @param $text
+     * @param $size
+     */
 	public function key( $text, $size )
 	{
 		$this->set_key( $text, $size );
@@ -44,21 +50,28 @@ class bar_base
     {
         $this->text = $text;
     }
-	
-	public function set_key_on_click( $action )
+
+    /**
+     * @param $action
+     */
+    public function set_key_on_click( $action )
 	{
 		$tmp = 'key-on-click';
 		$this->$tmp = $action;
 	}
 
-	public function set_group_id( $id )
+    /**
+     * @param $id
+     */
+    public function set_group_id( $id )
 	{
 		$this->id = $id;
-	}
-	
-	/**
-	 * see set_values
-	 */
+  }
+
+    /**
+     * see set_values
+     * @param $v
+     */
 	public function append_value( $v )
 	{
 		$this->values[] = $v;		
@@ -69,12 +82,13 @@ class bar_base
 	 */
 	public function set_colour( $colour )
 	{
-		$this->colour = $colour;	
-	}
-	
-	/**
-	 *syntatical sugar
-	 */
+		$this->colour = $colour;
+  }
+
+    /**
+     *syntatical sugar
+     * @param $colour
+     */
 	public function colour( $colour )
 	{
 		$this->set_colour( $colour );
@@ -103,8 +117,11 @@ class bar_base
 	{
 		$this->{'on-show'} = $on_show;
 	}
-	
-	public function set_on_click( $text )
+
+    /**
+     * @param $text
+     */
+    public function set_on_click( $text )
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $text;

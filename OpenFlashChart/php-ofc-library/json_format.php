@@ -1,6 +1,11 @@
 <?php
 
 // Pretty print some JSON
+/**
+ * @param $json
+ *
+ * @return string
+ */
 function json_format($json)
 {
     $tab = "  ";

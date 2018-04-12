@@ -14,7 +14,13 @@ class HTMLPurifier_AttrDef_HTML_ID extends HTMLPurifier_AttrDef
 
     // ref functionality disabled, since we also have to verify
     // whether or not the ID it refers to exists
-
+    /**
+     * @param String     $id
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string
+     */
     public function validate($id, $config, $context) {
 
         if (!$config->get('Attr.EnableID')) return false;

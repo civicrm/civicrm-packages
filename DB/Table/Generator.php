@@ -354,7 +354,6 @@ class DB_Table_Generator
 
     // }}}
     // {{{ function DB_Table_Generator(&$db, $name)
-
     /**
      * Constructor
      *
@@ -366,7 +365,6 @@ class DB_Table_Generator
      * @param object &$db  DB/MDB2 database connection object
      * @param string $name database name string
      *
-     * @return object DB_Table_Generator
      * @access public
      */
     public function __construct(&$db, $name)

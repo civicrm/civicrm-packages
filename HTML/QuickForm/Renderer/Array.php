@@ -187,7 +187,9 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         return $this->_ary;
     }
 
-
+    /**
+     * @param $form
+     */
     public function startForm(&$form)
     {
         $this->_ary = array(
@@ -205,7 +207,9 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         $this->_sectionCount   = 0;
     } // end func startForm
 
-
+    /**
+     * @param $header
+     */
     public function renderHeader(&$header)
     {
         $this->_ary['sections'][$this->_sectionCount] = array(
@@ -215,7 +219,11 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         $this->_currentSection = $this->_sectionCount++;
     } // end func renderHeader
 
-
+    /**
+     * @param $element
+     * @param $required
+     * @param $error
+     */
     public function renderElement(&$element, $required, $error)
     {
         $elAry = $this->_elementToArray($element, $required, $error);
@@ -225,7 +233,11 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         $this->_storeArray($elAry);
     } // end func renderElement
 
-
+    /**
+     * @param      $element
+     * @param bool $required
+     * @param bool $error
+     */
     public function renderHidden(&$element, $required = FALSE, $error = FALSE)
     {
         if ($this->_collectHidden) {
@@ -239,7 +251,11 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         }
     } // end func renderHidden
 
-
+    /**
+     * @param $group
+     * @param $required
+     * @param $error
+     */
     public function startGroup(&$group, $required, $error)
     {
         $this->_currentGroup = $this->_elementToArray($group, $required, $error);
@@ -248,7 +264,9 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         }
     } // end func startGroup
 
-
+    /**
+     * @param $group
+     */
     public function finishGroup(&$group)
     {
         $this->_storeArray($this->_currentGroup);

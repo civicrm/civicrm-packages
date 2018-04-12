@@ -12,6 +12,14 @@ class HTMLPurifier_ChildDef_Empty extends HTMLPurifier_ChildDef
     public $allow_empty = true;
     public $type = 'empty';
     public function __construct() {}
+
+    /**
+     * @param array                 $tokens_of_children
+     * @param \HTMLPurifier_Config  $config
+     * @param \HTMLPurifier_Context $context
+     *
+     * @return array|bool
+     */
     public function validateChildren($tokens_of_children, $config, $context) {
         return array();
     }

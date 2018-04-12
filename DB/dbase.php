@@ -335,7 +335,6 @@ class DB_dbase extends DB_common
 
     // }}}
     // {{{ numCols()
-
     /**
      * Gets the number of columns in a result set
      *
@@ -343,7 +342,7 @@ class DB_dbase extends DB_common
      * DB_result::numCols() instead.  It can't be declared "protected"
      * because DB_result is a separate object.
      *
-     * @param resource $result  PHP's query result resource
+     * @param $foo
      *
      * @return int  the number of columns.  A DB_Error object on failure.
      *
@@ -356,7 +355,6 @@ class DB_dbase extends DB_common
 
     // }}}
     // {{{ numRows()
-
     /**
      * Gets the number of rows in a result set
      *
@@ -364,8 +362,7 @@ class DB_dbase extends DB_common
      * DB_result::numRows() instead.  It can't be declared "protected"
      * because DB_result is a separate object.
      *
-     * @param resource $result  PHP's query result resource
-     *
+     * @param $foo
      * @return int  the number of rows.  A DB_Error object on failure.
      *
      * @see DB_result::numRows()

@@ -4,12 +4,12 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * Get path to file from include_path
  *
- * @param string $file_path
- * @param string $new_file_path
+ * @param $params
+ * @param $smarty
+ *
  * @return boolean
  * @staticvar array|null
  */

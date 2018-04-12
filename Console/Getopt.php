@@ -71,8 +71,15 @@ class Console_Getopt {
     /**
      * This function expects $args to start with the script name (POSIX-style).
      * Preserved for backwards compatibility.
+     *
      * @see getopt2()
-     */    
+     *
+     * @param      $args
+     * @param      $short_options
+     * @param null $long_options
+     *
+     * @return array|void
+     */
     public function getopt($args, $short_options, $long_options = null)
     {
         return Console_Getopt::doGetopt(1, $args, $short_options, $long_options);
@@ -80,7 +87,12 @@ class Console_Getopt {
 
     /**
      * The actual implementation of the argument parsing code.
-     */
+     * @param      $version
+     * @param      $args
+     * @param      $short_options
+     * @param null $long_options
+     * @return array|void
+*/
     public function doGetopt($version, $args, $short_options, $long_options = null)
     {
         // in case you pass directly readPHPArgv() as the first arg
@@ -143,8 +155,12 @@ class Console_Getopt {
 
     /**
      * @access private
-     *
-     */
+     * @param $arg
+     * @param $short_options
+     * @param $opts
+     * @param $args
+     * @return
+*/
     public function _parseShortOption($arg, $short_options, &$opts, &$args)
     {
         for ($i = 0; $i < strlen($arg); $i++) {
@@ -188,8 +204,9 @@ class Console_Getopt {
 
     /**
      * @access private
-     *
-     */
+     * @param $arg
+     * @return bool
+*/
     public function _isShortOpt($arg)
     {
         return strlen($arg) == 2 && $arg[0] == '-' && preg_match('/[a-zA-Z]/', $arg[1]);
@@ -197,8 +214,9 @@ class Console_Getopt {
 
     /**
      * @access private
-     *
-     */
+     * @param $arg
+     * @return bool
+*/
     public function _isLongOpt($arg)
     {
         return strlen($arg) > 2 && $arg[0] == '-' && $arg[1] == '-' &&
@@ -207,8 +225,12 @@ class Console_Getopt {
 
     /**
      * @access private
-     *
-     */
+     * @param $arg
+     * @param $long_options
+     * @param $opts
+     * @param $args
+     * @return void
+*/
     public function _parseLongOption($arg, $long_options, &$opts, &$args)
     {
         @list($opt, $opt_arg) = explode('=', $arg, 2);

@@ -624,13 +624,10 @@ class DB_mssql extends DB_common
 
     // }}}
     // {{{ mssqlRaiseError()
-
     /**
      * Produces a DB_Error object regarding the current problem
      *
-     * @param int $errno  if the error is being manually raised pass a
-     *                     DB_ERROR* constant here.  If this isn't passed
-     *                     the error information gathered from the DBMS.
+     * @param null $code
      *
      * @return object  the DB_Error object
      *
@@ -667,13 +664,13 @@ class DB_mssql extends DB_common
 
     // }}}
     // {{{ errorCode()
-
     /**
      * Determines PEAR::DB error code from mssql's native codes.
      *
      * If <var>$nativecode</var> isn't known yet, it will be looked up.
      *
-     * @param  mixed  $nativecode  mssql error code, if known
+     * @param  mixed $nativecode mssql error code, if known
+     * @param string $msg
      * @return integer  an error number from a DB error constant
      * @see errorNative()
      */

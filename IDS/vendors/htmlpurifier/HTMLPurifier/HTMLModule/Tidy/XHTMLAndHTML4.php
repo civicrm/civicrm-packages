@@ -1,8 +1,14 @@
 <?php
 
+/**
+ * Class HTMLPurifier_HTMLModule_Tidy_XHTMLAndHTML4
+ */
 class HTMLPurifier_HTMLModule_Tidy_XHTMLAndHTML4 extends HTMLPurifier_HTMLModule_Tidy
 {
 
+    /**
+     * @return array|void
+     */
     public function makeFixes() {
 
         $r = array();

@@ -24,6 +24,9 @@
      */
 //namespace Jira;
 
+/**
+ * Class Jira_IssueType
+ */
 class Jira_IssueType
 {
     protected $self;
@@ -47,6 +50,13 @@ class Jira_IssueType
         "subtask",
     );
 
+    /**
+     * Jira_IssueType constructor.
+     *
+     * @param $types
+     *
+     * @throws \Exception
+     */
     public function __construct($types)
     {
         foreach ($types as $key => $value) {

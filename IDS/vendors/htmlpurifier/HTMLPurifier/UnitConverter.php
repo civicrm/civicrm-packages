@@ -50,6 +50,13 @@ class HTMLPurifier_UnitConverter
      */
     private $bcmath;
 
+    /**
+     * HTMLPurifier_UnitConverter constructor.
+     *
+     * @param int  $output_precision
+     * @param int  $internal_precision
+     * @param bool $force_no_bcmath
+     */
     public function __construct($output_precision = 4, $internal_precision = 10, $force_no_bcmath = false) {
         $this->outputPrecision = $output_precision;
         $this->internalPrecision = $internal_precision;
@@ -187,6 +194,12 @@ class HTMLPurifier_UnitConverter
 
     /**
      * Adds two numbers, using arbitrary precision when available.
+     *
+     * @param $s1
+     * @param $s2
+     * @param $scale
+     *
+     * @return string
      */
     private function add($s1, $s2, $scale) {
         if ($this->bcmath) return bcadd($s1, $s2, $scale);
@@ -195,7 +208,11 @@ class HTMLPurifier_UnitConverter
 
     /**
      * Multiples two numbers, using arbitrary precision when available.
-     */
+     * @param $s1
+     * @param $s2
+     * @param $scale
+     * @return string
+*/
     private function mul($s1, $s2, $scale) {
         if ($this->bcmath) return bcmul($s1, $s2, $scale);
         else return $this->scale($s1 * $s2, $scale);
@@ -203,7 +220,11 @@ class HTMLPurifier_UnitConverter
 
     /**
      * Divides two numbers, using arbitrary precision when available.
-     */
+     * @param $s1
+     * @param $s2
+     * @param $scale
+     * @return string
+*/
     private function div($s1, $s2, $scale) {
         if ($this->bcmath) return bcdiv($s1, $s2, $scale);
         else return $this->scale($s1 / $s2, $scale);
@@ -212,7 +233,10 @@ class HTMLPurifier_UnitConverter
     /**
      * Rounds a number according to the number of sigfigs it should have,
      * using arbitrary precision when available.
-     */
+     * @param $n
+     * @param $sigfigs
+     * @return string
+*/
     private function round($n, $sigfigs) {
         $new_log = (int) floor(log(abs($n), 10)); // Number of digits left of decimal - 1
         $rp = $sigfigs - $new_log - 1; // Number of decimal places needed
@@ -235,7 +259,10 @@ class HTMLPurifier_UnitConverter
 
     /**
      * Scales a float to $scale digits right of decimal point, like BCMath.
-     */
+     * @param $r
+     * @param $scale
+     * @return string
+*/
     private function scale($r, $scale) {
         if ($scale < 0) {
             // The f sprintf type doesn't support negative numbers, so we

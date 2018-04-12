@@ -44,6 +44,14 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
      */
     protected $context;
 
+    /**
+     * @param array          $tokens
+     * @param \Configuration $config
+     * @param                $context
+     *
+     * @return array
+     * @throws \HTMLPurifier_Exception
+     */
     public function execute($tokens, $config, $context) {
 
         $definition = $config->getHTMLDefinition();
@@ -508,6 +516,8 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
     /**
      * Inserts a token before the current token. Cursor now points to
      * this token.  You must reprocess after this.
+     *
+     * @param $token
      */
     private function insertBefore($token) {
         array_splice($this->tokens, $this->t, 0, array($token));
@@ -524,6 +534,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
     /**
      * Swap current token with new token. Cursor points to new token (no
      * change).  You must reprocess after this.
+     * @param $token
      */
     private function swap($token) {
         $this->tokens[$this->t] = $token;

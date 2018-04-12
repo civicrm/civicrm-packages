@@ -1400,19 +1400,19 @@ class DB_Table_Manager {
         }
     }
 
-
-   /**
-    * 
-    * Return the index type and the columns belonging to this index.
-    * 
-    * @access private
-    * 
-    * @param mixed $idx_def The index definition.
-    * 
-    * @return mixed Array with the index type and the columns belonging to
-    * this index.
-    * 
-    */
+    /**
+     *
+     * Return the index type and the columns belonging to this index.
+     *
+     * @access private
+     *
+     * @param mixed $idx_def The index definition.
+     *
+     * @param       $idxname
+     *
+     * @return mixed Array with the index type and the columns belonging to
+     * this index.
+     */
 
     public function _getIndexTypeAndColumns($idx_def, $idxname)
     {

@@ -154,7 +154,6 @@ class HTMLPurifier_Config
      * @param null $a
      *
      * @return mixed|void
-     * @return mixed|void
      * @throws \HTMLPurifier_Exception
      */
     public function get($key, $a = null) {
@@ -258,9 +257,12 @@ class HTMLPurifier_Config
 
     /**
      * Sets a value to configuration.
+     *
      * @param      $key   String key
      * @param      $value Mixed value
      * @param null $a
+     *
+     * @throws \HTMLPurifier_Exception
      */
     public function set($key, $value, $a = null) {
         if (strpos($key, '.') === false) {
@@ -340,7 +342,7 @@ class HTMLPurifier_Config
      * Convenience function for error reporting
      * @param $lookup
      * @return string
-     */
+*/
     private function _listify($lookup) {
         $list = array();
         foreach ($lookup as $name => $b) {
@@ -631,8 +633,7 @@ class HTMLPurifier_Config
      * @param null $schema
      *
      * @return array
-     * @return array
-     */
+*/
     public static function getAllowedDirectivesForForm($allowed, $schema = null) {
         if (!$schema) {
             $schema = HTMLPurifier_ConfigSchema::instance();
@@ -706,7 +707,7 @@ class HTMLPurifier_Config
      * @param bool $index
      * @param bool $allowed
      * @param bool $mq_fix
-     */
+*/
     public function mergeArrayFromForm($array, $index = false, $allowed = true, $mq_fix = true) {
          $ret = HTMLPurifier_Config::prepareArrayFromForm($array, $index, $allowed, $mq_fix, $this->def);
          $this->loadArray($ret);
@@ -721,7 +722,7 @@ class HTMLPurifier_Config
      * @param bool $mq_fix
      * @param null $schema
      * @return array
-     */
+*/
     public static function prepareArrayFromForm($array, $index = false, $allowed = true, $mq_fix = true, $schema = null) {
         if ($index !== false) {
             $array = (isset($array[$index]) && is_array($array[$index])) ? $array[$index] : array();
@@ -798,7 +799,7 @@ class HTMLPurifier_Config
      * stack frame information OUTSIDE of HTMLPurifier_Config.
      * @param $msg
      * @param $no
-     */
+*/
     protected function triggerError($msg, $no) {
         // determine previous stack frame
         $extra = '';

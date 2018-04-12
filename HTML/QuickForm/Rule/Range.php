@@ -55,7 +55,11 @@ class HTML_QuickForm_Rule_Range extends HTML_QuickForm_Rule
         }
     } // end func validate
 
-
+    /**
+     * @param null $options
+     *
+     * @return array
+     */
     public function getValidationScript($options = null)
     {
         switch ($this->name) {

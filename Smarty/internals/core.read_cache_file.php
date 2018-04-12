@@ -4,15 +4,13 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * read a cache file, determine if it needs to be
  * regenerated or not
  *
- * @param string $tpl_file
- * @param string $cache_id
- * @param string $compile_id
- * @param string $results
+ * @param $params
+ * @param $smarty
+ *
  * @return boolean
  */
 

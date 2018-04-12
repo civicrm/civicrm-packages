@@ -2,6 +2,9 @@
 
 include_once 'ofc_bar_base.php';
 
+/**
+ * Class bar_sketch
+ */
 class bar_sketch extends bar_base
 {
 	/**
@@ -19,8 +22,11 @@ class bar_sketch extends bar_base
 		$this->set_outline_colour( $outline_colour );
 		$this->offset = $fun_factor;
 	}
-	
-	public function set_outline_colour( $outline_colour )
+
+    /**
+     * @param $outline_colour
+     */
+    public function set_outline_colour( $outline_colour )
 	{
 		$tmp = 'outline-colour';
 		$this->$tmp = $outline_colour;	

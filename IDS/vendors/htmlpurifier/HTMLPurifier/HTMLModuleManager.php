@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class HTMLPurifier_HTMLModuleManager
+ */
 class HTMLPurifier_HTMLModuleManager
 {
 
@@ -177,6 +180,8 @@ class HTMLPurifier_HTMLModuleManager
     /**
      * Adds a module to the current doctype by first registering it,
      * and then tacking it on to the active doctype
+     *
+     * @param $module
      */
     public function addModule($module) {
         $this->registerModule($module);
@@ -189,6 +194,7 @@ class HTMLPurifier_HTMLModuleManager
     /**
      * Adds a class prefix that registerModule() will use to resolve a
      * string name to a concrete class
+     * @param $prefix
      */
     public function addPrefix($prefix) {
         $this->prefixes[] = $prefix;
@@ -290,6 +296,7 @@ class HTMLPurifier_HTMLModuleManager
     /**
      * Takes a module and adds it to the active module collection,
      * registering it if necessary.
+     * @param $module
      */
     public function processModule($module) {
         if (!isset($this->registeredModules[$module]) || is_object($module)) {

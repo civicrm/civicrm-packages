@@ -64,6 +64,11 @@ function smarty_outputfilter_trimwhitespace($source, &$smarty)
     return $source;
 }
 
+/**
+ * @param $search_str
+ * @param $replace
+ * @param $subject
+ */
 function smarty_outputfilter_trimwhitespace_replace($search_str, $replace, &$subject) {
     $_len = strlen($search_str);
     $_pos = 0;

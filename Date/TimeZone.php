@@ -121,7 +121,6 @@ class Date_TimeZone
 
     // }}}
     // {{{ Constructor
-
     /**
      * Constructor
      *
@@ -130,8 +129,8 @@ class Date_TimeZone
      * time zone is UTC.
      *
      * @access public
+     *
      * @param string $id the time zone id
-     * @return object Date_TimeZone the new Date_TimeZone object
      */
     public function __construct($id)
     {

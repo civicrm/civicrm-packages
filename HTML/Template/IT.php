@@ -363,8 +363,9 @@ class HTML_Template_IT
      * Make sure that you call this constructor if you derive your template
      * class from this one.
      *
-     * @param    string    File root directory, prefix for all filenames
-     *                     given to the object.
+     * @param string $root
+     * @param null   $options
+     *
      * @see      setRoot()
      */
     public function __construct($root = '', $options = null)
@@ -436,7 +437,8 @@ class HTML_Template_IT
     /**
      * Print a certain block with all replacements done.
      * @brother get()
-     */
+     * @param string $block
+*/
     public function show($block = '__global__')
     {
         print $this->get($block);
@@ -490,11 +492,11 @@ class HTML_Template_IT
      *
      * @param    string    name of the block to be parsed
      *
+     * @param bool $flag_recursion
+     * @return bool
      * @access   public
      * @see      parseCurrentBlock()
-     * @return bool
-     * @throws   PEAR_Error
-     */
+*/
     public function parse($block = '__global__', $flag_recursion = false)
     {
         static $regs, $values;
@@ -973,9 +975,10 @@ class HTML_Template_IT
      *
      * @param integer $value error code
      *
+     * @param string  $blockname
      * @return string error message, or false if the error code was
-     * not recognized
-     */
+     *                       not recognized
+*/
     public function errorMessage($value, $blockname = '')
     {
         static $errorMessages;

@@ -13,6 +13,11 @@ class HTMLPurifier_AttrDef_CSS_ListStyle extends HTMLPurifier_AttrDef
      */
     protected $info;
 
+    /**
+     * HTMLPurifier_AttrDef_CSS_ListStyle constructor.
+     *
+     * @param $config
+     */
     public function __construct($config) {
         $def = $config->getCSSDefinition();
         $this->info['list-style-type']     = $def->info['list-style-type'];
@@ -20,6 +25,13 @@ class HTMLPurifier_AttrDef_CSS_ListStyle extends HTMLPurifier_AttrDef
         $this->info['list-style-image'] = $def->info['list-style-image'];
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string|void
+     */
     public function validate($string, $config, $context) {
 
         // regular pre-processing

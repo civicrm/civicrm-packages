@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class line_hollow
+ */
 class line_hollow extends line_base
 {
 	public function __construct()

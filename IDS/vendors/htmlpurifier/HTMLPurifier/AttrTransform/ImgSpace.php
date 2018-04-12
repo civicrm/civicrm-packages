@@ -11,6 +11,11 @@ class HTMLPurifier_AttrTransform_ImgSpace extends HTMLPurifier_AttrTransform {
         'vspace' => array('top', 'bottom')
     );
 
+    /**
+     * HTMLPurifier_AttrTransform_ImgSpace constructor.
+     *
+     * @param $attr
+     */
     public function __construct($attr) {
         $this->attr = $attr;
         if (!isset($this->css[$attr])) {
@@ -18,6 +23,13 @@ class HTMLPurifier_AttrTransform_ImgSpace extends HTMLPurifier_AttrTransform {
         }
     }
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
 
         if (!isset($attr[$this->attr])) return $attr;

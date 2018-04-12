@@ -37,6 +37,13 @@ class HTMLPurifier_TagTransform_Font extends HTMLPurifier_TagTransform
         '+4' => '300%'
     );
 
+    /**
+     * @param \Tag       $tag
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \HTMLPurifier_Token_End|\Tag
+     */
     public function transform($tag, $config, $context) {
 
         if ($tag instanceof HTMLPurifier_Token_End) {

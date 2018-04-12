@@ -14,6 +14,11 @@
 
 namespace kcfinder;
 
+/**
+ * Class dir
+ *
+ * @package kcfinder
+ */
 class dir {
 
 /** Checks if the given directory is really writable. The standard PHP
@@ -142,6 +147,12 @@ class dir {
         return $files;
     }
 
+    /**
+     * @param $a
+     * @param $b
+     *
+     * @return int
+     */
     public static function fileSort($a, $b) {
         if (function_exists("mb_strtolower")) {
             $a = mb_strtolower($a);

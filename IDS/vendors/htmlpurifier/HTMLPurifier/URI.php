@@ -15,6 +15,14 @@ class HTMLPurifier_URI
 
     /**
      * @note Automatically normalizes scheme and port
+     *
+     * @param $scheme
+     * @param $userinfo
+     * @param $host
+     * @param $port
+     * @param $path
+     * @param $query
+     * @param $fragment
      */
     public function __construct($scheme, $userinfo, $host, $port, $path, $query, $fragment) {
         $this->scheme = null === $scheme || ctype_lower($scheme) ? $scheme : strtolower($scheme);

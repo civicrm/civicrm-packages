@@ -61,12 +61,11 @@ class HTML_QuickForm_hidden extends HTML_QuickForm_input
         
     // }}}
     // {{{ freeze()
-
     /**
      * Freeze the element so that only its value is returned
-     * 
+     *
      * @access    public
-     * @return    void
+     * @return bool
      */
     public function freeze()
     {

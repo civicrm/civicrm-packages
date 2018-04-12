@@ -8,6 +8,13 @@
 class HTMLPurifier_AttrTransform_BdoDir extends HTMLPurifier_AttrTransform
 {
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
         if (isset($attr['dir'])) return $attr;
         $attr['dir'] = $config->get('Attr.DefaultTextDir');

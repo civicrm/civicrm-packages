@@ -1059,6 +1059,9 @@ class DB_mysqli extends DB_common
 
     // }}}
 
+    /**
+     * @return int|string|void
+     */
     public function lastInsertId() {
         return mysqli_insert_id($this->connection);
     }

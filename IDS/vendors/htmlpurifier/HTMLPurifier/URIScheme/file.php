@@ -16,6 +16,13 @@ class HTMLPurifier_URIScheme_file extends HTMLPurifier_URIScheme {
     // network shares.
     public $may_omit_host = true;
 
+    /**
+     * @param \Reference            $uri
+     * @param \HTMLPurifier_Config  $config
+     * @param \HTMLPurifier_Context $context
+     *
+     * @return bool
+     */
     public function doValidate(&$uri, $config, $context) {
         // Authentication method is not supported
         $uri->userinfo = null;

@@ -40,7 +40,12 @@ require_once ('DirectoryTar.php');
 * @version    Release: 0.1.14
 */
 class PHP_Beautifier_Batch_Output_DirectoryBz2 extends PHP_Beautifier_Batch_DirectoryTar {
-    protected function getTar($sFileName) 
+    /**
+     * @param $sFileName
+     *
+     * @return \Archive_Tar
+     */
+    protected function getTar($sFileName)
     {
         return new Archive_Tar($sFileName.'.tar.bz2', 'bz2');
     }

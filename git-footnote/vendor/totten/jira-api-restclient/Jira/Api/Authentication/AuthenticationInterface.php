@@ -22,6 +22,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  */
 
+/**
+ * Interface Jira_Api_Authentication_AuthenticationInterface
+ */
 interface Jira_Api_Authentication_AuthenticationInterface
 {
     public function getCredential();

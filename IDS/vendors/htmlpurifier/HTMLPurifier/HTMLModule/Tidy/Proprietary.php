@@ -1,11 +1,17 @@
 <?php
 
+/**
+ * Class HTMLPurifier_HTMLModule_Tidy_Proprietary
+ */
 class HTMLPurifier_HTMLModule_Tidy_Proprietary extends HTMLPurifier_HTMLModule_Tidy
 {
 
     public $name = 'Tidy_Proprietary';
     public $defaultLevel = 'light';
 
+    /**
+     * @return array|void
+     */
     public function makeFixes() {
         $r = array();
         $r['table@background'] = new HTMLPurifier_AttrTransform_Background();

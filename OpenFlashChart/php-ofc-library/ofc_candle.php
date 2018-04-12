@@ -2,11 +2,17 @@
 
 include_once 'ofc_bar_base.php';
 
+/**
+ * Class candle_value
+ */
 class candle_value
 {
-	/**
-	 *
-	 */
+    /**
+     * @param $high
+     * @param $open
+     * @param $close
+     * @param $low
+     */
 	public function __construct( $high, $open, $close, $low )
 	{
 		$this->high = $high;
@@ -14,21 +20,36 @@ class candle_value
 		$this->bottom = $close;
 		$this->low = $low;
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	public function set_tooltip( $tip )
+
+    /**
+     * @param $tip
+     */
+    public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;
 	}
 }
 
+/**
+ * Class candle
+ */
 class candle extends bar_base
 {
-	public function __construct($colour, $negative_colour=null)
+    /**
+     * candle constructor.
+     *
+     * @param      $colour
+     * @param null $negative_colour
+     */
+    public function __construct($colour, $negative_colour=null)
 	{
 		$this->type      = "candle";
 		parent::__construct();

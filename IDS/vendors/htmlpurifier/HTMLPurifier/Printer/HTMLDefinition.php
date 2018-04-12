@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class HTMLPurifier_Printer_HTMLDefinition
+ */
 class HTMLPurifier_Printer_HTMLDefinition extends HTMLPurifier_Printer
 {
 
@@ -8,6 +11,11 @@ class HTMLPurifier_Printer_HTMLDefinition extends HTMLPurifier_Printer
      */
     protected $def;
 
+    /**
+     * @param $config
+     *
+     * @return string
+     */
     public function render($config) {
         $ret = '';
         $this->config =& $config;
@@ -270,6 +278,11 @@ class HTMLPurifier_Printer_HTMLDefinition extends HTMLPurifier_Printer
 
     /**
      * Creates a heavy header row
+     *
+     * @param     $text
+     * @param int $num
+     *
+     * @return string
      */
     protected function heavyHeader($text, $num = 1) {
         $ret = '';

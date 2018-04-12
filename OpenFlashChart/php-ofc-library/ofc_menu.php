@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class ofc_menu_item
+ */
 class ofc_menu_item
 {
 	/**
@@ -17,6 +20,9 @@ class ofc_menu_item
 	}
 }
 
+/**
+ * Class ofc_menu_item_camera
+ */
 class ofc_menu_item_camera
 {
 	/**
@@ -41,15 +47,27 @@ class ofc_menu_item_camera
 	}
 }
 
+/**
+ * Class ofc_menu
+ */
 class ofc_menu
 {
-	public function __construct($colour, $outline_colour)
+    /**
+     * ofc_menu constructor.
+     *
+     * @param $colour
+     * @param $outline_colour
+     */
+    public function __construct($colour, $outline_colour)
 	{
 		$this->colour = $colour;
 		$this->outline_colour = $outline_colour;
 	}
-	
-	public function values($values)
+
+    /**
+     * @param $values
+     */
+    public function values($values)
 	{
 		$this->values = $values;
 	}

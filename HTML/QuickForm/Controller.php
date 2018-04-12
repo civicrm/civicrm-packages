@@ -533,7 +533,10 @@ class HTML_QuickForm_Controller
      * resets a specifc page in the container
      *
      * @access public
-     * @param  string    name of the page
+     *
+     * @param      $pageName
+     * @param null $valid
+     *
      * @return void
      */
     public function resetPage($pageName, $valid = null)

@@ -178,7 +178,7 @@ class IDS_Log_Email implements IDS_Log_Interface
      * @param  mixed  $config    IDS_Init | array
      * @param  string $classname the class name to use
      *
-     * @return object $this
+     * @return array $this
      */
     public static function getInstance($config, $classname = 'IDS_Log_Email')
     {
@@ -299,10 +299,10 @@ class IDS_Log_Email implements IDS_Log_Interface
     /**
      * Sends the report to registered recipients
      *
-     * @param object $data IDS_Report instance
+     * @param \IDS_Report $data IDS_Report instance
      *
-     * @throws Exception if data is no string
      * @return boolean
+     * @throws \Exception if data is no string
      */
     public function execute(IDS_Report $data)
     {

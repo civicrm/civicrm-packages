@@ -40,7 +40,12 @@ require_once ('DirectoryTar.php');
 * @version    Release: 0.1.14
 */
 class PHP_Beautifier_Batch_Output_DirectoryGz extends PHP_Beautifier_Batch_Output_DirectoryTar {
-    protected function getTar($sFileName) 
+    /**
+     * @param $sFileName
+     *
+     * @return \Archive_Tar|void
+     */
+    protected function getTar($sFileName)
     {
         return new Archive_Tar($sFileName.'.tgz', 'gz');
     }

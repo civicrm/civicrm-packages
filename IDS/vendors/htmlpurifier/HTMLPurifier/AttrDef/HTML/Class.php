@@ -5,6 +5,13 @@
  */
 class HTMLPurifier_AttrDef_HTML_Class extends HTMLPurifier_AttrDef_HTML_Nmtokens
 {
+    /**
+     * @param $string
+     * @param $config
+     * @param $context
+     *
+     * @return array[]|false|string[]
+     */
     protected function split($string, $config, $context) {
         // really, this twiddle should be lazy loaded
         $name = $config->getDefinition('HTML')->doctype->name;
@@ -14,6 +21,14 @@ class HTMLPurifier_AttrDef_HTML_Class extends HTMLPurifier_AttrDef_HTML_Nmtokens
             return preg_split('/\s+/', $string);
         }
     }
+
+    /**
+     * @param $tokens
+     * @param $config
+     * @param $context
+     *
+     * @return array|mixed
+     */
     protected function filter($tokens, $config, $context) {
         $allowed = $config->get('Attr.AllowedClasses');
         $forbidden = $config->get('Attr.ForbiddenClasses');

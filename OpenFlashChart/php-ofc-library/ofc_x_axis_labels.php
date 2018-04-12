@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class x_axis_labels
+ */
 class x_axis_labels
 {
 	public function __construct(){}
@@ -31,15 +34,20 @@ class x_axis_labels
 	{
 		$this->labels = $labels;
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	/**
-	 * font size in pixels
-	 */
+
+    /**
+     * font size in pixels
+     *
+     * @param $size
+     */
 	public function set_size( $size )
 	{
 		$this->size = $size;

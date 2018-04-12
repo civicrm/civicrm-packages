@@ -614,10 +614,11 @@ class FPDI extends FPDF_TPL
     			break;
     	}
     }
-    
-    
+
     /**
      * Modified _out() method so not each call will add a newline to the output.
+     *
+     * @param $s
      */
     protected function _straightOut($s)
     {

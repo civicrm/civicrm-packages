@@ -17,6 +17,13 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier_URIScheme {
     // component
     public $may_omit_host = true;
 
+    /**
+     * @param \Reference            $uri
+     * @param \HTMLPurifier_Config  $config
+     * @param \HTMLPurifier_Context $context
+     *
+     * @return bool
+     */
     public function doValidate(&$uri, $config, $context) {
         $result = explode(',', $uri->path, 2);
         $is_base64 = false;
@@ -90,6 +97,10 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier_URIScheme {
         return true;
     }
 
+    /**
+     * @param $errno
+     * @param $errstr
+     */
     public function muteErrorHandler($errno, $errstr) {}
 
 }

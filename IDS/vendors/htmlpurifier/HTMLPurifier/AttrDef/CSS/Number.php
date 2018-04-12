@@ -21,6 +21,12 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
     /**
      * @warning Some contexts do not pass $config, $context. These
      *          variables should not be used without checking HTMLPurifier_Length
+     *
+     * @param $number
+     * @param $config
+     * @param $context
+     *
+     * @return bool|string
      */
     public function validate($number, $config, $context) {
 

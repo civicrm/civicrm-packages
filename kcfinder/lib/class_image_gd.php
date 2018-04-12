@@ -14,11 +14,22 @@
 
 namespace kcfinder;
 
+/**
+ * Class image_gd
+ *
+ * @package kcfinder
+ */
 class image_gd extends image {
 
 
     // ABSTRACT PUBLIC METHODS
 
+    /**
+     * @param int $width
+     * @param int $height
+     *
+     * @return bool
+     */
     public function resize($width, $height) {
         if (!$width) {
             $width = 1;
@@ -35,6 +46,13 @@ class image_gd extends image {
         );
     }
 
+    /**
+     * @param int  $width
+     * @param int  $height
+     * @param bool $background
+     *
+     * @return bool
+     */
     public function resizeFit($width, $height, $background=false) {
         if ((!$width && !$height) || (($width == $this->width) && ($height == $this->height))) {
             return true;
@@ -80,6 +98,13 @@ class image_gd extends image {
         }
     }
 
+    /**
+     * @param      $width
+     * @param      $height
+     * @param bool $offset
+     *
+     * @return bool
+     */
     public function resizeCrop($width, $height, $offset=false) {
 
         if (($this->width / $this->height) > ($width / $height)) {
@@ -140,6 +165,12 @@ class image_gd extends image {
         return $return;
     }
 
+    /**
+     * @param int    $angle
+     * @param string $background
+     *
+     * @return bool
+     */
     public function rotate($angle, $background="#000000") {
         $angle = -$angle;
         $img = @imagerotate($this->image, $angle, $this->gdColor($background));
@@ -152,6 +183,9 @@ class image_gd extends image {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function flipHorizontal() {
         $img = imagecreatetruecolor($this->width, $this->height);
         if (imagecopyresampled($img, $this->image, 0, 0, ($this->width - 1), 0, $this->width, $this->height, -$this->width, $this->height)) {
@@ -163,6 +197,9 @@ class image_gd extends image {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function flipVertical() {
         $img = imagecreatetruecolor($this->width, $this->height);
         if (imagecopyresampled($img, $this->image, 0, 0, 0, ($this->height - 1), $this->width, $this->height, $this->width, -$this->height)) {
@@ -174,6 +211,13 @@ class image_gd extends image {
         return true;
     }
 
+    /**
+     * @param string $file
+     * @param bool   $left
+     * @param bool   $top
+     *
+     * @return bool
+     */
     public function watermark($file, $left=false, $top=false) {
         $info = getimagesize($file);
         list($w, $h, $t) = $info;
@@ -215,6 +259,12 @@ class image_gd extends image {
         return true;
     }
 
+    /**
+     * @param string $type
+     * @param array  $options
+     *
+     * @return bool
+     */
     public function output($type='jpeg', array $options=array()) {
         $method = "output_$type";
         if (!method_exists($this, $method)) {
@@ -226,6 +276,12 @@ class image_gd extends image {
 
     // ABSTRACT PROTECTED METHODS
 
+    /**
+     * @param int $width
+     * @param int $height
+     *
+     * @return mixed|resource
+     */
     protected function getBlankImage($width, $height) {
         $image = imagecreatetruecolor($width, $height);
         imagealphablending($image, false);
@@ -233,6 +289,13 @@ class image_gd extends image {
         return $image;
     }
 
+    /**
+     * @param mixed $image
+     * @param int   $width
+     * @param int   $height
+     *
+     * @return bool|mixed|resource
+     */
     protected function getImage($image, &$width, &$height) {
 
         if (is_resource($image) && (get_resource_type($image) == "gd")) {
@@ -267,10 +330,18 @@ class image_gd extends image {
 
     // PSEUDO-ABSTRACT STATIC METHODS
 
+    /**
+     * @return bool
+     */
     public static function available() {
         return function_exists("imagecreatefromjpeg");
     }
 
+    /**
+     * @param string $file
+     *
+     * @return bool
+     */
     public static function checkImage($file) {
         if (!is_string($file) ||
             ((false === (list($width, $height, $t) = @getimagesize($file))))
@@ -292,6 +363,11 @@ class image_gd extends image {
 
     // OWN METHODS
 
+    /**
+     * @param array $options
+     *
+     * @return bool
+     */
     protected function output_png(array $options=array()) {
         $file = isset($options['file']) ? $options['file'] : null;
         $quality = isset($options['quality']) ? $options['quality'] : null;
@@ -302,6 +378,11 @@ class image_gd extends image {
         return imagepng($this->image, $file, $quality, $filters);
     }
 
+    /**
+     * @param array $options
+     *
+     * @return bool
+     */
     protected function output_jpeg(array $options=array()) {
         $file = isset($options['file']) ? $options['file'] : null;
         $quality = isset($options['quality'])
@@ -313,6 +394,11 @@ class image_gd extends image {
         return imagejpeg($this->image, $file, $quality);
     }
 
+    /**
+     * @param array $options
+     *
+     * @return bool
+     */
     protected function output_gif(array $options=array()) {
         $file = isset($options['file']) ? $options['file'] : null;
         if (isset($options['file']) && !headers_sent()) {
@@ -321,6 +407,9 @@ class image_gd extends image {
         return imagegif($this->image, $file);
     }
 
+    /**
+     * @return bool|int
+     */
     protected function gdColor() {
         $args = func_get_args();
 
@@ -365,6 +454,15 @@ class image_gd extends image {
         return imagecolorallocate($this->image, $r, $g, $b);
     }
 
+    /**
+     * @param $x1
+     * @param $y1
+     * @param $x2
+     * @param $y2
+     * @param $color
+     *
+     * @return bool
+     */
     protected function imageFilledRectangle($x1, $y1, $x2, $y2, $color) {
         $color = $this->gdColor($color);
         if ($color === false) {
@@ -373,6 +471,19 @@ class image_gd extends image {
         return imageFilledRectangle($this->image, $x1, $y1, $x2, $y2, $color);
     }
 
+    /**
+     * @param      $src
+     * @param int  $dstX
+     * @param int  $dstY
+     * @param int  $srcX
+     * @param int  $srcY
+     * @param null $dstW
+     * @param null $dstH
+     * @param null $srcW
+     * @param null $srcH
+     *
+     * @return bool
+     */
     protected function imageCopyResampled(
         $src, $dstX=0, $dstY=0, $srcX=0, $srcY=0, $dstW=null, $dstH=null, $srcW=null, $srcH=null
     ) {

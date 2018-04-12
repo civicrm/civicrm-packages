@@ -122,14 +122,19 @@ class GatewayResponse
       $this->txBeagleScore       = self::GetNodeValue('ewayBeagleScore', $Xml);
       $this->txAmount = (int) $amount;
    }
-   
-   
-   /************************************************************************
-   * Simple function to use in place of the 'simplexml_load_string' call.
-   * 
-   * It returns the NodeValue for a given NodeName
-   * or returns and empty string.
-   ************************************************************************/
+
+    /************************************************************************
+     * Simple function to use in place of the 'simplexml_load_string' call.
+     *
+     * It returns the NodeValue for a given NodeName
+     * or returns and empty string.
+     ***********************************************************************
+     *
+     * @param $NodeName
+     * @param $strXML
+     *
+     * @return bool|string
+     */
    public function GetNodeValue($NodeName, &$strXML)
    {
       $OpeningNodeName = '<' . $NodeName . '>';

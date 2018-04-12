@@ -24,6 +24,9 @@
  */
 //namespace Jira;
 
+/**
+ * Class Jira_Issue
+ */
 class Jira_Issue
 {
     /* @var array $expand */

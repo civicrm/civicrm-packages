@@ -8,6 +8,9 @@ class HTMLPurifier_HTMLModule_Target extends HTMLPurifier_HTMLModule
 
     public $name = 'Target';
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
         $elements = array('a');
         foreach ($elements as $name) {

@@ -31,6 +31,13 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
     private $parent_handler;
     private $stack = array();
 
+    /**
+     * @param String $string
+     * @param        $config
+     * @param        $context
+     *
+     * @return array|void
+     */
     public function tokenizeHTML($string, $config, $context) {
 
         $this->tokens = array();
@@ -59,6 +66,13 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
 
     /**
      * Open tag event handler, interface is defined by PEAR package.
+     *
+     * @param $parser
+     * @param $name
+     * @param $attrs
+     * @param $closed
+     *
+     * @return bool
      */
     public function openHandler(&$parser, $name, $attrs, $closed) {
         // entities are not resolved in attrs
@@ -77,7 +91,10 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
 
     /**
      * Close tag event handler, interface is defined by PEAR package.
-     */
+     * @param $parser
+     * @param $name
+     * @return bool
+*/
     public function closeHandler(&$parser, $name) {
         // HTMLSax3 seems to always send empty tags an extra close tag
         // check and ignore if you see it:
@@ -93,7 +110,10 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
 
     /**
      * Data event handler, interface is defined by PEAR package.
-     */
+     * @param $parser
+     * @param $data
+     * @return bool
+*/
     public function dataHandler(&$parser, $data) {
         $this->last_token_was_empty = false;
         $this->tokens[] = new HTMLPurifier_Token_Text($data);
@@ -102,7 +122,10 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
 
     /**
      * Escaped text handler, interface is defined by PEAR package.
-     */
+     * @param $parser
+     * @param $data
+     * @return bool
+*/
     public function escapeHandler(&$parser, $data) {
         if (strpos($data, '--') === 0) {
             // remove trailing and leading double-dashes
@@ -128,7 +151,13 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
 
     /**
      * An error handler that mutes strict errors
-     */
+     * @param      $errno
+     * @param      $errstr
+     * @param null $errfile
+     * @param null $errline
+     * @param null $errcontext
+     * @return mixed|void
+*/
     public function muteStrictErrorHandler($errno, $errstr, $errfile=null, $errline=null, $errcontext=null) {
         if ($errno == E_STRICT) return;
         return call_user_func($this->parent_handler, $errno, $errstr, $errfile, $errline, $errcontext);

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class HTMLPurifier_HTMLModule_NonXMLCommonAttributes
+ */
 class HTMLPurifier_HTMLModule_NonXMLCommonAttributes extends HTMLPurifier_HTMLModule
 {
     public $name = 'NonXMLCommonAttributes';

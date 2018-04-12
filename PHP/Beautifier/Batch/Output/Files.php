@@ -35,7 +35,10 @@
 * @version    Release: 0.1.14
 */
 class PHP_Beautifier_Batch_Output_Files extends PHP_Beautifier_Batch_Output {
-    public function get() 
+    /**
+     * @return mixed|string|void
+     */
+    public function get()
     {
         $aInputFiles = $this->oBatch->getInputFiles();
         if (count($aInputFiles) == 1) {
@@ -52,7 +55,13 @@ class PHP_Beautifier_Batch_Output_Files extends PHP_Beautifier_Batch_Output {
             return $sText;
         }
     }
-    private function getWithHeader($sFile) 
+
+    /**
+     * @param $sFile
+     *
+     * @return string
+     */
+    private function getWithHeader($sFile)
     {
         $sNewLine = $this->oBatch->callBeautifier($this, 'getNewLine');
         $sHeader = '- BEGIN OF '.$sFile.' -'.$sNewLine;

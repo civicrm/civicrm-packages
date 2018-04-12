@@ -30,8 +30,11 @@ class HTMLPurifier_Token_Tag extends HTMLPurifier_Token
     /**
      * Non-overloaded constructor, which lower-cases passed tag name.
      *
-     * @param $name String name.
-     * @param $attr Associative array of attributes.
+     * @param       $name String name.
+     * @param array $attr Associative array of attributes.
+     * @param null  $line
+     * @param null  $col
+     * @param array $armor
      */
     public function __construct($name, $attr = array(), $line = null, $col = null, $armor = array()) {
         $this->name = ctype_lower($name) ? $name : strtolower($name);

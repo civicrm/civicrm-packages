@@ -51,7 +51,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * Gets the default extension
      *
-     * @return $string
+     * @return  $string
      */
     public function getDefaultExtension()
     {

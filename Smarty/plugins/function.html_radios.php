@@ -127,6 +127,18 @@ function smarty_function_html_radios($params, &$smarty)
 
 }
 
+/**
+ * @param $name
+ * @param $value
+ * @param $output
+ * @param $selected
+ * @param $extra
+ * @param $separator
+ * @param $labels
+ * @param $label_ids
+ *
+ * @return string
+ */
 function smarty_function_html_radios_output($name, $value, $output, $selected, $extra, $separator, $labels, $label_ids) {
     $_output = '';
     if ($labels) {

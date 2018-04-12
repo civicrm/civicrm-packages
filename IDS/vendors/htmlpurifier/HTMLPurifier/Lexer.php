@@ -203,7 +203,10 @@ class HTMLPurifier_Lexer
      * Lexes an HTML string into tokens.
      *
      * @param $string String HTML.
-     * @return HTMLPurifier_Token array representation of HTML.
+     * @param $config
+     * @param $context
+     *
+     * @return void array representation of HTML.
      */
     public function tokenizeHTML($string, $config, $context) {
         trigger_error('Call to abstract class', E_USER_ERROR);
@@ -227,6 +230,8 @@ class HTMLPurifier_Lexer
 
     /**
      * Special CDATA case that is especially convoluted for <script>
+     * @param $string
+     * @return null|string|string[]
      */
     protected static function escapeCommentedCDATA($string) {
         return preg_replace_callback(
@@ -238,6 +243,8 @@ class HTMLPurifier_Lexer
 
     /**
      * Special Internet Explorer conditional comments should be removed.
+     * @param $string
+     * @return null|string|string[]
      */
     protected static function removeIEConditional($string) {
         return preg_replace(
@@ -254,7 +261,8 @@ class HTMLPurifier_Lexer
      *          calling it directly is not recommended.
      * @params $matches PCRE matches array, with index 0 the entire match
      *                  and 1 the inside of the CDATA section.
-     * @returns Escaped internals of the CDATA section.
+     * @param $matches
+     * @return string
      */
     protected static function CDATACallback($matches) {
         // not exactly sure why the character set is needed, but whatever
@@ -265,6 +273,10 @@ class HTMLPurifier_Lexer
      * Takes a piece of HTML and normalizes it by converting entities, fixing
      * encoding, extracting bits, and other good stuff.
      * @todo Consider making protected
+     * @param $html
+     * @param $config
+     * @param $context
+     * @return mixed|null|string|string[]
      */
     public function normalize($html, $config, $context) {
 
@@ -316,6 +328,8 @@ class HTMLPurifier_Lexer
     /**
      * Takes a string of HTML (fragment or document) and returns the content
      * @todo Consider making protected
+     * @param $html
+     * @return mixed
      */
     public function extractBody($html) {
         $matches = array();

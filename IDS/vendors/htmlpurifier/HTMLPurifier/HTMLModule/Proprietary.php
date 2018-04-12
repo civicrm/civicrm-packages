@@ -9,6 +9,9 @@ class HTMLPurifier_HTMLModule_Proprietary extends HTMLPurifier_HTMLModule
 
     public $name = 'Proprietary';
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
 
         $this->addElement('marquee', 'Inline', 'Flow', 'Common',

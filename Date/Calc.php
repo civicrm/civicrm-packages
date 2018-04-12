@@ -394,16 +394,15 @@ class Date_Calc
 
     // }}}
     // {{{ dateSeason()
-
     /**
      * Determines julian date of the given season
      *
      * Adapted from previous work in Java by James Mark Hamilton.
      *
-     * @param string $season  the season to get the date for: VERNALEQUINOX,
+     * @param string $season   the season to get the date for: VERNALEQUINOX,
      *                         SUMMERSOLSTICE, AUTUMNALEQUINOX,
      *                         or WINTERSOLSTICE
-     * @param string $year    the year in four digit format.  Must be between
+     * @param int    $year     the year in four digit format.  Must be between
      *                         -1000BC and 3000AD.
      *
      * @return float  the julian date the season starts on
@@ -1675,19 +1674,18 @@ class Date_Calc
 
     // }}}
     // {{{ beginOfMonthBySpan()
-
     /**
      * Returns date of the first day of the month in the number of months
      * from the given date
      *
-     * @param int    $months  the number of months from the date provided.
+     * @param int    $months   the number of months from the date provided.
      *                         Positive numbers go into the future.
      *                         Negative numbers go into the past.
      *                         0 is the month presented in $month.
-     * @param string $month   the month, default is current local month
-     * @param string $year    the year in four digit format, default is the
+     * @param int    $month    the month, default is current local month
+     * @param int    $year     the year in four digit format, default is the
      *                         current local year
-     * @param string $format  the string indicating how to format the output
+     * @param string $format   the string indicating how to format the output
      *
      * @return string  the date in the desired format
      *
@@ -1740,14 +1738,14 @@ class Date_Calc
      * Returns date of the last day of the month in the number of months
      * from the given date
      *
-     * @param int    $months  the number of months from the date provided.
+     * @param int    $months   the number of months from the date provided.
      *                         Positive numbers go into the future.
      *                         Negative numbers go into the past.
      *                         0 is the month presented in $month.
-     * @param string $month   the month, default is current local month
-     * @param string $year    the year in four digit format, default is the
+     * @param int    $month    the month, default is current local month
+     * @param int    $year     the year in four digit format, default is the
      *                         current local year
-     * @param string $format  the string indicating how to format the output
+     * @param string $format   the string indicating how to format the output
      *
      * @return string  the date in the desired format
      *

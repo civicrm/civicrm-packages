@@ -14,6 +14,11 @@
 
 namespace kcfinder;
 
+/**
+ * Class image
+ *
+ * @package kcfinder
+ */
 abstract class image {
     const DEFAULT_JPEG_QUALITY = 75;
 
@@ -72,12 +77,15 @@ abstract class image {
         $this->options = $options;
     }
 
-
-/** Factory pattern to load selected driver. $image and $options are passed
-  * to the constructor of the image driver
-  * @param string $driver
-  * @param mixed $image
-  * @return object */
+    /** Factory pattern to load selected driver. $image and $options are passed
+     * to the constructor of the image driver
+     *
+     * @param string $driver
+     * @param mixed  $image
+     * @param array  $options
+     *
+     * @return object
+     */
 
     final public static function factory($driver, $image, array $options=array()) {
         $class = __NAMESPACE__ . "\\image_$driver";
@@ -189,11 +197,13 @@ abstract class image {
   * @return bool */
     abstract public function resizeFit($width, $height, $background=false);
 
-/** Resize and crop the image to fit in given resolution. Returns TRUE on
-  * success or FALSE on failure
-  * @param mixed $src
-  * @param integer $offset
-  * @return bool */
+    /** Resize and crop the image to fit in given resolution. Returns TRUE on
+     * success or FALSE on failure
+     * @param      $width
+     * @param      $height
+     * @param bool $offset
+     * @return bool
+*/
     abstract public function resizeCrop($width, $height, $offset=false);
 
 

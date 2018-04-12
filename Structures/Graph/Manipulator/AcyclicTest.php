@@ -55,13 +55,16 @@ require_once 'Structures/Graph/Node.php';
 class Structures_Graph_Manipulator_AcyclicTest {
     /* _nonVisitedInDegree {{{ */
     /**
-    *
-    * This is a variant of Structures_Graph::inDegree which does 
-    * not count nodes marked as visited.
-    *
-    * @access   private
-    * @return	integer	 Number of non-visited nodes that link to this one
-    */
+     *
+     * This is a variant of Structures_Graph::inDegree which does
+     * not count nodes marked as visited.
+     *
+     * @access   private
+     *
+     * @param $node
+     *
+     * @return  integer   Number of non-visited nodes that link to this one
+     */
     public function _nonVisitedInDegree(&$node) {
         $result = 0;
         $graphNodes =& $node->_graph->getNodes();
@@ -75,8 +78,12 @@ class Structures_Graph_Manipulator_AcyclicTest {
 
     /* _isAcyclic {{{ */
     /**
-    * @access   private
-    */
+     * @access   private
+     *
+     * @param $graph
+     *
+     * @return bool
+     */
     public function _isAcyclic(&$graph) {
         // Mark every node as not visited
         $nodes =& $graph->getNodes();
@@ -117,12 +124,14 @@ class Structures_Graph_Manipulator_AcyclicTest {
 
     /* isAcyclic {{{ */
     /**
-    *
-    * isAcyclic returns true if a graph contains no cycles, false otherwise.
-    *
-    * @return	boolean	 true iff graph is acyclic
-    * @access	public
-    */
+     *
+     * isAcyclic returns true if a graph contains no cycles, false otherwise.
+     *
+     * @param $graph
+     *
+     * @return  boolean   true iff graph is acyclic
+     * @access  public
+     */
     public function isAcyclic(&$graph) {
         // We only test graphs
         if (!is_a($graph, 'Structures_Graph')) return Pear::raiseError('Structures_Graph_Manipulator_AcyclicTest::isAcyclic received an object that is not a Structures_Graph', STRUCTURES_GRAPH_ERROR_GENERIC);

@@ -35,6 +35,13 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         $this->factory = new HTMLPurifier_TokenFactory();
     }
 
+    /**
+     * @param String $html
+     * @param        $config
+     * @param        $context
+     *
+     * @return array|void
+     */
     public function tokenizeHTML($html, $config, $context) {
 
         $html = $this->normalize($html, $config, $context);
@@ -175,6 +182,10 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         }
     }
 
+    /**
+     * @param $node
+     * @param $tokens
+     */
     protected function createEndNode($node, &$tokens) {
         $tokens[] = $this->factory->createEnd($node->tagName);
     }
@@ -182,9 +193,8 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
     /**
      * Converts a DOMNamedNodeMap of DOMAttr objects into an assoc array.
      *
-     * @param $attribute_list DOMNamedNodeMap of DOMAttr objects.
+     * @param $node_map
      *
-     * @returns Associative array of attributes.
      * @return array
      */
     protected function transformAttrToAssoc($node_map) {
@@ -201,12 +211,17 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
 
     /**
      * An error handler that mutes all errors
+     * @param $errno
+     * @param $errstr
      */
-    public function muteErrorHandler($errno, $errstr) {}
+    public function muteErrorHandler($errno, $errstr) {
+    }
 
     /**
      * Callback function for undoing escaping of stray angled brackets
      * in comments
+     * @param $matches
+     * @return string
      */
     public function callbackUndoCommentSubst($matches) {
         return '<!--' . strtr($matches[1], array('&amp;'=>'&','&lt;'=>'<')) . $matches[2];
@@ -215,6 +230,8 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
     /**
      * Callback function that entity-izes ampersands in comments so that
      * callbackUndoCommentSubst doesn't clobber them
+     * @param $matches
+     * @return string
      */
     public function callbackArmorCommentEntities($matches) {
         return '<!--' . str_replace('&', '&amp;', $matches[1]) . $matches[2];
@@ -222,6 +239,10 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
 
     /**
      * Wraps an HTML fragment in the necessary HTML
+     * @param $html
+     * @param $config
+     * @param $context
+     * @return string
      */
     protected function wrapHTML($html, $config, $context) {
         $def = $config->getDefinition('HTML');

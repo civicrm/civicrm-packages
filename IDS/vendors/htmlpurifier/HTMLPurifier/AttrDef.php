@@ -44,7 +44,7 @@ abstract class HTMLPurifier_AttrDef
      * attributes specified as CDATA, it can also be applied to most CSS
      * values.
      *
-     * @note This method is not entirely standards compliant, as trim() removes
+     * @note    This method is not entirely standards compliant, as trim() removes
      *       more types of whitespace than specified in the spec. In practice,
      *       this is rarely a problem, as those extra characters usually have
      *       already been removed by HTMLPurifier_Encoder.
@@ -54,6 +54,10 @@ abstract class HTMLPurifier_AttrDef
      *          4.7.  However, note that we are NOT necessarily
      *          parsing XML, thus, this behavior may still be correct. We
      *          assume that newlines have been normalized.
+     *
+     * @param $string
+     *
+     * @return mixed|string
      */
     public function parseCDATA($string) {
         $string = trim($string);
@@ -64,8 +68,8 @@ abstract class HTMLPurifier_AttrDef
     /**
      * Factory method for creating this class from a string.
      * @param $string String construction info
-     * @return Created AttrDef object corresponding to $string
-     */
+     * @return \HTMLPurifier_AttrDef AttrDef object corresponding to $string
+*/
     public function make($string) {
         // default implementation, return a flyweight of this object.
         // If $string has an effect on the returned object (i.e. you
@@ -77,15 +81,19 @@ abstract class HTMLPurifier_AttrDef
     /**
      * Removes spaces from rgb(0, 0, 0) so that shorthand CSS properties work
      * properly. THIS IS A HACK!
-     */
+     * @param $string
+     * @return null|string|string[]
+*/
     protected function mungeRgb($string) {
         return preg_replace('/rgb\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\)/', 'rgb(\1,\2,\3)', $string);
     }
 
     /**
-     * Parses a possibly escaped CSS string and returns the "pure" 
+     * Parses a possibly escaped CSS string and returns the "pure"
      * version of it.
-     */
+     * @param $string
+     * @return string
+*/
     protected function expandCSSEscape($string) {
         // flexibly parse it
         $ret = '';

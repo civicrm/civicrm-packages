@@ -12,6 +12,11 @@ class HTMLPurifier_AttrDef_HTML_LinkTypes extends HTMLPurifier_AttrDef
     /** Name config attribute to pull. */
     protected $name;
 
+    /**
+     * HTMLPurifier_AttrDef_HTML_LinkTypes constructor.
+     *
+     * @param $name
+     */
     public function __construct($name) {
         $configLookup = array(
             'rel' => 'AllowedRel',
@@ -25,6 +30,13 @@ class HTMLPurifier_AttrDef_HTML_LinkTypes extends HTMLPurifier_AttrDef
         $this->name = $configLookup[$name];
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|mixed|string
+     */
     public function validate($string, $config, $context) {
 
         $allowed = $config->get('Attr.' . $this->name);

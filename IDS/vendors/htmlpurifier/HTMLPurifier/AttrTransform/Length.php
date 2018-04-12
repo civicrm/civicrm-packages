@@ -9,11 +9,24 @@ class HTMLPurifier_AttrTransform_Length extends HTMLPurifier_AttrTransform
     protected $name;
     protected $cssName;
 
+    /**
+     * HTMLPurifier_AttrTransform_Length constructor.
+     *
+     * @param      $name
+     * @param null $css_name
+     */
     public function __construct($name, $css_name = null) {
         $this->name = $name;
         $this->cssName = $css_name ? $css_name : $name;
     }
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
         if (!isset($attr[$this->name])) return $attr;
         $length = $this->confiscateAttr($attr, $this->name);

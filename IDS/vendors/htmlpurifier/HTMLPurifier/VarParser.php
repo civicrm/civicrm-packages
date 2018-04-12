@@ -112,6 +112,12 @@ class HTMLPurifier_VarParser
     /**
      * Actually implements the parsing. Base implementation is to not
      * do anything to $var. Subclasses should overload this!
+     *
+     * @param $var
+     * @param $type
+     * @param $allow_null
+     *
+     * @return mixed
      */
     protected function parseImplementation($var, $type, $allow_null) {
         return $var;
@@ -119,7 +125,9 @@ class HTMLPurifier_VarParser
 
     /**
      * Throws an exception.
-     */
+     * @param $msg
+     * @throws \HTMLPurifier_VarParserException
+*/
     protected function error($msg) {
         throw new HTMLPurifier_VarParserException($msg);
     }
@@ -129,19 +137,30 @@ class HTMLPurifier_VarParser
      * @note This should not ever be called. It would be called if we
      *       extend the allowed values of HTMLPurifier_VarParser without
      *       updating subclasses.
-     */
+     * @param $class
+     * @param $type
+     * @throws \HTMLPurifier_Exception
+*/
     protected function errorInconsistent($class, $type) {
         throw new HTMLPurifier_Exception("Inconsistency in $class: ".HTMLPurifier_VarParser::getTypeName($type)." not implemented");
     }
 
     /**
      * Generic error for if a type didn't work.
-     */
+     * @param $var
+     * @param $type
+     * @throws \HTMLPurifier_VarParserException
+*/
     protected function errorGeneric($var, $type) {
         $vtype = gettype($var);
         $this->error("Expected type ".HTMLPurifier_VarParser::getTypeName($type).", got $vtype");
     }
 
+    /**
+     * @param $type
+     *
+     * @return string
+     */
     static public function getTypeName($type) {
         static $lookup;
         if (!$lookup) {

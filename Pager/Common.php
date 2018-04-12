@@ -577,13 +577,12 @@ class Pager_Common
 
     // }}}
     // {{{ getPageIdByOffset()
-
     /**
      * Returns pageID for given offset
      *
      * @param integer $index Offset to get pageID for
      *
-     * @return integer PageID for given offset
+     * @return \PEAR_Error PageID for given offset
      * @access public
      */
     public function getPageIdByOffset($index)
@@ -624,13 +623,12 @@ class Pager_Common
 
     // }}}
     // {{{ getPageRangeByPageId()
-
     /**
      * Given a PageId, it returns the limits of the range of pages displayed.
      *
      * @param integer $pageID PageID to get offsets for
      *
-     * @return array First and last offsets
+     * @return \PEAR_Error First and last offsets
      * @access public
      */
     public function getPageRangeByPageId($pageID = null)
@@ -641,7 +639,6 @@ class Pager_Common
 
     // }}}
     // {{{ getLinks()
-
     /**
      * Returns back/next/first/last and page links,
      * both as ordered and associative array.
@@ -659,7 +656,7 @@ class Pager_Common
      * @param string  $next_html HTML to put inside the next link
      *                           [deprecated: use the factory instead]
      *
-     * @return array back/next/first/last and page links
+     * @return \PEAR_Error back/next/first/last and page links
      * @access public
      */
     public function getLinks($pageID=null, $next_html='')

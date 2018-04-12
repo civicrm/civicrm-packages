@@ -181,7 +181,6 @@ class Date
 
     // }}}
     // {{{ Constructor
-
     /**
      * Constructor
      *
@@ -192,9 +191,9 @@ class Date
      * is used.
      *
      * @access public
-     * @see setDate()
+     * @see    setDate()
+     *
      * @param mixed $date optional - date/time to initialize
-     * @return object Date the new Date object
      */
     public function __construct($date = null)
     {
@@ -676,7 +675,11 @@ class Date
 
     // }}}
     // {{{ toUTCbyOffset()
-
+    /**
+     * @param $offset
+     *
+     * @return bool
+     */
     public function toUTCbyOffset($offset)
     {
         if ($offset == 'Z' || $offset == '+00:00' || $offset == '+0000') {
@@ -1126,7 +1129,6 @@ class Date
 
     // }}}
     // {{{ getDayName()
-
     /**
      * Gets the full name or abbriviated name of this weekday
      *
@@ -1134,6 +1136,7 @@ class Date
      *
      * @access public
      * @param boolean $abbr abbrivate the name
+     * @param int     $length
      * @return string name of this day
      */
     public function getDayName($abbr = false, $length = 3)

@@ -14,6 +14,11 @@
 
 namespace kcfinder;
 
+/**
+ * Class httpCache
+ *
+ * @package kcfinder
+ */
 class httpCache {
     const DEFAULT_TYPE = "text/html";
     const DEFAULT_EXPIRE = 604800; // in seconds

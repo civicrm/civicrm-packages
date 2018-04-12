@@ -614,7 +614,8 @@ class Smarty
      * appends values to template variables
      *
      * @param array|string $tpl_var the template variable name(s)
-     * @param mixed $value the value to append
+     * @param mixed        $value   the value to append
+     * @param bool         $merge
      */
     public function append($tpl_var, $value=null, $merge=false)
     {
@@ -654,7 +655,8 @@ class Smarty
      * appends values to template variables by reference
      *
      * @param string $tpl_var the template variable name
-     * @param mixed $value the referenced value to append
+     * @param mixed  $value   the referenced value to append
+     * @param bool   $merge
      */
     public function append_by_ref($tpl_var, &$value, $merge=false)
     {
@@ -687,12 +689,13 @@ class Smarty
             unset($this->_tpl_vars[$tpl_var]);
     }
 
-
     /**
      * Registers custom function to be used in templates
      *
-     * @param string $function the name of the template function
+     * @param string $function      the name of the template function
      * @param string $function_impl the name of the PHP function to register
+     * @param bool   $cacheable
+     * @param null   $cache_attrs
      */
     public function register_function($function, $function_impl, $cacheable=true, $cache_attrs=null)
     {
@@ -714,11 +717,11 @@ class Smarty
     /**
      * Registers object to be used in templates
      *
-     * @param string $object name of template object
-     * @param object &$object_impl the referenced PHP object to register
-     * @param null|array $allowed list of allowed methods (empty = all)
-     * @param boolean $smarty_args smarty argument format, else traditional
-     * @param null|array $block_functs list of methods that are block format
+     * @param string     $object       name of template object
+     * @param object     &$object_impl the referenced PHP object to register
+     * @param null|array $allowed      list of allowed methods (empty = all)
+     * @param boolean    $smarty_args  smarty argument format, else traditional
+     * @param array      $block_methods
      */
     public function register_object($object, &$object_impl, $allowed = array(), $smarty_args = true, $block_methods = array())
     {
@@ -738,12 +741,13 @@ class Smarty
         unset($this->_reg_objects[$object]);
     }
 
-
     /**
      * Registers block function to be used in templates
      *
-     * @param string $block name of template block
+     * @param string $block      name of template block
      * @param string $block_impl PHP function to register
+     * @param bool   $cacheable
+     * @param null   $cache_attrs
      */
     public function register_block($block, $block_impl, $cacheable=true, $cache_attrs=null)
     {
@@ -764,8 +768,9 @@ class Smarty
     /**
      * Registers compiler function
      *
-     * @param string $function name of template function
+     * @param string $function      name of template function
      * @param string $function_impl name of PHP function to register
+     * @param bool   $cacheable
      */
     public function register_compiler_function($function, $function_impl, $cacheable=true)
     {
@@ -1052,7 +1057,7 @@ class Smarty
      * Returns an array containing template variables
      *
      * @param string $name
-     * @param string $type
+     *
      * @return array
      */
     public function &get_template_vars($name=null)
@@ -1072,7 +1077,6 @@ class Smarty
      * Returns an array containing config variables
      *
      * @param string $name
-     * @param string $type
      * @return array
      */
     public function &get_config_vars($name=null)
@@ -1446,12 +1450,13 @@ class Smarty
 
     }
 
-   /**
+    /**
      * compile the given source
      *
      * @param string $resource_name
      * @param string $source_content
      * @param string $compiled_content
+     * @param null   $cache_include_path
      * @return boolean
      */
     public function _compile_source($resource_name, &$source_content, &$compiled_content, $cache_include_path=null)

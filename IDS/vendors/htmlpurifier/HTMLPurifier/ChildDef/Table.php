@@ -10,6 +10,14 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
     public $elements = array('tr' => true, 'tbody' => true, 'thead' => true,
         'tfoot' => true, 'caption' => true, 'colgroup' => true, 'col' => true);
     public function __construct() {}
+
+    /**
+     * @param array                 $tokens_of_children
+     * @param \HTMLPurifier_Config  $config
+     * @param \HTMLPurifier_Context $context
+     *
+     * @return array|bool
+     */
     public function validateChildren($tokens_of_children, $config, $context) {
         if (empty($tokens_of_children)) return false;
 

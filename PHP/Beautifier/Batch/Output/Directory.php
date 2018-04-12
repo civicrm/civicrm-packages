@@ -35,7 +35,10 @@
 * @version    Release: 0.1.14
 */
 class PHP_Beautifier_Batch_Output_Directory extends PHP_Beautifier_Batch_Output {
-    public function save() 
+    /**
+     * @return bool|void
+     */
+    public function save()
     {
         $aInputFiles = $this->oBatch->getInputFiles();
         $sOutputPath = $this->oBatch->getOutputPath();

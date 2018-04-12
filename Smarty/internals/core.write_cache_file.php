@@ -4,15 +4,13 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * Prepend the cache information to the cache file
  * and write it
  *
- * @param string $tpl_file
- * @param string $cache_id
- * @param string $compile_id
- * @param string $results
+ * @param $params
+ * @param $smarty
+ *
  * @return true|null
  */
 

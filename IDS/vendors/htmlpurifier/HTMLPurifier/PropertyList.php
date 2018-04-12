@@ -17,12 +17,22 @@ class HTMLPurifier_PropertyList
 
     protected $cache;
 
+    /**
+     * HTMLPurifier_PropertyList constructor.
+     *
+     * @param null $parent
+     */
     public function __construct($parent = null) {
         $this->parent = $parent;
     }
 
     /**
      * Recursively retrieves the value for a key
+     *
+     * @param $name
+     *
+     * @return mixed
+     * @throws \HTMLPurifier_Exception
      */
     public function get($name) {
         if ($this->has($name)) return $this->data[$name];
@@ -33,14 +43,18 @@ class HTMLPurifier_PropertyList
 
     /**
      * Sets the value of a key, for this plist
-     */
+     * @param $name
+     * @param $value
+*/
     public function set($name, $value) {
         $this->data[$name] = $value;
     }
 
     /**
      * Returns true if a given key exists
-     */
+     * @param $name
+     * @return bool
+*/
     public function has($name) {
         return array_key_exists($name, $this->data);
     }
@@ -48,7 +62,8 @@ class HTMLPurifier_PropertyList
     /**
      * Resets a value to the value of it's parent, usually the default. If
      * no value is specified, the entire plist is reset.
-     */
+     * @param null $name
+*/
     public function reset($name = null) {
         if ($name == null) $this->data = array();
         else unset($this->data[$name]);
@@ -80,7 +95,8 @@ class HTMLPurifier_PropertyList
 
     /**
      * Sets the parent plist.
-     */
+     * @param $plist
+*/
     public function setParent($plist) {
         $this->parent = $plist;
     }

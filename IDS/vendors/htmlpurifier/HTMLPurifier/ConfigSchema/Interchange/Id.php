@@ -8,6 +8,11 @@ class HTMLPurifier_ConfigSchema_Interchange_Id
 
     public $key;
 
+    /**
+     * HTMLPurifier_ConfigSchema_Interchange_Id constructor.
+     *
+     * @param $key
+     */
     public function __construct($key) {
         $this->key = $key;
     }
@@ -20,14 +25,25 @@ class HTMLPurifier_ConfigSchema_Interchange_Id
         return $this->key;
     }
 
+    /**
+     * @return bool|string
+     */
     public function getRootNamespace() {
         return substr($this->key, 0, strpos($this->key, "."));
     }
 
+    /**
+     * @return bool|string
+     */
     public function getDirective() {
         return substr($this->key, strpos($this->key, ".") + 1);
     }
 
+    /**
+     * @param $id
+     *
+     * @return \HTMLPurifier_ConfigSchema_Interchange_Id
+     */
     public static function make($id) {
         return new HTMLPurifier_ConfigSchema_Interchange_Id($id);
     }

@@ -14,6 +14,11 @@
 
 namespace kcfinder;
 
+/**
+ * Class minifier
+ *
+ * @package kcfinder
+ */
 class minifier {
 
     protected $config;
@@ -24,6 +29,11 @@ class minifier {
         'css' => "text/css"
     );
 
+    /**
+     * minifier constructor.
+     *
+     * @param null $type
+     */
     public function __construct($type=null) {
         require "conf/config.php";
         $this->config = $_CONFIG;
@@ -34,6 +44,10 @@ class minifier {
             $this->minCmd = $_CONFIG["_{$this->type}MinCmd"];
     }
 
+    /**
+     * @param null $cacheFile
+     * @param null $dir
+     */
     public function minify($cacheFile=null, $dir=null) {
         if ($dir === null)
             $dir = dirname($_SERVER['SCRIPT_FILENAME']);

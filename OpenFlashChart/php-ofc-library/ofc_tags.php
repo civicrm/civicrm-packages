@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class ofc_tags
+ */
 class ofc_tags
 {
 	public function __construct()
@@ -7,8 +10,13 @@ class ofc_tags
 		$this->type      = "tags";
 		$this->values	= array();
 	}
-	
-	public function colour( $colour )
+
+    /**
+     * @param $colour
+     *
+     * @return $this
+     */
+    public function colour( $colour )
 	{
 		$this->colour = $colour;
 		return $this;
@@ -39,77 +47,105 @@ class ofc_tags
 		$this->{"pad-y"} = $y;
 		return $this;
 	}
-	
 
-	public function rotate( $angle )
+    /**
+     * @param $angle
+     */
+    public function rotate( $angle )
 	{
 		$this->rotate = $angle;
-	}	
-	public function align_x_center()
+	}
+
+    /**
+     * @return $this
+     */
+    public function align_x_center()
 	{
 		$this->{"align-x"} = "center";
 		return $this;
 	}
-	
-	public function align_x_left()
+
+    /**
+     * @return $this
+     */
+    public function align_x_left()
 	{
 		$this->{"align-x"} = "left";
 		return $this;
 	}
-	
-	public function align_x_right()
+
+    /**
+     * @return $this
+     */
+    public function align_x_right()
 	{
 		$this->{"align-x"} = "right";
 		return $this;
 	}
-	
-	public function align_y_above()
+
+    /**
+     * @return $this
+     */
+    public function align_y_above()
 	{
 		$this->{"align-y"} = "above";
 		return $this;
 	}
-	
-	public function align_y_below()
+
+    /**
+     * @return $this
+     */
+    public function align_y_below()
 	{
 		$this->{"align-y"} = "below";
 		return $this;
 	}
-	
-	public function align_y_center()
+
+    /**
+     * @return $this
+     */
+    public function align_y_center()
 	{
 		$this->{"align-y"} = "center";
 		return $this;
 	}
-	
-	/**
-	 * This can contain some HTML, e.g:
-	 *  - "More <a href="javascript:alert(12);">info</a>"
-	 *  - "<a href="http://teethgrinder.co.uk">ofc</a>"
-	 */
+
+    /**
+     * This can contain some HTML, e.g:
+     *  - "More <a href="javascript:alert(12);">info</a>"
+     *  - "<a href="http://teethgrinder.co.uk">ofc</a>"
+     *
+     * @param $text
+     *
+     * @return \ofc_tags
+     */
 	public function text($text)
 	{
 		$this->text = $text;
 		return $this;
-	}
-	
-	/**
-	 * This works, but to get the mouse pointer to change
-	 * to a little hand you need to use "<a href="">stuff</a>"-- see text()
-	 */
+  }
+
+    /**
+     * This works, but to get the mouse pointer to change
+     * to a little hand you need to use "<a href="">stuff</a>"-- see text()
+     * @param $on_click
+     * @return \ofc_tags
+*/
 	public function on_click($on_click)
 	{
 		$this->{'on-click'} = $on_click;
 		return $this;
-	}
+  }
 
     /**
      * @param $bold      boolean.
      * @param $underline boolean.
      * @param $border    boolean.
+     * @param $alpha
+     * @return \ofc_tags
      * @prarm $alpha real (0 to 1.0)
      *
-     * @return \ofc_tags
-     */
+*/
 	public function style($bold, $underline, $border, $alpha )
 	{
 		$this->bold = $bold;
@@ -128,9 +164,18 @@ class ofc_tags
 	}
 }
 
+/**
+ * Class ofc_tag
+ */
 class ofc_tag extends ofc_tags
 {
-	public function __construct($x, $y)
+    /**
+     * ofc_tag constructor.
+     *
+     * @param $x
+     * @param $y
+     */
+    public function __construct($x, $y)
 	{
 		$this->x = $x;
 		$this->y = $y;

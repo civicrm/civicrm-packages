@@ -24,6 +24,9 @@
  */
 //namespace Jira\Api;
 
+/**
+ * Class Jira_Api_Client_MemcacheProxyClient
+ */
 class Jira_Api_Client_MemcacheProxyClient implements Jira_Api_Client_ClientInterface
 {
     protected $api;
@@ -31,6 +34,10 @@ class Jira_Api_Client_MemcacheProxyClient implements Jira_Api_Client_ClientInter
 
     /**
      * create a traditional php client
+     *
+     * @param \Jira_Api_Client_ClientInterface $api
+     * @param                                  $server
+     * @param                                  $port
      */
     public function __construct(Jira_Api_Client_ClientInterface $api, $server, $port)
     {
@@ -64,6 +71,13 @@ class Jira_Api_Client_MemcacheProxyClient implements Jira_Api_Client_ClientInter
         return $result;
     }
 
+    /**
+     * @param $url
+     * @param $data
+     * @param $endpoint
+     *
+     * @return mixed
+     */
     protected function getFromCache($url, $data, $endpoint)
     {
         $key = $endpoint . $url;
@@ -73,6 +87,14 @@ class Jira_Api_Client_MemcacheProxyClient implements Jira_Api_Client_ClientInter
         return $this->mc->get("jira:cache:" . $key);
     }
 
+    /**
+     * @param $url
+     * @param $data
+     * @param $endpoint
+     * @param $result
+     *
+     * @return bool
+     */
     protected function setCache($url, $data, $endpoint, $result)
     {
         $key = $endpoint . $url;

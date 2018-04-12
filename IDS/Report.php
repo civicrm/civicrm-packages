@@ -109,7 +109,7 @@ class IDS_Report implements Countable, IteratorAggregate
     /**
      * Adds an IDS_Event object to the report
      *
-     * @param object $event IDS_Event
+     * @param \IDS_Event $event IDS_Event
      *
      * @return object $this
      */

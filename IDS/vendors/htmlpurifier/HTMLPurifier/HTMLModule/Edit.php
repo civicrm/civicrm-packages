@@ -9,6 +9,9 @@ class HTMLPurifier_HTMLModule_Edit extends HTMLPurifier_HTMLModule
 
     public $name = 'Edit';
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
         $contents = 'Chameleon: #PCDATA | Inline ! #PCDATA | Flow';
         $attr = array(
@@ -27,6 +30,12 @@ class HTMLPurifier_HTMLModule_Edit extends HTMLPurifier_HTMLModule
     // separator, see getChildDef for parsing)
 
     public $defines_child_def = true;
+
+    /**
+     * @param \HTMLPurifier_ElementDef $def
+     *
+     * @return bool|\HTMLPurifier_ChildDef_Chameleon
+     */
     public function getChildDef($def) {
         if ($def->content_model_type != 'chameleon') return false;
         $value = explode('!', $def->content_model);

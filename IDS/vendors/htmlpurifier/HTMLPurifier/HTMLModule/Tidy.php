@@ -32,8 +32,11 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
     /**
      * Lazy load constructs the module by determining the necessary
      * fixes to create and then delegating to the populate() function.
+     *
      * @todo Wildcard matching and error reporting when an added or
      *       subtracted fix has no effect.
+     *
+     * @param $config
      */
     public function setup($config) {
 
@@ -68,8 +71,8 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
      * Retrieves all fixes per a level, returning fixes for that specific
      * level as well as all levels below it.
      * @param $level String level identifier, see $levels for valid values
-     * @return Lookup up table of fixes
-     */
+     * @return array up table of fixes
+*/
     public function getFixesForLevel($level) {
         if ($level == $this->levels[0]) {
             return array();
@@ -99,7 +102,8 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
      * Dynamically populates the $fixesForLevel member variable using
      * the fixes array. It may be custom overloaded, used in conjunction
      * with $defaultLevel, or not used at all.
-     */
+     * @param $fixes
+*/
     public function makeFixesForLevel($fixes) {
         if (!isset($this->defaultLevel)) return;
         if (!isset($this->fixesForLevel[$this->defaultLevel])) {
@@ -115,8 +119,8 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
     /**
      * Populates the module with transforms and other special-case code
      * based on a list of fixes passed to it
-     * @param $lookup Lookup table of fixes to activate
-     */
+     * @param $fixes
+*/
     public function populate($fixes) {
         foreach ($fixes as $name => $fix) {
             // determine what the fix is for

@@ -51,6 +51,10 @@ class HTMLPurifier_Bootstrap
 
     /**
      * Returns the path for a specific class.
+     *
+     * @param $class
+     *
+     * @return bool|string
      */
     public static function getPath($class) {
         if (strncmp('HTMLPurifier', $class, 12) !== 0) return false;

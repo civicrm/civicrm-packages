@@ -7,6 +7,10 @@ class HTMLPurifier_HTMLModule_Tidy_Name extends HTMLPurifier_HTMLModule_Tidy
 {
     public $name = 'Tidy_Name';
     public $defaultLevel = 'heavy';
+
+    /**
+     * @return array|void
+     */
     public function makeFixes() {
 
         $r = array();

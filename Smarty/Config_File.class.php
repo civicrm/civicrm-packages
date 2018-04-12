@@ -141,11 +141,11 @@ class Config_File {
         }
     }
 
-
     /**
      * Retrieves config info based on the key.
      *
-     * @param $file_name string config key (filename/section/var)
+     * @param $config_key
+     *
      * @return string|array same as get()
      * @uses get() retrieves information from config file and returns it
      */
@@ -184,12 +184,11 @@ class Config_File {
         return array_keys($this->_config_data[$file_name]["sections"]);
     }
 
-
     /**
      * Get all global or section variable names.
      *
      * @param string $file_name config file to get info for
-     * @param string $section_name (optional) section to get info for
+     * @param null   $section
      * @return array an array of variables names from the specified file/section
      */
     public function get_var_names($file_name, $section = NULL)

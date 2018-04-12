@@ -6,6 +6,13 @@
 class HTMLPurifier_AttrTransform_Name extends HTMLPurifier_AttrTransform
 {
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
         // Abort early if we're using relaxed definition of name
         if ($config->get('HTML.Attr.Name.UseCDATA')) return $attr;

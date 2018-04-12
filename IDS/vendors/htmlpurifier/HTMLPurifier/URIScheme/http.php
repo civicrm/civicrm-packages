@@ -9,6 +9,13 @@ class HTMLPurifier_URIScheme_http extends HTMLPurifier_URIScheme {
     public $browsable = true;
     public $hierarchical = true;
 
+    /**
+     * @param \Reference            $uri
+     * @param \HTMLPurifier_Config  $config
+     * @param \HTMLPurifier_Context $context
+     *
+     * @return bool
+     */
     public function doValidate(&$uri, $config, $context) {
         $uri->userinfo = null;
         return true;

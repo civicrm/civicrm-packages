@@ -24,8 +24,8 @@ class HTMLPurifier_AttrTransform_EnumToCSS extends HTMLPurifier_AttrTransform {
     protected $caseSensitive = false;
 
     /**
-     * @param $attr String attribute name to transform from
-     * @param $enumToCSS Lookup array of attribute values to CSS
+     * @param $attr           String attribute name to transform from
+     * @param $enum_to_css
      * @param $case_sensitive Boolean case sensitivity indicator, default false
      */
     public function __construct($attr, $enum_to_css, $case_sensitive = false) {
@@ -34,6 +34,13 @@ class HTMLPurifier_AttrTransform_EnumToCSS extends HTMLPurifier_AttrTransform {
         $this->caseSensitive = (bool) $case_sensitive;
     }
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
 
         if (!isset($attr[$this->attr])) return $attr;

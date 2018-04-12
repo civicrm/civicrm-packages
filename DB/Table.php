@@ -611,8 +611,7 @@ class DB_Table extends DB_Table_Base
      * @access private
      */
     public $_auto_recast = true;
-    
-    
+
     /**
      * Constructor.
      *
@@ -622,26 +621,25 @@ class DB_Table extends DB_Table_Base
      * or verify that its schema matches that declared in the $col and
      * $idx parameters, depending on the value of the $create parameter.
      *
-     * If there is an error on instantiation, $this->error will be 
+     * If there is an error on instantiation, $this->error will be
      * populated with the PEAR_Error.
-     * 
-     * @param object &$db A PEAR DB/MDB2 object.
-     * 
-     * @param string $table The table name to connect to in the database.
-     * 
-     * @param mixed $create The automatic table creation mode to pursue:
-     * - boolean false to not attempt creation
-     * - 'safe' to create the table only if it does not exist
-     * - 'drop' to drop any existing table with the same name and re-create it
-     * - 'verify' to check whether the table exists, whether all the columns
-     *   exist, whether the columns have the right type, and whether the indexes
-     *   exist and have the right type
-     * - 'alter' does the same as 'safe' if the table does not exist; if it
-     *   exists, a verification for columns existence, the column types, the
-     *   indexes existence, and the indexes types will be performed and the
-     *   table schema will be modified if needed
-     * 
-     * @return object DB_Table
+     *
+     * @param object &$db    A PEAR DB/MDB2 object.
+     *
+     * @param string $table  The table name to connect to in the database.
+     *
+     * @param mixed  $create The automatic table creation mode to pursue:
+     *                       - boolean false to not attempt creation
+     *                       - 'safe' to create the table only if it does not exist
+     *                       - 'drop' to drop any existing table with the same name and re-create it
+     *                       - 'verify' to check whether the table exists, whether all the columns
+     *                       exist, whether the columns have the right type, and whether the indexes
+     *                       exist and have the right type
+     *                       - 'alter' does the same as 'safe' if the table does not exist; if it
+     *                       exists, a verification for columns existence, the column types, the
+     *                       indexes existence, and the indexes types will be performed and the
+     *                       table schema will be modified if needed
+     *
      * @access public
      */
     public function __construct(&$db, $table = null, $create = false)
@@ -2149,18 +2147,19 @@ class DB_Table extends DB_Table_Base
     /**
      * Creates and returns an array of QuickForm elements based on a DB_Table
      * column name.
-     * 
+     *
      * @author Ian Eure <ieure@php.net>
-     * 
-     * @param array $cols        Array of DB_Table column names
+     *
+     * @param array  $cols       Array of DB_Table column names
      * @param string $array_name The name to use for the generated QuickForm
      *                           elements.
-     * @return object HTML_QuickForm_Element
-     * 
+     *
+     * @return array HTML_QuickForm_Element
+     *
      * @access public
-     * 
-     * @see HTML_QuickForm
-     * @see DB_Table_QuickForm
+     *
+     * @see    HTML_QuickForm
+     * @see    DB_Table_QuickForm
      */
     public function &getFormElements($cols, $array_name = null)
     {

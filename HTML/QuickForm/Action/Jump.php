@@ -130,6 +130,10 @@ class HTML_QuickForm_Action_Jump extends HTML_QuickForm_Action
         }
     }
 
+    /**
+     * @param $page
+     * @param $actionName
+     */
     public function perform(&$page, $actionName)
     {
         // check whether the page is valid before trying to go to it

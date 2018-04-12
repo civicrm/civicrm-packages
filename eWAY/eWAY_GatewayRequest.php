@@ -345,15 +345,19 @@ class GatewayRequest
       
       return $xml;
    }
-   
-   
-   /********************************************************
-   * Builds a simple XML Node
-   *
-   * 'NodeName' is the anem of the node being created.
-   * 'NodeValue' is its value
-   *
-   ********************************************************/
+
+    /********************************************************
+     * Builds a simple XML Node
+     *
+     * 'NodeName' is the anem of the node being created.
+     * 'NodeValue' is its value
+     *
+     *******************************************************
+     * @param $NodeName
+     * @param $NodeValue
+     *
+     * @return string
+     */
    public function CreateNode($NodeName, $NodeValue)
    {
     require_once 'XML/Util.php';

@@ -13,6 +13,11 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
      */
     protected $info;
 
+    /**
+     * HTMLPurifier_AttrDef_CSS_Background constructor.
+     *
+     * @param $config
+     */
     public function __construct($config) {
         $def = $config->getCSSDefinition();
         $this->info['background-color'] = $def->info['background-color'];
@@ -22,6 +27,13 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
         $this->info['background-position'] = $def->info['background-position'];
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string
+     */
     public function validate($string, $config, $context) {
 
         // regular pre-processing

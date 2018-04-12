@@ -106,7 +106,11 @@ class HTML_QuickForm_Rule_Callback extends HTML_QuickForm_Rule
         $this->_BCMode[$name] = $BCMode;
     } // end func addData
 
-
+    /**
+     * @param null $options
+     *
+     * @return array
+     */
     public function getValidationScript($options = null)
     {
         if (isset($this->_data[$this->name])) {

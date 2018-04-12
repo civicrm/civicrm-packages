@@ -8,6 +8,13 @@ class HTMLPurifier_URIScheme_nntp extends HTMLPurifier_URIScheme {
     public $default_port = 119;
     public $browsable = false;
 
+    /**
+     * @param \Reference            $uri
+     * @param \HTMLPurifier_Config  $config
+     * @param \HTMLPurifier_Context $context
+     *
+     * @return bool
+     */
     public function doValidate(&$uri, $config, $context) {
         $uri->userinfo = null;
         $uri->query    = null;

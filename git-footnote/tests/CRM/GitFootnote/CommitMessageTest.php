@@ -1,6 +1,11 @@
 <?php
 namespace CRM\GitFootnote;
 
+/**
+ * Class CommitMessageTest
+ *
+ * @package CRM\GitFootnote
+ */
 class CommitMessageTest extends \PHPUnit_Framework_TestCase {
   function testEmpty() {
     $message = new CommitMessage("");

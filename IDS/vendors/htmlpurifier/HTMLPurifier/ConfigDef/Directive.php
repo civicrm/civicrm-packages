@@ -8,7 +8,15 @@ class HTMLPurifier_ConfigDef_Directive extends HTMLPurifier_ConfigDef
 {
     
     public $class = 'directive';
-    
+
+    /**
+     * HTMLPurifier_ConfigDef_Directive constructor.
+     *
+     * @param null $type
+     * @param null $allow_null
+     * @param null $allowed
+     * @param null $aliases
+     */
     public function __construct(
         $type = null,
         $allow_null = null,

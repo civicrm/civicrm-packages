@@ -1,31 +1,52 @@
 <?php
 
+/**
+ * Class scatter_line
+ */
 class scatter_line
 {
-	public function __construct( $colour, $width  )
+    /**
+     * scatter_line constructor.
+     *
+     * @param $colour
+     * @param $width
+     */
+    public function __construct( $colour, $width  )
 	{
 		$this->type      = "scatter_line";
 		$this->set_colour( $colour );
 		$this->set_width( $width );
 	}
-	
-	public function set_default_dot_style( $style )
+
+    /**
+     * @param $style
+     */
+    public function set_default_dot_style( $style )
 	{
 		$tmp = 'dot-style';
 		$this->$tmp = $style;	
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	public function set_width( $width )
+
+    /**
+     * @param $width
+     */
+    public function set_width( $width )
 	{
 		$this->width = $width;
 	}
-	
-	public function set_values( $values )
+
+    /**
+     * @param $values
+     */
+    public function set_values( $values )
 	{
 		$this->values = $values;
 	}
@@ -39,8 +60,12 @@ class scatter_line
 	{
 		$this->stepgraph = 'vertical';
 	}
-	
-	public function set_key( $text, $font_size )
+
+    /**
+     * @param $text
+     * @param $font_size
+     */
+    public function set_key( $text, $font_size )
 	{
 		$this->text      = $text;
 		$tmp = 'font-size';

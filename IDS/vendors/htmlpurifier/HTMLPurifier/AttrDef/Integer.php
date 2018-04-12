@@ -38,6 +38,13 @@ class HTMLPurifier_AttrDef_Integer extends HTMLPurifier_AttrDef
         $this->positive = $positive;
     }
 
+    /**
+     * @param String     $integer
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|mixed|string
+     */
     public function validate($integer, $config, $context) {
 
         $integer = $this->parseCDATA($integer);

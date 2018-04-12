@@ -608,18 +608,17 @@ class DB_Table_Database extends DB_Table_Base
     // {{{ Methods
 
     // {{{ function DB_Table_Database(&$db, $name)
-
     /**
      * Constructor
      *
      * If an error is encountered during instantiation, the error
      * message is stored in the $this->error property of the resulting
      * object. See $error property docblock for a discussion of error
-     * handling. 
-     * 
-     * @param  object &$db   DB/MDB2 database connection object
+     * handling.
+     *
+     * @param  object &$db  DB/MDB2 database connection object
      * @param  string $name the database name
-     * @return object DB_Table_Database
+     *
      * @access public
      */
     public function __construct(&$db, $name)
@@ -1796,11 +1795,10 @@ class DB_Table_Database extends DB_Table_Base
 
     // }}}
     // {{{ function addLink($table1, $table2, $link)
- 
     /**
      * Identifies a linking/association table that links two others
      *
-     * Adds table name $link to $this->_link[$table1][$table2] and 
+     * Adds table name $link to $this->_link[$table1][$table2] and
      * to $this->_link[$table2][$table1].
      *
      * Returns true on success, and PEAR error on failure. Returns the
@@ -1811,9 +1809,9 @@ class DB_Table_Database extends DB_Table_Base
      * @param  string $table1 name of 1st linked table
      * @param  string $table2 name of 2nd linked table
      * @param  string $link   name of linking/association table.
-     * @return boolean true on success (PEAR_Error on failure)
+     * @return object true on success (PEAR_Error on failure)
      * @access public
-     */
+*/
     public function addLink($table1, $table2, $link)
     {
 
@@ -2684,24 +2682,23 @@ class DB_Table_Database extends DB_Table_Base
 
     // }}}
     // {{{ function _replaceKeys($data, $keys) 
-
     /**
-     * Returns array in which keys of associative array $data are replaced 
+     * Returns array in which keys of associative array $data are replaced
      * by values of sequential array $keys.
      *
-     * This function is used by the onDeleteAction() and onUpdateAction() 
-     * methods to restore the case of column names in associative arrays 
-     * that are returned from an automatically generated query "SELECT * 
-     * FROM $table WHERE ...", when these column name keys are returned 
-     * with a fixed case. In this usage, $keys is a sequential array of 
-     * the names of all columns in $table. 
+     * This function is used by the onDeleteAction() and onUpdateAction()
+     * methods to restore the case of column names in associative arrays
+     * that are returned from an automatically generated query "SELECT *
+     * FROM $table WHERE ...", when these column name keys are returned
+     * with a fixed case. In this usage, $keys is a sequential array of
+     * the names of all columns in $table.
      *
      * @param  array $data associative array
-     * @param  array $key  numerical array of replacement key names
-     * @return array associative array in which keys of $data have been 
-     *               replaced by the values of array $keys.
+     * @param        $keys
+     * @return array associative array in which keys of $data have been
+     *                     replaced by the values of array $keys.
      * @access private
-     */
+*/
     public function _replaceKeys($data, $keys)
     {
         $new_data = array();
@@ -3001,36 +2998,35 @@ class DB_Table_Database extends DB_Table_Base
 
     // }}}
     // {{{ function _buildFKeyFilter($data, $data_key = null, $filt_key = null, $match = 'simple')
-
     /**
-     * Returns WHERE clause equating values of $data array to database column 
+     * Returns WHERE clause equating values of $data array to database column
      * values
      *
-     * Usage: The function is designed to return an SQL logical 
+     * Usage: The function is designed to return an SQL logical
      * expression that equates the values of a set of foreign key columns in
      * associative array $data, which is a row to be inserted or updated in
-     * one table, to the values of the corresponding columns of a referenced 
+     * one table, to the values of the corresponding columns of a referenced
      * table. In this usage, $data_key is the foreign key (a column name or
      * numerical array of column names), and $filt_key is the corresponding
-     * referenced key. 
-     * 
-     * Parameters: Parameter $data is an associative array containing data to 
+     * referenced key.
+     *
+     * Parameters: Parameter $data is an associative array containing data to
      * be inserted into or used to update one row of a database table, in which
      * array keys are column names. When present, $data_key contains either
      * the name of a single array key of interest, or a numerical array of such
-     * keys. These are usually the names of the columns of a foreign key in 
-     * that table. When, $data_key is null or absent, it is taken to be equal 
+     * keys. These are usually the names of the columns of a foreign key in
+     * that table. When, $data_key is null or absent, it is taken to be equal
      * to an array containing all of the keys of $data. When present, $filt_key
-     * contains either a string or a numerical array of strings that are 
+     * contains either a string or a numerical array of strings that are
      * aliases for the keys in $data_key.  These are usually the names of the
-     * corresponding columns in the referenced table. When $filt_key is null 
-     * or absent, it is equated with $data_key internally.  The function 
-     * returns an SQL logical expression that equates the values in $data 
-     * whose keys are specified by $data_key, to the values of database 
-     * columns whose names are specified in $filt_key. 
+     * corresponding columns in the referenced table. When $filt_key is null
+     * or absent, it is equated with $data_key internally.  The function
+     * returns an SQL logical expression that equates the values in $data
+     * whose keys are specified by $data_key, to the values of database
+     * columns whose names are specified in $filt_key.
      *
-     * General case: _buildFKeyFilter returns a SQL logical expression that 
-     * equates the values of $data whose keys are given in $data_key with the 
+     * General case: _buildFKeyFilter returns a SQL logical expression that
+     * equates the values of $data whose keys are given in $data_key with the
      * values of database columns with names given in $filt_key. For example,
      * if
      * <code>
@@ -3040,23 +3036,23 @@ class DB_Table_Database extends DB_Table_Base
      * </code>
      * then buildFilter($data, $data_key, $filt_key) returns a string
      * <code>
-     *    "c2 = $v2 AND c5 = $v5 AND c7 = $v7" 
+     *    "c2 = $v2 AND c5 = $v5 AND c7 = $v7"
      * </code>
-     * in which the values $v2, $v5, $v7 are replaced by properly quoted 
-     * SQL literal values. If, in the above example, $data_key = 'k5' 
+     * in which the values $v2, $v5, $v7 are replaced by properly quoted
+     * SQL literal values. If, in the above example, $data_key = 'k5'
      * and $filt_key = 'c5', then the function will return
      * <code>
-     *    "c5 = $v5" 
+     *    "c5 = $v5"
      * </code>
-     * where (again) $v5 is replaced by an SQL literal. 
+     * where (again) $v5 is replaced by an SQL literal.
      *
-     * Simple case: If parameters $data_key and $filt_key are null, the 
-     * behavior is the same as that of the DB_Table_Base::buildFilter() method. 
+     * Simple case: If parameters $data_key and $filt_key are null, the
+     * behavior is the same as that of the DB_Table_Base::buildFilter() method.
      * For example, if
      * <code>
      *     $data = array( 'c1' => $v1, 'c2' => $v2, 'c3' => $v3)
      * </code>
-     * then _buildFKeyFilter($data) returns a string 
+     * then _buildFKeyFilter($data) returns a string
      * <code>
      *     "c1 => $val1 AND c2 => $val2 AND c3 = $v3"
      * </code>
@@ -3064,30 +3060,30 @@ class DB_Table_Database extends DB_Table_Base
      * quoted and escaped as appropriate for each data type and the backend.
      *
      * Quoting is done by the DB_Table_Database::quote() method, based on
-     * the php type of the values in $array.  The treatment of null values 
+     * the php type of the values in $array.  The treatment of null values
      * in $data depends upon the value of the $match parameter.
      *
-     * Null values: The treatment to null values in $data depends upon 
+     * Null values: The treatment to null values in $data depends upon
      * the value of the $match parameter . If $match == 'simple', an empty
      * string is returned if any $value of $data with a key in $data_key
-     * is null. If $match == 'partial', the returned SQL expression 
+     * is null. If $match == 'partial', the returned SQL expression
      * equates only the relevant non-null values of $data to the values of
      * corresponding database columns. If $match == 'full', the function
      * returns an empty string if all of the relevant values of data are
      * null, and returns a PEAR_Error if some of the selected values are
      * null and others are not null.
      *
-     * @param array $data     associative array, keys are column names
-     * @param mixed $data_key string or numerical array of strings, in which
-     *                        values are a set of keys of interest in $data
-     * @param mixed $data_key string or numerical array of strings, in which
-     *                        values are names of a corresponding set of
-     *                        database column names.
+     * @param array  $data     associative array, keys are column names
+     * @param mixed  $data_key string or numerical array of strings, in which
+     *                         values are names of a corresponding set of
+     *                         database column names.
+     * @param null   $filt_key
+     * @param string $match
      * @return string SQL expression equating values in $data, for which keys
-     *                also appear in $data_key, to values of corresponding 
-     *                database columns named in $filt_key.
+     *                         also appear in $data_key, to values of corresponding
+     *                         database columns named in $filt_key.
      * @access private
-     */
+*/
     public function _buildFKeyFilter($data, $data_key = null, $filt_key = null,
                               $match = 'simple')
     {
@@ -3291,25 +3287,21 @@ class DB_Table_Database extends DB_Table_Base
 
     // }}}
     // {{{ function fromXML($xml_string, $conn)
-
     /**
      * Returns a DB_Table_Database object constructed from an XML string
      *
      * Uses the MDB2 XML schema for a database element, including a new
-     * syntax for foreign key indices. 
+     * syntax for foreign key indices.
      *
      * NOTE: This function requires PHP 5. It throws an error if used
-     * with PHP 4. 
+     * with PHP 4.
      *
-     * @param  string XML string representation
+     * @param $xml_string
+     * @param $conn
      * @return object DB_Table_Database object on success (PEAR_Error on failure)
      *
-     * @throws PEAR_Error if:
-     *    - PHP version is not >= 5.0.0 (...DATABASE_ERR_PHP_VERSION )
-     *    - Parsing by simpleXML fails (...DATABASE_ERR_XML_PARSE )
-     *
      * @access public
-     */
+*/
     public function fromXML($xml_string, $conn)
     {
         // Check PHP version. Throw error if not >= PHP 5.0.0

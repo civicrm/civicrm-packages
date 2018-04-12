@@ -86,12 +86,27 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
         "ws" => "ws"
     );
     protected $sDescription = 'Filter the code in 4 different indent styles: K&R, Allman, Whitesmiths and GNU';
-    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array()) 
+
+    /**
+     * PHP_Beautifier_Filter_IndentStyles constructor.
+     *
+     * @param \PHP_Beautifier $oBeaut
+     * @param array           $aSettings
+     */
+    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array())
     {
         parent::__construct($oBeaut, $aSettings);
         $this->addSettingDefinition('style', 'text', 'Style for indent: K&R, Allman, Whitesmiths, GNU');
     }
-    public function __call($sMethod, $aArgs) 
+
+    /**
+     * @param $sMethod
+     * @param $aArgs
+     *
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function __call($sMethod, $aArgs)
     {
         if (strtolower($this->getSetting('style')) == 'k&r') {
             return PHP_Beautifier_Filter::BYPASS;

@@ -123,14 +123,16 @@ class Structures_Graph_Node {
 
     /* setData {{{ */
     /**
-    *
-    * Node data setter
-    *
-    * Each graph node can contain a reference to one variable. This is the setter for that reference.
-    *
-    * @return	mixed	Data to store in node
-    * @access	public
-    */
+     *
+     * Node data setter
+     *
+     * Each graph node can contain a reference to one variable. This is the setter for that reference.
+     *
+     * @param $data
+     *
+     * @return  mixed  Data to store in node
+     * @access  public
+     */
     public function setData($data) {
         $this->_data =& $data;
     }
@@ -219,7 +221,9 @@ class Structures_Graph_Node {
     /* }}} */
 
     /* _connectTo {{{ */
-    /** @access private */
+    /** @access private
+     * @param $destinationNode
+     */
     public function _connectTo(&$destinationNode) {
         $this->_arcs[] =& $destinationNode;
     }
@@ -267,12 +271,13 @@ class Structures_Graph_Node {
 
     /* connectsTo {{{ */
     /**
-    *
-    * Test wether this node has an arc to the target node
-    *
-    * @return	boolean   True if the two nodes are connected
-    * @access	public
-    */
+     *
+     * Test wether this node has an arc to the target node
+     *
+     * @param $target
+     * @return  boolean   True if the two nodes are connected
+     * @access  public
+     */
     public function connectsTo(&$target) {
         $copy = $target;
         $arcKeys = array_keys($this->_arcs);

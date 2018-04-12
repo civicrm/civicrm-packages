@@ -78,13 +78,11 @@ class Date_Human
      * Returns an associative array containing the converted date information
      * in 'Human Calendar' format.
      *
-     * @param int day in DD format, default current local day
-     * @param int month in MM format, default current local month
-     * @param int year in CCYY format, default to current local year
+     * @param int $day
+     * @param int $month
+     * @param int $year
      *
-     * @access public
-     *
-     * @return associative array(
+     * @return array array(
      *               hdom,       // Human Day Of Month, starting at 1
      *               hdow,       // Human Day Of Week, starting at 1
      *               hwom,       // Human Week of Month, starting at 1
@@ -100,6 +98,8 @@ class Date_Human
      * "hmoy" => -1
      *  Since 0 is a valid month number under the Human Calendar, I have left
      *  the month as -1 for New Years Day.
+     * @access public
+     *
      */
     public function gregorianToHuman($day=0, $month=0, $year=0)
     {

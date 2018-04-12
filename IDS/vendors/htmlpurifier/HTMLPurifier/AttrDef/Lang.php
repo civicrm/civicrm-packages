@@ -7,6 +7,13 @@
 class HTMLPurifier_AttrDef_Lang extends HTMLPurifier_AttrDef
 {
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string
+     */
     public function validate($string, $config, $context) {
 
         $string = trim($string);

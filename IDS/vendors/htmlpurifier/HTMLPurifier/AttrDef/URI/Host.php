@@ -21,6 +21,13 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
         $this->ipv6 = new HTMLPurifier_AttrDef_URI_IPv6();
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|String
+     */
     public function validate($string, $config, $context) {
         $length = strlen($string);
         // empty hostname is OK; it's usually semantically equivalent:

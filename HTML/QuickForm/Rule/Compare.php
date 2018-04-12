@@ -77,7 +77,12 @@ class HTML_QuickForm_Rule_Compare extends HTML_QuickForm_Rule
         }
     }
 
-
+    /**
+     * @param      $values
+     * @param null $operator
+     *
+     * @return bool
+     */
     public function validate($values, $operator = null)
     {
         $operator = $this->_findOperator($operator);
@@ -90,7 +95,11 @@ class HTML_QuickForm_Rule_Compare extends HTML_QuickForm_Rule
         return $compareFn($values[0], $values[1]);
     }
 
-
+    /**
+     * @param null $operator
+     *
+     * @return array
+     */
     public function getValidationScript($operator = null)
     {
         $operator = $this->_findOperator($operator);

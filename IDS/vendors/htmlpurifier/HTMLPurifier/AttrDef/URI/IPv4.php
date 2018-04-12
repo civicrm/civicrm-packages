@@ -12,6 +12,13 @@ class HTMLPurifier_AttrDef_URI_IPv4 extends HTMLPurifier_AttrDef
      */
     protected $ip4;
 
+    /**
+     * @param $aIP
+     * @param $config
+     * @param $context
+     *
+     * @return bool|String
+     */
     public function validate($aIP, $config, $context) {
 
         if (!$this->ip4) $this->_loadRegex();

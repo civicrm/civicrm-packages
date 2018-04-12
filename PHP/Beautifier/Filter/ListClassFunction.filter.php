@@ -63,12 +63,25 @@ class PHP_Beautifier_Filter_ListClassFunction extends PHP_Beautifier_Filter
         'functions' => true,
         'classes' => true
     );
-    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array()) 
+
+    /**
+     * PHP_Beautifier_Filter_ListClassFunction constructor.
+     *
+     * @param \PHP_Beautifier $oBeaut
+     * @param array           $aSettings
+     */
+    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array())
     {
         parent::__construct($oBeaut, $aSettings);
         $this->addSettingDefinition('list_functions', 'bool', 'List Functions inside the file');
         $this->addSettingDefinition('list_classes', 'bool', 'List Classes inside the file');
     }
+
+    /**
+     * @param $sTag
+     *
+     * @return string
+     */
     public function t_function($sTag)
     {
         if ($this->aInclude['functions']) {
@@ -80,10 +93,21 @@ class PHP_Beautifier_Filter_ListClassFunction extends PHP_Beautifier_Filter
         }
         return PHP_Beautifier_Filter::BYPASS;
     }
+
+    /**
+     * @param $sTag
+     * @param $sValue
+     */
     public function includeInList($sTag, $sValue)
     {
         $this->aInclude[$sTag] = $sValue;
     }
+
+    /**
+     * @param $sTag
+     *
+     * @return string
+     */
     public function t_class($sTag)
     {
         if ($this->aInclude['classes']) {
@@ -95,6 +119,12 @@ class PHP_Beautifier_Filter_ListClassFunction extends PHP_Beautifier_Filter
         }
         return PHP_Beautifier_Filter::BYPASS;
     }
+
+    /**
+     * @param $sTag
+     *
+     * @return string
+     */
     public function t_doc_comment($sTag)
     {
         if (strpos($sTag, 'Class and Function List') !== FALSE) {
@@ -102,6 +132,12 @@ class PHP_Beautifier_Filter_ListClassFunction extends PHP_Beautifier_Filter
         }
         return PHP_Beautifier_Filter::BYPASS;
     }
+
+    /**
+     * @param $sTag
+     *
+     * @return string
+     */
     public function t_open_tag($sTag)
     {
         if (null === $this->iOpenTag) {

@@ -22,17 +22,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  */
 
+/**
+ * Class Jira_Api_Authentication_Basic
+ */
 class Jira_Api_Authentication_Basic implements Jira_Api_Authentication_AuthenticationInterface
 {
     private $user_id;
     private $password;
 
+    /**
+     * Jira_Api_Authentication_Basic constructor.
+     *
+     * @param $user_id
+     * @param $password
+     */
     public function __construct($user_id, $password)
     {
         $this->user_id  = $user_id;
         $this->password = $password;
     }
 
+    /**
+     * @return string
+     */
     public function getCredential()
     {
         return base64_encode($this->user_id . ':' . $this->password);

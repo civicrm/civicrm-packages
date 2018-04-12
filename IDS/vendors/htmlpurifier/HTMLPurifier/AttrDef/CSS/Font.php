@@ -16,6 +16,11 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
      */
     protected $info = array();
 
+    /**
+     * HTMLPurifier_AttrDef_CSS_Font constructor.
+     *
+     * @param $config
+     */
     public function __construct($config) {
         $def = $config->getCSSDefinition();
         $this->info['font-style']   = $def->info['font-style'];
@@ -26,6 +31,13 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
         $this->info['font-family']  = $def->info['font-family'];
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string
+     */
     public function validate($string, $config, $context) {
 
         static $system_fonts = array(

@@ -4,11 +4,11 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * load a resource plugin
  *
- * @param string $type
+ * @param $params
+ * @param $smarty
  */
 
 // $type

@@ -201,16 +201,16 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
 
     // }}}
     // {{{ onQuickFormEvent()
-
     /**
      * Called by HTML_QuickForm whenever form event is made on this element
      *
-     * @param     string    $event  Name of event
-     * @param     mixed     $arg    event arguments
-     * @param     object    &$caller calling object
+     * @param     string $event   Name of event
+     * @param     mixed  $arg     event arguments
+     * @param     object &$caller calling object
+     *
+     * @return bool
      * @since     1.0
      * @access    public
-     * @return    void
      */
     public function onQuickFormEvent($event, $arg, &$caller)
     {
@@ -248,10 +248,12 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
 
     // }}}
     // {{{ exportValue()
-
-   /**
-    * Returns the value attribute if the radio is checked, null if it is not
-    */
+    /**
+     * Returns the value attribute if the radio is checked, null if it is not
+     * @param      $submitValues
+     * @param bool $assoc
+     * @return mixed
+     */
     public function exportValue(&$submitValues, $assoc = false)
     {
         $value = $this->_findValue($submitValues);

@@ -222,11 +222,11 @@ class PEAR_ErrorStack {
     /**
      * Set up a new error stack
      *
-     * @param string   $package name of the package this error stack represents
-     * @param callback $msgCallback callback used for error message generation
-     * @param callback $contextCallback callback used for context generation,
-     *                 defaults to {@link getFileLine()}
-     * @param boolean  $throwPEAR_Error
+     * @param string  $package         name of the package this error stack represents
+     * @param bool    $msgCallback     callback used for error message generation
+     * @param bool    $contextCallback callback used for context generation,
+     *                                 defaults to {@link getFileLine()}
+     * @param boolean $throwPEAR_Error
      */
     public function __construct($package, $msgCallback = false, $contextCallback = false,
                          $throwPEAR_Error = false)
@@ -236,18 +236,19 @@ class PEAR_ErrorStack {
         $this->setContextCallback($contextCallback);
         $this->_compat = $throwPEAR_Error;
     }
-    
+
     /**
      * Return a single error stack for this package.
-     * 
+     *
      * Note that all parameters are ignored if the stack for package $package
      * has already been instantiated
-     * @param string   $package name of the package this error stack represents
-     * @param callback $msgCallback callback used for error message generation
-     * @param callback $contextCallback callback used for context generation,
-     *                 defaults to {@link getFileLine()}
-     * @param boolean  $throwPEAR_Error
-     * @param string   $stackClass class to instantiate
+     *
+     * @param string  $package         name of the package this error stack represents
+     * @param bool    $msgCallback     callback used for error message generation
+     * @param bool    $contextCallback callback used for context generation,
+     *                                 defaults to {@link getFileLine()}
+     * @param boolean $throwPEAR_Error
+     * @param string  $stackClass      class to instantiate
      *
      * @return PEAR_ErrorStack
      */
@@ -275,9 +276,10 @@ class PEAR_ErrorStack {
 
     /**
      * Internal error handler for PEAR_ErrorStack class
-     * 
+     *
      * Dies if the error is an exception (and would have died anyway)
      * @access private
+     * @param $err
      */
     public function _handleError($err)
     {
@@ -348,14 +350,15 @@ class PEAR_ErrorStack {
     {
         return $this->_msgCallback;
     }
-    
+
     /**
      * Sets a default callback to be used by all error stacks
-     * 
+     *
      * This method sets the callback that can be used to generate error
      * messages for a singleton
-     * @param array|string Callback function/method
-     * @param string Package name, or false for all packages
+     *
+     * @param bool $callback
+     * @param bool $package
      */
     public static function setDefaultCallback($callback = false, $package = false)
     {
@@ -451,33 +454,35 @@ class PEAR_ErrorStack {
         }
         return $ret;
     }
-    
+
     /**
      * Add an error to the stack
-     * 
+     *
      * If the message generator exists, it is called with 2 parameters.
      *  - the current Error Stack object
      *  - an array that is in the same format as an error.  Available indices
      *    are 'code', 'package', 'time', 'params', 'level', and 'context'
-     * 
+     *
      * Next, if the error should contain context information, this is
      * handled by the context grabbing method.
      * Finally, the error is pushed onto the proper error stack
+     *
      * @param int    $code      Package-specific error code
      * @param string $level     Error level.  This is NOT spell-checked
      * @param array  $params    associative array of error parameters
-     * @param string $msg       Error message, or a portion of it if the message
+     * @param bool   $msg       Error message, or a portion of it if the message
      *                          is to be generated
-     * @param array  $repackage If this error re-packages an error pushed by
+     * @param bool   $repackage If this error re-packages an error pushed by
      *                          another package, place the array returned from
      *                          {@link pop()} in this parameter
-     * @param array  $backtrace Protected parameter: use this to pass in the
+     * @param bool   $backtrace Protected parameter: use this to pass in the
      *                          {@link debug_backtrace()} that should be used
      *                          to find error context
+     *
      * @return PEAR_Error|array if compatibility mode is on, a PEAR_Error is also
      * thrown.  If a PEAR_Error is returned, the userinfo
      * property is set to the following array:
-     * 
+     *
      * <code>
      * array(
      *    'code' => $code,
@@ -490,7 +495,7 @@ class PEAR_ErrorStack {
      * //['repackage' => $err] repackaged error array/Exception class
      * );
      * </code>
-     * 
+     *
      * Normally, the previous array is returned.
      */
     public function push($code, $level = 'error', $params = array(), $msg = false,

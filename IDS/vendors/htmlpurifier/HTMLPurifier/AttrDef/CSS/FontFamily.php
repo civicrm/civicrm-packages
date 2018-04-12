@@ -39,6 +39,13 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
         // possible optimization: invert the mask.
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string
+     */
     public function validate($string, $config, $context) {
         static $generic_names = array(
             'serif' => true,

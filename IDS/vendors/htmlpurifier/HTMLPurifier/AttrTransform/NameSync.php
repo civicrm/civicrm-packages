@@ -12,6 +12,13 @@ class HTMLPurifier_AttrTransform_NameSync extends HTMLPurifier_AttrTransform
         $this->idDef = new HTMLPurifier_AttrDef_HTML_ID();
     }
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
         if (!isset($attr['name'])) return $attr;
         $name = $attr['name'];

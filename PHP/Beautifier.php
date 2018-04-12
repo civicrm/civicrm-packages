@@ -421,6 +421,12 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
     {
         return $this->aFilterDirs;
     }
+
+    /**
+     * @param \PHP_Beautifier_Filter $oFilter
+     *
+     * @return bool
+     */
     private function addFilterObject(PHP_Beautifier_Filter $oFilter)
     {
         array_unshift($this->aFilters, $oFilter);
@@ -550,22 +556,37 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
         sort($aFilterFiles);
         return $aFilterFiles;
     }
+
     /**
      * Receive a path to a filter and replace it with the name of filter
+     *
+     * @param $sFile
      */
     private function getFilterList_FilterName(&$sFile)
     {
         preg_match("/\/([^\/]*?)\.filter\.php/", $sFile, $aMatch);
         $sFile = $aMatch[1];
     }
+
+    /**
+     * @return string
+     */
     public function getIndentChar()
     {
         return $this->sIndentChar;
     }
+
+    /**
+     * @return int
+     */
     public function getIndentNumber()
     {
         return $this->iIndentNumber;
     }
+
+    /**
+     * @return string
+     */
     public function getNewLine()
     {
         return $this->sNewLine;
@@ -1041,6 +1062,7 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
     {
         echo $this->get();
     }
+
     /**
      * Activate or deactivate this ominous hack
      * If you need to maintain some special whitespace
@@ -1049,6 +1071,7 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
      * in {@link get()}, this text will be erased.
      * @see removeWhitespace()
      * @see PHP_Beautifier_Filter_NewLines
+     * @param bool $bFlag
      */
     public function setNoDeletePreviousSpaceHack($bFlag = true)
     {
@@ -1274,9 +1297,11 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
             }
         }
     }
+
     /**
      * Return true if any of the constant defined is param 1 is the previous 'x' constant
-     * @param    mixed int (constant) or array of constants
+     * @param     $mValue
+     * @param int $iPrev
      * @return   bool
      */
     public function isPreviousTokenConstant($mValue, $iPrev = 1)
@@ -1289,9 +1314,11 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
         $iPrevious = $this->getPreviousTokenConstant($iPrev);
         return in_array($iPrevious, $mValue);
     }
+
     /**
      * Return true if any of the content defined is param 1 is the previous 'x' content
-     * @param    mixed string (content) or array of contents
+     * @param     $mValue
+     * @param int $iPrev
      * @return   bool
      */
     public function isPreviousTokenContent($mValue, $iPrev = 1)
@@ -1304,9 +1331,11 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
         $iPrevious = $this->getPreviousTokenContent($iPrev);
         return in_array($iPrevious, $mValue);
     }
+
     /**
      * Return true if any of the constant defined in param 1 is the next 'x' content
-     * @param    mixed int (constant) or array of constants
+     * @param     $mValue
+     * @param int $iPrev
      * @return   bool
      */
     public function isNextTokenConstant($mValue, $iPrev = 1)
@@ -1319,9 +1348,11 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
         $iNext = $this->getNextTokenConstant($iPrev);
         return in_array($iNext, $mValue);
     }
+
     /**
      * Return true if any of the content defined is param 1 is the next 'x' content
-     * @param    mixed string (content) or array of contents
+     * @param     $mValue
+     * @param int $iPrev
      * @return   bool
      */
     public function isNextTokenContent($mValue, $iPrev = 1)
@@ -1354,6 +1385,12 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
         $mToken = $this->getPreviousToken($iPrev);
         return is_string($mToken) ? $mToken : $mToken[1];
     }
+
+    /**
+     * @param int $iPrev
+     *
+     * @return mixed
+     */
     public function getNextTokenNonCommentConstant($iPrev = 1)
     {
         do {
@@ -1461,6 +1498,10 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
 
         return $this->aTokens[$iIndex];
     }
+
+    /**
+     * @return bool
+     */
     public function openBraceDontProcess() {
         return $this->isPreviousTokenConstant(T_VARIABLE) or $this->isPreviousTokenConstant(T_OBJECT_OPERATOR) or ($this->isPreviousTokenConstant(T_STRING) and $this->getPreviousTokenConstant(2) == T_OBJECT_OPERATOR) or $this->getMode('double_quote');
     }

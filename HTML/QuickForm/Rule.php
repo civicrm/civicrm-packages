@@ -44,12 +44,16 @@ class HTML_QuickForm_Rule
     */
     public $name;
 
-   /**
-    * Validates a value
-    * 
-    * @access public
-    * @abstract
-    */
+    /**
+     * Validates a value
+     *
+     * @access public
+     * @abstract
+     *
+     * @param $value
+     *
+     * @return bool
+     */
     public function validate($value)
     {
         return true;

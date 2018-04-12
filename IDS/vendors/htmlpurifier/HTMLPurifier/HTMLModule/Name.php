@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * Class HTMLPurifier_HTMLModule_Name
+ */
 class HTMLPurifier_HTMLModule_Name extends HTMLPurifier_HTMLModule
 {
 
     public $name = 'Name';
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
         $elements = array('a', 'applet', 'form', 'frame', 'iframe', 'img', 'map');
         foreach ($elements as $name) {

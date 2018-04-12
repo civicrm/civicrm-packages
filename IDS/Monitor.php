@@ -672,6 +672,8 @@ class IDS_Monitor
      *
      * @since 0.5
      *
+     * @param $value
+     *
      * @return void
      */
     public function addHtml($value)
@@ -736,7 +738,7 @@ class IDS_Monitor
     /**
      * Returns storage container
      *
-     * @return array
+     * @return \IDS_Filter_Storage|object
      */
     public function getStorage()
     {

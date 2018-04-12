@@ -24,6 +24,9 @@
  */
 //namespace Jira\Api;
 
+/**
+ * Class Jira_Api_Client_CurlClient
+ */
 class Jira_Api_Client_CurlClient implements Jira_Api_Client_ClientInterface
 {
     /**
@@ -36,13 +39,16 @@ class Jira_Api_Client_CurlClient implements Jira_Api_Client_ClientInterface
     /**
      * send request to the api server
      *
-     * @param $method
-     * @param $url
-     * @param array $data
-     * @param $endpoint
-     * @param $credential
+     * @param                                                  $method
+     * @param                                                  $url
+     * @param array                                            $data
+     * @param                                                  $endpoint
+     * @param \Jira_Api_Authentication_AuthenticationInterface $credential
+     * @param bool                                             $isFile
+     * @param bool                                             $debug
+     *
      * @return array|string
-     * @throws Exception
+     * @throws \Exception
      */
     public function sendRequest($method, $url, $data = array(), $endpoint, Jira_Api_Authentication_AuthenticationInterface $credential, $isFile = FALSE, $debug = FALSE)
     {

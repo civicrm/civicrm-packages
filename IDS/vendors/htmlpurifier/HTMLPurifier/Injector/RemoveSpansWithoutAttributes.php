@@ -16,6 +16,12 @@ class HTMLPurifier_Injector_RemoveSpansWithoutAttributes extends HTMLPurifier_In
     private $config;
     private $context;
 
+    /**
+     * @param \Instance $config
+     * @param \Instance $context
+     *
+     * @return bool
+     */
     public function prepare($config, $context) {
         $this->attrValidator = new HTMLPurifier_AttrValidator();
         $this->config = $config;
@@ -23,6 +29,9 @@ class HTMLPurifier_Injector_RemoveSpansWithoutAttributes extends HTMLPurifier_In
         return parent::prepare($config, $context);
     }
 
+    /**
+     * @param $token
+     */
     public function handleElement(&$token) {
         if ($token->name !== 'span' || !$token instanceof HTMLPurifier_Token_Start) {
             return;
@@ -50,6 +59,9 @@ class HTMLPurifier_Injector_RemoveSpansWithoutAttributes extends HTMLPurifier_In
         }
     }
 
+    /**
+     * @param $token
+     */
     public function handleEnd(&$token) {
         if ($token->markForDeletion) {
             $token = false;

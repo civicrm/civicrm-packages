@@ -71,6 +71,10 @@ class HTMLPurifier_ConfigSchema {
 
     /**
      * Retrieves an instance of the application-wide configuration definition.
+     *
+     * @param null $prototype
+     *
+     * @return
      */
     public static function instance($prototype = null) {
         if ($prototype !== null) {
@@ -86,13 +90,12 @@ class HTMLPurifier_ConfigSchema {
      * @warning Will fail of directive's namespace is defined.
      * @warning This method's signature is slightly different from the legacy
      *          define() static method! Beware!
-     * @param $namespace Namespace the directive is in
-     * @param $name Key of directive
-     * @param $default Default value of directive
-     * @param $type Allowed type of the directive. See
-     *      HTMLPurifier_DirectiveDef::$type for allowed values
+     * @param $key
+     * @param $default    Default value of directive
+     * @param $type       Allowed type of the directive. See
+     *                    HTMLPurifier_DirectiveDef::$type for allowed values
      * @param $allow_null Whether or not to allow null values
-     */
+*/
     public function add($key, $default, $type, $allow_null) {
         $obj = new stdclass();
         $obj->type = is_int($type) ? $type : HTMLPurifier_VarParser::$types[$type];
@@ -107,10 +110,9 @@ class HTMLPurifier_ConfigSchema {
      *
      * Directive value aliases are convenient for developers because it lets
      * them set a directive to several values and get the same result.
-     * @param $namespace Directive's namespace
-     * @param $name Name of Directive
+     * @param $key
      * @param $aliases Hash of aliased values to the real alias
-     */
+*/
     public function addValueAliases($key, $aliases) {
         if (!isset($this->info[$key]->aliases)) {
             $this->info[$key]->aliases = array();
@@ -124,21 +126,18 @@ class HTMLPurifier_ConfigSchema {
      * Defines a set of allowed values for a directive.
      * @warning This is slightly different from the corresponding static
      *          method definition.
-     * @param $namespace Namespace of directive
-     * @param $name Name of directive
+     * @param $key
      * @param $allowed Lookup array of allowed values
-     */
+*/
     public function addAllowedValues($key, $allowed) {
         $this->info[$key]->allowed = $allowed;
     }
 
     /**
      * Defines a directive alias for backwards compatibility
-     * @param $namespace
-     * @param $name Directive that will be aliased
-     * @param $new_namespace
-     * @param $new_name Directive that the alias will be to
-     */
+     * @param $key
+     * @param $new_key
+*/
     public function addAlias($key, $new_key) {
         $obj = new stdclass;
         $obj->key = $new_key;

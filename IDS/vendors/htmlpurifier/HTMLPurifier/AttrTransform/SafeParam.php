@@ -22,6 +22,13 @@ class HTMLPurifier_AttrTransform_SafeParam extends HTMLPurifier_AttrTransform
         $this->wmode = new HTMLPurifier_AttrDef_Enum(array('window', 'opaque', 'transparent'));
     }
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
         // If we add support for other objects, we'll need to alter the
         // transforms.

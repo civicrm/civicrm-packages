@@ -25,10 +25,19 @@ class HTMLPurifier_Injector_SafeObject extends HTMLPurifier_Injector
         'allowFullScreen' => true, // if omitted, assume to be 'false'
     );
 
+    /**
+     * @param \Instance $config
+     * @param \Instance $context
+     *
+     * @return bool|void
+     */
     public function prepare($config, $context) {
         parent::prepare($config, $context);
     }
 
+    /**
+     * @param $token
+     */
     public function handleElement(&$token) {
         if ($token->name == 'object') {
             $this->objectStack[] = $token;
@@ -76,6 +85,9 @@ class HTMLPurifier_Injector_SafeObject extends HTMLPurifier_Injector
         }
     }
 
+    /**
+     * @param $token
+     */
     public function handleEnd(&$token) {
         // This is the WRONG way of handling the object and param stacks;
         // we should be inserting them directly on the relevant object tokens

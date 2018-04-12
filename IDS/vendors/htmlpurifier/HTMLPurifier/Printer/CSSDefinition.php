@@ -1,10 +1,18 @@
 <?php
 
+/**
+ * Class HTMLPurifier_Printer_CSSDefinition
+ */
 class HTMLPurifier_Printer_CSSDefinition extends HTMLPurifier_Printer
 {
 
     protected $def;
 
+    /**
+     * @param $config
+     *
+     * @return string
+     */
     public function render($config) {
         $this->def = $config->getCSSDefinition();
         $ret = '';

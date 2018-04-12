@@ -62,8 +62,11 @@ abstract class HTMLPurifier_Injector
      * deleted a node, and now need to see if this change affected any
      * earlier nodes. Rewinding does not affect other injectors, and can
      * result in infinite loops if not used carefully.
+     *
      * @warning HTML Purifier will prevent you from fast-forwarding with this
      *          function.
+     *
+     * @param $index
      */
     public function rewind($index) {
         $this->rewind = $index;
@@ -105,9 +108,8 @@ abstract class HTMLPurifier_Injector
      * will work with the Injector: if p tags are not allowed, the
      * Auto-Paragraphing injector should not be enabled.
      * @param $config Instance of HTMLPurifier_Config
-     * @param $context Instance of HTMLPurifier_Context
      * @return Boolean false if success, string of missing needed element/attribute if failure
-     */
+*/
     public function checkNeeded($config) {
         $def = $config->getHTMLDefinition();
         foreach ($this->needed as $element => $attributes) {
@@ -170,7 +172,11 @@ abstract class HTMLPurifier_Injector
      * Similar to _forward, but accepts a third parameter $nesting (which
      * should be initialized at 0) and stops when we hit the end tag
      * for the node $this->inputIndex starts in.
-     */
+     * @param $i
+     * @param $current
+     * @param $nesting
+     * @return bool
+*/
     protected function forwardUntilEndToken(&$i, &$current, &$nesting) {
         $result = $this->forward($i, $current);
         if (!$result) return false;
@@ -219,17 +225,24 @@ abstract class HTMLPurifier_Injector
 
     /**
      * Handler that is called when a text token is processed
-     */
-    public function handleText(&$token) {}
+     * @param $token
+*/
+    public function handleText(&$token)
+    {
+    }
 
     /**
      * Handler that is called when a start or empty token is processed
-     */
-    public function handleElement(&$token) {}
+     * @param $token
+*/
+    public function handleElement(&$token)
+    {
+    }
 
     /**
      * Handler that is called when an end token is processed
-     */
+     * @param $token
+*/
     public function handleEnd(&$token) {
         $this->notifyEnd($token);
     }
@@ -238,7 +251,8 @@ abstract class HTMLPurifier_Injector
      * Notifier that is called when an end token is processed
      * @note This differs from handlers in that the token is read-only
      * @deprecated
-     */
+     * @param $token
+*/
     public function notifyEnd($token) {}
 
 

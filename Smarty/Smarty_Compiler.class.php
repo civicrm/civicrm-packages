@@ -769,13 +769,14 @@ class Smarty_Compiler extends Smarty {
         return true;
     }
 
-
     /**
      * compile custom function tag
      *
      * @param string $tag_command
      * @param string $tag_args
      * @param string $tag_modifier
+     * @param        $output
+     *
      * @return string
      */
     public function _compile_custom_tag($tag_command, $tag_args, $tag_modifier, &$output)
@@ -1448,7 +1449,14 @@ class Smarty_Compiler extends Smarty {
         }
     }
 
-
+    /**
+     * @param $type
+     * @param $name
+     * @param $attrs
+     * @param $cache_code
+     *
+     * @return array
+     */
     public function _compile_arg_list($type, $name, $attrs, &$cache_code) {
         $arg_list = array();
 
@@ -1655,7 +1663,6 @@ class Smarty_Compiler extends Smarty {
      * PHP code
      *
      * @param string $val
-     * @param string $tag_attrs
      * @return string
      */
     public function _parse_var_props($val)
@@ -1741,7 +1748,6 @@ class Smarty_Compiler extends Smarty {
      * parse variable expression into PHP code
      *
      * @param string $var_expr
-     * @param string $output
      * @return string
      */
     public function _parse_var($var_expr)
@@ -2304,11 +2310,12 @@ class Smarty_Compiler extends Smarty {
         $this->_trigger_fatal_error("syntax error: $error_msg", $this->_current_file, $this->_current_line_no, $file, $line, $error_type);
     }
 
-
     /**
      * check if the compilation changes from cacheable to
      * non-cacheable state with the beginning of the current
      * plugin. return php-code to reflect the transition.
+     * @param $type
+     * @param $name
      * @return string
      */
     public function _push_cacheable_state($type, $name) {
@@ -2326,11 +2333,12 @@ class Smarty_Compiler extends Smarty {
         return $_ret;
     }
 
-
     /**
      * check if the compilation changes from non-cacheable to
      * cacheable state with the end of the current plugin return
      * php-code to reflect the transition.
+     * @param $type
+     * @param $name
      * @return string
      */
     public function _pop_cacheable_state($type, $name) {
@@ -2400,7 +2408,7 @@ class Smarty_Compiler extends Smarty {
  * @access private
  * @param string $a
  * @param string $b
- * @return 0|-1|1
+ * @return int 0|-1|1
  */
 function _smarty_sort_length($a, $b)
 {

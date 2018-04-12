@@ -46,6 +46,15 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
     public $iSeek = 0;
     public $iSeekDir = 0;
     public $aContents = array();
+
+    /**
+     * @param $sPath
+     * @param $sMode
+     * @param $iOptions
+     * @param $sOpenedPath
+     *
+     * @return bool|mixed
+     */
     public function stream_open($sPath, $sMode, $iOptions, &$sOpenedPath)
     {
         if ($this->getTar($sPath)) {
@@ -59,6 +68,12 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
         //ArrayNested->on()
         return false;
     }
+
+    /**
+     * @param $sPath
+     *
+     * @return bool
+     */
     public function getTar($sPath)
     {
         if (preg_match("/tarz:\/\/(.*?(\.tgz|\.tar\.gz|\.tar\.bz2|\.tar)+)(?:#\/?(.*))*/", $sPath, $aMatch)) {
@@ -87,15 +102,31 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
     {
         unset($this->oTar, $this->sText, $this->sPath, $this->iSeek);
     }
+
+    /**
+     * @param $iCount
+     *
+     * @return bool|mixed|string
+     */
     public function stream_read($iCount)
     {
         $sRet = substr($this->sText, $this->iSeek, $iCount);
         $this->iSeek+= strlen($sRet);
         return $sRet;
     }
+
+    /**
+     * @param $sData
+     *
+     * @return mixed|void
+     */
     public function stream_write($sData)
     {
     }
+
+    /**
+     * @return bool
+     */
     public function stream_eof()
     {
         // BUG in 5.0.0RC1<PHP<5.0.0.0RC4
@@ -106,10 +137,21 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
             return $this->iSeek >= strlen($this->sText);
         }
     }
+
+    /**
+     * @return int
+     */
     public function stream_tell()
     {
         return $this->iSeek;
     }
+
+    /**
+     * @param $iOffset
+     * @param $iWhence
+     *
+     * @return bool|mixed
+     */
     public function stream_seek($iOffset, $iWhence)
     {
         switch ($iWhence) {
@@ -150,10 +192,23 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
         public function stream_stat()
         {
         }
-        public function unlink($sPath)
+
+    /**
+     * @param $sPath
+     *
+     * @return mixed|void
+     */
+    public function unlink($sPath)
         {
         }
-        public function dir_opendir($sPath, $iOptions)
+
+    /**
+     * @param $sPath
+     * @param $iOptions
+     *
+     * @return bool|mixed
+     */
+    public function dir_opendir($sPath, $iOptions)
         {
             if ($this->getTar($sPath)) {
                 array_walk($this->oTar->listContent() , array(
@@ -165,7 +220,11 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
                 return false;
             }
         }
-        public function dir_readdir()
+
+    /**
+     * @return bool|mixed
+     */
+    public function dir_readdir()
         {
             if ($this->iSeekDir >= count($this->aContents)) {
                 return false;
@@ -183,11 +242,21 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
             //return true;
             
         }
-        public function getFileList($aInput)
+
+    /**
+     * @param $aInput
+     */
+    public function getFileList($aInput)
         {
             $this->aContents[] = $aInput['filename'];
         }
-        public function tarFileExists($aInput)
+
+    /**
+     * @param $aInput
+     *
+     * @return bool
+     */
+    public function tarFileExists($aInput)
         {
             return ($aInput['filename'] == $this->sPath and empty($aInput['typeflag']));
         }

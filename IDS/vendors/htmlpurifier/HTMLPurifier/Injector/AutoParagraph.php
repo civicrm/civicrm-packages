@@ -12,12 +12,18 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
     public $name = 'AutoParagraph';
     public $needed = array('p');
 
+    /**
+     * @return \HTMLPurifier_Token_Start
+     */
     private function _pStart() {
         $par = new HTMLPurifier_Token_Start('p');
         $par->armor['MakeWellFormed_TagClosedError'] = true;
         return $par;
     }
 
+    /**
+     * @param $token
+     */
     public function handleText(&$token) {
         $text = $token->data;
         // Does the current parent allow <p> tags?
@@ -94,6 +100,9 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
         }
     }
 
+    /**
+     * @param $token
+     */
     public function handleElement(&$token) {
         // We don't have to check if we're already in a <p> tag for block
         // tokens, because the tag would have been autoclosed by MakeWellFormed.
@@ -201,12 +210,11 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
     /**
      * Splits up a text in paragraph tokens and appends them
      * to the result stream that will replace the original
-     * @param $data String text data that will be processed
-     *    into paragraphs
+     *
+     * @param $data   String text data that will be processed
+     *                into paragraphs
      * @param $result Reference to array of tokens that the
-     *    tags will be appended onto
-     * @param $config Instance of HTMLPurifier_Config
-     * @param $context Instance of HTMLPurifier_Context
+     *                tags will be appended onto
      */
     private function _splitText($data, &$result) {
         $raw_paragraphs = explode("\n\n", $data);
@@ -291,6 +299,8 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
     /**
      * Returns true if passed token is inline (and, ergo, allowed in
      * paragraph tags)
+     * @param $token
+     * @return bool
      */
     private function _isInline($token) {
         return isset($this->htmlDefinition->info['p']->child->elements[$token->name]);
@@ -318,6 +328,8 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
     /**
      * Determines if a particular token requires an earlier inline token
      * to get a paragraph. This should be used with _forwardUntilEndToken
+     * @param $current
+     * @return bool|null
      */
     private function _checkNeedsP($current) {
         if ($current instanceof HTMLPurifier_Token_Start){

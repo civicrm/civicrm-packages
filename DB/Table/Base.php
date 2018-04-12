@@ -654,48 +654,49 @@ class DB_Table_Base
         $db->setFetchMode($new_mode, $new_class);
     }
 
-
     /**
      * Returns SQL condition equating columns to literal values.
      *
      * The parameter $data is an associative array in which keys are
      * column names and values are corresponding values. The method
-     * returns an SQL string that is true if the value of every 
-     * specified database columns is equal to the corresponding 
-     * value in $data. 
-     * 
+     * returns an SQL string that is true if the value of every
+     * specified database columns is equal to the corresponding
+     * value in $data.
+     *
      * For example, if:
      * <code>
      *     $data = array( 'c1' => 'thing', 'c2' => 23, 'c3' => 0.32 )
      * </code>
-     * then buildFilter($data) returns a string 
+     * then buildFilter($data) returns a string
      * <code>
      *     c1 => 'thing' AND c2 => 23 AND c3 = 0.32
      * </code>
-     * in which string values are replaced by SQL literal values, 
+     * in which string values are replaced by SQL literal values,
      * quoted and escaped as necessary.
-     * 
-     * Values are quoted and escaped as appropriate for each data 
+     *
+     * Values are quoted and escaped as appropriate for each data
      * type and the backend RDBMS, using the MDB2::quote() or
      * DB::smartQuote() method. The behavior depends on the PHP type
-     * of the value: string values are quoted and escaped, while 
+     * of the value: string values are quoted and escaped, while
      * integer and float numerical values are not. Boolean values
-     * in $data are represented as 0 or 1, consistent with the way 
-     * booleans are stored by DB_Table. 
+     * in $data are represented as 0 or 1, consistent with the way
+     * booleans are stored by DB_Table.
      *
-     * Null values: The treatment of null values in $data depends upon 
-     * the value of the $match parameter . If $match == 'simple', an 
-     * empty string is returned if any $value of $data with a key in 
-     * $data_key is null. If $match == 'partial', the returned SQL 
-     * expression equates only the relevant non-null values of $data 
-     * to the values of corresponding database columns. If 
-     * $match == 'full', the function returns an empty string if all 
-     * of the relevant values of data are null, and returns a 
-     * PEAR_Error if some of the selected values are null and others 
+     * Null values: The treatment of null values in $data depends upon
+     * the value of the $match parameter . If $match == 'simple', an
+     * empty string is returned if any $value of $data with a key in
+     * $data_key is null. If $match == 'partial', the returned SQL
+     * expression equates only the relevant non-null values of $data
+     * to the values of corresponding database columns. If
+     * $match == 'full', the function returns an empty string if all
+     * of the relevant values of data are null, and returns a
+     * PEAR_Error if some of the selected values are null and others
      * are not null.
      *
-     * @param array $data associative array, keys are column names
-     * @return string SQL expression equating values in $data to 
+     * @param array  $data associative array, keys are column names
+     * @param string $match
+     *
+     * @return string SQL expression equating values in $data to
      *                values of columns named by keys.
      * @access public
      */

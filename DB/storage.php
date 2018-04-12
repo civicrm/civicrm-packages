@@ -106,7 +106,6 @@ class DB_storage extends PEAR
 
     // }}}
     // {{{ _makeWhere()
-
     /**
      * Utility method to build a "WHERE" clause to locate ourselves in
      * the table.
@@ -114,6 +113,10 @@ class DB_storage extends PEAR
      * XXX future improvement: use rowids?
      *
      * @access private
+     *
+     * @param null $keyval
+     *
+     * @return mixed|string
      */
     public function _makeWhere($keyval = null)
     {
@@ -189,11 +192,12 @@ class DB_storage extends PEAR
 
     // }}}
     // {{{ insert()
-
     /**
      * Create a new (empty) row in the configured table for this
      * object.
-     */
+     * @param $newpk
+     * @return
+*/
     public function insert($newpk)
     {
         if (is_array($this->_keycolumn)) {
@@ -283,13 +287,13 @@ class DB_storage extends PEAR
 
     // }}}
     // {{{ &create()
-
     /**
      * Static method used to create new DB storage objects.
+     * @param $table
      * @param $data assoc. array where the keys are the names
      *              of properties/columns
      * @return object a new instance of DB_storage or a subclass of it
-     */
+*/
     public function &create($table, &$data)
     {
         $classname = strtolower(get_class($this));
@@ -355,10 +359,12 @@ class DB_storage extends PEAR
 
     // }}}
     // {{{ set()
-
     /**
      * Modify an attriute value.
-     */
+     * @param $property
+     * @param $newvalue
+     * @return bool
+*/
     public function set($property, $newvalue)
     {
         // only change if $property is known and object is not

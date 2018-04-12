@@ -4,13 +4,12 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * write out a file to disk
  *
- * @param string $filename
- * @param string $contents
- * @param boolean $create_dirs
+ * @param $params
+ * @param $smarty
+ *
  * @return boolean
  */
 function smarty_core_write_file($params, &$smarty)

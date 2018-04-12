@@ -835,15 +835,14 @@ class DB_common extends PEAR
 
     // }}}
     // {{{ autoPrepare()
-
     /**
      * Automaticaly generates an insert or update query and pass it to prepare()
      *
-     * @param string $table         the table name
-     * @param array  $table_fields  the array of field names
-     * @param int    $mode          a type of query to make:
+     * @param string $table          the table name
+     * @param array  $table_fields   the array of field names
+     * @param int    $mode           a type of query to make:
      *                               DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE
-     * @param string $where         for update queries: the WHERE clause to
+     * @param bool   $where          for update queries: the WHERE clause to
      *                               append to the SQL statement.  Don't
      *                               include the "WHERE" keyword.
      *
@@ -863,17 +862,16 @@ class DB_common extends PEAR
 
     // }}}
     // {{{ autoExecute()
-
     /**
      * Automaticaly generates an insert or update query and call prepare()
      * and execute() with it
      *
-     * @param string $table         the table name
-     * @param array  $fields_values the associative array where $key is a
+     * @param string $table          the table name
+     * @param array  $fields_values  the associative array where $key is a
      *                               field name and $value its value
-     * @param int    $mode          a type of query to make:
+     * @param int    $mode           a type of query to make:
      *                               DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE
-     * @param string $where         for update queries: the WHERE clause to
+     * @param bool   $where          for update queries: the WHERE clause to
      *                               append to the SQL statement.  Don't
      *                               include the "WHERE" keyword.
      *
@@ -920,11 +918,11 @@ class DB_common extends PEAR
      *   - Be carefull! If you don't give a $where param with an UPDATE
      *     query, all the records of the table will be updated!
      *
-     * @param string $table         the table name
-     * @param array  $table_fields  the array of field names
-     * @param int    $mode          a type of query to make:
+     * @param string $table          the table name
+     * @param array  $table_fields   the array of field names
+     * @param int    $mode           a type of query to make:
      *                               DB_AUTOQUERY_INSERT or DB_AUTOQUERY_UPDATE
-     * @param string $where         for update queries: the WHERE clause to
+     * @param bool   $where          for update queries: the WHERE clause to
      *                               append to the SQL statement.  Don't
      *                               include the "WHERE" keyword.
      *
@@ -1693,9 +1691,9 @@ class DB_common extends PEAR
     /**
      * Enables or disables automatic commits
      *
-     * @param bool $onoff  true turns it on, false turns it off
+     * @param bool $onoff true turns it on, false turns it off
      *
-     * @return int  DB_OK on success.  A DB_Error object if the driver
+     * @return object DB_OK on success.  A DB_Error object if the driver
      *               doesn't support auto-committing transactions.
      */
     public function autoCommit($onoff = false)
@@ -1709,7 +1707,7 @@ class DB_common extends PEAR
     /**
      * Commits the current transaction
      *
-     * @return int  DB_OK on success.  A DB_Error object on failure.
+     * @return object DB_OK on success.  A DB_Error object on failure.
      */
     public function commit()
     {
@@ -1722,7 +1720,7 @@ class DB_common extends PEAR
     /**
      * Reverts the current transaction
      *
-     * @return int  DB_OK on success.  A DB_Error object on failure.
+     * @return object DB_OK on success.  A DB_Error object on failure.
      */
     public function rollback()
     {
@@ -1735,9 +1733,9 @@ class DB_common extends PEAR
     /**
      * Determines the number of rows in a query result
      *
-     * @param resource $result  the query result idenifier produced by PHP
+     * @param resource $result the query result idenifier produced by PHP
      *
-     * @return int  the number of rows.  A DB_Error object on failure.
+     * @return object the number of rows.  A DB_Error object on failure.
      */
     public function numRows($result)
     {
@@ -1752,7 +1750,7 @@ class DB_common extends PEAR
      *
      * 0 is returned for queries that don't manipulate data.
      *
-     * @return int  the number of rows.  A DB_Error object on failure.
+     * @return object the number of rows.  A DB_Error object on failure.
      */
     public function affectedRows()
     {
@@ -1788,11 +1786,11 @@ class DB_common extends PEAR
     /**
      * Returns the next free id in a sequence
      *
-     * @param string  $seq_name  name of the sequence
-     * @param boolean $ondemand  when true, the seqence is automatically
+     * @param string  $seq_name   name of the sequence
+     * @param boolean $ondemand   when true, the seqence is automatically
      *                            created if it does not exist
      *
-     * @return int  the next id number in the sequence.
+     * @return object the next id number in the sequence.
      *               A DB_Error object on failure.
      *
      * @see DB_common::createSequence(), DB_common::dropSequence(),
@@ -1816,9 +1814,9 @@ class DB_common extends PEAR
      *
      * <var>seqname_format</var> is set via setOption().
      *
-     * @param string $seq_name  name of the new sequence
+     * @param string $seq_name name of the new sequence
      *
-     * @return int  DB_OK on success.  A DB_Error object on failure.
+     * @return object DB_OK on success.  A DB_Error object on failure.
      *
      * @see DB_common::dropSequence(), DB_common::getSequenceName(),
      *      DB_common::nextID()
@@ -1834,9 +1832,9 @@ class DB_common extends PEAR
     /**
      * Deletes a sequence
      *
-     * @param string $seq_name  name of the sequence to be deleted
+     * @param string $seq_name name of the sequence to be deleted
      *
-     * @return int  DB_OK on success.  A DB_Error object on failure.
+     * @return object DB_OK on success.  A DB_Error object on failure.
      *
      * @see DB_common::createSequence(), DB_common::getSequenceName(),
      *      DB_common::nextID()
@@ -1854,21 +1852,13 @@ class DB_common extends PEAR
      *
      * Basically a wrapper for PEAR::raiseError without the message string.
      *
-     * @param mixed   integer error code, or a PEAR error object (all
-     *                 other parameters are ignored if this parameter is
-     *                 an object
-     * @param int     error mode, see PEAR_Error docs
-     * @param mixed   if error mode is PEAR_ERROR_TRIGGER, this is the
-     *                 error level (E_USER_NOTICE etc).  If error mode is
-     *                 PEAR_ERROR_CALLBACK, this is the callback function,
-     *                 either as a function name, or as an array of an
-     *                 object and method name.  For other error modes this
-     *                 parameter is ignored.
-     * @param string  extra debug information.  Defaults to the last
-     *                 query and native error code.
-     * @param mixed   native error code, integer or string depending the
-     *                 backend
-     *
+     * @param int  $code
+     * @param null $mode
+     * @param null $options
+     * @param null $userinfo
+     * @param null $nativecode
+     * @param null $argToMatchParentSignature1
+     * @param null $argToMatchParentSignature2
      * @return object  the PEAR_Error object
      *
      * @see PEAR_Error
@@ -2066,19 +2056,19 @@ class DB_common extends PEAR
      * If the 'portability' option has <samp>DB_PORTABILITY_LOWERCASE</samp>
      * turned on, the names of tables and fields will be lowercased.
      *
-     * @param object|string  $result  DB_result object from a query or a
+     * @param object|string $result   DB_result object from a query or a
      *                                string containing the name of a table.
      *                                While this also accepts a query result
      *                                resource identifier, this behavior is
      *                                deprecated.
-     * @param int  $mode   either unused or one of the tableInfo modes:
-     *                     <kbd>DB_TABLEINFO_ORDERTABLE</kbd>,
-     *                     <kbd>DB_TABLEINFO_ORDER</kbd> or
-     *                     <kbd>DB_TABLEINFO_FULL</kbd> (which does both).
-     *                     These are bitwise, so the first two can be
-     *                     combined using <kbd>|</kbd>.
+     * @param int           $mode     either unused or one of the tableInfo modes:
+     *                                <kbd>DB_TABLEINFO_ORDERTABLE</kbd>,
+     *                                <kbd>DB_TABLEINFO_ORDER</kbd> or
+     *                                <kbd>DB_TABLEINFO_FULL</kbd> (which does both).
+     *                                These are bitwise, so the first two can be
+     *                                combined using <kbd>|</kbd>.
      *
-     * @return array  an associative array with the information requested.
+     * @return object an associative array with the information requested.
      *                 A DB_Error object on failure.
      *
      * @see DB_common::setOption()

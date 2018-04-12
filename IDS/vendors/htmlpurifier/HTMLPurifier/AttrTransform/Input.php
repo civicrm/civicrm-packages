@@ -12,6 +12,13 @@ class HTMLPurifier_AttrTransform_Input extends HTMLPurifier_AttrTransform {
         $this->pixels = new HTMLPurifier_AttrDef_HTML_Pixels();
     }
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
         if (!isset($attr['type'])) $t = 'text';
         else $t = strtolower($attr['type']);

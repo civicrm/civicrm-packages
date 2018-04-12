@@ -25,6 +25,11 @@ class HTMLPurifier_ErrorCollector
 
     protected $lines = array();
 
+    /**
+     * HTMLPurifier_ErrorCollector constructor.
+     *
+     * @param $context
+     */
     public function __construct($context) {
         $this->locale    =& $context->get('Locale');
         $this->context   = $context;
@@ -34,10 +39,9 @@ class HTMLPurifier_ErrorCollector
 
     /**
      * Sends an error message to the collector for later use
+     *
      * @param $severity int Error severity, PHP error style (don't use E_USER_)
-     * @param $msg string Error message text
-     * @param $subst1 string First substitution for $msg
-     * @param $subst2 string ...
+     * @param $msg      string Error message text
      */
     public function send($severity, $msg) {
 
@@ -174,6 +178,12 @@ class HTMLPurifier_ErrorCollector
 
     }
 
+    /**
+     * @param      $ret
+     * @param      $struct
+     * @param null $line
+     * @param null $col
+     */
     private function _renderStruct(&$ret, $struct, $line = null, $col = null) {
         $stack = array($struct);
         $context_stack = array(array());

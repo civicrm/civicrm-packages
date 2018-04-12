@@ -4,14 +4,12 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * delete an automagically created file by name and id
  *
- * @param string $auto_base
- * @param string $auto_source
- * @param string $auto_id
- * @param integer $exp_time
+ * @param $params
+ * @param $smarty
+ *
  * @return boolean
  */
 

@@ -45,6 +45,12 @@ class HTMLPurifier_Language
      */
     protected $config, $context;
 
+    /**
+     * HTMLPurifier_Language constructor.
+     *
+     * @param $config
+     * @param $context
+     */
     public function __construct($config, $context) {
         $this->config  = $config;
         $this->context = $context;
@@ -89,6 +95,10 @@ class HTMLPurifier_Language
 
     /**
      * Converts an array list into a string readable representation
+     *
+     * @param $array
+     *
+     * @return string
      */
     public function listify($array) {
         $sep      = $this->getMessage('Item separator');
@@ -108,12 +118,12 @@ class HTMLPurifier_Language
 
     /**
      * Formats a localised message with passed parameters
-     * @param $key string identifier of message
-     * @param $args Parameters to substitute in
+     * @param       $key  string identifier of message
+     * @param array $args Parameters to substitute in
      * @return string localised message
      * @todo Implement conditionals? Right now, some messages make
-     *     reference to line numbers, but those aren't always available
-     */
+     *                    reference to line numbers, but those aren't always available
+*/
     public function formatMessage($key, $args = array()) {
         if (!$this->_loaded) $this->load();
         if (!isset($this->messages[$key])) return "[$key]";

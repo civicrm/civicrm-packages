@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * @param        $width
+ * @param        $height
+ * @param        $url
+ * @param bool   $use_swfobject
+ * @param string $base
+ *
+ * @return string
+ */
 function open_flash_chart_object_str( $width, $height, $url, $use_swfobject=true, $base='' )
 {
     //
@@ -8,6 +16,13 @@ function open_flash_chart_object_str( $width, $height, $url, $use_swfobject=true
     return _ofc( $width, $height, $url, $use_swfobject, $base );
 }
 
+/**
+ * @param        $width
+ * @param        $height
+ * @param        $url
+ * @param bool   $use_swfobject
+ * @param string $base
+ */
 function open_flash_chart_object( $width, $height, $url, $use_swfobject=true, $base='' )
 {
     //
@@ -16,6 +31,15 @@ function open_flash_chart_object( $width, $height, $url, $use_swfobject=true, $b
     echo _ofc( $width, $height, $url, $use_swfobject, $base );
 }
 
+/**
+ * @param $width
+ * @param $height
+ * @param $url
+ * @param $use_swfobject
+ * @param $base
+ *
+ * @return string
+ */
 function _ofc( $width, $height, $url, $use_swfobject, $base )
 {
     //

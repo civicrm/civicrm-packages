@@ -23,8 +23,8 @@ class HTMLPurifier_AttrDef_Enum extends HTMLPurifier_AttrDef
     protected $case_sensitive = false; // values according to W3C spec
 
     /**
-     * @param $valid_values List of valid values
-     * @param $case_sensitive Bool indicating whether or not case sensitive
+     * @param array $valid_values   List of valid values
+     * @param       $case_sensitive Bool indicating whether or not case sensitive
      */
     public function __construct(
         $valid_values = array(), $case_sensitive = false
@@ -33,6 +33,13 @@ class HTMLPurifier_AttrDef_Enum extends HTMLPurifier_AttrDef
         $this->case_sensitive = $case_sensitive;
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string
+     */
     public function validate($string, $config, $context) {
         $string = trim($string);
         if (!$this->case_sensitive) {

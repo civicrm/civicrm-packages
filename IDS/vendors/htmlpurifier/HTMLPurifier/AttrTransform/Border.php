@@ -5,6 +5,13 @@
  */
 class HTMLPurifier_AttrTransform_Border extends HTMLPurifier_AttrTransform {
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
         if (!isset($attr['border'])) return $attr;
         $border_width = $this->confiscateAttr($attr, 'border');

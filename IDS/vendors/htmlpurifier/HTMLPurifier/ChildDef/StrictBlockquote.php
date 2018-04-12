@@ -14,12 +14,23 @@ class HTMLPurifier_ChildDef_StrictBlockquote extends HTMLPurifier_ChildDef_Requi
     /**
      * @note We don't want MakeWellFormed to auto-close inline elements since
      *       they might be allowed.
+     *
+     * @param $config
+     *
+     * @return
      */
     public function getAllowedElements($config) {
         $this->init($config);
         return $this->fake_elements;
     }
 
+    /**
+     * @param $tokens_of_children
+     * @param $config
+     * @param $context
+     *
+     * @return array|bool
+     */
     public function validateChildren($tokens_of_children, $config, $context) {
 
         $this->init($config);
@@ -79,6 +90,9 @@ class HTMLPurifier_ChildDef_StrictBlockquote extends HTMLPurifier_ChildDef_Requi
         return $ret;
     }
 
+    /**
+     * @param $config
+     */
     private function init($config) {
         if (!$this->init) {
             $def = $config->getHTMLDefinition();

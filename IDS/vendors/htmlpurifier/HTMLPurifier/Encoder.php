@@ -43,6 +43,11 @@ class HTMLPurifier_Encoder
      *       As of right now, only smart lossless character encoding converters
      *       would need that, and I'm probably not going to implement them.
      *       Once again, PHP 6 should solve all our problems.
+     *
+     * @param      $str
+     * @param bool $force_php
+     *
+     * @return string
      */
     public static function cleanUTF8($str, $force_php = false) {
 
@@ -208,7 +213,9 @@ class HTMLPurifier_Encoder
      * @note This is very similar to the unichr function in
      *       maintenance/generate-entity-file.php (although this is superior,
      *       due to its sanity checks).
-     */
+     * @param $code
+     * @return string
+*/
 
     // +----------+----------+----------+----------+
     // | 33222222 | 22221111 | 111111   |          |
@@ -262,7 +269,11 @@ class HTMLPurifier_Encoder
 
     /**
      * Converts a string to UTF-8 based on configuration.
-     */
+     * @param $str
+     * @param $config
+     * @param $context
+     * @return string
+*/
     public static function convertToUTF8($str, $config, $context) {
         $encoding = $config->get('Core.Encoding');
         if ($encoding === 'utf-8') return $str;
@@ -295,7 +306,11 @@ class HTMLPurifier_Encoder
      * Converts a string from UTF-8 based on configuration.
      * @note Currently, this is a lossy conversion, with unexpressable
      *       characters being omitted.
-     */
+     * @param $str
+     * @param $config
+     * @param $context
+     * @return string
+*/
     public static function convertFromUTF8($str, $config, $context) {
         $encoding = $config->get('Core.Encoding');
         if ($encoding === 'utf-8') return $str;

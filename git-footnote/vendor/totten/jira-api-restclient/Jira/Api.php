@@ -24,6 +24,9 @@
  */
 //namespace Jira;
 
+/**
+ * Class Jira_Api
+ */
 class Jira_Api
 {
     const REQUEST_GET    = "GET";
@@ -76,6 +79,9 @@ class Jira_Api
         $this->client = $client;
     }
 
+    /**
+     * @param $options
+     */
     public function setOptions($options)
     {
         $this->options = $options;
@@ -137,6 +143,12 @@ class Jira_Api
         return $this->api(self::REQUEST_GET, sprintf("/rest/api/2/issue/%s", $issueKey));
     }
 
+    /**
+     * @param $issueKey
+     * @param $params
+     *
+     * @return mixed
+     */
     public function editIssue($issueKey, $params)
     {
         return $this->api(self::REQUEST_PUT, sprintf("/rest/api/2/issue/%s", $issueKey), $params);
@@ -204,6 +216,8 @@ class Jira_Api
 
     /**
      * get available versions
+     *
+     * @param $projectKey
      *
      * @return mixed
      */
@@ -344,14 +358,16 @@ class Jira_Api
     	);
     	return $this->api(self::REQUEST_POST, "/rest/api/2/issue/" . $issue . "/attachments", $options, false ,TRUE);
     }
-    
+
     /**
      * send request to specified host
      *
      * @param string $method
-     * @param $url
-     * @param array $data
-     * @param bool $return_as_json
+     * @param        $url
+     * @param array  $data
+     * @param bool   $return_as_json
+     * @param bool   $isfile
+     * @param bool   $debug
      * @return mixed
      */
     public function api($method = self::REQUEST_GET, $url, $data = array(), $return_as_json = false, $isfile = false, $debug = FALSE)
@@ -387,6 +403,11 @@ class Jira_Api
         }
     }
 
+    /**
+     * @param $issue
+     *
+     * @return mixed
+     */
     protected function automapFields($issue)
     {
         if (isset($issue['fields'])) {

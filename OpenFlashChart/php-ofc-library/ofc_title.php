@@ -6,13 +6,18 @@
  */
 class title
 {
-	public function __construct( $text='' )
+    /**
+     * title constructor.
+     *
+     * @param string $text
+     */
+    public function __construct( $text='' )
 	{
 		$this->text = $text;
 	}
-	
-	/**
-	 * A css string. Can optionally contain:
+
+    /**
+     * A css string. Can optionally contain:
      * - font-size
      * - font-family
      * - font-weight
@@ -30,7 +35,9 @@ class title
      * - padding-top
      * - padding-bottom
      * just like the css we use all the time :-)
-	 */
+     *
+     * @param $css
+     */
 	public function set_style( $css )
 	{
 		$this->style = $css;

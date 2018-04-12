@@ -21,6 +21,11 @@ class HTMLPurifier_Token {
     public $rewind;
     public $carryover;
 
+    /**
+     * @param $n
+     *
+     * @return null|string
+     */
     public function __get($n) {
       if ($n === 'type') {
         trigger_error('Deprecated type property called; use instanceof', E_USER_NOTICE);
@@ -37,6 +42,9 @@ class HTMLPurifier_Token {
 
     /**
      * Sets the position of the token in the source document.
+     *
+     * @param null $l
+     * @param null $c
      */
     public function position($l = null, $c = null) {
         $this->line = $l;
@@ -45,6 +53,8 @@ class HTMLPurifier_Token {
 
     /**
      * Convenience function for DirectLex settings line/col position.
+     * @param $l
+     * @param $c
      */
     public function rawPosition($l, $c) {
         if ($c === -1) $l++;

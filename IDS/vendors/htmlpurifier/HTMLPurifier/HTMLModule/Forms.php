@@ -13,6 +13,9 @@ class HTMLPurifier_HTMLModule_Forms extends HTMLPurifier_HTMLModule
         'Inline' => 'Formctrl',
     );
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
         $form = $this->addElement('form', 'Form',
           'Required: Heading | List | Block | fieldset', 'Common', array(

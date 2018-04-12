@@ -16,33 +16,51 @@ class inner_bg_grad
 		$this->angle    = 90;
 		$this->fillType    = 'linear';
 	}
-	
-	public function set_fillType( $text='linear' )
+
+    /**
+     * @param string $text
+     */
+    public function set_fillType( $text='linear' )
 	{
 		$this->fillType = $text;
 	}
 
-	public function set_colour1( $text='' )
+    /**
+     * @param string $text
+     */
+    public function set_colour1( $text='' )
 	{
 		$this->colour1 = $text;
 	}
-	
-	public function set_colour2( $text='' )
+
+    /**
+     * @param string $text
+     */
+    public function set_colour2( $text='' )
 	{
 		$this->colour2 = $text;
 	}
 
-	public function set_alpha( $text=array(1,1) )
+    /**
+     * @param array $text
+     */
+    public function set_alpha( $text=array(1,1) )
 	{
 		$this->alpha = $text;
 	}
-	
-	public function set_ratio( $text=array(0,255) )
+
+    /**
+     * @param array $text
+     */
+    public function set_ratio( $text=array(0,255) )
 	{
 		$this->ratio = $text;
-	}	
-	
-	public function set_angle( $text='0' )
+	}
+
+    /**
+     * @param string $text
+     */
+    public function set_angle( $text='0' )
 	{
 		$this->angle = $text;
 	}

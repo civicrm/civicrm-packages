@@ -8,6 +8,9 @@ class HTMLPurifier_HTMLModule_SafeEmbed extends HTMLPurifier_HTMLModule
 
     public $name = 'SafeEmbed';
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
 
         $max = $config->get('HTML.MaxImgLength');

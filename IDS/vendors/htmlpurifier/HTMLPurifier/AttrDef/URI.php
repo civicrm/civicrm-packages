@@ -11,18 +11,30 @@ class HTMLPurifier_AttrDef_URI extends HTMLPurifier_AttrDef
     protected $embedsResource;
 
     /**
-     * @param $embeds_resource_resource Does the URI here result in an extra HTTP request?
+     * @param bool $embeds_resource
      */
     public function __construct($embeds_resource = false) {
         $this->parser = new HTMLPurifier_URIParser();
         $this->embedsResource = (bool) $embeds_resource;
     }
 
+    /**
+     * @param String $string
+     *
+     * @return \HTMLPurifier_AttrDef|\HTMLPurifier_AttrDef_URI
+     */
     public function make($string) {
         $embeds = (bool) $string;
         return new HTMLPurifier_AttrDef_URI($embeds);
     }
 
+    /**
+     * @param String     $uri
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|String
+     */
     public function validate($uri, $config, $context) {
 
         if ($config->get('URI.Disable')) return false;

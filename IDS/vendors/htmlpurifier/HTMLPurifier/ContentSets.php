@@ -89,6 +89,11 @@ class HTMLPurifier_ContentSets
         $def->child = $this->getChildDef($def, $module);
     }
 
+    /**
+     * @param $matches
+     *
+     * @return mixed
+     */
     public function generateChildDefCallback($matches) {
         return $this->info[$matches[0]];
     }
@@ -96,9 +101,13 @@ class HTMLPurifier_ContentSets
     /**
      * Instantiates a ChildDef based on content_model and content_model_type
      * member variables in HTMLPurifier_ElementDef
+     *
      * @note This will also defer to modules for custom HTMLPurifier_ChildDef
      *       subclasses that need content set expansion
+     *
      * @param $def HTMLPurifier_ElementDef to have ChildDef extracted
+     * @param $module
+     *
      * @return HTMLPurifier_ChildDef corresponding to ElementDef
      */
     public function getChildDef($def, $module) {
@@ -139,8 +148,8 @@ class HTMLPurifier_ContentSets
      * Converts a string list of elements separated by pipes into
      * a lookup array.
      * @param $string List of elements
-     * @return Lookup array of elements
-     */
+     * @return array array of elements
+*/
     protected function convertToLookup($string) {
         $array = explode('|', str_replace(' ', '', $string));
         $ret = array();

@@ -1,6 +1,11 @@
 <?php
 namespace CRM\GitFootnote;
 
+/**
+ * Class CommentFilterTest
+ *
+ * @package CRM\GitFootnote
+ */
 class CommentFilterTest extends \PHPUnit_Framework_TestCase {
 
   /**
@@ -49,11 +54,12 @@ class CommentFilterTest extends \PHPUnit_Framework_TestCase {
     return $cases;
   }
 
-  /**
-   * @dataProvider commentCases
-   * @param string $messageBody
-   * @param array $expectedNotes footnotes that should be produced
-   */
+    /**
+     * @dataProvider commentCases
+     *
+     * @param string $messageBody
+     * @param        $expectedBody
+     */
   function testCommentCases($messageBody, $expectedBody) {
     $message = new CommitMessage($messageBody);
     $filter = new CommentFilter();

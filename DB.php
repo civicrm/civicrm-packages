@@ -444,8 +444,8 @@ class DB
      * Create a new DB object for the specified database type but don't
      * connect to the database
      *
-     * @param string $type     the database type (eg "mysql")
-     * @param array  $options  an associative array of option names and values
+     * @param string $type    the database type (eg "mysql")
+     * @param bool   $options an associative array of option names and values
      *
      * @return object  a new DB object.  A DB_Error object on failure.
      *
@@ -1410,10 +1410,13 @@ class DB_result
 
     // }}}
     // {{{ tableInfo()
-
     /**
-     * @see DB_common::tableInfo()
+     * @see        DB_common::tableInfo()
      * @deprecated Method deprecated some time before Release 1.2
+     *
+     * @param null $mode
+     *
+     * @return
      */
     public function tableInfo($mode = null)
     {

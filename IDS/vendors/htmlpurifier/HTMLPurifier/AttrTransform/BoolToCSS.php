@@ -24,6 +24,13 @@ class HTMLPurifier_AttrTransform_BoolToCSS extends HTMLPurifier_AttrTransform {
         $this->css  = $css;
     }
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
         if (!isset($attr[$this->attr])) return $attr;
         unset($attr[$this->attr]);

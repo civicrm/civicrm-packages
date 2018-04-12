@@ -7,7 +7,8 @@
 /**
  * create full directory structure
  *
- * @param string $dir
+ * @param $params
+ * @param $smarty
  *
  * @return bool
  */

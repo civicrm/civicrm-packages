@@ -1,29 +1,50 @@
 <?php
 
+/**
+ * Class dot_value
+ */
 class dot_value
 {
-	public function __construct( $value, $colour )
+    /**
+     * dot_value constructor.
+     *
+     * @param $value
+     * @param $colour
+     */
+    public function __construct( $value, $colour )
 	{
 		$this->value = $value;
 		$this->colour = $colour;
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	public function set_size( $size )
+
+    /**
+     * @param $size
+     */
+    public function set_size( $size )
 	{
 		$this->size = $size;
 	}
-	
-	public function set_tooltip( $tip )
+
+    /**
+     * @param $tip
+     */
+    public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;
 	}
 }
 
+/**
+ * Class line_dot
+ */
 class line_dot extends line_base
 {
 	public function __construct()

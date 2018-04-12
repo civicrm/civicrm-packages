@@ -61,11 +61,16 @@ class HTML_QuickForm_Page extends HTML_QuickForm
     */
     public $_formBuilt = false;
 
-   /**
-    * Class constructor
-    *
-    * @access public
-    */
+    /**
+     * Class constructor
+     *
+     * @access public
+     *
+     * @param        $formName
+     * @param string $method
+     * @param string $target
+     * @param null   $attributes
+     */
     public function __construct($formName, $method = 'post', $target = '', $attributes = null)
     {
         parent::__construct($formName, $method, '', $target, $attributes);
@@ -106,14 +111,14 @@ class HTML_QuickForm_Page extends HTML_QuickForm
         }
     }
 
-
-   /**
-    * Returns a name for a submit button that will invoke a specific action.
-    *
-    * @access public
-    * @param  string  Name of the action
-    * @return string  "name" attribute for a submit button
-    */
+    /**
+     * Returns a name for a submit button that will invoke a specific action.
+     *
+     * @access public
+     * @param      $actionName
+     * @param null $subActionName
+     * @return string  "name" attribute for a submit button
+     */
     public function getButtonName($actionName, $subActionName = null)
     {
         if ( $subActionName != null ) {

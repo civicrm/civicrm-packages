@@ -62,8 +62,8 @@ class IDS_Log_Composite
     /**
      * Iterates through registered loggers and executes them
      *
-     * @param object $data IDS_Report object
-     * 
+     * @param \IDS_Report $data IDS_Report object
+     *
      * @return void
      */
     public function execute(IDS_Report $data) 
@@ -110,8 +110,8 @@ class IDS_Log_Composite
     /**
      * Removes a logger
      *
-     * @param object $logger IDS_Log_Interface object
-     * 
+     * @param \IDS_Log_Interface $logger IDS_Log_Interface object
+     *
      * @return boolean
      */
     public function removeLogger(IDS_Log_Interface $logger) 

@@ -750,9 +750,12 @@ class DB_mysql extends DB_common
 
     // }}}
     // {{{ quote()
-
     /**
      * @deprecated  Deprecated in release 1.6.0
+     *
+     * @param null $str
+     *
+     * @return mixed
      */
     public function quote($str = null)
     {
@@ -1002,6 +1005,9 @@ class DB_mysql extends DB_common
 
     // }}}
 
+    /**
+     * @return int|void
+     */
     public function lastInsertId() {
         return mysql_insert_id($this->connection);
     }

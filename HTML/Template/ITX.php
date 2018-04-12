@@ -107,14 +107,16 @@ class HTML_Template_ITX extends HTML_Template_IT
     public $callback = array();
 
     /**
-    * Builds some complex regexps and calls the constructor
-    * of the parent class.
-    *
-    * Make sure that you call this constructor if you derive your own
-    * template class from this one.
-    *
-    * @see    HTML_Template_IT()
-    */
+     * Builds some complex regexps and calls the constructor
+     * of the parent class.
+     *
+     * Make sure that you call this constructor if you derive your own
+     * template class from this one.
+     *
+     * @see    HTML_Template_IT()
+     *
+     * @param string $root
+     */
     public function __construct($root = '')
     {
 

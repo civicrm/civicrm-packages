@@ -36,6 +36,11 @@
  * @version    Release: 0.1.14
  */
 interface PHP_Beautifier_Tokeniker_Interface {
+    /**
+     * PHP_Beautifier_Tokeniker_Interface constructor.
+     *
+     * @param $sText
+     */
     public function __construct($sText);
     public function getTokens();
 }

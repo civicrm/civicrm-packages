@@ -1,6 +1,11 @@
 <?php
 namespace CRM\GitFootnote;
 
+/**
+ * Class JiraFilterTest
+ *
+ * @package CRM\GitFootnote
+ */
 class JiraFilterTest extends \PHPUnit_Framework_TestCase {
 
   /**
@@ -132,11 +137,13 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
     return $cases;
   }
 
-  /**
-   * @dataProvider offlineCases
-   * @param string $messageBody
-   * @param array $expectedNotes footnotes that should be produced
-   */
+    /**
+     * @dataProvider offlineCases
+     *
+     * @param string $messageBody
+     * @param        $expectedBody
+     * @param array  $expectedNotes footnotes that should be produced
+     */
   function testOfflineCases($messageBody, $expectedBody, $expectedNotes) {
     $message = new CommitMessage($messageBody);
     $this->createJiraFilter()->filter($message);
@@ -144,13 +151,14 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals($expectedNotes, array_values($message->getNotes()));
   }
 
-  /**
-   * Content should stable across multiple executions
-   *
-   * @dataProvider offlineCases
-   * @param string $messageBody
-   * @param array $expectedNotes footnotes that should be produced
-   */
+    /**
+     * Content should stable across multiple executions
+     *
+     * @dataProvider offlineCases
+     * @param string $messageBody
+     * @param        $expectedBody
+     * @param array  $expectedNotes footnotes that should be produced
+     */
   function testReprocessOfflineCases($messageBody, $expectedBody, $expectedNotes) {
     // Ignore $expectedBody, $expectedNotes; these are evaluated elsewhere (testOfflineCases).
     // This test is only about stability of output.
@@ -226,11 +234,13 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
     return $cases;
   }
 
-  /**
-   * @dataProvider onlineCases
-   * @param string $messageBody
-   * @param array $expectedNotes footnotes that should be produced
-   */
+    /**
+     * @dataProvider onlineCases
+     * @param string $messageBody
+     * @param        $expectedBody
+     * @param array  $expectedNotes footnotes that should be produced
+     * @param        $mockWsReplies
+     */
   function testOnlineCases($messageBody, $expectedBody, $expectedNotes, $mockWsReplies) {
     $message = new CommitMessage($messageBody);
     $jiraClient = $this->getMock('Jira_Api_Client_ClientInterface');

@@ -31,8 +31,8 @@ class HTMLPurifier_Length
     );
 
     /**
-     * @param number $n Magnitude
-     * @param string $u Unit
+     * @param string $n Magnitude
+     * @param bool   $u Unit
      */
     public function __construct($n = '0', $u = false) {
         $this->n = (string) $n;
@@ -99,8 +99,13 @@ class HTMLPurifier_Length
 
     /**
      * Compares two lengths, and returns 1 if greater, -1 if less and 0 if equal.
+     *
      * @warning If both values are too large or small, this calculation will
      *          not work properly
+     *
+     * @param $l
+     *
+     * @return bool|string
      */
     public function compareTo($l) {
         if ($l === false) return false;

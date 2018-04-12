@@ -5,10 +5,13 @@
  */
 class s_star extends star
 {
-	/**
-	 * I use this wrapper for default dot types,
-	 * it just makes the code easier to read.
-	 */
+    /**
+     * I use this wrapper for default dot types,
+     * it just makes the code easier to read.
+     *
+     * @param $colour
+     * @param $size
+     */
 	public function __construct($colour, $size)
 	{
 		parent::__construct();
@@ -16,12 +19,17 @@ class s_star extends star
 	}
 }
 
+/**
+ * Class s_box
+ */
 class s_box extends anchor
 {
-	/**
-	 * I use this wrapper for default dot types,
-	 * it just makes the code easier to read.
-	 */
+    /**
+     * I use this wrapper for default dot types,
+     * it just makes the code easier to read.
+     * @param $colour
+     * @param $size
+     */
 	public function __construct($colour, $size)
 	{
 		parent::__construct();
@@ -29,12 +37,17 @@ class s_box extends anchor
 	}
 }
 
+/**
+ * Class s_hollow_dot
+ */
 class s_hollow_dot extends hollow_dot
 {
-	/**
-	 * I use this wrapper for default dot types,
-	 * it just makes the code easier to read.
-	 */
+    /**
+     * I use this wrapper for default dot types,
+     * it just makes the code easier to read.
+     * @param $colour
+     * @param $size
+     */
 	public function __construct($colour, $size)
 	{
 		parent::__construct();

@@ -130,13 +130,14 @@ class System_Command {
         
     // }}}
     // {{{ constructor
-
     /**
      * Class constructor
-     * 
+     *
      * Defines all necessary constants and sets defaults
-     * 
+     *
      * @access public
+     *
+     * @param null $in_shell
      */
     public function __construct($in_shell = null)
     {
@@ -281,17 +282,12 @@ class System_Command {
     
     // }}}
     // {{{ pushCommand()
-
     /**
      * Used to push a command onto the running command to be executed
      *
      * @param  string $in_command binary to be run
-     * @param  string $in_argument either an option or argument value, to be handled appropriately
-     * @param  string $in_argument
-     * @param  ...
-     *
-     * @access public
      * @return boolean true on success {or System_Command_Error Exception}
+     * @access public
      */
     public function pushCommand($in_command)
     {
@@ -445,15 +441,13 @@ class System_Command {
 
     // }}}
     // {{{ which()
-
     /**
      * Functionality similiar to unix 'which'. Searches the path
-     * for the specified program. 
+     * for the specified program.
      *
-     * @param $cmd name of the executable to search for 
-     *
-     * @access private
+     * @param $in_cmd
      * @return string returns the full path if found, false if not
+     * @access private
      */
     public function which($in_cmd)
     {
@@ -571,7 +565,14 @@ class System_Command_Error extends PEAR_Error
 
     // }}}
     // {{{ constructor
-
+    /**
+     * System_Command_Error constructor.
+     *
+     * @param int  $code
+     * @param int  $mode
+     * @param int  $level
+     * @param null $debuginfo
+     */
     public function __construct($code = SYSTEM_COMMAND_ERROR, $mode = PEAR_ERROR_RETURN,
               $level = E_USER_NOTICE, $debuginfo = null)
     {

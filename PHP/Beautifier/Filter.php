@@ -96,9 +96,13 @@ abstract class PHP_Beautifier_Filter
             $this->aSettings = $aSettings;
         }
     }
+
     /**
      * Add a setting definition
-     * @param string
+     *
+     * @param $sSetting
+     * @param $sType
+     * @param $sDescription
      */
     protected function addSettingDefinition($sSetting, $sType, $sDescription)
     {
@@ -227,16 +231,28 @@ abstract class PHP_Beautifier_Filter
     public function postProcess()
     {
     }
+
+    /**
+     * @return array
+     */
     public function __sleep()
     {
         return array(
             'aSettings'
         );
     }
+
+    /**
+     * @return string
+     */
     public function getDescription()
     {
         return $this->sDescription;
     }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         // php_beautifier->setBeautify(false);

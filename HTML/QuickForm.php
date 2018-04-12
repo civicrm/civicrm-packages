@@ -741,19 +741,19 @@ class HTML_QuickForm extends HTML_Common
 
     // }}}
     // {{{ addGroup()
-
     /**
      * Adds an element group
-     * @param    array      $elements       array of elements composing the group
-     * @param    string     $name           (optional)group name
-     * @param    string     $groupLabel     (optional)group label
-     * @param    string     $separator      (optional)string to separate elements
-     * @param    string     $appendName     (optional)specify whether the group name should be
+     *
+     * @param    array  $elements           array of elements composing the group
+     * @param    string $name               (optional)group name
+     * @param    string $groupLabel         (optional)group label
+     * @param    string $separator          (optional)string to separate elements
+     * @param bool      $appendName         (optional)specify whether the group name should be
      *                                      used in the form element name ex: group[element]
+     *
      * @return   HTML_QuickForm_group       reference to a newly added group
      * @since    2.8
      * @access   public
-     * @throws   HTML_QuickForm_Error
      */
     public function &addGroup($elements, $name=null, $groupLabel='', $separator=null, $appendName = true)
     {

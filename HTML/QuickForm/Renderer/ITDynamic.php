@@ -104,7 +104,9 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_tpl->setCurrentBlock('qf_main_loop');
     }
 
-
+    /**
+     * @param $form
+     */
     public function finishForm(&$form)
     {
         // display errors above form
@@ -123,8 +125,10 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         // assign javascript validation rules
         $this->_tpl->setVariable('qf_javascript', $form->getValidationScript());
     }
-      
 
+    /**
+     * @param $header
+     */
     public function renderHeader(&$header)
     {
         $blockName = $this->_matchBlock($header);
@@ -136,7 +140,11 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_tpl->parse('qf_main_loop');
     }
 
-
+    /**
+     * @param $element
+     * @param $required
+     * @param $error
+     */
     public function renderElement(&$element, $required, $error)
     {
         $blockName = $this->_matchBlock($element);
@@ -190,15 +198,21 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_tpl->parse($blockName);
         $this->_tpl->parseCurrentBlock();
     }
-   
 
+    /**
+     * @param $element
+     */
     public function renderHidden(&$element)
     {
         $this->_tpl->setVariable('qf_hidden', $element->toHtml());
         $this->_tpl->parse('qf_hidden_loop');
     }
 
-
+    /**
+     * @param $group
+     * @param $required
+     * @param $error
+     */
     public function startGroup(&$group, $required, $error)
     {
         $blockName = $this->_matchBlock($group);
@@ -223,7 +237,9 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_tpl->setVariable('qf_group_label', $group->getLabel());
     }
 
-
+    /**
+     * @param $group
+     */
     public function finishGroup(&$group)
     {
         $this->_tpl->parse($this->_matchBlock($group));

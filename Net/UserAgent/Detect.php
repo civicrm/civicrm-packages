@@ -56,6 +56,12 @@ define('NET_USERAGENT_DETECT_ALL',      'all');
 class Net_UserAgent_Detect {
     // {{{ constructor
 
+    /**
+     * Net_UserAgent_Detect constructor.
+     *
+     * @param null $in_userAgent
+     * @param null $in_detect
+     */
     public function __construct($in_userAgent = null, $in_detect = null)
     {
         $this->detect($in_userAgent, $in_detect);
@@ -63,11 +69,14 @@ class Net_UserAgent_Detect {
 
     // }}}
     // {{{ singleton
-
     /**
      * To be used in place of the contructor to return only open instance.
      *
-     * @access public 
+     * @access public
+     *
+     * @param null $in_userAgent
+     * @param null $in_detect
+     *
      * @return object Net_UserAgent_Detect instance
      */
     public function &singleton($in_userAgent = null, $in_detect = null)
@@ -660,7 +669,6 @@ class Net_UserAgent_Detect {
 
     // }}}
     // {{{ getOS()
-
     /**
      * Since simply returning the "os" is somewhat ambiguous since there
      * are different ways to classify the browser, this function works by taking
@@ -668,8 +676,9 @@ class Net_UserAgent_Detect {
      * ones first in the array.
      *
      * @access public
+     * @param $in_expectList
      * @return string first flag that matches
-     */
+*/
     public function getOS($in_expectList)
     {
         Net_UserAgent_Detect::detect();
@@ -731,7 +740,6 @@ class Net_UserAgent_Detect {
 
     // }}}
     // {{{ setQuirk()
-
     /**
      * Set a unique behavior for the current browser.
      *
@@ -739,12 +747,12 @@ class Net_UserAgent_Detect {
      * mechanism allows the coder to determine if an excepetion must
      * be made with the current client.
      *
-     * @param string $in_quirk The quirk to set
-     * @param string $in_hasQuirk (optional) Does the browser have the quirk?
+     * @param string $in_quirk    The quirk to set
+     * @param bool   $in_hasQuirk (optional) Does the browser have the quirk?
      *
-     * @access public
      * @return void
-     */
+     * @access public
+*/
     public function setQuirk($in_quirk, $in_hasQuirk = true)
     {
         $quirks = Net_UserAgent_Detect::_getStaticProperty('quirks');
@@ -796,7 +804,6 @@ class Net_UserAgent_Detect {
 
     // }}}
     // {{{ setFeature()
-
     /**
      * Set capabilities for the current browser.
      *
@@ -804,12 +811,12 @@ class Net_UserAgent_Detect {
      * helps keep track of the core features of a client, such as if the client
      * supports dhtml, dom, javascript, etc.
      *
-     * @param string $in_feature The feature to set
-     * @param string $in_hasFeature (optional) Does the browser have the feature?
+     * @param string $in_feature    The feature to set
+     * @param bool   $in_hasFeature (optional) Does the browser have the feature?
      *
-     * @access public
      * @return void
-     */
+     * @access public
+*/
     public function setFeature($in_feature, $in_hasFeature = true)
     {
         $features = Net_UserAgent_Detect::_getStaticProperty('features');

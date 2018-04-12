@@ -117,6 +117,9 @@ class FilterLZW
 
     /**
      * Add a new string to the string table.
+     *
+     * @param        $oldString
+     * @param string $newString
      */
     protected function _addStringToTable($oldString, $newString = '')
     {

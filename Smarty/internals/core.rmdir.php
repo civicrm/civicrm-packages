@@ -4,14 +4,13 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * delete a dir recursively (level=0 -> keep root)
  * WARNING: no tests, it will try to remove what you tell it!
  *
- * @param string $dirname
- * @param integer $level
- * @param integer $exp_time
+ * @param $params
+ * @param $smarty
+ *
  * @return boolean
  */
 

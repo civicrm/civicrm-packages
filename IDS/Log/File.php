@@ -169,10 +169,10 @@ class IDS_Log_File implements IDS_Log_Interface
     /**
      * Stores given data into a file
      *
-     * @param  object $data IDS_Report
-     * 
-     * @throws Exception if the logfile isn't writeable
+     * @param \IDS_Report $data IDS_Report
+     *
      * @return boolean
+     * @throws \Exception if the logfile isn't writeable
      */
     public function execute(IDS_Report $data) 
     {

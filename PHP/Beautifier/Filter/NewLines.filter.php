@@ -51,7 +51,14 @@ class PHP_Beautifier_Filter_NewLines extends PHP_Beautifier_Filter
     private $aBeforeContent = array();
     private $aAfterToken = array();
     private $aAfterContent = array();
-    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array()) 
+
+    /**
+     * PHP_Beautifier_Filter_NewLines constructor.
+     *
+     * @param \PHP_Beautifier $oBeaut
+     * @param array           $aSettings
+     */
+    public function __construct(PHP_Beautifier $oBeaut, $aSettings = array())
     {
         parent::__construct($oBeaut, $aSettings);
         $this->addSettingDefinition('before', 'text', 'List of contents to put new lines before, separated by colons');
@@ -78,7 +85,14 @@ class PHP_Beautifier_Filter_NewLines extends PHP_Beautifier_Filter
         }
         $this->oBeaut->setNoDeletePreviousSpaceHack();
     }
-    public function __call($sMethod, $aArgs) 
+
+    /**
+     * @param $sMethod
+     * @param $aArgs
+     *
+     * @return mixed|string
+     */
+    public function __call($sMethod, $aArgs)
     {
         $iToken = $this->aToken[0];
         $sContent = $this->aToken[1];

@@ -22,6 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+/**
+ * Class Jira_Api_Result
+ */
 class Jira_Api_Result
 {
     protected $expand;
@@ -31,6 +35,11 @@ class Jira_Api_Result
 
     protected $result;
 
+    /**
+     * Jira_Api_Result constructor.
+     *
+     * @param $result
+     */
     public function __construct($result)
     {
         if (isset($result['expand'])) {
@@ -57,11 +66,17 @@ class Jira_Api_Result
         return $this->total;
     }
 
+    /**
+     * @return int
+     */
     public function getIssuesCount()
     {
         return count($this->getIssues());
     }
 
+    /**
+     * @return array
+     */
     public function getIssues()
     {
         if (isset($this->result['issues'])) {

@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Class Blob
+ */
 class Blob
 {
     protected $db;
@@ -11,6 +15,11 @@ class Blob
         $this->db = $db;
     }
 
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
     public function get($name)
     {
         $stmt = $this->db->prepare("select * from notification where id = :id");
@@ -20,6 +29,10 @@ class Blob
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @param $id
+     * @param $status
+     */
     public function insert($id, $status)
     {
         $stmt = $this->db->prepare("insert ignore into notification(id,updated_at) values(:id, :status)");
@@ -28,6 +41,10 @@ class Blob
         $stmt->execute();
     }
 
+    /**
+     * @param $name
+     * @param $status
+     */
     public function update($name, $status)
     {
         $stmt = $this->db->prepare("update notification set updated_at = :status where id = :id");

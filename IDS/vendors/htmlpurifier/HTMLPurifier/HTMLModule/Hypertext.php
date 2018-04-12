@@ -8,6 +8,9 @@ class HTMLPurifier_HTMLModule_Hypertext extends HTMLPurifier_HTMLModule
 
     public $name = 'Hypertext';
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
         $a = $this->addElement(
             'a', 'Inline', 'Inline', 'Common',

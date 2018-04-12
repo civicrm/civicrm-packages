@@ -13,6 +13,13 @@ abstract class HTMLPurifier_Strategy_Composite extends HTMLPurifier_Strategy
 
     abstract public function __construct();
 
+    /**
+     * @param array          $tokens
+     * @param \Configuration $config
+     * @param                $context
+     *
+     * @return array
+     */
     public function execute($tokens, $config, $context) {
         foreach ($this->strategies as $strategy) {
             $tokens = $strategy->execute($tokens, $config, $context);

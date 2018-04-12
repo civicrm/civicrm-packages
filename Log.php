@@ -258,7 +258,13 @@ class Log
 
     /**
      * Abstract implementation of the log() method.
+     *
      * @since Log 1.0
+     *
+     * @param      $message
+     * @param null $priority
+     *
+     * @return bool
      */
     public function log($message, $priority = null)
     {
@@ -527,11 +533,15 @@ class Log
      * Produces a formatted log line based on a format string and a set of
      * variables representing the current log record and state.
      *
+     * @param $format
+     * @param $timestamp
+     * @param $priority
+     * @param $message
      * @return  string  Formatted log string.
      *
      * @access  protected
      * @since   Log 1.9.4
-     */
+*/
     public function _format($format, $timestamp, $priority, $message)
     {
         /*
@@ -707,11 +717,11 @@ class Log
     /**
      * Returns the current level mask.
      *
-     * @return interger         The current level mask.
+     * @return int The current level mask.
      *
      * @access  public
      * @since   Log 1.7.0
-     */
+*/
     public function getMask()
     {
         return $this->_mask;

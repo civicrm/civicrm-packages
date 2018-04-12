@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * Class pie_value
+ */
 class pie_value
 {
-	public function __construct( $value, $label )
+    /**
+     * pie_value constructor.
+     *
+     * @param $value
+     * @param $label
+     */
+    public function __construct( $value, $label )
 	{
 		$this->value = $value;
 		$this->label = $label;
@@ -17,19 +26,30 @@ class pie_value
     {
         $this->text = $text;
     }
-	
-	public function set_key_on_click( $action )
+
+    /**
+     * @param $action
+     */
+    public function set_key_on_click( $action )
 	{
 		$tmp = 'key-on-click';
 		$this->$tmp = $action;
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	public function set_label( $label, $label_colour, $font_size )
+
+    /**
+     * @param $label
+     * @param $label_colour
+     * @param $font_size
+     */
+    public function set_label( $label, $label_colour, $font_size )
 	{
 		$this->label = $label;
 		
@@ -40,22 +60,31 @@ class pie_value
 		$this->$tmp = $font_size;
 		
 	}
-	
-	public function set_tooltip( $tip )
+
+    /**
+     * @param $tip
+     */
+    public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;
 	}
-	
-	public function on_click( $event )
+
+    /**
+     * @param $event
+     */
+    public function on_click( $event )
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $event;
 	}
-	
-	
-	/**
-	 * An object that inherits from base_pie_animation
-	 */
+
+    /**
+     * An object that inherits from base_pie_animation
+     *
+     * @param $animation
+     *
+     * @return \pie_value
+     */
 	public function add_animation( $animation )
 	{
 		if( !isset( $this->animate ) )
@@ -67,6 +96,9 @@ class pie_value
 	}
 }
 
+/**
+ * Class base_pie_animation
+ */
 class base_pie_animation{}
 
 /**
@@ -104,15 +136,20 @@ class pie
 	{
 		$this->type      		= 'pie';
 	}
-	
-	public function set_colours( $colours )
+
+    /**
+     * @param $colours
+     */
+    public function set_colours( $colours )
 	{
 		$this->colours = $colours;
-	}
-	
-	/**
-	 * Sugar wrapped around set_colours
-	 */
+  }
+
+    /**
+     * Sugar wrapped around set_colours
+     * @param $colours
+     * @return \pie
+*/
 	public function colours( $colours )
 	{
 		$this->set_colours( $colours );
@@ -125,11 +162,13 @@ class pie
 	public function set_alpha( $alpha )
 	{
 		$this->alpha = $alpha;
-	}
-	
-	/**
-	 *sugar wrapped set_alpha
-	 **/
+  }
+
+    /**
+     *sugar wrapped set_alpha
+     * @param $alpha
+     * @return \pie
+*/
 	public function alpha( $alpha )
 	{
 		$this->set_alpha( $alpha );
@@ -144,31 +183,36 @@ class pie
 	 */
 	public function set_values( $v )
 	{
-		$this->values = $v;		
-	}
+		$this->values = $v;
+  }
 
-	/**
-	 * sugar for set_values
-	 */
+    /**
+     * sugar for set_values
+     * @param $v
+     * @return \pie
+*/
 	public function values( $v )
 	{
 		$this->set_values( $v );
 		return $this;
-	}
-	
-	/**
-	 * HACK to keep old code working.
-	 */
+  }
+
+    /**
+     * HACK to keep old code working.
+     * @param $bool
+*/
 	public function set_animate( $bool )
 	{
 		if( $bool )
 			$this->add_animation( new pie_fade() );
-			
-	}
-	
-	/**
-	 * An object that inherits from base_pie_animation
-	 */
+
+  }
+
+    /**
+     * An object that inherits from base_pie_animation
+     * @param $animation
+     * @return \pie
+*/
 	public function add_animation( $animation )
 	{
 		if( !isset( $this->animate ) )
@@ -186,11 +230,13 @@ class pie
 	{
 		$tmp = 'start-angle';
 		$this->$tmp = $angle;
-	}
-	
-	/**
-	 * sugar for set_start_angle
-	 */
+  }
+
+    /**
+     * sugar for set_start_angle
+     * @param $angle
+     * @return \pie
+*/
 	public function start_angle($angle)
 	{
 		$this->set_start_angle( $angle );
@@ -203,11 +249,13 @@ class pie
 	public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;
-	}
-	
-	/**
-	 * sugar for set_tooltip
-	 */
+  }
+
+    /**
+     * sugar for set_tooltip
+     * @param $tip
+     * @return \pie
+*/
 	public function tooltip( $tip )
 	{
 		$this->set_tooltip( $tip );
@@ -219,8 +267,11 @@ class pie
 		$tmp = 'gradient-fill';
 		$this->$tmp = true;
 	}
-	
-	public function gradient_fill()
+
+    /**
+     * @return $this
+     */
+    public function gradient_fill()
 	{
 		$this->set_gradient_fill();
 		return $this;
@@ -237,8 +288,13 @@ class pie
 		$tmp = 'label-colour';
 		$this->$tmp = $label_colour;	
 	}
-	
-	public function label_colour( $label_colour )
+
+    /**
+     * @param $label_colour
+     *
+     * @return $this
+     */
+    public function label_colour( $label_colour )
 	{
 		$this->set_label_colour( $label_colour );
 		return $this;
@@ -252,8 +308,11 @@ class pie
 		$tmp = 'no-labels';
 		$this->$tmp = true;
 	}
-	
-	public function on_click( $event )
+
+    /**
+     * @param $event
+     */
+    public function on_click( $event )
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $event;

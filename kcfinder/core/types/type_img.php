@@ -14,8 +14,19 @@
 
 namespace kcfinder;
 
+/**
+ * Class type_img
+ *
+ * @package kcfinder
+ */
 class type_img {
 
+    /**
+     * @param       $file
+     * @param array $config
+     *
+     * @return bool|string
+     */
     public function checkFile($file, array $config) {
 
         $driver = isset($config['imageDriversPriority'])

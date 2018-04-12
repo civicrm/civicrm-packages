@@ -104,10 +104,11 @@ class HTML_QuickForm_hiddenselect extends HTML_QuickForm_select
     
     // }}}
     // {{{ accept()
-
-   /**
-    * This is essentially a hidden element and should be rendered as one  
-    */
+    /**
+     * This is essentially a hidden element and should be rendered as one
+     *
+     * @param $renderer
+     */
     public function accept(&$renderer)
     {
         $renderer->renderHidden($this);

@@ -132,7 +132,12 @@ class When
 		return $this;
 	}
 
-	public function freq($frequency)
+    /**
+     * @param $frequency
+     *
+     * @return $this
+     */
+    public function freq($frequency)
 	{
 		if(in_array(strtoupper($frequency), $this->valid_frequency))
 		{
@@ -147,7 +152,13 @@ class When
 	}
 
 	// accepts an rrule directly
-	public function rrule($rrule)
+
+    /**
+     * @param $rrule
+     *
+     * @return $this
+     */
+    public function rrule($rrule)
 	{
 		// strip off a trailing semi-colon
 		$rrule = trim($rrule, ";");
@@ -210,7 +221,13 @@ class When
 	}
 
 	//max number of items to return based on the pattern
-	public function count($count)
+
+    /**
+     * @param $count
+     *
+     * @return $this
+     */
+    public function count($count)
 	{
 		$this->count = (int)$count;
 
@@ -218,7 +235,13 @@ class When
 	}
 
 	// how often the recurrence rule repeats
-	public function interval($interval)
+
+    /**
+     * @param $interval
+     *
+     * @return $this
+     */
+    public function interval($interval)
 	{
 		$this->interval = (int)$interval;
 
@@ -226,7 +249,13 @@ class When
 	}
 
 	// starting day of the week
-	public function wkst($day)
+
+    /**
+     * @param $day
+     *
+     * @return $this
+     */
+    public function wkst($day)
 	{
 		switch($day)
 		{
@@ -257,7 +286,13 @@ class When
 	}
 
 	// max date
-	public function until($end_date)
+
+    /**
+     * @param $end_date
+     *
+     * @return $this
+     */
+    public function until($end_date)
 	{
 		try
 		{
@@ -280,7 +315,12 @@ class When
 		return $this;
 	}
 
-	public function bymonth($months)
+    /**
+     * @param $months
+     *
+     * @return $this
+     */
+    public function bymonth($months)
 	{
 		if(is_array($months))
 		{
@@ -291,7 +331,12 @@ class When
 		return $this;
 	}
 
-	public function bymonthday($days)
+    /**
+     * @param $days
+     *
+     * @return $this
+     */
+    public function bymonthday($days)
 	{
 		if(is_array($days))
 		{
@@ -302,7 +347,12 @@ class When
 		return $this;
 	}
 
-	public function byweekno($weeks)
+    /**
+     * @param $weeks
+     *
+     * @return $this
+     */
+    public function byweekno($weeks)
 	{
 		$this->gobyweekno = true;
 
@@ -314,7 +364,12 @@ class When
 		return $this;
 	}
 
-	public function bysetpos($days)
+    /**
+     * @param $days
+     *
+     * @return $this
+     */
+    public function bysetpos($days)
 	{
 		$this->gobysetpos = true;
 
@@ -326,7 +381,12 @@ class When
 		return $this;
 	}
 
-	public function byday($days)
+    /**
+     * @param $days
+     *
+     * @return $this
+     */
+    public function byday($days)
 	{
 		$this->gobyday = true;
 
@@ -392,7 +452,12 @@ class When
 		return $this;
 	}
 
-	public function byyearday($days)
+    /**
+     * @param $days
+     *
+     * @return $this
+     */
+    public function byyearday($days)
 	{
 		$this->gobyyearday = true;
 
@@ -658,7 +723,12 @@ class When
 		}
 	}
 
-	public function valid_date($date)
+    /**
+     * @param $date
+     *
+     * @return bool
+     */
+    public function valid_date($date)
 	{
 		$year = $date->format('Y');
 		$month = $date->format('n');
@@ -706,7 +776,11 @@ class When
 	}
 
 	// return the next valid DateTime object which matches the pattern and follows the rules
-	public function next()
+
+    /**
+     * @return bool|mixed
+     */
+    public function next()
 	{
 		// check the counter is set
 		if($this->count !== 0 && $this->counter >= $this->count) {

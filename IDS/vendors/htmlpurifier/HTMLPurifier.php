@@ -194,9 +194,13 @@ class HTMLPurifier
 
     /**
      * Filters an array of HTML snippets
+     *
+     * @param $array_of_html
      * @param $config Optional HTMLPurifier_Config object for this operation.
      *                See HTMLPurifier::purify() for more details.
+     *
      * @return Array of purified HTML
+     * @throws \HTMLPurifier_Exception
      */
     public function purifyArray($array_of_html, $config = null) {
         $context_array = array();
@@ -232,7 +236,9 @@ class HTMLPurifier
 
     /**
      * @note Backwards compatibility, see instance()
-     */
+     * @param null $prototype
+     * @return \HTMLPurifier|null|\Optional
+*/
     public static function getInstance($prototype = null) {
         return HTMLPurifier::instance($prototype);
     }

@@ -40,6 +40,13 @@ class PHP_Beautifier_Filter_phpBB extends PHP_Beautifier_Filter
 {
     protected $sDescription = 'Filter the code to make it compatible with phpBB Coding Standards';
     private $iNestedIfs = 0;
+
+    /**
+     * PHP_Beautifier_Filter_phpBB constructor.
+     *
+     * @param \PHP_Beautifier $oBeaut
+     * @param array           $aSettings
+     */
     public function __construct(PHP_Beautifier $oBeaut, $aSettings = array())
     {
         parent::__construct($oBeaut, $aSettings);
@@ -47,6 +54,10 @@ class PHP_Beautifier_Filter_phpBB extends PHP_Beautifier_Filter
         $oBeaut->setIndentNumber(1);
         $oBeaut->setNewLine(PHP_EOL);
     }
+
+    /**
+     * @param $sTag
+     */
     public function t_open_brace($sTag)
     {
         $this->oBeaut->addNewLineIndent();
@@ -54,6 +65,10 @@ class PHP_Beautifier_Filter_phpBB extends PHP_Beautifier_Filter
         $this->oBeaut->incIndent();
         $this->oBeaut->addNewLineIndent();
     }
+
+    /**
+     * @param $sTag
+     */
     public function t_close_brace($sTag)
     {
         if ($this->oBeaut->getMode('string_index') or $this->oBeaut->getMode('double_quote')) {
@@ -66,6 +81,10 @@ class PHP_Beautifier_Filter_phpBB extends PHP_Beautifier_Filter
             $this->oBeaut->addNewLineIndent();
         }
     }
+
+    /**
+     * @param $sTag
+     */
     public function t_else($sTag)
     {
         $this->oBeaut->add($sTag);
@@ -77,6 +96,10 @@ class PHP_Beautifier_Filter_phpBB extends PHP_Beautifier_Filter
             $this->iNestedIfs++;
         }
     }
+
+    /**
+     * @param $sTag
+     */
     public function t_semi_colon($sTag)
     {
         $this->oBeaut->removeWhitespace();

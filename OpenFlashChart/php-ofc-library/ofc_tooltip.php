@@ -2,6 +2,9 @@
 
 include_once 'ofc_bar_base.php';
 
+/**
+ * Class tooltip
+ */
 class tooltip
 {
 	public function __construct(){}

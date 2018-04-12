@@ -11,7 +11,10 @@
 
 require_once('When.php');
 
-class When_Iterator extends When implements Iterator 
+/**
+ * Class When_Iterator
+ */
+class When_Iterator extends When implements Iterator
 {
 	// store the current position in the array
 	protected $position = 0;
@@ -28,7 +31,12 @@ class When_Iterator extends When implements Iterator
 	// use more memory but less cpu (should also perform quicker)
 	// 
 	// results should always be the same regardless of cache
-	public function __construct($cache = false) 
+    /**
+     * When_Iterator constructor.
+     *
+     * @param bool $cache
+     */
+    public function __construct($cache = false)
 	{
 		parent::__construct();
 
@@ -51,7 +59,10 @@ class When_Iterator extends When implements Iterator
 		}
 	}
 
-	public function current()
+    /**
+     * @return mixed
+     */
+    public function current()
 	{
 		if($this->cache === true)
 		{
@@ -64,18 +75,29 @@ class When_Iterator extends When implements Iterator
 	}
 
 	// only used if caching is enabled
-	public function key()
+
+    /**
+     * @return int|mixed
+     */
+    public function key()
 	{
 		return $this->position;
 	}
 
 	// only used of caching is enabled
-	public function next()
+
+    /**
+     * @return bool|mixed|void
+     */
+    public function next()
 	{
 		++$this->position;
 	}
 
-	public function valid()
+    /**
+     * @return bool
+     */
+    public function valid()
 	{
 		if($this->cache === true)
 		{
@@ -105,7 +127,10 @@ class When_Iterator extends When implements Iterator
 		return false;
 	}
 
-	public function enable_cache($cache)
+    /**
+     * @param $cache
+     */
+    public function enable_cache($cache)
 	{
 		$this->cache = $cache;
 	}

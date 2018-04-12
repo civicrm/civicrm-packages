@@ -31,6 +31,13 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
         return $matches[1] . htmlspecialchars($matches[2], ENT_COMPAT, 'UTF-8') . $matches[3];
     }
 
+    /**
+     * @param String $html
+     * @param        $config
+     * @param        $context
+     *
+     * @return array|void
+     */
     public function tokenizeHTML($html, $config, $context) {
 
         // special normalization for script tags without any armor
@@ -322,6 +329,13 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
 
     /**
      * PHP 5.0.x compatible substr_count that implements offset and length
+     *
+     * @param $haystack
+     * @param $needle
+     * @param $offset
+     * @param $length
+     *
+     * @return int
      */
     protected function substrCount($haystack, $needle, $offset, $length) {
         static $oldVersion;
@@ -341,9 +355,10 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
      *
      * @param $string Inside of tag excluding name.
      *
-     * @returns Assoc array of attributes.
+     * @param $config
+     * @param $context
      * @return array
-     */
+*/
     public function parseAttributeString($string, $config, $context) {
         $string = (string) $string; // quick typecast
 

@@ -302,6 +302,15 @@ class FPDF_TPL extends fpdi_bridge
      *
      * @see http://fpdf.org/en/doc/setfont.htm
      * @see http://www.tcpdf.org/doc/code/classTCPDF.html#afd56e360c43553830d543323e81bc045
+     *
+     * @param        $family
+     * @param string $style
+     * @param null   $size
+     * @param string $fontfile
+     * @param string $subset
+     * @param bool   $out
+     *
+     * @return mixed
      */
     public function SetFont($family, $style = '', $size = null, $fontfile = '', $subset = 'default', $out = true)
     {
@@ -328,7 +337,27 @@ class FPDF_TPL extends fpdi_bridge
      *
      * @see http://fpdf.org/en/doc/image.htm
      * @see http://www.tcpdf.org/doc/code/classTCPDF.html#a714c2bee7d6b39d4d6d304540c761352
-     */
+     * @param        $file
+     * @param string $x
+     * @param string $y
+     * @param int    $w
+     * @param int    $h
+     * @param string $type
+     * @param string $link
+     * @param string $align
+     * @param bool   $resize
+     * @param int    $dpi
+     * @param string $palign
+     * @param bool   $ismask
+     * @param bool   $imgmask
+     * @param int    $border
+     * @param bool   $fitbox
+     * @param bool   $hidden
+     * @param bool   $fitonpage
+     * @param bool   $alt
+     * @param array  $altimgs
+     * @return mixed
+*/
     public function Image(
         $file, $x = '', $y = '', $w = 0, $h = 0, $type = '', $link = '', $align = '', $resize = false,
         $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false,
@@ -359,7 +388,12 @@ class FPDF_TPL extends fpdi_bridge
      *
      * @see http://fpdf.org/en/doc/addpage.htm
      * @see http://www.tcpdf.org/doc/code/classTCPDF.html#a5171e20b366b74523709d84c349c1ced
-     */
+     * @param string $orientation
+     * @param string $format
+     * @param bool   $keepmargins
+     * @param bool   $tocpage
+     * @return mixed
+*/
     public function AddPage($orientation = '', $format = '', $keepmargins = false, $tocpage = false)
     {
         if (is_subclass_of($this, 'TCPDF')) {
@@ -381,7 +415,14 @@ class FPDF_TPL extends fpdi_bridge
      *
      * @see http://fpdf.org/en/doc/link.htm
      * @see http://www.tcpdf.org/doc/code/classTCPDF.html#ab87bf1826384fbfe30eb499d42f1d994
-     */
+     * @param     $x
+     * @param     $y
+     * @param     $w
+     * @param     $h
+     * @param     $link
+     * @param int $spaces
+     * @return mixed
+*/
     public function Link($x, $y, $w, $h, $link, $spaces = 0)
     {
         if (is_subclass_of($this, 'TCPDF')) {
@@ -425,7 +466,11 @@ class FPDF_TPL extends fpdi_bridge
      *
      * @see http://fpdf.org/en/doc/setlink.htm
      * @see http://www.tcpdf.org/doc/code/classTCPDF.html#ace5be60e7857953ea5e2b89cb90df0ae
-     */
+     * @param     $link
+     * @param int $y
+     * @param int $page
+     * @return mixed
+*/
     public function SetLink($link, $y = 0, $page = -1)
     {
         if (is_subclass_of($this, 'TCPDF')) {

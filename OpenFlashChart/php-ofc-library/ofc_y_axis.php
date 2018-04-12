@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class y_axis
+ */
 class y_axis extends y_axis_base
 {
 	public function __construct(){}

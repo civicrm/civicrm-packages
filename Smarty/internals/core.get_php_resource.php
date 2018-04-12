@@ -4,14 +4,14 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * Retrieves PHP script resource
  *
  * sets $php_resource to the returned resource
- * @param string $resource
- * @param string $resource_type
- * @param  $php_resource
+ *
+ * @param $params
+ * @param $smarty
+ *
  * @return boolean
  */
 

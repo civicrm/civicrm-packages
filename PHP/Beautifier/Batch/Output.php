@@ -35,24 +35,50 @@
 abstract class PHP_Beautifier_Batch_Output
 {
     protected $oBatch;
+
+    /**
+     * PHP_Beautifier_Batch_Output constructor.
+     *
+     * @param \PHP_Beautifier_Batch $oBatch
+     */
     public function __construct(PHP_Beautifier_Batch $oBatch)
     {
         $this->oBatch = $oBatch;
     }
+
+    /**
+     * @param $sFile
+     *
+     * @return mixed
+     */
     protected function beautifierSetInputFile($sFile)
     {
         return $this->oBatch->callBeautifier($this, 'setInputFile', array(
             $sFile
         ));
     }
+
+    /**
+     * @return mixed
+     */
     protected function beautifierProcess()
     {
         return $this->oBatch->callBeautifier($this, 'process');
     }
+
+    /**
+     * @return mixed
+     */
     protected function beautifierGet()
     {
         return $this->oBatch->callBeautifier($this, 'get');
     }
+
+    /**
+     * @param $sFile
+     *
+     * @return mixed
+     */
     protected function beautifierSave($sFile)
     {
         return $this->oBatch->callBeautifier($this, 'save', array(

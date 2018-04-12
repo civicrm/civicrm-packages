@@ -43,6 +43,12 @@ class HTMLPurifier_ErrorStruct
      */
     public $children = array();
 
+    /**
+     * @param $type
+     * @param $id
+     *
+     * @return mixed
+     */
     public function getChild($type, $id) {
         if (!isset($this->children[$type][$id])) {
             $this->children[$type][$id] = new HTMLPurifier_ErrorStruct();
@@ -51,6 +57,10 @@ class HTMLPurifier_ErrorStruct
         return $this->children[$type][$id];
     }
 
+    /**
+     * @param $severity
+     * @param $message
+     */
     public function addError($severity, $message) {
         $this->errors[] = array($severity, $message);
     }

@@ -14,6 +14,11 @@
 
 namespace kcfinder;
 
+/**
+ * Class image_gmagick
+ *
+ * @package kcfinder
+ */
 class image_gmagick extends image {
 
     public static $MIMES = array(
@@ -23,6 +28,12 @@ class image_gmagick extends image {
 
     // ABSTRACT PUBLIC METHODS
 
+    /**
+     * @param int $width
+     * @param int $height
+     *
+     * @return bool
+     */
     public function resize($width, $height) {//
         if (!$width) $width = 1;
         if (!$height) $height = 1;
@@ -36,6 +47,13 @@ class image_gmagick extends image {
         return true;
     }
 
+    /**
+     * @param int  $width
+     * @param int  $height
+     * @param bool $background
+     *
+     * @return bool
+     */
     public function resizeFit($width, $height, $background=false) {//
         if (!$width) $width = 1;
         if (!$height) $height = 1;
@@ -71,6 +89,13 @@ class image_gmagick extends image {
         }
     }
 
+    /**
+     * @param      $width
+     * @param      $height
+     * @param bool $offset
+     *
+     * @return bool
+     */
     public function resizeCrop($width, $height, $offset=false) {
         if (!$width) $width = 1;
         if (!$height) $height = 1;
@@ -121,6 +146,12 @@ class image_gmagick extends image {
         return true;
     }
 
+    /**
+     * @param int    $angle
+     * @param string $background
+     *
+     * @return bool
+     */
     public function rotate($angle, $background="#000000") {
         try {
             $this->image->rotateImage($background, $angle);
@@ -134,6 +165,9 @@ class image_gmagick extends image {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function flipHorizontal() {
         try {
             $this->image->flopImage();
@@ -143,6 +177,9 @@ class image_gmagick extends image {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function flipVertical() {
         try {
             $this->image->flipImage();
@@ -152,6 +189,13 @@ class image_gmagick extends image {
         return true;
     }
 
+    /**
+     * @param string $file
+     * @param bool   $left
+     * @param bool   $top
+     *
+     * @return bool
+     */
     public function watermark($file, $left=false, $top=false) {
         try {
             $wm = new \Gmagick($file);
@@ -187,6 +231,12 @@ class image_gmagick extends image {
 
     // ABSTRACT PROTECTED METHODS
 
+    /**
+     * @param int $width
+     * @param int $height
+     *
+     * @return bool|\Gmagick|mixed
+     */
     protected function getBlankImage($width, $height) {
         try {
             $img = new \Gmagick();
@@ -197,6 +247,13 @@ class image_gmagick extends image {
         return $img;
     }
 
+    /**
+     * @param mixed $image
+     * @param int   $width
+     * @param int   $height
+     *
+     * @return bool|\Gmagick|mixed|null
+     */
     protected function getImage($image, &$width, &$height) {
 
         if (is_object($image) && ($image instanceof image_gmagick)) {
@@ -234,10 +291,18 @@ class image_gmagick extends image {
 
     // PSEUDO-ABSTRACT STATIC METHODS
 
+    /**
+     * @return bool
+     */
     public static function available() {
         return class_exists("Gmagick");
     }
 
+    /**
+     * @param string $file
+     *
+     * @return bool
+     */
     public static function checkImage($file) {
         try {
             $img = new \Gmagick($file);
@@ -250,6 +315,12 @@ class image_gmagick extends image {
 
     // INHERIT METHODS
 
+    /**
+     * @param string $type
+     * @param array  $options
+     *
+     * @return bool
+     */
     public function output($type="jpeg", array $options=array()) {
         $type = strtolower($type);
         try {
@@ -289,6 +360,11 @@ class image_gmagick extends image {
 
     // OWN METHODS
 
+    /**
+     * @param array $options
+     *
+     * @return bool
+     */
     protected function optimize_jpeg(array $options=array()) {
         $quality = isset($options['quality']) ? $options['quality'] : self::DEFAULT_JPEG_QUALITY;
         try {

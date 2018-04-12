@@ -86,12 +86,11 @@ class DB_DataObject_Generator extends DB_DataObject
      */
     public $table; // active tablename
 
-
     /**
      * The 'starter' = call this to start the process
      *
      * @access  public
-     * @return  none
+     * @return void
      */
     public function start()
     {
@@ -302,14 +301,14 @@ class DB_DataObject_Generator extends DB_DataObject
         $this->tables = $tmp_table;
         //print_r($this->_definitions);
     }
-    
+
     /**
      * Auto generation of table data.
      *
      * it will output to db_oo_{database} the table definitions
      *
      * @access  private
-     * @return  none
+     * @return void
      */
     public function generateDefinitions()
     {
@@ -462,12 +461,11 @@ class DB_DataObject_Generator extends DB_DataObject
         chmod($file, $perms);
     }
 
-      
     /**
      * The table geneation part
      *
      * @access  private
-     * @return  tabledef and keys array.
+     * @return array and keys array.
      */
     public function _generateDefinitionsTable()
     {
@@ -705,11 +703,14 @@ class DB_DataObject_Generator extends DB_DataObject
     }
 
     /**
-    * Convert a table name into a class name -> override this if you want a different mapping
-    *
-    * @access  public
-    * @return  string class name;
-    */
+     * Convert a table name into a class name -> override this if you want a different mapping
+     *
+     * @access  public
+     *
+     * @param $table
+     *
+     * @return  string class name;
+     */
     
     
     public function getClassNameFromTableName($table)
@@ -718,14 +719,14 @@ class DB_DataObject_Generator extends DB_DataObject
         $class_prefix  = empty($options['class_prefix']) ? '' : $options['class_prefix'];
         return  $class_prefix.preg_replace('/[^A-Z0-9]/i','_',ucfirst(trim($this->table)));
     }
-    
-    
+
     /**
-    * Convert a table name into a file name -> override this if you want a different mapping
-    *
-    * @access  public
-    * @return  string file name;
-    */
+     * Convert a table name into a file name -> override this if you want a different mapping
+     *
+     * @access  public
+     * @param $table
+     * @return  string file name;
+*/
     
     
     public function getFileNameFromTableName($table)
@@ -746,16 +747,16 @@ class DB_DataObject_Generator extends DB_DataObject
             $outfilename = "{$base}/".preg_replace('/[^A-Z0-9]/i','_',ucfirst($this->table)).".php";
         }
         return $outfilename;
-        
+
     }
-    
-    
-     /**
-    * Convert a column name into a method name (usually prefixed by get/set/validateXXXXX)
-    *
-    * @access  public
-    * @return  string method name;
-    */
+
+    /**
+     * Convert a column name into a method name (usually prefixed by get/set/validateXXXXX)
+     *
+     * @access  public
+     * @param $col
+     * @return  string method name;
+*/
     
     
     public function getMethodNameFromColumnName($col)
@@ -841,8 +842,9 @@ class DB_DataObject_Generator extends DB_DataObject
      * The table class geneation part - single file.
      *
      * @access  private
+     * @param string $input
      * @return  none
-     */
+*/
     public function _generateClassTable($input = '')
     {
         // title = expand me!
@@ -1055,8 +1057,9 @@ class DB_DataObject_Generator extends DB_DataObject
      * use it to add extra methods to the default classes.
      *
      * @access   public
+     * @param string $input
      * @return  string added to class eg. functions.
-     */
+*/
     public function derivedHookFunctions($input = "")
     {
         // This is so derived generator classes can generate functions
@@ -1486,17 +1489,19 @@ class DB_DataObject_Generator extends DB_DataObject
         $ret = preg_replace('#, $#', '', $ret);
         return $ret . ");\n" .
                       "    }\n";
-        
+
     }
+
     /**
-    * Generate defaults Function - used generator_add_defaults or generator_no_ini is set.
-    * Only supports mysql and mysqli ... welcome ideas for more..
-    * 
-    *
-    * @param    array  table and key definition.
-    * @return   string
-    * @access   public
-    */
+     * Generate defaults Function - used generator_add_defaults or generator_no_ini is set.
+     * Only supports mysql and mysqli ... welcome ideas for more..
+     *
+     *
+     * @param $table
+     * @param $defs
+     * @return   string
+     * @access   public
+*/
     public function _generateDefaultsFunction($table,$defs)
     {
         $__DB= &$GLOBALS['_DB_DATAOBJECT']['CONNECTIONS'][$this->_database_dsn_md5];

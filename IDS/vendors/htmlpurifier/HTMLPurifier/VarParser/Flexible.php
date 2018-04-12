@@ -8,6 +8,15 @@
 class HTMLPurifier_VarParser_Flexible extends HTMLPurifier_VarParser
 {
 
+    /**
+     * @param $var
+     * @param $type
+     * @param $allow_null
+     *
+     * @return array|bool|float|int|mixed|null
+     * @throws \HTMLPurifier_Exception
+     * @throws \HTMLPurifier_VarParserException
+     */
     protected function parseImplementation($var, $type, $allow_null) {
         if ($allow_null && $var === null) return null;
         switch ($type) {

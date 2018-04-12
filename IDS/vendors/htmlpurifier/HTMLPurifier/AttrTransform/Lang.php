@@ -8,6 +8,13 @@
 class HTMLPurifier_AttrTransform_Lang extends HTMLPurifier_AttrTransform
 {
 
+    /**
+     * @param \Assoc     $attr
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Assoc
+     */
     public function transform($attr, $config, $context) {
 
         $lang     = isset($attr['lang']) ? $attr['lang'] : false;

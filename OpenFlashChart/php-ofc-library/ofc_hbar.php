@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * Class hbar_value
+ */
 class hbar_value
 {
-	public function __construct( $left, $right=null )
+    /**
+     * hbar_value constructor.
+     *
+     * @param      $left
+     * @param null $right
+     */
+    public function __construct( $left, $right=null )
 	{
 		if( isset( $right ) )
 		{
@@ -12,62 +21,99 @@ class hbar_value
 		else
 			$this->right = $left;
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;	
 	}
-	
-	public function set_tooltip( $tip )
+
+    /**
+     * @param $tip
+     */
+    public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;	
 	}
-		
-	public function set_on_click( $text )
+
+    /**
+     * @param $text
+     */
+    public function set_on_click( $text )
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $text;
 	}
 }
 
+/**
+ * Class hbar
+ */
 class hbar
 {
-	public function __construct( $colour )
+    /**
+     * hbar constructor.
+     *
+     * @param $colour
+     */
+    public function __construct( $colour )
 	{
 		$this->type      = "hbar";
 		$this->values    = array();
 		$this->set_colour( $colour );
 	}
-	
-	public function append_value( $v )
+
+    /**
+     * @param $v
+     */
+    public function append_value( $v )
 	{
 		$this->values[] = $v;		
 	}
-	
-	public function set_values( $v )
+
+    /**
+     * @param $v
+     */
+    public function set_values( $v )
 	{
 		foreach( $v as $val )
 			$this->append_value( new hbar_value( $val ) );
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;	
 	}
-		
-	public function set_on_click( $text )
+
+    /**
+     * @param $text
+     */
+    public function set_on_click( $text )
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $text;
 	}
-	public function set_key( $text, $size )
+
+    /**
+     * @param $text
+     * @param $size
+     */
+    public function set_key( $text, $size )
 	{
 		$this->text = $text;
 		$tmp = 'font-size';
 		$this->$tmp = $size;
 	}
-	
-	public function set_tooltip( $tip )
+
+    /**
+     * @param $tip
+     */
+    public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;	
 	}

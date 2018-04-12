@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class y_axis_labels
+ */
 class y_axis_labels
 {
 	public function __construct(){}
@@ -20,15 +23,20 @@ class y_axis_labels
 	{
 		$this->labels = $labels;
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	/**
-	 * font size in pixels
-	 */
+
+    /**
+     * font size in pixels
+     *
+     * @param $size
+     */
 	public function set_size( $size )
 	{
 		$this->size = $size;
@@ -41,8 +49,11 @@ class y_axis_labels
 	{
 		$this->rotate = 270;
 	}
-	
-	public function rotate( $angle )
+
+    /**
+     * @param $angle
+     */
+    public function rotate( $angle )
 	{
 		$this->rotate = $angle;
 	}

@@ -36,6 +36,9 @@
 //
 // Net_URL Class
 
+/**
+ * Class Net_URL
+ */
 class Net_URL
 {
     public $options = array('encode_query_keys' => false);
@@ -462,10 +465,10 @@ class Net_URL
      *
      * @access public
      *
-     * @param  string $opionName The name of the option to retrieve
+     * @param $optionName
      *
-     * @see    $this->options
      * @return bool|mixed
+     * @see    $this->options
      */
     public function getOption($optionName)
     {

@@ -511,10 +511,10 @@ class HTML_QuickForm_advmultiselect extends HTML_QuickForm_select
      * Sets element template
      *
      * @param string $html (optional) The HTML surrounding select boxes and buttons
-     * @param string $js   (optional) if we need to include qfams javascript handler
+     * @param bool   $js   (optional) if we need to include qfams javascript handler
      *
-     * @access     public
      * @return     string
+     * @access     public
      * @since      version 0.4.0 (2005-06-25)
      */
     public function setElementTemplate($html = null, $js = true)

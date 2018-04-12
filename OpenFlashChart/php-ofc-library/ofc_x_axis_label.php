@@ -5,30 +5,50 @@
  */
 class x_axis_label
 {
-	public function __construct( $text, $colour, $size, $rotate )
+    /**
+     * x_axis_label constructor.
+     *
+     * @param $text
+     * @param $colour
+     * @param $size
+     * @param $rotate
+     */
+    public function __construct( $text, $colour, $size, $rotate )
 	{
 		$this->set_text( $text );
 		$this->set_colour( $colour );
 		$this->set_size( $size );
 		$this->set_rotate( $rotate );
 	}
-	
-	public function set_text( $text )
+
+    /**
+     * @param $text
+     */
+    public function set_text( $text )
 	{
 		$this->text = $text;
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	public function set_size( $size )
+
+    /**
+     * @param $size
+     */
+    public function set_size( $size )
 	{
 		$this->size = $size;
 	}
-	
-	public function set_rotate( $rotate )
+
+    /**
+     * @param $rotate
+     */
+    public function set_rotate( $rotate )
 	{
 		$this->rotate = $rotate;
 	}

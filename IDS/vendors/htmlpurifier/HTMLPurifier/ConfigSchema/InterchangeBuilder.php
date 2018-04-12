@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class HTMLPurifier_ConfigSchema_InterchangeBuilder
+ */
 class HTMLPurifier_ConfigSchema_InterchangeBuilder
 {
 
@@ -8,16 +11,34 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
      */
     protected $varParser;
 
+    /**
+     * HTMLPurifier_ConfigSchema_InterchangeBuilder constructor.
+     *
+     * @param null $varParser
+     */
     public function __construct($varParser = null) {
         $this->varParser = $varParser ? $varParser : new HTMLPurifier_VarParser_Native();
     }
 
+    /**
+     * @param null $dir
+     *
+     * @return mixed
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+     */
     public static function buildFromDirectory($dir = null) {
         $builder     = new HTMLPurifier_ConfigSchema_InterchangeBuilder();
         $interchange = new HTMLPurifier_ConfigSchema_Interchange();
         return $builder->buildDir($interchange, $dir);
     }
 
+    /**
+     * @param      $interchange
+     * @param null $dir
+     *
+     * @return mixed
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+     */
     public function buildDir($interchange, $dir = null) {
         if (!$dir) $dir = HTMLPURIFIER_PREFIX . '/HTMLPurifier/ConfigSchema/schema';
         if (file_exists($dir . '/info.ini')) {
@@ -43,6 +64,12 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
         return $interchange;
     }
 
+    /**
+     * @param $interchange
+     * @param $file
+     *
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+     */
     public function buildFile($interchange, $file) {
         $parser = new HTMLPurifier_StringHashParser();
         $this->build(
@@ -78,6 +105,13 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
         $this->_findUnused($hash);
     }
 
+    /**
+     * @param $interchange
+     * @param $hash
+     *
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+     * @throws \HTMLPurifier_Exception
+     */
     public function buildDirective($interchange, $hash) {
         $directive = new HTMLPurifier_ConfigSchema_Interchange_Directive();
 
@@ -142,6 +176,10 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
 
     /**
      * Evaluates an array PHP code string without array() wrapper
+     *
+     * @param $contents
+     *
+     * @return mixed
      */
     protected function evalArray($contents) {
         return eval('return array('. $contents .');');
@@ -149,7 +187,9 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
 
     /**
      * Converts an array list into a lookup array.
-     */
+     * @param $array
+     * @return array
+*/
     protected function lookup($array) {
         $ret = array();
         foreach ($array as $val) $ret[$val] = true;
@@ -159,7 +199,9 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
     /**
      * Convenience function that creates an HTMLPurifier_ConfigSchema_Interchange_Id
      * object based on a string Id.
-     */
+     * @param $id
+     * @return \HTMLPurifier_ConfigSchema_Interchange_Id
+*/
     protected function id($id) {
         return HTMLPurifier_ConfigSchema_Interchange_Id::make($id);
     }

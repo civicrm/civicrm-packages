@@ -40,6 +40,10 @@ require_once 'HTML/QuickForm/Action.php';
  */
 class HTML_QuickForm_Action_Display extends HTML_QuickForm_Action
 {
+    /**
+     * @param $page
+     * @param $actionName
+     */
     public function perform(&$page, $actionName)
     {
         $pageName = $page->getAttribute('id');

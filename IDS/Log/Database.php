@@ -245,10 +245,10 @@ class IDS_Log_Database implements IDS_Log_Interface
     /**
      * Stores given data into the database
      *
-     * @param object $data IDS_Report instance
-     * 
-     * @throws Exception if db error occurred
+     * @param \IDS_Report $data IDS_Report instance
+     *
      * @return boolean
+     * @throws \Exception if db error occurred
      */
     public function execute(IDS_Report $data) 
     {

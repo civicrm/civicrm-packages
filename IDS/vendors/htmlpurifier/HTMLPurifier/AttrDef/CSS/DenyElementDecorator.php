@@ -15,8 +15,15 @@ class HTMLPurifier_AttrDef_CSS_DenyElementDecorator extends HTMLPurifier_AttrDef
         $this->def = $def;
         $this->element = $element;
     }
+
     /**
      * Checks if CurrentToken is set and equal to $this->element
+     *
+     * @param $string
+     * @param $config
+     * @param $context
+     *
+     * @return bool
      */
     public function validate($string, $config, $context) {
         $token = $context->get('CurrentToken', true);

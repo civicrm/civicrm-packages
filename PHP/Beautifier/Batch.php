@@ -177,7 +177,12 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
         $this->sPreOutputFile = $sFile;
         return true;
     }
-    private function setInputFilePost() 
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    private function setInputFilePost()
     {
         $bCli = php_sapi_name() == 'cli';
         // ArrayNested->off()
@@ -217,7 +222,11 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
         // ArrayNested->on()
         
     }
-    private function setOutputFilePost() 
+
+    /**
+     * @return bool
+     */
+    private function setOutputFilePost()
     {
         if (php_sapi_name() == 'cli' and $this->sPreOutputFile == STDOUT) {
             $this->sOutputMode = PHP_Beautifier_Batch::FILES;
@@ -258,7 +267,12 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
             return true;
         }
     }
-    private function getBatchEngine() 
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    private function getBatchEngine()
     {
         $sCompress = $this->sCompress ? ucfirst($this->sCompress) : '';
         $sClass = $this->sOutputMode.$sCompress;
@@ -275,11 +289,15 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
             }
         }
     }
+
     /**
-    * Save the beautified sources to file(s)
-    * @return bool
-    * @throws Exception
-    */
+     * Save the beautified sources to file(s)
+     *
+     * @param null $sFile
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function save($sFile = null) 
     {
         $oBatchEngine = $this->getBatchEngine();
@@ -301,13 +319,14 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
     {
         echo $this->get();
     }
+
     /**
-    * Allows subclass of {@link PHP_Beautifier_Batch_Engine} call methods of {@link $oBeaut}
-    * @param    PHP_Beautifier_Batch_Engine
-    * @param    string method to call
-    * @param    array  array of args
-    * @return   mixed
-    */
+     * Allows subclass of {@link PHP_Beautifier_Batch_Engine} call methods of {@link $oBeaut}
+     * @param \PHP_Beautifier_Batch_Output $oEngine
+     * @param    PHP_Beautifier_Batch_Engine
+     * @param array                        $aArgs
+     * @return   mixed
+*/
     public function callBeautifier(PHP_Beautifier_Batch_Output $oEngine, $sMethod, $aArgs = array()) 
     {
         return @call_user_func_array(array(
@@ -315,11 +334,19 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
             $sMethod
         ) , $aArgs);
     }
-    public function getInputFiles() 
+
+    /**
+     * @return mixed
+     */
+    public function getInputFiles()
     {
         return $this->mInputFiles;
     }
-    public function getOutputPath() 
+
+    /**
+     * @return string
+     */
+    public function getOutputPath()
     {
         return $this->sPreOutputFile;
     }

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class HTMLPurifier_URIDefinition
+ */
 class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
 {
 
@@ -31,10 +34,17 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
         $this->registerFilter(new HTMLPurifier_URIFilter_Munge());
     }
 
+    /**
+     * @param $filter
+     */
     public function registerFilter($filter) {
         $this->registeredFilters[$filter->name] = $filter;
     }
 
+    /**
+     * @param $filter
+     * @param $config
+     */
     public function addFilter($filter, $config) {
         $r = $filter->prepare($config);
         if ($r === false) return; // null is ok, for backwards compat
@@ -45,11 +55,17 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
         }
     }
 
+    /**
+     * @param \HTMLPurifier_Config $config
+     */
     protected function doSetup($config) {
         $this->setupMemberVariables($config);
         $this->setupFilters($config);
     }
 
+    /**
+     * @param $config
+     */
     protected function setupFilters($config) {
         foreach ($this->registeredFilters as $name => $filter) {
             $conf = $config->get('URI.' . $name);
@@ -60,6 +76,9 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
         unset($this->registeredFilters);
     }
 
+    /**
+     * @param $config
+     */
     protected function setupMemberVariables($config) {
         $this->host = $config->get('URI.Host');
         $base_uri = $config->get('URI.Base');
@@ -72,6 +91,13 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
         if (null === $this->defaultScheme) $this->defaultScheme = $config->get('URI.DefaultScheme');
     }
 
+    /**
+     * @param $uri
+     * @param $config
+     * @param $context
+     *
+     * @return bool
+     */
     public function filter(&$uri, $config, $context) {
         foreach ($this->filters as $name => $f) {
             $result = $f->filter($uri, $config, $context);
@@ -80,6 +106,13 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier_Definition
         return true;
     }
 
+    /**
+     * @param $uri
+     * @param $config
+     * @param $context
+     *
+     * @return bool
+     */
     public function postFilter(&$uri, $config, $context) {
         foreach ($this->postFilters as $name => $f) {
             $result = $f->filter($uri, $config, $context);

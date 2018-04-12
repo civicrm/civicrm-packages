@@ -76,7 +76,11 @@ class HTML_QuickForm_Rule_Required extends HTML_QuickForm_Rule
         return true;
     } // end func validate
 
-
+    /**
+     * @param null $options
+     *
+     * @return array
+     */
     public function getValidationScript($options = null)
     {
         return array('', "{jsVar} == ''");

@@ -4,12 +4,12 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * Extract non-cacheable parts out of compiled template and write it
  *
- * @param string $compile_path
- * @param string $template_compiled
+ * @param $params
+ * @param $smarty
+ *
  * @return boolean
  */
 

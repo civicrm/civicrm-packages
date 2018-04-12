@@ -8,10 +8,24 @@
 class HTMLPurifier_VarParser_Native extends HTMLPurifier_VarParser
 {
 
+    /**
+     * @param $var
+     * @param $type
+     * @param $allow_null
+     *
+     * @return mixed|null
+     * @throws \HTMLPurifier_VarParserException
+     */
     protected function parseImplementation($var, $type, $allow_null) {
         return $this->evalExpression($var);
     }
 
+    /**
+     * @param $expr
+     *
+     * @return null
+     * @throws \HTMLPurifier_VarParserException
+     */
     protected function evalExpression($expr) {
         $var = null;
         $result = eval("\$var = $expr;");

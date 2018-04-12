@@ -72,7 +72,12 @@ class gettext_reader {
       }
     }
 
-  public function read($bytes) {
+    /**
+     * @param $bytes
+     *
+     * @return mixed
+     */
+    public function read($bytes) {
     return $this->STREAM->read($bytes);
   }
 
@@ -269,12 +274,15 @@ class gettext_reader {
     }
   }
 
-  /**
-   * Sanitize plural form expression for use in PHP eval call.
-   *
-   * @access private
-   * @return string sanitized plural form expression
-   */
+    /**
+     * Sanitize plural form expression for use in PHP eval call.
+     *
+     * @access private
+     *
+     * @param $expr
+     *
+     * @return string sanitized plural form expression
+     */
   public function sanitize_plural_expression($expr) {
     // Get rid of disallowed characters.
     $expr = preg_replace('@[^a-zA-Z0-9_:;\(\)\?\|\&=!<>+*/\%-]@', '', $expr);
@@ -304,12 +312,13 @@ class gettext_reader {
     return $res;
   }
 
-  /**
-   * Parse full PO header and extract only plural forms line.
-   *
-   * @access private
-   * @return string verbatim plural form header field
-   */
+    /**
+     * Parse full PO header and extract only plural forms line.
+     *
+     * @access private
+     * @param $header
+     * @return string verbatim plural form header field
+*/
   public function extract_plural_forms_header_from_po_header($header) {
     if (preg_match("/(^|\n)plural-forms: ([^\n]*)\n/i", $header, $regs))
       $expr = $regs[2];
@@ -407,7 +416,13 @@ class gettext_reader {
     }
   }
 
-  public function pgettext($context, $msgid) {
+    /**
+     * @param $context
+     * @param $msgid
+     *
+     * @return string
+     */
+    public function pgettext($context, $msgid) {
     $key = $context . chr(4) . $msgid;
     $ret = $this->translate($key);
     if (strpos($ret, "\004") !== FALSE) {
@@ -417,7 +432,15 @@ class gettext_reader {
     }
   }
 
-  public function npgettext($context, $singular, $plural, $number) {
+    /**
+     * @param $context
+     * @param $singular
+     * @param $plural
+     * @param $number
+     *
+     * @return \translated
+     */
+    public function npgettext($context, $singular, $plural, $number) {
     $singular = $context . chr(4) . $singular;
     return $this->ngettext($singular, $plural, $number);
   }

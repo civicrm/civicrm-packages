@@ -123,6 +123,17 @@ function smarty_function_html_checkboxes($params, &$smarty)
 
 }
 
+/**
+ * @param $name
+ * @param $value
+ * @param $output
+ * @param $selected
+ * @param $extra
+ * @param $separator
+ * @param $labels
+ *
+ * @return string
+ */
 function smarty_function_html_checkboxes_output($name, $value, $output, $selected, $extra, $separator, $labels) {
     $_output = '';
     if ($labels) $_output .= '<label>';

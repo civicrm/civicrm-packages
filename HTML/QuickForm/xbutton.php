@@ -60,25 +60,33 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
         $this->_type = 'xbutton';
     }
 
-
+    /**
+     * @return string
+     */
     public function toHtml()
     {
         return '<button' . $this->getAttributes(true) . '>' . $this->_content . '</button>';
     }
 
-
+    /**
+     * @return string
+     */
     public function getFrozenHtml()
     {
         return $this->toHtml();
     }
 
-
+    /**
+     * @return bool|void
+     */
     public function freeze()
     {
         return false;
     }
 
-
+    /**
+     * @param string $name
+     */
     public function setName($name)
     {
         $this->updateAttributes(array(
@@ -86,13 +94,17 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
         ));
     }
 
-
+    /**
+     * @return null|string
+     */
     public function getName()
     {
         return $this->getAttribute('name');
     }
 
-
+    /**
+     * @param string $value
+     */
     public function setValue($value)
     {
         $this->updateAttributes(array(
@@ -100,7 +112,9 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
         ));
     }
 
-
+    /**
+     * @return mixed|null|string
+     */
     public function getValue()
     {
         return $this->getAttribute('value');
@@ -117,7 +131,13 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
         $this->_content = $content;
     }
 
-
+    /**
+     * @param string $event
+     * @param mixed  $arg
+     * @param object $caller
+     *
+     * @return bool
+     */
     public function onQuickFormEvent($event, $arg, &$caller)
     {
         if ('updateValue' != $event) {
@@ -134,13 +154,17 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
         return true;
     }
 
-
-   /**
-    * Returns a 'safe' element's value
-    * 
-    * The value is only returned if the button's type is "submit" and if this
-    * particlular button was clicked
-    */
+    /**
+     * Returns a 'safe' element's value
+     *
+     * The value is only returned if the button's type is "submit" and if this
+     * particlular button was clicked
+     *
+     * @param      $submitValues
+     * @param bool $assoc
+     *
+     * @return mixed|null
+     */
     public function exportValue(&$submitValues, $assoc = false)
     {
         if ('submit' == $this->getAttribute('type')) {

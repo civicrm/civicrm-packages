@@ -48,6 +48,11 @@ $cmd = preg_quote('t');
 $extensions = array('tpl');
 
 // "fix" string - strip slashes, escape and convert new lines to \n
+/**
+ * @param $str
+ *
+ * @return mixed|string
+ */
 function fs($str)
 {
 	$str = stripslashes($str);
@@ -57,6 +62,9 @@ function fs($str)
 }
 
 // rips gettext strings from $file and prints them in C format
+/**
+ * @param $file
+ */
 function do_file($file)
 {
 	$content = @file_get_contents($file);
@@ -88,6 +96,9 @@ function do_file($file)
 }
 
 // go through a directory
+/**
+ * @param $dir
+ */
 function do_dir($dir)
 {
 	$d = dir($dir);

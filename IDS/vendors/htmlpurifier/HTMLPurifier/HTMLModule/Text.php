@@ -20,6 +20,9 @@ class HTMLPurifier_HTMLModule_Text extends HTMLPurifier_HTMLModule
         'Flow' => 'Heading | Block | Inline'
     );
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
 
         // Inline Phrasal -------------------------------------------------

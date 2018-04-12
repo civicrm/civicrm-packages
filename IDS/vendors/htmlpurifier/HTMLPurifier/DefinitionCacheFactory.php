@@ -19,6 +19,10 @@ class HTMLPurifier_DefinitionCacheFactory
 
     /**
      * Retrieves an instance of global definition cache factory.
+     *
+     * @param null $prototype
+     *
+     * @return \HTMLPurifier_DefinitionCacheFactory|null
      */
     public static function instance($prototype = null) {
         static $instance;
@@ -43,11 +47,11 @@ class HTMLPurifier_DefinitionCacheFactory
     /**
      * Factory method that creates a cache object based on configuration
      *
-     * @param $name   Name of definitions handled by cache
+     * @param $type
      * @param $config Instance of HTMLPurifier_Config
      *
      * @return \HTMLPurifier_DefinitionCache_Null
-     */
+*/
     public function create($type, $config) {
         $method = $config->get('Cache.DefinitionImpl');
         if ($method === null) {

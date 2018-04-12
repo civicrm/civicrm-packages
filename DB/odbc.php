@@ -214,11 +214,10 @@ class DB_odbc extends DB_common
 
     // }}}
     // {{{ disconnect()
-
     /**
      * Disconnects from the database server
      *
-     * @return bool  TRUE on success, FALSE on failure
+     * @return void TRUE on success, FALSE on failure
      */
     public function disconnect()
     {
@@ -465,10 +464,13 @@ class DB_odbc extends DB_common
 
     // }}}
     // {{{ quote()
-
     /**
      * @deprecated  Deprecated in release 1.6.0
      * @internal
+     *
+     * @param $str
+     *
+     * @return mixed
      */
     public function quote($str)
     {

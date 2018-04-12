@@ -24,6 +24,9 @@
  */
 //namespace Jira\Api;
 
+/**
+ * Class Jira_Api_Client_PHPClient
+ */
 class Jira_Api_Client_PHPClient implements Jira_Api_Client_ClientInterface
 {
     protected $https_support = false;
@@ -40,6 +43,9 @@ class Jira_Api_Client_PHPClient implements Jira_Api_Client_ClientInterface
 
     }
 
+    /**
+     * @return bool
+     */
     protected function isSupportHttps()
     {
         return $this->https_support;

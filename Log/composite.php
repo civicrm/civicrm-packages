@@ -31,14 +31,13 @@ class Log_composite extends Log
      */
     public $_children = array();
 
-
     /**
      * Constructs a new composite Log object.
      *
-     * @param boolean   $name       This parameter is ignored.
-     * @param boolean   $ident      This parameter is ignored.
-     * @param boolean   $conf       This parameter is ignored.
-     * @param boolean   $level      This parameter is ignored.
+     * @param boolean $name  This parameter is ignored.
+     * @param string  $ident This parameter is ignored.
+     * @param array   $conf  This parameter is ignored.
+     * @param int     $level This parameter is ignored.
      *
      * @access public
      */

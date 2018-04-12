@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class HTMLPurifier_HTMLModule_CommonAttributes
+ */
 class HTMLPurifier_HTMLModule_CommonAttributes extends HTMLPurifier_HTMLModule
 {
     public $name = 'CommonAttributes';

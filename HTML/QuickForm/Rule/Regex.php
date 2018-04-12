@@ -89,7 +89,11 @@ class HTML_QuickForm_Rule_Regex extends HTML_QuickForm_Rule
         $this->_data[$name] = $pattern;
     } // end func addData
 
-
+    /**
+     * @param null $options
+     *
+     * @return array
+     */
     public function getValidationScript($options = null)
     {
         $regex = isset($this->_data[$this->name]) ? $this->_data[$this->name] : $options;

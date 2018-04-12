@@ -16,6 +16,10 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
 
     /**
      * Constructs the info array.  The meat of this class.
+     *
+     * @param $config
+     *
+     * @throws \HTMLPurifier_Exception
      */
     protected function doSetup($config) {
 
@@ -232,6 +236,9 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
         $this->setupConfigStuff($config);
     }
 
+    /**
+     * @param $config
+     */
     protected function doSetupProprietary($config) {
         // Internet Explorer only scrollbar colors
         $this->info['scrollbar-arrow-color']        = new HTMLPurifier_AttrDef_CSS_Color();
@@ -251,6 +258,9 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
 
     }
 
+    /**
+     * @param $config
+     */
     protected function doSetupTricky($config) {
         $this->info['display'] = new HTMLPurifier_AttrDef_Enum(array(
             'inline', 'block', 'list-item', 'run-in', 'compact',
@@ -264,6 +274,9 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
         $this->info['overflow'] = new HTMLPurifier_AttrDef_Enum(array('visible', 'hidden', 'auto', 'scroll'));
     }
 
+    /**
+     * @param $config
+     */
     protected function doSetupTrusted($config) {
         $this->info['position'] = new HTMLPurifier_AttrDef_Enum(array(
             'static', 'relative', 'absolute', 'fixed'
@@ -287,7 +300,8 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
      * HTMLPurifier_HTMLDefinition.
      * @todo Refactor duplicate elements into common class (probably using
      *       composition, not inheritance).
-     */
+     * @param $config
+*/
     protected function setupConfigStuff($config) {
 
         // setup allowed elements

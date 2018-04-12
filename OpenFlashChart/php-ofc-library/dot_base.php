@@ -50,10 +50,14 @@ class dot_base
 		$this->colour = $colour;
 		return $this;
 	}
-	
-	/**
-	 * The tooltip for this dot.
-	 */
+
+    /**
+     * The tooltip for this dot.
+     *
+     * @param $tip
+     *
+     * @return \dot_base
+     */
 	public function tooltip( $tip )
 	{
 		$this->tip = $tip;
@@ -70,11 +74,13 @@ class dot_base
 		$tmp = 'dot-size';
 		$this->$tmp = $size;
 		return $this;
-	}
-	
-	/**
-	 * a private method
-	 */
+  }
+
+    /**
+     * a private method
+     * @param $type
+     * @return \dot_base
+*/
 	public function type( $type )
 	{
 		$this->type = $type;
@@ -113,8 +119,13 @@ class dot_base
  * Draw a hollow dot
  */
 class hollow_dot extends dot_base
-{	
-	public function __construct($value=null)
+{
+    /**
+     * hollow_dot constructor.
+     *
+     * @param null $value
+     */
+    public function __construct($value=null)
 	{
 		parent::__construct( 'hollow-dot', $value );
 	}
@@ -125,9 +136,10 @@ class hollow_dot extends dot_base
  */
 class star extends dot_base
 {
-	/**
-	 * The constructor, takes an optional $value
-	 */
+    /**
+     * The constructor, takes an optional $value
+     * @param null $value
+*/
 	public function __construct($value=null)
 	{
 		parent::__construct( 'star', $value );
@@ -158,9 +170,10 @@ class star extends dot_base
  */
 class bow extends dot_base
 {
-	/**
-	 * The constructor, takes an optional $value
-	 */
+    /**
+     * The constructor, takes an optional $value
+     * @param null $value
+*/
 	public function __construct($value=null)
 	{
 		parent::__construct( 'bow', $value );
@@ -185,9 +198,10 @@ class bow extends dot_base
  */
 class anchor extends dot_base
 {
-	/**
-	 * The constructor, takes an optional $value
-	 */
+    /**
+     * The constructor, takes an optional $value
+     * @param null $value
+*/
 	public function __construct($value=null)
 	{
 		parent::__construct( 'anchor', $value );
@@ -223,9 +237,10 @@ class anchor extends dot_base
  */
 class dot extends dot_base
 {
-	/**
-	 * The constructor, takes an optional $value
-	 */
+    /**
+     * The constructor, takes an optional $value
+     * @param null $value
+*/
 	public function __construct($value=null)
 	{
 		parent::__construct( 'dot', $value );
@@ -237,9 +252,10 @@ class dot extends dot_base
  */
 class solid_dot extends dot_base
 {
-	/**
-	 * The constructor, takes an optional $value
-	 */
+    /**
+     * The constructor, takes an optional $value
+     * @param null $value
+*/
 	public function __construct($value=null)
 	{
 		parent::__construct( 'solid-dot', $value );

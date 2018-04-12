@@ -14,6 +14,11 @@
 
 namespace kcfinder;
 
+/**
+ * Class text
+ *
+ * @package kcfinder
+ */
 class text {
 
 /** Replace repeated white spaces to single space

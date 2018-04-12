@@ -15,11 +15,25 @@
 
 namespace kcfinder;
 
+/**
+ * Class zipFolder
+ *
+ * @package kcfinder
+ */
 class zipFolder {
     protected $zip;
     protected $root;
     protected $ignored;
 
+    /**
+     * zipFolder constructor.
+     *
+     * @param      $file
+     * @param      $folder
+     * @param null $ignored
+     *
+     * @throws \Exception
+     */
     public function __construct($file, $folder, $ignored=null) {
         $this->zip = new \ZipArchive();
 
@@ -42,6 +56,10 @@ class zipFolder {
         $this->zip->close();
     }
 
+    /**
+     * @param      $folder
+     * @param null $parent
+     */
     public function zip($folder, $parent=null) {
         $full_path = "{$this->root}$parent$folder";
         $zip_path = "$parent$folder";

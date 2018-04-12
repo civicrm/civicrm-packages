@@ -6,6 +6,13 @@
 class HTMLPurifier_AttrDef_HTML_Nmtokens extends HTMLPurifier_AttrDef
 {
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string
+     */
     public function validate($string, $config, $context) {
 
         $string = trim($string);
@@ -22,6 +29,12 @@ class HTMLPurifier_AttrDef_HTML_Nmtokens extends HTMLPurifier_AttrDef
 
     /**
      * Splits a space separated list of tokens into its constituent parts.
+     *
+     * @param $string
+     * @param $config
+     * @param $context
+     *
+     * @return
      */
     protected function split($string, $config, $context) {
         // OPTIMIZABLE!
@@ -42,7 +55,11 @@ class HTMLPurifier_AttrDef_HTML_Nmtokens extends HTMLPurifier_AttrDef
      * Template method for removing certain tokens based on arbitrary criteria.
      * @note If we wanted to be really functional, we'd do an array_filter
      *       with a callback. But... we're not.
-     */
+     * @param $tokens
+     * @param $config
+     * @param $context
+     * @return mixed
+*/
     protected function filter($tokens, $config, $context) {
         return $tokens;
     }

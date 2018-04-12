@@ -14,6 +14,13 @@ class HTMLPurifier_AttrDef_CSS_Filter extends HTMLPurifier_AttrDef
         $this->intValidator = new HTMLPurifier_AttrDef_Integer();
     }
 
+    /**
+     * @param String     $value
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|mixed|string
+     */
     public function validate($value, $config, $context) {
         $value = $this->parseCDATA($value);
         if ($value === 'none') return $value;

@@ -24,6 +24,9 @@
  */
 //namespace Jira\Issues;
 
+/**
+ * Class Jira_Issues_Walker
+ */
 class Jira_Issues_Walker implements Iterator
 {
     /* @var Jira_Api $jira */
@@ -51,6 +54,11 @@ class Jira_Issues_Walker implements Iterator
 
     protected $callback;
 
+    /**
+     * Jira_Issues_Walker constructor.
+     *
+     * @param \Jira_Api $api
+     */
     public function __construct(Jira_Api $api)
     {
         $this->jira = $api;

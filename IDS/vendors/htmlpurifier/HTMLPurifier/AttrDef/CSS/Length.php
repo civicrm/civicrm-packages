@@ -9,7 +9,7 @@ class HTMLPurifier_AttrDef_CSS_Length extends HTMLPurifier_AttrDef
     protected $min, $max;
 
     /**
-     * @param HTMLPurifier_Length $max Minimum length, or null for no bound. String is also acceptable.
+     * @param null                $min
      * @param HTMLPurifier_Length $max Maximum length, or null for no bound. String is also acceptable.
      */
     public function __construct($min = null, $max = null) {
@@ -17,6 +17,13 @@ class HTMLPurifier_AttrDef_CSS_Length extends HTMLPurifier_AttrDef
         $this->max = $max !== null ? HTMLPurifier_Length::make($max) : null;
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool|string
+     */
     public function validate($string, $config, $context) {
         $string = $this->parseCDATA($string);
 

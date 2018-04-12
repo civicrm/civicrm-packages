@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class line_base
+ */
 class line_base
 {
 	public function __construct()
@@ -11,8 +14,11 @@ class line_base
 		
 		$this->values    = array();
 	}
-	
-	public function set_values( $v )
+
+    /**
+     * @param $v
+     */
+    public function set_values( $v )
 	{
 		$this->values = $v;		
 	}
@@ -26,42 +32,64 @@ class line_base
     {
         $this->values[] = $v;       
     }
-	
-	public function set_width( $width )
+
+    /**
+     * @param $width
+     */
+    public function set_width( $width )
 	{
 		$this->width = $width;		
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	public function set_dot_size( $size )
+
+    /**
+     * @param $size
+     */
+    public function set_dot_size( $size )
 	{
 		$tmp = 'dot-size';
 		$this->$tmp = $size;		
 	}
-	
-	public function set_halo_size( $size )
+
+    /**
+     * @param $size
+     */
+    public function set_halo_size( $size )
 	{
 		$tmp = 'halo-size';
 		$this->$tmp = $size;		
 	}
-	
-	public function set_key( $text, $font_size )
+
+    /**
+     * @param $text
+     * @param $font_size
+     */
+    public function set_key( $text, $font_size )
 	{
 		$this->text      = $text;
 		$tmp = 'font-size';
 		$this->$tmp = $font_size;
 	}
-	
-	public function set_tooltip( $tip )
+
+    /**
+     * @param $tip
+     */
+    public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;
 	}
-	
-	public function set_on_click( $text )
+
+    /**
+     * @param $text
+     */
+    public function set_on_click( $text )
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $text;
@@ -71,8 +99,11 @@ class line_base
 	{
 		$this->loop = true;
 	}
-	
-	public function line_style( $s )
+
+    /**
+     * @param $s
+     */
+    public function line_style( $s )
 	{
 		$tmp = "line-style";
 		$this->$tmp = $s;

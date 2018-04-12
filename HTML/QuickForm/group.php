@@ -381,16 +381,16 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
 
     // }}}
     // {{{ onQuickFormEvent()
-
     /**
      * Called by HTML_QuickForm whenever form event is made on this element
      *
-     * @param     string    $event  Name of event
-     * @param     mixed     $arg    event arguments
-     * @param     object    &$caller calling object
+     * @param     string $event   Name of event
+     * @param     mixed  $arg     event arguments
+     * @param     object &$caller calling object
+     *
+     * @return bool
      * @since     1.0
      * @access    public
-     * @return    void
      */
     public function onQuickFormEvent($event, $arg, &$caller)
     {
@@ -467,11 +467,13 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
 
     // }}}
     // {{{ exportValue()
-
-   /**
-    * As usual, to get the group's value we access its elements and call
-    * their exportValue() methods
-    */
+    /**
+     * As usual, to get the group's value we access its elements and call
+     * their exportValue() methods
+     * @param      $submitValues
+     * @param bool $assoc
+     * @return array|null
+     */
     public function exportValue(&$submitValues, $assoc = false)
     {
         $value = null;
@@ -579,7 +581,9 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
 
     // }}}
     // {{{ setPersistantFreeze()
-
+    /**
+     * @param bool $persistant
+     */
     public function setPersistantFreeze($persistant = false)
     {
         parent::setPersistantFreeze($persistant);

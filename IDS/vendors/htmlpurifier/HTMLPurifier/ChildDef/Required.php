@@ -34,6 +34,14 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
     }
     public $allow_empty = false;
     public $type = 'required';
+
+    /**
+     * @param $tokens_of_children
+     * @param $config
+     * @param $context
+     *
+     * @return array|bool
+     */
     public function validateChildren($tokens_of_children, $config, $context) {
         // Flag for subclasses
         $this->whitespace = false;

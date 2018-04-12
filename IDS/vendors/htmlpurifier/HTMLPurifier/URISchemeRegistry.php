@@ -35,10 +35,12 @@ class HTMLPurifier_URISchemeRegistry
      * Retrieves a scheme validator object
      *
      * @param $scheme String scheme name like http or mailto
-     * @param $config HTMLPurifier_Config object
      * @param $config HTMLPurifier_Context object
      *
+     * @param $context
+     *
      * @return mixed|void
+     * @throws \HTMLPurifier_Exception
      */
     public function getScheme($scheme, $config, $context) {
         if (!$config) $config = HTMLPurifier_Config::createDefault();

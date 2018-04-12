@@ -3,6 +3,9 @@
 // OUT OF DATE, NEEDS UPDATING!
 // USE XMLWRITER!
 
+/**
+ * Class HTMLPurifier_Printer
+ */
 class HTMLPurifier_Printer
 {
 
@@ -24,6 +27,8 @@ class HTMLPurifier_Printer
 
     /**
      * Give generator necessary configuration if possible
+     *
+     * @param $config
      */
     public function prepareGenerator($config) {
         $all = $config->getAll();
@@ -79,12 +84,23 @@ class HTMLPurifier_Printer
                $this->end($tag);
     }
 
+    /**
+     * @param       $tag
+     * @param array $attr
+     *
+     * @return mixed
+     */
     protected function elementEmpty($tag, $attr = array()) {
         return $this->generator->generateFromToken(
             new HTMLPurifier_Token_Empty($tag, $attr)
         );
     }
 
+    /**
+     * @param $text
+     *
+     * @return mixed
+     */
     protected function text($text) {
         return $this->generator->generateFromToken(
             new HTMLPurifier_Token_Text($text)
@@ -146,9 +162,8 @@ class HTMLPurifier_Printer
     /**
      * Retrieves the class of an object without prefixes, as well as metadata
      *
-     * @param $obj    Object to determine class of
-     * @param $prefix Further prefix to remove
-     *
+     * @param        $obj    Object to determine class of
+     * @param string $sec_prefix
      * @return mixed|string
      */
     protected function getClass($obj, $sec_prefix = '') {

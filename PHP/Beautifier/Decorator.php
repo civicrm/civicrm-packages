@@ -32,6 +32,12 @@
 */
 abstract class PHP_Beautifier_Decorator implements PHP_Beautifier_Interface {
     protected $oBeaut;
+
+    /**
+     * PHP_Beautifier_Decorator constructor.
+     *
+     * @param \PHP_Beautifier_Interface $oBeaut
+     */
     public function __construct(PHP_Beautifier_Interface $oBeaut)
     {
         $this->oBeaut = $oBeaut;

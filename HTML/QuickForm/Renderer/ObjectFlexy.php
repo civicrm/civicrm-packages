@@ -111,6 +111,9 @@ class HTML_QuickForm_Renderer_ObjectFlexy extends HTML_QuickForm_Renderer_Object
         $this->_flexy =& $flexy;
     } // end constructor
 
+    /**
+     * @param $header
+     */
     public function renderHeader(&$header)
     {
         if($name = $header->getName()) {
@@ -121,6 +124,11 @@ class HTML_QuickForm_Renderer_ObjectFlexy extends HTML_QuickForm_Renderer_Object
         $this->_currentSection = $this->_sectionCount++;
     } // end func renderHeader
 
+    /**
+     * @param $group
+     * @param $required
+     * @param $error
+     */
     public function startGroup(&$group, $required, $error)
     {
         parent::startGroup($group, $required, $error);
@@ -254,12 +262,18 @@ class HTML_QuickForm_Renderer_ObjectFlexy extends HTML_QuickForm_Renderer_Object
         $this->_label = $template;
     }
 
+    /**
+     * @param $ret
+     */
     public function _renderLabel(&$ret)
     {
         $this->_flexy->compile($this->_label);
         $ret->label = $this->_flexy->bufferedOutputObject($ret);
     }
 
+    /**
+     * @param $ret
+     */
     public function _renderHtml(&$ret)
     {
         $this->_flexy->compile($this->_html);

@@ -4,11 +4,11 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * Load requested plugins
  *
- * @param array $plugins
+ * @param $params
+ * @param $smarty
  */
 
 // $plugins

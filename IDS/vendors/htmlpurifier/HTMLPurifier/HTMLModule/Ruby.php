@@ -9,6 +9,9 @@ class HTMLPurifier_HTMLModule_Ruby extends HTMLPurifier_HTMLModule
 
     public $name = 'Ruby';
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
         $this->addElement('ruby', 'Inline',
             'Custom: ((rb, (rt | (rp, rt, rp))) | (rbc, rtc, rtc?))',

@@ -238,16 +238,15 @@ class IDS_Caching_Database implements IDS_Caching_Interface
         }
         return $handle;
     }
-    
+
     /**
      * Write the cache data to the table
-     * 
+     *
      * @param object $handle the database handle
      * @param array  $data   the caching data
-     * 
-     * @return object PDO
-     * @throws PDOException if a db error occurred
-     */    
+     *
+     * @return void PDO
+     */
     private function _write($handle, $data) 
     {
         

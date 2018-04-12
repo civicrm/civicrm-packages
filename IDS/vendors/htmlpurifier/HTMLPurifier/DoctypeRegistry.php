@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class HTMLPurifier_DoctypeRegistry
+ */
 class HTMLPurifier_DoctypeRegistry
 {
 
@@ -15,13 +18,19 @@ class HTMLPurifier_DoctypeRegistry
 
     /**
      * Registers a doctype to the registry
+     *
      * @note Accepts a fully-formed doctype object, or the
      *       parameters for constructing a doctype object
-     * @param $doctype Name of doctype or literal doctype object
-     * @param $modules Modules doctype will load
-     * @param $modules_for_modes Modules doctype will load for certain modes
-     * @param $aliases Alias names for doctype
-     * @return Editable registered doctype
+     *
+     * @param       $doctype Name of doctype or literal doctype object
+     * @param bool  $xml
+     * @param array $modules Modules doctype will load
+     * @param array $tidy_modules
+     * @param array $aliases Alias names for doctype
+     * @param null  $dtd_public
+     * @param null  $dtd_system
+     *
+     * @return \HTMLPurifier_Doctype|\Name registered doctype
      */
     public function register($doctype, $xml = true, $modules = array(),
         $tidy_modules = array(), $aliases = array(), $dtd_public = null, $dtd_system = null
@@ -70,14 +79,18 @@ class HTMLPurifier_DoctypeRegistry
      *       can hold on to (this is necessary in order to tell
      *       Generator whether or not the current document is XML
      *       based or not).
-     */
+     * @param $config
+     * @return \Editable
+*/
     public function make($config) {
         return clone $this->get($this->getDoctypeFromConfig($config));
     }
 
     /**
      * Retrieves the doctype from the configuration object
-     */
+     * @param $config
+     * @return string
+*/
     public function getDoctypeFromConfig($config) {
         // recommended test
         $doctype = $config->get('HTML.Doctype');

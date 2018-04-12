@@ -2,19 +2,33 @@
 
 include_once 'ofc_bar_base.php';
 
+/**
+ * Class bar_3d_value
+ */
 class bar_3d_value
 {
-	public function __construct( $top )
+    /**
+     * bar_3d_value constructor.
+     *
+     * @param $top
+     */
+    public function __construct( $top )
 	{
 		$this->top = $top;
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	public function set_tooltip( $tip )
+
+    /**
+     * @param $tip
+     */
+    public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;
 	}

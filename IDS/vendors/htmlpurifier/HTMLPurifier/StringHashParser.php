@@ -32,6 +32,10 @@ class HTMLPurifier_StringHashParser
 
     /**
      * Parses a file that contains a single string-hash.
+     *
+     * @param $file
+     *
+     * @return array|bool
      */
     public function parseFile($file) {
         if (!file_exists($file)) return false;
@@ -44,7 +48,9 @@ class HTMLPurifier_StringHashParser
 
     /**
      * Parses a file that contains multiple string-hashes delimited by '----'
-     */
+     * @param $file
+     * @return array|bool
+*/
     public function parseMultiFile($file) {
         if (!file_exists($file)) return false;
         $ret = array();

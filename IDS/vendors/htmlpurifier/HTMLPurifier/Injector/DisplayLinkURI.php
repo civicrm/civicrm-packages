@@ -9,9 +9,15 @@ class HTMLPurifier_Injector_DisplayLinkURI extends HTMLPurifier_Injector
     public $name = 'DisplayLinkURI';
     public $needed = array('a');
 
+    /**
+     * @param $token
+     */
     public function handleElement(&$token) {
     }
 
+    /**
+     * @param $token
+     */
     public function handleEnd(&$token) {
         if (isset($token->start->attr['href'])){
             $url = $token->start->attr['href'];

@@ -2,6 +2,9 @@
 require_once('PHPUnit/Framework.php');
 require_once('gettext.inc');
 
+/**
+ * Class LocaleTest
+ */
 class LocaleTest extends PHPUnit_Framework_TestCase
 {
   public function test_setlocale()

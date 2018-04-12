@@ -8,6 +8,9 @@ class HTMLPurifier_HTMLModule_Tables extends HTMLPurifier_HTMLModule
 
     public $name = 'Tables';
 
+    /**
+     * @param \Instance $config
+     */
     public function setup($config) {
 
         $this->addElement('caption', false, 'Inline', 'Common');

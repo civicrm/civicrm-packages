@@ -14,6 +14,11 @@
 
 namespace kcfinder;
 
+/**
+ * Class uploader
+ *
+ * @package kcfinder
+ */
 class uploader {
 
 /** Release version */
@@ -382,6 +387,11 @@ class uploader {
             $this->callBack($url, $message);
     }
 
+    /**
+     * @param $filename
+     *
+     * @return string
+     */
     protected function normalizeFilename($filename) {
 
         if (isset($this->config['filenameChangeChars']) &&
@@ -395,6 +405,11 @@ class uploader {
         return $filename;
     }
 
+    /**
+     * @param $dirname
+     *
+     * @return string
+     */
     protected function normalizeDirname($dirname) {
 
         if (isset($this->config['dirnameChangeChars']) &&
@@ -408,6 +423,11 @@ class uploader {
         return $dirname;
     }
 
+    /**
+     * @param $file
+     *
+     * @return bool
+     */
     protected function checkFilePath($file) {
         $rPath = realpath($file);
         if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN")
@@ -415,6 +435,11 @@ class uploader {
         return (substr($rPath, 0, strlen($this->typeDir)) === $this->typeDir);
     }
 
+    /**
+     * @param $file
+     *
+     * @return bool
+     */
     protected function checkFilename($file) {
 
         if ((basename($file) !== $file) ||
@@ -429,6 +454,11 @@ class uploader {
         return true;
     }
 
+    /**
+     * @param array|null $aFile
+     *
+     * @return bool|mixed
+     */
     protected function checkUploadedFile(array $aFile=null) {
         $config = &$this->config;
         $file = ($aFile === null) ? $this->file : $aFile;
@@ -508,6 +538,13 @@ class uploader {
         return true;
     }
 
+    /**
+     * @param      $dir
+     * @param bool $inclType
+     * @param bool $existing
+     *
+     * @return bool|string
+     */
     protected function checkInputDir($dir, $inclType=true, $existing=true) {
         $dir = path::normalize($dir);
         if (substr($dir, 0, 1) == "/")
@@ -534,6 +571,12 @@ class uploader {
         return (is_dir($path) && is_readable($path)) ? $return : false;
     }
 
+    /**
+     * @param $ext
+     * @param $type
+     *
+     * @return bool
+     */
     protected function validateExtension($ext, $type) {
         $ext = trim(strtolower($ext));
         if (!isset($this->types[$type]))
@@ -559,16 +602,32 @@ class uploader {
         return in_array($ext, $exts);
     }
 
+    /**
+     * @param $path
+     *
+     * @return mixed
+     */
     protected function getTypeFromPath($path) {
         return preg_match('/^([^\/]*)\/.*$/', $path, $patt)
             ? $patt[1] : $path;
     }
 
+    /**
+     * @param $path
+     *
+     * @return string
+     */
     protected function removeTypeFromPath($path) {
         return preg_match('/^[^\/]*\/(.*)$/', $path, $patt)
             ? $patt[1] : "";
     }
 
+    /**
+     * @param      $image
+     * @param null $file
+     *
+     * @return bool
+     */
     protected function imageResize($image, $file=null) {
 
         if (!($image instanceof image)) {
@@ -663,6 +722,12 @@ class uploader {
         ));
     }
 
+    /**
+     * @param      $file
+     * @param bool $overwrite
+     *
+     * @return bool
+     */
     protected function makeThumb($file, $overwrite=true) {
         $img = image::factory($this->imageDriver, $file);
 
@@ -708,6 +773,9 @@ class uploader {
         return $img->output($type, $options);
     }
 
+    /**
+     * @param $langCode
+     */
     protected function localize($langCode) {
         require "lang/{$langCode}.php";
         setlocale(LC_ALL, $lang['_locale']);
@@ -723,6 +791,12 @@ class uploader {
         $this->labels = $lang;
     }
 
+    /**
+     * @param            $string
+     * @param array|null $data
+     *
+     * @return mixed
+     */
     protected function label($string, array $data=null) {
         $return = isset($this->labels[$string]) ? $this->labels[$string] : $string;
         if (is_array($data))
@@ -731,6 +805,10 @@ class uploader {
         return $return;
     }
 
+    /**
+     * @param            $message
+     * @param array|null $data
+     */
     protected function backMsg($message, array $data=null) {
         $message = $this->label($message, $data);
         $tmp_name = isset($this->file['tmp_name']) ? $this->file['tmp_name'] : false;
@@ -747,6 +825,10 @@ class uploader {
         die;
     }
 
+    /**
+     * @param        $url
+     * @param string $message
+     */
     protected function callBack($url, $message="") {
         $message = text::jsValue($message);
 
@@ -766,6 +848,12 @@ class uploader {
         echo "<html><body>$js</body></html>";
     }
 
+    /**
+     * @param $url
+     * @param $message
+     *
+     * @return string
+     */
     protected function callBack_ckeditor($url, $message) {
         $CKfuncNum = isset($this->opener['CKEditor']['funcNum']) ? $this->opener['CKEditor']['funcNum'] : 0;
         if (!$CKfuncNum) $CKfuncNum = 0;
@@ -783,6 +871,12 @@ if (o !== false) {
 </script>";
     }
 
+    /**
+     * @param $url
+     * @param $message
+     *
+     * @return string
+     */
     protected function callBack_fckeditor($url, $message) {
         $n = strlen($message) ? 1 : 0;
         return "<script type='text/javascript'>
@@ -799,14 +893,32 @@ if (o !== false) {
 </script>";
     }
 
+    /**
+     * @param $url
+     * @param $message
+     *
+     * @return string
+     */
     protected function callBack_tinymce($url, $message) {
         return $this->callBack_default($url, $message);
     }
 
+    /**
+     * @param $url
+     * @param $message
+     *
+     * @return string
+     */
     protected function callBack_tinymce4($url, $message) {
         return $this->callBack_default($url, $message);
     }
 
+    /**
+     * @param $url
+     * @param $message
+     *
+     * @return string
+     */
     protected function callBack_default($url, $message) {
         return "<script type='text/javascript'>
 alert('$message');
@@ -814,6 +926,9 @@ if (window.opener) window.close();
 </script>";
     }
 
+    /**
+     * @return bool|string
+     */
     protected function get_htaccess() {
         return file_get_contents("conf/upload.htaccess");
     }

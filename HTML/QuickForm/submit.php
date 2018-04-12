@@ -60,12 +60,11 @@ class HTML_QuickForm_submit extends HTML_QuickForm_input
     
     // }}}
     // {{{ freeze()
-
     /**
      * Freeze the element so that only its value is returned
-     * 
+     *
      * @access    public
-     * @return    void
+     * @return bool
      */
     public function freeze()
     {
@@ -74,11 +73,15 @@ class HTML_QuickForm_submit extends HTML_QuickForm_input
 
     // }}}
     // {{{ exportValue()
-
-   /**
-    * Only return the value if it is found within $submitValues (i.e. if
-    * this particular submit button was clicked)
-    */
+    /**
+     * Only return the value if it is found within $submitValues (i.e. if
+     * this particular submit button was clicked)
+     *
+     * @param      $submitValues
+     * @param bool $assoc
+     *
+     * @return mixed
+     */
     public function exportValue(&$submitValues, $assoc = false)
     {
         return $this->_prepareValue($this->_findValue($submitValues), $assoc);

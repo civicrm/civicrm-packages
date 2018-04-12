@@ -24,6 +24,9 @@
  */
 //namespace Jira;
 
+/**
+ * Class Jira_Autoloader
+ */
 class Jira_Autoloader
 {
     const NAME_SPACE = 'Jira';

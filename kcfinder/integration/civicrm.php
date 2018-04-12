@@ -81,7 +81,11 @@ function checkAuthentication() {
  * If the user is already logged into Drupal, bootstrap
  * drupal with this user's permissions. Thanks to integrate/drupal.php
  * script for hints on how to do this.
- **/
+ *
+ * @param $config
+ *
+ * @return bool
+ */
 function authenticate_drupal($config) {
   global $base_url;
   $base_root = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
@@ -108,6 +112,11 @@ function authenticate_drupal($config) {
   return false;
 }
 
+/**
+ * @param $config
+ *
+ * @return bool
+ */
 function authenticate_wordpress($config) {
   // make sure user has access to civicrm
   CRM_Utils_System::loadBootStrap();
@@ -118,6 +127,11 @@ function authenticate_wordpress($config) {
   return false;
 }
 
+/**
+ * @param $config
+ *
+ * @return bool
+ */
 function authenticate_joomla($config) {
   // make sure only logged in user can see upload / view images
   $joomlaBase = dirname(dirname(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))))));

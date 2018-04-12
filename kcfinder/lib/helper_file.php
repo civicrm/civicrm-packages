@@ -14,6 +14,11 @@
 
 namespace kcfinder;
 
+/**
+ * Class file
+ *
+ * @package kcfinder
+ */
 class file {
 
     public static $MIME = array(

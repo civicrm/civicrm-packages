@@ -25,6 +25,13 @@ class HTMLPurifier_AttrDef_CSS_Composite extends HTMLPurifier_AttrDef
         $this->defs = $defs;
     }
 
+    /**
+     * @param String     $string
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return bool
+     */
     public function validate($string, $config, $context) {
         foreach ($this->defs as $i => $def) {
             $result = $this->defs[$i]->validate($string, $config, $context);

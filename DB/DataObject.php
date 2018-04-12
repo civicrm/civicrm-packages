@@ -180,14 +180,27 @@ $GLOBALS['_DB_DATAOBJECT']['QUERYENDTIME'] = 0;
 // these two are BC/FC handlers for call in PHP4/5
 
 if (substr(PHP_VERSION,0,1) > 4) {
+    /**
+     * Class DB_DataObject_Overload
+     */
     class DB_DataObject_Overload
     {
+        /**
+         * @param $method
+         * @param $args
+         *
+         * @return null
+         */
         public function __call($method,$args)
         {
             $return = null;
             $this->_call($method,$args,$return);
             return $return;
         }
+
+        /**
+         * @return array
+         */
         public function __sleep()
         {
             return array_keys(get_object_vars($this)) ;
@@ -227,6 +240,9 @@ if (substr(PHP_VERSION,0,1) > 4) {
  * @since    PHP 4.0
  */
 
+/**
+ * Class DB_DataObject
+ */
 class DB_DataObject extends DB_DataObject_Overload
 {
    /**
@@ -584,10 +600,11 @@ class DB_DataObject extends DB_DataObject_Overload
      * $object->whereAdd("ID > 20");
      * $object->whereAdd("age > 20","OR");
      *
-     * @param    string  $cond  condition
-     * @param    string  $logic optional logic "OR" (defaults to "AND")
-     * @access   public
+     * @param bool      $cond  condition
+     * @param    string $logic optional logic "OR" (defaults to "AND")
+     *
      * @return   string|PEAR::Error - previous condition or Error when invalid args found
+     * @access   public
      */
     public function whereAdd($cond = false, $logic = 'AND')
     {
@@ -629,9 +646,9 @@ class DB_DataObject extends DB_DataObject_Overload
      * $object->orderBy("ID");
      * $object->orderBy("ID,age");
      *
-     * @param  string $order  Order
+     * @param bool $order Order
+     * @return bool|\error|void ::Error - invalid args only
      * @access public
-     * @return none|PEAR::Error - invalid args only
      */
     public function orderBy($order = false)
     {
@@ -677,9 +694,9 @@ class DB_DataObject extends DB_DataObject_Overload
      * $object->groupBy("ID DESC");
      * $object->groupBy("ID,age");
      *
-     * @param  string  $group  Grouping
+     * @param bool $group Grouping
+     * @return bool|\error|void ::Error - invalid args only
      * @access public
-     * @return none|PEAR::Error - invalid args only
      */
     public function groupBy($group = false)
     {
@@ -712,9 +729,9 @@ class DB_DataObject extends DB_DataObject_Overload
      * $object->having(); //reset the grouping
      * $object->having("sum(value) > 0 ");
      *
-     * @param  string  $having  condition
+     * @param bool $having condition
+     * @return bool|\error|void ::Error - invalid args only
      * @access public
-     * @return none|PEAR::Error - invalid args only
      */
     public function having($having = false)
     {
@@ -752,10 +769,10 @@ class DB_DataObject extends DB_DataObject_Overload
      * as there is no 'clean way' to implement it. - you should consider refering to
      * your database manual to decide how you want to implement it.
      *
-     * @param  string $a  limit start (or number), or blank to reset
-     * @param  string $b  number
+     * @param  string $a limit start (or number), or blank to reset
+     * @param  string $b number
+     * @return bool|\error|void ::Error - invalid args only
      * @access public
-     * @return none|PEAR::Error - invalid args only
      */
     public function limit($a = null, $b = null)
     {
@@ -825,6 +842,7 @@ class DB_DataObject extends DB_DataObject_Overload
         }
         $this->_query['data_select'] .= " $k ";
     }
+
     /**
      * Adds multiple Columns or objects to select with formating.
      *
@@ -836,10 +854,10 @@ class DB_DataObject extends DB_DataObject_Overload
      *                  objectTableName.colnameA as prefix_colnameA
      *
      * @param  array|object|null the array or object to take column names from.
-     * @param  string           format in sprintf format (use %s for the colname)
-     * @param  string           table name eg. if you have joinAdd'd or send $from as an array.
+     * @param string $format
+     * @param bool   $tableName
+     * @return bool
      * @access public
-     * @return void
      */
     public function selectAs($from = null,$format = '%s',$tableName=false)
     {
@@ -1183,9 +1201,9 @@ class DB_DataObject extends DB_DataObject_Overload
      * $object->whereAdd('age > 150');
      * $object->update(DB_DATAOBJECT_WHEREADD_ONLY);
      *
-     * @param object dataobject (optional) | DB_DATAOBJECT_WHEREADD_ONLY - used to only update changed items.
-     * @access public
+     * @param bool $dataObject
      * @return  int rows affected or false on failure
+     * @access public
      */
     public function update($dataObject = false)
     {
@@ -2157,11 +2175,11 @@ class DB_DataObject extends DB_DataObject_Overload
         }
     }
 
-
     /**
      * backend wrapper for quoting, as MDB2 and DB do it differently...
      *
      * @access private
+     * @param $str
      * @return string quoted
      */
 
@@ -3002,12 +3020,12 @@ class DB_DataObject extends DB_DataObject_Overload
      * you can also use $this->getLink('thisColumnName','otherTable','otherTableColumnName')
      *
      *
-     * @param string $row    either row or row.xxxxx
-     * @param string $table  name of table to look up value in
-     * @param string $link   name of column in other table to match
+     * @param string $row   either row or row.xxxxx
+     * @param string $table name of table to look up value in
+     * @param bool   $link  name of column in other table to match
+     * @return mixed object on success
      * @author Tim White <tim@cyface.com>
      * @access public
-     * @return mixed object on success
      */
     public function getLink($row, $table = null, $link = false)
     {
@@ -3092,6 +3110,8 @@ class DB_DataObject extends DB_DataObject_Overload
      * stores it in $this->_xxxxx_yyyyy
      *
      * @access public
+     * @param      $row
+     * @param null $table
      * @return array of results (empty array on failure)
      */
     public function &getLinkArray($row, $table = null)
@@ -3171,14 +3191,14 @@ class DB_DataObject extends DB_DataObject_Overload
      * }
      *
      *
-     * @param    optional $obj       object |array    the joining object (no value resets the join)
+     * @param bool   $obj                       object |array    the joining object (no value resets the join)
      *                                          If you use an array here it should be in the format:
      *                                          array('local_column','remotetable:remote_column');
      *                                          if remotetable does not have a definition, you should
      *                                          use @ to hide the include error message..
      *
      *
-     * @param    optional $joinType  string | array
+     * @param string $joinType                  string | array
      *                                          'LEFT'|'INNER'|'RIGHT'|'' Inner is default, '' indicates
      *                                          just select ... from a,b,c with no join and
      *                                          links are added as where items.
@@ -3190,11 +3210,10 @@ class DB_DataObject extends DB_DataObject_Overload
      *                                          'joinCol' => ....
      *                                          'useWhereAsOn' => false,
      *
-     * @param    optional $joinAs    string     if you want to select the table as anther name
+     * @param bool   $joinAs                    string     if you want to select the table as anther name
      *                                          useful when you want to select multiple columsn
      *                                          from a secondary table.
-
-     * @param    optional $joinCol   string     The column on This objects table to match (needed
+     * @param bool   $joinCol                   string     The column on This objects table to match (needed
      *                                          if this table links to the child object in
      *                                          multiple places eg.
      *                                          user->friend (is a link to another user)
@@ -3205,7 +3224,7 @@ class DB_DataObject extends DB_DataObject_Overload
      *                                          into ON arguments.
      *
      *
-     * @return   none
+     * @return bool
      * @access   public
      * @author   Stijn de Reede      <sjr@gmx.co.uk>
      */
@@ -4134,17 +4153,16 @@ class DB_DataObject extends DB_DataObject_Overload
 
 
     /* ----------------------- Debugger ------------------ */
-
     /**
      * Debugger. - use this in your extended classes to output debugging information.
      *
      * Uses DB_DataObject::DebugLevel(x) to turn it on
      *
      * @param    string $message - message to output
-     * @param    string $logtype - bold at start
-     * @param    string $level   - output level
-     * @access   public
+     * @param int       $logtype - bold at start
+     * @param int       $level   - output level
      * @return   none
+     * @access   public
      */
     public function debug($message, $logtype = 0, $level = 1)
     {
@@ -4263,7 +4281,7 @@ class DB_DataObject extends DB_DataObject_Overload
      * THIS STILL NEEDS FURTHER INVESTIGATION
      *
      * @access   public
-     * @return   object an error object
+     * @return void an error object
      */
     public static function _loadConfig()
     {
@@ -4271,14 +4289,14 @@ class DB_DataObject extends DB_DataObject_Overload
 
         $_DB_DATAOBJECT['CONFIG'] = PEAR::getStaticProperty('DB_DataObject','options');
 
-
     }
-     /**
+
+    /**
      * Free global arrays associated with this object.
      *
      *
      * @access   public
-     * @return   none
+     * @return void
      */
     public function free()
     {
@@ -4312,8 +4330,14 @@ class DB_DataObject extends DB_DataObject_Overload
 
 
     /* ---- LEGACY BC METHODS - NOT DOCUMENTED - See Documentation on New Methods. ---*/
-
+    /**
+     * @return array
+     */
     public function _get_table() { return $this->table(); }
+
+    /**
+     * @return array
+     */
     public function _get_keys()  { return $this->keys();  }
 
   /**
@@ -4341,7 +4365,10 @@ class DB_DataObject extends DB_DataObject_Overload
     return '';
   }
 
-  public function lastInsertId() {
+    /**
+     * @return mixed
+     */
+    public function lastInsertId() {
     $DB = &$_DB_DATAOBJECT['CONNECTIONS'][$this->_database_dsn_md5];
     return $DB->lastInsertId();
   }

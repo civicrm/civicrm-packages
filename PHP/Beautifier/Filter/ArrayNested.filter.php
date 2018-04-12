@@ -47,7 +47,10 @@
  */
 class PHP_Beautifier_Filter_ArrayNested extends PHP_Beautifier_Filter
 {
-    public function t_parenthesis_open($sTag) 
+    /**
+     * @param $sTag
+     */
+    public function t_parenthesis_open($sTag)
     {
         $this->oBeaut->add($sTag);
         if ($this->oBeaut->getControlParenthesis() == T_ARRAY) {
@@ -56,7 +59,11 @@ class PHP_Beautifier_Filter_ArrayNested extends PHP_Beautifier_Filter
             $this->oBeaut->addIndent();
         }
     }
-    public function t_parenthesis_close($sTag) 
+
+    /**
+     * @param $sTag
+     */
+    public function t_parenthesis_close($sTag)
     {
         $this->oBeaut->removeWhitespace();
         if ($this->oBeaut->getControlParenthesis() == T_ARRAY) {
@@ -70,7 +77,11 @@ class PHP_Beautifier_Filter_ArrayNested extends PHP_Beautifier_Filter
             $this->oBeaut->add($sTag . ' ');
         }
     }
-    public function t_comma($sTag) 
+
+    /**
+     * @param $sTag
+     */
+    public function t_comma($sTag)
     {
         if ($this->oBeaut->getControlParenthesis() != T_ARRAY) {
             $this->oBeaut->add($sTag . ' ');

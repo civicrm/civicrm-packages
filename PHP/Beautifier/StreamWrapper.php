@@ -34,16 +34,56 @@
 * @version    Release: 0.1.14
 */
 interface PHP_Beautifier_StreamWrapper_Interface {
+    /**
+     * @param $sPath
+     * @param $sMode
+     * @param $iOptions
+     * @param $sOpenedPath
+     *
+     * @return mixed
+     */
     public function stream_open($sPath, $sMode, $iOptions, &$sOpenedPath);
     public function stream_close();
+
+    /**
+     * @param $iCount
+     *
+     * @return mixed
+     */
     public function stream_read($iCount);
+
+    /**
+     * @param $sData
+     *
+     * @return mixed
+     */
     public function stream_write($sData);
     public function stream_eof();
     public function stream_tell();
+
+    /**
+     * @param $iOffset
+     * @param $iWhence
+     *
+     * @return mixed
+     */
     public function stream_seek($iOffset, $iWhence);
     public function stream_flush();
     public function stream_stat();
+
+    /**
+     * @param $sPath
+     *
+     * @return mixed
+     */
     public function unlink($sPath);
+
+    /**
+     * @param $sPath
+     * @param $iOptions
+     *
+     * @return mixed
+     */
     public function dir_opendir($sPath, $iOptions);
     public function dir_readdir();
     public function dir_rewinddir();

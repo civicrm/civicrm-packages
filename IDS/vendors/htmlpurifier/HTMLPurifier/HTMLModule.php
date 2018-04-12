@@ -106,8 +106,10 @@ class HTMLPurifier_HTMLModule
      * content_model and content_model_type member variables of
      * the HTMLPurifier_ElementDef class. There is a similar function
      * in HTMLPurifier_HTMLDefinition.
+     *
      * @param $def HTMLPurifier_ElementDef instance
-     * @return HTMLPurifier_ChildDef subclass
+     *
+     * @return bool subclass
      */
     public function getChildDef($def) {return false;}
 
@@ -115,18 +117,18 @@ class HTMLPurifier_HTMLModule
 
     /**
      * Convenience function that sets up a new element
-     * @param $element Name of element to add
-     * @param $type What content set should element be registered to?
-     *              Set as false to skip this step.
-     * @param $contents Allowed children in form of:
-     *              "$content_model_type: $content_model"
-     * @param $attr_includes What attribute collections to register to
-     *              element?
-     * @param $attr What unique attributes does the element define?
-     * @note See ElementDef for in-depth descriptions of these parameters.
+     * @param       $element       Name of element to add
+     * @param       $type          What content set should element be registered to?
+     *                             Set as false to skip this step.
+     * @param       $contents      Allowed children in form of:
+     *                             "$content_model_type: $content_model"
+     * @param array $attr_includes What attribute collections to register to
+     *                             element?
+     * @param array $attr          What unique attributes does the element define?
      * @return Created element definition object, so you
-     *         can set advanced parameters
-     */
+     *                             can set advanced parameters
+     * @note See ElementDef for in-depth descriptions of these parameters.
+*/
     public function addElement($element, $type, $contents, $attr_includes = array(), $attr = array()) {
         $this->elements[] = $element;
         // parse content_model
@@ -234,10 +236,10 @@ class HTMLPurifier_HTMLModule
      * Convenience function that generates a lookup table with boolean
      * true as value.
      * @param $list List of values to turn into a lookup
+     * @return array array equivalent of list
      * @note You can also pass an arbitrary number of arguments in
-     *       place of the regular argument
-     * @return Lookup array equivalent of list
-     */
+     *              place of the regular argument
+*/
     public function makeLookup($list) {
         if (is_string($list)) {
             $list = func_get_args();

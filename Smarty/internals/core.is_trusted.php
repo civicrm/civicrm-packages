@@ -4,12 +4,12 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * determines if a resource is trusted or not
  *
- * @param string $resource_type
- * @param string $resource_name
+ * @param $params
+ * @param $smarty
+ *
  * @return boolean
  */
 

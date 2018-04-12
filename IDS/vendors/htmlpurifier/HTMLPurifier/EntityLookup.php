@@ -12,9 +12,12 @@ class HTMLPurifier_EntityLookup {
 
     /**
      * Sets up the entity lookup table from the serialized file contents.
-     * @note The serialized contents are versioned, but were generated
+     *
+     * @note    The serialized contents are versioned, but were generated
      *       using the maintenance script generate_entity_file.php
      * @warning This is not in constructor to help enforce the Singleton
+     *
+     * @param bool $file
      */
     public function setup($file = false) {
         if (!$file) {

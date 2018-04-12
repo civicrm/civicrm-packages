@@ -29,9 +29,9 @@ class HTMLPurifier_Printer_ConfigForm extends HTMLPurifier_Printer
     protected $compress = false;
 
     /**
-     * @param $name Form element name for directives to be stuffed into
-     * @param $doc_url String documentation URL, will have fragment tagged on
-     * @param $compress Integer max length before compressing a directive name, set to false to turn off
+     * @param      $name     Form element name for directives to be stuffed into
+     * @param      $doc_url  String documentation URL, will have fragment tagged on
+     * @param bool $compress Integer max length before compressing a directive name, set to false to turn off
      */
     public function __construct(
         $name, $doc_url = null, $compress = false
@@ -72,9 +72,11 @@ class HTMLPurifier_Printer_ConfigForm extends HTMLPurifier_Printer
     /**
      * Returns HTML output for a configuration form
      *
-     * @param $config  Configuration object of current form state, or an array
-     *                 where [0] has an HTML namespace and [1] is being rendered.
-     * @param $allowed Optional namespace(s) and directives to restrict form to.
+     * @param      $config  Configuration object of current form state, or an array
+     *                      where [0] has an HTML namespace and [1] is being rendered.
+     * @param bool $allowed Optional namespace(s) and directives to restrict form to.
+     *
+     * @param bool $render_controls
      *
      * @return string
      */
@@ -126,7 +128,7 @@ class HTMLPurifier_Printer_ConfigForm extends HTMLPurifier_Printer
      * Renders a single namespace
      *
      * @param $ns        String namespace name
-     * @param $directive Associative array of directives to values
+     * @param $directives
      *
      * @return string
      */
@@ -203,6 +205,16 @@ class HTMLPurifier_Printer_ConfigForm_NullDecorator extends HTMLPurifier_Printer
         parent::__construct();
         $this->obj = $obj;
     }
+
+    /**
+     * @param $ns
+     * @param $directive
+     * @param $value
+     * @param $name
+     * @param $config
+     *
+     * @return string
+     */
     public function render($ns, $directive, $value, $name, $config) {
         if (is_array($config) && isset($config[0])) {
             $gen_config = $config[0];
@@ -244,6 +256,16 @@ class HTMLPurifier_Printer_ConfigForm_NullDecorator extends HTMLPurifier_Printer
 class HTMLPurifier_Printer_ConfigForm_default extends HTMLPurifier_Printer {
     public $cols = 18;
     public $rows = 5;
+
+    /**
+     * @param $ns
+     * @param $directive
+     * @param $value
+     * @param $name
+     * @param $config
+     *
+     * @return string
+     */
     public function render($ns, $directive, $value, $name, $config) {
         if (is_array($config) && isset($config[0])) {
             $gen_config = $config[0];
@@ -324,6 +346,15 @@ class HTMLPurifier_Printer_ConfigForm_default extends HTMLPurifier_Printer {
  * Bool form field printer
  */
 class HTMLPurifier_Printer_ConfigForm_bool extends HTMLPurifier_Printer {
+    /**
+     * @param $ns
+     * @param $directive
+     * @param $value
+     * @param $name
+     * @param $config
+     *
+     * @return string
+     */
     public function render($ns, $directive, $value, $name, $config) {
         if (is_array($config) && isset($config[0])) {
             $gen_config = $config[0];

@@ -1,14 +1,25 @@
 <?php
 
+/**
+ * Class radar_axis_labels
+ */
 class radar_axis_labels
 {
 	// $labels : array
-	public function __construct( $labels )
+    /**
+     * radar_axis_labels constructor.
+     *
+     * @param $labels
+     */
+    public function __construct( $labels )
 	{
 		$this->labels = $labels;
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}

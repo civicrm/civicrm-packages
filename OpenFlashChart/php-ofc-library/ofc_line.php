@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class line_on_show
+ */
 class line_on_show
 {
 	/**
@@ -22,6 +25,9 @@ class line_on_show
 	}
 }
 
+/**
+ * Class line
+ */
 class line
 {
 	public function __construct()
@@ -65,57 +71,86 @@ class line
     {
         $this->values[] = $v;       
     }
-	
-	public function set_width( $width )
+
+    /**
+     * @param $width
+     */
+    public function set_width( $width )
 	{
 		$this->width = $width;		
 	}
-	
-	public function set_colour( $colour )
+
+    /**
+     * @param $colour
+     */
+    public function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
-	/**
-	 * sytnatical sugar for set_colour
-	 */
+
+    /**
+     * sytnatical sugar for set_colour
+     *
+     * @param $colour
+     *
+     * @return \line
+     */
 	public function colour( $colour )
 	{
 		$this->set_colour( $colour );
 		return $this;
 	}
-	
-	public function set_halo_size( $size )
+
+    /**
+     * @param $size
+     */
+    public function set_halo_size( $size )
 	{
 		$tmp = 'halo-size';
 		$this->$tmp = $size;		
 	}
-	
-	public function set_key( $text, $font_size )
+
+    /**
+     * @param $text
+     * @param $font_size
+     */
+    public function set_key( $text, $font_size )
 	{
 		$this->text      = $text;
 		$tmp = 'font-size';
 		$this->$tmp = $font_size;
 	}
-	
-	public function set_tooltip( $tip )
+
+    /**
+     * @param $tip
+     */
+    public function set_tooltip( $tip )
 	{
 		$this->tip = $tip;
 	}
 
-	public function set_null_gap( $gap )
+    /**
+     * @param $gap
+     */
+    public function set_null_gap( $gap )
 	{
 		$tmp = 'null-gap';
 		$this->$tmp = $gap;
 	}
 
-	public function set_key_on_click( $action )
+    /**
+     * @param $action
+     */
+    public function set_key_on_click( $action )
 	{
 		$tmp = 'key-on-click';
 		$this->$tmp = $action;
 	}
 
-	public function set_group_id( $id )
+    /**
+     * @param $id
+     */
+    public function set_group_id( $id )
 	{
 		$this->id = $id;
 	}
@@ -138,8 +173,11 @@ class line
 	{
 		$this->loop = true;
 	}
-	
-	public function line_style( $s )
+
+    /**
+     * @param $s
+     */
+    public function line_style( $s )
 	{
 		$tmp = "line-style";
 		$this->$tmp = $s;
@@ -167,8 +205,13 @@ class line
 	{
 		$this->{'on-show'} = $on_show;
 	}
-	
-	public function on_show($on_show)
+
+    /**
+     * @param $on_show
+     *
+     * @return $this
+     */
+    public function on_show($on_show)
 	{
 		$this->set_on_show($on_show);
 		return $this;

@@ -348,19 +348,17 @@ class DB_DataObject_Cast {
 
     }
 
-  
-  
     /**
-    * get the string to use in the SQL statement for this...
-    *
-    * 
-    * @param   int      $to Type (DB_DATAOBJECT_*
-    * @param   object   $db DB Connection Object
-    * 
-    *
-    * @return   string 
-    * @access   public
-    */
+     * get the string to use in the SQL statement for this...
+     *
+     *
+     * @param bool     $to Type (DB_DATAOBJECT_*
+     * @param   object $db DB Connection Object
+     *
+     *
+     * @return   string
+     * @access   public
+     */
   
     public function toString($to=false,$db)
     {

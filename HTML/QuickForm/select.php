@@ -125,13 +125,12 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
     
     // }}}
     // {{{ getSelected()
-
     /**
      * Returns an array of the selected values
-     * 
+     *
      * @since     1.0
      * @access    public
-     * @return    array of selected values
+     * @return string of selected values
      */
     public function getSelected()
     {
@@ -190,14 +189,14 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
 
     // }}}
     // {{{ setValue()
-
     /**
      * Sets the value of the form element
      *
-     * @param     mixed    $values  Array or comma delimited string of selected values
+     * @param $value
+     *
+     * @return    void
      * @since     1.0
      * @access    public
-     * @return    void
      */
     public function setValue($value)
     {
@@ -206,13 +205,12 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
 
     // }}}
     // {{{ getValue()
-
     /**
      * Returns an array of the selected values
-     * 
+     *
      * @since     1.0
      * @access    public
-     * @return    array of selected values
+     * @return string of selected values
      */
     public function getValue()
     {
@@ -554,11 +552,13 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
 
     // }}}
     // {{{ exportValue()
-
-   /**
-    * We check the options and return only the values that _could_ have been
-    * selected. We also return a scalar value if select is not "multiple"
-    */
+    /**
+     * We check the options and return only the values that _could_ have been
+     * selected. We also return a scalar value if select is not "multiple"
+     * @param      $submitValues
+     * @param bool $assoc
+     * @return mixed
+     */
     public function exportValue(&$submitValues, $assoc = false)
     {
         $value = $this->_findValue($submitValues);
@@ -600,7 +600,13 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
     
     // }}}
     // {{{ onQuickFormEvent()
-
+    /**
+     * @param string $event
+     * @param mixed  $arg
+     * @param object $caller
+     *
+     * @return bool
+     */
     public function onQuickFormEvent($event, $arg, &$caller)
     {
         if ('updateValue' == $event) {

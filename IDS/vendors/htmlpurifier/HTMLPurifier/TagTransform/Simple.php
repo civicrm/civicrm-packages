@@ -19,6 +19,13 @@ class HTMLPurifier_TagTransform_Simple extends HTMLPurifier_TagTransform
         $this->style = $style;
     }
 
+    /**
+     * @param \Tag       $tag
+     * @param \Mandatory $config
+     * @param \Mandatory $context
+     *
+     * @return \Tag
+     */
     public function transform($tag, $config, $context) {
         $new_tag = clone $tag;
         $new_tag->name = $this->transform_to;

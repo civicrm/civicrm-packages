@@ -14,8 +14,7 @@ abstract class HTMLPurifier_DefinitionCache
     public $type;
 
     /**
-     * @param $name Type of definition objects this instance of the
-     *      cache will handle.
+     * @param $type
      */
     public function __construct($type) {
         $this->type = $type;
@@ -73,32 +72,49 @@ abstract class HTMLPurifier_DefinitionCache
 
     /**
      * Adds a definition object to the cache
+     *
+     * @param $def
+     * @param $config
+     *
+     * @return
      */
     abstract public function add($def, $config);
 
     /**
      * Unconditionally saves a definition object to the cache
-     */
+     * @param $def
+     * @param $config
+     * @return
+*/
     abstract public function set($def, $config);
 
     /**
      * Replace an object in the cache
-     */
+     * @param $def
+     * @param $config
+     * @return
+*/
     abstract public function replace($def, $config);
 
     /**
      * Retrieves a definition object from the cache
-     */
+     * @param $config
+     * @return
+*/
     abstract public function get($config);
 
     /**
      * Removes a definition object to the cache
-     */
+     * @param $config
+     * @return
+*/
     abstract public function remove($config);
 
     /**
      * Clears all objects from cache
-     */
+     * @param $config
+     * @return
+*/
     abstract public function flush($config);
 
     /**
@@ -106,7 +122,9 @@ abstract class HTMLPurifier_DefinitionCache
      * @note Be carefuly implementing this method as flush. Flush must
      *       not interfere with other Definition types, and cleanup()
      *       should not be repeatedly called by userland code.
-     */
+     * @param $config
+     * @return
+*/
     abstract public function cleanup($config);
 
 }

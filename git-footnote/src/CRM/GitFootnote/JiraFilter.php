@@ -1,6 +1,11 @@
 <?php
 namespace CRM\GitFootnote;
 
+/**
+ * Class JiraFilter
+ *
+ * @package CRM\GitFootnote
+ */
 class JiraFilter extends AbstractWordFilter {
 
   protected $wordPattern;
@@ -20,7 +25,12 @@ class JiraFilter extends AbstractWordFilter {
     $this->jiraCache = array();
   }
 
-  public function filter(CommitMessage $message) {
+    /**
+     * @param \CRM\GitFootnote\CommitMessage $message
+     *
+     * @throws \Exception
+     */
+    public function filter(CommitMessage $message) {
     // If message is a single line with 1-2 real words and 1 JIRA issue,
     // then use filterShortMessage
     $trimmedMessage = trim($message->getMessage(), "\r\n\t ");
@@ -92,6 +102,7 @@ class JiraFilter extends AbstractWordFilter {
 
     /**
      * @param $key
+     *
      * @return Jira_Issue|NULL|FALSE (NULL if no service available; FALSE if invalid key)
      * @throws \Exception
      */
@@ -122,7 +133,12 @@ class JiraFilter extends AbstractWordFilter {
     return $this->url . '/browse/' . $issueKey;
   }
 
-  protected function isIssueKey($word) {
+    /**
+     * @param $word
+     *
+     * @return false|int
+     */
+    protected function isIssueKey($word) {
     return preg_match($this->wordPattern, $word);
   }
 }

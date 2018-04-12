@@ -4,9 +4,12 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * Get seconds and microseconds
+ *
+ * @param $params
+ * @param $smarty
+ *
  * @return double
  */
 function smarty_core_get_microtime($params, &$smarty)

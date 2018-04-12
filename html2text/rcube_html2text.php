@@ -329,10 +329,11 @@ class rcube_html2text
      * will instantiate with that source propagated, all that has
      * to be done it to call get_text().
      *
-     * @param string $source HTML content
+     * @param string  $source    HTML content
      * @param boolean $from_file Indicates $source is a file to pull content from
-     * @param boolean $do_links Indicate whether a table of link URLs is desired
-     * @param integer $width Maximum width of the formatted text, 0 for no limit
+     * @param boolean $do_links  Indicate whether a table of link URLs is desired
+     * @param integer $width     Maximum width of the formatted text, 0 for no limit
+     * @param string  $charset
      */
     public function __construct($source = '', $from_file = false, $do_links = true, $width = 75, $charset = 'UTF-8')
     {
@@ -391,6 +392,8 @@ class rcube_html2text
      * Sets the allowed HTML tags to pass through to the resulting text.
      *
      * Tags should be in the form "<p>", with no corresponding closing tag.
+     *
+     * @param string $allowed_tags
      */
     public function set_allowed_tags($allowed_tags = '')
     {
@@ -401,6 +404,7 @@ class rcube_html2text
 
     /**
      * Sets a base URL to handle relative links.
+     * @param string $url
      */
     public function set_base_url($url = '')
     {
@@ -630,6 +634,8 @@ class rcube_html2text
 
     /**
      * Callback function to correctly add citation markers for blockquote contents
+     * @param $m
+     * @return string
      */
     public function blockquote_citation_ballback($m)
     {

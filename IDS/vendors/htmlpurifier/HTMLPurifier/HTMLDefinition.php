@@ -111,8 +111,17 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
     /**
      * Adds a custom element to your HTML definition
+     *
      * @note See HTMLPurifier_HTMLModule::addElement for detailed
      *       parameter and return value descriptions.
+     *
+     * @param       $element_name
+     * @param       $type
+     * @param       $contents
+     * @param       $attr_collections
+     * @param array $attributes
+     *
+     * @return \Created
      */
     public function addElement($element_name, $type, $contents, $attr_collections, $attributes = array()) {
         $module = $this->getAnonymousModule();
@@ -127,7 +136,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
      * existing behavior
      * @note See HTMLPurifier_HTMLModule::addBlankElement for detailed
      *       parameter and return value descriptions.
-     */
+     * @param $element_name
+     * @return \Created
+*/
     public function addBlankElement($element_name) {
         $module  = $this->getAnonymousModule();
         $element = $module->addBlankElement($element_name);
@@ -162,6 +173,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
         $this->manager = new HTMLPurifier_HTMLModuleManager();
     }
 
+    /**
+     * @param \HTMLPurifier_Config $config
+     */
     protected function doSetup($config) {
         $this->processModules($config);
         $this->setupConfigStuff($config);
@@ -176,7 +190,8 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
     /**
      * Extract out the information from the manager
-     */
+     * @param $config
+*/
     protected function processModules($config) {
 
         if ($this->_anonModule) {
@@ -216,7 +231,8 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
     /**
      * Sets up stuff based on config. We need a better way of doing this.
-     */
+     * @param $config
+*/
     protected function setupConfigStuff($config) {
 
         $block_wrapper = $config->get('HTML.BlockWrapper');

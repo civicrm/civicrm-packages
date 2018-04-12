@@ -8,6 +8,13 @@ class HTMLPurifier_URIScheme_news extends HTMLPurifier_URIScheme {
     public $browsable = false;
     public $may_omit_host = true;
 
+    /**
+     * @param \Reference            $uri
+     * @param \HTMLPurifier_Config  $config
+     * @param \HTMLPurifier_Context $context
+     *
+     * @return bool
+     */
     public function doValidate(&$uri, $config, $context) {
         $uri->userinfo = null;
         $uri->host     = null;

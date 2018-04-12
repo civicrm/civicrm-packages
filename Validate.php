@@ -909,10 +909,10 @@ class Validate
      *
      * @param string &$date Date
      * @param string $num   Length
-     * @param string $opt   Unknown   
+     * @param bool   $opt   Unknown
      *
-     * @access private
      * @return string
+     * @access private
      */
     public function _substr(&$date, $num, $opt = false)
     {
@@ -925,6 +925,12 @@ class Validate
         return $ret;
     }
 
+    /**
+     * @param $val
+     * @param $div
+     *
+     * @return float|int|string
+     */
     public function _modf($val, $div)
     {
         if (function_exists('bcmod')) {

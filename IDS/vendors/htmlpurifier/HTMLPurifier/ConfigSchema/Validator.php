@@ -33,6 +33,12 @@ class HTMLPurifier_ConfigSchema_Validator
     /**
      * Validates a fully-formed interchange object. Throws an
      * HTMLPurifier_ConfigSchema_Exception if there's a problem.
+     *
+     * @param $interchange
+     *
+     * @return bool
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+     * @throws \HTMLPurifier_Exception
      */
     public function validate($interchange) {
         $this->interchange = $interchange;
@@ -49,7 +55,9 @@ class HTMLPurifier_ConfigSchema_Validator
 
     /**
      * Validates a HTMLPurifier_ConfigSchema_Interchange_Id object.
-     */
+     * @param $id
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+*/
     public function validateId($id) {
         $id_string = $id->toString();
         $this->context[] = "id '$id_string'";
@@ -67,7 +75,10 @@ class HTMLPurifier_ConfigSchema_Validator
 
     /**
      * Validates a HTMLPurifier_ConfigSchema_Interchange_Directive object.
-     */
+     * @param $d
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+     * @throws \HTMLPurifier_Exception
+*/
     public function validateDirective($d) {
         $id = $d->id->toString();
         $this->context[] = "directive '$id'";
@@ -108,7 +119,9 @@ class HTMLPurifier_ConfigSchema_Validator
     /**
      * Extra validation if $allowed member variable of
      * HTMLPurifier_ConfigSchema_Interchange_Directive is defined.
-     */
+     * @param $d
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+*/
     public function validateDirectiveAllowed($d) {
         if (null === $d->allowed) return;
         $this->with($d, 'allowed')
@@ -127,7 +140,9 @@ class HTMLPurifier_ConfigSchema_Validator
     /**
      * Extra validation if $valueAliases member variable of
      * HTMLPurifier_ConfigSchema_Interchange_Directive is defined.
-     */
+     * @param $d
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+*/
     public function validateDirectiveValueAliases($d) {
         if (null === $d->valueAliases) return;
         $this->with($d, 'valueAliases')
@@ -155,7 +170,9 @@ class HTMLPurifier_ConfigSchema_Validator
     /**
      * Extra validation if $aliases member variable of
      * HTMLPurifier_ConfigSchema_Interchange_Directive is defined.
-     */
+     * @param $d
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+*/
     public function validateDirectiveAliases($d) {
         $this->with($d, 'aliases')
             ->assertIsArray(); // handled by InterchangeBuilder
@@ -180,14 +197,20 @@ class HTMLPurifier_ConfigSchema_Validator
     /**
      * Convenience function for generating HTMLPurifier_ConfigSchema_ValidatorAtom
      * for validating simple member variables of objects.
-     */
+     * @param $obj
+     * @param $member
+     * @return \HTMLPurifier_ConfigSchema_ValidatorAtom
+*/
     protected function with($obj, $member) {
         return new HTMLPurifier_ConfigSchema_ValidatorAtom($this->getFormattedContext(), $obj, $member);
     }
 
     /**
      * Emits an error, providing helpful context.
-     */
+     * @param $target
+     * @param $msg
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+*/
     protected function error($target, $msg) {
         if ($target !== false) $prefix = ucfirst($target) . ' in ' .  $this->getFormattedContext();
         else $prefix = ucfirst($this->getFormattedContext());

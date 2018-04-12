@@ -39,6 +39,11 @@ function get_drupal_path() {
     return $drupal_path;
 }
 
+/**
+ * @param $drupal_path
+ *
+ * @return bool
+ */
 function CheckAuthentication($drupal_path) {
 
     static $authenticated;

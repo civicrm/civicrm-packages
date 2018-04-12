@@ -51,19 +51,18 @@ class HTML_QuickForm_link extends HTML_QuickForm_static
 
     // }}}
     // {{{ constructor
-    
     /**
      * Class constructor
-     * 
-     * @param     string    $elementLabel   (optional)Link label
-     * @param     string    $href           (optional)Link href
-     * @param     string    $text           (optional)Link display text
-     * @param     mixed     $attributes     (optional)Either a typical HTML attribute string 
+     *
+     * @param null       $elementName
+     * @param     string $elementLabel      (optional)Link label
+     * @param     string $href              (optional)Link href
+     * @param     string $text              (optional)Link display text
+     * @param     mixed  $attributes        (optional)Either a typical HTML attribute string
      *                                      or an associative array
+     *
      * @since     1.0
      * @access    public
-     * @return    void
-     * @throws    
      */
     public function __construct($elementName=null, $elementLabel=null, $href=null, $text=null, $attributes=null)
     {

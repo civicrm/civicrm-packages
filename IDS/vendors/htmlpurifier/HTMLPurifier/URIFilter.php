@@ -26,6 +26,10 @@ abstract class HTMLPurifier_URIFilter
 
     /**
      * Performs initialization for the filter
+     *
+     * @param $config
+     *
+     * @return bool
      */
     public function prepare($config) {return true;}
 

@@ -6,7 +6,10 @@ namespace CRM\GitFootnote;
  */
 class CommentFilter implements Filter {
 
-  public function filter(CommitMessage $message) {
+    /**
+     * @param \CRM\GitFootnote\CommitMessage $message
+     */
+    public function filter(CommitMessage $message) {
     $lines = explode("\n", $message->getMessage());
     $lines = array_filter($lines, function ($line) {
       if (empty($line)) {

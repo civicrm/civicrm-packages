@@ -18,6 +18,8 @@ class HTMLPurifier_PercentEncoder
 
     /**
      * String of characters that should be preserved while using encode().
+     *
+     * @param bool $preserve
      */
     public function __construct($preserve = false) {
         // unreserved letters, ought to const-ify

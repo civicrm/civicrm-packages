@@ -4,11 +4,12 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * Replace cached inserts with the actual results
  *
- * @param string $results
+ * @param $params
+ * @param $smarty
+ *
  * @return string
  */
 function smarty_core_process_cached_inserts($params, &$smarty)

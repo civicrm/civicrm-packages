@@ -14,8 +14,19 @@
 
 namespace kcfinder;
 
+/**
+ * Class type_mime
+ *
+ * @package kcfinder
+ */
 class type_mime {
 
+    /**
+     * @param       $file
+     * @param array $config
+     *
+     * @return bool|string
+     */
     public function checkFile($file, array $config) {
         if (!class_exists("finfo"))
             return "Fileinfo PECL extension is missing.";

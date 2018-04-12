@@ -58,13 +58,16 @@ require_once 'Structures/Graph/Manipulator/AcyclicTest.php';
 class Structures_Graph_Manipulator_TopologicalSorter {
     /* _nonVisitedInDegree {{{ */
     /**
-    *
-    * This is a variant of Structures_Graph::inDegree which does 
-    * not count nodes marked as visited.
-    *
-    * @access   private
-    * @return	integer	 Number of non-visited nodes that link to this one
-    */
+     *
+     * This is a variant of Structures_Graph::inDegree which does
+     * not count nodes marked as visited.
+     *
+     * @access   private
+     *
+     * @param $node
+     *
+     * @return  integer   Number of non-visited nodes that link to this one
+     */
     public function _nonVisitedInDegree(&$node) {
         $result = 0;
         $graphNodes =& $node->_graph->getNodes();
@@ -78,8 +81,9 @@ class Structures_Graph_Manipulator_TopologicalSorter {
 
     /* _sort {{{ */
     /**
-    * @access   private
-    */
+     * @access   private
+     * @param $graph
+*/
     public function _sort(&$graph) {
         // Mark every node as not visited
         $nodes =& $graph->getNodes();
@@ -118,16 +122,17 @@ class Structures_Graph_Manipulator_TopologicalSorter {
 
     /* sort {{{ */
     /**
-    *
-    * sort returns the graph's nodes, sorted by topological order. 
-    * 
-    * The result is an array with 
-    * as many entries as topological levels. Each entry in this array is an array of nodes within
-    * the given topological level.
-    *
-    * @return	array	 The graph's nodes, sorted by topological order.
-    * @access	public
-    */
+     *
+     * sort returns the graph's nodes, sorted by topological order.
+     *
+     * The result is an array with
+     * as many entries as topological levels. Each entry in this array is an array of nodes within
+     * the given topological level.
+     *
+     * @param $graph
+     * @return  array   The graph's nodes, sorted by topological order.
+     * @access  public
+*/
     public function sort(&$graph) {
         // We only sort graphs
         if (!is_a($graph, 'Structures_Graph')) return Pear::raiseError('Structures_Graph_Manipulator_TopologicalSorter::sort received an object that is not a Structures_Graph', STRUCTURES_GRAPH_ERROR_GENERIC);

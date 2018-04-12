@@ -14,6 +14,11 @@
 
 namespace kcfinder;
 
+/**
+ * Class browser
+ *
+ * @package kcfinder
+ */
 class browser extends uploader {
     protected $action;
     protected $thumbsDir;
@@ -138,6 +143,9 @@ class browser extends uploader {
             : $return;
     }
 
+    /**
+     * @return string
+     */
     protected function act_browser() {
         if (isset($_GET['dir'])) {
             $dir = "{$this->typeDir}/{$_GET['dir']}";
@@ -148,6 +156,9 @@ class browser extends uploader {
         return $this->output();
     }
 
+    /**
+     * @return string
+     */
     protected function act_init() {
         $tree = $this->getDirInfo($this->typeDir);
         $tree['dirs'] = $this->getTree($this->session['dir']);
@@ -209,10 +220,16 @@ class browser extends uploader {
         httpCache::file($file, "image/$type");
     }
 
+    /**
+     * @return string
+     */
     protected function act_expand() {
         return json_encode(array('dirs' => $this->getDirs($this->postDir())));
     }
 
+    /**
+     * @return string
+     */
     protected function act_chDir() {
         $this->postDir(); // Just for existing check
         $this->session['dir'] = "{$this->type}/{$_POST['dir']}";
@@ -223,6 +240,9 @@ class browser extends uploader {
         ));
     }
 
+    /**
+     * @return bool
+     */
     protected function act_newDir() {
         if (!$this->config['access']['dirs']['create'] ||
             !isset($_POST['dir']) ||
@@ -252,6 +272,9 @@ class browser extends uploader {
         return true;
     }
 
+    /**
+     * @return string
+     */
     protected function act_renameDir() {
         if (!$this->config['access']['dirs']['rename'] ||
             !isset($_POST['dir']) ||
@@ -283,6 +306,9 @@ class browser extends uploader {
         return json_encode(array('name' => $newName));
     }
 
+    /**
+     * @return bool
+     */
     protected function act_deleteDir() {
         if (!$this->config['access']['dirs']['delete'] ||
             !isset($_POST['dir']) ||
@@ -308,6 +334,9 @@ class browser extends uploader {
         return true;
     }
 
+    /**
+     * @return string
+     */
     protected function act_upload() {
         header("Content-Type: text/plain; charset={$this->charset}");
 
@@ -361,6 +390,9 @@ class browser extends uploader {
         die;
     }
 
+    /**
+     * @return bool
+     */
     protected function act_rename() {
         $dir = $this->postDir();
         if (!$this->config['access']['files']['rename'] ||
@@ -415,6 +447,9 @@ class browser extends uploader {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     protected function act_delete() {
         $dir = $this->postDir();
         if (!$this->config['access']['files']['delete'] ||
@@ -435,6 +470,9 @@ class browser extends uploader {
         return true;
     }
 
+    /**
+     * @return bool|string
+     */
     protected function act_cp_cbd() {
         $dir = $this->postDir();
         if (!$this->config['access']['files']['copy'] ||
@@ -504,6 +542,9 @@ class browser extends uploader {
         return true;
     }
 
+    /**
+     * @return bool|string
+     */
     protected function act_mv_cbd() {
         $dir = $this->postDir();
         if (!$this->config['access']['files']['move'] ||
@@ -573,6 +614,9 @@ class browser extends uploader {
         return true;
     }
 
+    /**
+     * @return bool|string
+     */
     protected function act_rm_cbd() {
         if (!$this->config['access']['files']['delete'] ||
             !isset($_POST['files']) ||
@@ -731,6 +775,9 @@ class browser extends uploader {
         die;
     }
 
+    /**
+     * @return string
+     */
     protected function act_check4Update() {
         if ($this->config['denyUpdateCheck']) {
             return json_encode(array('version' => false));
@@ -810,6 +857,12 @@ class browser extends uploader {
         }
     }
 
+    /**
+     * @param $file
+     * @param $dir
+     *
+     * @return string
+     */
     protected function moveUploadFile($file, $dir) {
         $message = $this->checkUploadedFile($file);
 
@@ -837,6 +890,9 @@ class browser extends uploader {
         return '/' . basename($target);
     }
 
+    /**
+     * @param null $file
+     */
     protected function sendDefaultThumb($file=null) {
         if ($file !== null) {
             $ext = file::getExtension($file);
@@ -850,6 +906,11 @@ class browser extends uploader {
         die;
     }
 
+    /**
+     * @param $dir
+     *
+     * @return array
+     */
     protected function getFiles($dir) {
         $thumbDir = "{$this->config['uploadDir']}/{$this->config['thumbsDir']}/$dir";
         $dir = "{$this->config['uploadDir']}/$dir";
@@ -909,6 +970,12 @@ class browser extends uploader {
         return $return;
     }
 
+    /**
+     * @param     $dir
+     * @param int $index
+     *
+     * @return array|bool
+     */
     protected function getTree($dir, $index=0) {
         $path = explode('/', $dir);
 
@@ -947,6 +1014,11 @@ class browser extends uploader {
         return $dirs;
     }
 
+    /**
+     * @param bool $existent
+     *
+     * @return string
+     */
     protected function postDir($existent=true) {
         $dir = $this->typeDir;
         if (isset($_POST['dir'])) {
@@ -961,6 +1033,11 @@ class browser extends uploader {
         return $dir;
     }
 
+    /**
+     * @param bool $existent
+     *
+     * @return string
+     */
     protected function getDir($existent=true) {
         $dir = $this->typeDir;
         if (isset($_GET['dir'])) {
@@ -975,6 +1052,11 @@ class browser extends uploader {
         return $dir;
     }
 
+    /**
+     * @param $dir
+     *
+     * @return array
+     */
     protected function getDirs($dir) {
         $dirs = dir::content($dir, array('types' => 'dir'));
         $return = array();
@@ -992,6 +1074,12 @@ class browser extends uploader {
         return $return;
     }
 
+    /**
+     * @param      $dir
+     * @param bool $removable
+     *
+     * @return array|bool
+     */
     protected function getDirInfo($dir, $removable=false) {
         if ((substr(basename($dir), 0, 1) == '.') || !is_dir($dir) || !is_readable($dir)) {
             return false;
@@ -1024,6 +1112,12 @@ class browser extends uploader {
         return $info;
     }
 
+    /**
+     * @param null $data
+     * @param null $template
+     *
+     * @return string
+     */
     protected function output($data=null, $template=null) {
         if (!is_array($data)) {
             $data = array();
@@ -1049,6 +1143,10 @@ class browser extends uploader {
         return '';
     }
 
+    /**
+     * @param            $message
+     * @param array|null $data
+     */
     protected function errorMsg($message, array $data=null) {
         if (in_array($this->action, array('thumb', 'upload', 'download', 'downloadDir'))) {
             die($this->label($message, $data));
@@ -1062,6 +1160,11 @@ class browser extends uploader {
         }
     }
 
+    /**
+     * @param $str
+     *
+     * @return string
+     */
     protected function htmlData($str) {
         return htmlentities($str, null, strtoupper($this->charset));
     }

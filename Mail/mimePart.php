@@ -389,7 +389,7 @@ class Mail_mimePart
      * @param string  $boundary  Pre-defined boundary string
      * @param boolean $skip_head True if you don't want to save headers
      *
-     * @return array True on sucess or PEAR error object
+     * @return bool|string True on sucess or PEAR error object
      * @access private
      */
     public function _encodePartToFile($fh, $boundary=null, $skip_head=false)

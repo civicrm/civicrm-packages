@@ -304,28 +304,25 @@ class DB_Table_QuickForm {
     }
 
     /**
-    * 
-    * Gets controls for a list of columns
-    * 
-    * @author Ian Eure <ieure@php.net>
-    * 
-    * @static
-    * 
-    * @access public
-    * 
-    * @param object &$form An HTML_QuickForm object.
-    * 
-    * @param array $cols A sequential array of DB_Table column definitions
-    * from which to create form elements.
-    * 
-    * @param string $arrayName By default, the form will use the names
-    * of the columns as the names of the form elements.  If you pass
-    * $arrayName, the column names will become keys in an array named
-    * for this parameter.
-    * 
-    * @return array Form elements
-    * 
-    */
+     *
+     * Gets controls for a list of columns
+     *
+     * @author Ian Eure <ieure@php.net>
+     *
+     * @static
+     *
+     * @access public
+     *
+     * @param array  $cols      A sequential array of DB_Table column definitions
+     *                          from which to create form elements.
+     *
+     * @param string $arrayName By default, the form will use the names
+     *                          of the columns as the names of the form elements.  If you pass
+     *                          $arrayName, the column names will become keys in an array named
+     *                          for this parameter.
+     *
+     * @return array Form elements
+     */
     
     public function &getElements($cols, $arrayName = null)
     {

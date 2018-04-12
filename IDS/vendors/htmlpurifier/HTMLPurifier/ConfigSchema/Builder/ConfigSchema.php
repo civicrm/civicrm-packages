@@ -7,6 +7,11 @@
 class HTMLPurifier_ConfigSchema_Builder_ConfigSchema
 {
 
+    /**
+     * @param $interchange
+     *
+     * @return \HTMLPurifier_ConfigSchema
+     */
     public function build($interchange) {
         $schema = new HTMLPurifier_ConfigSchema();
         foreach ($interchange->directives as $d) {

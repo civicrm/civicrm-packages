@@ -325,7 +325,9 @@ class HTML_QuickForm_date extends HTML_QuickForm_group
 
     // }}}
     // {{{ setValue()
-
+    /**
+     * @param string $value
+     */
     public function setValue($value)
     {
         if (empty($value)) {
@@ -362,7 +364,9 @@ class HTML_QuickForm_date extends HTML_QuickForm_group
 
     // }}}
     // {{{ toHtml()
-
+    /**
+     * @return string
+     */
     public function toHtml()
     {
         include_once('HTML/QuickForm/Renderer/Default.php');
@@ -374,7 +378,11 @@ class HTML_QuickForm_date extends HTML_QuickForm_group
 
     // }}}
     // {{{ accept()
-
+    /**
+     * @param      $renderer
+     * @param bool $required
+     * @param null $error
+     */
     public function accept(&$renderer, $required = false, $error = null)
     {
         $renderer->renderElement($this, $required, $error);
@@ -382,7 +390,13 @@ class HTML_QuickForm_date extends HTML_QuickForm_group
 
     // }}}
     // {{{ onQuickFormEvent()
-
+    /**
+     * @param string $event
+     * @param mixed  $arg
+     * @param object $caller
+     *
+     * @return bool|void
+     */
     public function onQuickFormEvent($event, $arg, &$caller)
     {
         if ('updateValue' == $event) {

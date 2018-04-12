@@ -29,6 +29,12 @@ class HTMLPurifier_Filter
 
     /**
      * Pre-processor function, handles HTML before HTML Purifier
+     *
+     * @param $html
+     * @param $config
+     * @param $context
+     *
+     * @return mixed
      */
     public function preFilter($html, $config, $context) {
         return $html;
@@ -36,7 +42,11 @@ class HTMLPurifier_Filter
 
     /**
      * Post-processor function, handles HTML after HTML Purifier
-     */
+     * @param $html
+     * @param $config
+     * @param $context
+     * @return mixed
+*/
     public function postFilter($html, $config, $context) {
         return $html;
     }
