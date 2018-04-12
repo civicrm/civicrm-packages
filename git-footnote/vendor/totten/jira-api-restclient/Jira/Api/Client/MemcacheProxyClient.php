@@ -52,11 +52,9 @@ class Jira_Api_Client_MemcacheProxyClient implements Jira_Api_Client_ClientInter
      */
     public function sendRequest($method, $url, $data = array(), $endpoint, Jira_Api_Authentication_AuthenticationInterface $credential)
     {
-        if ($method == "GET") {
-            if ($result = $this->getFromCache($url, $data, $endpoint)) {
-                //$this->setCache($url, $data, $endpoint, $result);
-                return $result;
-            }
+        if ($method == "GET" && $result = $this->getFromCache($url, $data, $endpoint)) {
+            //$this->setCache($url, $data, $endpoint, $result);
+            return $result;
         }
         $result = $this->api->sendRequest($method, $url, $data, $endpoint, $credential);
 

@@ -886,10 +886,8 @@ class HTML_QuickForm extends HTML_Common
             foreach (array_keys($elements) as $key) {
                 $name = $group->getElementName($key);
                 // prevent endless recursion in case of radios and such
-                if ($name != $elementName) {
-                    if (null !== ($v = $this->getSubmitValue($name))) {
-                        $value[$name] = $v;
-                    }
+                if ($name != $elementName && null !== ($v = $this->getSubmitValue($name))) {
+                    $value[$name] = $v;
                 }
             }
         }

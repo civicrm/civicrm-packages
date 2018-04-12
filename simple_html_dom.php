@@ -488,12 +488,8 @@ class simple_html_dom_node
         if (is_object($debugObject))
         {
             $text = '';
-            if ($this->tag == 'text')
-            {
-                if (!empty($this->text))
-                {
-                    $text = " with text: " . $this->text;
-                }
+            if ($this->tag == 'text' && ! empty($this->text)) {
+                $text = " with text: " . $this->text;
             }
             $debugObject->debugLog(1, 'Innertext of tag: ' . $this->tag . $text);
         }
@@ -708,11 +704,9 @@ class simple_html_dom_node
             $count = 0;
             foreach ($this->children as $c)
             {
-                if ($tag==='*' || $tag===$c->tag) {
-                    if (++$count==$key) {
-                        $ret[$c->_[HDOM_INFO_BEGIN]] = 1;
-                        return;
-                    }
+                if (($tag === '*' || $tag === $c->tag) && ++$count == $key) {
+                    $ret[$c->_[HDOM_INFO_BEGIN]] = 1;
+                    return;
                 }
             }
             return;
@@ -1074,26 +1068,20 @@ class simple_html_dom_node
             }
 
             // If there is a width in the style attributes:
-            if (isset($attributes['width']) && $width == -1)
-            {
-                // check that the last two characters are px (pixels)
-                if (strtolower(substr($attributes['width'], -2)) == 'px')
+            // check that the last two characters are px (pixels)
+            if (isset($attributes['width']) && $width == -1 && strtolower(substr($attributes['width'], -2)) == 'px') {
+                $proposed_width = substr($attributes['width'], 0, -2);
+                // Now make sure that it's an integer and not something stupid.
+                if (filter_var($proposed_width, FILTER_VALIDATE_INT))
                 {
-                    $proposed_width = substr($attributes['width'], 0, -2);
-                    // Now make sure that it's an integer and not something stupid.
-                    if (filter_var($proposed_width, FILTER_VALIDATE_INT))
-                    {
-                        $width = $proposed_width;
-                    }
+                    $width = $proposed_width;
                 }
             }
 
             // If there is a width in the style attributes:
-            if (isset($attributes['height']) && $height == -1)
-            {
-                // check that the last two characters are px (pixels)
-                if (strtolower(substr($attributes['height'], -2)) == 'px')
-                {
+            // check that the last two characters are px (pixels)
+            if (isset($attributes['height']) && $height == -1
+                && strtolower(substr($attributes['height'], -2)) == 'px') {
                     $proposed_height = substr($attributes['height'], 0, -2);
                     // Now make sure that it's an integer and not something stupid.
                     if (filter_var($proposed_height, FILTER_VALIDATE_INT))
@@ -1101,7 +1089,6 @@ class simple_html_dom_node
                         $height = $proposed_height;
                     }
                 }
-            }
 
         }
 

@@ -568,10 +568,8 @@ class PEAR_ErrorStack {
             }
             $this->_errorsByLevel[$err['level']][] = &$this->_errors[0];
         }
-        if ($log) {
-            if ($this->_logger || $GLOBALS['_PEAR_ERRORSTACK_DEFAULT_LOGGER']) {
-                $this->_log($err);
-            }
+        if ($log && ($this->_logger || $GLOBALS['_PEAR_ERRORSTACK_DEFAULT_LOGGER'])) {
+            $this->_log($err);
         }
         if ($die) {
             die();
@@ -605,12 +603,8 @@ class PEAR_ErrorStack {
         $msg = false, $repackage = false, $backtrace = false
     ) {
         $s = &PEAR_ErrorStack::singleton($package);
-        if ($s->_contextCallback) {
-            if (!$backtrace) {
-                if (function_exists('debug_backtrace')) {
-                    $backtrace = debug_backtrace();
-                }
-            }
+        if ($s->_contextCallback && ! $backtrace && function_exists('debug_backtrace')) {
+            $backtrace = debug_backtrace();
         }
         return $s->push($code, $level, $params, $msg, $repackage, $backtrace);
     }
@@ -856,13 +850,11 @@ class PEAR_ErrorStack {
                 $ret['file'] = $matches[1];
                 $ret['line'] = $matches[2] + 0;
             }
-            if (isset($funcbacktrace['function']) && isset($backtrace[1])) {
-                if ($funcbacktrace['function'] != 'eval') {
-                    if ($funcbacktrace['function'] == '__lambda_func') {
-                        $ret['function'] = 'create_function() code';
-                    } else {
-                        $ret['function'] = $funcbacktrace['function'];
-                    }
+            if (isset($funcbacktrace['function']) && isset($backtrace[1]) && $funcbacktrace['function'] != 'eval') {
+                if ($funcbacktrace['function'] == '__lambda_func') {
+                    $ret['function'] = 'create_function() code';
+                } else {
+                    $ret['function'] = $funcbacktrace['function'];
                 }
             }
             if (isset($funcbacktrace['class']) && isset($backtrace[1])) {

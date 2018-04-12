@@ -570,14 +570,10 @@ class When
 
 					$week_day = $tmp_date->format('w');
 
-					if($this->try_date == $this->start_date)
-					{
-						if($week_day == $this->wkst)
-						{
-							$this->try_date = clone $tmp_date;
-							$this->try_date->modify('-7 days');
-							$run = false;
-						}
+					if($this->try_date == $this->start_date && $week_day == $this->wkst) {
+					    $this->try_date = clone $tmp_date;
+					    $this->try_date->modify('-7 days');
+					    $run = false;
 					}
 
 					if($week_day != $this->wkst)
@@ -710,12 +706,8 @@ class When
 	public function next()
 	{
 		// check the counter is set
-		if($this->count !== 0)
-		{
-			if($this->counter >= $this->count)
-			{
+		if($this->count !== 0 && $this->counter >= $this->count) {
 				return false;
-			}
 		}
 
 		// create initial set of suggested dates

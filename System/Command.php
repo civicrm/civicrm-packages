@@ -382,11 +382,11 @@ class System_Command {
         }
 
         // Warning about impossible mix of options
-        if (!empty($this->options['OUTPUT'])) {
-            if (!empty($this->options['SHUTDOWN']) || !empty($this->options['NOHUP'])) {
-                return PEAR::raiseError(null, SYSTEM_COMMAND_NO_OUTPUT, null, E_USER_WARNING, null, 'System_Command_Error', true);
-            }
-        }
+        if ( ! empty($this->options['OUTPUT'])
+             && ( ! empty($this->options['SHUTDOWN'])
+                  || ! empty($this->options['NOHUP']))) {
+                      return PEAR::raiseError(null, SYSTEM_COMMAND_NO_OUTPUT, null, E_USER_WARNING, null, 'System_Command_Error', true);
+                  }
                 
         // if this is not going to stdout, then redirect to /dev/null
         if (empty($this->options['OUTPUT'])) {

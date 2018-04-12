@@ -51,15 +51,11 @@ class HTML_QuickForm_Rule_Email extends HTML_QuickForm_Rule
      */
     public function validate($email, $checkDomain = false)
     {
-        if (function_exists('idn_to_ascii')) {
-          if ($parts = explode('@', $email)) {
-            if (sizeof($parts) == 2) {
-              foreach ($parts as &$part) {
-                $part = idn_to_ascii($part);
-              }
-              $email = implode('@', $parts);
-            }
+        if (function_exists('idn_to_ascii') && ($parts = explode('@', $email)) && count($parts) == 2) {
+          foreach ($parts as &$part) {
+            $part = idn_to_ascii($part);
           }
+          $email = implode('@', $parts);
         }
 
         // Fix for bug #10799: add 'D' modifier to regex

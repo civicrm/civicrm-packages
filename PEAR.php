@@ -548,20 +548,15 @@ class PEAR
             $message     = $message->getMessage();
         }
 
-        if (
-            $object !== null &&
-            isset($object->_expected_errors) &&
-            count($object->_expected_errors) > 0 &&
-            count($exp = end($object->_expected_errors))
-        ) {
-            if ($exp[0] == '*'
-                ||
-                (is_int(reset($exp)) && in_array($code, $exp)) ||
-                (is_string(reset($exp)) && in_array($message, $exp))
-            ) {
-                $mode = PEAR_ERROR_RETURN;
-            }
-        }
+        if ($object !== null
+            && isset($object->_expected_errors)
+            && count($object->_expected_errors) > 0
+            && count($exp = end($object->_expected_errors))
+            && ($exp[0] == '*'
+                || (is_int(reset($exp)) && in_array($code, $exp))
+                || (is_string(reset($exp)) && in_array($message, $exp)))) {
+                    $mode = PEAR_ERROR_RETURN;
+                }
 
         // No mode given, try global ones
         if ($mode === null) {

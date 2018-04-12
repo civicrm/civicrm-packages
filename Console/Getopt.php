@@ -103,10 +103,8 @@ class Console_Getopt {
          * Preserve backwards compatibility with callers that relied on
          * erroneous POSIX fix.
          */
-        if ($version < 2) {
-            if (isset($args[0]{0}) && $args[0]{0} != '-') {
-                array_shift($args);
-            }
+        if ($version < 2 && isset($args[0]{0}) && $args[0]{0} != '-') {
+            array_shift($args);
         }
 
         reset($args);

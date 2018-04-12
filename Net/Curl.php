@@ -502,18 +502,15 @@ class Net_Curl
                                $this->proxyUser . ':' . $this->proxyPassword);
         }
 
-        if (is_bool($this->verifyPeer)) {
-            if (!$this->setOption(CURLOPT_SSL_VERIFYPEER, $this->verifyPeer)) {
-                return PEAR::raiseError('Error setting CURLOPT_SSL_VERIFYPEER');
-            }
+        if (is_bool($this->verifyPeer) && ! $this->setOption(CURLOPT_SSL_VERIFYPEER, $this->verifyPeer)) {
+            return PEAR::raiseError('Error setting CURLOPT_SSL_VERIFYPEER');
         }
 
-        if (is_numeric($this->verifyHost) && $this->verifyHost >= 0 &&
-            $this->verifyHost <= 2) {
-            if (!$this->setOption(CURLOPT_SSL_VERIFYHOST, $this->verifyHost)) {
+        if (is_numeric($this->verifyHost) && $this->verifyHost >= 0
+            && $this->verifyHost <= 2
+            && ! $this->setOption(CURLOPT_SSL_VERIFYHOST, $this->verifyHost)) {
                 return PEAR::raiseError('Error setting CURLOPT_SSL_VERIFYPEER');
             }
-        }
 
         if (is_bool($this->verifyPeer) && $this->verifyPeer == true) {
             if (isset($this->caInfo) && strlen($this->caInfo)) {
@@ -527,10 +524,8 @@ class Net_Curl
                 }
             }
 
-            if (isset($this->caPath) && is_string($this->caPath)) {
-                if (!$this->setOption(CURLOPT_CAPATH, $this->caPath)) {
-                    return PEAR::raiseError('Error setting CURLOPT_CAPATH');
-                }
+            if (isset($this->caPath) && is_string($this->caPath) && ! $this->setOption(CURLOPT_CAPATH, $this->caPath)) {
+                return PEAR::raiseError('Error setting CURLOPT_CAPATH');
             }
         }
 

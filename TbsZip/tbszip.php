@@ -451,13 +451,10 @@ class clsTbsZip {
 		if ($ReplacedAndDeleted) {
 			// replaced or deleted files
 			$idx = $this->FileGetIdx($NameOrIdx);
-			if ($idx!==false) {
-				if (isset($this->ReplInfo[$idx])) {
-					$pos = $this->CdFileLst[$idx]['p_loc'];
-					unset($this->ReplByPos[$pos]);
-					unset($this->ReplInfo[$idx]);
-					$nbr++;
-				}
+			if ($idx !== false && isset($this->ReplInfo[$idx])) {
+			    $pos = $this->CdFileLst[$idx]['p_loc'];
+			    unset($this->ReplByPos[$pos], $this->ReplInfo[$idx]);
+			    $nbr++;
 			}
 		}
 

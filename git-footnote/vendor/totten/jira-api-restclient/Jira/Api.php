@@ -366,17 +366,14 @@ class Jira_Api
         	);
         if (strlen($result)) {
             $json = json_decode($result, true);
-            if ($this->options & self::AUTOMAP_FIELDS) {
-                if (isset($json['issues'])) {
-                    if (!count($this->fields)) {
-                        $this->getFields();
-                    }
-
-                    foreach ($json['issues'] as $offset => $issue) {
-                        $json['issues'][$offset] = $this->automapFields($issue);
-                    }
+            if ($this->options & self::AUTOMAP_FIELDS && isset($json['issues'])) {
+                if (!count($this->fields)) {
+                    $this->getFields();
                 }
 
+                foreach ($json['issues'] as $offset => $issue) {
+                    $json['issues'][$offset] = $this->automapFields($issue);
+                }
             }
 
             if ($return_as_json) {

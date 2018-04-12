@@ -584,25 +584,22 @@ class pdf_parser
                     // A numeric token. Make sure that
                     // it is not part of something else.
                     if (($tok2 = $this->_readToken($c)) !== false) {
-                        if (is_numeric($tok2)) {
-
-                            // Two numeric tokens in a row.
-                            // In this case, we're probably in
-                            // front of either an object reference
-                            // or an object specification.
-                            // Determine the case and return the data
-                            if (($tok3 = $this->_readToken($c)) !== false) {
-                                switch ($tok3) {
-                                    case 'obj':
-                                        return array(self::TYPE_OBJDEC, (int)$token, (int)$tok2);
-                                    case 'R':
-                                        return array(self::TYPE_OBJREF, (int)$token, (int)$tok2);
-                                }
-                                // If we get to this point, that numeric value up
-                                // there was just a numeric value. Push the extra
-                                // tokens back into the stack and return the value.
-                                array_push($c->stack, $tok3);
+                        // Two numeric tokens in a row.
+                        // In this case, we're probably in
+                        // front of either an object reference
+                        // or an object specification.
+                        // Determine the case and return the data
+                        if (is_numeric($tok2) && ($tok3 = $this->_readToken($c)) !== false) {
+                            switch ($tok3) {
+                                case 'obj':
+                                    return array(self::TYPE_OBJDEC, (int)$token, (int)$tok2);
+                                case 'R':
+                                    return array(self::TYPE_OBJREF, (int)$token, (int)$tok2);
                             }
+                            // If we get to this point, that numeric value up
+                            // there was just a numeric value. Push the extra
+                            // tokens back into the stack and return the value.
+                            array_push($c->stack, $tok3);
                         }
 
                         array_push($c->stack, $tok2);

@@ -528,20 +528,18 @@ class Validate
             $hasIDNA = true;
         }
 
-        if ($hasIDNA === true) {
-            if (strpos($email, '@') !== false) {
-                list($name, $domain) = explode('@', $email, 2);
+        if ($hasIDNA === true && strpos($email, '@') !== false) {
+            list($name, $domain) = explode('@', $email, 2);
 
-                // Check if the domain contains characters > 127 which means 
-                // it's an idn domain name.
-                $chars = count_chars($domain, 1);
-                if (!empty($chars) && max(array_keys($chars)) > 127) {
-                    $idna   = Net_IDNA::singleton();
-                    $domain = $idna->encode($domain);
-                }
-
-                $email = "$name@$domain";
+            // Check if the domain contains characters > 127 which means
+            // it's an idn domain name.
+            $chars = count_chars($domain, 1);
+            if (!empty($chars) && max(array_keys($chars)) > 127) {
+                $idna   = Net_IDNA::singleton();
+                $domain = $idna->encode($domain);
             }
+
+            $email = "$name@$domain";
         }
         
         /**
@@ -667,12 +665,11 @@ class Validate
         if (is_array($options)) {
             extract($options);
         }
-        if (is_array($allowed_schemes) &&
-            in_array("tag", $allowed_schemes)
+        if (is_array($allowed_schemes)
+            && in_array("tag", $allowed_schemes)
+            && strpos($url, "tag:") === 0
         ) {
-            if (strpos($url, "tag:") === 0) {
-                return self::__uriRFC4151($url);
-            }
+            return self::__uriRFC4151($url);
         }
 
         if (preg_match(
@@ -868,11 +865,10 @@ class Validate
                 return false;
             }
 
-            if (strtolower($format) == 'rfc822_compliant') {
-                if ($weekday != date("D", mktime(0, 0, 0, $month, $day, $year))) {
+            if (strtolower($format) == 'rfc822_compliant'
+                && $weekday != date("D", mktime(0, 0, 0, $month, $day, $year))) {
                     return false;
                 }
-            }
 
             if ($min) {
                 include_once 'Date/Calc.php';

@@ -181,10 +181,8 @@ class IDS_Converter
                 $matches[0])));
 
             foreach ($charcode as $char) {
-                if (!empty($char)) {
-                    if (octdec($char) >= 20 && octdec($char) <= 127) {
-                        $converted .= chr(octdec($char));
-                    }
+                if ( ! empty($char) && octdec($char) >= 20 && octdec($char) <= 127) {
+                    $converted .= chr(octdec($char));
                 }
             }
             $value .= "\n" . $converted;
@@ -198,10 +196,8 @@ class IDS_Converter
                 $matches[0])));
 
             foreach ($charcode as $char) {
-                if (!empty($char)) {
-                    if (hexdec($char) >= 20 && hexdec($char) <= 127) {
-                        $converted .= chr(hexdec($char));
-                    }
+                if ( ! empty($char) && hexdec($char) >= 20 && hexdec($char) <= 127) {
+                    $converted .= chr(hexdec($char));
                 }
             }
             $value .= "\n" . $converted;

@@ -63,10 +63,8 @@ class HTML_QuickForm_Action_Display extends HTML_QuickForm_Action
         $page->controller->applyDefaults($pageName);
         $page->isFormBuilt() or $page->buildForm();
         // if we had errors we should show them again
-        if (isset($validate) && $validate) {
-            if (PEAR::isError($err = $page->validate())) {
-                return $err;
-            }
+        if (isset($validate) && $validate && PEAR::isError($err = $page->validate())) {
+            return $err;
         }
         return $this->_renderForm($page);
     }

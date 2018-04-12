@@ -577,19 +577,14 @@ class PxPayRequest extends PxPayMessage
      */
     public function validData(){
 		$msg = '';
-		if($this->TxnType != 'Purchase') {
-        if ($this->TxnType != 'Auth') {
-            if ($this->TxnType != 'GetCurrRate') {
-                if ($this->TxnType != 'Refund') {
-                    if ($this->TxnType != 'Complete') {
-                        if ($this->TxnType != 'Order1') {
-                            $msg = "Invalid TxnType[$this->TxnType]<br>";
-                        }
-                    }
-                }
-            }
-        }
-    }
+		if($this->TxnType != 'Purchase' &&
+       $this->TxnType != 'Auth' &&
+       $this->TxnType != 'GetCurrRate' &&
+       $this->TxnType != 'Refund' &&
+       $this->TxnType != 'Complete' &&
+       $this->TxnType != 'Order1') {
+           $msg = "Invalid TxnType[$this->TxnType]<br>";
+       }
 		
 		if(strlen($this->MerchantReference) > 64) {
         $msg = "Invalid MerchantReference [$this->MerchantReference]<br>";

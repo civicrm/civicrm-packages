@@ -225,12 +225,11 @@ class Smarty_Compiler extends Smarty {
     public function _compile_file($resource_name, $source_content, &$compiled_content)
     {
 
-        if ($this->security) {
-            // do not allow php syntax to be executed unless specified
-            if ($this->php_handling == SMARTY_PHP_ALLOW &&
-                !$this->security_settings['PHP_HANDLING']) {
-                $this->php_handling = SMARTY_PHP_PASSTHRU;
-            }
+        // do not allow php syntax to be executed unless specified
+        if ($this->security && $this->php_handling == SMARTY_PHP_ALLOW
+            &&
+            ! $this->security_settings['PHP_HANDLING']) {
+            $this->php_handling = SMARTY_PHP_PASSTHRU;
         }
 
         $this->_load_filters();
@@ -1393,11 +1392,10 @@ class Smarty_Compiler extends Smarty {
                        Otherwise, we operate on the last encountered token. */
                     if ($tokens[$i-1] == ')') {
                         $is_arg_start = array_pop($is_arg_stack);
-                        if ($is_arg_start != 0) {
-                            if (preg_match('~^' . $this->_func_regexp . '$~', $tokens[$is_arg_start-1])) {
+                        if ($is_arg_start != 0
+                            && preg_match('~^' . $this->_func_regexp . '$~', $tokens[$is_arg_start - 1])) {
                                 $is_arg_start--;
                             }
-                        }
                     } else {
                         $is_arg_start = $i - 1;
                     }

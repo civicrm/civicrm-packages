@@ -642,10 +642,8 @@ class XML_Util
         }
 
         // check for multiline attributes
-        if ($multiline === true) {
-            if ($indent === '_auto') {
-                $indent = str_repeat(' ', (strlen($tag['qname'])+2));
-            }
+        if ($multiline === true && $indent === '_auto') {
+            $indent = str_repeat(' ', strlen($tag['qname']) + 2);
         }
 
         // create attribute list
@@ -711,10 +709,8 @@ class XML_Util
         }
 
         // check for multiline attributes
-        if ($multiline === true) {
-            if ($indent === '_auto') {
-                $indent = str_repeat(' ', (strlen($qname)+2));
-            }
+        if ($multiline === true && $indent === '_auto') {
+            $indent = str_repeat(' ', strlen($qname) + 2);
         }
 
         if ($namespaceUri != null) {

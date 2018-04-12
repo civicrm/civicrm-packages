@@ -1523,13 +1523,12 @@ class Smarty
         //for 'string:' resource smarty might going to fail to create
         //compile file, so make sure we should have valid path, CRM-5890
         $matches = array( );
-        if ( preg_match( '/^(\s+)?string:/', $resource_name, $matches ) ) {
-            if ( !$this->validateCompilePath( $compilePath ) ) {
-                $compilePath = $this->_get_auto_filename( $this->compile_dir,
-                                                          time().rand(),
-                                                          $this->_compile_id );
-                $compilePath .= '.php';
-            }
+        if (preg_match('/^(\s+)?string:/', $resource_name, $matches) &&
+            ! $this->validateCompilePath($compilePath)) {
+            $compilePath = $this->_get_auto_filename( $this->compile_dir,
+                                                      time().rand(),
+                                                      $this->_compile_id );
+            $compilePath .= '.php';
         }
 
         return $compilePath;
@@ -1613,16 +1612,14 @@ class Smarty
             }
         }
 
-        if (!$_return) {
-            // see if we can get a template with the default template handler
-            if (!empty($this->default_template_handler_func)) {
-                if (!is_callable($this->default_template_handler_func)) {
-                    $this->trigger_error("default template handler function \"$this->default_template_handler_func\" doesn't exist.");
-                } else {
-                    $_return = call_user_func_array(
-                        $this->default_template_handler_func,
-                        array($_params['resource_type'], $_params['resource_name'], &$params['source_content'], &$params['resource_timestamp'], &$this));
-                }
+        // see if we can get a template with the default template handler
+        if ( ! $_return && ! empty($this->default_template_handler_func)) {
+            if (!is_callable($this->default_template_handler_func)) {
+                $this->trigger_error("default template handler function \"$this->default_template_handler_func\" doesn't exist.");
+            } else {
+                $_return = call_user_func_array(
+                    $this->default_template_handler_func,
+                    array($_params['resource_type'], $_params['resource_name'], &$params['source_content'], &$params['resource_timestamp'], &$this));
             }
         }
 

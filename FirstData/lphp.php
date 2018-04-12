@@ -72,10 +72,8 @@ class lphp
         # FOR PERFORMANCE, Use the 'extensions' statement in your php.ini to load
         # this library at PHP startup, then comment out the next seven lines
         // load library
-        if ( ! extension_loaded('liblphp')) {
-            if ( ! dl('liblphp.so')) {
-                exit("cannot load liblphp.so, bye\n");
-            }
+        if ( ! extension_loaded('liblphp') && ! dl('liblphp.so')) {
+            exit("cannot load liblphp.so, bye\n");
         }
         if ($this->debugging) {
             if ($webspace) {
@@ -129,31 +127,28 @@ class lphp
     {
         $using_xml = 0;
         $webspace  = 1;
-        if (isset($data['webspace'])) {
-            if ($data['webspace'] == 'false') // if explicitly set to false, don't use html output
-            {
-                $webspace = 0;
-            }
+        if (isset($data['webspace']) && $data['webspace'] == 'false') {
+            $webspace = 0;
         }
-        if (isset($data['debugging']) || isset($data['debug'])) {
-            if ($data['debugging'] == 'true' || $data['debug'] == 'true') {
-                $this->debugging = 1;
-                # print out incoming hash
-                if ($webspace) {  // use html-friendly output
-                    echo 'at curl_process, incoming data: <br>';
-                    foreach ($data as $key => $value) {
-                        echo htmlspecialchars($key) . ' = ' . htmlspecialchars($value) . "<BR>\n";
+        if ((isset($data['debugging']) || isset($data['debug']))
+            && ($data['debugging'] == 'true'
+                || $data['debug'] == 'true')) {
+                    $this->debugging = 1;
+                    # print out incoming hash
+                    if ($webspace) {  // use html-friendly output
+                        echo 'at curl_process, incoming data: <br>';
+                        foreach ($data as $key => $value) {
+                            echo htmlspecialchars($key) . ' = ' . htmlspecialchars($value) . "<BR>\n";
+                        }
+                    } else {
+                        // don't use html output
+                        echo "at curl_process, incoming data: \n";
+                        foreach ($data as $key => $value) {
+                            echo "$key = $value\n";
+                        }
                     }
-                } else {
-                    // don't use html output
-                    echo "at curl_process, incoming data: \n";
-                    foreach ($data as $key => $value) {
-                        echo "$key = $value\n";
-                    }
+                    reset($data);
                 }
-                reset($data);
-            }
-        }
         if (isset($data['xml'])) { // if XML string is passed in, we'll use it
             $using_xml = 1;
             $xml       = $data['xml'];

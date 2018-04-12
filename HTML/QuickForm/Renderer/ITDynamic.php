@@ -247,11 +247,11 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
     {
         $name = $element->getName();
         $type = $element->getType();
-        if (isset($this->_elementBlocks[$name]) && $this->_tpl->blockExists($this->_elementBlocks[$name])) {
-            if (('group' == $type) || ($this->_elementBlocks[$name] . '_loop' != $this->_tpl->currentBlock)) {
-                return $this->_elementBlocks[$name];
-            }
-        }
+        if (isset($this->_elementBlocks[$name]) && $this->_tpl->blockExists($this->_elementBlocks[$name])
+            && (('group' == $type)
+                || ($this->_elementBlocks[$name] . '_loop' != $this->_tpl->currentBlock))) {
+                    return $this->_elementBlocks[$name];
+                }
         if ('group' != $type && 'qf_main_loop' != $this->_tpl->currentBlock) {
             $prefix = substr($this->_tpl->currentBlock, 0, -5); // omit '_loop' postfix
         } else {

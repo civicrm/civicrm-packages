@@ -246,12 +246,10 @@ class DB_pgsql extends DB_common
         }
 
         if (isset($dsn['new_link'])
-            && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true))
-        {
-            if (version_compare(phpversion(), '4.3.0', '>=')) {
+            && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true)
+            && version_compare(PHP_VERSION, '4.3.0', '>=')) {
                 $params[] = PGSQL_CONNECT_FORCE_NEW;
             }
-        }
 
         $connect_function = $persistent ? 'pg_pconnect' : 'pg_connect';
 
