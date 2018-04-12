@@ -15,5 +15,5 @@ interface Filter {
      *
      * @return void
      */
-  function filter(CommitMessage $message);
+  public function filter(CommitMessage $message);
 }

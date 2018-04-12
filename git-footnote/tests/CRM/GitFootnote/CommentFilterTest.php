@@ -12,7 +12,7 @@ class CommentFilterTest extends \PHPUnit_Framework_TestCase {
    * Data provider for basic test-cases which exercise parsing logic without
    * any support from web services
    */
-  function commentCases() {
+  public function commentCases() {
     // each test case has these parts: inputMessageBody, expectedMessageBody, expectedFootnotes
     $cases = array();
     $cases[] = array(
@@ -60,7 +60,7 @@ class CommentFilterTest extends \PHPUnit_Framework_TestCase {
      * @param string $messageBody
      * @param        $expectedBody
      */
-  function testCommentCases($messageBody, $expectedBody) {
+  public function testCommentCases($messageBody, $expectedBody) {
     $message = new CommitMessage($messageBody);
     $filter = new CommentFilter();
     $filter->filter($message);

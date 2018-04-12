@@ -187,7 +187,7 @@ class simple_html_dom_node
      *
      * @param $dom
      */
-    function __construct($dom)
+    public function __construct($dom)
     {
         $this->dom = $dom;
         $dom->nodes[] = $this;
@@ -201,7 +201,7 @@ class simple_html_dom_node
     /**
      * @return mixed|string
      */
-    function __toString()
+    public function __toString()
     {
         return $this->outertext();
     }
@@ -221,7 +221,7 @@ class simple_html_dom_node
      * @param bool $show_attr
      * @param int  $deep
      */
-    function dump($show_attr=true, $deep=0)
+    public function dump($show_attr=true, $deep=0)
     {
         $lead = str_repeat('    ', $deep);
 
@@ -252,7 +252,7 @@ class simple_html_dom_node
      *
      * @return string|void
      */
-    function dump_node($echo=true)
+    public function dump_node($echo=true)
     {
 
         $string = $this->tag;
@@ -323,7 +323,7 @@ class simple_html_dom_node
      *
      * @return null
      */
-    function parent($parent=null)
+    public function parent($parent=null)
     {
         // I am SURE that this doesn't work properly.
         // It fails to unset the current node from it's current parents nodes or children list first.
@@ -342,7 +342,7 @@ class simple_html_dom_node
     /**
      * @return bool
      */
-    function has_child()
+    public function has_child()
     {
         return !empty($this->children);
     }
@@ -354,7 +354,7 @@ class simple_html_dom_node
      *
      * @return array|mixed|null
      */
-    function children($idx=-1)
+    public function children($idx=-1)
     {
         if ($idx===-1)
         {
@@ -369,7 +369,7 @@ class simple_html_dom_node
     /**
      * @return mixed|null
      */
-    function first_child()
+    public function first_child()
     {
         if (count($this->children)>0)
         {
@@ -383,7 +383,7 @@ class simple_html_dom_node
     /**
      * @return mixed|null
      */
-    function last_child()
+    public function last_child()
     {
         if (($count=count($this->children))>0)
         {
@@ -397,7 +397,7 @@ class simple_html_dom_node
     /**
      * @return null
      */
-    function next_sibling()
+    public function next_sibling()
     {
         if ($this->parent===null)
         {
@@ -422,7 +422,7 @@ class simple_html_dom_node
     /**
      * @return null
      */
-    function prev_sibling()
+    public function prev_sibling()
     {
         if ($this->parent===null) return null;
         $idx = 0;
@@ -440,7 +440,7 @@ class simple_html_dom_node
      *
      * @return null|\simple_html_dom_node
      */
-    function find_ancestor_tag($tag)
+    public function find_ancestor_tag($tag)
     {
         global $debugObject;
         if (is_object($debugObject)) { $debugObject->debugLogEntry(1); }
@@ -466,7 +466,7 @@ class simple_html_dom_node
     /**
      * @return mixed|string
      */
-    function innertext()
+    public function innertext()
     {
         if (isset($this->_[HDOM_INFO_INNER])) return $this->_[HDOM_INFO_INNER];
         if (isset($this->_[HDOM_INFO_TEXT])) return $this->dom->restore_noise($this->_[HDOM_INFO_TEXT]);
@@ -482,7 +482,7 @@ class simple_html_dom_node
     /**
      * @return mixed|string
      */
-    function outertext()
+    public function outertext()
     {
         global $debugObject;
         if (is_object($debugObject))
@@ -542,7 +542,7 @@ class simple_html_dom_node
     /**
      * @return mixed|string
      */
-    function text()
+    public function text()
     {
         if (isset($this->_[HDOM_INFO_INNER])) return $this->_[HDOM_INFO_INNER];
         switch ($this->nodetype)
@@ -579,7 +579,7 @@ class simple_html_dom_node
     /**
      * @return mixed|string
      */
-    function xmltext()
+    public function xmltext()
     {
         $ret = $this->innertext();
         $ret = str_ireplace('<![CDATA[', '', $ret);
@@ -592,7 +592,7 @@ class simple_html_dom_node
     /**
      * @return string
      */
-    function makeup()
+    public function makeup()
     {
         // text, comment, unknown
         if (isset($this->_[HDOM_INFO_TEXT])) return $this->dom->restore_noise($this->_[HDOM_INFO_TEXT]);
@@ -635,7 +635,7 @@ class simple_html_dom_node
      *
      * @return array|mixed|null
      */
-    function find($selector, $idx=null, $lowercase=false)
+    public function find($selector, $idx=null, $lowercase=false)
     {
         $selectors = $this->parse_selector($selector);
         if (($count=count($selectors))===0) return array();
@@ -873,7 +873,7 @@ class simple_html_dom_node
      *
      * @return bool|mixed|string
      */
-    function __get($name) {
+    public function __get($name) {
         if (isset($this->attr[$name]))
         {
             return $this->convert_text($this->attr[$name]);
@@ -893,7 +893,7 @@ class simple_html_dom_node
      *
      * @return mixed
      */
-    function __set($name, $value) {
+    public function __set($name, $value) {
         switch ($name) {
             case 'outertext': return $this->_[HDOM_INFO_OUTER] = $value;
             case 'innertext':
@@ -912,7 +912,7 @@ class simple_html_dom_node
      *
      * @return bool
      */
-    function __isset($name) {
+    public function __isset($name) {
         switch ($name) {
             case 'outertext': return true;
             case 'innertext': return true;
@@ -925,7 +925,7 @@ class simple_html_dom_node
     /**
      * @param $name
      */
-    function __unset($name) {
+    public function __unset($name) {
         if (isset($this->attr[$name]))
             unset($this->attr[$name]);
     }
@@ -937,7 +937,7 @@ class simple_html_dom_node
      *
      * @return bool|string
      */
-    function convert_text($text)
+    public function convert_text($text)
     {
         global $debugObject;
         if (is_object($debugObject)) {$debugObject->debugLogEntry(1);}
@@ -1112,39 +1112,39 @@ class simple_html_dom_node
     /**
      * @return array
      */
-    function getAllAttributes() {return $this->attr;}
+    public function getAllAttributes() {return $this->attr;}
 
     /**
      * @param $name
      *
      * @return bool|mixed|string
      */
-    function getAttribute($name) {return $this->__get($name);}
+    public function getAttribute($name) {return $this->__get($name);}
 
     /**
      * @param $name
      * @param $value
      */
-    function setAttribute($name, $value) {$this->__set($name, $value);}
+    public function setAttribute($name, $value) {$this->__set($name, $value);}
 
     /**
      * @param $name
      *
      * @return bool
      */
-    function hasAttribute($name) {return $this->__isset($name);}
+    public function hasAttribute($name) {return $this->__isset($name);}
 
     /**
      * @param $name
      */
-    function removeAttribute($name) {$this->__set($name, null);}
+    public function removeAttribute($name) {$this->__set($name, null);}
 
     /**
      * @param $id
      *
      * @return array|mixed|null
      */
-    function getElementById($id) {return $this->find("#$id", 0);}
+    public function getElementById($id) {return $this->find("#$id", 0);}
 
     /**
      * @param      $id
@@ -1152,14 +1152,14 @@ class simple_html_dom_node
      *
      * @return array|mixed|null
      */
-    function getElementsById($id, $idx=null) {return $this->find("#$id", $idx);}
+    public function getElementsById($id, $idx=null) {return $this->find("#$id", $idx);}
 
     /**
      * @param $name
      *
      * @return array|mixed|null
      */
-    function getElementByTagName($name) {return $this->find($name, 0);}
+    public function getElementByTagName($name) {return $this->find($name, 0);}
 
     /**
      * @param      $name
@@ -1167,56 +1167,56 @@ class simple_html_dom_node
      *
      * @return array|mixed|null
      */
-    function getElementsByTagName($name, $idx=null) {return $this->find($name, $idx);}
+    public function getElementsByTagName($name, $idx=null) {return $this->find($name, $idx);}
 
     /**
      * @return null
      */
-    function parentNode() {return $this->parent();}
+    public function parentNode() {return $this->parent();}
 
     /**
      * @param int $idx
      *
      * @return array|mixed|null
      */
-    function childNodes($idx=-1) {return $this->children($idx);}
+    public function childNodes($idx=-1) {return $this->children($idx);}
 
     /**
      * @return mixed|null
      */
-    function firstChild() {return $this->first_child();}
+    public function firstChild() {return $this->first_child();}
 
     /**
      * @return mixed|null
      */
-    function lastChild() {return $this->last_child();}
+    public function lastChild() {return $this->last_child();}
 
     /**
      * @return null
      */
-    function nextSibling() {return $this->next_sibling();}
+    public function nextSibling() {return $this->next_sibling();}
 
     /**
      * @return null
      */
-    function previousSibling() {return $this->prev_sibling();}
+    public function previousSibling() {return $this->prev_sibling();}
 
     /**
      * @return bool
      */
-    function hasChildNodes() {return $this->has_child();}
+    public function hasChildNodes() {return $this->has_child();}
 
     /**
      * @return string
      */
-    function nodeName() {return $this->tag;}
+    public function nodeName() {return $this->tag;}
 
     /**
      * @param $node
      *
      * @return mixed
      */
-    function appendChild($node) {$node->parent($this); return $node;}
+    public function appendChild($node) {$node->parent($this); return $node;}
 
 }
 
@@ -1352,7 +1352,7 @@ class simple_html_dom
      * @param string $defaultBRText
      * @param string $defaultSpanText
      */
-    function __construct($str=null, $lowercase=true, $forceTagsClosed=true, $target_charset=DEFAULT_TARGET_CHARSET, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)
+    public function __construct($str=null, $lowercase=true, $forceTagsClosed=true, $target_charset=DEFAULT_TARGET_CHARSET, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)
     {
         if ($str)
         {
@@ -1388,7 +1388,7 @@ class simple_html_dom
      *
      * @return $this
      */
-    function load($str, $lowercase=true, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)
+    public function load($str, $lowercase=true, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)
     {
         global $debugObject;
 
@@ -1429,7 +1429,7 @@ class simple_html_dom
     /**
      * @return bool
      */
-    function load_file()
+    public function load_file()
     {
         $args = func_get_args();
         $this->load(call_user_func_array('file_get_contents', $args), true);
@@ -1445,7 +1445,7 @@ class simple_html_dom
     /**
      * @param $function_name
      */
-    function set_callback($function_name)
+    public function set_callback($function_name)
     {
         $this->callback = $function_name;
     }
@@ -1463,7 +1463,7 @@ class simple_html_dom
      *
      * @return mixed
      */
-    function save($filepath='')
+    public function save($filepath='')
     {
         $ret = $this->root->innertext();
         if ($filepath!=='') file_put_contents($filepath, $ret, LOCK_EX);
@@ -1479,7 +1479,7 @@ class simple_html_dom
      *
      * @return mixed
      */
-    function find($selector, $idx=null, $lowercase=false)
+    public function find($selector, $idx=null, $lowercase=false)
     {
         return $this->root->find($selector, $idx, $lowercase);
     }
@@ -1499,7 +1499,7 @@ class simple_html_dom
     /**
      * @param bool $show_attr
      */
-    function dump($show_attr=true)
+    public function dump($show_attr=true)
     {
         $this->root->dump($show_attr);
     }
@@ -2080,7 +2080,7 @@ class simple_html_dom
      *
      * @return string
      */
-    function restore_noise($text)
+    public function restore_noise($text)
     {
         global $debugObject;
         if (is_object($debugObject)) { $debugObject->debugLogEntry(1); }
@@ -2119,7 +2119,7 @@ class simple_html_dom
      *
      * @return mixed
      */
-    function search_noise($text)
+    public function search_noise($text)
     {
         global $debugObject;
         if (is_object($debugObject)) { $debugObject->debugLogEntry(1); }
@@ -2136,7 +2136,7 @@ class simple_html_dom
     /**
      * @return mixed
      */
-    function __toString()
+    public function __toString()
     {
         return $this->root->innertext();
     }
@@ -2146,7 +2146,7 @@ class simple_html_dom
      *
      * @return string
      */
-    function __get($name)
+    public function __get($name)
     {
         switch ($name)
         {
@@ -2170,17 +2170,17 @@ class simple_html_dom
      *
      * @return mixed
      */
-    function childNodes($idx=-1) {return $this->root->childNodes($idx);}
+    public function childNodes($idx=-1) {return $this->root->childNodes($idx);}
 
     /**
      * @return mixed
      */
-    function firstChild() {return $this->root->first_child();}
+    public function firstChild() {return $this->root->first_child();}
 
     /**
      * @return mixed
      */
-    function lastChild() {return $this->root->last_child();}
+    public function lastChild() {return $this->root->last_child();}
 
     /**
      * @param      $name
@@ -2188,21 +2188,21 @@ class simple_html_dom
      *
      * @return mixed
      */
-    function createElement($name, $value=null) {return @str_get_html("<$name>$value</$name>")->first_child();}
+    public function createElement($name, $value=null) {return @str_get_html("<$name>$value</$name>")->first_child();}
 
     /**
      * @param $value
      *
      * @return mixed
      */
-    function createTextNode($value) {return @end(str_get_html($value)->nodes);}
+    public function createTextNode($value) {return @end(str_get_html($value)->nodes);}
 
     /**
      * @param $id
      *
      * @return mixed
      */
-    function getElementById($id) {return $this->find("#$id", 0);}
+    public function getElementById($id) {return $this->find("#$id", 0);}
 
     /**
      * @param      $id
@@ -2210,14 +2210,14 @@ class simple_html_dom
      *
      * @return mixed
      */
-    function getElementsById($id, $idx=null) {return $this->find("#$id", $idx);}
+    public function getElementsById($id, $idx=null) {return $this->find("#$id", $idx);}
 
     /**
      * @param $name
      *
      * @return mixed
      */
-    function getElementByTagName($name) {return $this->find($name, 0);}
+    public function getElementByTagName($name) {return $this->find($name, 0);}
 
     /**
      * @param     $name
@@ -2225,7 +2225,7 @@ class simple_html_dom
      *
      * @return mixed
      */
-    function getElementsByTagName($name, $idx=-1) {return $this->find($name, $idx);}
+    public function getElementsByTagName($name, $idx=-1) {return $this->find($name, $idx);}
     public function loadFile() {$args = func_get_args();$this->load_file($args);}
 }
 

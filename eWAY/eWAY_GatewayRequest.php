@@ -147,7 +147,7 @@ class GatewayRequest
     /**
      * @return string
      */
-    function GetTransactionNumber()
+    public function GetTransactionNumber()
    {
       return $this->txTransactionNumber;
    }
@@ -155,7 +155,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function EwayCustomerID($value)
+    public function EwayCustomerID($value)
    {
       $this->txCustomerID=$value;
    }
@@ -163,7 +163,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function InvoiceAmount($value)
+    public function InvoiceAmount($value)
    {
       $this->txAmount=$value;
    }
@@ -171,7 +171,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function CardHolderName($value)
+    public function CardHolderName($value)
    {
       $this->txCardholderName=$value;
    }
@@ -179,7 +179,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function CardExpiryMonth($value)
+    public function CardExpiryMonth($value)
    {
       $this->txCardExpiryMonth=$value;
    }
@@ -187,7 +187,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function CardExpiryYear($value)
+    public function CardExpiryYear($value)
    {
       $this->txCardExpiryYear=$value;
    }
@@ -195,7 +195,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function TransactionNumber($value)
+    public function TransactionNumber($value)
    {
       $this->txTransactionNumber=$value;
    }
@@ -203,7 +203,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function PurchaserFirstName($value)
+    public function PurchaserFirstName($value)
    {
       $this->txCardholderFirstName=$value;
    }
@@ -211,7 +211,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function PurchaserLastName($value)
+    public function PurchaserLastName($value)
    {
       $this->txCardholderLastName=$value;
    }
@@ -219,7 +219,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function CardNumber($value)
+    public function CardNumber($value)
    {
       $this->txCardNumber=$value;
    }
@@ -227,7 +227,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function PurchaserAddress($value)
+    public function PurchaserAddress($value)
    {
       $this->txCardholderAddress=$value;
    }
@@ -235,7 +235,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function PurchaserPostalCode($value)
+    public function PurchaserPostalCode($value)
    {
       $this->txCardholderPostalCode=$value;
    }
@@ -243,7 +243,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function PurchaserEmailAddress($value)
+    public function PurchaserEmailAddress($value)
    {
       $this->txCardholderEmailAddress=$value;
    }
@@ -251,7 +251,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function InvoiceReference($value)
+    public function InvoiceReference($value)
    {
       $this->txInvoiceReference=$value; 
    }
@@ -259,7 +259,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function InvoiceDescription($value)
+    public function InvoiceDescription($value)
    {
       $this->txInvoiceDescription=$value; 
    }
@@ -267,7 +267,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function CVN($value)
+    public function CVN($value)
    {
       $this->txCVN=$value; 
    }
@@ -275,7 +275,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function EwayOption1($value)
+    public function EwayOption1($value)
    {
       $this->txOption1=$value; 
    }
@@ -283,7 +283,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function EwayOption2($value)
+    public function EwayOption2($value)
    {
       $this->txOption2=$value; 
    }
@@ -291,7 +291,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function EwayOption3($value)
+    public function EwayOption3($value)
    {
       $this->txOption3=$value; 
    }
@@ -299,7 +299,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function CustomerBillingCountry($value)
+    public function CustomerBillingCountry($value)
    {
        $this->txCustomerBillingCountry=$value; 
    }
@@ -307,7 +307,7 @@ class GatewayRequest
     /**
      * @param $value
      */
-    function CustomerIPAddress($value)
+    public function CustomerIPAddress($value)
    {
        $this->txCustomerIPAddress=$value; 
    }
@@ -315,7 +315,7 @@ class GatewayRequest
     /**
      * @return string
      */
-    function ToXml()
+    public function ToXml()
    {
       // We don't really need the overhead of creating an XML DOM object
       // to really just concatenate a string together.

@@ -259,18 +259,19 @@ class HTML_QuickForm_advmultiselect extends HTML_QuickForm_select
      * Zend Engine 1 uses HTML_QuickForm_advmultiselect, while
      * Zend Engine 2 uses __construct
      *
-     * @param string  $elementName  Dual Select name attribute
-     * @param mixed   $elementLabel Label(s) for the select boxes
-     * @param mixed   $options      Data to be used to populate options
-     * @param mixed   $attributes   Either a typical HTML attribute string or
-     *                              an associative array
-     * @param integer $sort         Either SORT_ASC for auto ascending arrange,
+     * @param string  $elementName         Dual Select name attribute
+     * @param mixed   $elementLabel        Label(s) for the select boxes
+     * @param mixed   $options             Data to be used to populate options
+     * @param mixed   $attributes          Either a typical HTML attribute string or
+     *                                     an associative array
+     * @param integer $sort                Either SORT_ASC for auto ascending arrange,
      *                                     SORT_DESC for auto descending arrange, or
      *                                     NULL for no sort (append at end: default)
      *
      * @access     public
      * @return     void
      * @since      version 0.4.0 (2005-06-25)
+     * @throws \PEAR_Error
      */
     public function __construct($elementName = null, $elementLabel = null,
                                            $options = null, $attributes = null,

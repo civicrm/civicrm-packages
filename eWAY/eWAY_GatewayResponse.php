@@ -92,7 +92,7 @@ class GatewayResponse
     /**
      * @param $Xml
      */
-    function ProcessResponse($Xml)
+    public function ProcessResponse($Xml)
 	{
 #####################################################################################
 #                                                                                   #
@@ -151,13 +151,13 @@ class GatewayResponse
 
       $return = substr($strXML, $pos1, $len);                                       
       
-      return ($return);
+      return $return;
    }
 
     /**
      * @return string
      */
-    function TransactionNumber()
+    public function TransactionNumber()
    {
       return $this->txTransactionNumber; 
    }
@@ -165,7 +165,7 @@ class GatewayResponse
     /**
      * @return string
      */
-    function InvoiceReference()
+    public function InvoiceReference()
    {
       return $this->txInvoiceReference; 
    }
@@ -173,7 +173,7 @@ class GatewayResponse
     /**
      * @return string
      */
-    function Option1()
+    public function Option1()
    {
       return $this->txOption1; 
    }
@@ -181,7 +181,7 @@ class GatewayResponse
     /**
      * @return string
      */
-    function Option2()
+    public function Option2()
    {
       return $this->txOption2; 
    }
@@ -189,7 +189,7 @@ class GatewayResponse
     /**
      * @return string
      */
-    function Option3()
+    public function Option3()
    {
       return $this->txOption3; 
    }
@@ -197,7 +197,7 @@ class GatewayResponse
     /**
      * @return string
      */
-    function AuthorisationCode()
+    public function AuthorisationCode()
    {
       return $this->txAuthCode; 
    }
@@ -205,7 +205,7 @@ class GatewayResponse
     /**
      * @return string
      */
-    function Error()
+    public function Error()
    {
       return $this->txError; 
    }
@@ -213,7 +213,7 @@ class GatewayResponse
     /**
      * @return int
      */
-    function Amount()
+    public function Amount()
    {
       return $this->txAmount; 
    }
@@ -221,7 +221,7 @@ class GatewayResponse
     /**
      * @return string
      */
-    function Status()
+    public function Status()
    {
       return $this->txStatus;
    }
@@ -229,7 +229,7 @@ class GatewayResponse
     /**
      * @return string
      */
-    function BeagleScore ()
+    public function BeagleScore ()
    {
        return $this->txBeagleScore ;
    }

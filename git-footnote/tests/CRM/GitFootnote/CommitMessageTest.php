@@ -7,17 +7,17 @@ namespace CRM\GitFootnote;
  * @package CRM\GitFootnote
  */
 class CommitMessageTest extends \PHPUnit_Framework_TestCase {
-  function testEmpty() {
+  public function testEmpty() {
     $message = new CommitMessage("");
     $this->assertEquals("", $message->toString());
   }
 
-  function testBasic() {
+  public function testBasic() {
     $message = new CommitMessage("Hello\nworld");
     $this->assertEquals("Hello\nworld", $message->toString());
   }
 
-  function testOneLink() {
+  public function testOneLink() {
     $message = new CommitMessage("Hello\nworld\n");
     $message->addLinkNote('http://example.com', 'Example');
     $this->assertEquals(
@@ -30,7 +30,7 @@ world
 ", $message->toString());
   }
 
-  function testOneLink_noTitle() {
+  public function testOneLink_noTitle() {
     $message = new CommitMessage("Hello\nworld\n");
     $message->addLinkNote('http://example.com');
     $this->assertEquals(
@@ -42,7 +42,7 @@ world
 ", $message->toString());
   }
 
-  function testMultipleLink() {
+  public function testMultipleLink() {
     $message = new CommitMessage("Hello\nworld\n");
     $message->addLinkNote('http://example.com', 'Example');
     $message->addLinkNote('http://example.org', 'Example For Good');
