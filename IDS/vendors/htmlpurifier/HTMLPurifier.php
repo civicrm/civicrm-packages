@@ -79,11 +79,14 @@ class HTMLPurifier
 
     /**
      * Initializes the purifier.
+     *
      * @param $config Optional HTMLPurifier_Config object for all instances of
      *                the purifier, if omitted, a default configuration is
      *                supplied (which can be overridden on a per-use basis).
      *                The parameter can also be any type that
      *                HTMLPurifier_Config::create() supports.
+     *
+     * @throws \HTMLPurifier_Exception
      */
     public function __construct($config = null) {
 

@@ -17,7 +17,7 @@
 //  limitations under the License.
 //
 
-require_once('pdf_parser.php');
+require_once __DIR__.'/pdf_parser.php';
 
 /**
  * Class fpdi_pdf_parser
@@ -108,11 +108,12 @@ class fpdi_pdf_parser extends pdf_parser
 
         $this->pageNo = $pageNo;
     }
-    
+
     /**
      * Get page-resources from current page
      *
      * @return array|boolean
+     * @throws \Exception
      */
     public function getPageResources()
     {
@@ -261,13 +262,15 @@ class fpdi_pdf_parser extends pdf_parser
 
         return $this->_getPageBoxes($this->_pages[$pageNo - 1], $k);
     }
-    
+
     /**
      * Get all boxes from /Page dictionary
      *
      * @param array $page A /Page dictionary
-     * @param float $k Scale factor from user space units to points
+     * @param float $k    Scale factor from user space units to points
+     *
      * @return array
+     * @throws \Exception
      */
     protected function _getPageBoxes($page, $k)
     {
@@ -286,8 +289,9 @@ class fpdi_pdf_parser extends pdf_parser
      * Get the page rotation by page number
      *
      * @param integer $pageNo
-     * @throws InvalidArgumentException
+     *
      * @return array
+     * @throws \Exception
      */
     public function getPageRotation($pageNo)
     {

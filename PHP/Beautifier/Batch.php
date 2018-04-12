@@ -315,7 +315,11 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
         $oBatchEngine = $this->getBatchEngine();
         return $oBatchEngine->get();
     }
-    public function show() 
+
+    /**
+     * @throws \Exception
+     */
+    public function show()
     {
         echo $this->get();
     }

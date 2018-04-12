@@ -64,6 +64,8 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
 
     /**
      * @param $directive
+     *
+     * @throws \HTMLPurifier_Exception
      */
     public function buildDirective($directive) {
 
@@ -121,13 +123,13 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
 
         if ($directive->deprecatedVersion) {
             $this->startElement('deprecated');
-                $this->writeElement('version', $directive->deprecatedVersion);
-                $this->writeElement('use', $directive->deprecatedUse->toString());
+            $this->writeElement('version', $directive->deprecatedVersion);
+            $this->writeElement('use', $directive->deprecatedUse->toString());
             $this->endElement(); // deprecated
         }
 
         $this->startElement('description');
-            $this->writeHTMLDiv($directive->description);
+        $this->writeHTMLDiv($directive->description);
         $this->endElement(); // description
 
         $this->endElement(); // directive

@@ -84,9 +84,10 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
      * Builds an interchange object based on a hash.
      *
      * @param $interchange HTMLPurifier_ConfigSchema_Interchange object to build
-     * @param $hash        HTMLPurifier_ConfigSchema_StringHash source data
+     * @param $hash        HTMLPurifier_StringHash source data
      *
      * @throws \HTMLPurifier_ConfigSchema_Exception
+     * @throws \HTMLPurifier_Exception
      */
     public function build($interchange, $hash) {
         if (!$hash instanceof HTMLPurifier_StringHash) {

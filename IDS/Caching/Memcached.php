@@ -109,8 +109,9 @@ class IDS_Caching_Memcached implements IDS_Caching_Interface
      *
      * @param  string $type caching type
      * @param  object $init the IDS_Init object
-     * 
+     *
      * @return object $this
+     * @throws \Exception
      */
     public static function getInstance($type, $init) 
     {

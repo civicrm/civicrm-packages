@@ -220,6 +220,10 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
     {
         $this->bOpenTag = false;
     }
+
+    /**
+     * @throws \Exception
+     */
     public function addHeaderComment()
     {
         if (!($sLicense = $this->getSetting('add_header'))) {
@@ -235,7 +239,7 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
         if (file_exists($sDataPath)) {
             $sLicenseText = file_get_contents($sDataPath);
         } else {
-            throw (new Exception("Can't load license '" . $sLicense . "'"));
+            throw new Exception("Can't load license '" . $sLicense . "'");
         }
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->addNewLine();

@@ -13,6 +13,7 @@
  *                HTMLPurifier_Config::create()
  *
  * @return \Purified
+ * @throws \HTMLPurifier_Exception
  */
 function HTMLPurifier($html, $config = null) {
     static $purifier = false;

@@ -260,6 +260,8 @@ class pdf_parser
 
     /**
      * Read the /Root dictionary
+     *
+     * @throws \Exception
      */
     protected function _readRoot()
     {

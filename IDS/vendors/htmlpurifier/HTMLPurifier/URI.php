@@ -36,9 +36,12 @@ class HTMLPurifier_URI
 
     /**
      * Retrieves a scheme object corresponding to the URI's scheme/default
-     * @param $config Instance of HTMLPurifier_Config
+     *
+     * @param $config  Instance of HTMLPurifier_Config
      * @param $context Instance of HTMLPurifier_Context
+     *
      * @return Scheme object appropriate for validating this URI
+     * @throws \HTMLPurifier_Exception
      */
     public function getSchemeObj($config, $context) {
         $registry = HTMLPurifier_URISchemeRegistry::instance();

@@ -280,6 +280,7 @@ class IDS_Monitor
      * @param mixed $value the value to scan
      *
      * @return bool|array false or array of filter(s) that matched the value
+     * @throws \Exception
      */
     private function _detect($key, $value)
     {
@@ -290,16 +291,14 @@ class IDS_Monitor
         
         // to increase performance, only start detection if value
         // isn't alphanumeric
-        if (!$this->scanKeys 
-            && (!$value || !preg_match($prefilter, $value))) {
+        if ( !$this->scanKeys
+             && (!$value || !preg_match($prefilter, $value))) {
+             return false;
+         }
+        if ($this->scanKeys && ( ! $key || ! preg_match($prefilter, $key))
+            && ( ! $value || ! preg_match($prefilter, $value))) {
             return false;
-        } elseif($this->scanKeys) {
-            if((!$key || !preg_match($prefilter, $key)) 
-                && (!$value || !preg_match($prefilter, $value))) {
-                return false;
-            }
         }
-        
         // check if this field is part of the exceptions
         if (is_array($this->exceptions)) {
             foreach($this->exceptions as $exception) {

@@ -143,6 +143,8 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
      * @param string $messageBody
      * @param        $expectedBody
      * @param array  $expectedNotes footnotes that should be produced
+     *
+     * @throws \Exception
      */
   public function testOfflineCases($messageBody, $expectedBody, $expectedNotes) {
     $message = new CommitMessage($messageBody);
@@ -239,10 +241,13 @@ class JiraFilterTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider onlineCases
+     *
      * @param string $messageBody
      * @param        $expectedBody
      * @param array  $expectedNotes footnotes that should be produced
      * @param        $mockWsReplies
+     *
+     * @throws \Exception
      */
   public function testOnlineCases($messageBody, $expectedBody, $expectedNotes, $mockWsReplies) {
     $message = new CommitMessage($messageBody);

@@ -17,7 +17,7 @@
 //  limitations under the License.
 //
 
-require_once('fpdi_bridge.php');
+require_once __DIR__.'/fpdi_bridge.php';
 
 /**
  * Class FPDF_TPL
@@ -189,9 +189,9 @@ class FPDF_TPL extends fpdi_bridge
             }
 
             return $this->tpl;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -251,10 +251,10 @@ class FPDF_TPL extends fpdi_bridge
             'y' => $this->y,
             'w' => $w,
             'h' => $h,
-            'scaleX' => ($w / $_w),
-            'scaleY' => ($h / $_h),
+            'scaleX' => $w / $_w,
+            'scaleY' => $h / $_h,
             'tx' => $x,
-            'ty' =>  ($this->h - $y - $h),
+            'ty' => $this->h - $y - $h,
             'lty' => ($this->h - $y - $h) - ($this->h - $_h) * ($h / $_h)
         );
 
@@ -498,7 +498,7 @@ class FPDF_TPL extends fpdi_bridge
      */
     protected function _putformxobjects()
     {
-        $filter=($this->compress) ? '/Filter /FlateDecode ' : '';
+        $filter= $this->compress ? '/Filter /FlateDecode ' : '';
         reset($this->_tpls);
 
         foreach($this->_tpls AS $tplIdx => $tpl) {
@@ -560,7 +560,7 @@ class FPDF_TPL extends fpdi_bridge
 
             $this->_out('>>');
 
-            $buffer = ($this->compress) ? gzcompress($tpl['buffer']) : $tpl['buffer'];
+            $buffer = $this->compress ? gzcompress($tpl['buffer']) : $tpl['buffer'];
             $this->_out('/Length ' . strlen($buffer) . ' >>');
             $this->_putstream($buffer);
             $this->_out('endobj');

@@ -345,8 +345,11 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
         $this->oBeaut->add($sTag . ' ');
     }
+
     /**
      * Detect structure elseif($something):
+     *
+     * @throws \Exception
      */
     private function detect_colon_after_parenthesis() 
     {

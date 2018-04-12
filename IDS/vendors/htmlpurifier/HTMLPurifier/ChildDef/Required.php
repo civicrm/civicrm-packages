@@ -43,6 +43,7 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
      * @param $context
      *
      * @return array|bool
+     * @throws \HTMLPurifier_Exception
      */
     public function validateChildren($tokens_of_children, $config, $context) {
         // Flag for subclasses

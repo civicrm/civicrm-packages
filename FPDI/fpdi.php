@@ -116,17 +116,19 @@ class FPDI extends FPDF_TPL
         
         return $this->parsers[$filename]->getPageCount();
     }
-    
+
     /**
      * Returns a PDF parser object
      *
      * @param string $filename
+     *
      * @return fpdi_pdf_parser
+     * @throws \Exception
      */
     protected function _getPdfParser($filename)
     {
-        require_once('fpdi_pdf_parser.php');
-    	return new fpdi_pdf_parser($filename);
+        require_once __DIR__.'/fpdi_pdf_parser.php';
+        return new fpdi_pdf_parser($filename);
     }
     
     /**
@@ -148,7 +150,7 @@ class FPDI extends FPDF_TPL
     {
 		$this->PDFVersion = $version;
 	}
-	
+
     /**
      * Import a page.
      *
@@ -167,11 +169,12 @@ class FPDI extends FPDF_TPL
      *
      * It is possible to get the used page box by the {@link getLastUsedPageBox()} method.
      *
-     * @param int $pageNo The page number
-     * @param string $boxName The boundary box to use when transforming the page into a form XObject
+     * @param int     $pageNo       The page number
+     * @param string  $boxName      The boundary box to use when transforming the page into a form XObject
      * @param boolean $groupXObject Define the form XObject as a group XObject to support transparency (if used)
+     *
      * @return int An id of the imported page/template to use with e.g. fpdf_tpl::useTemplate()
-     * @throws LogicException|InvalidArgumentException
+     * @throws \Exception
      * @see getLastUsedPageBox()
      */
     public function importPage($pageNo, $boxName = 'CropBox', $groupXObject = true)
@@ -334,9 +337,11 @@ class FPDI extends FPDF_TPL
         
         return $size;
     }
-    
+
     /**
      * Copy all imported objects to the resulting document.
+     *
+     * @throws \Exception
      */
     protected function _putimportedobjects()
     {

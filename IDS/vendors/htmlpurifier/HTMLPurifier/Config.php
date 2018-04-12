@@ -107,7 +107,7 @@ class HTMLPurifier_Config
      *                      or a string filename of an ini file.
      * @param null  $schema
      *
-     * @return Configured HTMLPurifier_Config object
+     * @return \HTMLPurifier_Config
      * @throws \HTMLPurifier_Exception
      */
     public static function create($config, $schema = null) {
@@ -697,8 +697,8 @@ class HTMLPurifier_Config
      * @param      $mq_fix  Boolean whether or not to enable magic quotes fix
      * @param      $schema  Instance of HTMLPurifier_ConfigSchema to use, if not global copy
      *
-     * @return \Configured
-     * @return \Configured
+     * @return \HTMLPurifier_Config
+     * @throws \HTMLPurifier_Exception
      */
     public static function loadArrayFromForm($array, $index = false, $allowed = true, $mq_fix = true, $schema = null) {
         $ret = self::prepareArrayFromForm($array, $index, $allowed, $mq_fix, $schema);

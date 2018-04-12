@@ -24,16 +24,16 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 */
-
 /**
  * This file handles integration of KCFinder with wysiwyg editors
  * supported by CiviCRM
  * Ckeditor and tinyMCE
  *
- * @package CRM
+ * @package   CRM
  * @copyright CiviCRM LLC (c) 2004-2016
  * $Id$
  *
+ * @throws \Exception
  */
 
 function checkAuthentication() {

@@ -32,9 +32,15 @@ class HTMLPurifier_ConfigSchema_Interchange
         $this->directives[$i] = $directive;
     }
 
+
     /**
+     *
      * Convenience function to perform standard validation. Throws exception
      * on failed validation.
+     *
+     * @return bool
+     * @throws \HTMLPurifier_ConfigSchema_Exception
+     * @throws \HTMLPurifier_Exception
      */
     public function validate() {
         $validator = new HTMLPurifier_ConfigSchema_Validator();

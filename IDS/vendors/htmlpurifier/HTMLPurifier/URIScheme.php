@@ -44,10 +44,13 @@ abstract class HTMLPurifier_URIScheme
     /**
      * Public interface for validating components of a URI.  Performs a
      * bunch of default actions. Don't overload this method.
-     * @param $uri Reference to a HTMLPurifier_URI object
-     * @param $config HTMLPurifier_Config object
+     *
+     * @param $uri     Reference to a HTMLPurifier_URI object
+     * @param $config  HTMLPurifier_Config object
      * @param $context HTMLPurifier_Context object
+     *
      * @return Bool success or failure
+     * @throws \HTMLPurifier_Exception
      */
     public function validate(&$uri, $config, $context) {
         if ($this->default_port == $uri->port) {
@@ -55,9 +58,10 @@ abstract class HTMLPurifier_URIScheme
         }
         // kludge: browsers do funny things when the scheme but not the
         // authority is set
-        if (!$this->may_omit_host &&
-            // if the scheme is present, a missing host is always in error
-            (null !== $uri->scheme && ($uri->host === '' || null === $uri->host)) ||
+        if (( ! $this->may_omit_host
+              && // if the scheme is present, a missing host is always in error
+              (null !== $uri->scheme && ($uri->host === '' || null === $uri->host)))
+            ||
             // if the scheme is not present, a *blank* host is in error,
             // since this translates into '///path' which most browsers
             // interpret as being 'http://path'.

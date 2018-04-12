@@ -485,6 +485,7 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
      * @param    string  name of the filter
      *
      * @return   mixed   string or false
+     * @throws \Exception
      */
     public function getFilterDescription($sFilter)
     {
@@ -1012,8 +1013,10 @@ class PHP_Beautifier implements PHP_Beautifier_Interface
 
     /**
      * Pop a control construct from the stack
+     *
      * @return int token constant
-*/
+     * @throws \Exception
+     */
     private function popControlSeq()
     {
         $aEl = array_pop($this->aControlSeq);
