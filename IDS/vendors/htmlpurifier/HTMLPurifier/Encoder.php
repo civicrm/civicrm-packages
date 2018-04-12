@@ -81,7 +81,7 @@ class HTMLPurifier_Encoder
             if (0 == $mState) {
                 // When mState is zero we expect either a US-ASCII character
                 // or a multi-octet sequence.
-                if (0 == (0x80 & ($in))) {
+                if (0 == (0x80 & $in)) {
                     // US-ASCII, pass straight through.
                     if (($in <= 31 || $in == 127) &&
                         !($in == 9 || $in == 13 || $in == 10) // save \r\t\n
@@ -93,25 +93,25 @@ class HTMLPurifier_Encoder
                     // reset
                     $char = '';
                     $mBytes = 1;
-                } elseif (0xC0 == (0xE0 & ($in))) {
+                } elseif (0xC0 == (0xE0 & $in)) {
                     // First octet of 2 octet sequence
-                    $mUcs4 = ($in);
+                    $mUcs4 = $in;
                     $mUcs4 = ($mUcs4 & 0x1F) << 6;
                     $mState = 1;
                     $mBytes = 2;
-                } elseif (0xE0 == (0xF0 & ($in))) {
+                } elseif (0xE0 == (0xF0 & $in)) {
                     // First octet of 3 octet sequence
-                    $mUcs4 = ($in);
+                    $mUcs4 = $in;
                     $mUcs4 = ($mUcs4 & 0x0F) << 12;
                     $mState = 2;
                     $mBytes = 3;
-                } elseif (0xF0 == (0xF8 & ($in))) {
+                } elseif (0xF0 == (0xF8 & $in)) {
                     // First octet of 4 octet sequence
-                    $mUcs4 = ($in);
+                    $mUcs4 = $in;
                     $mUcs4 = ($mUcs4 & 0x07) << 18;
                     $mState = 3;
                     $mBytes = 4;
-                } elseif (0xF8 == (0xFC & ($in))) {
+                } elseif (0xF8 == (0xFC & $in)) {
                     // First octet of 5 octet sequence.
                     //
                     // This is illegal because the encoded codepoint must be
@@ -121,14 +121,14 @@ class HTMLPurifier_Encoder
                     // Rather than trying to resynchronize, we will carry on
                     // until the end of the sequence and let the later error
                     // handling code catch it.
-                    $mUcs4 = ($in);
+                    $mUcs4 = $in;
                     $mUcs4 = ($mUcs4 & 0x03) << 24;
                     $mState = 4;
                     $mBytes = 5;
-                } elseif (0xFC == (0xFE & ($in))) {
+                } elseif (0xFC == (0xFE & $in)) {
                     // First octet of 6 octet sequence, see comments for 5
                     // octet sequence.
-                    $mUcs4 = ($in);
+                    $mUcs4 = $in;
                     $mUcs4 = ($mUcs4 & 1) << 30;
                     $mState = 5;
                     $mBytes = 6;
@@ -143,7 +143,7 @@ class HTMLPurifier_Encoder
             } else {
                 // When mState is non-zero, we expect a continuation of the
                 // multi-octet sequence
-                if (0x80 == (0xC0 & ($in))) {
+                if (0x80 == (0xC0 & $in)) {
                     // Legal continuation.
                     $shift = ($mState - 1) * 6;
                     $tmp = $in;
@@ -301,10 +301,11 @@ class HTMLPurifier_Encoder
             // If the string is bjorked by Shift_JIS or a similar encoding
             // that doesn't support all of ASCII, convert the naughty
             // characters to their true byte-wise ASCII/UTF-8 equivalents.
-            $str = strtr($str, HTMLPurifier_Encoder::testEncodingSupportsASCII($encoding));
+            $str = strtr($str, self::testEncodingSupportsASCII($encoding));
             restore_error_handler();
             return $str;
-        } elseif ($encoding === 'iso-8859-1') {
+        }
+        if ($encoding === 'iso-8859-1') {
             $str = utf8_encode($str);
             restore_error_handler();
             return $str;
@@ -331,12 +332,12 @@ class HTMLPurifier_Encoder
             $iconv = function_exists('iconv');
         }
         if ($escape = $config->get('Core.EscapeNonASCIICharacters')) {
-            $str = HTMLPurifier_Encoder::convertToASCIIDumbLossless($str);
+            $str = self::convertToASCIIDumbLossless($str);
         }
         set_error_handler(array('HTMLPurifier_Encoder', 'muteErrorHandler'));
         if ($iconv && !$config->get('Test.ForceNoIconv')) {
             // Undo our previous fix in convertToUTF8, otherwise iconv will barf
-            $ascii_fix = HTMLPurifier_Encoder::testEncodingSupportsASCII($encoding);
+            $ascii_fix = self::testEncodingSupportsASCII($encoding);
             if (!$escape && !empty($ascii_fix)) {
                 $clear_fix = array();
                 foreach ($ascii_fix as $utf8 => $native) {
@@ -349,7 +350,8 @@ class HTMLPurifier_Encoder
             $str = iconv('utf-8', $encoding . '//IGNORE', $str);
             restore_error_handler();
             return $str;
-        } elseif ($encoding === 'iso-8859-1') {
+        }
+        if ($encoding === 'iso-8859-1') {
             $str = utf8_decode($str);
             restore_error_handler();
             return $str;

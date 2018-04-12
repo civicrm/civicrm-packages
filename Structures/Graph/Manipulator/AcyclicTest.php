@@ -101,7 +101,7 @@ class Structures_Graph_Manipulator_AcyclicTest {
             // Find out which nodes are leafs (excluding visited nodes)
             $leafNodes = array();
             foreach($nodeKeys as $key) {
-                if ((!$nodes[$key]->getMetadata('acyclic-test-visited')) && Structures_Graph_Manipulator_AcyclicTest::_nonVisitedInDegree($nodes[$key]) == 0) {
+                if ((!$nodes[$key]->getMetadata('acyclic-test-visited')) && $this->_nonVisitedInDegree($nodes[$key]) == 0) {
                     $leafNodes[] =& $nodes[$key];
                 }
             }
@@ -150,7 +150,7 @@ class Structures_Graph_Manipulator_AcyclicTest {
             return false;
         } // Only directed graphs may be acyclic
 
-        return Structures_Graph_Manipulator_AcyclicTest::_isAcyclic($graph);
+        return $this->_isAcyclic($graph);
     }
     /* }}} */
 }

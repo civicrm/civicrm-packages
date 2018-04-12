@@ -375,30 +375,30 @@ class Services_JSON
                 */
 
                 // treat as a JSON object
-                if (is_array($var) && count($var) && (array_keys($var) !== range(0, sizeof($var) - 1))) {
+                if (is_array($var) && count($var) && (array_keys($var) !== range(0, count($var) - 1))) {
                     $properties = array_map(array($this, 'name_value'),
                                             array_keys($var),
                                             array_values($var));
 
                     foreach($properties as $property) {
-                        if(Services_JSON::isError($property)) {
+                        if($this->isError($property)) {
                             return $property;
                         }
                     }
 
-                    return '{' . join(',', $properties) . '}';
+                    return '{' . implode(',', $properties) . '}';
                 }
 
                 // treat it like a regular array
                 $elements = array_map(array($this, 'encode'), $var);
 
                 foreach($elements as $element) {
-                    if(Services_JSON::isError($element)) {
+                    if($this->isError($element)) {
                         return $element;
                     }
                 }
 
-                return '[' . join(',', $elements) . ']';
+                return '[' . implode(',', $elements) . ']';
 
             case 'object':
                 $vars = get_object_vars($var);
@@ -408,12 +408,12 @@ class Services_JSON
                                         array_values($vars));
 
                 foreach($properties as $property) {
-                    if(Services_JSON::isError($property)) {
+                    if($this->isError($property)) {
                         return $property;
                     }
                 }
 
-                return '{' . join(',', $properties) . '}';
+                return '{' . implode(',', $properties) . '}';
 
             default:
                 return ($this->use & SERVICES_JSON_SUPPRESS_ERRORS)
@@ -435,11 +435,11 @@ class Services_JSON
     {
         $encoded_value = $this->encode($value);
 
-        if(Services_JSON::isError($encoded_value)) {
+        if($this->isError($encoded_value)) {
             return $encoded_value;
         }
 
-        return $this->encode(strval($name)) . ':' . $encoded_value;
+        return $this->encode((string)$name) . ':' . $encoded_value;
     }
 
    /**

@@ -120,7 +120,7 @@ class HTMLPurifier_ElementDef
      * @return \HTMLPurifier_ElementDef
      */
     public static function create($content_model, $content_model_type, $attr) {
-        $def = new HTMLPurifier_ElementDef();
+        $def = new self();
         $def->content_model = $content_model;
         $def->content_model_type = $content_model_type;
         $def->attr = $attr;

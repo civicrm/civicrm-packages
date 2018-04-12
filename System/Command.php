@@ -508,7 +508,7 @@ class System_Command {
             );
         }
 
-        if (System_Command::isError($in_value)) {
+        if ($this->isError($in_value)) {
             $in_value = $in_value->getCode();
         }
 

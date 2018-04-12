@@ -21,7 +21,7 @@ class HTMLPurifier_URISchemeRegistry
         if ($prototype !== null) {
             $instance = $prototype;
         } elseif ($instance === null || $prototype == true) {
-            $instance = new HTMLPurifier_URISchemeRegistry();
+            $instance = new self();
         }
         return $instance;
     }

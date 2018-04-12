@@ -641,6 +641,7 @@ class DB_Table extends DB_Table_Base
      *                       table schema will be modified if needed
      *
      * @access public
+     * @throws \PEAR_Error
      */
     public function __construct(&$db, $table = null, $create = false)
     {
@@ -656,7 +657,7 @@ class DB_Table extends DB_Table_Base
         }
 
         if (null === $this->backend) {
-            $this->error = DB_Table::throwError(DB_TABLE_ERR_NOT_DB_OBJECT);
+            $this->error = $this->throwError(DB_TABLE_ERR_NOT_DB_OBJECT);
             return;
         }
         
@@ -665,7 +666,7 @@ class DB_Table extends DB_Table_Base
         if (null === $table) {
             // $table parameter not given => check $table class property
             if (null === $this->table) {
-                $this->error = DB_Table::throwError(DB_TABLE_ERR_TABLE_NAME_MISSING);
+                $this->error = $this->throwError(DB_TABLE_ERR_TABLE_NAME_MISSING);
                 return;
             }
         } else {
@@ -675,8 +676,8 @@ class DB_Table extends DB_Table_Base
         // is the RDBMS supported?
         $phptype = $db->phptype;
         $dbsyntax = $db->dbsyntax;
-        if (! DB_Table::supported($phptype, $dbsyntax)) {
-            $this->error =& DB_Table::throwError(
+        if (! $this->supported($phptype, $dbsyntax)) {
+            $this->error =& $this->throwError(
                 DB_TABLE_ERR_PHPTYPE,
                 "({$db->phptype})"
             );
@@ -696,7 +697,7 @@ class DB_Table extends DB_Table_Base
             }
 
             // check whether the chosen mode is supported
-            $mode_supported = DB_Table::modeSupported($create, $phptype);
+            $mode_supported = $this->modeSupported($create, $phptype);
             if (PEAR::isError($mode_supported)) {
                 $this->error =& $mode_supported;
                 return;
@@ -851,9 +852,9 @@ class DB_Table extends DB_Table_Base
         if (is_string($col)) {
             if (isset($this->col[$col])) {
                 return $this->col[$col];
-            } else {
-                return false;
             }
+
+            return false;
         }
         
         // if the param is a sequential array of column names,
@@ -866,9 +867,9 @@ class DB_Table extends DB_Table_Base
             
             if (count($set) == 0) {
                 return false;
-            } else {
-                return $set;
             }
+
+            return $set;
         }
         
         // param was not null, string, or array
@@ -899,9 +900,9 @@ class DB_Table extends DB_Table_Base
         if (is_string($idx)) {
             if (isset($this->idx[$idx])) {
                 return $this->idx[$idx];
-            } else {
-                return false;
             }
+
+            return false;
         }
         
         // if the param is a sequential array of index names,
@@ -914,9 +915,9 @@ class DB_Table extends DB_Table_Base
             
             if (count($set) == 0) {
                 return false;
-            } else {
-                return $set;
             }
+
+            return $set;
         }
         
         // param was not null, string, or array
@@ -1409,7 +1410,7 @@ class DB_Table extends DB_Table_Base
         if (   $GLOBALS['_DB_TABLE']['disable_length_check'] === false
             && strlen($seq_name) > 26
            ) {
-            return DB_Table::throwError(
+            return $this->throwError(
                 DB_TABLE_ERR_SEQ_STRLEN,
                 " ('$seq_name')"
             );
@@ -1971,9 +1972,9 @@ class DB_Table extends DB_Table_Base
         if (isset($this->col[$column]['require']) &&
             $this->col[$column]['require'] == true) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
     
     

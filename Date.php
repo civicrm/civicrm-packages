@@ -924,11 +924,7 @@ class Date
      */
     public function before($when)
     {
-        if (Date::compare($this,$when) == -1) {
-            return true;
-        }
-
-        return false;
+        return $this->compare($this, $when) == -1;
     }
 
     // }}}
@@ -945,11 +941,7 @@ class Date
      */
     public function after($when)
     {
-        if (Date::compare($this,$when) == 1) {
-            return true;
-        }
-
-        return false;
+        return $this->compare($this, $when) == 1;
     }
 
     // }}}
@@ -966,11 +958,7 @@ class Date
      */
     public function equals($when)
     {
-        if (Date::compare($this,$when) == 0) {
-            return true;
-        }
-
-        return false;
+        return self::compare($this, $when) == 0;
     }
 
     // }}}

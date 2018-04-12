@@ -14,7 +14,7 @@ class HTMLPurifier_DefinitionCache_Decorator_Cleanup extends
      * @return \HTMLPurifier_DefinitionCache_Decorator|\HTMLPurifier_DefinitionCache_Decorator_Cleanup
      */
     public function copy() {
-        return new HTMLPurifier_DefinitionCache_Decorator_Cleanup();
+        return new self();
     }
 
     /**

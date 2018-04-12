@@ -16,7 +16,7 @@ class HTMLPurifier_DefinitionCache_Decorator_Memory extends
      * @return \HTMLPurifier_DefinitionCache_Decorator|\HTMLPurifier_DefinitionCache_Decorator_Memory
      */
     public function copy() {
-        return new HTMLPurifier_DefinitionCache_Decorator_Memory();
+        return new self();
     }
 
     /**

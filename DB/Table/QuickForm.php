@@ -148,10 +148,10 @@ class DB_Table_QuickForm {
     public function &getForm($cols, $arrayName = null, $args = array(),
         $clientValidate = null, $formFilters = null)
     {
-        $form = DB_Table_QuickForm::createForm($args);
-        DB_Table_QuickForm::addElements($form, $cols, $arrayName);
-        DB_Table_QuickForm::addRules($form, $cols, $arrayName, $clientValidate);
-        DB_Table_QuickForm::addFilters($form, $cols, $arrayName, $formFilters);
+        $form = $this->createForm($args);
+        $this->addElements($form, $cols, $arrayName);
+        $this->addRules($form, $cols, $arrayName, $clientValidate);
+        $this->addFilters($form, $cols, $arrayName, $formFilters);
         
         return $form;
     }
@@ -252,7 +252,7 @@ class DB_Table_QuickForm {
     
     public function addElements(&$form, $cols, $arrayName = null)
     {
-        $elements = DB_Table_QuickForm::getElements($cols, $arrayName);
+        $elements = $this->getElements($cols, $arrayName);
         $cols_keys = array_keys($cols);
         foreach (array_keys($elements) as $k) {
         
@@ -285,7 +285,7 @@ class DB_Table_QuickForm {
                 // fix the column definition temporarily to get the separator
                 // for the group
                 $col = $cols[$cols_keys[$k]];
-                DB_Table_QuickForm::fixColDef($col, $name);
+                $this->fixColDef($col, $name);
 
                 // done
                 $group =& $form->addGroup($element, $name, $label,
@@ -336,9 +336,9 @@ class DB_Table_QuickForm {
                 $elemname = $name;
             }
             
-            DB_Table_QuickForm::fixColDef($col, $elemname);
+            $this->fixColDef($col, $elemname);
 
-            $elements[] = DB_Table_QuickForm::getElement($col, $elemname);
+            $elements[] = $this->getElement($col, $elemname);
         }
         
         return $elements;
@@ -736,9 +736,9 @@ class DB_Table_QuickForm {
                 $elemname = $name;
             }
             
-            DB_Table_QuickForm::fixColDef($col, $elemname);
+            $this->fixColDef($col, $elemname);
             
-            $group[] = DB_Table_QuickForm::getElement($col, $elemname);
+            $group[] = $this->getElement($col, $elemname);
         }
         
         return $group;
@@ -766,9 +766,9 @@ class DB_Table_QuickForm {
     {
         foreach ($elements as $name => $elemDef) {
 
-            DB_Table_QuickForm::fixColDef($elemDef, $name);
+            $this->fixColDef($elemDef, $name);
 
-            $element = DB_Table_QuickForm::getElement($elemDef, $name);
+            $element = $this->getElement($elemDef, $name);
 
             if (!is_object($element)) {
                 continue;
@@ -817,7 +817,7 @@ class DB_Table_QuickForm {
                 $elemname = $name;
             }
 
-            DB_Table_QuickForm::fixColDef($col, $elemname);
+            $this->fixColDef($col, $elemname);
 
             foreach (array_keys($col['qf_filters']) as $fk) {
                 $form->applyFilter($elemname, $col['qf_filters'][$fk]);
@@ -871,7 +871,7 @@ class DB_Table_QuickForm {
             }
             
             // make sure all necessary elements are in place
-            DB_Table_QuickForm::fixColDef($col, $elemname);
+            $this->fixColDef($col, $elemname);
             
             // if clientValidate is specified, override the column
             // definition.  otherwise use the col def as it is.

@@ -100,20 +100,23 @@ class HTMLPurifier_Config
 
     /**
      * Convenience constructor that creates a config object based on a mixed var
+     *
      * @param mixed $config Variable that defines the state of the config
      *                      object. Can be: a HTMLPurifier_Config() object,
      *                      an array of directives based on loadArray(),
      *                      or a string filename of an ini file.
-     * @param HTMLPurifier_ConfigSchema Schema object
+     * @param null  $schema
+     *
      * @return Configured HTMLPurifier_Config object
+     * @throws \HTMLPurifier_Exception
      */
     public static function create($config, $schema = null) {
-        if ($config instanceof HTMLPurifier_Config) {
+        if ($config instanceof self) {
             // pass-through
             return $config;
         }
         if (!$schema) {
-            $ret = HTMLPurifier_Config::createDefault();
+            $ret = self::createDefault();
         } else {
             $ret = new HTMLPurifier_Config($schema);
         }
@@ -143,8 +146,8 @@ class HTMLPurifier_Config
      */
     public static function createDefault() {
         $definition = HTMLPurifier_ConfigSchema::instance();
-        $config = new HTMLPurifier_Config($definition);
-        return $config;
+
+        return new HTMLPurifier_Config($definition);
     }
 
     /**
@@ -603,7 +606,10 @@ class HTMLPurifier_Config
     /**
      * Loads configuration values from an array with the following structure:
      * Namespace.Directive => Value
+     *
      * @param $config_array Configuration associative array
+     *
+     * @throws \HTMLPurifier_Exception
      */
     public function loadArray($config_array) {
         if ($this->isFinalized('Cannot load directives after finalization')) {
@@ -695,9 +701,9 @@ class HTMLPurifier_Config
      * @return \Configured
      */
     public static function loadArrayFromForm($array, $index = false, $allowed = true, $mq_fix = true, $schema = null) {
-        $ret = HTMLPurifier_Config::prepareArrayFromForm($array, $index, $allowed, $mq_fix, $schema);
+        $ret = self::prepareArrayFromForm($array, $index, $allowed, $mq_fix, $schema);
 
-        return HTMLPurifier_Config::create($ret, $schema);
+        return self::create($ret, $schema);
     }
 
     /**
@@ -707,9 +713,10 @@ class HTMLPurifier_Config
      * @param bool $index
      * @param bool $allowed
      * @param bool $mq_fix
+     * @throws \HTMLPurifier_Exception
 */
     public function mergeArrayFromForm($array, $index = false, $allowed = true, $mq_fix = true) {
-         $ret = HTMLPurifier_Config::prepareArrayFromForm($array, $index, $allowed, $mq_fix, $this->def);
+         $ret = self::prepareArrayFromForm($array, $index, $allowed, $mq_fix, $this->def);
          $this->loadArray($ret);
     }
 
@@ -729,7 +736,7 @@ class HTMLPurifier_Config
         }
         $mq = $mq_fix && function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc();
 
-        $allowed = HTMLPurifier_Config::getAllowedDirectivesForForm($allowed, $schema);
+        $allowed = self::getAllowedDirectivesForForm($allowed, $schema);
         $ret = array();
         foreach ($allowed as $key) {
             list($ns, $directive) = $key;
@@ -750,7 +757,8 @@ class HTMLPurifier_Config
     /**
      * Loads configuration values from an ini file
      * @param $filename Name of ini file
-     */
+     * @throws \HTMLPurifier_Exception
+*/
     public function loadIni($filename) {
         if ($this->isFinalized('Cannot load directives after finalization')) {
             return;

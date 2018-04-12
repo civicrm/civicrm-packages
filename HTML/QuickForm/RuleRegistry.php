@@ -58,7 +58,7 @@ class HTML_QuickForm_RuleRegistry
     {
         static $obj;
         if (!isset($obj)) {
-            $obj = new HTML_QuickForm_RuleRegistry();
+            $obj = new self();
         }
         return $obj;
     } // end func singleton

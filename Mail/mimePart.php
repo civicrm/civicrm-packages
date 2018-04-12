@@ -823,7 +823,7 @@ class Mail_mimePart
 
         // Structured header (make sure addr-spec inside is not encoded)
         if (!empty($separator)) {
-            $parts = Mail_mimePart::_explodeQuotedString($separator, $value);
+            $parts = self::_explodeQuotedString($separator, $value);
             $value = '';
 
             foreach ($parts as $part) {
@@ -868,7 +868,7 @@ class Mail_mimePart
                             } else {
                                 $last_len = strlen($value);
                             }
-                            $word = Mail_mimePart::encodeHeaderValue(
+                            $word = self::encodeHeaderValue(
                                 $word, $charset, $encoding, $last_len, $eol
                             );
                         } else if (($word[0] != '"' || $word[strlen($word)-1] != '"')
@@ -905,7 +905,7 @@ class Mail_mimePart
                     $value = str_replace($search, $replace, $value);
                     $value = substr($value, 1, -1);
                 }
-                $value = Mail_mimePart::encodeHeaderValue(
+                $value = self::encodeHeaderValue(
                     $value, $charset, $encoding, strlen($name) + 2, $eol
                 );
             } else if (strlen($name.': '.$value) > 78) {
@@ -966,7 +966,7 @@ class Mail_mimePart
     public static function encodeHeaderValue($value, $charset, $encoding, $prefix_len=0, $eol="\r\n")
     {
         // #17311: Use multibyte aware method (requires mbstring extension)
-        if ($result = Mail_mimePart::encodeMB($value, $charset, $encoding, $prefix_len, $eol)) {
+        if ($result = self::encodeMB($value, $charset, $encoding, $prefix_len, $eol)) {
             return $result;
         }
 
@@ -1006,7 +1006,7 @@ class Mail_mimePart
             $value = $output;
         } else {
             // quoted-printable encoding has been selected
-            $value = Mail_mimePart::encodeQP($value);
+            $value = self::encodeQP($value);
 
             // This regexp will break QP-encoded text at every $maxLength
             // but will not break any encoded letters.

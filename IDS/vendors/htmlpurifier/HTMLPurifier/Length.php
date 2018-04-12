@@ -46,7 +46,7 @@ class HTMLPurifier_Length
      * @return \HTMLPurifier_Length|string
      */
     public static function make($s) {
-        if ($s instanceof HTMLPurifier_Length) {
+        if ($s instanceof self) {
             return $s;
         }
         $n_length = strspn($s, '1234567890.+-');
@@ -72,7 +72,7 @@ class HTMLPurifier_Length
         if (!ctype_lower($this->unit)) {
             $this->unit = strtolower($this->unit);
         }
-        if (!isset(HTMLPurifier_Length::$allowedUnits[$this->unit])) {
+        if (!isset(self::$allowedUnits[$this->unit])) {
             return false;
         }
         // Hack:

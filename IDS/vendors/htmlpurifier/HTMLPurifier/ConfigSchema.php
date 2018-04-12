@@ -78,11 +78,11 @@ class HTMLPurifier_ConfigSchema {
      */
     public static function instance($prototype = null) {
         if ($prototype !== null) {
-            HTMLPurifier_ConfigSchema::$singleton = $prototype;
-        } elseif (HTMLPurifier_ConfigSchema::$singleton === null || $prototype === true) {
-            HTMLPurifier_ConfigSchema::$singleton = HTMLPurifier_ConfigSchema::makeFromSerial();
+            self::$singleton = $prototype;
+        } elseif (self::$singleton === null || $prototype === true) {
+            self::$singleton = self::makeFromSerial();
         }
-        return HTMLPurifier_ConfigSchema::$singleton;
+        return self::$singleton;
     }
 
     /**

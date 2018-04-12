@@ -847,14 +847,14 @@ class pdf_parser
         if (isset($obj[1][1]['/Filter'])) {
             $filter = $obj[1][1]['/Filter'];
 
-            if ($filter[0] == pdf_parser::TYPE_OBJREF) {
+            if ($filter[0] == self::TYPE_OBJREF) {
                 $tmpFilter = $this->resolveObject($filter);
                 $filter = $tmpFilter[1];
             }
 
-            if ($filter[0] == pdf_parser::TYPE_TOKEN) {
+            if ($filter[0] == self::TYPE_TOKEN) {
                 $filters[] = $filter;
-            } else if ($filter[0] == pdf_parser::TYPE_ARRAY) {
+            } else if ($filter[0] == self::TYPE_ARRAY) {
                 $filters = $filter[1];
             }
         }

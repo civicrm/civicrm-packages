@@ -78,19 +78,19 @@ class image_imagick extends image {
             $this->height = $size['height'];
             return true;
 
-        } else {
-            try {
-                $this->image->setImageBackgroundColor($background);
-                $x = -round(($width - $size['width']) / 2);
-                $y = -round(($height - $size['height']) / 2);
-                $this->image->extentImage($width, $height, $x, $y);
-            } catch (\Exception $e) {
-                return false;
-            }
-            $this->width = $width;
-            $this->height = $height;
-            return true;
         }
+        try {
+            $this->image->setImageBackgroundColor($background);
+            $x = -round(($width - $size['width']) / 2);
+            $y = -round(($height - $size['height']) / 2);
+            $this->image->extentImage($width, $height, $x, $y);
+        } catch (\Exception $e) {
+            return false;
+        }
+        $this->width  = $width;
+        $this->height = $height;
+
+        return true;
     }
 
     /**
@@ -276,7 +276,7 @@ class image_imagick extends image {
      */
     protected function getImage($image, &$width, &$height) {
 
-        if (is_object($image) && ($image instanceof image_imagick)) {
+        if (is_object($image) && ($image instanceof self)) {
             try {
                 $image->image->setImageCompressionQuality(100);
             } catch (\Exception $e) {
@@ -286,7 +286,8 @@ class image_imagick extends image {
             $height = $image->height;
             return $image->image;
 
-        } elseif (is_object($image) && ($image instanceof \Imagick)) {
+        }
+        if (is_object($image) && ($image instanceof \Imagick)) {
             try {
                 $image->setImageCompressionQuality(100);
                 $size = $image->getImageGeometry();
@@ -297,7 +298,8 @@ class image_imagick extends image {
             $height = $size['height'];
             return $image;
 
-        } elseif (is_string($image)) {
+        }
+        if (is_string($image)) {
             try {
                 $image = new \Imagick($image);
                 $image->setImageCompressionQuality(100);
@@ -309,9 +311,9 @@ class image_imagick extends image {
             $height = $size['height'];
             return $image;
 
-        } else {
-            return false;
         }
+
+        return false;
     }
 
 

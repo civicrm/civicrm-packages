@@ -176,9 +176,8 @@ class PEAR
                     $GLOBALS['_PEAR_SHUTDOWN_REGISTERED'] = true;
                 }
                 break;
-            } else {
-                $classname = get_parent_class($classname);
             }
+            $classname = get_parent_class($classname);
         }
     }
 
@@ -310,10 +309,10 @@ class PEAR
         if (!is_a($data, 'PEAR_Error')) {
             return false;
         }
-
         if (null === $code) {
             return true;
-        } elseif (is_string($code)) {
+        }
+        if (is_string($code)) {
             return $data->getMessage() == $code;
         }
 
@@ -481,7 +480,8 @@ class PEAR
             }
 
             return $deleted ? true : PEAR::raiseError('The expected error you submitted does not exist'); // IMPROVE ME
-        } elseif (!empty($error_code)) {
+        }
+        if ( !empty($error_code)) {
             // $error_code comes alone, trying to unset it
             if ($this->_checkDelExpect($error_code)) {
                 return true;

@@ -104,7 +104,7 @@ class DB_DataObject_Cast {
     */
   
     public function blob($value) {
-        $r = new DB_DataObject_Cast;
+        $r = new self;
         $r->type = 'blob';
         $r->value = $value;
         return $r;
@@ -124,7 +124,7 @@ class DB_DataObject_Cast {
     */
   
     public function string($value) {
-        $r = new DB_DataObject_Cast;
+        $r = new self;
         $r->type = 'string';
         $r->value = $value;
         return $r;
@@ -143,7 +143,7 @@ class DB_DataObject_Cast {
   
     public function sql($value)
     {
-        $r = new DB_DataObject_Cast;
+        $r = new self;
         $r->type = 'sql';
         $r->value = $value;
         return $r;
@@ -208,7 +208,7 @@ class DB_DataObject_Cast {
             // now mktime
             $bits = explode('-',date('Y-m-d',mktime(1,1,1,$bits[1],$bits[2],$bits[0])));
         }
-        $r = new DB_DataObject_Cast;
+        $r = new self;
         $r->type = 'date';
         list($r->year,$r->month,$r->day) = $bits;
         return $r;
@@ -279,7 +279,7 @@ class DB_DataObject_Cast {
             return false;
         }
         
-        $r = DB_DataObject_Cast::date($bits[0], $bits[1], $bits[2]);
+        $r = self::date($bits[0], $bits[1], $bits[2]);
         if (!$r) {
             return $r; // pass thru error (False) - doesnt happen at present!
         }
@@ -339,7 +339,7 @@ class DB_DataObject_Cast {
         }
         
         // now take data from bits into object fields
-        $r = new DB_DataObject_Cast;
+        $r = new self;
         $r->type = 'time';
         $r->hour = $bits[0];
         $r->minute = $bits[1];

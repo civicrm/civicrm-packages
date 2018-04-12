@@ -135,7 +135,7 @@ class Date_TimeZone
     public function __construct($id)
     {
         $_DATE_TIMEZONE_DATA =& $GLOBALS['_DATE_TIMEZONE_DATA'];
-        if(Date_TimeZone::isValidID($id)) {
+        if($this->isValidID($id)) {
             $this->id = $id;
             $this->longname = $_DATE_TIMEZONE_DATA[$id]['longname'];
             $this->shortname = $_DATE_TIMEZONE_DATA[$id]['shortname'];
@@ -188,7 +188,7 @@ class Date_TimeZone
      */
     public function setDefault($id)
     {
-        if(Date_TimeZone::isValidID($id)) {
+        if($this->isValidID($id)) {
             $GLOBALS['_DATE_TIMEZONE_DEFAULT'] = $id;
         }
     }
@@ -209,9 +209,9 @@ class Date_TimeZone
     {
         if(isset($GLOBALS['_DATE_TIMEZONE_DATA'][$id])) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     // }}}
@@ -229,11 +229,7 @@ class Date_TimeZone
      */
     public function isEqual($tz)
     {
-        if(strcasecmp($this->id, $tz->id) == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return strcasecmp($this->id, $tz->id) == 0;
     }
 
     // }}}
@@ -256,11 +252,7 @@ class Date_TimeZone
      */
     public function isEquivalent($tz)
     {
-        if($this->offset == $tz->offset && $this->hasdst == $tz->hasdst) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->offset == $tz->offset && $this->hasdst == $tz->hasdst;
     }
 
     // }}}
@@ -329,9 +321,9 @@ class Date_TimeZone
     {
         if($this->hasdst) {
             return 3600000;
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
     // }}}
@@ -353,9 +345,9 @@ class Date_TimeZone
     {
         if($this->inDaylightTime($date)) {
             return $this->offset + $this->getDSTSavings();
-        } else {
-            return $this->offset;
         }
+
+        return $this->offset;
     }
 
     // }}}

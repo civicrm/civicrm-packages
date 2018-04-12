@@ -124,7 +124,7 @@ class System
         $struct = array('dirs' => array(), 'files' => array());
         if (($dir = @opendir($sPath)) === false) {
             if (!$silent) {
-                System::raiseError("Could not open dir $sPath");
+                $this->raiseError("Could not open dir $sPath");
             }
             return $struct; // XXX could not open error
         }
@@ -143,7 +143,7 @@ class System
             foreach ($list as $val) {
                 $path = $sPath . DIRECTORY_SEPARATOR . $val;
                 if (is_dir($path) && !is_link($path)) {
-                    $tmp    = System::_dirToStruct($path, $maxinst, $aktinst+1, $silent);
+                    $tmp    = $this->_dirToStruct($path, $maxinst, $aktinst + 1, $silent);
                     $struct = array_merge_recursive($struct, $tmp);
                 } else {
                     $struct['files'][] = $path;
@@ -168,7 +168,7 @@ class System
         $files  = (array)$files;
         foreach ($files as $file) {
             if (is_dir($file) && !is_link($file)) {
-                $tmp    = System::_dirToStruct($file, 0);
+                $tmp    = $this->_dirToStruct($file, 0);
                 $struct = array_merge_recursive($tmp, $struct);
             } else {
                 if (!in_array($file, $struct['files'])) {
@@ -190,9 +190,9 @@ class System
      */
     public function rm($args)
     {
-        $opts = System::_parseArgs($args, 'rf'); // "f" does nothing but I like it :-)
+        $opts = $this->_parseArgs($args, 'rf'); // "f" does nothing but I like it :-)
         if (PEAR::isError($opts)) {
-            return System::raiseError($opts);
+            return $this->raiseError($opts);
         }
         foreach ($opts[0] as $opt) {
             if ($opt[0] == 'r') {
@@ -201,7 +201,7 @@ class System
         }
         $ret = true;
         if (isset($do_recursive)) {
-            $struct = System::_multipleToStruct($opts[1]);
+            $struct = $this->_multipleToStruct($opts[1]);
             foreach ($struct['files'] as $file) {
                 if (!@unlink($file)) {
                     $ret = false;
@@ -236,9 +236,9 @@ class System
      */
     public function mkDir($args)
     {
-        $opts = System::_parseArgs($args, 'pm:');
+        $opts = $this->_parseArgs($args, 'pm:');
         if (PEAR::isError($opts)) {
-            return System::raiseError($opts);
+            return $this->raiseError($opts);
         }
 
         $mode = 0777; // default mode
@@ -330,14 +330,14 @@ class System
         $outputfd = false;
         if (isset($mode)) {
             if (!$outputfd = fopen($outputfile, $mode)) {
-                $err = System::raiseError("Could not open $outputfile");
+                $err = $this->raiseError("Could not open $outputfile");
                 return $err;
             }
             $ret = true;
         }
         foreach ($files as $file) {
             if (!$fd = fopen($file, 'r')) {
-                System::raiseError("Could not open $file");
+                $this->raiseError("Could not open $file");
                 continue;
             }
             while ($cont = fread($fd, 2048)) {
@@ -382,9 +382,9 @@ class System
     public function mktemp($args = null)
     {
         static $first_time = true;
-        $opts = System::_parseArgs($args, 't:d');
+        $opts = $this->_parseArgs($args, 't:d');
         if (PEAR::isError($opts)) {
-            return System::raiseError($opts);
+            return $this->raiseError($opts);
         }
 
         foreach ($opts[0] as $opt) {
@@ -397,10 +397,10 @@ class System
 
         $prefix = isset($opts[1][0]) ? $opts[1][0] : 'tmp';
         if (!isset($tmpdir)) {
-            $tmpdir = System::tmpdir();
+            $tmpdir = self::tmpdir();
         }
 
-        if (!System::mkDir(array('-p', $tmpdir))) {
+        if (! $this->mkDir(array('-p', $tmpdir))) {
             return false;
         }
 
@@ -408,7 +408,7 @@ class System
         if (isset($tmp_is_dir)) {
             unlink($tmp); // be careful possible race condition here
             if ( ! mkdir($tmp, 0700) && ! is_dir($tmp)) {
-                return System::raiseError("Unable to create temporary directory $tmpdir");
+                return $this->raiseError("Unable to create temporary directory $tmpdir");
             }
         }
 
@@ -437,7 +437,7 @@ class System
         if (count($GLOBALS['_System_temp_files'])) {
             $delete = $GLOBALS['_System_temp_files'];
             array_unshift($delete, '-r');
-            System::rm($delete);
+            $this->rm($delete);
             $GLOBALS['_System_temp_files'] = array();
         }
     }
@@ -569,7 +569,7 @@ class System
         $depth = 0;
         $do_files = $do_dirs = true;
         $args_count = count($args);
-        for ($i = 0; $i < $args_count; $i++) {
+        foreach ($args as $i => $iValue) {
             switch ($args[$i]) {
                 case '-type':
                     if (in_array($args[$i+1], array('d', 'f'))) {
@@ -594,7 +594,7 @@ class System
                     break;
             }
         }
-        $path = System::_dirToStruct($dir, $depth, 0, true);
+        $path = $this->_dirToStruct($dir, $depth, 0, true);
         if ($do_files && $do_dirs) {
             $files = array_merge($path['files'], $path['dirs']);
         } elseif ($do_dirs) {
@@ -607,13 +607,14 @@ class System
             $pattern = '#(^|'.$dsq.')'.implode('|', $patterns).'($|'.$dsq.')#';
             $ret = array();
             $files_count = count($files);
-            for ($i = 0; $i < $files_count; $i++) {
+            foreach ($files as $i => $iValue) {
                 // only search in the part of the file below the current directory
                 $filepart = basename($files[$i]);
                 if (preg_match($pattern, $filepart)) {
-                    $ret[] = $files[$i];
+                    $ret[] = $iValue;
                 }
             }
+
             return $ret;
         }
         return $files;

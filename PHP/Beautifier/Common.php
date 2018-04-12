@@ -79,13 +79,13 @@ class PHP_Beautifier_Common {
                 continue;
             }
             if (is_dir($sDir . '/' . $entry) and $bRecursive) {
-                $matches = array_merge($matches, PHP_Beautifier_Common::getFilesByPattern($sDir.'/'.$entry, $sFilePattern, $bRecursive));
+                $matches = array_merge($matches, self::getFilesByPattern($sDir . '/' . $entry, $sFilePattern, $bRecursive));
             } elseif (preg_match('/' . $sFilePattern . '$/', $entry)) {
                 $matches[] = $sDir . '/' . $entry;
             }
         }
         if (!$matches) {
-            PHP_Beautifier_Common::getLog()->log("$sDir/$sFilePattern pattern don't match any file", PEAR_LOG_DEBUG);
+            self::getLog()->log("$sDir/$sFilePattern pattern don't match any file", PEAR_LOG_DEBUG);
         }
         return $matches;
     }
@@ -123,7 +123,7 @@ class PHP_Beautifier_Common {
     */
     public static function getSavePath($aFiles, $sPath = './') 
     {
-        $sPath = PHP_Beautifier_Common::normalizeDir($sPath);
+        $sPath = self::normalizeDir($sPath);
         // get the lowest denominator..
         $sPrevious = '';
         $iCut = 0;
@@ -165,7 +165,7 @@ class PHP_Beautifier_Common {
             return glob($sPath);
         }
         $sDir  = dirname($sPath) ? realpath(dirname($sPath)) : realpath('./');
-        $sDir  = PHP_Beautifier_Common::normalizeDir($sDir);
+        $sDir  = self::normalizeDir($sDir);
         $sDir  = substr($sDir, 0, -1); // strip last slash
         $sGlob = basename($sPath);
         $dh    = @opendir($sDir);
@@ -178,7 +178,7 @@ class PHP_Beautifier_Common {
                 continue;
             }
             if (is_dir($sDir . '/' . $entry)) {
-                $aMatches = array_merge($aMatches, PHP_Beautifier_Common::getFilesByGlob($sDir.'/'.$entry.'/'.$sGlob, true));
+                $aMatches = array_merge($aMatches, self::getFilesByGlob($sDir . '/' . $entry . '/' . $sGlob, true));
             }
         }
 

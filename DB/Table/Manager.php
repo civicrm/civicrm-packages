@@ -258,7 +258,7 @@ class DB_Table_Manager {
         $indexes = array();
         
         // check the table name
-        $name_check = DB_Table_Manager::_validateTableName($table);
+        $name_check = $this->_validateTableName($table);
         if (PEAR::isError($name_check)) {
             return $name_check;
         }
@@ -279,7 +279,7 @@ class DB_Table_Manager {
             $colname = trim($colname);
             
             // check the column name
-            $name_check = DB_Table_Manager::_validateColumnName($colname);
+            $name_check = $this->_validateColumnName($colname);
             if (PEAR::isError($name_check)) {
                 return $name_check;
             }
@@ -295,7 +295,7 @@ class DB_Table_Manager {
             if ($backend == 'mdb2') {
 
                 // get the declaration string
-                $result = DB_Table_Manager::getDeclareMDB2($type,
+                $result = $this->getDeclareMDB2($type,
                     $size, $scope, $require, $default, $max_scope);
 
                 // did it work?
@@ -310,7 +310,7 @@ class DB_Table_Manager {
             } else {
 
                 // get the declaration string
-                $result = DB_Table_Manager::getDeclare($phptype, $type,
+                $result = $this->getDeclare($phptype, $type,
                     $size, $scope, $require, $default);
 
                 // did it work?
@@ -340,12 +340,12 @@ class DB_Table_Manager {
 
         foreach ($index_set as $idxname => $val) {
             
-            list($type, $cols) = DB_Table_Manager::_getIndexTypeAndColumns($val, $idxname);
+            list($type, $cols) = $this->_getIndexTypeAndColumns($val, $idxname);
 
             $newIdxName = '';
 
             // check the index definition
-            $index_check = DB_Table_Manager::_validateIndexName($idxname,
+            $index_check = $this->_validateIndexName($idxname,
                 $table, $phptype, $type, $cols, $column_set, $newIdxName);
             if (PEAR::isError($index_check)) {
                 return $index_check;
@@ -391,7 +391,7 @@ class DB_Table_Manager {
                 
             } else {
 
-                $indexes[] = DB_Table_Manager::getDeclareForIndex($phptype,
+                $indexes[] = $this->getDeclareForIndex($phptype,
                     $type, $newIdxName, $table, $cols);
 
             }
@@ -432,7 +432,7 @@ class DB_Table_Manager {
 
         }
 
-        $result = DB_Table_Manager::_createIndexesAndContraints($db, $backend,
+        $result = $this->_createIndexesAndContraints($db, $backend,
                                                                 $table, $indexes);
         if (PEAR::isError($result)) {
             return $result;
@@ -483,7 +483,7 @@ class DB_Table_Manager {
         // check #1: does the table exist?
 
         // check the table name
-        $name_check = DB_Table_Manager::_validateTableName($table);
+        $name_check = $this->_validateTableName($table);
         if (PEAR::isError($name_check)) {
             return $name_check;
         }
@@ -509,13 +509,13 @@ class DB_Table_Manager {
             $colname = strtolower(trim($colname));
             
             // check the column name
-            $name_check = DB_Table_Manager::_validateColumnName($colname);
+            $name_check = $this->_validateColumnName($colname);
             if (PEAR::isError($name_check)) {
                 return $name_check;
             }
 
             // check #2: do all columns exist?
-            $column_exists = DB_Table_Manager::_columnExists($colname,
+            $column_exists = $this->_columnExists($colname,
                 $tableInfoOrder, 'verify');
             if (PEAR::isError($column_exists)) {
                 return $column_exists;
@@ -524,13 +524,13 @@ class DB_Table_Manager {
             // check #3: do all columns have the right type?
 
             // check whether the column type is a known type
-            $type_check = DB_Table_Manager::_validateColumnType($phptype, $val['type']);
+            $type_check = $this->_validateColumnType($phptype, $val['type']);
             if (PEAR::isError($type_check)) {
                 return $type_check;
             }
 
             // check whether the column has the right type
-            $type_check = DB_Table_Manager::_checkColumnType($phptype,
+            $type_check = $this->_checkColumnType($phptype,
                 $colname, $val['type'], $tableInfoOrder, $tableInfo, 'verify');
             if (PEAR::isError($type_check)) {
                 return $type_check;
@@ -539,7 +539,7 @@ class DB_Table_Manager {
         }
 
         // check #4: do all indexes exist?
-        $table_indexes = DB_Table_Manager::getIndexes($db, $table);
+        $table_indexes = $this->getIndexes($db, $table);
         if (PEAR::isError($table_indexes)) {
             return $table_indexes;
         }
@@ -550,12 +550,12 @@ class DB_Table_Manager {
         
         foreach ($index_set as $idxname => $val) {
           
-            list($type, $cols) = DB_Table_Manager::_getIndexTypeAndColumns($val, $idxname);
+            list($type, $cols) = $this->_getIndexTypeAndColumns($val, $idxname);
 
             $newIdxName = '';
 
             // check the index definition
-            $index_check = DB_Table_Manager::_validateIndexName($idxname,
+            $index_check = $this->_validateIndexName($idxname,
                 $table, $phptype, $type, $cols, $column_set, $newIdxName);
             if (PEAR::isError($index_check)) {
                 return $index_check;
@@ -563,7 +563,7 @@ class DB_Table_Manager {
 
             // check whether the index has the right type and has all
             // specified columns
-            $index_check = DB_Table_Manager::_checkIndex($idxname, $newIdxName,
+            $index_check = $this->_checkIndex($idxname, $newIdxName,
                 $type, $cols, $table_indexes, 'verify');
             if (PEAR::isError($index_check)) {
                 return $index_check;
@@ -643,19 +643,19 @@ class DB_Table_Manager {
             $colname = strtolower(trim($colname));
             
             // check the column name
-            $name_check = DB_Table_Manager::_validateColumnName($colname);
+            $name_check = $this->_validateColumnName($colname);
             if (PEAR::isError($name_check)) {
                 return $name_check;
             }
 
             // check the column's existence
-            $column_exists = DB_Table_Manager::_columnExists($colname,
+            $column_exists = $this->_columnExists($colname,
                 $tableInfoOrder, 'alter');
             if (PEAR::isError($column_exists)) {
                 return $column_exists;
             }
             if ($column_exists === false) {  // add the column
-                $definition = DB_Table_Manager::_getColumnDefinition($backend,
+                $definition = $this->_getColumnDefinition($backend,
                     $phptype, $val);
                 if (PEAR::isError($definition)) {
                     return $definition;
@@ -674,19 +674,19 @@ class DB_Table_Manager {
             }
 
             // check whether the column type is a known type
-            $type_check = DB_Table_Manager::_validateColumnType($phptype, $val['type']);
+            $type_check = $this->_validateColumnType($phptype, $val['type']);
             if (PEAR::isError($type_check)) {
                 return $type_check;
             }
 
             // check whether the column has the right type
-            $type_check = DB_Table_Manager::_checkColumnType($phptype,
+            $type_check = $this->_checkColumnType($phptype,
                 $colname, $val['type'], $tableInfoOrder, $tableInfo, 'alter');
             if (PEAR::isError($type_check)) {
                 return $type_check;
             }
             if ($type_check === false) {  // change the column type
-                $definition = DB_Table_Manager::_getColumnDefinition($backend,
+                $definition = $this->_getColumnDefinition($backend,
                     $phptype, $val);
                 if (PEAR::isError($definition)) {
                     return $definition;
@@ -709,7 +709,7 @@ class DB_Table_Manager {
         }
 
         // get information about indexes / constraints
-        $table_indexes = DB_Table_Manager::getIndexes($db, $table);
+        $table_indexes = $this->getIndexes($db, $table);
         if (PEAR::isError($table_indexes)) {
             return $table_indexes;
         }
@@ -721,12 +721,12 @@ class DB_Table_Manager {
         
         foreach ($index_set as $idxname => $val) {
           
-            list($type, $cols) = DB_Table_Manager::_getIndexTypeAndColumns($val, $idxname);
+            list($type, $cols) = $this->_getIndexTypeAndColumns($val, $idxname);
 
             $newIdxName = '';
 
             // check the index definition
-            $index_check = DB_Table_Manager::_validateIndexName($idxname,
+            $index_check = $this->_validateIndexName($idxname,
                 $table, $phptype, $type, $cols, $column_set, $newIdxName);
             if (PEAR::isError($index_check)) {
                 return $index_check;
@@ -734,7 +734,7 @@ class DB_Table_Manager {
 
             // check whether the index has the right type and has all
             // specified columns
-            $index_check = DB_Table_Manager::_checkIndex($idxname, $newIdxName,
+            $index_check = $this->_checkIndex($idxname, $newIdxName,
                 $type, $cols, $table_indexes, 'alter');
             if (PEAR::isError($index_check)) {
                 return $index_check;
@@ -798,7 +798,7 @@ class DB_Table_Manager {
 
                 } else {
 
-                    $indexes[] = DB_Table_Manager::getDeclareForIndex($phptype,
+                    $indexes[] = $this->getDeclareForIndex($phptype,
                         $type, $newIdxName, $table, $cols);
 
                 }
@@ -809,7 +809,7 @@ class DB_Table_Manager {
                     var_dump($indexes);
                     echo "\n";
                 }
-                $result = DB_Table_Manager::_createIndexesAndContraints(
+                $result = $this->_createIndexesAndContraints(
                     $db, $backend, $table, $indexes);
                 if ($backend == 'mdb2') {
                     // restore user defined 'idxname_format' option
@@ -893,7 +893,7 @@ class DB_Table_Manager {
         $require = null, $default = null)
     {
         // validate char/varchar/decimal type declaration
-        $validation = DB_Table_Manager::_validateTypeDeclaration($coltype, $size,
+        $validation = $this->_validateTypeDeclaration($coltype, $size,
                                                                  $scope);
         if (PEAR::isError($validation)) {
             return $validation;
@@ -991,7 +991,7 @@ class DB_Table_Manager {
         $require = null, $default = null, &$max_scope)
     {
         // validate char/varchar/decimal type declaration
-        $validation = DB_Table_Manager::_validateTypeDeclaration($coltype, $size,
+        $validation = $this->_validateTypeDeclaration($coltype, $size,
                                                                  $scope);
         if (PEAR::isError($validation)) {
             return $validation;
@@ -1138,12 +1138,12 @@ class DB_Table_Manager {
         $default = isset($column['default']) ? $column['default'] : null;
 
         if ($backend == 'db') {
-            return DB_Table_Manager::getDeclare($phptype, $type,
+            return $this->getDeclare($phptype, $type,
                     $size, $scope, $require, $default);
-        } else {
-            return DB_Table_Manager::getDeclareMDB2($type,
-                    $size, $scope, $require, $default, $max_scope);
         }
+
+        return $this->getDeclareMDB2($type,
+                $size, $scope, $require, $default, $max_scope);
     }
 
 

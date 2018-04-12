@@ -229,7 +229,7 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
     private function setOutputFilePost()
     {
         if (php_sapi_name() == 'cli' and $this->sPreOutputFile == STDOUT) {
-            $this->sOutputMode = PHP_Beautifier_Batch::FILES;
+            $this->sOutputMode = self::FILES;
         } else {
             $sPath = str_replace(DIRECTORY_SEPARATOR, '/', $this->sPreOutputFile);
             if (!$sPath) {
@@ -237,13 +237,13 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
             }
             // determine file or dir
             if (substr($sPath, -1) != '/' and !is_dir($sPath)) {
-                $this->sOutputMode = PHP_Beautifier_Batch::FILES;
+                $this->sOutputMode = self::FILES;
                 // Define compression mode
                 if (preg_match("/\.(gz|bz2|tar)$/", $sPath, $aMatch)) {
                     $this->sCompress = $aMatch[1];
                 }
             } else {
-                $this->sOutputMode = PHP_Beautifier_Batch::DIRECTORY;
+                $this->sOutputMode = self::DIRECTORY;
             }
         }
         return true;

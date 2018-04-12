@@ -63,11 +63,10 @@ class HTMLPurifier_VarParser
      */
     final public function parse($var, $type, $allow_null = false) {
         if (is_string($type)) {
-            if (!isset(HTMLPurifier_VarParser::$types[$type])) {
+            if (!isset(self::$types[$type])) {
                 throw new HTMLPurifier_VarParserException("Invalid type '$type'");
-            } else {
-                $type = HTMLPurifier_VarParser::$types[$type];
             }
+            $type = self::$types[$type];
         }
         $var = $this->parseImplementation($var, $type, $allow_null);
         if ($allow_null && $var === null) {
@@ -162,7 +161,7 @@ class HTMLPurifier_VarParser
      * @throws \HTMLPurifier_Exception
 */
     protected function errorInconsistent($class, $type) {
-        throw new HTMLPurifier_Exception("Inconsistency in $class: ".HTMLPurifier_VarParser::getTypeName($type)." not implemented");
+        throw new HTMLPurifier_Exception("Inconsistency in $class: " . self::getTypeName($type) . " not implemented");
     }
 
     /**
@@ -173,7 +172,7 @@ class HTMLPurifier_VarParser
 */
     protected function errorGeneric($var, $type) {
         $vtype = gettype($var);
-        $this->error("Expected type ".HTMLPurifier_VarParser::getTypeName($type).", got $vtype");
+        $this->error("Expected type " . self::getTypeName($type) . ", got $vtype");
     }
 
     /**
@@ -185,7 +184,7 @@ class HTMLPurifier_VarParser
         static $lookup;
         if (!$lookup) {
             // Lazy load the alternative lookup table
-            $lookup = array_flip(HTMLPurifier_VarParser::$types);
+            $lookup = array_flip(self::$types);
         }
         if (!isset($lookup[$type])) {
             return 'unknown';

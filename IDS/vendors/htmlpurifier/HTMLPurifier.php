@@ -227,7 +227,7 @@ class HTMLPurifier
      */
     public static function instance($prototype = null) {
         if (!self::$instance || $prototype) {
-            if ($prototype instanceof HTMLPurifier) {
+            if ($prototype instanceof self) {
                 self::$instance = $prototype;
             } elseif ($prototype) {
                 self::$instance = new HTMLPurifier($prototype);
@@ -244,7 +244,7 @@ class HTMLPurifier
      * @return \HTMLPurifier|null|\Optional
 */
     public static function getInstance($prototype = null) {
-        return HTMLPurifier::instance($prototype);
+        return self::instance($prototype);
     }
 
 }

@@ -38,7 +38,7 @@ class HTMLPurifier_Bootstrap
      * @return bool
      */
     public static function autoload($class) {
-        $file = HTMLPurifier_Bootstrap::getPath($class);
+        $file = self::getPath($class);
         if (!$file) {
             return false;
         }

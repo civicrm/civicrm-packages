@@ -376,7 +376,7 @@ class DB_Table_Generator
             $this->backend = 'mdb2';
         } else {
             $this->error =&
-                DB_Table_Generator::throwError(DB_TABLE_GENERATOR_ERR_DB_OBJECT,
+                self::throwError(DB_TABLE_GENERATOR_ERR_DB_OBJECT,
                 'DB_Table_Generator');
             return;
         }
@@ -402,7 +402,7 @@ class DB_Table_Generator
      * @access public
      * @static
      */
-    public function &throwError($code, $extra = null)
+    public static function &throwError($code, $extra = null)
     {
         // get the error message text based on the error code
         $text = 'DB_TABLE_GENERATOR ERROR - ' . "\n"
@@ -738,7 +738,7 @@ class DB_Table_Generator
                         } else {
                             $code   =  DB_TABLE_GENERATOR_ERR_INDEX_COL;
                             $return =&
-                                DB_Table_Generator::throwError($code, $field);
+                                self::throwError($code, $field);
                         }
 
                     }
@@ -1008,7 +1008,7 @@ class DB_Table_Generator
                 if (!file_exists($base)) {
                     include_once 'System.php';
                     if (!@System::mkdir(array('-p', $base))) {
-                        return $this->throwError(DB_TABLE_GENERATOR_ERR_FILE,
+                        return self::throwError(DB_TABLE_GENERATOR_ERR_FILE,
                             $base);
                     }
 

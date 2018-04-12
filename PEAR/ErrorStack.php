@@ -263,7 +263,7 @@ class PEAR_ErrorStack {
             if (function_exists('debug_backtrace')) {
                 $trace = debug_backtrace();
             }
-            PEAR_ErrorStack::staticPush('PEAR_ErrorStack', PEAR_ERRORSTACK_ERR_NONCLASS,
+            self::staticPush('PEAR_ErrorStack', PEAR_ERRORSTACK_ERR_NONCLASS,
                 'exception', array('stackclass' => $stackClass),
                 'stack class "%stackclass%" is not a valid class name (should be like PEAR_ErrorStack)',
                 false, $trace);
@@ -610,7 +610,7 @@ class PEAR_ErrorStack {
         $package, $code, $level = 'error', $params = array(),
         $msg = false, $repackage = false, $backtrace = false
     ) {
-        $s = &PEAR_ErrorStack::singleton($package);
+        $s = &self::singleton($package);
         if ($s->_contextCallback && ! $backtrace && function_exists('debug_backtrace')) {
             $backtrace = debug_backtrace();
         }
@@ -918,7 +918,7 @@ class PEAR_ErrorStack {
                     if (method_exists($val, '__toString')) {
                         $val = $val->__toString();
                     } else {
-                        PEAR_ErrorStack::staticPush('PEAR_ErrorStack', PEAR_ERRORSTACK_ERR_OBJTOSTRING,
+                        self::staticPush('PEAR_ErrorStack', PEAR_ERRORSTACK_ERR_OBJTOSTRING,
                             'warning', array('obj' => get_class($val)),
                             'object %obj% passed into getErrorMessage, but has no __toString() method');
                         $val = 'Object';

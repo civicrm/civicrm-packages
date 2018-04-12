@@ -451,7 +451,7 @@ class Validate
             array_push($validate, 'cctld');
         }
 
-        $self = new Validate;
+        $self = new self;
 
         $toValidate = array();
 
@@ -554,7 +554,7 @@ class Validate
          */
         if (isset($fullTLDValidation)) {
             //$valid = Validate::_fullTLDValidation($email, $fullTLDValidation);
-            $valid = Validate::_fullTLDValidation($email, $options);
+            $valid = $this->_fullTLDValidation($email, $options);
 
             if (!$valid) {
                 return false;
@@ -573,7 +573,7 @@ class Validate
          $&xi';
 
         //checks if exists the domain (MX or A)
-        if ($use_rfc822? Validate::__emailRFC822($email, $options) :
+        if ($use_rfc822? $this->__emailRFC822($email, $options) :
                 preg_match($regex, $email)) {
             if ($check_domain && function_exists('checkdnsrr')) {
                 list ($account, $domain) = explode('@', $email);
@@ -788,9 +788,9 @@ class Validate
                     case 'j':
                     case 'd':
                         if ($next == 'j') {
-                            $day = (int)Validate::_substr($date, 1, 2);
+                            $day = (int)$this->_substr($date, 1, 2);
                         } else {
-                            $day = (int)Validate::_substr($date, 0, 2);
+                            $day = (int)$this->_substr($date, 0, 2);
                         }
                         if ($day < 1 || $day > 31) {
                             return false;
@@ -799,9 +799,9 @@ class Validate
                     case 'm':
                     case 'n':
                         if ($next == 'm') {
-                            $month = (int)Validate::_substr($date, 0, 2);
+                            $month = (int)$this->_substr($date, 0, 2);
                         } else {
-                            $month = (int)Validate::_substr($date, 1, 2);
+                            $month = (int)$this->_substr($date, 1, 2);
                         }
                         if ($month < 1 || $month > 12) {
                             return false;
@@ -810,11 +810,11 @@ class Validate
                     case 'Y':
                     case 'y':
                         if ($next == 'Y') {
-                            $year = Validate::_substr($date, 4);
+                            $year = $this->_substr($date, 4);
                             $year = (int)$year?$year:'';
                         } else {
                             $year = (int)(substr(date('Y'), 0, 2) .
-                                              Validate::_substr($date, 2));
+                                          $this->_substr($date, 2));
                         }
                         if (strlen($year) != 4 || $year < 0 || $year > 9999) {
                             return false;
@@ -823,9 +823,9 @@ class Validate
                     case 'g':
                     case 'h':
                         if ($next == 'g') {
-                            $hour = Validate::_substr($date, 1, 2);
+                            $hour = $this->_substr($date, 1, 2);
                         } else {
-                            $hour = Validate::_substr($date, 2);
+                            $hour = $this->_substr($date, 2);
                         }
                         if (!preg_match('/^\d+$/', $hour) || $hour < 0 || $hour > 12) {
                             return false;
@@ -834,9 +834,9 @@ class Validate
                     case 'G':
                     case 'H':
                         if ($next == 'G') {
-                            $hour = Validate::_substr($date, 1, 2);
+                            $hour = $this->_substr($date, 1, 2);
                         } else {
-                            $hour = Validate::_substr($date, 2);
+                            $hour = $this->_substr($date, 2);
                         }
                         if (!preg_match('/^\d+$/', $hour) || $hour < 0 || $hour > 24) {
                             return false;
@@ -844,7 +844,7 @@ class Validate
                         break;
                     case 's':
                     case 'i':
-                        $t = Validate::_substr($date, 2);
+                        $t = $this->_substr($date, 2);
                         if (!preg_match('/^\d+$/', $t) || $t < 0 || $t > 59) {
                             return false;
                         }
@@ -855,7 +855,7 @@ class Validate
                     $i++;
                 } else {
                     //literal
-                    if (Validate::_substr($date, 1) != $c) {
+                    if ($this->_substr($date, 1) != $c) {
                         return false;
                     }
                 }
@@ -941,12 +941,13 @@ class Validate
     {
         if (function_exists('bcmod')) {
             return bcmod($val, $div);
-        } elseif (function_exists('fmod')) {
+        }
+        if (function_exists('fmod')) {
             return fmod($val, $div);
         }
         $r = $val / $div;
-        $i = intval($r);
-        return intval($val - $i * $div + .1);
+        $i = (int)$r;
+        return (int)$val - $i * $div + .1;
     }
 
     /**
@@ -970,8 +971,8 @@ class Validate
         if ($count == 0) { // empty string or weights array
             return -1;
         }
-        for ($i = 0; $i < $count; ++$i) {
-            $sum += intval(substr($number, $i, 1)) * $weights[$i];
+        foreach ($weights as $i => $iValue) {
+            $sum += (int)substr($number, $i, 1) * $iValue;
         }
 
         return $sum;
@@ -993,11 +994,11 @@ class Validate
     public function _getControlNumber($number, &$weights, $modulo = 10, $subtract = 0, $allow_high = false)
     {
         // calc sum
-        $sum = Validate::_multWeights($number, $weights);
+        $sum = $this->_multWeights($number, $weights);
         if ($sum == -1) {
             return -1;
         }
-        $mod = Validate::_modf($sum, $modulo);  // calculate control digit
+        $mod = $this->_modf($sum, $modulo);  // calculate control digit
 
         if ($subtract > $mod && $mod > 0) {
             $mod = $subtract - $mod;
@@ -1026,7 +1027,7 @@ class Validate
             return false;
         }
         $target_digit  = substr($number, count($weights), 1);
-        $control_digit = Validate::_getControlNumber($number, $weights, $modulo, $subtract, $modulo > 10);
+        $control_digit = $this->_getControlNumber($number, $weights, $modulo, $subtract, $modulo > 10);
 
         if ($control_digit == -1) {
             return false;
@@ -1078,7 +1079,7 @@ class Validate
                 $method = $opt['type'];
                 unset($opt['type']);
 
-                if (sizeof($opt) == 1 && is_array(reset($opt))) {
+                if (count($opt) == 1 && is_array(reset($opt))) {
                     $opt = array_pop($opt);
                 }
                 $valid[$var_name] = call_user_func(array('Validate', $method), $val2check, $opt);
@@ -1108,7 +1109,7 @@ class Validate
                     continue;
                 }
                 unset($opt['type']);
-                if (sizeof($opt) == 1) {
+                if (count($opt) == 1) {
                     $opt = array_pop($opt);
                 }
                 $valid[$var_name] = call_user_func(array($class, $method),

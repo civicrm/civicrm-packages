@@ -62,7 +62,7 @@ class HTMLPurifier_LanguageFactory
         if ($prototype !== null) {
             $instance = $prototype;
         } elseif ($instance === null || $prototype == true) {
-            $instance = new HTMLPurifier_LanguageFactory();
+            $instance = new self();
             $instance->setup();
         }
         return $instance;

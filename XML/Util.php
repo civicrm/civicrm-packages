@@ -302,7 +302,7 @@ class XML_Util
         }
 
         return sprintf('<?xml%s?>', 
-            XML_Util::attributesToString($attributes, false));
+            $this->attributesToString($attributes, false));
     }
 
     /**
@@ -337,9 +337,9 @@ class XML_Util
 
         if (empty($internalDtd)) {
             return sprintf('<!DOCTYPE %s%s>', $root, $ref);
-        } else {
-            return sprintf("<!DOCTYPE %s%s [\n%s\n]>", $root, $ref, $internalDtd);
         }
+
+        return sprintf("<!DOCTYPE %s%s [\n%s\n]>", $root, $ref, $internalDtd);
     }
 
     /**
@@ -416,7 +416,7 @@ class XML_Util
                         if ($entities === XML_UTIL_CDATA_SECTION) {
                             $entities = XML_UTIL_ENTITIES_XML;
                         }
-                        $value = XML_Util::replaceEntities($value, $entities);
+                        $value = $this->replaceEntities($value, $entities);
                     }
                     $string .= ' ' . $key . '="' . $value . '"';
                 }
@@ -424,7 +424,7 @@ class XML_Util
                 $first = true;
                 foreach ($attributes as $key => $value) {
                     if ($entities != XML_UTIL_ENTITIES_NONE) {
-                        $value = XML_Util::replaceEntities($value, $entities);
+                        $value = $this->replaceEntities($value, $entities);
                     }
                     if ($first) {
                         $string .= ' ' . $key . '="' . $value . '"';
@@ -459,9 +459,9 @@ class XML_Util
                 . 'param)([^>]*)><\/\\1>/s',
                 '<\\1\\2 />',
                 $xml);
-        } else {
-            return preg_replace('/<(\w+)([^>]*)><\/\\1>/s', '<\\1\\2 />', $xml);
         }
+
+        return preg_replace('/<(\w+)([^>]*)><\/\\1>/s', '<\\1\\2 />', $xml);
     }
 
     /**
@@ -521,7 +521,7 @@ class XML_Util
             $tag['namespaceUri'] = $namespaceUri;
         }
 
-        return XML_Util::createTagFromArray($tag, $replaceEntities, $multiline, 
+        return $this->createTagFromArray($tag, $replaceEntities, $multiline,
             $indent, $linebreak, $sortAttributes);
     }
 
@@ -589,13 +589,13 @@ class XML_Util
         $sortAttributes = true)
     {
         if (isset($tag['content']) && !is_scalar($tag['content'])) {
-            return XML_Util::raiseError('Supplied non-scalar value as tag content',
+            return $this->raiseError('Supplied non-scalar value as tag content',
             XML_UTIL_ERROR_NON_SCALAR_CONTENT);
         }
 
         if (!isset($tag['qname']) && !isset($tag['localPart'])) {
-            return XML_Util::raiseError('You must either supply a qualified name '
-                . '(qname) or local tag name (localPart).', 
+            return $this->raiseError('You must either supply a qualified name '
+                                     . '(qname) or local tag name (localPart).',
                 XML_UTIL_ERROR_NO_TAG_NAME);
         }
 
@@ -622,7 +622,7 @@ class XML_Util
         } elseif (isset($tag['namespaceUri']) && !isset($tag['namespace'])) {
             // namespace URI is set, but no namespace
 
-            $parts = XML_Util::splitQualifiedName($tag['qname']);
+            $parts = $this->splitQualifiedName($tag['qname']);
 
             $tag['localPart'] = $parts['localPart'];
             if (isset($parts['namespace'])) {
@@ -647,7 +647,7 @@ class XML_Util
         }
 
         // create attribute list
-        $attList = XML_Util::attributesToString($tag['attributes'], 
+        $attList = $this->attributesToString($tag['attributes'],
             $sortAttributes, $multiline, $indent, $linebreak, $replaceEntities);
         if (!isset($tag['content']) || (string)$tag['content'] == '') {
             $tag = sprintf('<%s%s />', $tag['qname'], $attList);
@@ -656,10 +656,10 @@ class XML_Util
             case XML_UTIL_ENTITIES_NONE:
                 break;
             case XML_UTIL_CDATA_SECTION:
-                $tag['content'] = XML_Util::createCDataSection($tag['content']);
+                $tag['content'] = $this->createCDataSection($tag['content']);
                 break;
             default:
-                $tag['content'] = XML_Util::replaceEntities($tag['content'], 
+                $tag['content'] = $this->replaceEntities($tag['content'],
                     $replaceEntities);
                 break;
             }
@@ -705,7 +705,7 @@ class XML_Util
         }
 
         if ($namespaceUri != null) {
-            $parts = XML_Util::splitQualifiedName($qname);
+            $parts = $this->splitQualifiedName($qname);
         }
 
         // check for multiline attributes
@@ -724,10 +724,10 @@ class XML_Util
         }
 
         // create attribute list
-        $attList = XML_Util::attributesToString($attributes, $sortAttributes, 
+        $attList = $this->attributesToString($attributes, $sortAttributes,
             $multiline, $indent, $linebreak);
-        $element = sprintf('<%s%s>', $qname, $attList);
-        return  $element;
+
+        return sprintf('<%s%s>', $qname, $attList);
     }
 
     /**
@@ -749,8 +749,7 @@ class XML_Util
      */
     public function createEndElement($qname)
     {
-        $element = sprintf('</%s>', $qname);
-        return $element;
+        return sprintf('</%s>', $qname);
     }
 
     /**
@@ -771,8 +770,7 @@ class XML_Util
      */
     public function createComment($content)
     {
-        $comment = sprintf('<!-- %s -->', $content);
-        return $comment;
+        return sprintf('<!-- %s -->', $content);
     }
 
     /**
@@ -794,7 +792,7 @@ class XML_Util
     public function createCDataSection($data)
     {
         return sprintf('<![CDATA[%s]]>', 
-            preg_replace('/\]\]>/', ']]]]><![CDATA[>', strval($data)));
+            preg_replace('/\]\]>/', ']]]]><![CDATA[>', (string)$data));
 
     }
 
@@ -868,16 +866,16 @@ class XML_Util
     {
         // check for invalid chars
         if (!preg_match('/^[[:alpha:]_]$/', $string{0})) {
-            return XML_Util::raiseError('XML names may only start with letter '
-                . 'or underscore', XML_UTIL_ERROR_INVALID_START);
+            return $this->raiseError('XML names may only start with letter '
+                                     . 'or underscore', XML_UTIL_ERROR_INVALID_START);
         }
 
         // check for invalid chars
         if (!preg_match('/^([[:alpha:]_]([[:alnum:]\-\.]*)?:)?[[:alpha:]_]([[:alnum:]\_\-\.]+)?$/',
             $string)
         ) {
-            return XML_Util::raiseError('XML names may only contain alphanumeric '
-                . 'chars, period, hyphen, colon and underscores', 
+            return $this->raiseError('XML names may only contain alphanumeric '
+                                     . 'chars, period, hyphen, colon and underscores',
                 XML_UTIL_ERROR_INVALID_CHARS);
         }
         // XML name is valid

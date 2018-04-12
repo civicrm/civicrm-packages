@@ -24,7 +24,7 @@ class HTMLPurifier_IDAccumulator
      * @return \HTMLPurifier_IDAccumulator initialized HTMLPurifier_IDAccumulator
      */
     public static function build($config, $context) {
-        $id_accumulator = new HTMLPurifier_IDAccumulator();
+        $id_accumulator = new self();
         $id_accumulator->load($config->get('Attr.IDBlacklist'));
         return $id_accumulator;
     }

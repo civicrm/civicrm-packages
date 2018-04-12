@@ -93,7 +93,7 @@ class Structures_Graph_Manipulator_TopologicalSorter {
         $refGenerator = array();
         foreach($nodeKeys as $key) {
             $refGenerator[] = false;
-            $nodes[$key]->setMetadata('topological-sort-visited', $refGenerator[sizeof($refGenerator) - 1]);
+            $nodes[$key]->setMetadata('topological-sort-visited', $refGenerator[count($refGenerator) - 1]);
         }
 
         // Iteratively peel off leaf nodes
@@ -102,20 +102,20 @@ class Structures_Graph_Manipulator_TopologicalSorter {
             // Find out which nodes are leafs (excluding visited nodes)
             $leafNodes = array();
             foreach($nodeKeys as $key) {
-                if ((!$nodes[$key]->getMetadata('topological-sort-visited')) && Structures_Graph_Manipulator_TopologicalSorter::_nonVisitedInDegree($nodes[$key]) == 0) {
+                if ((!$nodes[$key]->getMetadata('topological-sort-visited')) && $this->_nonVisitedInDegree($nodes[$key]) == 0) {
                     $leafNodes[] =& $nodes[$key];
                 }
             }
             // Mark leafs as visited
             $refGenerator[] = $topologicalLevel;
-            for ($i=sizeof($leafNodes) - 1; $i>=0; $i--) {
+            for ($i= count($leafNodes) - 1; $i >= 0; $i--) {
                 $visited =& $leafNodes[$i]->getMetadata('topological-sort-visited');
                 $visited = true;
                 $leafNodes[$i]->setMetadata('topological-sort-visited', $visited);
-                $leafNodes[$i]->setMetadata('topological-sort-level', $refGenerator[sizeof($refGenerator) - 1]);
+                $leafNodes[$i]->setMetadata('topological-sort-level', $refGenerator[count($refGenerator) - 1]);
             }
             $topologicalLevel++;
-        } while (sizeof($leafNodes) > 0);
+        } while (count($leafNodes) > 0);
 
         // Cleanup visited marks
         foreach($nodeKeys as $key) {
@@ -148,7 +148,7 @@ class Structures_Graph_Manipulator_TopologicalSorter {
               STRUCTURES_GRAPH_ERROR_GENERIC);
         }
 
-        Structures_Graph_Manipulator_TopologicalSorter::_sort($graph);
+        $this->_sort($graph);
         $result = array();
 
         // Fill out result array

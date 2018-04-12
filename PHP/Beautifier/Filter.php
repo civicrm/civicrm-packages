@@ -153,7 +153,7 @@ abstract class PHP_Beautifier_Filter
      */
     final public function getSetting($sSetting)
     {
-        return (array_key_exists($sSetting, $this->aSettings)) ? $this->aSettings[$sSetting] : false;
+        return array_key_exists($sSetting, $this->aSettings) ? $this->aSettings[$sSetting] : false;
     }
     /**
      * Set a value of a Setting
@@ -194,15 +194,17 @@ abstract class PHP_Beautifier_Filter
         $sValue = $token[1];
         if ($sMethod) {
             if ($this->oBeaut->iVerbose > 5) {
-                echo $sMethod . ":" . trim($sValue) . "\n";
+                echo $sMethod . ':' . trim($sValue) . "\n";
             }
             // return false if PHP_Beautifier_Filter::BYPASS
-            return ($this->$sMethod($sValue) !== PHP_Beautifier_Filter::BYPASS);
-        } else { // WEIRD!!! -> Add the same received
-            $this->oBeaut->add($token[1]);
-            PHP_Beautifier_Common::getLog()->log("Add same received:" . trim($token[1]) , PEAR_LOG_DEBUG);
-            return true;
+            return ($this->$sMethod($sValue) !== self::BYPASS);
         }
+        // WEIRD!!! -> Add the same received
+        $this->oBeaut->add($token[1]);
+        PHP_Beautifier_Common::getLog()->log('Add same received:' . trim($token[1]) , PEAR_LOG_DEBUG);
+
+        return true;
+
         // never go here
         return false;
     }
@@ -213,7 +215,7 @@ abstract class PHP_Beautifier_Filter
      */
     public function __call($sMethod, $aArgs)
     {
-        return PHP_Beautifier_Filter::BYPASS;
+        return self::BYPASS;
     }
     /**
      * Called from {@link PHP_Beautifier::process()} at the beginning
@@ -257,9 +259,9 @@ abstract class PHP_Beautifier_Filter
     {
         // php_beautifier->setBeautify(false);
             $sOut='Filter:      '.$this->getName()."\n".
-                  "Description: ".$this->getDescription()."\n";
+                  'Description: ' . $this->getDescription() . "\n";
                   if (!$this->aSettingsDefinition) {
-                      $sOut.= "Settings:    No declared settings";
+                      $sOut.= 'Settings:    No declared settings';
                   } else {
                       $sOut.="Settings:\n";
                       foreach($this->aSettingsDefinition as $sSetting=>$aSettings) {

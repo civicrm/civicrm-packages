@@ -343,13 +343,13 @@ class DB_Table_Valid {
             ! is_numeric($i) || $i < 0 || $i > 59 ||
             $s2 != ':' ||
             ! is_numeric($s) || $s < 0 || $s > 59) {
-            
+
             return false;
-            
+
         } else {
-        
+
             return true;
-            
+
         }
     }
     
@@ -382,13 +382,13 @@ class DB_Table_Valid {
         // date check
         if (strlen($value) != 10 || $s1 != '-' || $s2 != '-' ||
             ! checkdate($m, $d, $y)) {
-            
+
             return false;
-            
+
         } else {
-        
+
             return true;
-            
+
         }
     }
     
@@ -415,18 +415,16 @@ class DB_Table_Valid {
         $date = substr($value, 0, 10);
         $sep = substr($value, 10, 1);
         $time = substr($value, 11, 8);
-        
+
         if (strlen($value) != 19 || $sep != ' ' ||
-            ! DB_Table_Valid::isDate($date) ||
-            ! DB_Table_Valid::isTime($time)) {
-            
+            ! $this->isDate($date) ||
+            ! $this->isTime($time)) {
+
             return false;
-            
-        } else {
-        
-            return true;
-            
+
         }
+
+        return true;
     }
     
     

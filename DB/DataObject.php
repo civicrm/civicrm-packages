@@ -298,7 +298,7 @@ class DB_DataObject extends DB_DataObject_Overload
     {
         global $_DB_DATAOBJECT;
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
-            DB_DataObject::_loadConfig();
+            self::_loadConfig();
         }
         $keys = array();
 
@@ -345,7 +345,7 @@ class DB_DataObject extends DB_DataObject_Overload
         $lclass = strtolower($class);
         global $_DB_DATAOBJECT;
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
-            DB_DataObject::_loadConfig();
+            self::_loadConfig();
         }
 
 
@@ -355,18 +355,18 @@ class DB_DataObject extends DB_DataObject_Overload
             $key = $k;
         }
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
-            DB_DataObject::debug("$class $key", 'STATIC GET - TRY CACHE');
+            $this->debug("$class $key", 'STATIC GET - TRY CACHE');
         }
         if (!empty($_DB_DATAOBJECT['CACHE'][$lclass][$key])) {
             return $_DB_DATAOBJECT['CACHE'][$lclass][$key];
         }
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
-            DB_DataObject::debug("$class $key", 'STATIC GET - NOT IN CACHE');
+            $this->debug("$class $key", 'STATIC GET - NOT IN CACHE');
         }
 
-        $obj = DB_DataObject::factory(substr($class,strlen($_DB_DATAOBJECT['CONFIG']['class_prefix'])));
+        $obj = $this->factory(substr($class,strlen($_DB_DATAOBJECT['CONFIG']['class_prefix'])));
         if (PEAR::isError($obj)) {
-            DB_DataObject::raiseError("could not autoload $class", DB_DATAOBJECT_ERROR_NOCLASS);
+            $this->raiseError("could not autoload $class", DB_DATAOBJECT_ERROR_NOCLASS);
             $r = false;
             return $r;
         }
@@ -375,7 +375,7 @@ class DB_DataObject extends DB_DataObject_Overload
             $_DB_DATAOBJECT['CACHE'][$lclass] = array();
         }
         if (!$obj->get($k,$v)) {
-            DB_DataObject::raiseError("No Data return from get $k $v", DB_DATAOBJECT_ERROR_NODATA);
+            $this->raiseError("No Data return from get $k $v", DB_DATAOBJECT_ERROR_NODATA);
 
             $r = false;
             return $r;
@@ -412,7 +412,7 @@ class DB_DataObject extends DB_DataObject_Overload
         }
 
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
-            DB_DataObject::_loadConfig();
+            self::_loadConfig();
         }
 
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
@@ -516,7 +516,7 @@ class DB_DataObject extends DB_DataObject_Overload
 
         global $_DB_DATAOBJECT;
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
-            DB_DataObject::_loadConfig();
+            self::_loadConfig();
         }
         if (empty($this->N)) {
             if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
@@ -1797,7 +1797,7 @@ class DB_DataObject extends DB_DataObject_Overload
                     $this->debug('Loading Generator as databaseStructure called with args',1);
                 }
 
-                $x = new DB_DataObject;
+                $x = new self;
                 $x->_database = $args[0];
                 $this->_connect();
                 $DB = &$_DB_DATAOBJECT['CONNECTIONS'][$this->_database_dsn_md5];
@@ -1854,7 +1854,7 @@ class DB_DataObject extends DB_DataObject_Overload
 
 
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
-            DB_DataObject::_loadConfig();
+            self::_loadConfig();
         }
 
         // if you supply this with arguments, then it will take those
@@ -2584,7 +2584,7 @@ class DB_DataObject extends DB_DataObject_Overload
 
         // if we dont have query vars.. - reset them.
         if ($this->_query === false) {
-            $x = new DB_DataObject;
+            $x = new self;
             $this->_query= $x->_query;
         }
 
@@ -2664,14 +2664,14 @@ class DB_DataObject extends DB_DataObject_Overload
     {
         global $_DB_DATAOBJECT;
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
-            DB_DataObject::_loadConfig();
+            self::_loadConfig();
         }
         $p = isset($_DB_DATAOBJECT['CONFIG']['class_prefix']) ?
             $_DB_DATAOBJECT['CONFIG']['class_prefix'] : '';
         $class = $p . preg_replace('/[^A-Z0-9]/i','_',ucfirst($table));
 
         $ce = substr(PHP_VERSION,0,1) > 4 ? class_exists($class,false) : class_exists($class);
-        $class = $ce ? $class  : DB_DataObject::_autoloadClass($class);
+        $class = $ce ? $class  : $this->_autoloadClass($class);
         return $class;
     }
 
@@ -2691,8 +2691,9 @@ class DB_DataObject extends DB_DataObject_Overload
      *
      *
      * @param  string  $table  tablename (use blank to create a new instance of the same class.)
+     *
      * @access private
-     * @return DataObject|PEAR_Error
+      * @return \DataObject|\error|\PEAR_Error
      */
 
 
@@ -2710,11 +2711,11 @@ class DB_DataObject extends DB_DataObject_Overload
         }
 
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
-            DB_DataObject::_loadConfig();
+            self::_loadConfig();
         }
         // no configuration available for database
         if (!empty($database) && empty($_DB_DATAOBJECT['CONFIG']['database_'.$database])) {
-                return DB_DataObject::raiseError(
+                return $this->raiseError(
                     "unable to find database_{$database} in Configuration, It is required for factory with database"
                     , 0, PEAR_ERROR_DIE );
        }
@@ -2725,7 +2726,7 @@ class DB_DataObject extends DB_DataObject_Overload
             if (is_a($this,'DB_DataObject') && strlen($this->__table)) {
                 $table = $this->__table;
             } else {
-                return DB_DataObject::raiseError(
+                return $this->raiseError(
                     'factory did not recieve a table name',
                     DB_DATAOBJECT_ERROR_INVALIDARGS);
             }
@@ -2737,12 +2738,12 @@ class DB_DataObject extends DB_DataObject_Overload
         $class = $p . preg_replace('/[^A-Z0-9]/i','_',ucfirst($table));
         $ce = substr(PHP_VERSION,0,1) > 4 ? class_exists($class,false) : class_exists($class);
 
-        $class = $ce ? $class  : DB_DataObject::_autoloadClass($class);
+        $class = $ce ? $class  : $this->_autoloadClass($class);
 
         // proxy = full|light
         if (!$class && isset($_DB_DATAOBJECT['CONFIG']['proxy'])) {
 
-            DB_DataObject::debug("FAILED TO Autoload  $database.$table - using proxy.", 'FACTORY',1);
+            $this->debug("FAILED TO Autoload  $database.$table - using proxy.", 'FACTORY',1);
 
 
             $proxyMethod = 'getProxy'.$_DB_DATAOBJECT['CONFIG']['proxy'];
@@ -2750,7 +2751,7 @@ class DB_DataObject extends DB_DataObject_Overload
             class_exists('DB_DataObject_Generator') ? '' :
                     require_once 'DB/DataObject/Generator.php';
 
-            $d = new DB_DataObject;
+            $d = new self;
 
             $d->__table = $table;
             if (is_a($ret = $d->_connect(), 'PEAR_Error')) {
@@ -2762,13 +2763,13 @@ class DB_DataObject extends DB_DataObject_Overload
         }
 
         if (!$class) {
-            return DB_DataObject::raiseError(
+            return $this->raiseError(
                 "factory could not find class $class from $table",
                 DB_DATAOBJECT_ERROR_INVALIDCONFIG);
         }
         $ret = new $class;
         if (!empty($database)) {
-            DB_DataObject::debug("Setting database to $database", 'FACTORY',1);
+            $this->debug("Setting database to $database", 'FACTORY',1);
             $ret->database($database);
         }
         return $ret;
@@ -2780,12 +2781,12 @@ class DB_DataObject extends DB_DataObject_Overload
      * @access private
      * @return string classname on Success
      */
-    public function _autoloadClass($class)
+    private function _autoloadClass($class)
     {
         global $_DB_DATAOBJECT;
 
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
-            DB_DataObject::_loadConfig();
+            self::_loadConfig();
         }
         $class_prefix = empty($_DB_DATAOBJECT['CONFIG']['class_prefix']) ?
                 '' : $_DB_DATAOBJECT['CONFIG']['class_prefix'];
@@ -2814,7 +2815,7 @@ class DB_DataObject extends DB_DataObject_Overload
                 }
             }
             if (!$found) {
-                DB_DataObject::raiseError(
+                $this->raiseError(
                     "autoload:Could not find class {$class} using class_location value",
                     DB_DATAOBJECT_ERROR_INVALIDCONFIG);
                 return false;
@@ -2827,7 +2828,7 @@ class DB_DataObject extends DB_DataObject_Overload
         $ce = substr(PHP_VERSION,0,1) > 4 ? class_exists($class,false) : class_exists($class);
 
         if (!$ce) {
-            DB_DataObject::raiseError(
+            $this->raiseError(
                 "autoload:Could not autoload {$class}",
                 DB_DATAOBJECT_ERROR_INVALIDCONFIG);
             return false;
@@ -3256,10 +3257,10 @@ class DB_DataObject extends DB_DataObject_Overload
         if (is_array($obj)) {
             $tfield = $obj[0];
             list($toTable,$ofield) = explode(':',$obj[1]);
-            $obj = DB_DataObject::factory($toTable);
+            $obj = $this->factory($toTable);
 
             if (!$obj || is_a($obj,'PEAR_Error')) {
-                $obj = new DB_DataObject;
+                $obj = new self;
                 $obj->__table = $toTable;
             }
             $obj->_connect();
@@ -4215,7 +4216,7 @@ class DB_DataObject extends DB_DataObject_Overload
     {
         global $_DB_DATAOBJECT;
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
-            DB_DataObject::_loadConfig();
+            self::_loadConfig();
         }
         if ($v !== null) {
             $r = isset($_DB_DATAOBJECT['CONFIG']['debug']) ? $_DB_DATAOBJECT['CONFIG']['debug'] : 0;
@@ -4265,7 +4266,7 @@ class DB_DataObject extends DB_DataObject_Overload
         $_DB_DATAOBJECT['LASTERROR'] = $error;
 
         // no checks for production here?....... - we log  errors before we throw them.
-        DB_DataObject::debug($message,'ERROR',1);
+        $this->debug($message,'ERROR',1);
 
 
         if (PEAR::isError($message)) {

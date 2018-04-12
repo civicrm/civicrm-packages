@@ -38,8 +38,8 @@ class image_gd extends image {
             $height = 1;
         }
         return (
-            (false !== ($img = new image_gd(array($width, $height)))) &&
-            $img->imageCopyResampled($this) &&
+          (false !== ($img = new self(array($width, $height)))) &&
+          $img->imageCopyResampled($this) &&
             (false !== ($this->image = $img->image)) &&
             (false !== ($this->width = $img->width)) &&
             (false !== ($this->height = $img->height))
@@ -79,7 +79,7 @@ class image_gd extends image {
         }
 
         else {
-            $img = new image_gd(array($width, $height));
+            $img = new self(array($width, $height));
             $x = round(($width - $w) / 2);
             $y = round(($height - $h) / 2);
 
@@ -152,8 +152,8 @@ class image_gd extends image {
         }
 
         $return = (
-            (false !== ($img = new image_gd(array($width, $height))))) &&
-            (false !== ($img->imageCopyResampled($this->image, $x, $y, 0, 0, $w, $h))
+            (false !== ($img = new self(array($width, $height))))) &&
+                  (false !== ($img->imageCopyResampled($this->image, $x, $y, 0, 0, $w, $h))
         );
 
         if ($return) {

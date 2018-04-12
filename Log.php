@@ -164,12 +164,12 @@ class Log
          * a failure as fatal.  The caller may have already included their own
          * version of the named class.
          */
-        if (!Log::_classExists($class)) {
+        if (! self::_classExists($class)) {
             include_once $classfile;
         }
 
         /* If the class exists, return a new instance of it. */
-        if (Log::_classExists($class)) {
+        if (self::_classExists($class)) {
             $obj = new $class($name, $ident, $conf, $level);
             return $obj;
         }
@@ -224,7 +224,7 @@ class Log
 
         $signature = serialize(array($handler, $name, $ident, $conf, $level));
         if (!isset($instances[$signature])) {
-            $instances[$signature] = &Log::factory($handler, $name, $ident,
+            $instances[$signature] = &self::factory($handler, $name, $ident,
                                                    $conf, $level);
         }
 
@@ -441,7 +441,7 @@ class Log
             } else if (method_exists($message, 'tostring')) {
                 $message = $message->toString();
             } else if (method_exists($message, '__tostring')) {
-                if (version_compare(PHP_VERSION, '5.0.0', 'ge')) {
+                if (PHP_VERSION_ID >= 50000) {
                     $message = (string)$message;
                 } else {
                     $message = $message->__toString();
@@ -658,7 +658,7 @@ class Log
      */
     public function UPTO($priority)
     {
-        return Log::MAX($priority);
+        return $this->MAX($priority);
     }
 
     /**
@@ -742,7 +742,7 @@ class Log
      */
     public function _isMasked($priority)
     {
-        return (Log::MASK($priority) & $this->_mask);
+        return ($this->MASK($priority) & $this->_mask);
     }
 
     /**

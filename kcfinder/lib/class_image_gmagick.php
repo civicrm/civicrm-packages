@@ -79,22 +79,22 @@ class image_gmagick extends image {
             $this->height = $h;
             return true;
 
-        } else {
-            try {
-                $this->image->setImageBackgroundColor($background);
-                $x = round(($width - $w) / 2);
-                $y = round(($height - $h) / 2);
-                $img = new \Gmagick();
-                $img->newimage($width, $height, $background);
-                $img->compositeimage($this->image, 1, $x, $y);
-            } catch (\Exception $e) {
-                return false;
-            }
-            $this->image = $img;
-            $this->width = $width;
-            $this->height = $height;
-            return true;
         }
+        try {
+            $this->image->setImageBackgroundColor($background);
+            $x = round(($width - $w) / 2);
+            $y = round(($height - $h) / 2);
+            $img = new \Gmagick();
+            $img->newimage($width, $height, $background);
+            $img->compositeimage($this->image, 1, $x, $y);
+        } catch (\Exception $e) {
+            return false;
+        }
+        $this->image  = $img;
+        $this->width  = $width;
+        $this->height = $height;
+
+        return true;
     }
 
     /**
@@ -279,12 +279,13 @@ class image_gmagick extends image {
      */
     protected function getImage($image, &$width, &$height) {
 
-        if (is_object($image) && ($image instanceof image_gmagick)) {
+        if (is_object($image) && ($image instanceof self)) {
             $width = $image->width;
             $height = $image->height;
             return $image->image;
 
-        } elseif (is_object($image) && ($image instanceof \Gmagick)) {
+        }
+        if (is_object($image) && ($image instanceof \Gmagick)) {
             try {
                 $w = $image->getimagewidth();
                 $h = $image->getimageheight();
@@ -295,7 +296,8 @@ class image_gmagick extends image {
             $height = $h;
             return $image;
 
-        } elseif (is_string($image)) {
+        }
+        if (is_string($image)) {
             try {
                 $image = new \Gmagick($image);
                 $w = $image->getimagewidth();
@@ -307,9 +309,9 @@ class image_gmagick extends image {
             $height = $h;
             return $image;
 
-        } else {
-            return false;
         }
+
+        return false;
     }
 
 

@@ -243,9 +243,9 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
         if ((isset($elementValue['error']) && $elementValue['error'] == 0) ||
             (!empty($elementValue['tmp_name']) && $elementValue['tmp_name'] != 'none')) {
             return is_uploaded_file($elementValue['tmp_name']);
-        } else {
-            return false;
         }
+
+        return false;
     } // end func _ruleIsUploadedFile
 
     // }}}
@@ -265,7 +265,7 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
             (UPLOAD_ERR_FORM_SIZE == $elementValue['error'] || UPLOAD_ERR_INI_SIZE == $elementValue['error'])) {
             return false;
         }
-        if (!HTML_QuickForm_file::_ruleIsUploadedFile($elementValue)) {
+        if (! self::_ruleIsUploadedFile($elementValue)) {
             return true;
         }
         return ($maxSize >= @filesize($elementValue['tmp_name']));
@@ -284,7 +284,7 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
      */
     public static function _ruleCheckMimeType($elementValue, $mimeType)
     {
-        if (!HTML_QuickForm_file::_ruleIsUploadedFile($elementValue)) {
+        if (! self::_ruleIsUploadedFile($elementValue)) {
             return true;
         }
         if (is_array($mimeType)) {
@@ -306,7 +306,7 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
      */
     public static function _ruleCheckFileName($elementValue, $regex)
     {
-        if (!HTML_QuickForm_file::_ruleIsUploadedFile($elementValue)) {
+        if (! self::_ruleIsUploadedFile($elementValue)) {
             return true;
         }
         return (bool)preg_match($regex, $elementValue['name']);
@@ -334,7 +334,8 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
         $elementName = $this->getName();
         if (isset($_FILES[$elementName])) {
             return $_FILES[$elementName];
-        } elseif (false !== ($pos = strpos($elementName, '['))) {
+        }
+        if (false !== ($pos = strpos($elementName, '['))) {
             $base  = str_replace(
                         array('\\', '\''), array('\\\\', '\\\''),
                         substr($elementName, 0, $pos)
@@ -352,9 +353,9 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
                 $code .= "    \$value['{$prop}'] = \$_FILES['{$base}']['{$prop}']{$idx};\n";
             }
             return eval($code . "    return \$value;\n}\n");
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     // }}}
