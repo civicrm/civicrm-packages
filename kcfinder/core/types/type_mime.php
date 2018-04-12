@@ -28,7 +28,7 @@ class type_mime {
      * @return bool|string
      */
     public function checkFile($file, array $config) {
-        if (!class_exists("finfo")) {
+        if (!class_exists('finfo')) {
             return "Fileinfo PECL extension is missing.";
         }
 
@@ -44,17 +44,17 @@ class type_mime {
         }
 
         $type = $finfo->file($file);
-        $type = substr($type, 0, strrpos($type, ";"));
+        $type = substr($type, 0, strrpos($type, ';'));
 
         $mimes = $config['params'];
-        if (substr($mimes, 0, 1) == "!") {
+        if (substr($mimes, 0, 1) == '!') {
             $mimes = trim(substr($mimes, 1));
-            return in_array($type , explode(" ", $mimes))
+            return in_array($type , explode(' ', $mimes))
                 ? "You can't upload such files."
                 : true;
         }
 
-        return !in_array($type , explode(" ", $mimes))
+        return !in_array($type , explode(' ', $mimes))
             ? "You can't upload such files."
             : true;
     }

@@ -29,7 +29,7 @@ if (!preg_match('/^(\d+\.\d+)/', PHP_VERSION, $ver) || ($ver[1] < 5.3)) {
 
 
 // SAFE MODE CHECK
-if (ini_get("safe_mode")) {
+if (ini_get('safe_mode')) {
     die("The \"safe_mode\" PHP ini setting is turned on! You cannot run KCFinder in safe mode.");
 }
 
@@ -44,11 +44,11 @@ if (isset($_GET['cms']) &&
 
 
 // REGISTER AUTOLOAD FUNCTION
-require "core/autoload.php";
+require 'core/autoload.php';
 
 
 // json_encode() IMPLEMENTATION IF JSON EXTENSION IS MISSING
-if (!function_exists("json_encode")) {
+if (!function_exists('json_encode')) {
 
     /**
      * @param $data
@@ -65,14 +65,14 @@ if (!function_exists("json_encode")) {
                 foreach ($data as $key => $val) {
                     $ret[] = json_encode((string)$key) . ':' . json_encode($val);
                 }
-                return "{" . implode(",", $ret) . "}";
+                return '{' . implode(',', $ret) . '}';
 
             // ARRAY
             } else {
                 foreach ($data as $val) {
                     $ret[] = json_encode($val);
                 }
-                return "[" . implode(",", $ret) . "]";
+                return '[' . implode(',', $ret) . ']';
             }
 
         // BOOLEAN OR NULL

@@ -41,18 +41,18 @@ function smarty_function_html_select_date($params, &$smarty)
     require_once $smarty->_get_plugin_filepath('shared','make_timestamp');
     require_once $smarty->_get_plugin_filepath('function','html_options');
     /* Default values. */
-    $prefix          = "Date_";
-    $start_year      = strftime("%Y");
+    $prefix          = 'Date_';
+    $start_year      = strftime('%Y');
     $end_year        = $start_year;
     $display_days    = true;
     $display_months  = true;
     $display_years   = true;
-    $month_format    = "%B";
+    $month_format    = '%B';
     /* Write months as numbers by default  GL */
-    $month_value_format = "%m";
-    $day_format      = "%02d";
+    $month_value_format = '%m';
+    $day_format      = '%02d';
     /* Write day values using this format MB */
-    $day_value_format = "%d";
+    $day_value_format = '%d';
     $year_as_text    = false;
     /* Display years in reverse order? Ie. 2000,1999,.... */
     $reverse_years   = false;
@@ -146,7 +146,7 @@ function smarty_function_html_select_date($params, &$smarty)
         $time = strftime('%Y-%m-%d', smarty_make_timestamp($time));
     }
     // Now split this in pieces, which later can be used to set the select
-    $time = explode("-", $time);
+    $time = explode('-', $time);
 
     // make syntax "+N" or "-N" work with start_year and end_year
     if (preg_match('!^(\+|\-)\s*(\d+)$!', $end_year, $match)) {
@@ -176,7 +176,7 @@ function smarty_function_html_select_date($params, &$smarty)
 
     $field_order = strtoupper($field_order);
 
-    $html_result = $month_result = $day_result = $year_result = "";
+    $html_result = $month_result = $day_result = $year_result = '';
 
     $field_separator_count = -1;
     if ($display_months) {

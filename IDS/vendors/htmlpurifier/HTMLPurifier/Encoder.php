@@ -389,11 +389,11 @@ class HTMLPurifier_Encoder
                 $result .= chr( $bytevalue );
                 $bytesleft = 0;
             } elseif( $bytevalue <= 0xBF ) { //10xx xxxx
-                $working = $working << 6;
+                $working <<= 6;
                 $working += ($bytevalue & 0x3F);
                 $bytesleft--;
                 if( $bytesleft <= 0 ) {
-                    $result .= "&#" . $working . ";";
+                    $result .= '&#' . $working . ';';
                 }
             } elseif( $bytevalue <= 0xDF ) { //110x xxxx
                 $working = $bytevalue & 0x1F;

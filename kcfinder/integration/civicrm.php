@@ -65,7 +65,7 @@ function checkAuthentication() {
       break;
     }
     if(!$auth_function($config)) {
-      CRM_Core_Error::fatal(ts("You must be logged in with proper permissions to edit, add, or delete uploaded images."));
+      CRM_Core_Error::fatal(ts('You must be logged in with proper permissions to edit, add, or delete uploaded images.'));
     }
 
     $_SESSION['KCFINDER']['disabled'] = false;
@@ -120,7 +120,7 @@ function authenticate_drupal($config) {
 function authenticate_wordpress($config) {
   // make sure user has access to civicrm
   CRM_Utils_System::loadBootStrap();
-  require_once "CRM/Core/Permission.php";
+  require_once 'CRM/Core/Permission.php';
   if (CRM_Core_Permission::check('access CiviCRM')) {
     return true;
   }

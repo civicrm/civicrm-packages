@@ -32,7 +32,7 @@ class line
 {
 	public function __construct()
 	{
-		$this->type      = "line";
+		$this->type      = 'line';
 		$this->values    = array();
 	}
 	
@@ -179,7 +179,7 @@ class line
      */
     public function line_style( $s )
 	{
-		$tmp = "line-style";
+		$tmp = 'line-style';
 		$this->$tmp = $s;
 	}
 	

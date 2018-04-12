@@ -104,7 +104,7 @@ class HTML_QuickForm_Rule_Regex extends HTML_QuickForm_Rule
             $regex = preg_replace('/(?<!\\\\)(?>\\\\\\\\)*\\\\x{([a-fA-F0-9]+)}/', '\\u$1', $regex);
         }
 
-        return array("  var regex = " . $regex . ";\n", "{jsVar} != '' && !regex.test({jsVar})");
+        return array('  var regex = ' . $regex . ";\n", "{jsVar} != '' && !regex.test({jsVar})");
     } // end func getValidationScript
 
 } // end class HTML_QuickForm_Rule_Regex

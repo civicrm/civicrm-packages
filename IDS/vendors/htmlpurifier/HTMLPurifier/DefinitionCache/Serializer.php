@@ -192,7 +192,7 @@ class HTMLPurifier_DefinitionCache_Serializer extends
             if (!$chmod) {
                 $chmod = 0644; // invalid config or simpletest
             }
-            $chmod = $chmod & 0666;
+            $chmod &= 0666;
             chmod($file, $chmod);
         }
         return $result;
@@ -251,16 +251,16 @@ class HTMLPurifier_DefinitionCache_Serializer extends
             // POSIX system, we can give more specific advice
             if (fileowner($dir) === posix_getuid()) {
                 // we can chmod it ourselves
-                $chmod = $chmod | 0700;
+                $chmod |= 0700;
                 if (chmod($dir, $chmod)) {
                     return true;
                 }
             } elseif (filegroup($dir) === posix_getgid()) {
-                $chmod = $chmod | 0070;
+                $chmod |= 0070;
             } else {
                 // PHP's probably running as nobody, so we'll
                 // need to give global permissions
-                $chmod = $chmod | 0777;
+                $chmod |= 0777;
             }
             trigger_error('Directory '.$dir.' not writable, '.
                 'please chmod to ' . decoct($chmod),

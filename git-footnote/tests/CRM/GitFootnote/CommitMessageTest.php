@@ -8,8 +8,8 @@ namespace CRM\GitFootnote;
  */
 class CommitMessageTest extends \PHPUnit_Framework_TestCase {
   public function testEmpty() {
-    $message = new CommitMessage("");
-    $this->assertEquals("", $message->toString());
+    $message = new CommitMessage('');
+    $this->assertEquals('', $message->toString());
   }
 
   public function testBasic() {
@@ -21,25 +21,25 @@ class CommitMessageTest extends \PHPUnit_Framework_TestCase {
     $message = new CommitMessage("Hello\nworld\n");
     $message->addLinkNote('http://example.com', 'Example');
     $this->assertEquals(
-"Hello
+'Hello
 world
 
 ----------------------------------------
 * Example
   http://example.com
-", $message->toString());
+', $message->toString());
   }
 
   public function testOneLink_noTitle() {
     $message = new CommitMessage("Hello\nworld\n");
     $message->addLinkNote('http://example.com');
     $this->assertEquals(
-"Hello
+'Hello
 world
 
 ----------------------------------------
 * http://example.com
-", $message->toString());
+', $message->toString());
   }
 
   public function testMultipleLink() {
@@ -48,7 +48,7 @@ world
     $message->addLinkNote('http://example.org', 'Example For Good');
     $message->addLinkNote('http://example.com', 'Example Redundant');
     $this->assertEquals(
-"Hello
+'Hello
 world
 
 ----------------------------------------
@@ -56,6 +56,6 @@ world
   http://example.com
 * Example For Good
   http://example.org
-", $message->toString());
+', $message->toString());
   }
 }

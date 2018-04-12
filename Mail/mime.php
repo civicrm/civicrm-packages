@@ -1165,7 +1165,7 @@ class Mail_mime
                 $this->_build_params['boundary'] = '=_' . md5(rand() . microtime());
             }
 
-            $header .= ";$eol boundary=\"".$this->_build_params['boundary']."\"";
+            $header .= ";$eol boundary=\"".$this->_build_params['boundary'] . '"';
         }
 
         $this->_build_params['ctype'] = $header;
@@ -1266,9 +1266,9 @@ class Mail_mime
      */
     public function encodeRecipients($recipients)
     {
-        $input = array("To" => $recipients);
+        $input = array('To' => $recipients);
         $retval = $this->_encodeHeaders($input);
-        return $retval["To"] ;
+        return $retval['To'] ;
     }
 
     /**

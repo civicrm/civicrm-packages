@@ -24,9 +24,9 @@ class HTMLPurifier_HTMLModule_List extends HTMLPurifier_HTMLModule
      */
     public function setup($config) {
         $ol = $this->addElement('ol', 'List', 'Required: li', 'Common');
-        $ol->wrap = "li";
+        $ol->wrap = 'li';
         $ul = $this->addElement('ul', 'List', 'Required: li', 'Common');
-        $ul->wrap = "li";
+        $ul->wrap = 'li';
         $this->addElement('dl', 'List', 'Required: dt | dd', 'Common');
 
         $this->addElement('li', false, 'Flow', 'Common');

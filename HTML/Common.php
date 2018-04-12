@@ -178,7 +178,7 @@ class HTML_Common
                     if (trim($name) == trim($check)) {
                         $arrAttr[strtolower(trim($name))] = strtolower(trim($name));
                     } else {
-                        if (substr($value, 0, 1) == "\"" || substr($value, 0, 1) == "'") {
+                        if (substr($value, 0, 1) == '"' || substr($value, 0, 1) == "'") {
                             $arrAttr[strtolower(trim($name))] = substr($value, 1, -1);
                         } else {
                             $arrAttr[strtolower(trim($name))] = trim($value);

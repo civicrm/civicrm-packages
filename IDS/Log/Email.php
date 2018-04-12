@@ -279,7 +279,7 @@ class IDS_Log_Email implements IDS_Log_Interface
             $attackedParameters .= $event->getName() . '=' .
                 ((!isset($this->urlencode) ||$this->urlencode) 
                     ? urlencode($event->getValue()) 
-                    : $event->getValue()) . ", ";
+                    : $event->getValue()) . ', ';
         }
 
         $format .= "Affected parameters: %s \n";
@@ -323,7 +323,7 @@ class IDS_Log_Email implements IDS_Log_Interface
 
             // if headers are passed as array, we need to make a string of it
             if (is_array($this->headers)) {
-                $headers = "";
+                $headers = '';
                 foreach ($this->headers as $header) {
                     $headers .= $header . "\r\n";
                 }

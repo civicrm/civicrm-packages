@@ -271,8 +271,8 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
         }
 
         // support template text
-        $support = "(for information on implementing this, see the ".
-                   "support forums) ";
+        $support = '(for information on implementing this, see the ' .
+                   'support forums) ';
 
         // setup allowed elements -----------------------------------------
 

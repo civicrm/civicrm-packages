@@ -34,7 +34,7 @@ function smarty_modifier_print_array($var, $depth = 0, $length = 40)
                     . smarty_modifier_print_array($curr_val, $depth, $length). ",\n";
                 $depth--;
             }
-            $results .= str_repeat('  ', ($depth + 1)) . ")";
+            $results .= str_repeat('  ', ($depth + 1)) . ')';
             break;
 
         case 'object' :
@@ -83,7 +83,7 @@ function smarty_modifier_print_array($var, $depth = 0, $length = 40)
     }
     if (empty($var)){
       if(is_array($var)){
-        $results = "array()";
+        $results = 'array()';
 
       }elseif ($var === '0' || $var === 0){
         $results = 0;

@@ -7,8 +7,8 @@ class line_base
 {
 	public function __construct()
 	{
-		$this->type      = "line";
-		$this->text      = "Page views";
+		$this->type      = 'line';
+		$this->text      = 'Page views';
 		$tmp = 'font-size';
 		$this->$tmp = 10;
 		
@@ -105,7 +105,7 @@ class line_base
      */
     public function line_style( $s )
 	{
-		$tmp = "line-style";
+		$tmp = 'line-style';
 		$this->$tmp = $s;
 	}
 	

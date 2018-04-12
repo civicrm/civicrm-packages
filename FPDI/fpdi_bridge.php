@@ -53,7 +53,7 @@ if (!class_exists('TCPDF', false)) {
          *
          * @var string A String defining the Prefix used as Template-Object-Names. Have to begin with an /
          */
-        public $tplPrefix = "/TPL";
+        public $tplPrefix = '/TPL';
 
         /**
          * Current Object Id.

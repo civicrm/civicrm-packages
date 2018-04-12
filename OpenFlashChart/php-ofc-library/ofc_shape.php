@@ -30,7 +30,7 @@ class shape
      */
     public function __construct( $colour )
 	{
-		$this->type		= "shape";
+		$this->type		= 'shape';
 		$this->colour	= $colour;
 		$this->values	= array();
 	}

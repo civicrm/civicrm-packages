@@ -59,13 +59,13 @@ class Jira_Api_Client_MemcacheProxyClient implements Jira_Api_Client_ClientInter
      */
     public function sendRequest($method, $url, $data = array(), $endpoint, Jira_Api_Authentication_AuthenticationInterface $credential)
     {
-        if ($method == "GET" && $result = $this->getFromCache($url, $data, $endpoint)) {
+        if ($method == 'GET' && $result = $this->getFromCache($url, $data, $endpoint)) {
             //$this->setCache($url, $data, $endpoint, $result);
             return $result;
         }
         $result = $this->api->sendRequest($method, $url, $data, $endpoint, $credential);
 
-        if ($method == "GET") {
+        if ($method == 'GET') {
             $this->setCache($url, $data, $endpoint, $result);
         }
         return $result;
@@ -84,7 +84,7 @@ class Jira_Api_Client_MemcacheProxyClient implements Jira_Api_Client_ClientInter
         $key .= http_build_query($data);
         $key = sha1($key);
 
-        return $this->mc->get("jira:cache:" . $key);
+        return $this->mc->get('jira:cache:' . $key);
     }
 
     /**
@@ -101,7 +101,7 @@ class Jira_Api_Client_MemcacheProxyClient implements Jira_Api_Client_ClientInter
         $key .= http_build_query($data);
         $key = sha1($key);
 
-        return $this->mc->set("jira:cache:" . $key, $result, 86400);
+        return $this->mc->set('jira:cache:' . $key, $result, 86400);
     }
 
 }

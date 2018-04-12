@@ -7,7 +7,7 @@ class area extends line
 {
 	public function __construct()
 	{
-		$this->type      = "area";
+		$this->type      = 'area';
 	}
 
     /**
@@ -36,7 +36,7 @@ class area extends line
      */
     public function set_fill_alpha( $alpha )
 	{
-		$tmp = "fill-alpha";
+		$tmp = 'fill-alpha';
 		$this->$tmp = $alpha;
 	}
 	

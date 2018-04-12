@@ -386,7 +386,7 @@ class Date_Span
                             array_push($vars, 'hour', 'minute', 'second');
                             break;
                         case '%':
-                            $str .= "%";
+                            $str .= '%';
                             break;
                         default:
                             $str .= $char . $nextchar;
@@ -738,7 +738,7 @@ class Date_Span
                         );
                         break;
                     case '%':
-                        $output .= "%";
+                        $output .= '%';
                         break;
                     default:
                         $output .= $char . $nextchar;

@@ -72,7 +72,7 @@ function CheckAuthentication($drupal_path) {
 
         // If we aren't in a Drupal installation, or if Drupal path hasn't been properly found, die
         if(!file_exists(DRUPAL_ROOT . '/includes/bootstrap.inc')) {
-            die("The CMS integration service for -drupal- requires KCFinder to be properly placed inside your Drupal installation.");
+            die('The CMS integration service for -drupal- requires KCFinder to be properly placed inside your Drupal installation.');
         }
 
 

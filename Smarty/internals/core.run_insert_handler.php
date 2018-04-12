@@ -59,8 +59,8 @@ function smarty_core_run_insert_handler($params, &$smarty)
                                                 'exec_time' => smarty_core_get_microtime($_params, $smarty) - $_debug_start_time);
         }
 
-        if (!empty($params['args']["assign"])) {
-            $smarty->assign($params['args']["assign"], $_content);
+        if (!empty($params['args']['assign'])) {
+            $smarty->assign($params['args']['assign'], $_content);
         } else {
             return $_content;
         }

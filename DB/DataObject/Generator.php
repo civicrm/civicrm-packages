@@ -312,7 +312,7 @@ class DB_DataObject_Generator extends DB_DataObject
      */
     public function generateDefinitions()
     {
-        $this->debug("Generating Definitions file:        ");
+        $this->debug('Generating Definitions file:        ');
         if (!$this->tables) {
             $this->debug("-- NO TABLES -- \n");
             return;
@@ -383,7 +383,7 @@ class DB_DataObject_Generator extends DB_DataObject
         }
         $__DB = &$GLOBALS['_DB_DATAOBJECT']['CONNECTIONS'][$this->_database_dsn_md5];
         if (!in_array($__DB->phptype, array('mysql','mysqli'))) {
-            echo "WARNING: cant handle non-mysql introspection for defaults.";
+            echo 'WARNING: cant handle non-mysql introspection for defaults.';
             return; // cant handle non-mysql introspection for defaults.
         }
 
@@ -413,12 +413,12 @@ class DB_DataObject_Generator extends DB_DataObject
                 continue;
             }
             for ($i = 0; $i < count($treffer); $i++) {
-                $fk[$this->table][$treffer[$i][1]] = $treffer[$i][2] . ":" . $treffer[$i][3];
+                $fk[$this->table][$treffer[$i][1]] = $treffer[$i][2] . ':' . $treffer[$i][3];
             }
             
         }
 
-        $links_ini = "";
+        $links_ini = '';
 
         foreach($fk as $table => $details) {
             $links_ini .= "[$table]\n";
@@ -677,7 +677,7 @@ class DB_DataObject_Generator extends DB_DataObject
             } else if ($secondary_key_match && preg_match('/('.$secondary_key_match.')/i',$t->flags)) {
                 // keys.. = 1
                 $key_type = 'K';
-                if (!preg_match("/(primary)/i",$t->flags)) {
+                if (!preg_match('/(primary)/i',$t->flags)) {
                     $key_type = 'U';
                 }
                 
@@ -744,7 +744,7 @@ class DB_DataObject_Generator extends DB_DataObject
             $outfilename   = sprintf($options['class_location'], 
                     preg_replace('/[^A-Z0-9]/i','_',ucfirst($this->table)));
         } else { 
-            $outfilename = "{$base}/".preg_replace('/[^A-Z0-9]/i','_',ucfirst($this->table)).".php";
+            $outfilename = "{$base}/".preg_replace('/[^A-Z0-9]/i','_',ucfirst($this->table)) . '.php';
         }
         return $outfilename;
 
@@ -798,7 +798,7 @@ class DB_DataObject_Generator extends DB_DataObject
             $this->debug( "writing $this->classname\n");
             $tmpname = tempnam(session_save_path(),'DataObject_');
        
-            $fh = fopen($tmpname, "w");
+            $fh = fopen($tmpname, 'w');
             fputs($fh,$out);
             fclose($fh);
             $perms = file_exists($outfilename) ? fileperms($outfilename) : 0755;
@@ -828,7 +828,7 @@ class DB_DataObject_Generator extends DB_DataObject
      * @var    string
      * @access private
      */
-    public $_extendsFile = "DB/DataObject.php";
+    public $_extendsFile = 'DB/DataObject.php';
 
     /**
      * class being generated
@@ -848,7 +848,7 @@ class DB_DataObject_Generator extends DB_DataObject
     public function _generateClassTable($input = '')
     {
         // title = expand me!
-        $foot = "";
+        $foot = '';
         $head = "<?php\n/**\n * Table Definition for {$this->table}\n";
         $head .= $this->derivedHookPageLevelDocBlock();
         $head .= " */\n";
@@ -1062,11 +1062,11 @@ class DB_DataObject_Generator extends DB_DataObject
      * @param string $input
      * @return  string added to class eg. functions.
 */
-    public function derivedHookFunctions($input = "")
+    public function derivedHookFunctions($input = '')
     {
         // This is so derived generator classes can generate functions
         // It MUST NOT be changed here!!!
-        return "";
+        return '';
     }
 
     /**
@@ -1083,7 +1083,7 @@ class DB_DataObject_Generator extends DB_DataObject
     {
         // This is so derived generator classes can generate variabels
         // It MUST NOT be changed here!!!
-        return "";
+        return '';
     }
 
     /**
@@ -1175,8 +1175,8 @@ class DB_DataObject_Generator extends DB_DataObject
     {
         global $_DB_DATAOBJECT;
          // a little bit of sanity testing.
-        if ((false !== strpos($database,"'")) || (false !== strpos($database,";"))) {   
-            return PEAR::raiseError("Error: Database name contains a quote or semi-colon", null, PEAR_ERROR_DIE);
+        if ((false !== strpos($database,"'")) || (false !== strpos($database, ';'))) {
+            return PEAR::raiseError('Error: Database name contains a quote or semi-colon', null, PEAR_ERROR_DIE);
         }
         
         $this->_database  = $database; 
@@ -1185,8 +1185,8 @@ class DB_DataObject_Generator extends DB_DataObject
         $table = trim($table);
         
         // a little bit of sanity testing.
-        if ((false !== strpos($table,"'")) || (false !== strpos($table,";"))) {   
-            return PEAR::raiseError("Error: Table contains a quote or semi-colon", null, PEAR_ERROR_DIE);
+        if ((false !== strpos($table,"'")) || (false !== strpos($table, ';'))) {
+            return PEAR::raiseError('Error: Table contains a quote or semi-colon', null, PEAR_ERROR_DIE);
         }
         $__DB= &$GLOBALS['_DB_DATAOBJECT']['CONNECTIONS'][$this->_database_dsn_md5];
         
@@ -1402,7 +1402,7 @@ class DB_DataObject_Generator extends DB_DataObject
         $ret = "\n" .
                "    function keys()\n" .
                "    {\n" .
-               "         return array(";
+               '         return array(';
             
         foreach($def as $k=>$type) {
             // hopefully addslashes is good enough here!!!
@@ -1472,7 +1472,7 @@ class DB_DataObject_Generator extends DB_DataObject
         $ret = "\n" .
                "    function sequenceKey() // keyname, use native, native name\n" .
                "    {\n" .
-               "         return array(";
+               '         return array(';
         foreach($ar as $v) {
             switch (gettype($v)) {
                 case 'boolean':
@@ -1484,7 +1484,7 @@ class DB_DataObject_Generator extends DB_DataObject
                     break;
                     
                 default:    // eak
-                    $ret .= "null, ";
+                    $ret .= 'null, ';
         
             }
         }

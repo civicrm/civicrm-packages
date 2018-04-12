@@ -7,7 +7,7 @@ class ofc_tags
 {
 	public function __construct()
 	{
-		$this->type      = "tags";
+		$this->type      = 'tags';
 		$this->values	= array();
 	}
 
@@ -43,8 +43,8 @@ class ofc_tags
      */
 	public function padding($x, $y)
 	{
-		$this->{"pad-x"} = $x;
-		$this->{"pad-y"} = $y;
+		$this->{'pad-x'} = $x;
+		$this->{'pad-y'} = $y;
 		return $this;
 	}
 
@@ -61,7 +61,7 @@ class ofc_tags
      */
     public function align_x_center()
 	{
-		$this->{"align-x"} = "center";
+		$this->{'align-x'} = 'center';
 		return $this;
 	}
 
@@ -70,7 +70,7 @@ class ofc_tags
      */
     public function align_x_left()
 	{
-		$this->{"align-x"} = "left";
+		$this->{'align-x'} = 'left';
 		return $this;
 	}
 
@@ -79,7 +79,7 @@ class ofc_tags
      */
     public function align_x_right()
 	{
-		$this->{"align-x"} = "right";
+		$this->{'align-x'} = 'right';
 		return $this;
 	}
 
@@ -88,7 +88,7 @@ class ofc_tags
      */
     public function align_y_above()
 	{
-		$this->{"align-y"} = "above";
+		$this->{'align-y'} = 'above';
 		return $this;
 	}
 
@@ -97,7 +97,7 @@ class ofc_tags
      */
     public function align_y_below()
 	{
-		$this->{"align-y"} = "below";
+		$this->{'align-y'} = 'below';
 		return $this;
 	}
 
@@ -106,7 +106,7 @@ class ofc_tags
      */
     public function align_y_center()
 	{
-		$this->{"align-y"} = "center";
+		$this->{'align-y'} = 'center';
 		return $this;
 	}
 

@@ -15,7 +15,7 @@ class bar_sketch extends bar_base
 	 */
 	public function __construct( $colour, $outline_colour, $fun_factor )
 	{
-		$this->type      = "bar_sketch";
+		$this->type      = 'bar_sketch';
 		parent::__construct();
 		
 		$this->set_colour( $colour );

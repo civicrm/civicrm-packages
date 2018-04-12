@@ -61,7 +61,7 @@ class hbar
      */
     public function __construct( $colour )
 	{
-		$this->type      = "hbar";
+		$this->type      = 'hbar';
 		$this->values    = array();
 		$this->set_colour( $colour );
 	}

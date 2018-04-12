@@ -49,6 +49,6 @@ class line_dot extends line_base
 {
 	public function __construct()
 	{
-		$this->type      = "line_dot";
+		$this->type      = 'line_dot';
 	}
 }

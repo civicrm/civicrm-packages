@@ -98,9 +98,9 @@ class fastImage
     {
       switch ($this->getChars(2))
       {
-      case "BM":
+      case 'BM':
         return $this->type = 'bmp';
-      case "GI":
+      case 'GI':
         return $this->type = 'gif';
       case chr(0xFF).chr(0xd8):
         return $this->type = 'jpeg';
@@ -143,7 +143,7 @@ class fastImage
   {
     $chars = $this->getChars(25);
 
-    return unpack("N*", substr($chars, 16, 8));
+    return unpack('N*', substr($chars, 16, 8));
   }
 
     /**
@@ -153,7 +153,7 @@ class fastImage
   {
     $chars = $this->getChars(11);
 
-    return unpack("S*", substr($chars, 6, 4));
+    return unpack('S*', substr($chars, 6, 4));
   }
 
     /**
@@ -273,7 +273,7 @@ class fastImage
     private function getByte()
   {
     $c = $this->getChars(1);
-    $b = unpack("C", $c);
+    $b = unpack('C', $c);
 
     return reset($b);
   }
@@ -285,7 +285,7 @@ class fastImage
      */
     private function readInt($str)
   {
-    $size = unpack("C*", $str);
+    $size = unpack('C*', $str);
 
     return ($size[1] << 8) + $size[2];
   }

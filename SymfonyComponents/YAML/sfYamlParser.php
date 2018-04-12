@@ -138,7 +138,7 @@ class sfYamlParser
             $merged = array();
             if (!is_array($parsed))
             {
-              throw new InvalidArgumentException(sprintf("YAML merge keys used with a scalar value instead of an array at line %s (%s)", $this->getRealCurrentLineNb() + 1, $this->currentLine));
+              throw new InvalidArgumentException(sprintf('YAML merge keys used with a scalar value instead of an array at line %s (%s)', $this->getRealCurrentLineNb() + 1, $this->currentLine));
             }
             else if (isset($parsed[0]))
             {
@@ -147,7 +147,7 @@ class sfYamlParser
               {
                 if (!is_array($parsedItem))
                 {
-                  throw new InvalidArgumentException(sprintf("Merge items must be arrays at line %s (%s).", $this->getRealCurrentLineNb() + 1, $parsedItem));
+                  throw new InvalidArgumentException(sprintf('Merge items must be arrays at line %s (%s).', $this->getRealCurrentLineNb() + 1, $parsedItem));
                 }
                 $merged = array_merge($parsedItem, $merged);
               }

@@ -149,26 +149,26 @@ class PHP_Beautifier_Filter_ListClassFunction extends PHP_Beautifier_Filter
     {
         $sNL = $this->oBeaut->sNewLine;
         $aOut = array(
-            "/**",
-            "* Class and Function List:"
+          '/**',
+          '* Class and Function List:'
         );
         if ($this->getSetting('list_functions')) {
-            $aOut[] = "* Function list:";
+            $aOut[] = '* Function list:';
             foreach($this->aFunctions as $sFunction) {
-                $aOut[] = "* - " . $sFunction . "()";
+                $aOut[] = '* - ' . $sFunction . '()';
             }
         }
         if ($this->getSetting('list_classes')) {
-            $aOut[] = "* Classes list:";
+            $aOut[] = '* Classes list:';
             foreach($this->aClasses as $sClass) {
-                $aOut[] = "* - " . $sClass;
+                $aOut[] = '* - ' . $sClass;
             }
         }
-        $aOut[] = "*/";
+        $aOut[] = '*/';
         if ($this->iComment) {
             // Determine the previous Indent
             $sComment = $this->oBeaut->getTokenAssocText($this->iComment);
-            if (preg_match("/" . addcslashes($sNL, "\r\n") . "([ \t]+)/ms", $sComment, $aMatch)) {
+            if (preg_match('/' . addcslashes($sNL, "\r\n") . "([ \t]+)/ms", $sComment, $aMatch)) {
                 $sPrevio = $sNL . $aMatch[1];
             } else {
                 $sPrevio = $sNL;

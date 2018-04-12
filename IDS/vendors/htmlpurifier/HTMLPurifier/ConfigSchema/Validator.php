@@ -164,7 +164,7 @@ class HTMLPurifier_ConfigSchema_Validator
                 $this->error("alias target $real from alias '$alias'", 'must be a string');
             }
             if ($alias === $real) {
-                $this->error("alias '$alias'", "must not be an alias to itself");
+                $this->error("alias '$alias'", 'must not be an alias to itself');
             }
         }
         if (null !== $d->allowed) {

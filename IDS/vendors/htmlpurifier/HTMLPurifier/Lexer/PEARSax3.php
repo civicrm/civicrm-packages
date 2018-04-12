@@ -132,11 +132,11 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
         if (strpos($data, '--') === 0) {
             // remove trailing and leading double-dashes
             $data = substr($data, 2);
-            if (strlen($data) >= 2 && substr($data, -2) == "--") {
+            if (strlen($data) >= 2 && substr($data, -2) == '--') {
                 $data = substr($data, 0, -2);
             }
             if (isset($this->stack[sizeof($this->stack) - 1]) &&
-                $this->stack[sizeof($this->stack) - 1] == "style") {
+                $this->stack[sizeof($this->stack) - 1] == 'style') {
                 $this->tokens[] = new HTMLPurifier_Token_Text($data);
             } else {
                 $this->tokens[] = new HTMLPurifier_Token_Comment($data);

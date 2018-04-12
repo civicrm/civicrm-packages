@@ -231,7 +231,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
 
         if(isset($this->_elementStyles[$ret->name])) {
             $ret->style = $this->_elementStyles[$ret->name];
-            $ret->styleTemplate = "styles/". $ret->style .".html";
+            $ret->styleTemplate = 'styles/' . $ret->style . '.html';
         }
         if($ret->type == 'group') {
             $ret->separator = $element->_separator;
@@ -360,7 +360,7 @@ class QuickformForm
     */
     public function outputHeader()
     {
-        return "<form " . $this->attributes . ">\n";
+        return '<form ' . $this->attributes . ">\n";
     }
 
    /**
@@ -479,7 +479,7 @@ class QuickformElement
      */
     public function isButton()
     {
-        return ($this->type == "submit" || $this->type == "reset");
+        return ($this->type == 'submit' || $this->type == 'reset');
     }
 
 

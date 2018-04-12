@@ -129,7 +129,7 @@ class file {
 
     public static function getExtension($filename, $toLower=true) {
         return preg_match('/^.*\.([^\.]*)$/s', $filename, $patt)
-            ? ($toLower ? strtolower($patt[1]) : $patt[1]) : "";
+            ? ($toLower ? strtolower($patt[1]) : $patt[1]) : '';
     }
 
 /** Get MIME type of the given filename. If Fileinfo PHP extension is
@@ -144,16 +144,16 @@ class file {
   * @return string */
 
     public static function getMimeType($filename, $magic=null) {
-        if (class_exists("finfo")) {
+        if (class_exists('finfo')) {
             $finfo = new \finfo(FILEINFO_MIME, $magic);
             if ($finfo) {
                 $mime = $finfo->file($filename);
-                $mime = substr($mime, 0, strrpos($mime, ";"));
+                $mime = substr($mime, 0, strrpos($mime, ';'));
                 return $mime;
             }
         }
         $ext = self::getExtension($filename, true);
-        return isset(self::$MIME[$ext]) ? self::$MIME[$ext] : "application/octet-stream";
+        return isset(self::$MIME[$ext]) ? self::$MIME[$ext] : 'application/octet-stream';
     }
 
 /** Get inexistant filename based on the given filename. If you skip $dir
@@ -195,7 +195,7 @@ class file {
         $ext = self::getExtension($filename, false);
         $name = strlen($ext) ? substr($filename, 0, -strlen($ext) - 1) : $filename;
         $tpl = str_replace('{name}', $name, $tpl);
-        $tpl = str_replace('{ext}', (strlen($ext) ? ".$ext" : ""), $tpl);
+        $tpl = str_replace('{ext}', (strlen($ext) ? ".$ext" : ''), $tpl);
         $i = 1; $file = "$dir/$filename";
         while (file_exists($file)) {
             $file = "$dir/" . str_replace('{sufix}', $i++, $tpl);
@@ -220,7 +220,7 @@ class file {
               = html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i',
               '$1', $string), ENT_QUOTES, 'UTF-8');
         }
-        $filename = trim(preg_replace('~[^0-9a-z\.\- ]~i', "_", $filename));
+        $filename = trim(preg_replace('~[^0-9a-z\.\- ]~i', '_', $filename));
         return $filename;
     }
 

@@ -17,7 +17,7 @@
 //
 // $Id: IT_Error.php,v 1.3 2006/08/17 15:44:31 dsp Exp $
 
-require_once "PEAR.php";
+require_once 'PEAR.php';
 
 /**
 * IT[X] Error class
@@ -32,7 +32,7 @@ class IT_Error extends PEAR_Error {
   * 
   * @var  string
   */
-  public $error_message_prefix = "IntegratedTemplate Error: ";
+  public $error_message_prefix = 'IntegratedTemplate Error: ';
 
     /**
      * Creates an cache error object.
@@ -43,7 +43,7 @@ class IT_Error extends PEAR_Error {
      */
   public function __construct($msg, $file = __FILE__, $line = __LINE__) {
     
-    parent::__construct(sprintf("%s [%s on line %d].", $msg, $file, $line));
+    parent::__construct(sprintf('%s [%s on line %d].', $msg, $file, $line));
     
   } // end func IT_Error
   

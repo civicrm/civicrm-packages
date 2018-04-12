@@ -4,7 +4,7 @@
 <script src="js/index.php" type="text/javascript"></script>
 <script src="js_localize.php?lng=<?php echo $this->lang ?>" type="text/javascript"></script>
 <?php
-    IF ($this->opener['name'] == "tinymce"):
+    IF ($this->opener['name'] == 'tinymce'):
 ?>
 <script src="<?php echo $this->config['_tinyMCEPath'] ?>/tiny_mce_popup.js" type="text/javascript"></script>
 <?php
@@ -18,8 +18,9 @@
 ?>
 <script type="text/javascript">
 _.version = "<?php echo self::VERSION ?>";
-_.support.zip = <?php echo (class_exists('ZipArchive') && !$this->config['denyZipDownload']) ? "true" : "false" ?>;
-_.support.check4Update = <?php echo ((!isset($this->config['denyUpdateCheck']) || !$this->config['denyUpdateCheck']) && (ini_get("allow_url_fopen") || function_exists("http_get") || function_exists("curl_init") || function_exists('socket_create'))) ? "true" : "false" ?>;
+_.support.zip = <?php echo (class_exists('ZipArchive') && !$this->config['denyZipDownload']) ? 'true' : 'false' ?>;
+_.support.check4Update = <?php echo ((!isset($this->config['denyUpdateCheck']) || !$this->config['denyUpdateCheck']) && (ini_get('allow_url_fopen') || function_exists('http_get') || function_exists('curl_init') || function_exists('socket_create'))) ? 'true'
+  : 'false' ?>;
 _.lang = "<?php echo text::jsValue($this->lang) ?>";
 _.type = "<?php echo text::jsValue($this->type) ?>";
 _.theme = "<?php echo text::jsValue($this->config['theme']) ?>";

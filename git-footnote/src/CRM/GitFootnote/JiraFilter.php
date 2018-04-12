@@ -117,7 +117,7 @@ class JiraFilter extends AbstractWordFilter {
       }
 
       $walker = new \Jira_Issues_Walker($this->jiraApi);
-      $walker->push("key = $key", "*navigable");
+      $walker->push("key = $key", '*navigable');
       foreach ($walker as $k => $issue) {
         $this->jiraCache[$key] = $issue;
       }

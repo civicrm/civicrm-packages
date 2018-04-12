@@ -170,7 +170,7 @@ class image_imagick extends image {
      *
      * @return bool
      */
-    public function rotate($angle, $background="#000000") {
+    public function rotate($angle, $background= '#000000') {
         try {
             $this->image->rotateImage(new \ImagickPixel($background), $angle);
             $size = $this->image->getImageGeometry();
@@ -259,7 +259,7 @@ class image_imagick extends image {
     protected function getBlankImage($width, $height) {
         try {
             $img = new \Imagick();
-            $img->newImage($width, $height, "none");
+            $img->newImage($width, $height, 'none');
             $img->setImageCompressionQuality(100);
         } catch (\Exception $e) {
             return false;
@@ -349,7 +349,7 @@ class image_imagick extends image {
      *
      * @return bool
      */
-    public function output($type="jpeg", array $options=array()) {
+    public function output($type= 'jpeg', array $options=array()) {
         $type = strtolower($type);
         try {
             $this->image->setImageFormat($type);

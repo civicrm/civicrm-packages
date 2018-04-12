@@ -359,7 +359,7 @@ class gettext_reader {
     // cache header field for plural forms
     if (! is_string($this->pluralheader)) {
       if ($this->enable_cache) {
-        $header = $this->cache_translations[""];
+        $header = $this->cache_translations[''];
       } else {
         $header = $this->get_translation_string(0);
       }
@@ -378,9 +378,9 @@ class gettext_reader {
    */
   public function select_string($n) {
     $string = $this->get_plural_forms();
-    $string = str_replace('nplurals',"\$total",$string);
-    $string = str_replace("n",$n,$string);
-    $string = str_replace('plural',"\$plural",$string);
+    $string = str_replace('nplurals', '$total',$string);
+    $string = str_replace('n',$n,$string);
+    $string = str_replace('plural', '$plural',$string);
 
     $total = 0;
     $plural = 0;

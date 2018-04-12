@@ -110,6 +110,6 @@ class FilterASCII85
      */
     public function encode($in)
     {
-        throw new LogicException("ASCII85 encoding not implemented.");
+        throw new LogicException('ASCII85 encoding not implemented.');
     }
 }

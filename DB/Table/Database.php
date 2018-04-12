@@ -763,14 +763,14 @@ class DB_Table_Database extends DB_Table_Base
         $flag = (bool) $flag;
         $option = $this->db->getOption('portability');
         if ($this->backend == 'db') {
-            $option = $option | DB_PORTABILITY_LOWERCASE;
+            $option |= DB_PORTABILITY_LOWERCASE;
             if (!$flag) {
-                $option = $option ^ DB_PORTABILITY_LOWERCASE;
+                $option ^= DB_PORTABILITY_LOWERCASE;
             }
         } else {
-            $option = $option | MDB2_PORTABILITY_FIX_CASE;
+            $option |= MDB2_PORTABILITY_FIX_CASE;
             if (!$flag) {
-                $option = $option ^ MDB2_PORTABILITY_FIX_CASE;
+                $option ^= MDB2_PORTABILITY_FIX_CASE;
             }
         } 
         $this->db->setOption('portability', $option);

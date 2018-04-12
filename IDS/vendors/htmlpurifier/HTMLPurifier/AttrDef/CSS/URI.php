@@ -56,7 +56,7 @@ class HTMLPurifier_AttrDef_CSS_URI extends HTMLPurifier_AttrDef_URI
         }
 
         // extra sanity check; should have been done by URI
-        $result = str_replace(array('"', "\\", "\n", "\x0c", "\r"), "", $result);
+        $result = str_replace(array('"', "\\", "\n", "\x0c", "\r"), '', $result);
 
         // suspicious characters are ()'; we're going to percent encode
         // them for safety.

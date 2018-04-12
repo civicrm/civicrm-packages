@@ -50,7 +50,7 @@ class Jira_Issue
     public function __construct($issue = array())
     {
         if (isset($issue['expand'])) {
-            $this->expand = explode(",", $issue['expand']);
+            $this->expand = explode(',', $issue['expand']);
         }
         if (isset($issue['id'])) {
             $this->id = $issue['id'];

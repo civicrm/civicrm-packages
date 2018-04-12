@@ -174,7 +174,7 @@ class image_gmagick extends image {
      *
      * @return bool
      */
-    public function rotate($angle, $background="#000000") {
+    public function rotate($angle, $background= '#000000') {
         try {
             $this->image->rotateImage($background, $angle);
             $w = $this->image->getImageWidth();
@@ -263,7 +263,7 @@ class image_gmagick extends image {
     protected function getBlankImage($width, $height) {
         try {
             $img = new \Gmagick();
-            $img->newimage($width, $height, "none");
+            $img->newimage($width, $height, 'none');
         } catch (\Exception $e) {
             return false;
         }
@@ -321,7 +321,7 @@ class image_gmagick extends image {
      * @return bool
      */
     public static function available() {
-        return class_exists("Gmagick");
+        return class_exists('Gmagick');
     }
 
     /**
@@ -347,7 +347,7 @@ class image_gmagick extends image {
      *
      * @return bool
      */
-    public function output($type="jpeg", array $options=array()) {
+    public function output($type= 'jpeg', array $options=array()) {
         $type = strtolower($type);
         try {
             $this->image->setImageFormat($type);

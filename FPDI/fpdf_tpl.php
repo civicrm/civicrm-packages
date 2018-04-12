@@ -50,7 +50,7 @@ class FPDF_TPL extends fpdi_bridge
      *
      * @var string A String defining the Prefix used as Template-Object-Names. Have to begin with an /
      */
-    public $tplPrefix = "/TPL";
+    public $tplPrefix = '/TPL';
 
     /**
      * Resources used by templates and pages
@@ -92,7 +92,7 @@ class FPDF_TPL extends fpdi_bridge
         }
 
         if ($this->page <= 0) {
-            throw new LogicException("You have to add at least a page first!");
+            throw new LogicException('You have to add at least a page first!');
         }
 
         if ($x == null) {
@@ -300,7 +300,7 @@ class FPDF_TPL extends fpdi_bridge
             $h = $w * $_h / $_w;
         }
 
-        return array("w" => $w, "h" => $h);
+        return array('w' => $w, 'h' => $h);
     }
 
     /**

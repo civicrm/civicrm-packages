@@ -22,11 +22,11 @@ namespace kcfinder;
 class minifier {
 
     protected $config;
-    protected $type = "js";
-    protected $minCmd = "";
+    protected $type = 'js';
+    protected $minCmd = '';
     protected $mime = array(
-        'js' => "text/javascript",
-        'css' => "text/css"
+        'js' => 'text/javascript',
+        'css' => 'text/css'
     );
 
     /**
@@ -35,7 +35,7 @@ class minifier {
      * @param null $type
      */
     public function __construct($type=null) {
-        require "conf/config.php";
+        require 'conf/config.php';
         $this->config = $_CONFIG;
         $type = strtolower($type);
         if (isset($this->mime[$type])) {
@@ -59,12 +59,12 @@ class minifier {
         $mtFiles = array(
             __FILE__,
             $_SERVER['SCRIPT_FILENAME'],
-            "conf/config.php"
+          'conf/config.php'
         );
 
         // GET SOURCE CODE FILES
         $files = dir::content($dir, array(
-            'types' => "file",
+            'types' => 'file',
             'pattern' => '/^.*\.' . $this->type . '$/'
         ));
 
@@ -98,11 +98,11 @@ class minifier {
         }
 
         // MINIFY AND JOIN SOURCE CODE
-        $source = "";
+        $source = '';
         foreach ($files as $file) {
 
-            if (strlen($this->minCmd) && (substr($file, 4, 1) != "_")) {
-                $cmd = str_replace("{file}", $file, $this->minCmd);
+            if (strlen($this->minCmd) && (substr($file, 4, 1) != '_')) {
+                $cmd = str_replace('{file}', $file, $this->minCmd);
                 $source .= `$cmd`;
 
             } else {

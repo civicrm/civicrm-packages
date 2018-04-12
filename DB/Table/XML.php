@@ -71,7 +71,7 @@ class DB_Table_XML
     public function openTag($tag, &$indent)
     {
         $old_indent = $indent;
-        $indent = $indent . '   ';
+        $indent     .= '   ';
         return $old_indent . "<$tag>";
     }
 

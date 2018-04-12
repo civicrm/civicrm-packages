@@ -21,15 +21,15 @@ spl_autoload_register(function($path) {
 
     list($ns, $class) = $path;
 
-    if ($ns == "kcfinder") {
+    if ($ns == 'kcfinder') {
 
-        if ($class == "uploader") {
+        if ($class == 'uploader') {
             require "core/class/uploader.php";
         }
-        elseif ($class == "browser") {
+        elseif ($class == 'browser') {
             require "core/class/browser.php";
         }
-        elseif ($class == "minifier") {
+        elseif ($class == 'minifier') {
             require "core/class/minifier.php";
         }
 

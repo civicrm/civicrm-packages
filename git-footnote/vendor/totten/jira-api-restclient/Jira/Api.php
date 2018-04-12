@@ -29,10 +29,10 @@
  */
 class Jira_Api
 {
-    const REQUEST_GET    = "GET";
-    const REQUEST_POST   = "POST";
-    const REQUEST_PUT    = "PUT";
-    const REQUEST_DELETE = "DELETE";
+    const REQUEST_GET    = 'GET';
+    const REQUEST_POST   = 'POST';
+    const REQUEST_PUT    = 'PUT';
+    const REQUEST_DELETE = 'DELETE';
 
 
     const AUTOMAP_FIELDS = 0x01;
@@ -118,7 +118,7 @@ class Jira_Api
     {
         if (!count($this->fields)) {
             $fields  = array();
-            $_fields = $this->api(self::REQUEST_GET, "/rest/api/2/field", array());
+            $_fields = $this->api(self::REQUEST_GET, '/rest/api/2/field', array());
 
             /* set hash key as custom field id */
             foreach($_fields->getResult() as $k => $v) {
@@ -140,7 +140,7 @@ class Jira_Api
      */
     public function getIssue($issueKey)
     {
-        return $this->api(self::REQUEST_GET, sprintf("/rest/api/2/issue/%s", $issueKey));
+        return $this->api(self::REQUEST_GET, sprintf('/rest/api/2/issue/%s', $issueKey));
     }
 
     /**
@@ -151,7 +151,7 @@ class Jira_Api
      */
     public function editIssue($issueKey, $params)
     {
-        return $this->api(self::REQUEST_PUT, sprintf("/rest/api/2/issue/%s", $issueKey), $params);
+        return $this->api(self::REQUEST_PUT, sprintf('/rest/api/2/issue/%s', $issueKey), $params);
     }
 
     /**
@@ -165,7 +165,7 @@ class Jira_Api
      */
     public function addComment($issueKey, $params)
     {
-        return $this->api(self::REQUEST_POST, sprintf("/rest/api/2/issue/%s/comment", $issueKey), $params);
+        return $this->api(self::REQUEST_POST, sprintf('/rest/api/2/issue/%s/comment', $issueKey), $params);
     }
 
     /**
@@ -179,7 +179,7 @@ class Jira_Api
      */
     public function getTransitions($issueKey, $params)
     {
-        return $this->api(self::REQUEST_GET, sprintf("/rest/api/2/issue/%s/transitions", $issueKey), $params);
+        return $this->api(self::REQUEST_GET, sprintf('/rest/api/2/issue/%s/transitions', $issueKey), $params);
     }
 
     /**
@@ -193,7 +193,7 @@ class Jira_Api
      */
     public function transition($issueKey, $params)
     {
-        return $this->api(self::REQUEST_POST, sprintf("/rest/api/2/issue/%s/transitions", $issueKey), $params);
+        return $this->api(self::REQUEST_POST, sprintf('/rest/api/2/issue/%s/transitions', $issueKey), $params);
     }
 
     /**
@@ -205,7 +205,7 @@ class Jira_Api
     public function getIssueTypes()
     {
         $result = array();
-        $types = $this->api(self::REQUEST_GET, "/rest/api/2/issuetype",array(), true);
+        $types = $this->api(self::REQUEST_GET, '/rest/api/2/issuetype',array(), true);
 
         foreach ($types as $issue_type) {
             $result[] = new Jira_IssueType($issue_type);
@@ -236,7 +236,7 @@ class Jira_Api
     {
     	if (!count($this->priorities)) {
     		$priorities  = array();
-    		$result = $this->api(self::REQUEST_GET, "/rest/api/2/priority", array());
+    		$result = $this->api(self::REQUEST_GET, '/rest/api/2/priority', array());
     	    /* set hash key as custom field id */
     		foreach($result->getResult() as $k => $v) {
     			$priorities[$v['id']] = $v;
@@ -255,7 +255,7 @@ class Jira_Api
     {
     	if (!count($this->statuses)) {
     		$statuses  = array();
-    		$result = $this->api(self::REQUEST_GET, "/rest/api/2/status", array());
+    		$result = $this->api(self::REQUEST_GET, '/rest/api/2/status', array());
     		/* set hash key as custom field id */
     		foreach($result->getResult() as $k => $v) {
     			$statuses[$v['id']] = $v;
@@ -278,18 +278,18 @@ class Jira_Api
     public function createIssue($projectKey, $summary, $issueType, $options = array())
     {
         $default = array(
-            "project" => array(
-                "key"  => $projectKey,
+          'project'   => array(
+            'key' => $projectKey,
             ),
-            "summary"     => $summary,
-            "issuetype"   => array(
-                "id" => $issueType,
+          'summary'   => $summary,
+          'issuetype' => array(
+            'id' => $issueType,
         ));
 
         $default = array_merge($default, $options);
 
-        $result = $this->api(self::REQUEST_POST, "/rest/api/2/issue/", array(
-            "fields" => $default
+        $result = $this->api(self::REQUEST_POST, '/rest/api/2/issue/', array(
+          'fields' => $default
         ));
 
         return $result;
@@ -307,11 +307,11 @@ class Jira_Api
      */
     public function search($jql, $startAt = 0, $maxResult = 20, $fields = '*navigable')
     {
-        $result = $this->api(self::REQUEST_GET, "/rest/api/2/search", array(
-            "jql"        => $jql,
-            "startAt"    => $startAt,
-            "maxResults" => $maxResult,
-            "fields"     => $fields,
+        $result = $this->api(self::REQUEST_GET, '/rest/api/2/search', array(
+          'jql'        => $jql,
+          'startAt'    => $startAt,
+          'maxResults' => $maxResult,
+          'fields'     => $fields,
         ));
 
         return $result;
@@ -328,17 +328,17 @@ class Jira_Api
     public function createVersion($project_id, $name,$options = array())
     {
         $options = array_merge(array(
-                "name"            => $name,
-                "description"     => "",
-                "project"         => $project_id,
+          'name'        => $name,
+          'description' => '',
+          'project'     => $project_id,
                 //"userReleaseDate" => "",
                 //"releaseDate"     => "",
-                "released"        => false,
-                "archived"        => false,
+          'released'    => false,
+          'archived'    => false,
             ), $options
         );
 
-        return $this->api(self::REQUEST_POST, "/rest/api/2/version", $options);
+        return $this->api(self::REQUEST_POST, '/rest/api/2/version', $options);
     }
 
 
@@ -353,10 +353,10 @@ class Jira_Api
     public function createAttachment($issue, $filename,$options = array())
     {
     	$options = array_merge(array(
-    			"file"            => '@' . $filename,
+        'file' => '@' . $filename,
     	), $options
     	);
-    	return $this->api(self::REQUEST_POST, "/rest/api/2/issue/" . $issue . "/attachments", $options, false ,TRUE);
+    	return $this->api(self::REQUEST_POST, '/rest/api/2/issue/' . $issue . '/attachments', $options, false ,TRUE);
     }
 
     /**

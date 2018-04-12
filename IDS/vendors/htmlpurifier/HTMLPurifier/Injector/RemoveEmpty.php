@@ -38,7 +38,7 @@ class HTMLPurifier_Injector_RemoveEmpty extends HTMLPurifier_Injector
                     continue;
                 }
                 if ($this->removeNbsp && !isset($this->removeNbspExceptions[$token->name])) {
-                    $plain = str_replace("\xC2\xA0", "", $next->data);
+                    $plain = str_replace("\xC2\xA0", '', $next->data);
                     $isWsOrNbsp = $plain === '' || ctype_space($plain);
                     if ($isWsOrNbsp) {
                         continue;

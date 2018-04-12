@@ -64,7 +64,7 @@ class Config_File {
     /**#@-*/
 
     /** @access private */
-    public $_config_path = "";
+    public $_config_path = '';
     public $_config_data = array();
     /**#@-*/
 
@@ -124,9 +124,9 @@ class Config_File {
 
         if (!empty($var_name)) {
             if (empty($section_name)) {
-                return $this->_config_data[$file_name]["vars"][$var_name];
+                return $this->_config_data[$file_name]['vars'][$var_name];
             } else {
-                if(isset($this->_config_data[$file_name]["sections"][$section_name]["vars"][$var_name])) {
+                if(isset($this->_config_data[$file_name]['sections'][$section_name]['vars'][$var_name])) {
                     return $this->_config_data[$file_name]["sections"][$section_name]["vars"][$var_name];
                 }
                 else {
@@ -135,9 +135,9 @@ class Config_File {
             }
         } else {
             if (empty($section_name)) {
-                return (array)$this->_config_data[$file_name]["vars"];
+                return (array)$this->_config_data[$file_name]['vars'];
             } else {
-                if(isset($this->_config_data[$file_name]["sections"][$section_name]["vars"])) {
+                if(isset($this->_config_data[$file_name]['sections'][$section_name]['vars'])) {
                     return (array)$this->_config_data[$file_name]["sections"][$section_name]["vars"];
                 }
                 else {
@@ -187,7 +187,7 @@ class Config_File {
             return;
         }
 
-        return array_keys($this->_config_data[$file_name]["sections"]);
+        return array_keys($this->_config_data[$file_name]['sections']);
     }
 
     /**
@@ -242,7 +242,7 @@ class Config_File {
      */
     public function load_file($file_name, $prepend_path = true)
     {
-        if ($prepend_path && $this->_config_path != "") {
+        if ($prepend_path && $this->_config_path != '') {
             $config_file = $this->_config_path . $file_name;
         }
         else {
@@ -250,7 +250,7 @@ class Config_File {
         }
 
         ini_set('track_errors', true);
-        $fp = @fopen($config_file, "r");
+        $fp = @fopen($config_file, 'r');
         if (!is_resource($fp)) {
             $this->_trigger_error_msg("Could not open config file '$config_file'");
             return false;
@@ -385,10 +385,10 @@ class Config_File {
         }
 
         if ($booleanize) {
-            if (preg_match("/^(on|true|yes)$/i", $var_value)) {
+            if (preg_match('/^(on|true|yes)$/i', $var_value)) {
                 $var_value = true;
             }
-            else if (preg_match("/^(off|false|no)$/i", $var_value)) {
+            else if (preg_match('/^(off|false|no)$/i', $var_value)) {
                 $var_value = false;
             }
         }

@@ -8,8 +8,8 @@
  */
 function json_format($json)
 {
-    $tab = "  ";
-    $new_json = "";
+    $tab = '  ';
+    $new_json = '';
     $indent_level = 0;
     $in_string = false;
 
@@ -69,7 +69,7 @@ function json_format($json)
             case ':':
                 if(!$in_string)
                 {
-                    $new_json .= ": ";
+                    $new_json .= ': ';
                 }
                 else
                 {

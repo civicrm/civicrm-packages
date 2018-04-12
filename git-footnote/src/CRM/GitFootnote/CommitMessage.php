@@ -76,7 +76,7 @@ class CommitMessage {
     if (!empty($this->notes)) {
       $s .= "\n\n----------------------------------------\n";
       foreach ($this->notes as $note) {
-        $s .= "* ";
+        $s .= '* ';
         $s .= $note;
         $s .= "\n";
       }

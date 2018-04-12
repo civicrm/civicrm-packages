@@ -48,7 +48,7 @@ define('VALIDATE_EALPHA_LOWER', VALIDATE_ALPHA_LOWER . '��������
 define('VALIDATE_EALPHA_UPPER', VALIDATE_ALPHA_UPPER . '���������������ܾ�������զ��Ǽ���');
 define('VALIDATE_EALPHA',       VALIDATE_EALPHA_LOWER . VALIDATE_EALPHA_UPPER);
 define('VALIDATE_PUNCTUATION',  VALIDATE_SPACE . '\.,;\:&"\'\?\!\(\)');
-define('VALIDATE_NAME',         VALIDATE_EALPHA . VALIDATE_SPACE . "'" . "-");
+define('VALIDATE_NAME',         VALIDATE_EALPHA . VALIDATE_SPACE . "'" . '-');
 define('VALIDATE_STREET',       VALIDATE_NUM . VALIDATE_NAME . "/\\��\.");
 
 define('VALIDATE_ITLD_EMAILS',  1);
@@ -221,9 +221,9 @@ class Validate
             $date6 = strtotime($date);
             if ((strlen($date) == 4) && $date <= date('Y')) {
                 $datevalid = true;
-            } elseif ((strlen($date) == 7) && ($date6 < strtotime("now"))) {
+            } elseif ((strlen($date) == 7) && ($date6 < strtotime('now'))) {
                 $datevalid = true;
-            } elseif ((strlen($date) == 10) && ($date6 < strtotime("now"))) {
+            } elseif ((strlen($date) == 10) && ($date6 < strtotime('now'))) {
                 $datevalid = true;
             }
             if ($this->email($matches['name'])) {
@@ -441,13 +441,13 @@ class Validate
     public function _fullTLDValidation($email, $options)
     {
         $validate = array();
-        if(!empty($options["VALIDATE_ITLD_EMAILS"])) {
+        if(!empty($options['VALIDATE_ITLD_EMAILS'])) {
             array_push($validate, 'itld');
         }
-        if(!empty($options["VALIDATE_GTLD_EMAILS"])) {
+        if(!empty($options['VALIDATE_GTLD_EMAILS'])) {
             array_push($validate, 'gtld');
         }
-        if(!empty($options["VALIDATE_CCTLD_EMAILS"])) {
+        if(!empty($options['VALIDATE_CCTLD_EMAILS'])) {
             array_push($validate, 'cctld');
         }
 
@@ -672,8 +672,8 @@ class Validate
             extract($options);
         }
         if (is_array($allowed_schemes)
-            && in_array("tag", $allowed_schemes)
-            && strpos($url, "tag:") === 0
+            && in_array('tag', $allowed_schemes)
+            && strpos($url, 'tag:') === 0
         ) {
             return $this->__uriRFC4151($url);
         }
@@ -872,7 +872,7 @@ class Validate
             }
 
             if (strtolower($format) == 'rfc822_compliant'
-                && $weekday != date("D", mktime(0, 0, 0, $month, $day, $year))) {
+                && $weekday != date('D', mktime(0, 0, 0, $month, $day, $year))) {
                     return false;
                 }
 

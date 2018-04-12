@@ -13,17 +13,17 @@
   */
 
 namespace kcfinder;
-require "core/autoload.php";
+require 'core/autoload.php';
 
 if (!isset($_GET['lng']) || ($_GET['lng'] == 'en') ||
     ($_GET['lng'] != basename($_GET['lng'])) ||
-    !is_file("lang/" . $_GET['lng'] . ".php")
+    !is_file('lang/' . $_GET['lng'] . '.php')
 ) {
-    header("Content-Type: text/javascript");
+    header('Content-Type: text/javascript');
     die;
 }
 
-$file = "lang/" . $_GET['lng'] . ".php";
+$file = 'lang/' . $_GET['lng'] . '.php';
 $mtime = @filemtime($file);
 
 if ($mtime) {
@@ -31,20 +31,20 @@ if ($mtime) {
 }
 
 require $file;
-header("Content-Type: text/javascript");
+header('Content-Type: text/javascript');
 
-echo "_.labels={";
+echo '_.labels={';
 
 $i = 0;
 foreach ($lang as $english => $native) {
-    if (substr($english, 0, 1) != "_") {
-        echo "'" . text::jsValue($english) . "':\"" . text::jsValue($native) . "\"";
+    if (substr($english, 0, 1) != '_') {
+        echo "'" . text::jsValue($english) . "':\"" . text::jsValue($native) . '"';
         if (++$i < count($lang)) {
             echo ",";
         }
     }
 }
 
-echo "}";
+echo '}';
 
 
