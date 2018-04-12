@@ -188,6 +188,7 @@ class Jira_Api
      * get available issue types
      *
      * @return mixed
+     * @throws \Exception
      */
     public function getIssueTypes()
     {

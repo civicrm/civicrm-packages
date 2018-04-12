@@ -4,11 +4,12 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * create full directory structure
  *
  * @param string $dir
+ *
+ * @return bool
  */
 
 // $dir

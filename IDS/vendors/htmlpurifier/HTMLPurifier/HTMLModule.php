@@ -184,11 +184,14 @@ class HTMLPurifier_HTMLModule
     /**
      * Convenience function that transforms single-string contents
      * into separate content model and content model type
+     *
      * @param $contents Allowed children in form of:
      *                  "$content_model_type: $content_model"
+     *
      * @note If contents is an object, an array of two nulls will be
      *       returned, and the callee needs to take the original $contents
      *       and use it directly.
+     * @return array
      */
     public function parseContents($contents) {
         if (!is_string($contents)) {

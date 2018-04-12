@@ -42,8 +42,11 @@ class HTMLPurifier_DefinitionCacheFactory
 
     /**
      * Factory method that creates a cache object based on configuration
-     * @param $name Name of definitions handled by cache
+     *
+     * @param $name   Name of definitions handled by cache
      * @param $config Instance of HTMLPurifier_Config
+     *
+     * @return \HTMLPurifier_DefinitionCache_Null
      */
     public function create($type, $config) {
         $method = $config->get('Cache.DefinitionImpl');

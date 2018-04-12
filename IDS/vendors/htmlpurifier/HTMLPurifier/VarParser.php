@@ -53,10 +53,13 @@ class HTMLPurifier_VarParser
      * HTMLPurifier_VarParserException if invalid.
      * It may return NULL as a valid type if $allow_null is true.
      *
-     * @param $var Variable to validate
-     * @param $type Type of variable, see HTMLPurifier_VarParser->types
-     * @param $allow_null Whether or not to permit null as a value
+     * @param      $var        Variable to validate
+     * @param      $type       Type of variable, see HTMLPurifier_VarParser->types
+     * @param bool $allow_null Whether or not to permit null as a value
+     *
      * @return Validated and type-coerced variable
+     * @throws \HTMLPurifier_Exception
+     * @throws \HTMLPurifier_VarParserException
      */
     final public function parse($var, $type, $allow_null = false) {
         if (is_string($type)) {

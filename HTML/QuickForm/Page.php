@@ -84,17 +84,19 @@ class HTML_QuickForm_Page extends HTML_QuickForm
         $this->_actions[$actionName] =& $action;
     }
 
-
-   /**
-    * Handles an action.
-    *
-    * If an Action object was not registered here, controller's handle()
-    * method will be called.
-    *
-    * @access public
-    * @param  string Name of the action
-    * @throws PEAR_Error
-    */
+    /**
+     * Handles an action.
+     *
+     * If an Action object was not registered here, controller's handle()
+     * method will be called.
+     *
+     * @access public
+     *
+     * @param  string Name of the action
+     *
+     * @return
+     * @throws PEAR_Error
+     */
     public function handle($actionName)
     {
         if (isset($this->_actions[$actionName])) {
@@ -190,13 +192,14 @@ class HTML_QuickForm_Page extends HTML_QuickForm
         }
     }
 
-
-   /**
-    * Returns 'safe' elements' values
-    *
-    * @param   mixed   Array/string of element names, whose values we want. If not set then return all elements.
-    * @param   bool    Whether to remove internal (_qf_...) values from the resultant array
-    */
+    /**
+     * Returns 'safe' elements' values
+     *
+     * @param   mixed   Array/string of element names, whose values we want. If not set then return all elements.
+     * @param   bool    Whether to remove internal (_qf_...) values from the resultant array
+     *
+     * @return array
+     */
     public function exportValues($elementList = null, $filterInternal = false)
     {
         $values = parent::exportValues($elementList);

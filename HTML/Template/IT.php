@@ -489,8 +489,10 @@ class HTML_Template_IT
      * Parses the given block.
      *
      * @param    string    name of the block to be parsed
+     *
      * @access   public
      * @see      parseCurrentBlock()
+     * @return bool
      * @throws   PEAR_Error
      */
     public function parse($block = '__global__', $flag_recursion = false)
@@ -849,7 +851,9 @@ class HTML_Template_IT
      * Recusively builds a list of all blocks within the template.
      *
      * @param    string    string that gets scanned
+     *
      * @see      $blocklist
+     * @return array
      */
     public function findBlocks($string)
     {

@@ -122,7 +122,6 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
 
     // }}}
     // {{{ setValue()
-
     /**
      * Sets value for file element.
      *
@@ -133,8 +132,10 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
      * read-only property with a special meaning.
      *
      * @param     mixed    Value for file element
+     *
      * @since     3.0
      * @access    public
+     * @return null
      */
     public function setValue($value)
     {

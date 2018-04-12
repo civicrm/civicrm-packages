@@ -57,7 +57,10 @@ class HTMLPurifier_PropertyList
     /**
      * Squashes this property list and all of its property lists into a single
      * array, and returns the array. This value is cached by default.
+     *
      * @param $force If true, ignores the cache and regenerates the array.
+     *
+     * @return array
      */
     public function squash($force = false) {
         if ($this->cache !== null && !$force) return $this->cache;

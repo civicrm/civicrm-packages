@@ -58,11 +58,13 @@ class HTMLPurifier_UnitConverter
 
     /**
      * Converts a length object of one unit into another unit.
+     *
      * @param HTMLPurifier_Length $length
      *      Instance of HTMLPurifier_Length to convert. You must validate()
      *      it before passing it here!
-     * @param string $to_unit
+     * @param string              $to_unit
      *      Unit to convert to.
+     *
      * @note
      *      About precision: This conversion function pays very special
      *      attention to the incoming precision of values and attempts
@@ -73,6 +75,7 @@ class HTMLPurifier_UnitConverter
      *          - If a number contains less than four sigfigs ($outputPrecision)
      *            and this causes some decimals to be excluded, those
      *            decimals will be added on.
+     * @return bool|\HTMLPurifier_Length
      */
     public function convert($length, $to_unit) {
 

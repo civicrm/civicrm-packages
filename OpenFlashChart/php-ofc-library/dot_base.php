@@ -39,10 +39,12 @@ class dot_base
 		$this->x = $x;
 		$this->y = $y;
 	}
-	
-	/**
-	 * @param $colour is a string, HEX colour, e.g. '#FF0000' red
-	 */
+
+    /**
+     * @param $colour is a string, HEX colour, e.g. '#FF0000' red
+     *
+     * @return \dot_base
+     */
 	public function colour($colour)
 	{
 		$this->colour = $colour;
@@ -57,10 +59,12 @@ class dot_base
 		$this->tip = $tip;
 		return $this;
 	}
-	
-	/**
-	 * @param $size is an integer. Size of the dot.
-	 */
+
+    /**
+     * @param $size is an integer. Size of the dot.
+     *
+     * @return \dot_base
+     */
 	public function size($size)
 	{
 		$tmp = 'dot-size';
@@ -76,10 +80,12 @@ class dot_base
 		$this->type = $type;
 		return $this;
 	}
-	
-	/**
-	 * @param $size is an integer. The size of the hollow 'halo' around the dot that masks the line.
-	 */
+
+    /**
+     * @param $size is an integer. The size of the hollow 'halo' around the dot that masks the line.
+     *
+     * @return \dot_base
+     */
 	public function halo_size( $size )
 	{
 		$tmp = 'halo-size';
@@ -126,10 +132,12 @@ class star extends dot_base
 	{
 		parent::__construct( 'star', $value );
 	}
-	
-	/**
-	 * @param $angle is an integer.
-	 */
+
+    /**
+     * @param $angle is an integer.
+     *
+     * @return \star
+     */
 	public function rotation($angle)
 	{
 		$this->rotation = $angle;
@@ -157,11 +165,14 @@ class bow extends dot_base
 	{
 		parent::__construct( 'bow', $value );
 	}
-	
-	/**
-	 * Rotate the anchor object.
-	 * @param $angle is an integer.
-	 */
+
+    /**
+     * Rotate the anchor object.
+     *
+     * @param $angle is an integer.
+     *
+     * @return \bow
+     */
 	public function rotation($angle)
 	{
 		$this->rotation = $angle;
@@ -181,20 +192,25 @@ class anchor extends dot_base
 	{
 		parent::__construct( 'anchor', $value );
 	}
-	
-	/**
-	 * Rotate the anchor object.
-	 * @param $angle is an integer.
-	 */
+
+    /**
+     * Rotate the anchor object.
+     *
+     * @param $angle is an integer.
+     *
+     * @return \anchor
+     */
 	public function rotation($angle)
 	{
 		$this->rotation = $angle;
 		return $this;
 	}
-	
-	/**
-	 * @param $sides is an integer. Number of sides this shape has.
-	 */
+
+    /**
+     * @param $sides is an integer. Number of sides this shape has.
+     *
+     * @return \anchor
+     */
 	public function sides($sides)
 	{
 		$this->sides = $sides;

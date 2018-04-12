@@ -258,13 +258,15 @@ class pie
 		$tmp = 'on-click';
 		$this->$tmp = $event;
 	}
-	
-	/**
-	 * Fix the radius of the pie chart. Take a look at the magic variable #radius#
-	 * for helping figure out what radius to set it to.
-	 * 
-	 * @param $radius as number
-	 */
+
+    /**
+     * Fix the radius of the pie chart. Take a look at the magic variable #radius#
+     * for helping figure out what radius to set it to.
+     *
+     * @param $radius as number
+     *
+     * @return \pie
+     */
 	public function radius( $radius )
 	{
 		$this->radius = $radius;

@@ -59,11 +59,15 @@ class HTMLPurifier_StringHashParser
 
     /**
      * Internal parser that acepts a file handle.
+     *
      * @note While it's possible to simulate in-memory parsing by using
      *       custom stream wrappers, if such a use-case arises we should
      *       factor out the file handle into its own class.
+     *
      * @param $fh File handle with pointer at start of valid string-hash
      *            block.
+     *
+     * @return array
      */
     protected function parseHandle($fh) {
         $state   = false;

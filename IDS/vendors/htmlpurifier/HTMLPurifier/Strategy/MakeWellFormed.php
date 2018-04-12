@@ -472,9 +472,11 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
      * If $token is an integer, that number of tokens (with the first token
      * being the current one) will be deleted.
      *
-     * @param $token Token substitution value
-     * @param $injector Injector that performed the substitution; default is if
-     *        this is not an injector related operation.
+     * @param     $token    Token substitution value
+     * @param int $injector Injector that performed the substitution; default is if
+     *                      this is not an injector related operation.
+     *
+     * @throws \HTMLPurifier_Exception
      */
     protected function processToken($token, $injector = -1) {
 

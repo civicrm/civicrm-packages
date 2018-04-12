@@ -149,10 +149,14 @@ abstract class HTMLPurifier_Injector
     /**
      * Iterator function, which starts with the next token and continues until
      * you reach the end of the input tokens.
+     *
      * @warning Please prevent previous references from interfering with this
      *          functions by setting $i = null beforehand!
-     * @param &$i Current integer index variable for inputTokens
+     *
+     * @param &$i       Current integer index variable for inputTokens
      * @param &$current Current token variable. Do NOT use $token, as that variable is also a reference
+     *
+     * @return bool
      */
     protected function forward(&$i, &$current) {
         if ($i === null) $i = $this->inputIndex + 1;
@@ -182,10 +186,14 @@ abstract class HTMLPurifier_Injector
     /**
      * Iterator function, starts with the previous token and continues until
      * you reach the beginning of input tokens.
+     *
      * @warning Please prevent previous references from interfering with this
      *          functions by setting $i = null beforehand!
-     * @param &$i Current integer index variable for inputTokens
+     *
+     * @param &$i       Current integer index variable for inputTokens
      * @param &$current Current token variable. Do NOT use $token, as that variable is also a reference
+     *
+     * @return bool
      */
     protected function backward(&$i, &$current) {
         if ($i === null) $i = $this->inputIndex - 1;

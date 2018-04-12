@@ -210,9 +210,12 @@ class HTML_Common
 
     /**
      * Updates the attributes in $attr1 with the values in $attr2 without changing the other existing attributes
-     * @param    array   $attr1      Original attributes array
-     * @param    array   $attr2      New attributes array
+     *
+     * @param    array $attr1 Original attributes array
+     * @param    array $attr2 New attributes array
+     *
      * @access   private
+     * @return bool
      */
     public function _updateAttrArray(&$attr1, $attr2)
     {

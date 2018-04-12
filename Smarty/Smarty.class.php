@@ -1116,10 +1116,12 @@ class Smarty
     /**
      * executes & returns or displays the template results
      *
-     * @param string $resource_name
-     * @param string $cache_id
-     * @param string $compile_id
+     * @param string  $resource_name
+     * @param string  $cache_id
+     * @param string  $compile_id
      * @param boolean $display
+     *
+     * @return mixed|string|void
      */
     public function fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {

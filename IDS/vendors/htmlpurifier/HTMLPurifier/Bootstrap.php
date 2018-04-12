@@ -32,7 +32,10 @@ class HTMLPurifier_Bootstrap
 
     /**
      * Autoload function for HTML Purifier
+     *
      * @param $class Class to load
+     *
+     * @return bool
      */
     public static function autoload($class) {
         $file = HTMLPurifier_Bootstrap::getPath($class);
@@ -64,6 +67,9 @@ class HTMLPurifier_Bootstrap
 
     /**
      * "Pre-registers" our autoloader on the SPL stack.
+     *
+     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function registerAutoload() {
         $autoload = array('HTMLPurifier_Bootstrap', 'autoload');

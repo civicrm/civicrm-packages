@@ -1,5 +1,7 @@
 <?php namespace kcfinder\cms;
 
+use kcfinder\cms\BolmerCMS as CMS;
+
 /** This file is part of KCFinder project
  *
  *      @desc CMS integration code: BolmerCMS
@@ -18,7 +20,7 @@ class BolmerCMS{
         if ( ! self::$authenticated) {
             define('BOLMER_API_MODE', true);
             define('IN_MANAGER_MODE', true);
-            $init = realpath(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))))."/index.php");
+            $init = realpath(dirname(__FILE__, 6) . '/index.php');
             include_once($init);
             $type = getService('user', true)->getLoginUserType();
             if($type=='manager'){
@@ -40,4 +42,4 @@ class BolmerCMS{
         return self::$authenticated;
     }
 }
-\kcfinder\cms\BolmerCMS::checkAuth();
+CMS::checkAuth();

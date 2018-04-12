@@ -128,9 +128,12 @@ class HTMLPurifier_ErrorCollector
 
     /**
      * Retrieves raw error data for custom formatter to use
+     *
      * @param List of arrays in format of array(line of error,
      *        error severity, error message,
      *        recursive sub-errors array)
+     *
+     * @return mixed
      */
     public function getRaw() {
         return $this->errors;
@@ -138,8 +141,11 @@ class HTMLPurifier_ErrorCollector
 
     /**
      * Default HTML formatting implementation for error messages
+     *
      * @param $config Configuration array, vital for HTML output nature
      * @param $errors Errors array to display; used for recursion.
+     *
+     * @return string
      */
     public function getHTMLFormatted($config, $errors = null) {
         $ret = array();

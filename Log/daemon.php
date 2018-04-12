@@ -151,11 +151,13 @@ class Log_daemon extends Log
      * instances that are observing this Log.
      *
      * @param string $message  The textual message to be logged.
-     * @param int $priority (optional) The priority of the message.  Valid
-     *                  values are: LOG_EMERG, LOG_ALERT, LOG_CRIT,
-     *                  LOG_ERR, LOG_WARNING, LOG_NOTICE, LOG_INFO,
-     *                  and LOG_DEBUG.  The default is LOG_INFO.
+     * @param int    $priority (optional) The priority of the message.  Valid
+     *                         values are: LOG_EMERG, LOG_ALERT, LOG_CRIT,
+     *                         LOG_ERR, LOG_WARNING, LOG_NOTICE, LOG_INFO,
+     *                         and LOG_DEBUG.  The default is LOG_INFO.
+     *
      * @access public
+     * @return bool
      */
     public function log($message, $priority = null)
     {

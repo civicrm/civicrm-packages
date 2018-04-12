@@ -39,13 +39,15 @@ class JiraFilter extends AbstractWordFilter {
     parent::filter($message);
   }
 
-  /**
-   * Given a short commit message with single issue reference, add
-   * the JIRA title to summary line.
-   *
-   * @param array $words
-   * @return string
-   */
+    /**
+     * Given a short commit message with single issue reference, add
+     * the JIRA title to summary line.
+     *
+     * @param array $words
+     *
+     * @return string
+     * @throws \Exception
+     */
   public function filterShortMessage($words) {
     $suffix = '';
     foreach ($words as $word) {
@@ -63,13 +65,14 @@ class JiraFilter extends AbstractWordFilter {
     return implode('', $words) . $suffix;
   }
 
-  /**
-   * Filter each word in the commit message separately.
-   *
-   * @param CommitMessage $message
-   * @param $word
-   * @return mixed
-   */
+    /**
+     * Filter each word in the commit message separately.
+     *
+     * @param CommitMessage $message
+     * @param               $word
+     * @return mixed
+     * @throws \Exception
+     */
   public function filterWord(CommitMessage $message, $word) {
     if ($this->isIssueKey($word)) {
       $issue = $this->getIssue($word);
@@ -87,9 +90,11 @@ class JiraFilter extends AbstractWordFilter {
     return $word;
   }
 
-  /**
-   * @return Jira_Issue|NULL|FALSE (NULL if no service available; FALSE if invalid key)
-   */
+    /**
+     * @param $key
+     * @return Jira_Issue|NULL|FALSE (NULL if no service available; FALSE if invalid key)
+     * @throws \Exception
+     */
   protected function getIssue($key) {
     if (! $this->jiraApi) {
       return NULL;

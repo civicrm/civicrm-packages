@@ -184,19 +184,21 @@ class HTML_QuickForm_Controller
         return $this->_pages[$pageName];
     }
 
-
-   /**
-    * Handles an action.
-    *
-    * This will be called if the page itself does not have a handler
-    * to a specific action. The method also loads and uses default handlers
-    * for common actions, if specific ones were not added.
-    *
-    * @access public
-    * @param  HTML_QuickForm_Page   The page that failed to handle the action
-    * @param  string                Name of the action
-    * @throws PEAR_Error
-    */
+    /**
+     * Handles an action.
+     *
+     * This will be called if the page itself does not have a handler
+     * to a specific action. The method also loads and uses default handlers
+     * for common actions, if specific ones were not added.
+     *
+     * @access public
+     *
+     * @param  HTML_QuickForm_Page   The page that failed to handle the action
+     * @param  string                Name of the action
+     *
+     * @return
+     * @throws PEAR_Error
+     */
     public function handle(&$page, $actionName)
     {
         if (isset($this->_actions[$actionName])) {
@@ -369,15 +371,17 @@ class HTML_QuickForm_Controller
         return array(key($this->_pages), 'display');
     }
 
-
-   /**
-    * Initializes default form values.
-    *
-    * @access public
-    * @param  array  default values
-    * @param  mixed  filter(s) to apply to default values
-    * @throws PEAR_Error
-    */
+    /**
+     * Initializes default form values.
+     *
+     * @access public
+     *
+     * @param  array  default values
+     * @param  mixed  filter(s) to apply to default values
+     *
+     * @return
+     * @throws PEAR_Error
+     */
     public function setDefaults($defaultValues = null, $filter = null)
     {
         if (is_array($defaultValues)) {
@@ -386,16 +390,18 @@ class HTML_QuickForm_Controller
         }
     }
 
-
-   /**
-    * Initializes constant form values.
-    * These values won't get overridden by POST or GET vars
-    *
-    * @access public
-    * @param  array  constant values
-    * @param  mixed  filter(s) to apply to constant values
-    * @throws PEAR_Error
-    */
+    /**
+     * Initializes constant form values.
+     * These values won't get overridden by POST or GET vars
+     *
+     * @access public
+     *
+     * @param  array  constant values
+     * @param  mixed  filter(s) to apply to constant values
+     *
+     * @return
+     * @throws PEAR_Error
+     */
     public function setConstants($constantValues = null, $filter = null)
     {
         if (is_array($constantValues)) {
@@ -404,16 +410,18 @@ class HTML_QuickForm_Controller
         }
     }
 
-
-   /**
-    * Adds new values to defaults or constants array
-    *
-    * @access   private
-    * @param    array   array to add values to (either defaults or constants)
-    * @param    array   values to add
-    * @param    mixed   filters to apply to new values
-    * @throws   PEAR_Error
-    */
+    /**
+     * Adds new values to defaults or constants array
+     *
+     * @access   private
+     *
+     * @param    array   array to add values to (either defaults or constants)
+     * @param    array   values to add
+     * @param    mixed   filters to apply to new values
+     *
+     * @return
+     * @throws   PEAR_Error
+     */
     public function _setDefaultsOrConstants(&$values, $newValues, $filter = null)
     {
         if (isset($filter)) {

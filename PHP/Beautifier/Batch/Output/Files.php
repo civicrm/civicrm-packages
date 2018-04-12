@@ -63,7 +63,12 @@ class PHP_Beautifier_Batch_Output_Files extends PHP_Beautifier_Batch_Output {
         $sText.= $sNewLine.$sLine.$sEnd.$sLine.$sNewLine;
         return $sText;
     }
-    public function save() 
+
+    /**
+     * @return bool|void
+     * @throws \Exception
+     */
+    public function save()
     {
         $bCli = php_sapi_name() == 'cli';
         $sFile = $this->oBatch->getOutputPath();
@@ -73,10 +78,10 @@ class PHP_Beautifier_Batch_Output_Files extends PHP_Beautifier_Batch_Output {
             $fp = fopen($this->oBatch->getOutputPath() , "w");
         }
         if (!$fp) {
-            throw (new Exception("Can't save file $sFile"));
+            throw new Exception("Can't save file $sFile");
         }
         $sText = $this->get();
-        fputs($fp, $sText, strlen($sText));
+        fwrite($fp, $sText, strlen($sText));
         if (!($bCli and $fp == STDOUT)) {
             fclose($fp);
         }

@@ -79,8 +79,8 @@ class IDS_Init
      * Includes needed classes and parses the configuration file
      *
      * @param string $configPath the path to the config file
-     * 
-     * @return object $this
+     *
+     * @throws \Exception
      */
     private function __construct($configPath = null) 
     {

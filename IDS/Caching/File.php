@@ -85,8 +85,8 @@ class IDS_Caching_File implements IDS_Caching_Interface
      *
      * @param  string $type caching type
      * @param  object $init the IDS_Init object
-     * 
-     * @return void
+     *
+     * @throws \Exception
      */
     public function __construct($type, $init)
     {
@@ -107,8 +107,9 @@ class IDS_Caching_File implements IDS_Caching_Interface
      *
      * @param  string $type caching type
      * @param  object $init the IDS_Init object
-     * 
+     *
      * @return object $this
+     * @throws \Exception
      */
     public static function getInstance($type, $init)
     {
@@ -137,8 +138,8 @@ class IDS_Caching_File implements IDS_Caching_Interface
             ' seems not writable');
         }    	
         
-        if ((!file_exists($this->path) || (time()-filectime($this->path)) > 
-            $this->config['expiration_time'])) {
+        if ( !file_exists($this->path) || (time() - filectime($this->path)) >
+                                          $this->config['expiration_time']) {
             $handle = @fopen($this->path, 'w+');
             $serialized = @serialize($data);
             
@@ -170,8 +171,7 @@ class IDS_Caching_File implements IDS_Caching_Interface
         // make sure filters are parsed again if cache expired
         if (file_exists($this->path) && (time()-filectime($this->path)) < 
             $this->config['expiration_time']) {
-            $data = unserialize(file_get_contents($this->path));
-              return $data;
+            return unserialize(file_get_contents($this->path));
         }
 
         return false;

@@ -26,14 +26,15 @@
  * @author	Sagi Bashari <sagi@boom.org.il>
  * @copyright 2004-2005 Sagi Bashari
  */
- 
 /**
  * Replaces arguments in a string with their values.
  * Arguments are represented by % followed by their number.
  *
- * @param	string	Source string
- * @param	mixed	Arguments, can be passed in an array or through single variables.
- * @returns	string	Modified string
+ * @param  string  Source string
+ * @param  mixed  Arguments, can be passed in an array or through single variables.
+ *
+ * @returns  string  Modified string
+ * @return string
  */
 function smarty_gettext_strarg($str)
 {

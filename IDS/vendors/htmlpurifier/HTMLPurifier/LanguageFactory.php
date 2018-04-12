@@ -51,8 +51,11 @@ class HTMLPurifier_LanguageFactory
 
     /**
      * Retrieve sole instance of the factory.
+     *
      * @param $prototype Optional prototype to overload sole instance with,
      *                   or bool true to reset to default factory.
+     *
+     * @return \HTMLPurifier_LanguageFactory|null|\Optional
      */
     public static function instance($prototype = null) {
         static $instance = null;
@@ -76,9 +79,12 @@ class HTMLPurifier_LanguageFactory
 
     /**
      * Creates a language object, handles class fallbacks
-     * @param $config Instance of HTMLPurifier_Config
+     *
+     * @param $config  Instance of HTMLPurifier_Config
      * @param $context Instance of HTMLPurifier_Context
-     * @param $code Code to override configuration with. Private parameter.
+     * @param $code    Code to override configuration with. Private parameter.
+     *
+     * @return \HTMLPurifier_Language
      */
     public function create($config, $context, $code = false) {
 
@@ -123,8 +129,12 @@ class HTMLPurifier_LanguageFactory
 
     /**
      * Returns the fallback language for language
+     *
      * @note Loads the original language into cache
+     *
      * @param $code string language code
+     *
+     * @return
      */
     public function getFallbackFor($code) {
         $this->loadLanguage($code);

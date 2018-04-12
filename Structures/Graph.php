@@ -93,12 +93,14 @@ class Structures_Graph {
 
     /* addNode {{{ */
     /**
-    *
-    * Add a Node to the Graph
-    *
-    * @param    Structures_Graph_Node   The node to be added.
-    * @access	public
-    */
+     *
+     * Add a Node to the Graph
+     *
+     * @param    Structures_Graph_Node   The node to be added.
+     *
+     * @access  public
+     * @return
+     */
     public function addNode(&$newNode) {
         // We only add nodes
         if (!is_a($newNode, 'Structures_Graph_Node')) return Pear::raiseError('Structures_Graph::addNode received an object that is not a Structures_Graph_Node', STRUCTURES_GRAPH_ERROR_GENERIC);

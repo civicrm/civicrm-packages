@@ -437,8 +437,11 @@ class Net_URL
      * to be used thorough the script.
      *
      * @access public
-     * @param  string $optionName  The optionname to set
-     * @param  string $value       The value of this option.
+     *
+     * @param  string $optionName The optionname to set
+     * @param  string $value      The value of this option.
+     *
+     * @return bool
      */
     public function setOption($optionName, $value)
     {
@@ -458,8 +461,11 @@ class Net_URL
      * and return it's value.
      *
      * @access public
-     * @param  string $opionName  The name of the option to retrieve
+     *
+     * @param  string $opionName The name of the option to retrieve
+     *
      * @see    $this->options
+     * @return bool|mixed
      */
     public function getOption($optionName)
     {

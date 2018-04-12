@@ -816,13 +816,13 @@ class Date_Span
 
     // }}}
     // {{{ add()
-
     /**
      * Adds a time span.
      *
      * @param  object Date_Span $time Time span to add.
      *
      * @access public
+     * @return bool
      */
     public function add($time)
     {

@@ -1050,23 +1050,25 @@ class HTML_QuickForm extends HTML_Common
 
     // }}}
     // {{{ addRule()
-
     /**
      * Adds a validation rule for the given field
      *
      * If the element is in fact a group, it will be considered as a whole.
-     * To validate grouped elements as separated entities, 
+     * To validate grouped elements as separated entities,
      * use addGroupRule instead of addRule.
      *
-     * @param    string     $element       Form element name
-     * @param    string     $message       Message to display for invalid data
-     * @param    string     $type          Rule type, use getRegisteredRules() to get types
-     * @param    string     $format        (optional)Required for extra rule data
-     * @param    string     $validation    (optional)Where to perform validation: "server", "client"
-     * @param    boolean    $reset         Client-side validation: reset the form element to its original value if there is an error?
-     * @param    boolean    $force         Force the rule to be applied, even if the target form element does not exist
+     * @param    string  $element    Form element name
+     * @param    string  $message    Message to display for invalid data
+     * @param    string  $type       Rule type, use getRegisteredRules() to get types
+     * @param    string  $format     (optional)Required for extra rule data
+     * @param    string  $validation (optional)Where to perform validation: "server", "client"
+     * @param    boolean $reset      Client-side validation: reset the form element to its original value if there is
+     *                               an error?
+     * @param    boolean $force      Force the rule to be applied, even if the target form element does not exist
+     *
      * @since    1.0
      * @access   public
+     * @return
      * @throws   HTML_QuickForm_Error
      */
     public function addRule($element, $message, $type, $format=null, $validation='server', $reset = false, $force = false)
@@ -1114,7 +1116,6 @@ class HTML_QuickForm extends HTML_Common
 
     // }}}
     // {{{ addGroupRule()
-
     /**
      * Adds a validation rule for the given group of elements
      *
@@ -1124,15 +1125,18 @@ class HTML_QuickForm extends HTML_Common
      * the same rule will be applied to all elements in the group.
      * Use addRule if you need to validate the group against a function.
      *
-     * @param    string     $group         Form group name
-     * @param    mixed      $arg1          Array for multiple elements or error message string for one element
-     * @param    string     $type          (optional)Rule type use getRegisteredRules() to get types
-     * @param    string     $format        (optional)Required for extra rule data
-     * @param    int        $howmany       (optional)How many valid elements should be in the group
-     * @param    string     $validation    (optional)Where to perform validation: "server", "client"
-     * @param    bool       $reset         Client-side: whether to reset the element's value to its original state if validation failed.
+     * @param    string $group      Form group name
+     * @param    mixed  $arg1       Array for multiple elements or error message string for one element
+     * @param    string $type       (optional)Rule type use getRegisteredRules() to get types
+     * @param    string $format     (optional)Required for extra rule data
+     * @param    int    $howmany    (optional)How many valid elements should be in the group
+     * @param    string $validation (optional)Where to perform validation: "server", "client"
+     * @param    bool   $reset      Client-side: whether to reset the element's value to its original state if
+     *                              validation failed.
+     *
      * @since    2.5
      * @access   public
+     * @return
      * @throws   HTML_QuickForm_Error
      */
     public function addGroupRule($group, $arg1, $type='', $format=null, $howmany=0, $validation = 'server', $reset = false)
@@ -1212,20 +1216,22 @@ class HTML_QuickForm extends HTML_Common
 
     // }}}
     // {{{ addFormRule()
-
-   /**
-    * Adds a global validation rule 
-    * 
-    * This should be used when for a rule involving several fields or if
-    * you want to use some completely custom validation for your form.
-    * The rule function/method should return true in case of successful 
-    * validation and array('element name' => 'error') when there were errors.
-    * 
-    * @access   public
-    * @param    mixed   Callback, either function name or array(&$object, 'method')
-    * @param    string  $format   (optional)Required for extra rule data
-    * @throws   HTML_QuickForm_Error
-    */
+    /**
+     * Adds a global validation rule
+     *
+     * This should be used when for a rule involving several fields or if
+     * you want to use some completely custom validation for your form.
+     * The rule function/method should return true in case of successful
+     * validation and array('element name' => 'error') when there were errors.
+     *
+     * @access   public
+     *
+     * @param    mixed   Callback, either function name or array(&$object, 'method')
+     * @param    string $format (optional)Required for extra rule data
+     *
+     * @return
+     * @throws   HTML_QuickForm_Error
+     */
     public function addFormRule($rule, $format=null)
     {
         if (!is_callable($rule)) {
@@ -1236,14 +1242,15 @@ class HTML_QuickForm extends HTML_Common
     
     // }}}
     // {{{ applyFilter()
-
     /**
      * Applies a data filter for the given field(s)
      *
-     * @param    mixed     $element       Form element name or array of such names
-     * @param    mixed     $filter        Callback, either function name or array(&$object, 'method')
+     * @param    mixed $element Form element name or array of such names
+     * @param    mixed $filter  Callback, either function name or array(&$object, 'method')
+     *
      * @since    2.0
      * @access   public
+     * @return
      * @throws   HTML_QuickForm_Error
      */
     public function applyFilter($element, $filter)
@@ -1603,13 +1610,14 @@ class HTML_QuickForm extends HTML_Common
 
     // }}}
     // {{{ freeze()
-
     /**
      * Displays elements without HTML input tags
      *
-     * @param    mixed   $elementList       array or string of element(s) to be frozen
+     * @param    mixed $elementList array or string of element(s) to be frozen
+     *
      * @since     1.0
-     * @access   public
+     * @access    public
+     * @return bool
      * @throws   HTML_QuickForm_Error
      */
     public function freeze($elementList=null)

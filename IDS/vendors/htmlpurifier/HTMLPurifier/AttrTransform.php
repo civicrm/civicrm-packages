@@ -41,8 +41,11 @@ abstract class HTMLPurifier_AttrTransform
 
     /**
      * Retrieves and removes an attribute
+     *
      * @param $attr Attribute array to process (passed by reference)
-     * @param $key Key of attribute to confiscate
+     * @param $key  Key of attribute to confiscate
+     *
+     * @return null
      */
     public function confiscateAttr(&$attr, $key) {
         if (!isset($attr[$key])) return null;

@@ -162,15 +162,14 @@ class IDS_Monitor
      */
     private $tmpJsonString = '';
 
-
     /**
      * Constructor
      *
-     * @param array  $request array to scan
-     * @param object $init    instance of IDS_Init
-     * @param array  $tags    list of tags to which filters should be applied
+     * @param array     $request array to scan
+     * @param \IDS_Init $init    instance of IDS_Init
+     * @param array     $tags    list of tags to which filters should be applied
      *
-     * @return void
+     * @throws \Exception
      */
     public function __construct(array $request, IDS_Init $init, array $tags = null)
     {

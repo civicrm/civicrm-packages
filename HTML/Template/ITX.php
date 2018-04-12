@@ -201,14 +201,17 @@ class HTML_Template_ITX extends HTML_Template_IT
     } // end func replaceBlock
 
     /**
-    * Replaces an existing block with new content from a file.
-    *
-    * @brother replaceBlock()
-    * @param   string    Blockname
-    * @param   string    Name of the file that contains the blockcontent
-    * @param   boolean   true if the new block inherits the content of the old block
-    * @access  public
-    */
+     * Replaces an existing block with new content from a file.
+     *
+     * @brother replaceBlock()
+     *
+     * @param   string    Blockname
+     * @param   string    Name of the file that contains the blockcontent
+     * @param   boolean   true if the new block inherits the content of the old block
+     *
+     * @access  public
+     * @return bool
+     */
     public function replaceBlockfile($block, $filename, $keep_content = false)
     {
         return $this->replaceBlock($block, $this->getFile($filename), $keep_content);
@@ -313,15 +316,17 @@ class HTML_Template_ITX extends HTML_Template_IT
     } // end func addBlock
 
     /**
-    * Adds a block taken from a file to the template changing a variable
-    * placeholder to a block placeholder.
-    *
-    * @param      string    Name of the variable placeholder to be converted
-    * @param      string    Name of the block to be added
-    * @param      string    File that contains the block
-    * @brother    addBlock()
-    * @access     public
-    */
+     * Adds a block taken from a file to the template changing a variable
+     * placeholder to a block placeholder.
+     *
+     * @param      string    Name of the variable placeholder to be converted
+     * @param      string    Name of the block to be added
+     * @param      string    File that contains the block
+     *
+     * @brother    addBlock()
+     * @access     public
+     * @return bool
+     */
     public function addBlockfile($placeholder, $blockname, $filename)
     {
         return $this->addBlock($placeholder, $blockname, $this->getFile($filename));

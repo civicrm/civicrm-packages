@@ -47,10 +47,18 @@
 final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
 {
     protected $sDescription = 'Default Filter for PHP_Beautifier';
+
+    /**
+     * @param $sMethod
+     * @param $aArgs
+     *
+     * @return mixed|void
+     * @throws \Exception
+     */
     public function __call($sMethod, $aArgs)
     {
         if (!is_array($aArgs) or count($aArgs) != 1) {
-            throw (new Exception('Call to Filter::__call with wrong argument'));
+            throw new Exception('Call to Filter::__call with wrong argument');
         }
         PHP_Beautifier_Common::getLog()->log('Default Filter:unhandled[' . $aArgs[0] . ']', PEAR_LOG_DEBUG);
         $this->oBeaut->add($aArgs[0]);
@@ -78,9 +86,13 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         if (preg_match("/[\r\n]+/", $sWhitespace)) {
             $this->oBeaut->addNewLineIndent();
         } else {
-            $this->oBeaut->add(" ");
+            $this->oBeaut->add(' ');
         }
     }
+
+    /**
+     * @param $sTag
+     */
     public function t_close_tag($sTag)
     {
         $this->oBeaut->removeWhitespace();
@@ -88,7 +100,7 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
             $this->oBeaut->addNewLine();
             $this->oBeaut->add($sTag);
         } else {
-            $this->oBeaut->add(" " . $sTag);
+            $this->oBeaut->add(' ' . $sTag);
         }
     }
     public function t_switch($sTag)
@@ -194,11 +206,11 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
             foreach($aLines as $sLine) {
                 if ($sLine = trim($sLine)) {
                     $this->oBeaut->addNewLineIndent();
-                    $this->oBeaut->add(" " . $sLine);
+                    $this->oBeaut->add(' ' . $sLine);
                 }
             }
             $this->oBeaut->addNewLineIndent();
-            $this->oBeaut->add(" " . $aMatch[3]);
+            $this->oBeaut->add(' ' . $aMatch[3]);
             $this->oBeaut->addNewLineIndent();
         }
     }
@@ -313,7 +325,7 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
     }
     public function t_variable($sTag)
     {
-        if ($this->oBeaut->isPreviousTokenConstant(T_STRING) and !$this->oBeaut->getMode("double_quote")) {
+        if ($this->oBeaut->isPreviousTokenConstant(T_STRING) and !$this->oBeaut->getMode('double_quote')) {
             $this->oBeaut->add(' ');
         }
         $this->oBeaut->add($sTag);
@@ -350,7 +362,7 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
             $this->oBeaut->add($sTag);
         }
         if ($this->oBeaut->isNextTokenConstant(T_LNUMBER)) {
-            $this->oBeaut->add(" ");
+            $this->oBeaut->add(' ');
         }
     }
     public function t_default($sTag)
@@ -402,7 +414,7 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         $this->oBeaut->add($sTag);
 		// Check this, please!
 		if (!$this->oBeaut->isNextTokenContent('(')) {
-            $this->oBeaut->add(" ");
+            $this->oBeaut->add(' ');
         }
     }
     public function t_object_operator($sTag)

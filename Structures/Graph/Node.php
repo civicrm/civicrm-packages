@@ -227,14 +227,16 @@ class Structures_Graph_Node {
 
     /* connectTo {{{ */
     /**
-    *
-    * Connect this node to another one.
-    * 
-    * If the graph is not directed, the reverse arc, connecting $destinationNode to $this is also created.
-    *
-    * @param    Structures_Graph Node to connect to
-    * @access	public
-    */
+     *
+     * Connect this node to another one.
+     *
+     * If the graph is not directed, the reverse arc, connecting $destinationNode to $this is also created.
+     *
+     * @param    Structures_Graph Node to connect to
+     *
+     * @access  public
+     * @return
+     */
     public function connectTo(&$destinationNode) {
         // We only connect to nodes
         if (!is_a($destinationNode, 'Structures_Graph_Node')) return Pear::raiseError('Structures_Graph_Node::connectTo received an object that is not a Structures_Graph_Node', STRUCTURES_GRAPH_ERROR_GENERIC);

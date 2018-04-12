@@ -36,11 +36,13 @@ class HTMLPurifier_Printer
      * @note Parameters vary depending on printer
      */
     // function render() {}
-
     /**
      * Returns a start tag
-     * @param $tag Tag name
+     *
+     * @param $tag  Tag name
      * @param $attr Attribute array
+     *
+     * @return
      */
     protected function start($tag, $attr = array()) {
         return $this->generator->generateFromToken(
@@ -50,7 +52,10 @@ class HTMLPurifier_Printer
 
     /**
      * Returns an end teg
+     *
      * @param $tag Tag name
+     *
+     * @return
      */
     protected function end($tag) {
         return $this->generator->generateFromToken(
@@ -60,10 +65,13 @@ class HTMLPurifier_Printer
 
     /**
      * Prints a complete element with content inside
-     * @param $tag Tag name
+     *
+     * @param $tag      Tag name
      * @param $contents Element contents
-     * @param $attr Tag attributes
-     * @param $escape Bool whether or not to escape contents
+     * @param $attr     Tag attributes
+     * @param $escape   Bool whether or not to escape contents
+     *
+     * @return string
      */
     protected function element($tag, $contents, $attr = array(), $escape = true) {
         return $this->start($tag, $attr) .
@@ -85,8 +93,11 @@ class HTMLPurifier_Printer
 
     /**
      * Prints a simple key/value row in a table.
-     * @param $name Key
+     *
+     * @param $name  Key
      * @param $value Value
+     *
+     * @return string
      */
     protected function row($name, $value) {
         if (is_bool($value)) $value = $value ? 'On' : 'Off';
@@ -100,7 +111,10 @@ class HTMLPurifier_Printer
 
     /**
      * Escapes a string for HTML output.
+     *
      * @param $string String to escape
+     *
+     * @return String
      */
     protected function escape($string) {
         $string = HTMLPurifier_Encoder::cleanUTF8($string);
@@ -110,8 +124,11 @@ class HTMLPurifier_Printer
 
     /**
      * Takes a list of strings and turns them into a single list
-     * @param $array List of strings
+     *
+     * @param $array  List of strings
      * @param $polite Bool whether or not to add an end before the last
+     *
+     * @return string
      */
     protected function listify($array, $polite = false) {
         if (empty($array)) return 'None';
@@ -128,8 +145,11 @@ class HTMLPurifier_Printer
 
     /**
      * Retrieves the class of an object without prefixes, as well as metadata
-     * @param $obj Object to determine class of
+     *
+     * @param $obj    Object to determine class of
      * @param $prefix Further prefix to remove
+     *
+     * @return mixed|string
      */
     protected function getClass($obj, $sec_prefix = '') {
         static $five = null;

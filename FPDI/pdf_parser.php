@@ -180,7 +180,8 @@ class pdf_parser
      * Constructor
      *
      * @param string $filename Source filename
-     * @throws InvalidArgumentException
+     *
+     * @throws \Exception
      */
     public function __construct($filename)
     {
@@ -427,8 +428,9 @@ class pdf_parser
      * Reads a PDF value
      *
      * @param pdf_context $c
-     * @param string $token A token
+     * @param string      $token A token
      * @return mixed
+     * @throws \Exception
      */
     protected function _readValue(&$c, $token = null)
     {

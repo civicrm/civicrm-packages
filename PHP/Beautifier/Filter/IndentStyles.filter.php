@@ -210,10 +210,14 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
             return PHP_Beautifier_Filter::BYPASS;
         }
     }
+
     /**
      * Return the method for the defined style
+     *
      * @param    string  method to search
+     *
      * @return   string  method renamed for the defined style
+     * @throws \Exception
      */
     private function _getFunctionForStyle($sMethod) 
     {

@@ -252,7 +252,11 @@ class DB_dbase extends DB_common
 
     // }}}
     // {{{ &query()
-
+    /**
+     * @param null $query
+     *
+     * @return \DB_result|mixed
+     */
     public function &query($query = null)
     {
         // emulate result resources

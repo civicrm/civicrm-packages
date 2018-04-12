@@ -113,10 +113,14 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
     {
         $this->bRecursive = $bRecursive;
     }
+
     /**
-    * Set compression on/off
-    * @param mixed bool(false, true for gzip) or string ('gz' or 'gz2')
-    */
+     * Set compression on/off
+     *
+     * @param mixed bool(false, true for gzip) or string ('gz' or 'gz2')
+     *
+     * @throws \Exception
+     */
     public function setCompress($mCompress = true) 
     {
         if ($mCompress === true) {
@@ -124,21 +128,25 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
         } elseif (!$mCompress) {
             $mCompress = false;
         } elseif (!is_string($mCompress)) {
-            throw (new Exception('You have to define a mode for compress'));
+            throw new Exception('You have to define a mode for compress');
         }
         $this->sCompress = $mCompress;
     }
+
     /**
-    * Set the input(s) files
-    * Could be STDIN or a name, with special chars (?,*)
-    * @param mixed STDIN or string(path)
-    * @return bool
-    */
+     * Set the input(s) files
+     * Could be STDIN or a name, with special chars (?,*)
+     *
+     * @param mixed STDIN or string(path)
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function setInputFile($mFiles) 
     {
         $bCli = (php_sapi_name() == 'cli');
         if ($bCli and $this->mPreInputFiles == STDIN and $mFiles != STDIN) {
-            throw (new Exception("Hey, you already defined STDIN,dude"));
+            throw new Exception("Hey, you already defined STDIN,dude");
         } elseif ($bCli and $mFiles == STDIN) {
             $this->mPreInputFiles = STDIN;
         } else {
@@ -151,16 +159,20 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
         }
         return true;
     }
+
     /**
-    * Set the output file
-    * Could be STDOUT or a path to a file or dir (with '/' at the end)
-    * @param mixed STDOUT or string (path)
-    * @return true
-    */
+     * Set the output file
+     * Could be STDOUT or a path to a file or dir (with '/' at the end)
+     *
+     * @param mixed STDOUT or string (path)
+     *
+     * @return true
+     * @throws \Exception
+     */
     public function setOutputFile($sFile) 
     {
         if (!is_string($sFile) and !(php_sapi_name() == 'cli' and $sFile == STDOUT)) {
-            throw (new Exception("Accept only string or STDOUT"));
+            throw new Exception("Accept only string or STDOUT");
         }
         $this->sPreOutputFile = $sFile;
         return true;
@@ -199,7 +211,7 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
             }
         }
         if (!$this->mInputFiles) {
-            throw (new Exception("Can't match any file"));
+            throw new Exception("Can't match any file");
         }
         return true;
         // ArrayNested->on()
@@ -235,29 +247,29 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
     public function process() 
     {
         if (!$this->mPreInputFiles) {
-            throw (new Exception('Input file not defined'));
+            throw new Exception('Input file not defined');
         } else {
             $this->setInputFilePost();
             $this->setOutputFilePost();
         }
         if (!$this->mInputFiles) {
-            throw (new Exception(implode(',', $this->mPreInputFiles) ." doesn't match any files"));
+            throw new Exception(implode(',', $this->mPreInputFiles) . " doesn't match any files");
         } else {
             return true;
         }
     }
     private function getBatchEngine() 
     {
-        $sCompress = ($this->sCompress) ? ucfirst($this->sCompress) : '';
+        $sCompress = $this->sCompress ? ucfirst($this->sCompress) : '';
         $sClass = $this->sOutputMode.$sCompress;
         $sClassEngine = 'PHP_Beautifier_Batch_Output_'.$sClass;
         $sClassFile = PHP_Beautifier_Common::normalizeDir(dirname(__FILE__)) .'Batch/Output/'.$sClass.'.php';
         if (!file_exists($sClassFile)) {
-            throw (new Exception("Doesn't exists file definition for $sClass ($sClassFile)"));
+            throw new Exception("Doesn't exists file definition for $sClass ($sClassFile)");
         } else {
-            include_once ($sClassFile);
+            include_once $sClassFile;
             if (!class_exists($sClassEngine)) {
-                throw (new Exception("$sClassFile exists, but $sClassEngine isn't defined"));
+                throw new Exception("$sClassFile exists, but $sClassEngine isn't defined");
             } else {
                 return new $sClassEngine($this);
             }
@@ -273,10 +285,13 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
         $oBatchEngine = $this->getBatchEngine();
         return $oBatchEngine->save();
     }
+
     /**
-    * Return a string with the content of the file(s)
-    * @return string
-    */
+     * Return a string with the content of the file(s)
+     *
+     * @return string
+     * @throws \Exception
+     */
     public function get() 
     {
         $oBatchEngine = $this->getBatchEngine();

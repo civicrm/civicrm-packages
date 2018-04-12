@@ -12,7 +12,10 @@ class HTMLPurifier_DefinitionCache_Decorator extends HTMLPurifier_DefinitionCach
 
     /**
      * Lazy decorator function
+     *
      * @param $cache Reference to cache object to decorate
+     *
+     * @return \HTMLPurifier_DefinitionCache_Decorator
      */
     public function decorate(&$cache) {
         $decorator = $this->copy();

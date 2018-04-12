@@ -22,7 +22,10 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
 
     /**
      * Callback function for script CDATA fudge
-     * @param $matches, in form of array(opening tag, contents, closing tag)
+     *
+     * @param $matches , in form of array(opening tag, contents, closing tag)
+     *
+     * @return string
      */
     protected function scriptCallback($matches) {
         return $matches[1] . htmlspecialchars($matches[2], ENT_COMPAT, 'UTF-8') . $matches[3];
@@ -337,7 +340,9 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
      * Takes the inside of an HTML tag and makes an assoc array of attributes.
      *
      * @param $string Inside of tag excluding name.
+     *
      * @returns Assoc array of attributes.
+     * @return array
      */
     public function parseAttributeString($string, $config, $context) {
         $string = (string) $string; // quick typecast

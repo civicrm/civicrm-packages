@@ -98,10 +98,13 @@ class When
 		$this->valid_frequency = array('SECONDLY', 'MINUTELY', 'HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY');
 	}
 
-	/**
-	 * @param DateTime|string $start_date of the recursion - also is the first return value.
-	 * @param string $frequency of the recrusion, valid frequencies: secondly, minutely, hourly, daily, weekly, monthly, yearly
-	 */
+    /**
+     * @param DateTime|string $start_date of the recursion - also is the first return value.
+     * @param string          $frequency  of the recrusion, valid frequencies: secondly, minutely, hourly, daily,
+     *                                    weekly, monthly, yearly
+     *
+     * @return \When
+     */
 	public function recur($start_date, $frequency = "daily")
 	{
 		try

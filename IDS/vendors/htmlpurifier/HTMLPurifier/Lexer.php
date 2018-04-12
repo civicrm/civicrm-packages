@@ -63,7 +63,9 @@ class HTMLPurifier_Lexer
      *       This change in behavior de-singletonizes the lexer object.
      *
      * @param $config Instance of HTMLPurifier_Config
+     *
      * @return Concrete lexer.
+     * @throws \HTMLPurifier_Exception
      */
     public static function create($config) {
 
@@ -169,7 +171,9 @@ class HTMLPurifier_Lexer
      * have been handled previously in substituteNonSpecialEntities()
      *
      * @param $string String character data to be parsed.
+     *
      * @returns Parsed character data.
+     * @return null|string|string[]
      */
     public function parseData($string) {
 
@@ -209,7 +213,9 @@ class HTMLPurifier_Lexer
      * Translates CDATA sections into regular sections (through escaping).
      *
      * @param $string HTML string to process.
+     *
      * @returns HTML with CDATA sections escaped.
+     * @return null|string|string[]
      */
     protected static function escapeCDATA($string) {
         return preg_replace_callback(

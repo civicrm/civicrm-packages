@@ -23,7 +23,10 @@ abstract class HTMLPurifier_DefinitionCache
 
     /**
      * Generates a unique identifier for a particular configuration
+     *
      * @param Instance of HTMLPurifier_Config
+     *
+     * @return string
      */
     public function generateKey($config) {
         return $config->version . ',' . // possibly replace with function calls
@@ -34,8 +37,11 @@ abstract class HTMLPurifier_DefinitionCache
     /**
      * Tests whether or not a key is old with respect to the configuration's
      * version and revision number.
-     * @param $key Key to test
+     *
+     * @param $key    Key to test
      * @param $config Instance of HTMLPurifier_Config to test against
+     *
+     * @return bool
      */
     public function isOld($key, $config) {
         if (substr_count($key, ',') < 2) return true;

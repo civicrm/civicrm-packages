@@ -40,12 +40,16 @@ include_once 'Archive/Tar.php';
 * @version    Release: 0.1.14
 */
 abstract class PHP_Beautifier_Batch_Output_DirectoryTar extends PHP_Beautifier_Batch_Output {
-    public function save() 
+    /**
+     * @return bool|void
+     * @throws \Exception
+     */
+    public function save()
     {
         $aInputFiles = $this->oBatch->getInputFiles();
         $sOutputPath = $this->oBatch->getOutputPath();
         $aOutputFiles = PHP_Beautifier_Common::getSavePath($aInputFiles, $sOutputPath);
-        for ($x = 0;$x<count($aInputFiles);$x++) {
+        for ($x = 0, $xMax = count($aInputFiles); $x < $xMax;$x++) {
             unset($oTar);
             $oTar = $this->getTar($aOutputFiles[$x]);
             $this->beautifierSetInputFile($aInputFiles[$x]);
@@ -55,9 +59,12 @@ abstract class PHP_Beautifier_Batch_Output_DirectoryTar extends PHP_Beautifier_B
         }
         return true;
     }
+
     /**
-    * @todo implements this
-    */
+     * @todo implements this
+     *
+     * @param $sFileName
+     */
     protected function getTar($sFileName) 
     {
     }

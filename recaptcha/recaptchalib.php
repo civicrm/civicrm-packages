@@ -196,8 +196,11 @@ function recaptcha_check_answer ($privkey, $remoteip, $challenge, $response, $ex
  * gets a URL where the user can sign up for reCAPTCHA. If your application
  * has a configuration page where you enter a key, you should provide a link
  * using this function.
- * @param string $domain The domain where the page is hosted
+ *
+ * @param string $domain  The domain where the page is hosted
  * @param string $appname The name of your application
+ *
+ * @return string
  */
 function recaptcha_get_signup_url ($domain = null, $appname = null) {
 	return "https://www.google.com/recaptcha/admin/create?" .  _recaptcha_qsencode (array ('domains' => $domain, 'app' => $appname));

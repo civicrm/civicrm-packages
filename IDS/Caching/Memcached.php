@@ -87,14 +87,13 @@ class IDS_Caching_Memcached implements IDS_Caching_Interface
      */
     private static $cachingInstance = null;
 
-
     /**
      * Constructor
      *
      * @param  string $type caching type
      * @param  array  $init the IDS_Init object
-     * 
-     * @return void
+     *
+     * @throws \Exception
      */
     public function __construct($type, $init) 
     {

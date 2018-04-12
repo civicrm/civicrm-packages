@@ -52,7 +52,9 @@ class HTMLPurifier_EntityParser
      * it before everything else.
      *
      * @param $string String to have non-special entities parsed.
+     *
      * @returns Parsed string.
+     * @return null|string|string[]
      */
     public function substituteNonSpecialEntities($string) {
         // it will try to detect missing semicolons, but don't rely on it
@@ -69,7 +71,9 @@ class HTMLPurifier_EntityParser
      * @param $matches  PCRE matches array, with 0 the entire match, and
      *                  either index 1, 2 or 3 set with a hex value, dec value,
      *                  or string (respectively).
+     *
      * @returns Replacement string.
+     * @return string
      */
 
     protected function nonSpecialEntityCallback($matches) {
@@ -104,7 +108,9 @@ class HTMLPurifier_EntityParser
      * would have to be called a lot (for every parsed section).
      *
      * @param $string String to have non-special entities parsed.
+     *
      * @returns Parsed string.
+     * @return null|string|string[]
      */
     public function substituteSpecialEntities($string) {
         return preg_replace_callback(
@@ -121,7 +127,9 @@ class HTMLPurifier_EntityParser
      * @param $matches  PCRE-style matches array, with 0 the entire match, and
      *                  either index 1, 2 or 3 set with a hex value, dec value,
      *                  or string (respectively).
+     *
      * @returns Replacement string.
+     * @return mixed
      */
     protected function specialEntityCallback($matches) {
         $entity = $matches[0];

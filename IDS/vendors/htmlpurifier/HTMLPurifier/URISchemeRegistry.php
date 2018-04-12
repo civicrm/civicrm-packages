@@ -8,10 +8,13 @@ class HTMLPurifier_URISchemeRegistry
 
     /**
      * Retrieve sole instance of the registry.
+     *
      * @param $prototype Optional prototype to overload sole instance with,
      *                   or bool true to reset to default registry.
+     *
      * @note Pass a registry object $prototype with a compatible interface and
      *       the function will copy it and return it all further times.
+     * @return \HTMLPurifier_URISchemeRegistry|null|\Optional
      */
     public static function instance($prototype = null) {
         static $instance = null;
@@ -30,9 +33,12 @@ class HTMLPurifier_URISchemeRegistry
 
     /**
      * Retrieves a scheme validator object
+     *
      * @param $scheme String scheme name like http or mailto
      * @param $config HTMLPurifier_Config object
      * @param $config HTMLPurifier_Context object
+     *
+     * @return mixed|void
      */
     public function getScheme($scheme, $config, $context) {
         if (!$config) $config = HTMLPurifier_Config::createDefault();

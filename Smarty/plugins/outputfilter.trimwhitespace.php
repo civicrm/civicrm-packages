@@ -4,7 +4,6 @@
  * @package Smarty
  * @subpackage plugins
  */
-
 /**
  * Smarty trimwhitespace outputfilter plugin
  *
@@ -19,11 +18,15 @@
  * Install:  Drop into the plugin directory, call
  *           <code>$smarty->load_filter('output','trimwhitespace');</code>
  *           from application.
+ *
  * @author   Monte Ohrt <monte at ohrt dot com>
- * @author Contributions from Lars Noschinski <lars@usenet.noschinski.de>
+ * @author   Contributions from Lars Noschinski <lars@usenet.noschinski.de>
  * @version  1.3
+ *
  * @param string
  * @param Smarty
+ *
+ * @return null|string|string[]
  */
 function smarty_outputfilter_trimwhitespace($source, &$smarty)
 {

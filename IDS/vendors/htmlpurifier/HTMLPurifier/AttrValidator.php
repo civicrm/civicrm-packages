@@ -11,12 +11,15 @@ class HTMLPurifier_AttrValidator
     /**
      * Validates the attributes of a token, returning a modified token
      * that has valid tokens
-     * @param $token Reference to token to validate. We require a reference
-     *     because the operation this class performs on the token are
-     *     not atomic, so the context CurrentToken to be updated
-     *     throughout
-     * @param $config Instance of HTMLPurifier_Config
+     *
+     * @param $token   Reference to token to validate. We require a reference
+     *                 because the operation this class performs on the token are
+     *                 not atomic, so the context CurrentToken to be updated
+     *                 throughout
+     * @param $config  Instance of HTMLPurifier_Config
      * @param $context Instance of HTMLPurifier_Context
+     *
+     * @return \Reference
      */
     public function validateToken(&$token, &$config, $context) {
 

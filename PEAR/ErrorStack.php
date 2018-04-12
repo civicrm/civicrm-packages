@@ -365,14 +365,17 @@ class PEAR_ErrorStack {
         $package = $package ? $package : '*';
         $GLOBALS['_PEAR_ERRORSTACK_DEFAULT_CALLBACK'][$package] = $callback;
     }
-    
+
     /**
      * Set a callback that generates context information (location of error) for an error stack
-     * 
+     *
      * This method sets the callback that can be used to generate context
      * information for an error.  Passing in NULL will disable context generation
      * and remove the expensive call to debug_backtrace()
+     *
      * @param array|string|null Callback function/method
+     *
+     * @return bool
      */
     public function setContextCallback($contextCallback)
     {

@@ -27,8 +27,9 @@ class zipFolder {
             ? $ignored
             : ($ignored ? array($ignored) : array());
 
-        if ($this->zip->open($file, \ZipArchive::CREATE) !== TRUE)
+        if ($this->zip->open($file, \ZipArchive::CREATE) !== TRUE) {
             throw new \Exception("cannot open <$file>\n");
+        }
 
         $folder = rtrim($folder, '/');
 
@@ -46,16 +47,18 @@ class zipFolder {
         $zip_path = "$parent$folder";
         $this->zip->addEmptyDir($zip_path);
         $dir = new \DirectoryIterator($full_path);
-        foreach ($dir as $file)
-            if (!$file->isDot()) {
+        foreach ($dir as $file) {
+            if ( ! $file->isDot()) {
                 $filename = $file->getFilename();
-                if (!in_array($filename, $this->ignored)) {
-                    if ($file->isDir())
+                if ( ! in_array($filename, $this->ignored)) {
+                    if ($file->isDir()) {
                         $this->zip($filename, "$zip_path/");
-                    else
+                    } else {
                         $this->zip->addFile("$full_path/$filename", "$zip_path/$filename");
+                    }
                 }
             }
+        }
     }
 }
 

@@ -13,11 +13,13 @@ class ofc_tags
 		$this->colour = $colour;
 		return $this;
 	}
-	
-	/**
-	 *@param $font as string. e.g. "Verdana"
-	 *@param $size as integer. Size in px
-	 */
+
+    /**
+     * @param $font as string. e.g. "Verdana"
+     * @param $size as integer. Size in px
+     *
+     * @return \ofc_tags
+     */
 	public function font($font, $size)
 	{
 		$this->font = $font;
@@ -25,10 +27,12 @@ class ofc_tags
 		return $this;
 	}
 
-	/**
-	 *@param $x as integer. Size of x padding in px
-	 *@param $y as integer. Size of y padding in px
-	 */
+    /**
+     * @param $x as integer. Size of x padding in px
+     * @param $y as integer. Size of y padding in px
+     *
+     * @return \ofc_tags
+     */
 	public function padding($x, $y)
 	{
 		$this->{"pad-x"} = $x;
@@ -97,13 +101,15 @@ class ofc_tags
 		$this->{'on-click'} = $on_click;
 		return $this;
 	}
-	
-	/**
-	 *@param $bold boolean.
-	 *@param $underline boolean.
-	 *@param $border boolean.
-	 *@prarm $alpha real (0 to 1.0)
-	 */
+
+    /**
+     * @param $bold      boolean.
+     * @param $underline boolean.
+     * @param $border    boolean.
+     * @prarm $alpha real (0 to 1.0)
+     *
+     * @return \ofc_tags
+     */
 	public function style($bold, $underline, $border, $alpha )
 	{
 		$this->bold = $bold;

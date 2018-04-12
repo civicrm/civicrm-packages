@@ -328,19 +328,22 @@ class HTMLPurifier_Encoder
 
     /**
      * Lossless (character-wise) conversion of HTML to ASCII
+     *
      * @param $str UTF-8 string to be converted to ASCII
+     *
      * @returns ASCII encoded string with non-ASCII character entity-ized
      * @warning Adapted from MediaWiki, claiming fair use: this is a common
      *       algorithm. If you disagree with this license fudgery,
      *       implement it yourself.
-     * @note Uses decimal numeric entities since they are best supported.
-     * @note This is a DUMB function: it has no concept of keeping
+     * @note    Uses decimal numeric entities since they are best supported.
+     * @note    This is a DUMB function: it has no concept of keeping
      *       character entities that the projected character encoding
      *       can allow. We could possibly implement a smart version
      *       but that would require it to also know which Unicode
      *       codepoints the charset supported (not an easy task).
-     * @note Sort of with cleanUTF8() but it assumes that $str is
+     * @note    Sort of with cleanUTF8() but it assumes that $str is
      *       well-formed UTF-8
+     * @return string
      */
     public static function convertToASCIIDumbLossless($str) {
         $bytesleft = 0;

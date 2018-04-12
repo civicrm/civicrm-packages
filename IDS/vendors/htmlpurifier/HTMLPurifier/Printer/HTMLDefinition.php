@@ -165,7 +165,10 @@ class HTMLPurifier_Printer_HTMLDefinition extends HTMLPurifier_Printer
 
     /**
      * Renders a row describing the allowed children of an element
+     *
      * @param $def HTMLPurifier_ChildDef of pertinent element
+     *
+     * @return string
      */
     protected function renderChildren($def) {
         $context = new HTMLPurifier_Context();
@@ -216,7 +219,10 @@ class HTMLPurifier_Printer_HTMLDefinition extends HTMLPurifier_Printer
 
     /**
      * Listifies a tag lookup table.
+     *
      * @param $array Tag lookup array in form of array('tagname' => true)
+     *
+     * @return string
      */
     protected function listifyTagLookup($array) {
         ksort($array);
@@ -230,8 +236,11 @@ class HTMLPurifier_Printer_HTMLDefinition extends HTMLPurifier_Printer
 
     /**
      * Listifies a list of objects by retrieving class names and internal state
+     *
      * @param $array List of objects
+     *
      * @todo Also add information about internal state
+     * @return string
      */
     protected function listifyObjectList($array) {
         ksort($array);
@@ -244,7 +253,10 @@ class HTMLPurifier_Printer_HTMLDefinition extends HTMLPurifier_Printer
 
     /**
      * Listifies a hash of attributes to AttrDef classes
+     *
      * @param $array Array hash in form of array('attrname' => HTMLPurifier_AttrDef)
+     *
+     * @return string
      */
     protected function listifyAttr($array) {
         ksort($array);

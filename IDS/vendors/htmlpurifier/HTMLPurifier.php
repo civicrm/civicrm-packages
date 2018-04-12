@@ -105,12 +105,14 @@ class HTMLPurifier
     /**
      * Filters an HTML snippet/document to be XSS-free and standards-compliant.
      *
-     * @param $html String of HTML to purify
+     * @param $html   String of HTML to purify
      * @param $config HTMLPurifier_Config object for this operation, if omitted,
      *                defaults to the config object specified during this
      *                object's construction. The parameter can also be any type
      *                that HTMLPurifier_Config::create() supports.
+     *
      * @return Purified HTML
+     * @throws \HTMLPurifier_Exception
      */
     public function purify($html, $config = null) {
 
@@ -208,9 +210,12 @@ class HTMLPurifier
 
     /**
      * Singleton for enforcing just one HTML Purifier in your system
+     *
      * @param $prototype Optional prototype HTMLPurifier instance to
      *                   overload singleton with, or HTMLPurifier_Config
      *                   instance to configure the generated version with.
+     *
+     * @return \HTMLPurifier|null|\Optional
      */
     public static function instance($prototype = null) {
         if (!self::$instance || $prototype) {

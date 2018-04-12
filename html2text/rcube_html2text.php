@@ -510,8 +510,10 @@ class rcube_html2text
      * appeared. Also makes an effort at identifying and handling absolute
      * and relative links.
      *
-     * @param string $link URL of the link
+     * @param string $link    URL of the link
      * @param string $display Part of the text to associate number with
+     *
+     * @return string
      */
     protected function _build_link_list( $link, $display )
     {

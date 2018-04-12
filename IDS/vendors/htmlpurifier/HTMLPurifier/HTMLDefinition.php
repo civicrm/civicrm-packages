@@ -383,11 +383,15 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
     /**
      * Parses a TinyMCE-flavored Allowed Elements and Attributes list into
      * separate lists for processing. Format is element[attr1|attr2],element2...
+     *
      * @warning Although it's largely drawn from TinyMCE's implementation,
      *      it is different, and you'll probably have to modify your lists
+     *
      * @param $list String list to parse
      * @param array($allowed_elements, $allowed_attributes)
-     * @todo Give this its own class, probably static interface
+     *
+     * @todo    Give this its own class, probably static interface
+     * @return array
      */
     public function parseTinyMCEAllowedList($list) {
 

@@ -11,10 +11,12 @@ class x_axis_labels
 	{
 		$this->steps = $steps;
 	}
-	
-	/**
-	 * @param $steps as integer which labels are visible
-	 */
+
+    /**
+     * @param $steps as integer which labels are visible
+     *
+     * @return \x_axis_labels
+     */
 	public function visible_steps( $steps )
 	{
 		$this->{"visible-steps"} = $steps;

@@ -31,8 +31,11 @@ class HTMLPurifier_Context
 
     /**
      * Retrieves a variable reference from the context.
-     * @param $name String name
+     *
+     * @param $name         String name
      * @param $ignore_error Boolean whether or not to ignore error
+     *
+     * @return mixed|null
      */
     public function &get($name, $ignore_error = false) {
         if (!isset($this->_storage[$name])) {
@@ -61,7 +64,10 @@ class HTMLPurifier_Context
 
     /**
      * Checks whether or not the variable exists.
+     *
      * @param $name String name
+     *
+     * @return bool
      */
     public function exists($name) {
         return isset($this->_storage[$name]);

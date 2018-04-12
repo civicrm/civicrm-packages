@@ -60,11 +60,13 @@ class fpdi_pdf_parser extends pdf_parser
      * @var array
      */
     public $availableBoxes = array('/MediaBox', '/CropBox', '/BleedBox', '/TrimBox', '/ArtBox');
-        
+
     /**
      * The constructor.
      *
      * @param string $filename The source filename
+     *
+     * @throws \Exception
      */
     public function __construct($filename)
     {
@@ -116,12 +118,13 @@ class fpdi_pdf_parser extends pdf_parser
     {
         return $this->_getPageResources($this->_pages[$this->pageNo]);
     }
-    
+
     /**
      * Get page-resources from a /Page dictionary.
      *
      * @param array $obj Array of pdf-data
      * @return array|boolean
+     * @throws \Exception
      */
     protected function _getPageResources($obj)
     {
@@ -154,6 +157,7 @@ class fpdi_pdf_parser extends pdf_parser
      * If /Contents is an array, the streams are concatenated
      *
      * @return string
+     * @throws \Exception
      */
     public function getContent()
     {
@@ -174,6 +178,7 @@ class fpdi_pdf_parser extends pdf_parser
      *
      * @param array $contentRef
      * @return array
+     * @throws \Exception
      */
     protected function _getPageContent($contentRef)
     {
@@ -200,11 +205,11 @@ class fpdi_pdf_parser extends pdf_parser
      *
      * Array format is same as used by FPDF_TPL.
      *
-     * @param array $page a /Page dictionary
+     * @param array  $page     a /Page dictionary
      * @param string $boxIndex Type of box {see {@link $availableBoxes})
-     * @param float Scale factor from user space units to points
-     *
+     * @param        $k
      * @return array|boolean
+     * @throws \Exception
      */
     protected function _getPageBox($page, $boxIndex, $k)
     {
@@ -296,6 +301,7 @@ class fpdi_pdf_parser extends pdf_parser
      *
      * @param array $obj A /Page dictionary
      * @return array|bool
+     * @throws \Exception
      */
     protected function _getPageRotation($obj)
     {

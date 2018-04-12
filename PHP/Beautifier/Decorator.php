@@ -36,15 +36,23 @@ abstract class PHP_Beautifier_Decorator implements PHP_Beautifier_Interface {
     {
         $this->oBeaut = $oBeaut;
     }
+
+    /**
+     * @param $sMethod
+     * @param $aArgs
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     public function __call($sMethod, $aArgs)
     {
         if (!method_exists($this->oBeaut, $sMethod)) {
-            throw (new Exception("Method '$sMethod' doesn't exists"));
-        } else {
-            return call_user_func_array(array(
-                $this->oBeaut,
-                $sMethod
-            ) , $aArgs);
+            throw new Exception("Method '$sMethod' doesn't exists");
         }
+
+        return call_user_func_array(array(
+            $this->oBeaut,
+            $sMethod
+        ) , $aArgs);
     }
 }

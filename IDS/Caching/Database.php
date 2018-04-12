@@ -107,8 +107,8 @@ class IDS_Caching_Database implements IDS_Caching_Interface
      *
      * @param string $type caching type
      * @param object $init the IDS_Init object
-     * 
-     * @return void
+     *
+     * @throws \Exception
      */
     public function __construct($type, $init) 
     {
@@ -122,10 +122,12 @@ class IDS_Caching_Database implements IDS_Caching_Interface
      * Returns an instance of this class
      *
      * @static
+     *
      * @param  string $type caching type
      * @param  object $init the IDS_Init object
-     * 
+     *
      * @return object $this
+     * @throws \Exception
      */
     public static function getInstance($type, $init)
     {

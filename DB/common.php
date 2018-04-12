@@ -529,13 +529,12 @@ class DB_common extends PEAR
 
     // }}}
     // {{{ setFetchMode()
-
     /**
      * Sets the fetch mode that should be used by default for query results
      *
-     * @param integer $fetchmode    DB_FETCHMODE_ORDERED, DB_FETCHMODE_ASSOC
+     * @param integer $fetchmode     DB_FETCHMODE_ORDERED, DB_FETCHMODE_ASSOC
      *                               or DB_FETCHMODE_OBJECT
-     * @param string $object_class  the class name of the object to be returned
+     * @param string  $object_class  the class name of the object to be returned
      *                               by the fetch methods when the
      *                               DB_FETCHMODE_OBJECT mode is selected.
      *                               If no class is specified by default a cast
@@ -544,6 +543,7 @@ class DB_common extends PEAR
      *                               and extend the 'DB_row' class.
      *
      * @see DB_FETCHMODE_ORDERED, DB_FETCHMODE_ASSOC, DB_FETCHMODE_OBJECT
+     * @return object
      */
     public function setFetchMode($fetchmode, $object_class = 'stdClass')
     {

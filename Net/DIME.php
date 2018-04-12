@@ -540,10 +540,12 @@ class Net_DIME_Message {
     /**
      * Encodes data in DIME.
      *
-     * @param string $data
-     * @param string $typestr
-     * @param string $id
-     * @param integer $type     One of the NET_DIME_TYPE_* constants.
+     * @param string  $data
+     * @param string  $typestr
+     * @param string  $id
+     * @param integer $type One of the NET_DIME_TYPE_* constants.
+     *
+     * @return string
      */
     public function encodeData($data, $typestr = '', $id = null,
                         $type = NET_DIME_TYPE_UNKNOWN)

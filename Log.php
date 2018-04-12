@@ -763,13 +763,14 @@ class Log
      * Adds a Log_observer instance to the list of observers that are listening
      * for messages emitted by this Log instance.
      *
-     * @param object    $observer   The Log_observer instance to attach as a
+     * @param object $observer      The Log_observer instance to attach as a
      *                              listener.
      *
      * @param boolean   True if the observer is successfully attached.
      *
      * @access  public
      * @since   Log 1.0
+     * @return bool
      */
     public function attach(&$observer)
     {
@@ -785,13 +786,14 @@ class Log
     /**
      * Removes a Log_observer instance from the list of observers.
      *
-     * @param object    $observer   The Log_observer instance to detach from
+     * @param object $observer      The Log_observer instance to detach from
      *                              the list of listeners.
      *
      * @param boolean   True if the observer is successfully detached.
      *
      * @access  public
      * @since   Log 1.0
+     * @return bool
      */
     public function detach($observer)
     {

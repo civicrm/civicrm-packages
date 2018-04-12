@@ -71,9 +71,12 @@ class HTMLPurifier_Printer_ConfigForm extends HTMLPurifier_Printer
 
     /**
      * Returns HTML output for a configuration form
-     * @param $config Configuration object of current form state, or an array
-     *        where [0] has an HTML namespace and [1] is being rendered.
+     *
+     * @param $config  Configuration object of current form state, or an array
+     *                 where [0] has an HTML namespace and [1] is being rendered.
      * @param $allowed Optional namespace(s) and directives to restrict form to.
+     *
+     * @return string
      */
     public function render($config, $allowed = true, $render_controls = true) {
         if (is_array($config) && isset($config[0])) {
@@ -121,8 +124,11 @@ class HTMLPurifier_Printer_ConfigForm extends HTMLPurifier_Printer
 
     /**
      * Renders a single namespace
-     * @param $ns String namespace name
+     *
+     * @param $ns        String namespace name
      * @param $directive Associative array of directives to values
+     *
+     * @return string
      */
     protected function renderNamespace($ns, $directives) {
         $ret = '';

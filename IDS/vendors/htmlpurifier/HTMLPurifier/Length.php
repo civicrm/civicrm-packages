@@ -41,7 +41,9 @@ class HTMLPurifier_Length
 
     /**
      * @param string $s Unit string, like '2em' or '3.4in'
+     *
      * @warning Does not perform validation.
+     * @return \HTMLPurifier_Length|string
      */
     static public function make($s) {
         if ($s instanceof HTMLPurifier_Length) return $s;

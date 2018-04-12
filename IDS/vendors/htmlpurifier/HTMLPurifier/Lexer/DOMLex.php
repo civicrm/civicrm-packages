@@ -109,12 +109,14 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
     }
 
     /**
-     * @param $node  DOMNode to be tokenized.
-     * @param $tokens   Array-list of already tokenized tokens.
-     * @param $collect  Says whether or start and close are collected, set to
+     * @param $node       DOMNode to be tokenized.
+     * @param $tokens     Array-list of already tokenized tokens.
+     * @param $collect    Says whether or start and close are collected, set to
      *                    false at first recursion because it's the implicit DIV
      *                    tag you're dealing with.
+     *
      * @returns bool if the token needs an endtoken
+     * @return bool
      */
     protected function createStartNode($node, &$tokens, $collect) {
         // intercept non element nodes. WE MUST catch all of them,
@@ -177,12 +179,13 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         $tokens[] = $this->factory->createEnd($node->tagName);
     }
 
-
     /**
      * Converts a DOMNamedNodeMap of DOMAttr objects into an assoc array.
      *
      * @param $attribute_list DOMNamedNodeMap of DOMAttr objects.
+     *
      * @returns Associative array of attributes.
+     * @return array
      */
     protected function transformAttrToAssoc($node_map) {
         // NamedNodeMap is documented very well, so we're using undocumented

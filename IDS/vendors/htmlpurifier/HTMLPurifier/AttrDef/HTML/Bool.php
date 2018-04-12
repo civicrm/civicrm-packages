@@ -18,6 +18,8 @@ class HTMLPurifier_AttrDef_HTML_Bool extends HTMLPurifier_AttrDef
 
     /**
      * @param $string Name of attribute
+     *
+     * @return \HTMLPurifier_AttrDef_HTML_Bool
      */
     public function make($string) {
         return new HTMLPurifier_AttrDef_HTML_Bool($string);
