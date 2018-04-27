@@ -26,7 +26,7 @@ class text {
   * @return string */
 
     public static function clearWhitespaces($string) {
-        return trim(preg_replace('/\s+/s', ' ', $string));
+        return trim(preg_replace('/\s+/s', " ", $string));
     }
 
 /** Normalize the string for HTML attribute value
@@ -35,10 +35,10 @@ class text {
 
     public static function htmlValue($string) {
         return
-            str_replace('"', '&quot;',
+            str_replace('"', "&quot;",
             str_replace("'", '&#39;',
             str_replace('<', '&lt;',
-            str_replace('&', '&amp;',
+            str_replace('&', "&amp;",
         $string))));
     }
 

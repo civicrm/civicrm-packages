@@ -9,7 +9,7 @@ class bar_stack extends bar_base
 {
 	public function __construct()
 	{
-		$this->type      = 'bar_stack';
+		$this->type      = "bar_stack";
 		parent::__construct();
 	}
 

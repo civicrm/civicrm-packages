@@ -13,7 +13,7 @@ class ParsingTest extends PHPUnit_Framework_TestCase
     // It defaults to a "Western-style" plural header.
     $this->assertEquals(
       'nplurals=2; plural=n == 1 ? 0 : 1;',
-      $parser->extract_plural_forms_header_from_po_header(''));
+      $parser->extract_plural_forms_header_from_po_header(""));
 
     // Extracting it from the middle of the header works.
     $this->assertEquals(
@@ -35,9 +35,9 @@ class ParsingTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(
       'nplurals=2; plural=n == 1 ? 0 : 1;',
       $parser->extract_plural_forms_header_from_po_header(
-        'Content-type: text/html; charset=UTF-8' // note the missing \n here
-        . "Plural-Forms: nplurals=1; plural=0;\n"
-        . "Last-Translator: nobody\n"
+       "Content-type: text/html; charset=UTF-8" // note the missing \n here
+        ."Plural-Forms: nplurals=1; plural=0;\n"
+        ."Last-Translator: nobody\n"
       ));
 
   }

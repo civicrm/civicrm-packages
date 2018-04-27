@@ -167,8 +167,7 @@ class HTML_Common
             }
             return $ret;
 
-        }
-        if (is_string($attributes)) {
+        } elseif (is_string($attributes)) {
             $preg = "/(([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*)" .
                 "([ \\n\\t\\r]+)?(=([ \\n\\t\\r]+)?(\"[^\"]*\"|'[^']*'|[^ \\n\\t\\r]*))?/";
             if (preg_match_all($preg, $attributes, $regs)) {
@@ -179,7 +178,7 @@ class HTML_Common
                     if (trim($name) == trim($check)) {
                         $arrAttr[strtolower(trim($name))] = strtolower(trim($name));
                     } else {
-                        if ($value[0] == '"' || $value[0] == "'") {
+                        if (substr($value, 0, 1) == '"' || substr($value, 0, 1) == "'") {
                             $arrAttr[strtolower(trim($name))] = substr($value, 1, -1);
                         } else {
                             $arrAttr[strtolower(trim($name))] = trim($value);

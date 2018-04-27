@@ -305,8 +305,8 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
     protected function setupConfigStuff($config) {
 
         // setup allowed elements
-        $support = '(for information on implementing this, see the ' .
-                   'support forums) ';
+        $support = "(for information on implementing this, see the ".
+                   "support forums) ";
         $allowed_properties = $config->get('CSS.AllowedProperties');
         if ($allowed_properties !== null) {
             foreach ($this->info as $name => $d) {

@@ -390,7 +390,7 @@ class DB_DataObject_Cast {
             return PEAR::raiseError('Invalid Cast from a DB_DataObject_Cast::blob to something other than a blob!');
         }
         
-        switch ($db->dsn['phptype']) {
+        switch ($db->dsn["phptype"]) {
             case 'pgsql':
                 return "'".pg_escape_bytea($this->value)."'::bytea";
                 

@@ -99,7 +99,7 @@ class Log_daemon extends Log
         if (isset($conf['timeout'])) {
             $this->_timeout = $conf['timeout'];
         }
-        $this->_proto .= '://';
+        $this->_proto = $this->_proto . '://';
 
         register_shutdown_function(array(&$this, '_Log_daemon'));
     }

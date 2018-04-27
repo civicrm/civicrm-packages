@@ -84,7 +84,7 @@ class PHP_Beautifier_Batch_Output_Files extends PHP_Beautifier_Batch_Output {
         if ($bCli and $sFile == STDOUT) {
             $fp = STDOUT;
         } else {
-            $fp = fopen($this->oBatch->getOutputPath() , 'w');
+            $fp = fopen($this->oBatch->getOutputPath() , "w");
         }
         if (!$fp) {
             throw new Exception("Can't save file $sFile");

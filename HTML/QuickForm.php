@@ -431,8 +431,7 @@ class HTML_QuickForm extends HTML_Common
                 $this->setConstants($datasource->constantValues($this), $constantsFilter);
             }
         } else {
-            return PEAR::raiseError(null, QUICKFORM_INVALID_DATASOURCE, null, E_USER_WARNING,
-              'Datasource is not an object in QuickForm::setDatasource()', 'HTML_QuickForm_Error', true);
+            return PEAR::raiseError(null, QUICKFORM_INVALID_DATASOURCE, null, E_USER_WARNING, "Datasource is not an object in QuickForm::setDatasource()", 'HTML_QuickForm_Error', true);
         }
     } // end func setDatasource
 
@@ -456,14 +455,12 @@ class HTML_QuickForm extends HTML_Common
                 if (is_array($filter) && (2 != count($filter) || !is_callable($filter))) {
                     foreach ($filter as $val) {
                         if (!is_callable($val)) {
-                            return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING,
-                              'Callback function does not exist in QuickForm::setDefaults()', 'HTML_QuickForm_Error', true);
+                            return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING, "Callback function does not exist in QuickForm::setDefaults()", 'HTML_QuickForm_Error', true);
                         }
                         $defaultValues = $this->_recursiveFilter($val, $defaultValues);
                     }
                 } elseif (!is_callable($filter)) {
-                    return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING,
-                      'Callback function does not exist in QuickForm::setDefaults()', 'HTML_QuickForm_Error', true);
+                    return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING, "Callback function does not exist in QuickForm::setDefaults()", 'HTML_QuickForm_Error', true);
                 } else {
                     $defaultValues = $this->_recursiveFilter($filter, $defaultValues);
                 }
@@ -497,14 +494,12 @@ class HTML_QuickForm extends HTML_Common
                 if (is_array($filter) && (2 != count($filter) || !is_callable($filter))) {
                     foreach ($filter as $val) {
                         if (!is_callable($val)) {
-                            return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING,
-                              'Callback function does not exist in QuickForm::setConstants()', 'HTML_QuickForm_Error', true);
+                            return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING, "Callback function does not exist in QuickForm::setConstants()", 'HTML_QuickForm_Error', true);
                         }
                         $constantValues = $this->_recursiveFilter($val, $constantValues);
                     }
                 } elseif (!is_callable($filter)) {
-                    return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING,
-                      'Callback function does not exist in QuickForm::setConstants()', 'HTML_QuickForm_Error', true);
+                    return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING, "Callback function does not exist in QuickForm::setConstants()", 'HTML_QuickForm_Error', true);
                 } else {
                     $constantValues = $this->_recursiveFilter($filter, $constantValues);
                 }
@@ -1265,8 +1260,7 @@ class HTML_QuickForm extends HTML_Common
     public function applyFilter($element, $filter)
     {
         if (!is_callable($filter)) {
-            return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING,
-              'Callback function does not exist in QuickForm::applyFilter()', 'HTML_QuickForm_Error', true);
+            return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING, "Callback function does not exist in QuickForm::applyFilter()", 'HTML_QuickForm_Error', true);
         }
         if ($element == '__ALL__') {
             $this->_submitValues = $this->_recursiveFilter($filter, $this->_submitValues);
@@ -1687,8 +1681,7 @@ class HTML_QuickForm extends HTML_Common
     public function process($callback, $mergeFiles = true)
     {
         if (!is_callable($callback)) {
-            return PEAR::raiseError(null, QUICKFORM_INVALID_PROCESS, null, E_USER_WARNING,
-              'Callback function does not exist in QuickForm::process()', 'HTML_QuickForm_Error', true);
+            return PEAR::raiseError(null, QUICKFORM_INVALID_PROCESS, null, E_USER_WARNING, "Callback function does not exist in QuickForm::process()", 'HTML_QuickForm_Error', true);
         }
         $values = ($mergeFiles === true) ? self::arrayMerge($this->_submitValues, $this->_submitFiles) : $this->_submitValues;
         return call_user_func($callback, $values);
@@ -1836,8 +1829,8 @@ class HTML_QuickForm extends HTML_Common
         if (count($test) > 0) {
             return
                 "\n<script type=\"text/javascript\">\n" .
-                "//<![CDATA[\n" .
-                'function validate_' . $this->_attributes['id'] . "(frm) {\n" .
+                "//<![CDATA[\n" . 
+                "function validate_" . $this->_attributes['id'] . "(frm) {\n" .
                 "  var value = '';\n" .
                 "  var errFlag = new Array();\n" .
                 "  var _qfGroups = {};\n" .
@@ -1852,7 +1845,7 @@ class HTML_QuickForm extends HTML_Common
                 "  return true;\n" .
                 "}\n" .
                 "//]]>\n" .
-                '</script>';
+                "</script>";
         }
         return '';
     } // end func getValidationScript

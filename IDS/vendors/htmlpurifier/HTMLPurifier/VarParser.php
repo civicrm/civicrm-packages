@@ -161,7 +161,7 @@ class HTMLPurifier_VarParser
      * @throws \HTMLPurifier_Exception
 */
     protected function errorInconsistent($class, $type) {
-        throw new HTMLPurifier_Exception("Inconsistency in $class: " . self::getTypeName($type) . ' not implemented');
+        throw new HTMLPurifier_Exception("Inconsistency in $class: " . self::getTypeName($type) . " not implemented");
     }
 
     /**
@@ -172,7 +172,7 @@ class HTMLPurifier_VarParser
 */
     protected function errorGeneric($var, $type) {
         $vtype = gettype($var);
-        $this->error('Expected type ' . self::getTypeName($type) . ", got $vtype");
+        $this->error("Expected type " . self::getTypeName($type) . ", got $vtype");
     }
 
     /**

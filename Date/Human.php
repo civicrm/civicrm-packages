@@ -113,19 +113,19 @@ class Date_Human
             $dateinfo = getdate(time());
         }
         if (empty($day)) {
-            $day = $dateinfo['mday'];
+            $day = $dateinfo["mday"];
         }
         if (empty($month)) {
-            $month = $dateinfo['mon'];
+            $month = $dateinfo["mon"];
         }
         if (empty($year)) {
-            $year = $dateinfo['year'];
+            $year = $dateinfo["year"];
         }
         /*
          * We need to know how many days into the year we are
          */
         $dateinfo = getdate(mktime(0, 0, 0, $month, $day, $year));
-        $dayofyear = $dateinfo['yday'];
+        $dayofyear = $dateinfo["yday"];
         /*
          * Human Calendar starts at 0 for months and the first day of the year
          * is designated 00, so we need to start our day of the year at 0 for
@@ -175,11 +175,11 @@ class Date_Human
          * Return an associative array of the values
          */
         return array(
-          'hdom' => $humanDayOfMonth,
-          'hdow' => $humanDayOfWeek,
-          'hwom' => $humanWeekOfMonth,
-          'hwoy' => $humanWeekOfYear,
-          'hmoy' => $humanMonthOfYear );
+                     "hdom" => $humanDayOfMonth,
+                     "hdow" => $humanDayOfWeek,
+                     "hwom" => $humanWeekOfMonth,
+                     "hwoy" => $humanWeekOfYear,
+                     "hmoy" => $humanMonthOfYear );
     }
 
     // }}}
@@ -204,7 +204,7 @@ class Date_Human
          */
         if (empty($year)) {
             $dateinfo = getdate(time());
-            $year = $dateinfo['year'];
+            $year = $dateinfo["year"];
         }
         /*
          * We need to get the day of the year that we are currently at so that

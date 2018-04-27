@@ -14,7 +14,7 @@
  */
 class HTMLPurifier_AttrTransform_SafeParam extends HTMLPurifier_AttrTransform
 {
-    public $name = 'SafeParam';
+    public $name = "SafeParam";
     private $uri;
 
     public function __construct() {
@@ -53,7 +53,7 @@ class HTMLPurifier_AttrTransform_SafeParam extends HTMLPurifier_AttrTransform
                 break;
             case 'movie':
             case 'src':
-                $attr['name'] = 'movie';
+                $attr['name'] = "movie";
                 $attr['value'] = $this->uri->validate($attr['value'], $config, $context);
                 break;
             case 'flashvars':

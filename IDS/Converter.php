@@ -543,8 +543,8 @@ class IDS_Converter
     public static function convertFromConcatenated($value)
     {
         //normalize remaining backslashes
-        if ($value != preg_replace('/(\w)\\\/', '$1', $value)) {
-            $value .= preg_replace('/(\w)\\\/', '$1', $value);
+        if ($value != preg_replace('/(\w)\\\/', "$1", $value)) {
+            $value .= preg_replace('/(\w)\\\/', "$1", $value);
         }
 
         $compare = stripslashes($value);
@@ -572,10 +572,10 @@ class IDS_Converter
         $converted = preg_replace($pattern, null, $compare);
 
         //strip object traversal
-        $converted = preg_replace('/\w(\.\w\()/', '$1', $converted);
+        $converted = preg_replace('/\w(\.\w\()/', "$1", $converted);
 
         // normalize obfuscated method calls
-        $converted = preg_replace('/\)\s*\+/', ')', $converted);
+        $converted = preg_replace('/\)\s*\+/', ")", $converted);
 
         //convert JS special numbers
         $converted = preg_replace('/(?:\(*[.\d]e[+-]*[^a-z\W]+\)*)' .

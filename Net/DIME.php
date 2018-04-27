@@ -203,12 +203,12 @@ class Net_DIME_Record {
      */
     public function setType($typestring, $type = NET_DIME_TYPE_UNKNOWN)
     {
-        $typelen                           = strlen($typestring) & 0xFFFF;
-        $type                              <<= 4;
-        $this->Elements[NET_DIME_FLAGS]    = ($this->Elements[NET_DIME_FLAGS] & 0xFF0F) | $type;
+        $typelen = strlen($typestring) & 0xFFFF;
+        $type = $type << 4;
+        $this->Elements[NET_DIME_FLAGS] = ($this->Elements[NET_DIME_FLAGS] & 0xFF0F) | $type;
         $this->Elements[NET_DIME_TYPE_LEN] = $typelen;
-        $this->TYPE_LENGTH                 = $this->_getPadLength($typelen);
-        $this->Elements[NET_DIME_TYPE]     = $typestring;
+        $this->TYPE_LENGTH = $this->_getPadLength($typelen);
+        $this->Elements[NET_DIME_TYPE] = $typestring;
     }
 
     /**

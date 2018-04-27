@@ -76,7 +76,7 @@ class legend
      */
     public function set_border_colour( $border_colour )
 	{
-		$tmp = 'border_colour';
+		$tmp = "border_colour";
 		$this->$tmp = $border_colour;
 	}
 
@@ -85,7 +85,7 @@ class legend
      */
     public function set_bg_colour( $bg_colour )
 	{
-		$tmp = 'bg_colour';
+		$tmp = "bg_colour";
 		$this->$tmp = $bg_colour;
 	}
 

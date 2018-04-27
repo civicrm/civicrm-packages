@@ -131,7 +131,7 @@ class Contact_Vcard_Parse
         // line 2 starts with a whitespace character.  only removes
         // the first whitespace character, leaves others in place.
         $fold_regex = '(\n)([ |\t])';
-        $text       = preg_replace("/$fold_regex/i", '', $text);
+        $text       = preg_replace("/$fold_regex/i", "", $text);
 
         // massage for Macintosh OS X Address Book (remove nulls that
         // Address Book puts in for unicode chars)
@@ -480,7 +480,7 @@ class Contact_Vcard_Parse
 
             // split the full parameter at the equal sign so we can tell
             // the parameter name from the parameter value
-            $tmp = explode('=', $full);
+            $tmp = explode("=", $full);
 
             // the key is the left portion of the parameter (before
             // '='). if in 2.1 format, the key may in fact be the

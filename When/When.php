@@ -105,7 +105,7 @@ class When
      *
      * @return \When
      */
-	public function recur($start_date, $frequency = 'daily')
+	public function recur($start_date, $frequency = "daily")
 	{
 		try
 		{
@@ -161,57 +161,57 @@ class When
     public function rrule($rrule)
 	{
 		// strip off a trailing semi-colon
-		$rrule = trim($rrule, ';');
+		$rrule = trim($rrule, ";");
 
-		$parts = explode(';', $rrule);
+		$parts = explode(";", $rrule);
 
 		foreach($parts as $part)
 		{
-			list($rule, $param) = explode('=', $part);
+			list($rule, $param) = explode("=", $part);
 
 			$rule = strtoupper($rule);
 			$param = strtoupper($param);
 
 			switch($rule)
 			{
-				case 'FREQ':
+				case "FREQ":
 					$this->frequency = $param;
 					break;
-				case 'UNTIL':
+				case "UNTIL":
 					$this->until($param);
 					break;
-				case 'COUNT':
+				case "COUNT":
 					$this->count($param);
 					$this->counter = 0;
 					break;
-				case 'INTERVAL':
+				case "INTERVAL":
 					$this->interval($param);
 					break;
-				case 'BYDAY':
-					$params = explode(',', $param);
+				case "BYDAY":
+					$params = explode(",", $param);
 					$this->byday($params);
 					break;
-				case 'BYMONTHDAY':
-					$params = explode(',', $param);
+				case "BYMONTHDAY":
+					$params = explode(",", $param);
 					$this->bymonthday($params);
 					break;
-				case 'BYYEARDAY':
-					$params = explode(',', $param);
+				case "BYYEARDAY":
+					$params = explode(",", $param);
 					$this->byyearday($params);
 					break;
-				case 'BYWEEKNO':
-					$params = explode(',', $param);
+				case "BYWEEKNO":
+					$params = explode(",", $param);
 					$this->byweekno($params);
 					break;
-				case 'BYMONTH':
-					$params = explode(',', $param);
+				case "BYMONTH":
+					$params = explode(",", $param);
 					$this->bymonth($params);
 					break;
-				case 'BYSETPOS':
-					$params = explode(',', $param);
+				case "BYSETPOS":
+					$params = explode(",", $param);
 					$this->bysetpos($params);
 					break;
-				case 'WKST':
+				case "WKST":
 					$this->wkst($param);
 					break;
 			}
@@ -474,25 +474,25 @@ class When
 	{
 		switch($this->frequency)
 		{
-			case 'YEARLY':
+			case "YEARLY":
 				$interval = 'year';
 				break;
-			case 'MONTHLY':
+			case "MONTHLY":
 				$interval = 'month';
 				break;
-			case 'WEEKLY':
+			case "WEEKLY":
 				$interval = 'week';
 				break;
-			case 'DAILY':
+			case "DAILY":
 				$interval = 'day';
 				break;
-			case 'HOURLY':
+			case "HOURLY":
 				$interval = 'hour';
 				break;
-			case 'MINUTELY':
+			case "MINUTELY":
 				$interval = 'minute';
 				break;
-			case 'SECONDLY':
+			case "SECONDLY":
 				$interval = 'second';
 				break;
 		}
@@ -583,7 +583,7 @@ class When
 			}
 		}
 		// special case because for years you need to loop through the months too
-		elseif($this->gobyday && $interval == 'year')
+		elseif($this->gobyday && $interval == "year")
 		{
 			foreach($this->bymonth as $_month)
 			{
@@ -603,11 +603,11 @@ class When
 				}
 			}
 		}
-		elseif($interval == 'day')
+		elseif($interval == "day")
 		{
 			$this->suggestions[] = clone $this->try_date;
 		}
-		elseif($interval == 'week')
+		elseif($interval == "week")
 		{
 			$this->suggestions[] = clone $this->try_date;
 
@@ -655,7 +655,7 @@ class When
 				}
 			}
 		}
-		elseif($this->gobyday || ($this->gobymonthday && $interval == 'month'))
+		elseif($this->gobyday || ($this->gobymonthday && $interval == "month"))
 		{
 			$_mdays = range(1, date('t',mktime(0,0,0,$month,1,$year)));
 			foreach($_mdays as $_mday)
@@ -682,7 +682,7 @@ class When
 				}
 			}
 		}
-		elseif($interval == 'month')
+		elseif($interval == "month")
 		{
 			// Keep track of the original day of the month that was used
 			if ($this->keep_first_month_day === null) {
@@ -709,7 +709,7 @@ class When
 			$this->suggestions[] = clone $this->try_date;
 		}
 
-		if($interval == 'month')
+		if($interval == "month")
 		{
                         for ($i=0; $i< $this->interval; $i++)
                         {

@@ -107,7 +107,7 @@ class HTMLPurifier_VarParser_Flexible extends HTMLPurifier_VarParser
                     }
                 }
                 if ($type === self::ALIST) {
-                    trigger_error('Array list did not have consecutive integer indexes', E_USER_WARNING);
+                    trigger_error("Array list did not have consecutive integer indexes", E_USER_WARNING);
                     return array_values($var);
                 }
                 if ($type === self::LOOKUP) {

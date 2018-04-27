@@ -37,7 +37,7 @@ class scatter
      */
     public function __construct( $colour )
 	{
-		$this->type      = 'scatter';
+		$this->type      = "scatter";
 		$this->set_colour( $colour );
 	}
 

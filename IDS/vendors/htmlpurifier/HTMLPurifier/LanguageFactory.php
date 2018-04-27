@@ -190,7 +190,7 @@ class HTMLPurifier_LanguageFactory
             foreach ( $this->keys as $key ) {
                 if (isset($cache[$key]) && isset($fallback_cache[$key])) {
                     if (isset($this->mergeable_keys_map[$key])) {
-                        $cache[$key] += $fallback_cache[$key];
+                        $cache[$key] = $cache[$key] + $fallback_cache[$key];
                     } elseif (isset($this->mergeable_keys_list[$key])) {
                         $cache[$key] = array_merge( $fallback_cache[$key], $cache[$key] );
                     }

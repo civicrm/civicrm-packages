@@ -29,14 +29,14 @@ class HTMLPurifier_ConfigSchema_Interchange_Id
      * @return bool|string
      */
     public function getRootNamespace() {
-        return substr($this->key, 0, strpos($this->key, '.'));
+        return substr($this->key, 0, strpos($this->key, "."));
     }
 
     /**
      * @return bool|string
      */
     public function getDirective() {
-        return substr($this->key, strpos($this->key, '.') + 1);
+        return substr($this->key, strpos($this->key, ".") + 1);
     }
 
     /**

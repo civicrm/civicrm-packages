@@ -1,9 +1,9 @@
 <?php
-require dirname(__FILE__) . '/common.php';
+require dirname(__FILE__) ."/common.php";
 
 $api = new Jira_Api(
-    'https://your-jira-project.net',
-    new Jira_Api_Authentication_Basic('yourname', 'password')
+    "https://your-jira-project.net",
+    new Jira_Api_Authentication_Basic("yourname", "password")
 );
 
 /**
@@ -18,7 +18,7 @@ $api = new Jira_Api(
  * https://developer.atlassian.com/static/rest/jira/5.0.html#id202584
  */
 $walker = new Jira_Issues_Walker($api);
-$walker->push('project = YOURPROJECT AND  updated > -1d ORDER BY priority DESC', '*navigable');
+$walker->push("project = YOURPROJECT AND  updated > -1d ORDER BY priority DESC", "*navigable");
 
 /** okay, then just do foreach walker variable to pull issues */
 foreach ($walker as $k => $issue) {

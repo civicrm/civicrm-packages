@@ -895,8 +895,7 @@ class HTML_QuickForm_advmultiselect extends HTML_QuickForm_select
                 = array('onclick' => "{$this->_jsPrefix}moveUp" .
                             "(this.form.elements['" . $selectNameTo . "'], " .
                             "this.form.elements['" . $selectName . "']); " .
-                                     'return false;'
-            );
+                            "return false;");
             $this->_upButtonAttributes
                 = array_merge($this->_upButtonAttributes, $attributes);
             $attrStrUp     = $this->_getAttrString($this->_upButtonAttributes);
@@ -907,8 +906,7 @@ class HTML_QuickForm_advmultiselect extends HTML_QuickForm_select
                 = array('onclick' => "{$this->_jsPrefix}moveDown" .
                             "(this.form.elements['" . $selectNameTo . "'], " .
                             "this.form.elements['" . $selectName . "']); " .
-                                     'return false;'
-            );
+                            "return false;");
             $this->_downButtonAttributes
                 = array_merge($this->_downButtonAttributes, $attributes);
             $attrStrDown     = $this->_getAttrString($this->_downButtonAttributes);
@@ -919,8 +917,7 @@ class HTML_QuickForm_advmultiselect extends HTML_QuickForm_select
                 = array('onclick' => "{$this->_jsPrefix}moveTop" .
                             "(this.form.elements['" . $selectNameTo . "'], " .
                             "this.form.elements['" . $selectName . "']); " .
-                                     'return false;'
-            );
+                            "return false;");
             $this->_topButtonAttributes
                 = array_merge($this->_topButtonAttributes, $attributes);
             $attrStrTop     = $this->_getAttrString($this->_topButtonAttributes);
@@ -931,8 +928,7 @@ class HTML_QuickForm_advmultiselect extends HTML_QuickForm_select
                 = array('onclick' => "{$this->_jsPrefix}moveBottom" .
                             "(this.form.elements['" . $selectNameTo . "'], " .
                             "this.form.elements['" . $selectName . "']); " .
-                                     'return false;'
-            );
+                            "return false;");
             $this->_bottomButtonAttributes
                 = array_merge($this->_bottomButtonAttributes, $attributes);
             $attrStrBottom     = $this->_getAttrString($this->_bottomButtonAttributes);
@@ -997,7 +993,7 @@ class HTML_QuickForm_advmultiselect extends HTML_QuickForm_select
         $comment = $this->getComment();
 
         if (!empty($comment)) {
-            $strHtml = $tabs . '<!-- ' . $comment . ' //-->' . PHP_EOL . $strHtml;
+            $strHtml = $tabs . '<!-- ' . $comment . " //-->" . PHP_EOL . $strHtml;
         }
 
         return $strHtml;

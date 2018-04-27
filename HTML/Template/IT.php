@@ -548,13 +548,13 @@ class HTML_Template_IT
                     $empty = false;
                 }
 
-                $placeholder = $this->openingDelimiter . '__' .
-                               $innerblock . '__' . $this->closingDelimiter;
+                $placeholder = $this->openingDelimiter . "__" .
+                                $innerblock . "__" . $this->closingDelimiter;
                 $outer = str_replace(
                                     $placeholder,
                                     $this->blockdata[$innerblock], $outer
                         );
-                $this->blockdata[$innerblock] = '';
+                $this->blockdata[$innerblock] = "";
             }
 
         }
@@ -579,7 +579,7 @@ class HTML_Template_IT
             $outer = $funcReplace($regs, $values, $outer);
 
             if ($this->removeUnknownVariables) {
-                $outer = preg_replace($this->removeVariablesRegExp, '', $outer);
+                $outer = preg_replace($this->removeVariablesRegExp, "", $outer);
             }
         }
 
@@ -876,7 +876,7 @@ class HTML_Template_IT
                 }
 
                 $this->blocklist[$blockname] = $blockcontent;
-                $this->blockdata[$blockname] = '';
+                $this->blockdata[$blockname] = "";
 
                 $blocklist[] = $blockname;
 
@@ -923,7 +923,7 @@ class HTML_Template_IT
                         ': "' .$filename .'"',
                         IT_TPL_NOT_FOUND
                     );
-            return '';
+            return "";
         }
 
 		$fsize = filesize($filename);
@@ -935,7 +935,7 @@ class HTML_Template_IT
         $content = fread($fh, $fsize);
         fclose($fh);
 
-        return preg_replace_callback('#<!-- INCLUDE (.*) -->#im', function($matches) {
+        return preg_replace_callback("#<!-- INCLUDE (.*) -->#im", function($matches) {
           return $this->getFile($matches[1]);
         }, $content);
     } // end func getFile

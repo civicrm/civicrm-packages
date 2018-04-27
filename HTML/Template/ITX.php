@@ -167,8 +167,8 @@ class HTML_Template_ITX extends HTML_Template_IT
     {
         if (!isset($this->blocklist[$block])) {
             return new IT_Error(
-              'The block ' . "'$block'" .
-              " does not exist in the template and thus it can't be replaced.",
+            "The block "."'$block'".
+            " does not exist in the template and thus it can't be replaced.",
             __FILE__, __LINE__
             );
         }
@@ -276,8 +276,8 @@ class HTML_Template_ITX extends HTML_Template_IT
         if (count($parents) == 0) {
 
             return new IT_Error(
-              'The variable placeholder' .
-              " '$placeholder' was not found in the template.",
+                "The variable placeholder".
+                " '$placeholder' was not found in the template.",
                 __FILE__, __LINE__
             );
 
@@ -289,7 +289,7 @@ class HTML_Template_ITX extends HTML_Template_IT
             }
             $msg = substr($parent, -2);
 
-            return new IT_Error('The variable placeholder ' . "'$placeholder'" .
+            return new IT_Error("The variable placeholder "."'$placeholder'".
                                 " must be unique, found in multiple blocks '$msg'.",
                                 __FILE__, __LINE__
                                 );
@@ -504,8 +504,8 @@ class HTML_Template_ITX extends HTML_Template_IT
     {
         if ($tplfunction == '' || $callbackfunction == '') {
             return new IT_Error(
-              'No template function ' . "('$tplfunction')" .
-              " and/or no callback function ('$callback') given.",
+                "No template function "."('$tplfunction')".
+                " and/or no callback function ('$callback') given.",
                     __FILE__, __LINE__
                 );
         }
@@ -707,7 +707,7 @@ class HTML_Template_ITX extends HTML_Template_IT
                     if (!$enclosed) {
                         $enclosed_by = $char;
                     } else {
-                        $enclosed_by = '';
+                        $enclosed_by = "";
                     }
                     $enclosed = !$enclosed;
 

@@ -13,7 +13,7 @@ class ofc_menu_item
 	 */
 	public function __construct($text, $javascript_function_name)
 	{
-		$this->type = 'text';
+		$this->type = "text";
 		$this->text = $text;
 		$tmp = 'javascript-function';
 		$this->$tmp = $javascript_function_name;
@@ -40,7 +40,7 @@ class ofc_menu_item_camera
 	 */
 	public function __construct($text, $javascript_function_name)
 	{
-		$this->type = 'camera-icon';
+		$this->type = "camera-icon";
 		$this->text = $text;
 		$tmp = 'javascript-function';
 		$this->$tmp = $javascript_function_name;

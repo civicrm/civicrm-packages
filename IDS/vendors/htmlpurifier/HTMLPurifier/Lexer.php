@@ -71,9 +71,9 @@ class HTMLPurifier_Lexer
 
         if (!($config instanceof HTMLPurifier_Config)) {
             $lexer = $config;
-            trigger_error('Passing a prototype to
+            trigger_error("Passing a prototype to
               HTMLPurifier_Lexer::create() is deprecated, please instead
-              use %Core.LexerImpl', E_USER_WARNING);
+              use %Core.LexerImpl", E_USER_WARNING);
         } else {
             $lexer = $config->get('Core.LexerImpl');
         }
@@ -123,7 +123,7 @@ class HTMLPurifier_Lexer
                     $inst = new HTMLPurifier_Lexer_PH5P();
                     break;
                 default:
-                    throw new HTMLPurifier_Exception('Cannot instantiate unrecognized Lexer type ' . htmlspecialchars($lexer));
+                    throw new HTMLPurifier_Exception("Cannot instantiate unrecognized Lexer type " . htmlspecialchars($lexer));
             }
         }
 

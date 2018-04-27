@@ -171,7 +171,7 @@ class image_gd extends image {
      *
      * @return bool
      */
-    public function rotate($angle, $background= '#000000') {
+    public function rotate($angle, $background="#000000") {
         $angle = -$angle;
         $img = @imagerotate($this->image, $angle, $this->gdColor($background));
         if ($img === false) {
@@ -224,7 +224,7 @@ class image_gd extends image {
         if (!in_array($t, array(IMAGETYPE_PNG, IMAGETYPE_GIF))) {
             return false;
         }
-        $imagecreate = ($t == IMAGETYPE_PNG) ? 'imagecreatefrompng' : 'imagecreatefromgif';
+        $imagecreate = ($t == IMAGETYPE_PNG) ? "imagecreatefrompng" : "imagecreatefromgif";
 
         if (!@imagealphablending($this->image, true) ||
             (false === ($wm = @$imagecreate($file)))
@@ -298,7 +298,7 @@ class image_gd extends image {
      */
     protected function getImage($image, &$width, &$height) {
 
-        if (is_resource($image) && (get_resource_type($image) == 'gd')) {
+        if (is_resource($image) && (get_resource_type($image) == "gd")) {
             $width = @imagesx($image);
             $height = @imagesy($image);
             imagealphablending($image, false);
@@ -334,7 +334,7 @@ class image_gd extends image {
      * @return bool
      */
     public static function available() {
-        return function_exists('imagecreatefromjpeg');
+        return function_exists("imagecreatefromjpeg");
     }
 
     /**
@@ -373,7 +373,7 @@ class image_gd extends image {
         $quality = isset($options['quality']) ? $options['quality'] : null;
         $filters = isset($options['filters']) ? $options['filters'] : null;
         if (($file === null) && !headers_sent()) {
-            header('Content-Type: image/png');
+            header("Content-Type: image/png");
         }
         return imagepng($this->image, $file, $quality, $filters);
     }
@@ -389,7 +389,7 @@ class image_gd extends image {
             ? $options['quality']
             : self::DEFAULT_JPEG_QUALITY;
         if (($file === null) && !headers_sent()) {
-            header('Content-Type: image/jpeg');
+            header("Content-Type: image/jpeg");
         }
         return imagejpeg($this->image, $file, $quality);
     }
@@ -402,7 +402,7 @@ class image_gd extends image {
     protected function output_gif(array $options=array()) {
         $file = isset($options['file']) ? $options['file'] : null;
         if (isset($options['file']) && !headers_sent()) {
-            header('Content-Type: image/gif');
+            header("Content-Type: image/gif");
         }
         return imagegif($this->image, $file);
     }

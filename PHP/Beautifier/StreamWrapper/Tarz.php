@@ -131,7 +131,7 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
     {
         // BUG in 5.0.0RC1<PHP<5.0.0.0RC4
         // DON'T USE EOF. Use ... another option :P
-        if (version_compare(PHP_VERSION, '5.0.0.RC.1', '>=') and version_compare(PHP_VERSION, '5.0.0.RC.4', '<')) {
+        if (version_compare(PHP_VERSION, '5.0.0.RC.1', ">=") and version_compare(PHP_VERSION, '5.0.0.RC.4', "<")) {
             return !($this->iSeek >= strlen($this->sText));
         } else {
             return $this->iSeek >= strlen($this->sText);
@@ -261,4 +261,4 @@ class PHP_Beautifier_StreamWrapper_Tarz implements PHP_Beautifier_StreamWrapper_
             return ($aInput['filename'] == $this->sPath and empty($aInput['typeflag']));
         }
     }
-    stream_wrapper_register('tarz', 'PHP_Beautifier_StreamWrapper_Tarz');
+    stream_wrapper_register("tarz", "PHP_Beautifier_StreamWrapper_Tarz");

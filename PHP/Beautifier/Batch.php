@@ -146,7 +146,7 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
     {
         $bCli = (php_sapi_name() == 'cli');
         if ($bCli and $this->mPreInputFiles == STDIN and $mFiles != STDIN) {
-            throw new Exception('Hey, you already defined STDIN,dude');
+            throw new Exception("Hey, you already defined STDIN,dude");
         } elseif ($bCli and $mFiles == STDIN) {
             $this->mPreInputFiles = STDIN;
         } else {
@@ -172,7 +172,7 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
     public function setOutputFile($sFile) 
     {
         if (!is_string($sFile) and !(php_sapi_name() == 'cli' and $sFile == STDOUT)) {
-            throw new Exception('Accept only string or STDOUT');
+            throw new Exception("Accept only string or STDOUT");
         }
         $this->sPreOutputFile = $sFile;
         return true;
@@ -233,7 +233,7 @@ class PHP_Beautifier_Batch extends PHP_Beautifier_Decorator {
         } else {
             $sPath = str_replace(DIRECTORY_SEPARATOR, '/', $this->sPreOutputFile);
             if (!$sPath) {
-                $sPath = './';
+                $sPath = "./";
             }
             // determine file or dir
             if (substr($sPath, -1) != '/' and !is_dir($sPath)) {

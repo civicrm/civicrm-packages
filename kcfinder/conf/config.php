@@ -22,29 +22,29 @@ $_CONFIG = array(
 // GENERAL SETTINGS
 
     'disabled' => true,
-    'uploadURL' => 'upload',
-    'uploadDir' => '',
-    'theme' => 'default',
+    'uploadURL' => "upload",
+    'uploadDir' => "",
+    'theme' => "default",
 
     'types' => array(
 
     // (F)CKEditor types
-        'files'   => '',
-        'flash'   => 'swf',
-        'images'  => '*img',
+        'files'   =>  "",
+        'flash'   =>  "swf",
+        'images'  =>  "*img",
 
     // TinyMCE types
-        'file'    => '',
-        'media'   => 'swf flv avi mpg mpeg qt mov wmv asf rm',
-        'image'   => '*img',
+        'file'    =>  "",
+        'media'   =>  "swf flv avi mpg mpeg qt mov wmv asf rm",
+        'image'   =>  "*img",
     ),
 
 
 // IMAGE SETTINGS
 
-    'imageDriversPriority' => 'imagick gmagick gd',
+    'imageDriversPriority' => "imagick gmagick gd",
     'jpegQuality' => 90,
-    'thumbsDir' => '.thumbs',
+    'thumbsDir' => ".thumbs",
 
     'maxImageWidth' => 0,
     'maxImageHeight' => 0,
@@ -52,7 +52,7 @@ $_CONFIG = array(
     'thumbWidth' => 100,
     'thumbHeight' => 100,
 
-    'watermark' => '',
+    'watermark' => "",
 
 
 // DISABLE / ENABLE SETTINGS
@@ -84,7 +84,7 @@ $_CONFIG = array(
         )
     ),
 
-    'deniedExts' => 'exe com msi bat cgi pl php phps phtml php3 php4 php5 php6 py pyc pyo pcgi pcgi3 pcgi4 pcgi5 pchi6',
+    'deniedExts' => "exe com msi bat cgi pl php phps phtml php3 php4 php5 php6 py pyc pyo pcgi pcgi3 pcgi4 pcgi5 pchi6",
 
 
 // MISC SETTINGS
@@ -99,10 +99,10 @@ $_CONFIG = array(
         ':' => "."
     */),
 
-    'mime_magic' => '',
+    'mime_magic' => "",
 
-    'cookieDomain' => '',
-    'cookiePath' => '',
+    'cookieDomain' => "",
+    'cookiePath' => "",
     'cookiePrefix' => 'KCFINDER_',
 
 
@@ -110,7 +110,7 @@ $_CONFIG = array(
 
     '_normalizeFilenames' => true,
     '_check4htaccess' => false,
-    '_tinyMCEPath' => '../tinymce/jscripts/tiny_mce/',
+    '_tinyMCEPath' => "../tinymce/jscripts/tiny_mce/",
 
     '_sessionVar' => 'KCFINDER',
     //'_sessionLifetime' => 30,

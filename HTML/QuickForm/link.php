@@ -47,7 +47,7 @@ class HTML_QuickForm_link extends HTML_QuickForm_static
      * @since     1.0
      * @access    private
      */
-    public $_text = '';
+    public $_text = "";
 
     // }}}
     // {{{ constructor
@@ -171,9 +171,9 @@ class HTML_QuickForm_link extends HTML_QuickForm_static
     public function toHtml()
     {
         $tabs = $this->_getTabs();
-        $html = "$tabs<a".$this->_getAttrString($this->_attributes) . '>';
+        $html = "$tabs<a".$this->_getAttrString($this->_attributes).">";
         $html .= $this->_text;
-        $html .= '</a>';
+        $html .= "</a>";
         return $html;
     } //end func toHtml
     

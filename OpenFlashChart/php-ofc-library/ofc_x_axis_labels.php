@@ -22,7 +22,7 @@ class x_axis_labels
      */
 	public function visible_steps( $steps )
 	{
-		$this->{'visible-steps'} = $steps;
+		$this->{"visible-steps"} = $steps;
 		return $this;
 	}
 	

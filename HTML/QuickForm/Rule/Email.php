@@ -79,7 +79,7 @@ class HTML_QuickForm_Rule_Email extends HTML_QuickForm_Rule
      */
     public function getValidationScript($options = null)
     {
-        return array('  var regex = ' . $this->regex . ";\n", "{jsVar} != '' && !regex.test({jsVar})");
+        return array("  var regex = " . $this->regex . ";\n", "{jsVar} != '' && !regex.test({jsVar})");
     } // end func getValidationScript
 
 } // end class HTML_QuickForm_Rule_Email

@@ -20,7 +20,7 @@ namespace kcfinder;
  * @package kcfinder
  */
 class httpCache {
-    const DEFAULT_TYPE = 'text/html';
+    const DEFAULT_TYPE = "text/html";
     const DEFAULT_EXPIRE = 604800; // in seconds
 
 /** Cache a file. The $type parameter might define the MIME type of the file
@@ -39,7 +39,7 @@ class httpCache {
         }
 
         if ($type === null) {
-            $magic = ((substr($type, 0, 1) == '/') || preg_match('/^[a-z]\:/i', $type))
+            $magic = ((substr($type, 0, 1) == "/") || preg_match('/^[a-z]\:/i', $type))
                 ? $type : null;
             $type = file::getMimeType($file, $magic);
             if (!$type) {
@@ -69,11 +69,11 @@ class httpCache {
             $expire = self::DEFAULT_EXPIRE;
         }
         $size = strlen($content);
-        $expires = gmdate('D, d M Y H:i:s', time() + $expire) . ' GMT';
+        $expires = gmdate("D, d M Y H:i:s", time() + $expire) . " GMT";
         header("Content-Type: $type");
         header("Expires: $expires");
         header("Cache-Control: max-age=$expire");
-        header('Pragma: !invalid');
+        header("Pragma: !invalid");
         header("Content-Length: $size");
         if ($headers !== null) {
             foreach ($headers as $header) {
@@ -91,11 +91,11 @@ class httpCache {
   * @param mixed $sendHeaders */
 
     public static function checkMTime($mtime, $sendHeaders=null) {
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $mtime) . ' GMT');
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s", $mtime) . " GMT");
 
-        $headers = function_exists('getallheaders')
+        $headers = function_exists("getallheaders")
             ? getallheaders()
-            : (function_exists('apache_request_headers')
+            : (function_exists("apache_request_headers")
                 ? apache_request_headers()
                 : false);
 

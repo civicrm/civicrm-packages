@@ -120,9 +120,9 @@ function smarty_function_mailto($params, &$smarty)
 
         $_ret = "<script type=\"text/javascript\" language=\"javascript\">\n";
         $_ret .= "<!--\n";
-        $_ret .= '{document.write(String.fromCharCode(';
+        $_ret .= "{document.write(String.fromCharCode(";
         $_ret .= implode(',',$ord);
-        $_ret .= '))';
+        $_ret .= "))";
         $_ret .= "}\n";
         $_ret .= "//-->\n";
         $_ret .= "</script>\n";
@@ -134,7 +134,7 @@ function smarty_function_mailto($params, &$smarty)
 
         preg_match('!^(.*)(\?.*)$!',$address,$match);
         if(!empty($match[2])) {
-            $smarty->trigger_error('mailto: hex encoding does not work with extra attributes. Try javascript.');
+            $smarty->trigger_error("mailto: hex encoding does not work with extra attributes. Try javascript.");
             return;
         }
         $address_encode = '';
@@ -150,7 +150,7 @@ function smarty_function_mailto($params, &$smarty)
             $text_encode .= '&#x' . bin2hex($text[$x]).';';
         }
 
-        $mailto = '&#109;&#97;&#105;&#108;&#116;&#111;&#58;';
+        $mailto = "&#109;&#97;&#105;&#108;&#116;&#111;&#58;";
         return '<a href="'.$mailto.$address_encode.'" '.$extra.'>'.$text_encode.'</a>';
 
     } else {

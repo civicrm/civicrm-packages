@@ -428,15 +428,13 @@ class HTML_QuickForm_Controller
             if (is_array($filter) && (2 != count($filter) || !is_callable($filter))) {
                 foreach ($filter as $val) {
                     if (!is_callable($val)) {
-                        return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING,
-                          'Callback function does not exist in QuickForm_Controller::_setDefaultsOrConstants()', 'HTML_QuickForm_Error', true);
+                        return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING, "Callback function does not exist in QuickForm_Controller::_setDefaultsOrConstants()", 'HTML_QuickForm_Error', true);
                     } else {
                         $newValues = $this->_arrayMapRecursive($val, $newValues);
                     }
                 }
             } elseif (!is_callable($filter)) {
-                return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING,
-                  'Callback function does not exist in QuickForm_Controller::_setDefaultsOrConstants()', 'HTML_QuickForm_Error', true);
+                return PEAR::raiseError(null, QUICKFORM_INVALID_FILTER, null, E_USER_WARNING, "Callback function does not exist in QuickForm_Controller::_setDefaultsOrConstants()", 'HTML_QuickForm_Error', true);
             } else {
                 $newValues = $this->_arrayMapRecursive($val, $newValues);
             }

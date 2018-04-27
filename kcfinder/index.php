@@ -1,4 +1,4 @@
 <?php
 
-require 'browse.php';
+require "browse.php";
 

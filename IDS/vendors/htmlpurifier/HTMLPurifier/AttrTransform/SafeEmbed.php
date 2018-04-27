@@ -5,7 +5,7 @@
  */
 class HTMLPurifier_AttrTransform_SafeEmbed extends HTMLPurifier_AttrTransform
 {
-    public $name = 'SafeEmbed';
+    public $name = "SafeEmbed";
 
     /**
      * @param \Assoc     $attr

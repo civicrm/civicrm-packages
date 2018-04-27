@@ -42,12 +42,12 @@ class Jira_IssueType
     protected $subtask;
 
     private $acceptable_keys = array(
-      'self',
-      'id',
-      'description',
-      'iconUrl',
-      'name',
-      'subtask',
+        "self",
+        "id",
+        "description",
+        "iconUrl",
+        "name",
+        "subtask",
     );
 
     /**

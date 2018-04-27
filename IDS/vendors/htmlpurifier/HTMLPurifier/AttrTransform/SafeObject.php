@@ -5,7 +5,7 @@
  */
 class HTMLPurifier_AttrTransform_SafeObject extends HTMLPurifier_AttrTransform
 {
-    public $name = 'SafeObject';
+    public $name = "SafeObject";
 
     /**
      * @param \Assoc     $attr

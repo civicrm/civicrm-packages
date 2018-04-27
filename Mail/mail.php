@@ -158,7 +158,7 @@ class Mail_mail extends Mail {
         if (!empty($headers['Return-Path'])) {
             $from = $headers['Return-Path'];
         }
-        $this->_params = '-f' . $from;
+        $this->_params = "-f".$from;
 
         // We only use mail()'s optional fifth parameter if the additional
         // parameters have been provided and we're not running in safe mode.

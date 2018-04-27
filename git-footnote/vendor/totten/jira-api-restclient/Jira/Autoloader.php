@@ -45,7 +45,7 @@ class Jira_Autoloader
             $dirname = dirname(__FILE__);
         }
         self::$base_dir = $dirname;
-        spl_autoload_register(array(__CLASS__, 'autoload'));
+        spl_autoload_register(array(__CLASS__, "autoload"));
     }
 
     /**
@@ -55,7 +55,7 @@ class Jira_Autoloader
      */
     public static function unregister()
     {
-        spl_autoload_unregister(array(__CLASS__, 'autoload'));
+        spl_autoload_unregister(array(__CLASS__, "autoload"));
     }
 
     /**
@@ -69,10 +69,10 @@ class Jira_Autoloader
         $retval = false;
 
         if (strpos($name,self::NAME_SPACE) === 0) {
-            $parts = explode('_',$name);
+            $parts = explode("_",$name);
             array_shift($parts);
 
-            $expected_path = join(DIRECTORY_SEPARATOR, array(self::$base_dir, join(DIRECTORY_SEPARATOR,$parts) . '.php'));
+            $expected_path = join(DIRECTORY_SEPARATOR, array(self::$base_dir, join(DIRECTORY_SEPARATOR,$parts) . ".php"));
             if (is_file($expected_path) && is_readable($expected_path)) {
                 require $expected_path;
                 $retval = true;

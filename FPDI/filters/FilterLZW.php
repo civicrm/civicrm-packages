@@ -87,8 +87,8 @@ class FilterLZW
                     $this->_addStringToTable($this->_sTable[$oldCode], $string[0]);
                     $oldCode = $code;
                 } else {
-                    $string     = $this->_sTable[$oldCode];
-                    $string     .= $string[0];
+                    $string = $this->_sTable[$oldCode];
+                    $string = $string . $string[0];
                     $unCompData .= $string;
 
                     $this->_addStringToTable($string);
@@ -172,6 +172,6 @@ class FilterLZW
      */
     public function encode($in)
     {
-        throw new LogicException('LZW encoding not implemented.');
+        throw new LogicException("LZW encoding not implemented.");
     }
 }

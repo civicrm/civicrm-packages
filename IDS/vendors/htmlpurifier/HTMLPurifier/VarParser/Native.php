@@ -30,7 +30,7 @@ class HTMLPurifier_VarParser_Native extends HTMLPurifier_VarParser
         $var = null;
         $result = eval("\$var = $expr;");
         if ($result === false) {
-            throw new HTMLPurifier_VarParserException('Fatal error in evaluated code');
+            throw new HTMLPurifier_VarParserException("Fatal error in evaluated code");
         }
         return $var;
     }

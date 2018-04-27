@@ -78,12 +78,12 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
         'style' => 'K&R'
     );
     public $aAllowedStyles = array(
-      'k&r'         => 'kr',
-      'allman'      => 'bsd',
-      'bsd'         => 'bsd',
-      'gnu'         => 'gnu',
-      'whitesmiths' => 'ws',
-      'ws'          => 'ws'
+        "k&r" => "kr",
+        "allman" => "bsd",
+        "bsd" => "bsd",
+        "gnu" => "gnu",
+        "whitesmiths" => "ws",
+        "ws" => "ws"
     );
     protected $sDescription = 'Filter the code in 4 different indent styles: K&R, Allman, Whitesmiths and GNU';
 
@@ -238,8 +238,8 @@ class PHP_Beautifier_Filter_IndentStyles extends PHP_Beautifier_Filter
     {
         $sStyle = strtolower($this->getSetting('style'));
         if (!array_key_exists($sStyle, $this->aAllowedStyles)) {
-            throw (new Exception('Style ' . $sStyle . "doesn't exists"));
+            throw (new Exception("Style " . $sStyle . "doesn't exists"));
         }
-        return $sMethod . '_' . $this->aAllowedStyles[$sStyle];
+        return $sMethod . "_" . $this->aAllowedStyles[$sStyle];
     }
 }

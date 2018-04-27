@@ -130,7 +130,7 @@ class y_axis_base
 	 */
 	public function set_vertical()
 	{
-		$this->rotate = 'vertical';
+		$this->rotate = "vertical";
 	}
 
     /**

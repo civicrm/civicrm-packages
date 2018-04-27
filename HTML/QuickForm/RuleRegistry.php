@@ -187,8 +187,8 @@ class HTML_QuickForm_RuleRegistry
         $jsField = isset($ruleData['group'])? $ruleData['group']: $elementName;
         list ($jsPrefix, $jsCheck) = $rule->getValidationScript($ruleData['format']);
         if (!isset($ruleData['howmany'])) {
-            $js = $jsValue . "\n" . $jsPrefix .
-                  '  if (' . str_replace('{jsVar}', 'value', $jsCheck) . " && !errFlag['{$jsField}']) {\n" .
+            $js = $jsValue . "\n" . $jsPrefix . 
+                  "  if (" . str_replace('{jsVar}', 'value', $jsCheck) . " && !errFlag['{$jsField}']) {\n" .
                   "    errFlag['{$jsField}'] = true;\n" .
                   "    _qfMsg = _qfMsg + '\\n - {$ruleData['message']}';\n" .
                   $jsReset .
@@ -197,7 +197,7 @@ class HTML_QuickForm_RuleRegistry
             $js = $jsValue . "\n" . $jsPrefix . 
                   "  var res = 0;\n" .
                   "  for (var i = 0; i < value.length; i++) {\n" .
-                  '    if (!(' . str_replace('{jsVar}', 'value[i]', $jsCheck) . ")) {\n" .
+                  "    if (!(" . str_replace('{jsVar}', 'value[i]', $jsCheck) . ")) {\n" .
                   "      res++;\n" .
                   "    }\n" .
                   "  }\n" . 
@@ -332,11 +332,11 @@ class HTML_QuickForm_RuleRegistry
                      "    if (els[i].checked) {\n" .
                      "      value{$jsIndex} = els[i].value;\n" .
                      "    }\n" .
-                     '  }';
+                     "  }";
             if ($reset) {
                 $tmp_reset .= "    for (var i = 0; i < field.length; i++) {\n" .
                               "      field[i].checked = field[i].defaultChecked;\n" .
-                              '    }';
+                              "    }";
             }
 
         } else {

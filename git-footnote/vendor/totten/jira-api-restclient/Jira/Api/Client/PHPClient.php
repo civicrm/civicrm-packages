@@ -37,7 +37,7 @@ class Jira_Api_Client_PHPClient implements Jira_Api_Client_ClientInterface
     public function __construct()
     {
         $wrappers = stream_get_wrappers();
-        if (in_array('https', $wrappers)) {
+        if (in_array("https", $wrappers)) {
             $this->https_support = true;
         }
 
@@ -65,37 +65,37 @@ class Jira_Api_Client_PHPClient implements Jira_Api_Client_ClientInterface
     public function sendRequest($method, $url, $data = array(), $endpoint, Jira_Api_Authentication_AuthenticationInterface $credential)
     {
         if (!($credential instanceof Jira_Api_Authentication_Basic) && !($credential instanceof Jira_Api_Authentication_Anonymous)) {
-            throw new Exception(sprintf('PHPClient does not support %s authentication.', get_class($credential)));
+            throw new Exception(sprintf("PHPClient does not support %s authentication.", get_class($credential)));
         }
 
         $header = array();
         if (!($credential instanceof Jira_Api_Authentication_Anonymous)) {
-          $header[] = 'Authorization: Basic ' . $credential->getCredential();
+          $header[] = "Authorization: Basic " . $credential->getCredential();
         }
-        $header[] = 'Content-Type: application/json';
+        $header[] = "Content-Type: application/json";
 
         $context = array(
-          'http' => array(
-            'method' => $method,
-            'header' => join("\r\n", $header),
+            "http" => array(
+                "method"  => $method,
+                "header"  => join("\r\n", $header),
             ));
 
-        if ($method == 'POST' || $method == 'PUT') {
+        if ($method=="POST" || $method == "PUT") {
             $__data     = json_encode($data);
             $header[]   = sprintf('Content-Length: %d', strlen($__data));
 
             $context['http']['header']  = join("\r\n", $header);
             $context['http']['content'] = $__data;
         } else {
-            $url .= '?' . http_build_query($data);
+            $url .= "?" . http_build_query($data);
         }
 
-        if (strpos($endpoint, 'https://') === 0 && !$this->isSupportHttps()) {
-            throw new Exception('does not support https wrapper. please enable openssl extension');
+        if (strpos($endpoint, "https://") === 0 && !$this->isSupportHttps()) {
+            throw new Exception("does not support https wrapper. please enable openssl extension");
         }
 
 
-        set_error_handler(array($this, 'errorHandler'));
+        set_error_handler(array($this, "errorHandler"));
         $data = file_get_contents($endpoint . $url,
             false,
             stream_context_create($context)
@@ -103,7 +103,7 @@ class Jira_Api_Client_PHPClient implements Jira_Api_Client_ClientInterface
         restore_error_handler();
 
         if (is_null($data)) {
-            throw new Exception('JIRA Rest server returns unexpected result.');
+            throw new Exception("JIRA Rest server returns unexpected result.");
         }
 
         return $data;

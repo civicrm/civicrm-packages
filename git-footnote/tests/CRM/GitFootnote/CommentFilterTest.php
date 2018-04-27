@@ -16,20 +16,20 @@ class CommentFilterTest extends \PHPUnit_Framework_TestCase {
     // each test case has these parts: inputMessageBody, expectedMessageBody, expectedFootnotes
     $cases = array();
     $cases[] = array(
-      '',
-      '',
+      "",
+      "",
     );
     $cases[] = array(
-      'Hello',
-      'Hello',
+      "Hello",
+      "Hello",
     );
     $cases[] = array(
-      'Hello #123',
-      'Hello #123',
+      "Hello #123",
+      "Hello #123",
     );
     $cases[] = array(
-      '#hello',
-      '',
+      "#hello",
+      "",
     );
     $cases[] = array(
       "#comment-1\nnormal-1\n#comment-2\nnormal-2",

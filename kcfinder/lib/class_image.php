@@ -104,7 +104,7 @@ abstract class image {
                 continue;
             }
             $class = __NAMESPACE__ . "\\image_$driver";
-            if (class_exists($class) && method_exists($class, 'available')) {
+            if (class_exists($class) && method_exists($class, "available")) {
                 eval("\$avail = $class::available();");
                 if ($avail) {
                     return $driver;
@@ -211,7 +211,7 @@ abstract class image {
   * @param integer $angle
   * @param string $background
   * @return bool */
-    abstract public function rotate($angle, $background= '#000000');
+    abstract public function rotate($angle, $background="#000000");
 
     abstract public function flipHorizontal();
 

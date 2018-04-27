@@ -114,7 +114,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
     public function setSelected($values)
     {
         if (is_string($values) && $this->getMultiple()) {
-            $values = preg_split('/[ ]?,[ ]?/', $values);
+            $values = preg_split("/[ ]?,[ ]?/", $values);
         }
         if (is_array($values)) {
             $this->_values = array_values($values);
@@ -405,7 +405,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
             if (DB::isError($dbConn)) {
                 return $dbConn;
             }
-        } elseif (is_subclass_of($conn, 'db_common')) {
+        } elseif (is_subclass_of($conn, "db_common")) {
             $dbConn = &$conn;
         } else {
             return PEAR::raiseError('Argument 1 of HTML_Select::loadQuery is not a valid type');
@@ -453,7 +453,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
             case (is_a($options, 'db_result')):
                 return $this->loadDbResult($options, $param1, $param2, $param3);
                 break;
-            case (is_string($options) && !empty($options) || is_subclass_of($options, 'db_common')):
+            case (is_string($options) && !empty($options) || is_subclass_of($options, "db_common")):
                 return $this->loadQuery($options, $param1, $param2, $param3, $param4);
                 break;
         }

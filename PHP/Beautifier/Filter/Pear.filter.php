@@ -67,7 +67,7 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
      */
     public function t_open_tag_with_echo($sTag)
     {
-        $this->oBeaut->add('<?php echo ');
+        $this->oBeaut->add("<?php echo ");
     }
 
     /**
@@ -104,7 +104,7 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
         } elseif ($this->oBeaut->getControlParenthesis() == T_FOR) {
             // The three terms in the head of a for loop are separated by the string "; "
             $this->oBeaut->removeWhitespace();
-            $this->oBeaut->add($sTag . ' '); // Bug 8327
+            $this->oBeaut->add($sTag . " "); // Bug 8327
             
         } else {
             return PHP_Beautifier_Filter::BYPASS;
@@ -142,7 +142,7 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
     {
         $this->oBeaut->add($sTag);
         if ($this->oBeaut->isNextTokenConstant(T_LNUMBER)) {
-            $this->oBeaut->add(' ');
+            $this->oBeaut->add(" ");
         }        
     }
 
@@ -200,7 +200,7 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
     public function t_open_tag($sTag)
     {
         // find PEAR header comment
-        $this->oBeaut->add('<?php');
+        $this->oBeaut->add("<?php");
         $this->oBeaut->addNewLineIndent();
         if (!$this->bOpenTag) {
             $this->bOpenTag = true;

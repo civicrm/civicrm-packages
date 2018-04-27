@@ -30,7 +30,7 @@ class type_img {
     public function checkFile($file, array $config) {
 
         $driver = isset($config['imageDriversPriority'])
-            ? image::getDriver(explode(' ', $config['imageDriversPriority'])) : 'gd';
+            ? image::getDriver(explode(" ", $config['imageDriversPriority'])) : "gd";
 
         $img = image::factory($driver, $file);
 

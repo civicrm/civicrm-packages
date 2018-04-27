@@ -233,7 +233,7 @@ class Contact_Vcard_Build extends PEAR
         if (! is_integer($iter) || $iter < 0) {
 
             $msg  = "$iter is not a valid iteration number for $comp; ";
-            $msg .= 'must be a positive integer.';
+            $msg .= "must be a positive integer.";
                         
             return $this->raiseError($msg);
 
@@ -393,8 +393,8 @@ class Contact_Vcard_Build extends PEAR
                     $text != 'B') {
 
                     $msg  = "vCard 3.0 [$comp] [$iter]: ";
-                    $msg .= 'The only allowed ENCODING';
-                    $msg .= ' parameters are 8BIT and B.';
+                    $msg .= "The only allowed ENCODING";
+                    $msg .= " parameters are 8BIT and B.";
 
                     $result = $this->raiseError($msg);
                 } else {
@@ -411,9 +411,9 @@ class Contact_Vcard_Build extends PEAR
                     $text != 'VCARD') {
 
                     $msg  = "vCard 3.0 [$comp] [$iter]: The only allowed VALUE ";
-                    $msg .= 'parameters are ';
-                    $msg .= 'BINARY, PHONE-NUMBER, TEXT, URI, UTC-OFFSET,';
-                    $msg .= ' and VCARD.';
+                    $msg .= "parameters are ";
+                    $msg .= "BINARY, PHONE-NUMBER, TEXT, URI, UTC-OFFSET,";
+                    $msg .= " and VCARD.";
         
                     return $this->raiseError($msg);
                 }
@@ -1732,7 +1732,7 @@ class Contact_Vcard_Build extends PEAR
         $lines = array();
 
         // begin (required)
-        $lines[] = 'BEGIN:VCARD';
+        $lines[] = "BEGIN:VCARD";
 
         // version (required)
         // available in both 2.1 and 3.0
@@ -1740,7 +1740,7 @@ class Contact_Vcard_Build extends PEAR
 
         // profile (3.0 only)
         if ($this->value['VERSION'][0][0][0] == '3.0') {
-            $lines[] = 'PROFILE:VCARD';
+            $lines[] = "PROFILE:VCARD";
         }
 
         // formatted name (required)
@@ -1944,7 +1944,7 @@ class Contact_Vcard_Build extends PEAR
         }
 
         // required
-        $lines[] = 'END:VCARD';
+        $lines[] = "END:VCARD";
 
         // version 3.0 uses \n for new lines,
         // version 2.1 uses \r\n
@@ -2082,7 +2082,7 @@ class Contact_Vcard_Build extends PEAR
             // simply tag the non-US-ASCII-only lines as UTF-8
             foreach ($lines as $number => $line) {
                 if (preg_match('/[^\x00-\x7f]/', $line)) {
-                    $lines[$number] = preg_replace('/:/', ';ENCODING=8BIT;CHARSET=UTF-8:', $line, 1);
+                    $lines[$number] = preg_replace('/:/', ";ENCODING=8BIT;CHARSET=UTF-8:", $line, 1);
                 }
             }
 

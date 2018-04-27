@@ -107,7 +107,7 @@ class dir {
     public static function content($dir, array $options=null) {
 
         $defaultOptions = array(
-            'types' => 'all',   // Allowed: "all" or possible return values
+            'types' => "all",   // Allowed: "all" or possible return values
                                 // of filetype(), or an array with them
             'addPath' => true,  // Whether to add directory path to filenames
             'pattern' => '/./', // Regular expression pattern for filename
@@ -118,10 +118,10 @@ class dir {
             return false;
         }
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+        if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN") {
             $dir = str_replace("\\", "/", $dir);
         }
-        $dir = rtrim($dir, '/');
+        $dir = rtrim($dir, "/");
 
         $dh = @opendir($dir);
         if ($dh === false) {
@@ -151,18 +151,18 @@ class dir {
             $type = filetype($fullpath);
 
             // If file is a symlink, get the true type of its destination
-            if ($options['followLinks'] && ($type == 'link')) {
+            if ($options['followLinks'] && ($type == "link")) {
                 $type = filetype(realpath($fullpath));
             }
 
-            if (($options['types'] === 'all') || ($type === $options['types']) ||
+            if (($options['types'] === "all") || ($type === $options['types']) ||
                 (is_array($options['types']) && in_array($type, $options['types']))
             ) {
                 $files[] = $options['addPath'] ? $fullpath : $file;
             }
         }
         closedir($dh);
-        usort($files, array(__NAMESPACE__ . "\\dir", 'fileSort'));
+        usort($files, array(__NAMESPACE__ . "\\dir", "fileSort"));
         return $files;
     }
 
@@ -173,7 +173,7 @@ class dir {
      * @return int
      */
     public static function fileSort($a, $b) {
-        if (function_exists('mb_strtolower')) {
+        if (function_exists("mb_strtolower")) {
             $a = mb_strtolower($a);
             $b = mb_strtolower($b);
         } else {

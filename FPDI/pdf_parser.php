@@ -675,7 +675,7 @@ class pdf_parser
                         $c->stack = array();
                     } else {
                         throw new Exception(
-                            sprintf('Unable to find object (%s, %s) at expected location.', $objSpec[1], $objSpec[2])
+                            sprintf("Unable to find object (%s, %s) at expected location.", $objSpec[1], $objSpec[2])
                         );
                     }
                 }

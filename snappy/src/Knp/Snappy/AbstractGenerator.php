@@ -347,12 +347,12 @@ abstract class AbstractGenerator implements GeneratorInterface
                         }
                     } else {
                         foreach ($option as $v) {
-                            $command .= ' --' . $key . ' ' . escapeshellarg($v);
+                            $command .= " --".$key." ".escapeshellarg($v);
                         }
                     }
 
                 } else {
-                    $command .= ' --'.$key . ' ' . escapeshellarg($option);
+                    $command .= ' --'.$key." ".escapeshellarg($option);
                 }
             }
         }

@@ -334,7 +334,7 @@ class Mail_smtp extends Mail {
         $res = $this->_smtp->data($textHeaders . "\r\n\r\n" . $body);
 		list(,$args) = $this->_smtp->getResponse();
 
-		if (preg_match('/Ok: queued as (.*)/', $args, $queued)) {
+		if (preg_match("/Ok: queued as (.*)/", $args, $queued)) {
 			$this->queued_as = $queued[1];
 		}
 

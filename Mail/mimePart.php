@@ -608,7 +608,7 @@ class Mail_mimePart
                 } elseif (($dec == 61) || ($dec < 32) || ($dec > 126)) {
                     $char = $escape . sprintf('%02X', $dec);
                 } elseif (($dec == 46) && (($newline == '')
-                    || ((strlen($newline) + strlen('=2E')) >= $line_max))
+                    || ((strlen($newline) + strlen("=2E")) >= $line_max))
                 ) {
                     // Bug #9722: convert full-stop at bol,
                     // some Windows servers need this, won't break anything (cipri)
@@ -858,7 +858,7 @@ class Mail_mimePart
                                 // de-quote quoted-string, encoding changes
                                 // string to atom
                                 $search = array("\\\"", "\\\\");
-                                $replace = array('"', "\\");
+                                $replace = array("\"", "\\");
                                 $word = str_replace($search, $replace, $word);
                                 $word = substr($word, 1, -1);
                             }
@@ -901,7 +901,7 @@ class Mail_mimePart
                     // de-quote quoted-string, encoding changes
                     // string to atom
                     $search = array("\\\"", "\\\\");
-                    $replace = array('"', "\\");
+                    $replace = array("\"", "\\");
                     $value = str_replace($search, $replace, $value);
                     $value = substr($value, 1, -1);
                 }
@@ -936,7 +936,7 @@ class Mail_mimePart
         $strlen = strlen($string);
 
         for ($q=$p=$i=0; $i < $strlen; $i++) {
-            if ($string[$i] == '"'
+            if ($string[$i] == "\""
                 && (empty($string[$i-1]) || $string[$i-1] != "\\")
             ) {
                 $q = $q ? false : true;
@@ -985,8 +985,8 @@ class Mail_mimePart
 
             // We can cut base64 every 4 characters, so the real max
             // we can get must be rounded down.
-            $maxLength        -= ($maxLength % 4);
-            $maxLength1stLine -= ($maxLength1stLine % 4);
+            $maxLength = $maxLength - ($maxLength % 4);
+            $maxLength1stLine = $maxLength1stLine - ($maxLength1stLine % 4);
 
             $cutpoint = $maxLength1stLine;
             $output = '';
