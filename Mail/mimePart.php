@@ -89,7 +89,7 @@ class Mail_mimePart
     * @var array
     * @access private
     */
-    var $_subparts;
+    var $_subparts = [];
 
     /**
     * The output of this part after being built
