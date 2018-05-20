@@ -308,6 +308,11 @@ class HTML_QuickForm_element extends HTML_Common
     function setLabel($label)
     {
         $this->_label = $label;
+        // if aria-label attribute is not set and label is present, then set this missing property
+        //  with label value, that will provide accessible label to respective input element
+        if (!$this->getAttribute('aria-label') && $label) {
+          $this->updateAttributes(array('aria-label' => $label));
+        }
     } //end func setLabel
 
     // }}}
