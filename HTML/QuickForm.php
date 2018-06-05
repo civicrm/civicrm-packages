@@ -855,12 +855,15 @@ class HTML_QuickForm extends HTML_Common
                         array('\\', '\''), array('\\\\', '\\\''),
                         substr($elementName, 0, $pos)
                     );
-            $idx  = "['" . str_replace(
-                        array('\\', '\'', ']', '['), array('\\\\', '\\\'', '', "']['"),
-                        substr($elementName, $pos + 1, -1)
-                    ) . "']";
+            $keys = str_replace(
+              array('\\', '\'', ']', '['), array('\\\\', '\\\'', '', "']['"),
+              substr($elementName, $pos + 1, -1)
+            );
+            // We are kind of undoing the above but it's kind of hard to unpack.
+            $keyArray = explode("']['", $keys);
+            $idx  = "['" . $keys . "']";
             if (isset($this->_submitValues[$base])) {
-                $value = eval("return (isset(\$this->_submitValues['{$base}']{$idx})) ? \$this->_submitValues['{$base}']{$idx} : null;");
+                $value = CRM_Utils_Array::recursiveValue($this->_submitValues[$base], $keyArray, NULL);
             }
 
             if ((is_array($value) || null === $value) && isset($this->_submitFiles[$base])) {
