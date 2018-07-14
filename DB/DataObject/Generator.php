@@ -1149,8 +1149,7 @@ class DB_DataObject_Generator extends DB_DataObject
         $classname = $this->classname = $this->getClassNameFromTableName($this->table);
         
         $out = $this->_generateClassTable();
-        //echo $out;
-        eval('?>'.$out);
+        echo $out;
         return new $classname;
         
     }
