@@ -874,8 +874,6 @@ class HTML_QuickForm extends HTML_Common
                           $this->_reindexFiles(CRM_Utils_Array::recursiveValue($this->_submitFiles[$base], array_merge([$prop], $idx)), $prop)
                         );
                     }
-
-                    $code .= "    \$v = HTML_QuickForm::arrayMerge(\$v, \$this->_reindexFiles(\$this->_submitFiles['{$base}']['{$prop}']{$idx}, '{$prop}'));\n";
                 }
                 if (null !== $fileValue) {
                     $value = null === $value? $fileValue: HTML_QuickForm::arrayMerge($value, $fileValue);
