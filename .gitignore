@@ -2,3 +2,8 @@
 composer.lock
 composer.phar
 vendor
+
+# eclipse
+.buildpath
+.project
+.settings
