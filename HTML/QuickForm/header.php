@@ -60,10 +60,12 @@ class HTML_QuickForm_header extends HTML_QuickForm_static
     * Accepts a renderer
     *
     * @param HTML_QuickForm_Renderer    renderer object
+    * @param bool $sc1                  unused, for signature compatibility
+    * @param bool $sc2                  unused, for signature compatibilit
     * @access public
     * @return void
     */
-    function accept(&$renderer)
+    function accept(&$renderer, $sc1 = false, $sc2 = null)
     {
         $renderer->renderHeader($this);
     } // end func accept

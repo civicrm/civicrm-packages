@@ -189,6 +189,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @param     array     $array    Options for the first select element
      *
      * @access    public
+     * @deprecated          Deprecated since release 3.2.2
      * @return    void
      */
     function setMainOptions($array)
@@ -211,6 +212,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @param     array     $array    Options for the second select element
      *
      * @access    public
+     * @deprecated          Deprecated since release 3.2.2
      * @return    void
      */
     function setSecOptions($array)

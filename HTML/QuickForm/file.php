@@ -44,7 +44,7 @@ if (class_exists('HTML_QuickForm')) {
  * @author      Adam Daniel <adaniel1@eesus.jnj.com>
  * @author      Bertrand Mansion <bmansion@mamasam.com>
  * @author      Alexey Borzov <avb@php.net>
- * @version     Release: 3.2.13
+ * @version     Release: 3.2.15
  * @since       1.0
  */
 class HTML_QuickForm_file extends HTML_QuickForm_input
