@@ -29,7 +29,7 @@
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Alexey Borzov <avb@php.net>
- * @version     Release: 3.2.11
+ * @version     Release: 3.2.15
  * @since       3.0
  * @abstract
  */
