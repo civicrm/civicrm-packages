@@ -49,7 +49,7 @@ class StringReader {
   var $_pos;
   var $_str;
 
-  function StringReader($str='') {
+  function __construct($str='') {
     $this->_str = $str;
     $this->_pos = 0;
   }
