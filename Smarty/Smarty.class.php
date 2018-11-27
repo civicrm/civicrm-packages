@@ -1298,6 +1298,11 @@ class Smarty
         }
         $this->_cache_including = $_cache_including;
 
+        // remove cache file if generated from string input
+        if ( preg_match( '/^(\s+)?string:/', $resource_name, $matches ) ) {
+            $this->_unlink($_smarty_compile_path);
+        }
+
         if ($display) {
             if (isset($_smarty_results)) { echo $_smarty_results; }
             if ($this->debugging) {
