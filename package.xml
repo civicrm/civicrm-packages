@@ -65,9 +65,9 @@ DB is compatible with PHP 5 and PHP 7.
   <email>cox@idecnet.com</email>
   <active>no</active>
  </developer>
- <date>2015-11-24</date>
+ <date>2018-12-05</date>
  <version>
-  <release>1.9.2</release>
+  <release>1.9.3</release>
   <api>1.9.0</api>
  </version>
  <stability>
@@ -76,7 +76,8 @@ DB is compatible with PHP 5 and PHP 7.
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-* Fix mysqli freeResult() broken when fixing bug #5762 (f0b6b182a8f)
+* PR #4: Change pg_exec to pg_query
+* PR #5: added php72
  </notes>
  <contents>
   <dir name="/">
