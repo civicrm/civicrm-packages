@@ -205,18 +205,18 @@ class IDS_Monitor
                 && isset($init->config['General']['HTML_Purifier_Cache'])) {
 
                 // Dealing in Relative CiviCRM Path here
-                if (strpos($init->config['general']['HTML_Purifier_Path'], '[')) {
-                    $purifierPath = Civi::paths()->getPath($init->config['general']['HTML_Purifier_Path']);
+                if (strpos($init->config['General']['HTML_Purifier_Path'], '[')) {
+                    $purifierPath = Civi::paths()->getPath($init->config['General']['HTML_Purifier_Path']);
                 }
                 else {
-                    $purifierPath = $init->config['general']['HTML_Purifier_Path'];
+                    $purifierPath = $init->config['General']['HTML_Purifier_Path'];
                 }
 
-                if (strpos($init->config['general']['HTML_Purifier_Cache'], '[')) {
-                    $purifierCachePath = Civi::paths()->getPath($init->config['general']['HTML_Purifier_Cache']);
+                if (strpos($init->config['General']['HTML_Purifier_Cache'], '[')) {
+                    $purifierCachePath = Civi::paths()->getPath($init->config['General']['HTML_Purifier_Cache']);
                 }
                 else {
-                    $purifierCachePath = $init->getBasePath() . $init->config['general']['HTML_Purifier_Cache'];
+                    $purifierCachePath = $init->getBasePath() . $init->config['General']['HTML_Purifier_Cache'];
                 }
 
                 $this->pathToHTMLPurifier = $purifierPath;
