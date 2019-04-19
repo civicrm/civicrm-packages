@@ -890,9 +890,16 @@ class DB_mysql extends DB_common
             }
             $errno = $this->errorCode(mysql_errno($this->connection));
         }
-        return $this->raiseError($errno, null, null, null,
+        $errorObject = $this->raiseError($errno, null, null, null,
                                  @mysql_errno($this->connection) . ' ** ' .
                                  @mysql_error($this->connection));
+        // If we are dealing in a Deadlock then pass this to the Exception Handler so that
+        // It can be caught by the Exception handling in CRM-21489
+        $deadlockIds = [1213, 1205];
+        if (in_array(@mysql_errno($this->connection), $deadlockIds)) {
+          CRM_Core_Error::exceptionHandler($errorObject);
+        }
+        return $errorObject;
     }
 
     // }}}
