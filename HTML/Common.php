@@ -134,17 +134,33 @@ class HTML_Common
      * @return   string
      * @access   private
      */
-    function _getAttrString($attributes)
-    {
-        $strAttr = '';
+    function _getAttrString($attributes)    {
+      $strAttr = '';
 
-        if (is_array($attributes)) {
-            $charset = HTML_Common::charset();
-            foreach ($attributes as $key => $value) {
-                $strAttr .= ' ' . $key . '="' . htmlspecialchars($value, ENT_COMPAT, $charset) . '"';
+      if (is_array($attributes)) {
+          $charset = HTML_Common::charset();
+          foreach ($attributes as $key => $value) {
+            // Sometimes $value is an array.  If so, we take concatenate 
+            // its elements.
+            if (is_array($value)) {
+              if (count($value) == 0) {
+                // An empty string.
+                $value1 = '';
+                $strAttr .= ' ' . $key . '="' . htmlspecialchars($value1, ENT_COMPAT, $charset) . '"';
+              }
+              else {
+                foreach ($value as $value1) {
+                  $strAttr .= ' ' . $key . '="' . htmlspecialchars($value1, ENT_COMPAT, $charset) . '"';
+                }
+              }
             }
-        }
-        return $strAttr;
+            else {
+              $strAttr .= ' ' . $key . '="' . htmlspecialchars($value, ENT_COMPAT, $charset) . '"';
+            }
+      }
+
+      }
+      return $strAttr;
     } // end func _getAttrString
 
     /**
