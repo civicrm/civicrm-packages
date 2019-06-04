@@ -11,7 +11,7 @@
 
 namespace Cache\IntegrationTests;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use Psr\SimpleCache\CacheInterface;
 
 abstract class LegacySimpleCacheTest extends TestCase
