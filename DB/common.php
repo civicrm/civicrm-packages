@@ -1148,7 +1148,14 @@ class DB_common extends PEAR
      */
     function modifyQuery($query)
     {
-        return $query;
+
+      if (class_exists('Civi\Core\Container') && \Civi\Core\Container::isContainerBooted()) {
+        Civi\Core\Container::singleton()->get('dispatcher')->dispatch('civi.db.query',
+          \Civi\Core\Event\GenericHookEvent::create(array('query' => &$query))
+        );
+      }
+      return $query;
+
     }
 
     // }}}
