@@ -8,6 +8,7 @@
  *  + Introduction
  *  + License Abbreviations
  *  + How-To: Manual upgrade of a forked package
+ *  + How-To: Migrate a package to composer
  *  + Package List: PEAR
  *  + Package List: Manually installed
  *  + Package List: Payment processors
@@ -62,8 +63,8 @@
  * 6. update this file and commit
  *
  *
- * How-To: Migrating a package to composer
- * =======================================
+ * How-To: Migrate a package to composer
+ * =====================================
  *
  * To improve maintainability, it is desirable to migrate PHP dependencies from `civicrm-packages.git`
  * to `civicrm-core.git:composer.json`. This is a somewhat painstaking process, but it makes future
