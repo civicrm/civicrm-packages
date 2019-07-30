@@ -72,10 +72,12 @@
  * A. Assess situation
  *     1. Determine the old/active version of the package `Foo`.
  *     2. Download the old/active version of package `Foo`, overwriting the copy in `packages/Foo`
- *     3. Check for for differences. If there are some, it means we patched the package – do a *reverse* diff and save to a patch file (git diff -R > /tmp/Archive_Tar.diff)
+ *     3. Check for for differences. If there are some, it means we patched the package – do
+ *        a *reverse* diff and save to a patch file (`git diff -R > /tmp/Archive_Tar.diff`)
  *     4. Determine if the patches are still relevent in newer releases of the package.
  *     5. Determine if changing the live path of the package will impact anything.
  *        In particular, look out for hard-coded references to `packages/Foo`. Ideally, check `universe`.
+ *     6. Revert/undo any changes you made during assessment.
  * B. Prepare PRs
  *     1. For `civicrm-core.git`, prepare a branch with a few commits:
  *
