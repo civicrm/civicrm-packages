@@ -55,7 +55,7 @@ class HTML_QuickForm_Rule_Email extends HTML_QuickForm_Rule
           if ($parts = explode('@', $email)) {
             if (sizeof($parts) == 2) {
               foreach ($parts as &$part) {
-                $part = idn_to_ascii($part);
+                $part = idn_to_ascii($part, 0, INTL_IDNA_VARIANT_UTS46);
               }
               $email = implode('@', $parts);
             }
