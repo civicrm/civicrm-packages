@@ -446,9 +446,6 @@ class DB_oci8 extends DB_common
         if (!is_resource($stmt)) {
             return false;
         }
-        if ($free_resource) {
-            @ocifreestatement($stmt);
-        }
         if (isset($this->prepare_types[(int)$stmt])) {
             unset($this->prepare_types[(int)$stmt]);
             unset($this->manip_query[(int)$stmt]);
