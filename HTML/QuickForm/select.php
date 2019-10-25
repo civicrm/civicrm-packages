@@ -493,7 +493,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
             }
             $strHtml .= $tabs . '<select' . $attrString . ">\n";
 
-            $strValues = is_array($this->_values)? array_map('strval', $this->_values): array();
+            $strValues = (is_array($this->_values && !empty($this->_values)))? array_map('strval', $this->_values): array();
             foreach ($this->_options as $option) {
                 if (!empty($strValues) && in_array($option['attr']['value'], $strValues, true)) {
                     $option['attr']['selected'] = 'selected';
