@@ -123,7 +123,6 @@
  * Net_Curl                      1.2.5      BSD 3-cl.
  * Net_DIME                      1.0.1      BSD 3-cl.
  * Net_URL                       1.0.15     BSD 3-cl.
- * Net_UserAgent_Detect          2.5.1      PHP 2
  * Pager                         2.4.8      BSD 3-cl.
  * PEAR                          1.9.0      PHP 3.0
  * PHP_Beautifier                0.1.14     PHP 3.0
