@@ -180,8 +180,17 @@ define('DB_ERROR_NOSUCHDB', -27);
  * Tried to insert a null value into a column that doesn't allow nulls
  */
 define('DB_ERROR_CONSTRAINT_NOT_NULL',-29);
-/**#@-*/
 
+/**
+ * Database lock timeout exceeded.
+ */
+define('DB_ERROR_LOCK_TIMEOUT', -30);
+
+/**
+ * Database deadlock encountered.
+ */
+define('DB_ERROR_DEADLOCK', -31);
+/**#@-*/
 
 // }}}
 // {{{ prepared statement-related
@@ -683,6 +692,8 @@ class DB
                 DB_ERROR_TRUNCATED          => 'truncated',
                 DB_ERROR_VALUE_COUNT_ON_ROW => 'value count on row',
                 DB_OK                       => 'no error',
+                DB_ERROR_DEADLOCK           => 'deadlock',
+                DB_ERROR_LOCK_TIMEOUT       => 'database lock timeout',
             );
         }
 
