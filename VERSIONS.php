@@ -107,7 +107,7 @@
  * Contact_Vcard_Build           1.1.2      PHP 3          local changes
  * Contact_Vcard_Parse           1.32.0     PHP 3.0
  * Date                          1.4.7      BSD 3-cl.
- * DB                            1.7.13     PHP 3.0
+ * DB                            1.9.3      PHP 3.0
  * DB_DataObject                 1.8.12     PHP 3          local changes
  * DB_Table                      1.5.6      BSD 3-cl.
  * HTML_Common                   1.2.5      PHP 3
