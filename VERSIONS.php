@@ -109,7 +109,6 @@
  * Date                          1.4.7      BSD 3-cl.
  * DB                            1.7.13     PHP 3.0
  * DB_DataObject                 1.8.12     PHP 3          local changes
- * DB_Table                      1.5.6      BSD 3-cl.
  * HTML_Common                   1.2.5      PHP 3
  * HTML_QuickForm                3.2.16     PHP 3          local changes, hierselect.php from a very old version (PHP 2)
  * HTML_QuickForm_advmultiselect 1.5.1      BSD 3-cl.      local changes
@@ -131,7 +130,6 @@
  * System_Command                1.0.6      PHP 2
  * Validate                      0.8.2      BSD 3-cl.
  * Validate_Finance              0.5.4      BSD 3-cl.
- * Validate_Finance_CreditCard   0.5.3      BSD 3-cl.      local changes
  * XML_RPC                       1.5.3      PHP 3
  * XML_Util                      1.2.1      BSD 3-cl.
  *
