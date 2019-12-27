@@ -568,16 +568,14 @@ class DB_DataObject extends DB_DataObject_Overload
             // note: we dont declare this to keep the print_r size down.
             $_DB_DATAOBJECT['RESULTFIELDS'][$this->_DB_resultid]= array_flip(array_keys($array));
         }
-        $replace = array('.', ' ');
-        foreach($array as $k=>$v) {
-            // use strpos as str_replace is slow.
-            $kk =  (strpos($k, '.') === false && strpos($k, ' ') === false) ?
-                $k : str_replace($replace, '_', $k);
-
+        $keys = str_replace(array("."," "), "_", array_keys($array));
+        $i = 0;
+        foreach($array as $val) {
+            $key = $keys[$i++];
             if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
-                $this->debug("$kk = ". $array[$k], "fetchrow LINE", 3);
+                $this->debug("$key = ". $val, "fetchrow LINE", 3);
             }
-            $this->$kk = $array[$k];
+            $this->$key = $val;
         }
 
         // set link flag
@@ -693,7 +691,7 @@ class DB_DataObject extends DB_DataObject_Overload
         }
 
         if ($cond === false) {
-            $r = $this->_query['condition'];
+            $r = isset($this->_query['condition']) ? $this->_query['condition'] : null;
             $_query['condition'] = '';
             $this->_query = $_query;
             return preg_replace('/^\s+WHERE\s+/','',$r);
@@ -788,6 +786,16 @@ class DB_DataObject extends DB_DataObject_Overload
             return;
         }
         $this->_query['order_by'] .= " , {$order}";
+    }
+
+    /*
+     * Return affected rows for current connection.
+     * Override the mysql affectedRows w/ db object.
+     */
+    function affectedRows() {
+        global $_DB_DATAOBJECT;
+        $DB = $_DB_DATAOBJECT['CONNECTIONS'][$this->_database_dsn_md5];
+        return $DB->affectedRows();
     }
 
     /**
@@ -966,7 +974,7 @@ class DB_DataObject extends DB_DataObject_Overload
             return false;
         }
         if ($k === null) {
-            $old = $this->_query['data_select'];
+            $old = isset($this->_query['data_select']) ? $this->_query['data_select'] : null;
             $this->_query['data_select'] = '';
             return $old;
         }
@@ -1133,11 +1141,6 @@ class DB_DataObject extends DB_DataObject_Overload
             ) {
                 continue;
             }
-            // dont insert data into mysql timestamps
-            // use query() if you really want to do this!!!!
-            if ($v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
-                continue;
-            }
 
             if ($leftq) {
                 $leftq  .= ', ';
@@ -1146,6 +1149,7 @@ class DB_DataObject extends DB_DataObject_Overload
 
             $leftq .= ($quoteIdentifiers ? ($DB->quoteIdentifier($k) . ' ')  : "$k ");
 
+            /***
             if (is_object($this->$k) && is_a($this->$k,'DB_DataObject_Cast')) {
                 $value = $this->$k->toString($v,$DB);
                 if (PEAR::isError($value)) {
@@ -1155,11 +1159,24 @@ class DB_DataObject extends DB_DataObject_Overload
                 $rightq .=  $value;
                 continue;
             }
-
+            **/
 
             if (!($v & DB_DATAOBJECT_NOTNULL) && DB_DataObject::_is_null($this,$k)) {
                 $rightq .= " NULL ";
                 continue;
+            }
+            if (($v & DB_DATAOBJECT_DATE) || ($v & DB_DATAOBJECT_TIME) || $v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
+                if (strpos($this->$k, '-') !== FALSE) {
+                    /*
+                     * per CRM-14986 we have been having ongoing problems with the format returned from $dao->find(TRUE) NOT
+                     * being acceptable for an immediate save. This has resulted in the codebase being smattered with
+                     * instances of CRM_Utils_Date::isoToMysql for date fields retrieved in this way
+                     * which seems both risky (have to remember to do it for every field) & cludgey.
+                     * doing it here should be safe as only fields with a '-' in them will be affected - if they are
+                     *  already formatted or empty then this line will not be hit
+                     */
+                    $this->$k = CRM_Utils_Date::isoToMysql($this->$k);
+                }
             }
             // DATE is empty... on a col. that can be null..
             // note: this may be usefull for time as well..
@@ -1182,6 +1199,17 @@ class DB_DataObject extends DB_DataObject_Overload
                     )) . " ";
                 continue;
             }
+
+            if ($v & DB_DATAOBJECT_TXT) {
+                $rightq .= $this->_quote((string) $this->$k ) . ' ';
+                continue;
+            }
+
+            if ($v & DB_DATAOBJECT_BLOB) {
+                $rightq .= $this->_quote( $this->$k ) . ' ';
+                continue;
+            }
+
             if (is_numeric($this->$k)) {
                 $rightq .=" {$this->$k} ";
                 continue;
@@ -1394,19 +1422,13 @@ class DB_DataObject extends DB_DataObject_Overload
                 continue;
             }
 
-             // dont insert data into mysql timestamps
-            // use query() if you really want to do this!!!!
-            if ($v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
-                continue;
-            }
-
-
             if ($settings)  {
                 $settings .= ', ';
             }
 
             $kSql = ($quoteIdentifiers ? $DB->quoteIdentifier($k) : $k);
 
+            /***
             if (is_object($this->$k) && is_a($this->$k,'DB_DataObject_Cast')) {
                 $value = $this->$k->toString($v,$DB);
                 if (PEAR::isError($value)) {
@@ -1416,11 +1438,25 @@ class DB_DataObject extends DB_DataObject_Overload
                 $settings .= "$kSql = $value ";
                 continue;
             }
+            ***/
 
             // special values ... at least null is handled...
             if (!($v & DB_DATAOBJECT_NOTNULL) && DB_DataObject::_is_null($this,$k)) {
                 $settings .= "$kSql = NULL ";
                 continue;
+            }
+            if (($v & DB_DATAOBJECT_DATE) || ($v & DB_DATAOBJECT_TIME) || $v & DB_DATAOBJECT_MYSQLTIMESTAMP) {
+                if (strpos($this->$k, '-') !== FALSE) {
+                    /*
+                     * per CRM-14986 we have been having ongoing problems with the format returned from $dao->find(TRUE) NOT
+                     * being acceptable for an immediate save. This has resulted in the codebase being smattered with
+                     * instances of CRM_Utils_Date::isoToMysql for date fields retrieved in this way
+                     * which seems both risky (have to remember to do it for every field) & cludgey.
+                     * doing it here should be safe as only fields with a '-' in them will be affected - if they are
+                     *  already formatted or empty then this line will not be hit
+                     */
+                    $this->$k = CRM_Utils_Date::isoToMysql($this->$k);
+                }
             }
             // DATE is empty... on a col. that can be null..
             // note: this may be usefull for time as well..
@@ -1443,6 +1479,17 @@ class DB_DataObject extends DB_DataObject_Overload
                     )) . ' ';
                 continue;
             }
+
+            if ($v & DB_DATAOBJECT_TXT) {
+                $settings .= "$kSql = " . $this->_quote((string) $this->$k ) . ' ';
+                continue;
+            }
+
+            if ($v & DB_DATAOBJECT_BLOB) {
+              $settings .= "$kSql = " . $this->_quote($this->$k ) . ' ';
+              continue;
+            }
+
             if (is_numeric($this->$k)) {
                 $settings .= "$kSql = {$this->$k} ";
                 continue;
@@ -1499,10 +1546,12 @@ class DB_DataObject extends DB_DataObject_Overload
             return true;
         }
 
-        $this->raiseError(
-            "update: No Data specifed for query $settings , {$this->_query['condition']}",
-            DB_DATAOBJECT_ERROR_NODATA);
-        return false;
+        // $this->raiseError(
+        //    "update: No Data specifed for query $settings , {$this->_query['condition']}",
+        //    DB_DATAOBJECT_ERROR_NODATA);
+        // return false;
+        // we allow empty updates always [CiviCRM]
+        return true;
     }
 
     /**
@@ -1645,16 +1694,14 @@ class DB_DataObject extends DB_DataObject_Overload
             $this->raiseError("fetchrow: No results available", DB_DATAOBJECT_ERROR_NODATA);
             return false;
         }
-        $replace = array('.', ' ');
-        foreach($array as $k => $v) {
-            // use strpos as str_replace is slow.
-            $kk =  (strpos($k, '.') === false && strpos($k, ' ') === false) ?
-                $k : str_replace($replace, '_', $k);
-
+        $keys = str_replace(array("."," "), "_", array_keys($array));
+        $i = 0;
+        foreach($array as $val) {
+            $key = $keys[$i++];
             if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
-                $this->debug("$kk = ". $array[$k], "fetchrow LINE", 3);
+                $this->debug("$key = ". $val, "fetchrow LINE", 3);
             }
-            $this->$kk = $array[$k];
+            $this->$key = $val;
         }
 
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
@@ -2510,6 +2557,10 @@ class DB_DataObject extends DB_DataObject_Overload
 
         }
 
+        // change the connection and results charsets to UTF-8 if we're using MySQL 4.1+
+        $civicrmConfig = CRM_Core_Config::singleton();
+        $this->query("/*!40101 SET NAMES utf8 */");
+        $this->query("/*!50503 SET NAMES utf8mb4 */");
 
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
             $this->debug(print_r($_DB_DATAOBJECT['CONNECTIONS'],true), "CONNECT",5);
@@ -2556,6 +2607,8 @@ class DB_DataObject extends DB_DataObject_Overload
         global $_DB_DATAOBJECT;
         $this->_connect();
 
+        // Logging the query first makes sure it gets logged even if it fails.
+        CRM_Core_Error::debug_query($string);
 
         $DB = $_DB_DATAOBJECT['CONNECTIONS'][$this->_database_dsn_md5];
 
@@ -2617,12 +2670,34 @@ class DB_DataObject extends DB_DataObject_Overload
         $t= explode(' ',microtime());
         $_DB_DATAOBJECT['QUERYENDTIME'] = $time = $t[0]+$t[1];
 
-
-        for ($tries = 0;$tries < 3;$tries++) {
+        $maxTries = defined('CIVICRM_DEADLOCK_RETRIES') ? CIVICRM_DEADLOCK_RETRIES : 3;
+        for ($tries = 0;$tries < $maxTries;$tries++) {
 
             if ($_DB_driver == 'DB') {
-
-                $result = $DB->query($string);
+                try {
+                    $result = $DB->query($string);
+                }
+                catch (PEAR_Exception $e) {
+                    if ($tries == 0) {
+                        // The original sin was what triggered the retry. Sometimes the retry fails because mysql has done an internal rollback
+                        // of previous queries in the transaction so it has essentially failed to recover from the deadlock. If we can't
+                        // recover we should return the original error.
+                        $firstError = $e;
+                    }
+                    // CRM-21489 If we have caught a DB lock - let it go around the loop until our tries limit is hit.
+                    // else rethrow the exception. The 2 locks we are looking at are mysql code 1205 (lock) and
+                    // 1213 (deadlock).
+                    $dbErrorMessage = $e->getCause()->getUserInfo();
+                    if (!stristr($dbErrorMessage, 'nativecode=1205') && !stristr($dbErrorMessage, 'nativecode=1213')) {
+                      throw $firstError;
+                    }
+                    $message = (stristr($dbErrorMessage, 'nativecode=1213') ? 'Database deadlock encountered' : 'Database lock encountered');
+                    if (($tries + 1) === $maxTries) {
+                      throw new CRM_Core_Exception($message, 0, array('sql' => $string, 'trace' => $firstError->getTrace()));
+                    }
+                    CRM_Core_Error::debug_log_message("Retrying after $message hit on attempt " . ($tries + 1) . ' at query : ' . $string);
+                    continue;
+                }
             } else {
                 switch (strtolower(substr(trim($string),0,6))) {
 
@@ -2639,6 +2714,7 @@ class DB_DataObject extends DB_DataObject_Overload
             }
 
             // see if we got a failure.. - try again a few times..
+            // See CRM-21489 for why Eileen believes this is never hit.
             if (!is_object($result) || !is_a($result,'PEAR_Error')) {
                 break;
             }
@@ -2657,12 +2733,35 @@ class DB_DataObject extends DB_DataObject_Overload
             $this->N = false;
             return $this->raiseError($result);
         }
-        if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
-            $t= explode(' ',microtime());
-            $_DB_DATAOBJECT['QUERYENDTIME'] = $t[0]+$t[1];
-            $this->debug('QUERY DONE IN  '.($t[0]+$t[1]-$time)." seconds", 'query',1);
+
+        // Strip any prepended comments
+        $queryString = (substr($string, 0, 2) === '/*') ? substr($string, strpos($string, '*/') + 2) : $string;
+        $action = strtolower(substr(trim($queryString),0,6));
+
+        if (!empty($_DB_DATAOBJECT['CONFIG']['debug']) || defined('CIVICRM_DEBUG_LOG_QUERY')) {
+            $timeTaken = sprintf("%0.6f", microtime(TRUE) - $time);
+            $alertLevel = $this->getAlertLevel($timeTaken);
+            $message = "$alertLevel QUERY DONE IN $timeTaken  seconds.";
+            if (in_array($action, array('insert', 'update', 'delete')) && $_DB_driver == 'DB') {
+                $message .= " " . $DB->affectedRows() . " row(s)s subject to $action action";
+            }
+            elseif (is_a($result, 'DB_result') && method_exists($result, 'numrows')) {
+                $message .= " Result is {$result->numRows()} rows by {$result->numCols()} columns. ";
+            }
+            elseif ($result === 1) {
+                $message .= " No further information is available for this type of query";
+            }
+            else {
+                echo $message .= " not quite sure why this query does not have more info";
+            }
+            if (defined('CIVICRM_DEBUG_LOG_QUERY')) {
+                CRM_Core_Error::debug_log_message($message, FALSE, 'sql_log');
+            }
+            else {
+                $this->debug($message, 'query', 1);
+            }
         }
-        switch (strtolower(substr(trim($string),0,6))) {
+        switch ($action) {
             case 'insert':
             case 'update':
             case 'delete':
@@ -2749,7 +2848,7 @@ class DB_DataObject extends DB_DataObject_Overload
                 : "{$this->tableName()}.{$k}";
 
 
-
+            /***
             if (is_object($this->$k) && is_a($this->$k,'DB_DataObject_Cast')) {
                 $dbtype = $DB->dsn["phptype"];
                 $value = $this->$k->toString($v,$DB);
@@ -2764,6 +2863,7 @@ class DB_DataObject extends DB_DataObject_Overload
                 $this->whereAdd(" $kSql = $value");
                 continue;
             }
+            ***/
 
             if (!($v & DB_DATAOBJECT_NOTNULL) && DB_DataObject::_is_null($this,$k)) {
                 $this->whereAdd(" $kSql  IS NULL");
@@ -2771,7 +2871,8 @@ class DB_DataObject extends DB_DataObject_Overload
             }
 
 
-            if ($v & DB_DATAOBJECT_STR) {
+            if ($v & DB_DATAOBJECT_STR ||
+                $v & DB_DATAOBJECT_TXT) {
                 $this->whereAdd(" $kSql  = " . $this->_quote((string) (
                         ($v & DB_DATAOBJECT_BOOL) ?
                             // this is thanks to the braindead idea of postgres to
@@ -4247,14 +4348,13 @@ class DB_DataObject extends DB_DataObject_Overload
             // the Validate will probably break!!... - rightly so! (your design is broken,
             // so issuing a runtime error like PEAR_Error is probably not appropriate..
 
-            switch (true) {
-                // todo: date time.....
-                case  ($val & DB_DATAOBJECT_STR):
-                    $ret[$key] = Validate::string($this->$key, VALIDATE_PUNCTUATION . VALIDATE_NAME);
-                    continue;
-                case  ($val & DB_DATAOBJECT_INT):
-                    $ret[$key] = Validate::number($this->$key, array('decimal'=>'.'));
-                    continue;
+            if ($val & DB_DATAOBJECT_STR) {
+                $ret[$key] = Validate::string($this->$key, VALIDATE_PUNCTUATION . VALIDATE_NAME);
+                continue;
+            }
+            if ($val & DB_DATAOBJECT_INT) {
+                $ret[$key] = Validate::number($this->$key, array('decimal'=>'.'));
+                continue;
             }
         }
         // if any of the results are false or an object (eg. PEAR_Error).. then return the array..
@@ -4645,7 +4745,7 @@ class DB_DataObject extends DB_DataObject_Overload
      * @access  public
      * @return  none
      */
-    static function debugLevel($v = null)
+    public static function debugLevel($v = null)
     {
         global $_DB_DATAOBJECT;
         if (empty($_DB_DATAOBJECT['CONFIG'])) {
@@ -4727,7 +4827,7 @@ class DB_DataObject extends DB_DataObject_Overload
      * @access   public
      * @return   object an error object
      */
-    function _loadConfig()
+    public static function _loadConfig()
     {
         global $_DB_DATAOBJECT;
 
@@ -4811,7 +4911,8 @@ class DB_DataObject extends DB_DataObject_Overload
                 && is_string($options['disable_null_strings'])
                 && strtolower($options['disable_null_strings'] === 'full');
 
-        if ( $null_strings && $isset  && is_string($value)  && (strtolower($value) === 'null') ) {
+        // CRM-15522 Ensure that Last name of Null is validly stored.
+        if ( $null_strings && $isset  && is_string($value)  && (strtolower($value) === 'null' && $value !== 'Null') ) {
             return true;
         }
 
@@ -4901,8 +5002,35 @@ class DB_DataObject extends DB_DataObject_Overload
     function _get_table() { return $this->table(); }
     function _get_keys()  { return $this->keys();  }
 
+    /**
+     * Get a string to append to the query log depending on time taken.
+     *
+     * This is to allow easier grepping for slow queries.
+     *
+     * @param float $timeTaken
+     *
+     * @return string
+     */
+    public function getAlertLevel($timeTaken) {
+      if ($timeTaken >= 20) {
+          return '(very-very-very-slow)';
+      }
+      if ($timeTaken > 10) {
+          return '(very-very-slow)';
+      }
+      if ($timeTaken > 5) {
+          return '(very-slow)';
+      }
+      if ($timeTaken > 1) {
+          return '(slow)';
+      }
+      return '';
+    }
 
-
+    public function lastInsertId() {
+        $DB = $_DB_DATAOBJECT['CONNECTIONS'][$this->_database_dsn_md5];
+        return $DB->lastInsertId();
+    }
 
 }
 // technially 4.3.2RC1 was broken!!
