@@ -568,16 +568,14 @@ class DB_DataObject extends DB_DataObject_Overload
             // note: we dont declare this to keep the print_r size down.
             $_DB_DATAOBJECT['RESULTFIELDS'][$this->_DB_resultid]= array_flip(array_keys($array));
         }
-        $replace = array('.', ' ');
-        foreach($array as $k=>$v) {
-            // use strpos as str_replace is slow.
-            $kk =  (strpos($k, '.') === false && strpos($k, ' ') === false) ?
-                $k : str_replace($replace, '_', $k);
-
+        $keys = str_replace(array("."," "), "_", array_keys($array));
+        $i = 0;
+        foreach($array as $val) {
+            $key = $keys[$i++];
             if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
-                $this->debug("$kk = ". $array[$k], "fetchrow LINE", 3);
+                $this->debug("$key = ". $val, "fetchrow LINE", 3);
             }
-            $this->$kk = $array[$k];
+            $this->$key = $val;
         }
 
         // set link flag
@@ -1673,16 +1671,14 @@ class DB_DataObject extends DB_DataObject_Overload
             $this->raiseError("fetchrow: No results available", DB_DATAOBJECT_ERROR_NODATA);
             return false;
         }
-        $replace = array('.', ' ');
-        foreach($array as $k => $v) {
-            // use strpos as str_replace is slow.
-            $kk =  (strpos($k, '.') === false && strpos($k, ' ') === false) ?
-                $k : str_replace($replace, '_', $k);
-
+        $keys = str_replace(array("."," "), "_", array_keys($array));
+        $i = 0;
+        foreach($array as $val) {
+            $key = $keys[$i++];
             if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
-                $this->debug("$kk = ". $array[$k], "fetchrow LINE", 3);
+                $this->debug("$key = ". $val, "fetchrow LINE", 3);
             }
-            $this->$kk = $array[$k];
+            $this->$key = $val;
         }
 
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
