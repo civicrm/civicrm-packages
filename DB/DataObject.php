@@ -691,7 +691,7 @@ class DB_DataObject extends DB_DataObject_Overload
         }
 
         if ($cond === false) {
-            $r = $this->_query['condition'];
+            $r = isset($this->_query['condition']) ? $this->_query['condition'] : null;
             $_query['condition'] = '';
             $this->_query = $_query;
             return preg_replace('/^\s+WHERE\s+/','',$r);
@@ -964,7 +964,7 @@ class DB_DataObject extends DB_DataObject_Overload
             return false;
         }
         if ($k === null) {
-            $old = $this->_query['data_select'];
+            $old = isset($this->_query['data_select']) ? $this->_query['data_select'] : null;
             $this->_query['data_select'] = '';
             return $old;
         }
