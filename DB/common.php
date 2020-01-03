@@ -1147,6 +1147,7 @@ class DB_common extends PEAR
      */
     function modifyQuery($query)
     {
+        // CRM-20445 Add query dispatcher to allow query modification.
         // This section of code may run hundreds or thousands of times in a given request.
         // Consequently, it is micro-optimized to use single lookup in typical case.
         if (!isset(Civi::$statics['db_common_dispatcher'])) {
@@ -1160,6 +1161,7 @@ class DB_common extends PEAR
 
         $e = new \Civi\Core\Event\QueryEvent($query);
         Civi::$statics['db_common_dispatcher']->dispatch('civi.db.query', $e);
+        // CRM-20445 ends.
         return $e->query;
     }
 

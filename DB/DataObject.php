@@ -2715,7 +2715,11 @@ class DB_DataObject extends DB_DataObject_Overload
         }
 
         // CRM-18093 starts.
-        $action = strtolower(substr(trim($string),0,6));
+        // CRM-20445 starts Strip any prepended comments
+        $queryString = (substr($string, 0, 2) === '/*') ? substr($string, strpos($string, '*/') + 2) : $string;
+        $action = strtolower(substr(trim($queryString),0,6));
+        // CRM-20445 ends
+
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug']) || defined('CIVICRM_DEBUG_LOG_QUERY')) {
           $timeTaken = sprintf("%0.6f", microtime(TRUE) - $time);
           $alertLevel = $this->getAlertLevel($timeTaken);
@@ -2741,7 +2745,7 @@ class DB_DataObject extends DB_DataObject_Overload
         }
       // CRM-18093 ends.
 
-        switch (strtolower(substr(trim($string),0,6))) {
+        switch ($action) {
             case 'insert':
             case 'update':
             case 'delete':
