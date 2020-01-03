@@ -1154,6 +1154,7 @@ class DB_DataObject extends DB_DataObject_Overload
 
             $leftq .= ($quoteIdentifiers ? ($DB->quoteIdentifier($k) . ' ')  : "$k ");
 
+            /***
             if (is_object($this->$k) && is_a($this->$k,'DB_DataObject_Cast')) {
                 $value = $this->$k->toString($v,$DB);
                 if (PEAR::isError($value)) {
@@ -1163,7 +1164,7 @@ class DB_DataObject extends DB_DataObject_Overload
                 $rightq .=  $value;
                 continue;
             }
-
+            **/
 
             if (!($v & DB_DATAOBJECT_NOTNULL) && DB_DataObject::_is_null($this,$k)) {
                 $rightq .= " NULL ";
@@ -1429,6 +1430,7 @@ class DB_DataObject extends DB_DataObject_Overload
 
             $kSql = ($quoteIdentifiers ? $DB->quoteIdentifier($k) : $k);
 
+            /***
             if (is_object($this->$k) && is_a($this->$k,'DB_DataObject_Cast')) {
                 $value = $this->$k->toString($v,$DB);
                 if (PEAR::isError($value)) {
@@ -1438,6 +1440,7 @@ class DB_DataObject extends DB_DataObject_Overload
                 $settings .= "$kSql = $value ";
                 continue;
             }
+            ***/
 
             // special values ... at least null is handled...
             if (!($v & DB_DATAOBJECT_NOTNULL) && DB_DataObject::_is_null($this,$k)) {
@@ -2838,7 +2841,7 @@ class DB_DataObject extends DB_DataObject_Overload
                 : "{$this->tableName()}.{$k}";
 
 
-
+            /***
             if (is_object($this->$k) && is_a($this->$k,'DB_DataObject_Cast')) {
                 $dbtype = $DB->dsn["phptype"];
                 $value = $this->$k->toString($v,$DB);
@@ -2853,6 +2856,7 @@ class DB_DataObject extends DB_DataObject_Overload
                 $this->whereAdd(" $kSql = $value");
                 continue;
             }
+            ***/
 
             if (!($v & DB_DATAOBJECT_NOTNULL) && DB_DataObject::_is_null($this,$k)) {
                 $this->whereAdd(" $kSql  IS NULL");
