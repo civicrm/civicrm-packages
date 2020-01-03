@@ -4843,7 +4843,9 @@ class DB_DataObject extends DB_DataObject_Overload
                 && is_string($options['disable_null_strings'])
                 && strtolower($options['disable_null_strings'] === 'full');
 
-        if ( $null_strings && $isset  && is_string($value)  && (strtolower($value) === 'null') ) {
+        // CRM-15522 Ensure that Last name of Null is validly stored.
+        if ( $null_strings && $isset  && is_string($value)  && (strtolower($value) === 'null')  && $value !== 'Null') {
+        // CRM-15522 ends
             return true;
         }
 
