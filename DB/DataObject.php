@@ -636,36 +636,36 @@ class DB_DataObject extends DB_DataObject_Overload
      * @access  public
      * @return  array  format dependant on arguments, may be empty
      */
-    //function fetchAll($k= false, $v = false, $method = false)
-    //{
+    function fetchAll($k= false, $v = false, $method = false)
+    {
         // should it even do this!!!?!?
-    //    if ($k !== false &&
-    //            (   // only do this is we have not been explicit..
-    //                empty($this->_query['data_select']) ||
-    //                ($this->_query['data_select'] == '*')
-    //            )
-    //        ) {
-    //        $this->selectAdd();
-    //        $this->selectAdd($k);
-    //        if ($v !== false) {
-    //            $this->selectAdd($v);
-    //        }
-    //    }
+        if ($k !== false &&
+                (   // only do this is we have not been explicit..
+                    empty($this->_query['data_select']) ||
+                    ($this->_query['data_select'] == '*')
+                )
+            ) {
+            $this->selectAdd();
+            $this->selectAdd($k);
+            if ($v !== false) {
+                $this->selectAdd($v);
+            }
+        }
 
-    //    $this->find();
-    //    $ret = array();
-    //    while ($this->fetch()) {
-    //        if ($v !== false) {
-    //            $ret[$this->$k] = $this->$v;
-    //            continue;
-    //        }
-    //        $ret[] = $k === false ?
-    //            ($method == false ? clone($this)  : $this->$method())
-    //            : $this->$k;
-    //    }
-    //    return $ret;
+        $this->find();
+        $ret = array();
+        while ($this->fetch()) {
+            if ($v !== false) {
+                $ret[$this->$k] = $this->$v;
+                continue;
+            }
+            $ret[] = $k === false ?
+                ($method == false ? clone($this)  : $this->$method())
+                : $this->$k;
+        }
+        return $ret;
 
-    //}
+    }
 
     /**
      * Adds a condition to the WHERE statement, defaults to AND
