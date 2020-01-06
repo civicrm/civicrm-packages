@@ -126,7 +126,6 @@
  * PEAR                          1.9.0      PHP 3.0
  * PHP_Beautifier                0.1.14     PHP 3.0
  * Services_Twilio               3.10.0     MIT
- * System_Command                1.0.6      PHP 2
  * Validate                      0.8.2      BSD 3-cl.
  * Validate_Finance              0.5.4      BSD 3-cl.
  * XML_RPC                       1.5.3      PHP 3
