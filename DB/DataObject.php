@@ -2642,7 +2642,12 @@ class DB_DataObject extends DB_DataObject_Overload
         ) {
             if ($_DB_driver == 'DB') {
                 $DB->autoCommit(false);
-                $DB->simpleQuery('BEGIN');
+                // dev/core#1675 and dev/core#1695
+                // This was added when DB was upgraded in 5.23 but it's
+                // causing problems with CRM_Core_Transaction where some
+                // transactions aren't getting committed. It's not clear
+                // yet what the best fix is.
+                // $DB->simpleQuery('BEGIN');
             } else {
                 $DB->beginTransaction();
             }
