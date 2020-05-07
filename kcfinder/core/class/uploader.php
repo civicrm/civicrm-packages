@@ -564,6 +564,11 @@ class uploader {
             return !in_array($ext, $exts);
         }
 
+        //Incoporate CiviCRM Safe File Extension.
+        if (!CRM_Utils_File::isExtensionSafe($ext)) {
+          return FALSE;
+        }
+
         $exts = explode(" ", trim(strtolower($exts)));
         return in_array($ext, $exts);
     }
