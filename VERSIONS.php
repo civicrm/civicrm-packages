@@ -115,8 +115,6 @@
  * HTML_QuickForm_Controller     1.0.9      PHP 3          local changes
  * HTML_Template_IT              1.2.1      BSD 3-cl.
  * Log                           1.11.5     X11
- * Mail                          1.2.0      PHP 2          local changes
- * Mail_Mime                     1.8.0      BSD 3-cl.      local changes
  * Mail_mimeDecode               1.5.1      BSD 3-cl.
  * Net_URL                       1.0.15     BSD 3-cl.
  * Pager                         2.4.8      BSD 3-cl.
