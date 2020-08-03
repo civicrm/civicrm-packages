@@ -1177,6 +1177,7 @@ class DB_DataObject extends DB_DataObject_Overload
                  * doing it here should be safe as only fields with a '-' in them will be affected - if they are
                  *  already formatted or empty then this line will not be hit
                  */
+                throw new CRM_Core_Exception('L1180 of DataObject package hit');
                 $this->$k = CRM_Utils_Date::isoToMysql($this->$k);
               }
             }
@@ -1464,6 +1465,7 @@ class DB_DataObject extends DB_DataObject_Overload
                 * doing it here should be safe as only fields with a '-' in them will be affected - if they are
                 *  already formatted or empty then this line will not be hit
                 */
+                throw new CRM_Core_Exception('L1468 of DataObject hit');
                 $this->$k = CRM_Utils_Date::isoToMysql($this->$k);
               }
             }
