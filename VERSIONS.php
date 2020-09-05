@@ -122,8 +122,6 @@
  * Services_Twilio               3.10.0     MIT
  * Validate                      0.8.2      BSD 3-cl.
  * Validate_Finance              0.5.4      BSD 3-cl.
- * XML_RPC                       1.5.3      PHP 3
- * XML_Util                      1.2.1      BSD 3-cl.
  *
  *
  * Package List: Manually installed
@@ -152,7 +150,6 @@
  * ================================
  * PayJunction      AGPL 3   by Phase2 Technology
  * PaymentExpress   AGPL 3   by Lucas Baker
- * eWAY             AGPL 3   by Dolphin Software
  *
  *
  * Package List: Unknown status
