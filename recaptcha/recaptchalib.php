@@ -114,7 +114,9 @@ function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
         } else {
                 $server = RECAPTCHA_API_SERVER;
         }
-
+        // dev/translation#50 Make sure recapture is locale aware.
+        $locale = CRM_Core_I18n::getLocale();
+        $server = $server .'?hl='.$locale;
         $errorpart = "";
         if ($error) {
            $errorpart = "&amp;error=" . $error;
