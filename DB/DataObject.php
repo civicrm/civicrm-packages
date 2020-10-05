@@ -2775,7 +2775,7 @@ class DB_DataObject extends DB_DataObject_Overload
             echo $message .= " not quite sure why this query does not have more info";
           }
           if ((defined('CIVICRM_DEBUG_LOG_QUERY') && CIVICRM_DEBUG_LOG_QUERY)) {
-            CRM_Core_Error::debug_log_message($message, FALSE, 'sql_log');
+            CRM_Core_Error::debug_log_message($message, FALSE, 'sql_log' . CIVICRM_DEBUG_LOG_QUERY);
           }
           else {
             $this->debug($message, 'query', 1);
