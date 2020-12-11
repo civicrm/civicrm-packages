@@ -1097,10 +1097,16 @@ class Smarty
     function trigger_error($error_msg, $error_type = E_USER_WARNING)
     {
         $msg = htmlentities($error_msg);
-        trigger_error("Smarty error: $msg", $error_type);
+
         // Customised for CiviCRM - this allows us to capture the error messages
         $event = new \Civi\Core\Event\SmartyErrorEvent($error_msg, $error_type);
         \Civi::dispatcher()->dispatch('civi.smarty.error', $event);
+        if ($error_type === E_USER_ERROR) {
+          throw new CRM_Core_Exception("Smarty error: $msg");
+        }
+        else {
+          trigger_error("Smarty error: $msg", $error_type);
+        }
     }
 
 
