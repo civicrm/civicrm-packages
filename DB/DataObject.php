@@ -1185,7 +1185,7 @@ class DB_DataObject extends DB_DataObject_Overload
             // DATE is empty... on a col. that can be null..
             // note: this may be usefull for time as well..
             if (!$this->$k &&
-                    (($v & DB_DATAOBJECT_DATE) || ($v & DB_DATAOBJECT_TIME)) &&
+                    (($v & DB_DATAOBJECT_DATE) || ($v & DB_DATAOBJECT_TIME) || ($v & DB_DATAOBJECT_MYSQLTIMESTAMP)) &&
                     !($v & DB_DATAOBJECT_NOTNULL)) {
 
                 $rightq .= " NULL ";
