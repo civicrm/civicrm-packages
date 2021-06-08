@@ -2717,7 +2717,8 @@ class DB_DataObject extends DB_DataObject_Overload
             continue;
           }
             } else {
-                switch (strtolower(substr(trim($string),0,6))) {
+                // civicrm-packages#324 Use mb function because if setlocale is set to tr_TR.utf8, INSERT would become Insert
+                switch (mb_strtolower(substr(trim($string),0,6))) {
 
                     case 'insert':
                     case 'update':
@@ -2754,8 +2755,9 @@ class DB_DataObject extends DB_DataObject_Overload
 
         // CRM-18093 starts.
         // CRM-20445 starts Strip any prepended comments
+        // civicrm-packages#324 Use mb function because if setlocale is set to tr_TR.utf8, INSERT would become Insert
         $queryString = (substr($string, 0, 2) === '/*') ? substr($string, strpos($string, '*/') + 2) : $string;
-        $action = strtolower(substr(trim($queryString),0,6));
+        $action = mb_strtolower(substr(trim($queryString),0,6));
         // CRM-20445 ends
 
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug']) || (defined('CIVICRM_DEBUG_LOG_QUERY') && CIVICRM_DEBUG_LOG_QUERY)) {
