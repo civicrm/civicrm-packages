@@ -2063,7 +2063,7 @@ class Contact_Vcard_Build extends PEAR
                     $strlen = mb_strlen($line, 'UTF-8');
                 }
                 foreach ($charsets as $charset) {
-                    $iconvd = iconv('UTF-8', $charset, $line);
+                    $iconvd = iconv('UTF-8', $charset.'//IGNORE', $line);
                     if (strlen($iconvd) == $strlen) {
                         $lineCharset = $charset;
                         $line = $iconvd;
