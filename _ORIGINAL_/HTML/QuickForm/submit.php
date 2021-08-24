@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * HTML class for a hidden type element
+ * HTML class for a submit type element
  * 
  * PHP versions 4 and 5
  *
@@ -28,7 +28,7 @@
 require_once 'HTML/QuickForm/input.php';
 
 /**
- * HTML class for a hidden type element
+ * HTML class for a submit type element
  * 
  * @category    HTML
  * @package     HTML_QuickForm
@@ -37,28 +37,27 @@ require_once 'HTML/QuickForm/input.php';
  * @version     Release: 3.2.16
  * @since       1.0
  */
-class HTML_QuickForm_hidden extends HTML_QuickForm_input
+class HTML_QuickForm_submit extends HTML_QuickForm_input
 {
     // {{{ constructor
 
     /**
      * Class constructor
      * 
-     * @param     string    $elementName    (optional)Input field name attribute
-     * @param     string    $value          (optional)Input field value
-     * @param     mixed     $attributes     (optional)Either a typical HTML attribute string 
-     *                                      or an associative array
+     * @param     string    Input field name attribute
+     * @param     string    Input field value
+     * @param     mixed     Either a typical HTML attribute string or an associative array
      * @since     1.0
      * @access    public
      * @return    void
      */
-    function HTML_QuickForm_hidden($elementName=null, $value='', $attributes=null)
+    function HTML_QuickForm_submit($elementName=null, $value=null, $attributes=null)
     {
         HTML_QuickForm_input::HTML_QuickForm_input($elementName, null, $attributes);
-        $this->setType('hidden');
         $this->setValue($value);
+        $this->setType('submit');
     } //end constructor
-        
+    
     // }}}
     // {{{ freeze()
 
@@ -74,23 +73,17 @@ class HTML_QuickForm_hidden extends HTML_QuickForm_input
     } //end func freeze
 
     // }}}
-    // {{{ accept()
+    // {{{ exportValue()
 
    /**
-    * Accepts a renderer
-    *
-    * @param HTML_QuickForm_Renderer    renderer object
-    * @param bool $sc1                  unused, for signature compatibility
-    * @param bool $sc2                  unused, for signature compatibility
-    * @access public
-    * @return void 
+    * Only return the value if it is found within $submitValues (i.e. if
+    * this particular submit button was clicked)
     */
-    function accept(&$renderer, $sc1 = false, $sc2 = null)
+    function exportValue(&$submitValues, $assoc = false)
     {
-        $renderer->renderHidden($this);
-    } // end func accept
+        return $this->_prepareValue($this->_findValue($submitValues), $assoc);
+    }
 
     // }}}
-
-} //end class HTML_QuickForm_hidden
+} //end class HTML_QuickForm_submit
 ?>

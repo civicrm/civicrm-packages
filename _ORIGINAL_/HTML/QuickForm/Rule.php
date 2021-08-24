@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Required elements validation
+ * Abstract base class for QuickForm validation rules 
  * 
  * PHP versions 4 and 5
  *
@@ -23,43 +23,60 @@
 
 /**
  * Abstract base class for QuickForm validation rules 
- */
-require_once 'HTML/QuickForm/Rule.php';
-
-/**
- * Required elements validation
  *
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Bertrand Mansion <bmansion@mamasam.com>
  * @version     Release: 3.2.16
  * @since       3.2
+ * @abstract
  */
-class HTML_QuickForm_Rule_Required extends HTML_QuickForm_Rule
+class HTML_QuickForm_Rule
 {
-    /**
-     * Checks if an element is empty
-     *
-     * @param     string    $value      Value to check
-     * @param     mixed     $options    Not used yet
-     * @access    public
-     * @return    boolean   true if value is not empty
-     */
-    function validate($value, $options = null)
+   /**
+    * Name of the rule to use in validate method
+    *
+    * This property is used in more global rules like Callback and Regex
+    * to determine which callback and which regex is to be used for validation
+    *
+    * @var  string
+    * @access   public
+    */
+    var $name;
+
+   /**
+    * Validates a value
+    * 
+    * @access public
+    * @abstract
+    */
+    function validate($value)
     {
-        if (is_array($value)) {
-            return (bool) $value;
-        } else if ((string)$value == '') {
-            return false;
-        }
         return true;
-    } // end func validate
+    }
 
+   /**
+    * Sets the rule name
+    *
+    * @param  string    rule name
+    * @access public
+    */
+    function setName($ruleName)
+    {
+        $this->name = $ruleName;
+    }
 
+    /**
+     * Returns the javascript test (the test should return true if the value is INVALID)
+     *
+     * @param     mixed     Options for the rule
+     * @access    public
+     * @return    array     first element is code to setup validation, second is the check itself
+     * @abstract
+     */
     function getValidationScript($options = null)
     {
-        return array('', "{jsVar} == ''");
-    } // end func getValidationScript
-
-} // end class HTML_QuickForm_Rule_Required
+        return array('', '');
+    }
+}
 ?>

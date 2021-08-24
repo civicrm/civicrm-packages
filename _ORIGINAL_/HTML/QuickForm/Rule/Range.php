@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Required elements validation
+ * Checks that the length of value is within range
  * 
  * PHP versions 4 and 5
  *
@@ -27,7 +27,7 @@
 require_once 'HTML/QuickForm/Rule.php';
 
 /**
- * Required elements validation
+ * Checks that the length of value is within range
  *
  * @category    HTML
  * @package     HTML_QuickForm
@@ -35,31 +35,41 @@ require_once 'HTML/QuickForm/Rule.php';
  * @version     Release: 3.2.16
  * @since       3.2
  */
-class HTML_QuickForm_Rule_Required extends HTML_QuickForm_Rule
+class HTML_QuickForm_Rule_Range extends HTML_QuickForm_Rule
 {
     /**
-     * Checks if an element is empty
+     * Validates a value using a range comparison
      *
-     * @param     string    $value      Value to check
-     * @param     mixed     $options    Not used yet
+     * @param     string    $value      Value to be checked
+     * @param     mixed     $options    Int for length, array for range
      * @access    public
-     * @return    boolean   true if value is not empty
+     * @return    boolean   true if value is valid
      */
     function validate($value, $options = null)
     {
-        if (is_array($value)) {
-            return (bool) $value;
-        } else if ((string)$value == '') {
-            return false;
+        $length = strlen($value);
+        switch ($this->name) {
+            case 'minlength': return ($length >= $options);
+            case 'maxlength': return ($length <= $options);
+            default:          return ($length >= $options[0] && $length <= $options[1]);
         }
-        return true;
     } // end func validate
 
 
     function getValidationScript($options = null)
     {
-        return array('', "{jsVar} == ''");
+        switch ($this->name) {
+            case 'minlength': 
+                $test = '{jsVar}.length < '.$options;
+                break;
+            case 'maxlength': 
+                $test = '{jsVar}.length > '.$options;
+                break;
+            default: 
+                $test = '({jsVar}.length < '.$options[0].' || {jsVar}.length > '.$options[1].')';
+        }
+        return array('', "{jsVar} != '' && {$test}");
     } // end func getValidationScript
 
-} // end class HTML_QuickForm_Rule_Required
+} // end class HTML_QuickForm_Rule_Range
 ?>

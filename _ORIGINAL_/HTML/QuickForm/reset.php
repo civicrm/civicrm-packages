@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * HTML class for a hidden type element
+ * HTML class for a reset type element
  * 
  * PHP versions 4 and 5
  *
@@ -28,7 +28,7 @@
 require_once 'HTML/QuickForm/input.php';
 
 /**
- * HTML class for a hidden type element
+ * HTML class for a reset type element
  * 
  * @category    HTML
  * @package     HTML_QuickForm
@@ -37,10 +37,10 @@ require_once 'HTML/QuickForm/input.php';
  * @version     Release: 3.2.16
  * @since       1.0
  */
-class HTML_QuickForm_hidden extends HTML_QuickForm_input
+class HTML_QuickForm_reset extends HTML_QuickForm_input
 {
     // {{{ constructor
-
+    
     /**
      * Class constructor
      * 
@@ -52,13 +52,13 @@ class HTML_QuickForm_hidden extends HTML_QuickForm_input
      * @access    public
      * @return    void
      */
-    function HTML_QuickForm_hidden($elementName=null, $value='', $attributes=null)
+    function HTML_QuickForm_reset($elementName=null, $value=null, $attributes=null)
     {
         HTML_QuickForm_input::HTML_QuickForm_input($elementName, null, $attributes);
-        $this->setType('hidden');
         $this->setValue($value);
+        $this->setType('reset');
     } //end constructor
-        
+
     // }}}
     // {{{ freeze()
 
@@ -74,23 +74,6 @@ class HTML_QuickForm_hidden extends HTML_QuickForm_input
     } //end func freeze
 
     // }}}
-    // {{{ accept()
 
-   /**
-    * Accepts a renderer
-    *
-    * @param HTML_QuickForm_Renderer    renderer object
-    * @param bool $sc1                  unused, for signature compatibility
-    * @param bool $sc2                  unused, for signature compatibility
-    * @access public
-    * @return void 
-    */
-    function accept(&$renderer, $sc1 = false, $sc2 = null)
-    {
-        $renderer->renderHidden($this);
-    } // end func accept
-
-    // }}}
-
-} //end class HTML_QuickForm_hidden
+} //end class HTML_QuickForm_reset
 ?>

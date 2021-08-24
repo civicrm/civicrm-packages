@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * HTML class for a hidden type element
+ * HTML class for a password type field
  * 
  * PHP versions 4 and 5
  *
@@ -28,7 +28,7 @@
 require_once 'HTML/QuickForm/input.php';
 
 /**
- * HTML class for a hidden type element
+ * HTML class for a password type field
  * 
  * @category    HTML
  * @package     HTML_QuickForm
@@ -37,7 +37,7 @@ require_once 'HTML/QuickForm/input.php';
  * @version     Release: 3.2.16
  * @since       1.0
  */
-class HTML_QuickForm_hidden extends HTML_QuickForm_input
+class HTML_QuickForm_password extends HTML_QuickForm_input
 {
     // {{{ constructor
 
@@ -45,52 +45,71 @@ class HTML_QuickForm_hidden extends HTML_QuickForm_input
      * Class constructor
      * 
      * @param     string    $elementName    (optional)Input field name attribute
-     * @param     string    $value          (optional)Input field value
+     * @param     string    $elementLabel   (optional)Input field label
      * @param     mixed     $attributes     (optional)Either a typical HTML attribute string 
      *                                      or an associative array
      * @since     1.0
      * @access    public
      * @return    void
+     * @throws    
      */
-    function HTML_QuickForm_hidden($elementName=null, $value='', $attributes=null)
+    function HTML_QuickForm_password($elementName=null, $elementLabel=null, $attributes=null)
     {
-        HTML_QuickForm_input::HTML_QuickForm_input($elementName, null, $attributes);
-        $this->setType('hidden');
-        $this->setValue($value);
+        HTML_QuickForm_input::HTML_QuickForm_input($elementName, $elementLabel, $attributes);
+        $this->setType('password');
     } //end constructor
-        
+    
     // }}}
-    // {{{ freeze()
+    // {{{ setSize()
 
     /**
-     * Freeze the element so that only its value is returned
+     * Sets size of password element
      * 
+     * @param     string    $size  Size of password field
+     * @since     1.0
      * @access    public
      * @return    void
      */
-    function freeze()
+    function setSize($size)
     {
-        return false;
-    } //end func freeze
+        $this->updateAttributes(array('size'=>$size));
+    } //end func setSize
 
     // }}}
-    // {{{ accept()
+    // {{{ setMaxlength()
 
-   /**
-    * Accepts a renderer
-    *
-    * @param HTML_QuickForm_Renderer    renderer object
-    * @param bool $sc1                  unused, for signature compatibility
-    * @param bool $sc2                  unused, for signature compatibility
-    * @access public
-    * @return void 
-    */
-    function accept(&$renderer, $sc1 = false, $sc2 = null)
+    /**
+     * Sets maxlength of password element
+     * 
+     * @param     string    $maxlength  Maximum length of password field
+     * @since     1.0
+     * @access    public
+     * @return    void
+     */
+    function setMaxlength($maxlength)
     {
-        $renderer->renderHidden($this);
-    } // end func accept
+        $this->updateAttributes(array('maxlength'=>$maxlength));
+    } //end func setMaxlength
+        
+    // }}}
+    // {{{ getFrozenHtml()
+
+    /**
+     * Returns the value of field without HTML tags (in this case, value is changed to a mask)
+     * 
+     * @since     1.0
+     * @access    public
+     * @return    string
+     * @throws    
+     */
+    function getFrozenHtml()
+    {
+        $value = $this->getValue();
+        return ('' != $value? '**********': '&nbsp;') .
+               $this->_getPersistantData();
+    } //end func getFrozenHtml
 
     // }}}
 
-} //end class HTML_QuickForm_hidden
+} //end class HTML_QuickForm_password
 ?>
