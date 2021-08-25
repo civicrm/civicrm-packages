@@ -63,7 +63,7 @@ define('HTML_QUICKFORM_ADVMULTISELECT_ERROR_INVALID_INPUT', 1);
  * @author    Laurent Laville <pear@laurent-laville.org>
  * @copyright 2005-2009 Laurent Laville
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD
- * @version   Release: 1.5.1
+ * @version   Release: @package_version@
  * @link      http://pear.php.net/package/HTML_QuickForm_advmultiselect
  * @since     Class available since Release 0.4.0
  */
@@ -1010,8 +1010,8 @@ class HTML_QuickForm_advmultiselect extends HTML_QuickForm_select
      */
     function getElementJs($raw = true, $min = false)
     {
-        $js = 'packages/data' . DIRECTORY_SEPARATOR
-            . 'HTML_QuickForm_advmultiselect' . DIRECTORY_SEPARATOR;
+        $js = '@data_dir@' . DIRECTORY_SEPARATOR
+            . '@package_name@' . DIRECTORY_SEPARATOR;
 
         if ($min) {
             $js .= 'qfamsHandler-min.js';

@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.7.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>HTML_QuickForm_advmultiselect</name>
+ <channel>pear.php.net</channel>
+ <summary>Element for HTML_QuickForm that emulate a multi-select.</summary>
+ <description>The HTML_QuickForm_advmultiselect package adds an element to the
+ HTML_QuickForm package that is two select boxes next to each other
+ emulating a multi-select.</description>
+ <lead>
+  <name>Laurent Laville</name>
+  <user>farell</user>
+  <email>pear@laurent-laville.org</email>
+  <active>yes</active>
+ </lead>
+ <date>2009-04-05</date>
+ <time>09:19:02</time>
+ <version>
+  <release>1.5.1</release>
+  <api>1.5.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+ <notes>[+] New features
+ -  None
+
+[*] Improvements / changes
+ -  None
+
+[-] Bugfixes
+ -  single or dual shape is now well commented when using setComment()
+
+[!] Quality Assurance
+ -  Improve unit test suites (for PHPUnit 3.2+) with code coverage closest to 100% (99.81)
+ -  Upgrade HTML_Common dependency from 1.2.4 to 1.2.5</notes>
+ <contents>
+  <dir baseinstalldir="HTML" name="/">
+   <file baseinstalldir="HTML/QuickForm" md5sum="17f9c22bd5623609af519a821fe48955" name="examples/bluestar-12.gif" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="113cae5ea72917da02b63e3aa3e78aeb" name="examples/down.png" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="4a542801bc401766e1da4a8cbf6f1b20" name="examples/goldstar-12.gif" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="a33f88edf5d04b3752e3bd34128c734d" name="examples/itdynamic.html" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="608acda2ec19c826eff41444a10a1a4b" name="examples/qfams_basic_1.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="fa93a4a875478d9f8e5fd5534f4bd92d" name="examples/qfams_basic_2.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="a054de581f546ba2c3e93ec058f8921b" name="examples/qfams_custom_1.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="d959b00aade2051dc048f32ca994aa0e" name="examples/qfams_custom_2.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="1b7ba3b1bb4cee72c5a3c59f40abcc8e" name="examples/qfams_custom_3.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="a9bc965cd0f75a87729ae6a27dbc045f" name="examples/qfams_custom_4.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="30b6a12e2d3ebdffa101a647e052ec9b" name="examples/qfams_custom_5.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="391c7491d052237649670afcff036e35" name="examples/qfams_custom_6.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="6940f13c098f1ed10f57ced6b1f9e678" name="examples/qfams_custom_7.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="1de9f5d74a5684bfae1c8af5c9dd5cbd" name="examples/qfams_custom_8.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="eedac508da1ddbe659543e418c694756" name="examples/qfams_custom_9.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="08e6f5387049732349e57b8f2e50d496" name="examples/qfams_multiple_1.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="6a39d1a193310d71c938e7830bf2d66f" name="examples/qfams_multiple_2.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="514695d6040fc37b6587e2fbb93de081" name="examples/qfams_template_1.php" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="8c73c6605797bf55ce6ab9df21e71a4a" name="examples/up.png" role="doc" />
+   <file baseinstalldir="HTML" md5sum="b751485b8f8fca33509bd202a095758e" name="tests/AllTests.php" role="test">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="HTML" md5sum="fc1ea1ac3dedaba94d82a0caf1fad565" name="tests/HTML_QuickForm_advmultiselect_TestSuite_Basic.php" role="test">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="HTML" md5sum="1a1f776b4c04596c453b565b7525852e" name="tests/HTML_QuickForm_advmultiselect_TestSuite_Custom.php" role="test">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="HTML" md5sum="2ec6ec307180cc2c4c43a39bf11ca3ea" name="tests/HTML_QuickForm_advmultiselect_TestSuite_Exception.php" role="test">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="HTML/QuickForm" md5sum="cc19c38a8530cdd4cbdfb76fa186f4e4" name="advmultiselect.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+    <tasks:replace from="@package_name@" to="name" type="package-info" />
+    <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+   </file>
+   <file baseinstalldir="HTML/QuickForm" md5sum="0ea1593fcc96746d6c78fa256af3b3c7" name="ChangeLog" role="doc" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="633f6ac954655c6a2c98bfccc822054a" name="qfamsHandler-min.js" role="data" />
+   <file baseinstalldir="HTML/QuickForm" md5sum="52231c63c953d7468a3c570fd65d202c" name="qfamsHandler.js" role="data" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.3.10</min>
+   </php>
+   <pearinstaller>
+    <min>1.5.4</min>
+   </pearinstaller>
+   <package>
+    <name>HTML_Common</name>
+    <channel>pear.php.net</channel>
+    <min>1.2.5</min>
+   </package>
+   <package>
+    <name>HTML_QuickForm</name>
+    <channel>pear.php.net</channel>
+    <min>3.2.10</min>
+   </package>
+   <extension>
+    <name>pcre</name>
+   </extension>
+  </required>
+  <optional>
+   <package>
+    <name>PHPUnit</name>
+    <channel>pear.phpunit.de</channel>
+    <min>3.2.0</min>
+   </package>
+  </optional>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>1.5.1</release>
+    <api>1.5.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2009-04-05</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>[+] New features
+ -  None
+
+[*] Improvements / changes
+ -  None
+
+[-] Bugfixes
+ -  single or dual shape is now well commented when using setComment()
+
+[!] Quality Assurance
+ -  Improve unit test suites (for PHPUnit 3.2+) with code coverage closest to 100% (99.81)
+ -  Upgrade HTML_Common dependency from 1.2.4 to 1.2.5</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.5.0</release>
+    <api>1.5.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2009-02-15</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>* news
+- copyright bump to 2009
+- fix dependencies
+- remove dreprecated function (setJsElement) since version 1.3.0
+- rewrites JS in object literal notation (uses namespace)
+- add two new buttons to move up to top or down to bottom a selected item
+- add a minimized/compressed version of Javascript code; uses getElementJs()
+- may now load options (class constructor) with fancy attributes
+  without additional code
+- qfams_custom_3.php show that it is now possible
+  to define one or more item (preselected) that cannot be remove by end-user
+- setElementTemplate() function signature changed (but keep BC) :
+  allow to use only one instance of javascript code
+- remove embedded version of TDG (The Definitive Guide)
+  now it was included in the new PEAR
+- new example qfams_custom_9.php show how to handle fancy options attributes
+  (disabled, style:color background-color ...)
+- handle of persistant options at run-time
+  (see new methods: getPersistantOptions, setPersistantOptions)
+- PEAR_Error instance throws have now a level (exception or error)
+  and a code identified by HTML_QUICKFORM_ADVMULTISELECT_ERROR_INVALID_INPUT constant
+
+* QA
+- Old User Guide 1.4.0 that was previously included in past releases, was removed.
+  The most up-to-date documentation is now part of the new PEAR Manual.
+- Add unit test suites (for PHPUnit 3.2+) with code coverage closest to 100% (97.30)</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.1</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2008-04-26</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>* news
+- Introduce a TIP to make double-select-box XHTML 1.0 Strict compliant
+  even with an empty list.
+
+* bugs
+- fix #13680 : XHTML - Need to create a distinct id for all checkboxes
+
+* changes
+- With default element template there is a label, that does not exist with submit button
+  All examples uses a custom submit-element template to make them XHTML compliant.
+
+* QA
+- User Guide 1.4.0 included in this release cover all versions 1.x.x
+  see http://pear.laurent-laville.org/HTML_QuickForm_advmultiselect
+  for more format to download.</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-06-09</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>* changes
+- No code changes since previous release
+- License switch from PHP 3.01 to new BSD
+
+* QA
+- User Guide 1.4.0 included in this release cover all versions 1.x.x
+  see http://pear.laurent-laville.org/HTML_QuickForm_advmultiselect for more format to download.</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.3.1</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-01-08</date>
+   <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
+   <notes>* bugs
+- fixed javascript file path resource pear installer replacement into getElementJs()</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.3.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-01-06</date>
+   <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
+   <notes>* warning
+- PHP 4.2.0 is still enough to use all other API except getElementJs()
+  that requires now PHP 4.3.0 to retrieve inline javascript source code.
+  BTW usage of getElementJs() begin optional and not recommanded.
+- To avoid BC break, and keep previous implementation still running,
+ {javascript} placeholder is again included inside default template.
+  Do not use it anymore. See FAQ howto section of user guide.
+
+* news
+- placeholders to display live counters (unselected, selected, all items)
+  see Multiple example 2 (examples/qfams_multiple_2.php) and User Guide for details
+
+* changes
+- fixed closing html-styles tags that raised a warning in all examples
+- copyright notice bumped to 2007
+- license fixed to PHP 3.01
+- use namespace for CSS and JS
+- setJsElement() is marked as deprecated, since rewrite of JS (external file) with namespace
+- more placeholders into template to support new feature : Live Counter
+- getElementJs return now content of external JS to avoid BC break
+
+* bugs
+- Doc Bug #9221 : Did not realize at first needed additional require
+
+* QA
+- User Guide 1.3.0 included in this release cover all versions 1.x.x
+  see http://pear.laurent-laville.org/HTML_QuickForm_advmultiselect for more format to download.</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.2.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-04-08</date>
+   <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
+   <notes>* news
+- add both package.xml v1.0 and v2.0
+- license upgrade from PHP License 3.0 to 3.01
+- copyright notice changed
+- add toggle button ability to a dual multi-select boxes.
+
+  See examples/qfams_custom_6.php script that demonstrates this feature.
+
+* Quality Assurance
+- User Guide (TDG), english html multi pages include was also updated
+See chapter 5.Advanced features / buttons</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-12-01</date>
+   <license uri="http://www.example.com">PHP License 3.0</license>
+   <notes>* news
+- ability to select/unselect all items (options) in one stroke.
+- you may also toggle a selection.
+
+See examples/qfams_custom_7.php script that demonstrates these new features.
+
+* Quality Assurance
+- User Guide (TDG), english html multi pages include was also updated
+See chapter 5.Advanced features / buttons
+and also chapter 8.Examples / Avanced selection usage</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-09-01</date>
+   <license uri="http://www.example.com">PHP License 3.0</license>
+   <notes>* bugs
+- fix bug #5216 Warning: Invalid argument supplied for foreach()
+
+* news
+- add a new example to demonstrate the db options loading feature with PEAR::DB
+  and a MySQL database (see examples/qfams_basic_2.php).
+
+* Quality Assurance
+- added some @example and @link phpDoc tags to provide screenshots and example
+  source code access on API documentation (generated by phpDocumentor).
+- include a complete english guide for both beginners and expert users.
+  This is the many html files version. Others format and language content are
+  available to download at URI http://pear.laurent-laville.org/HTML_QuickForm_advmultiselect/docs
+
+Live demos, screenshots, source codes and much more are available on my
+project homepage at http://pear.laurent-laville.org/HTML_QuickForm_advmultiselect</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.1</release>
+    <api>0.5.1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2005-08-05</date>
+   <license uri="http://www.example.com">PHP License 3.0</license>
+   <notes>* bugs
+- fix bug #4993 javascript error: r.options[i] has no properties
+  only since version 0.5.0
+
+* QA
+- add more phpdoc tags for screenshots link and examples source code
+- fix minor other phpdoc tags
+- include ChangeLog and NEWS files
+
+PDF and HTML online docs are available at
+http://pear.laurent-laville.org/HTML_QuickForm_advmultiselect/docs
+
+Live demos, screenshots, source codes and much more are available on my
+project homepage at http://pear.laurent-laville.org/HTML_QuickForm_advmultiselect</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.0</release>
+    <api>0.5.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2005-07-25</date>
+   <license uri="http://www.example.com">PHP License 3.0</license>
+   <notes>* news
+- add auto arrange feature (developer issue) asked by Jamie Alessio
+- ability to manage (sort) list with two buttons (Up and Down)
+
+Live demos, screenshots, source codes and much more are available on my
+project homepage at http://pear.laurent-laville.org/HTML_QuickForm_advmultiselect</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.0</release>
+    <api>0.4.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2005-06-25</date>
+   <license uri="http://www.example.com">PHP License 3.0</license>
+   <notes>This is the initial release of the HTML_QuickForm_advmultiselect package.
+
+Live demos, screenshots, source codes and much more are available on my
+project homepage at http://pear.laurent-laville.org/HTML_QuickForm_advmultiselect</notes>
+  </release>
+ </changelog>
+</package>
