@@ -237,6 +237,16 @@ class DB_DataObject extends DB_DataObject_Overload
      */
     var $N = 0;  // Number of rows returned from a query
 
+   /**
+    * When enabled, output keys will be munged with underscores instead of special characters,
+    * and output values will be HTML-escaped according to HTMLInputCoder rules
+    * @see CRM_Utils_API_HTMLInputCoder
+    * @see https://lab.civicrm.org/dev/core/-/issues/1328
+    *
+    * @var bool
+    */
+    private $__legacy_crm_mode = TRUE;
+
     /* ============================================================= */
     /*                      Major Public Methods                     */
     /* (designed to be optionally then called with parent::method()) */
@@ -570,12 +580,22 @@ class DB_DataObject extends DB_DataObject_Overload
         }
         $keys = str_replace(array("."," "), "_", array_keys($array));
         $i = 0;
-        foreach($array as $val) {
+        foreach($array as $origKey => $val) {
             $key = $keys[$i++];
             if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
                 $this->debug("$key = ". $val, "fetchrow LINE", 3);
             }
-            $this->$key = $val;
+            // For legacy reasons Civi expects html-encoded results; see dev/core#1328
+            if ($this->__legacy_crm_mode) {
+                $fieldKey = strpos($origKey, '.') ? substr($origKey, strrpos('.', $origKey)) : $origKey;
+                if (is_string($val) && !CRM_Core_HTMLInputCoder::isSkippedField($fieldKey)) {
+                    CRM_Core_HTMLInputCoder::encodeInput($val);
+                }
+                $this->$key = $val;
+            }
+            else {
+                $this->$origKey = $val;
+            }
         }
 
         // set link flag
@@ -1710,12 +1730,22 @@ class DB_DataObject extends DB_DataObject_Overload
         }
         $keys = str_replace(array("."," "), "_", array_keys($array));
         $i = 0;
-        foreach($array as $val) {
+        foreach($array as $origKey => $val) {
             $key = $keys[$i++];
             if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
                 $this->debug("$key = ". $val, "fetchrow LINE", 3);
             }
-            $this->$key = $val;
+            // For legacy reasons Civi expects html-encoded results; see dev/core#1328
+            if ($this->__legacy_crm_mode) {
+                $fieldKey = strpos($origKey, '.') ? substr($origKey, strrpos('.', $origKey)) : $origKey;
+                if (is_string($val) && !CRM_Core_HTMLInputCoder::isSkippedField($fieldKey)) {
+                    CRM_Core_HTMLInputCoder::encodeInput($val);
+                }
+                $this->$key = $val;
+            }
+            else {
+                $this->$origKey = $val;
+            }
         }
 
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
@@ -5054,6 +5084,13 @@ class DB_DataObject extends DB_DataObject_Overload
       return '(slow)';
     }
     return '';
+  }
+
+  /**
+   * @param bool $mode
+   */
+  public function setLegacyCrmMode(bool $mode) {
+    $this->__legacy_crm_mode = $mode;
   }
 
 }
