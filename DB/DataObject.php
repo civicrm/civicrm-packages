@@ -210,7 +210,7 @@ if (!defined('DB_DATAOBJECT_NO_OVERLOAD')) {
  * @author   Alan Knowles <alan@akbkhome.com>
  * @since    PHP 4.0
  */
-
+#[AllowDynamicProperties]
 class DB_DataObject extends DB_DataObject_Overload
 {
    /**
