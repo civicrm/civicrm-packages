@@ -556,6 +556,11 @@ class uploader {
                 return false;
         }
 
+        //Incoporate CiviCRM Safe File Extension.
+        if (!\CRM_Utils_File::isExtensionSafe($ext)) {
+            return FALSE;
+        }
+
         $exts = trim($this->types[$type]);
         if (!strlen($exts) || substr($exts, 0, 1) == "*")
             return true;
@@ -563,11 +568,6 @@ class uploader {
         if (substr($exts, 0, 1) == "!") {
             $exts = explode(" ", trim(strtolower(substr($exts, 1))));
             return !in_array($ext, $exts);
-        }
-
-        //Incoporate CiviCRM Safe File Extension.
-        if (!CRM_Utils_File::isExtensionSafe($ext)) {
-          return FALSE;
         }
 
         $exts = explode(" ", trim(strtolower($exts)));
