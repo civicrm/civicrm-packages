@@ -89,6 +89,7 @@ class Smarty_Internal_Resource_File extends Smarty_Resource
         // Some basenames contained carriage returs or new lines. At least
         // under Windows, this leads to illegal file names. The regular
         // expression removes new lines, carriage returns and tabs.
+    
         $basename = basename($source->filepath);
         return preg_replace( '/(\r\n)+|\r+|\n+|\t+/', '', $basename );
     }
