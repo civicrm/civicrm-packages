@@ -1068,6 +1068,22 @@ class Smarty
         }
     }
 
+  /**
+   * Returns a single or all template variables
+   *
+   * @api  Smarty::getTemplateVars()
+   * @link http://www.smarty.net/docs/en/api.get.template.vars.tpl
+   *
+   * @param string $varName variable name or NULL
+   * @param \Smarty_Internal_Data|\Smarty_Internal_Template|\Smarty $_ptr optional pointer to data object
+   * @param bool $searchParents include parent templates?
+   *
+   * @return mixed variable value or or array of variables
+   */
+  public function getTemplateVars($varName = NULL, Smarty_Internal_Data $_ptr = NULL, $searchParents = TRUE) {
+    return $this->get_template_vars($varName);
+  }
+
     /**
      * Returns an array containing config variables
      *
