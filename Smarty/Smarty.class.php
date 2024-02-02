@@ -1084,6 +1084,64 @@ class Smarty
     return $this->get_template_vars($varName);
   }
 
+  /**
+   * Set template directory
+   *
+   * @param string|array $template_dir directory(s) of template sources
+   * @param bool $isConfig true for config_dir
+   *
+   * @return \Smarty current Smarty instance for chaining
+   */
+  public function setTemplateDir($template_dir, $isConfig = false) {
+    $this->addTemplateDir($template_dir, null, $isConfig);
+    return $this;
+  }
+
+  /**
+   * Add template directory(s).
+   *
+   * @param string|array $template_dir directory(s) of template sources
+   * @param string $key (Smarty3+) of the array element to assign the template dir to
+   * @param bool $isConfig (Smarty3+) true for config_dir
+   *
+   * @return Smarty          current Smarty instance for chaining
+   */
+  public function addTemplateDir($template_dir, $key = NULL, $isConfig = FALSE) {
+    if (is_array($this->template_dir)) {
+      if (!in_array($template_dir, $this->template_dir)) {
+        array_unshift($this->template_dir, $template_dir);
+      }
+    }
+    else {
+      $this->template_dir = [$template_dir, $this->template_dir];
+    }
+    return $this;
+  }
+
+  public function getPluginsDir() {
+    return (array) $this->plugins_dir;
+  }
+
+  public function clearAllCache() {
+    $this->clear_all_cache();
+  }
+
+  public function setPluginsDir(array $directory) {
+    $this->plugins_dir = $directory;
+  }
+
+  public function setCompileDir($compileDirectory) {
+    $this->compile_dir = $compileDirectory;
+  }
+
+  public function registerPlugin($type, $name, $callback, $cacheable = TRUE, $cache_attr = NULL) {
+    if ($type === 'modifier') {
+      $this->register_modifier($name, $callback);
+    }
+    if ($type === 'block') {
+      $this->register_block('localize', 'smarty_block_localize');
+    }
+  }
     /**
      * Returns an array containing config variables
      *
