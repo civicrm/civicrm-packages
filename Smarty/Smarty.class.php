@@ -672,6 +672,9 @@ class Smarty
         }
     }
 
+    public function clearAssign($tpl_var) {
+      $this->clear_assign($tpl_var);
+    }
 
     /**
      * clear the given assigned template variable.
