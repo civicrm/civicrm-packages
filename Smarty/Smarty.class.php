@@ -1121,6 +1121,10 @@ class Smarty
     return $this;
   }
 
+  public function loadFilter($type, $name) {
+    $this->load_filter($type, $name);
+  }
+
   public function getPluginsDir() {
     return (array) $this->plugins_dir;
   }
