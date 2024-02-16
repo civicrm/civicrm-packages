@@ -1088,6 +1088,18 @@ class Smarty
   }
 
   /**
+   * Check if a template resource exists
+   *
+   * @param string $resource_name template name
+   *
+   * @return bool status
+   * @throws \SmartyException
+   */
+  public function templateExists($resource_name) {
+    return $this->template_exists($resource_name);
+  }
+
+  /**
    * Set template directory
    *
    * @param string|array $template_dir directory(s) of template sources
