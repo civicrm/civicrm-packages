@@ -1088,6 +1088,18 @@ class Smarty
   }
 
   /**
+   * Check if a template resource exists
+   *
+   * @param string $resource_name template name
+   *
+   * @return bool status
+   * @throws \SmartyException
+   */
+  public function templateExists($resource_name) {
+    return $this->template_exists($resource_name);
+  }
+
+  /**
    * Set template directory
    *
    * @param string|array $template_dir directory(s) of template sources
@@ -1119,6 +1131,10 @@ class Smarty
       $this->template_dir = [$template_dir, $this->template_dir];
     }
     return $this;
+  }
+
+  public function loadFilter($type, $name) {
+    $this->load_filter($type, $name);
   }
 
   public function getPluginsDir() {
