@@ -848,7 +848,7 @@ class Template extends BaseCompiler {
 		$e = new CompilerException(
 			$error_text,
 			0,
-			$this->template->getSource()->getFullResourceName(),
+			$this->template->getSource()->getFilepath() ?? $this->template->getSource()->getFullResourceName(),
 			$line
 		);
 		$e->source = trim(preg_replace('![\t\r\n]+!', ' ', $match[$line - 1]));
@@ -1367,6 +1367,11 @@ class Template extends BaseCompiler {
 
 	public function compileFunctionCall(string $base_tag, array $args, array $parameter = []) {
 		return $this->functionCallCompiler->compile($args, $this, $parameter, $base_tag, $base_tag);
+	}
+
+	public function compileModifierInExpression(string $function, array $_attr) {
+		$value = array_shift($_attr);
+		return $this->compileModifier([array_merge([$function], $_attr)], $value);
 	}
 
 	/**
