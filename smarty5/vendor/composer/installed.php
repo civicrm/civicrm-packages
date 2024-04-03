@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'ea0a4202fcd7edabd4a51e837c8f1018e514f365',
+        'reference' => '84b16439666b5ec85ad89de609425ccbfbbec106',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'ea0a4202fcd7edabd4a51e837c8f1018e514f365',
+            'reference' => '84b16439666b5ec85ad89de609425ccbfbbec106',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -22,7 +22,7 @@
         'smarty/smarty' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '82397ec7f074c56844d2e489ac1c40ca2ca3e756',
+            'reference' => 'beafa5ec31f2ca241a67ba9d04d868ba8596f62f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../smarty/smarty',
             'aliases' => array(
