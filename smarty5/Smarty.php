@@ -1,5 +1,8 @@
 <?php
 
+use Civi\Smarty\Extension;
+use Smarty\Extension\DefaultExtension;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 class Smarty {
 
@@ -7,11 +10,12 @@ class Smarty {
 
   public function __construct() {
     $this->smarty = new Smarty\Smarty();
+    $this->smarty->addExtension(new Extension());
     global $civicrm_root;
     $pluginsDirectory = $civicrm_root . DIRECTORY_SEPARATOR . 'CRM' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Smarty'  . DIRECTORY_SEPARATOR . 'plugins';
     $files = scandir($pluginsDirectory);
     foreach ($files as $file) {
-      if (str_starts_with($file, '.')) {
+      if (str_starts_with($file, '.') || str_starts_with($file, 'modifier')) {
         continue;
       }
       if (CRM_Utils_File::isIncludable($pluginsDirectory .DIRECTORY_SEPARATOR . $file)) {
