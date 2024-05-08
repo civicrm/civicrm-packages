@@ -72,4 +72,8 @@ class Smarty {
     }
   }
 
+  public function getVersion(): ?int {
+    return 5;
+  }
+
 }
