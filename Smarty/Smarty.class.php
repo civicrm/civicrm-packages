@@ -1107,8 +1107,8 @@ class Smarty
    *
    * @return \Smarty current Smarty instance for chaining
    */
-  public function setTemplateDir($template_dir, $isConfig = false) {
-    $this->addTemplateDir($template_dir, null, $isConfig);
+  public function setTemplateDir($template_dir) {
+    $this->template_dir = (array) $template_dir;
     return $this;
   }
 
