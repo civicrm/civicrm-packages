@@ -2151,6 +2151,19 @@ class Smarty
 		}
 	}
 
+  /**
+   * Adds directory of plugin files
+   *
+   * @param null|array|string $plugins_dir
+   *
+   * @return Smarty current Smarty instance for chaining
+   */
+  public function addPluginsDir($plugins_dir)
+  {
+    $this->plugins_dir = array_merge($this->plugins_dir, (array) $plugins_dir);
+    return $this;
+  }
+
     /**#@-*/
 
 }
