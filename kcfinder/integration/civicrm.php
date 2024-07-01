@@ -69,6 +69,9 @@ function checkAuthentication() {
     case 'Drupal8':
       $auth_function = 'authenticate_drupal8';
       break;
+    case 'Standalone':
+      $auth_function = 'authenticate_standalone';
+      break;
     }
     if(!$auth_function($config)) {
       throw new CRM_Core_Exception(ts("You must be logged in with proper permissions to edit, add, or delete uploaded images."));
@@ -188,6 +191,10 @@ function authenticate_wordpress($config) {
     return true;
   }
   return false;
+}
+
+function authenticate_standalone($config) {
+  return CRM_Core_Permission::check('access CiviCRM');
 }
 
 function authenticate_joomla($config) {
