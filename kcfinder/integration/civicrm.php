@@ -42,6 +42,7 @@ function checkAuthentication() {
     $current_cwd   = getcwd();
     $civicrm_root  = dirname(dirname(getcwd()));
     $authenticated = false;
+    chdir($civicrm_root);
     require_once "{$civicrm_root}/civicrm.config.php";
     require_once 'CRM/Core/Config.php';
 
