@@ -7,6 +7,16 @@
  * @package    Smarty
  * @subpackage Template
  */
+/*
+ * Later versions of PHP deprecate dynamic properties in a class. Since it is
+ * possible, without a detailed knowledge of the code, that a variable we
+ * haven't declared might be a different class depending on the context,
+ * we add this line. See
+ * https://deycode.com/posts/
+ * how-to-fix-php-warning-deprecated-creation-of-dynamic-property-is-deprecated
+ */
+
+#[\AllowDynamicProperties]
 class Smarty_Variable
 {
     /**

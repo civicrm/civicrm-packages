@@ -36,6 +36,16 @@
  * @property   Smarty_Internal_Method_RegisterPlugin     $registerPlugin
  * @property   mixed|\Smarty_Template_Cached             configLoad
  */
+/*
+ * Later versions of PHP deprecate dynamic properties in a class. Since it is
+ * possible, without a detailed knowledge of the code, that a variable we
+ * haven't declared might be a different class depending on the context,
+ * we add this line. See
+ * https://deycode.com/posts/
+ * how-to-fix-php-warning-deprecated-creation-of-dynamic-property-is-deprecated
+ */
+
+#[\AllowDynamicProperties]
 class Smarty_Internal_Extension_Handler
 {
     public $objType = null;
@@ -51,7 +61,6 @@ class Smarty_Internal_Extension_Handler
         'DebugTemplate'   => 0, 'RegisteredObject' => 0, 'StreamVariable' => 0,
         'TemplateVars'    => 0, 'Literals' => 'Literals',
     );//
-
     private $resolvedProperties = array();
 
     /**
