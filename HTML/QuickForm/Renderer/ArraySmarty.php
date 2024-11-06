@@ -197,7 +197,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
             $this->_renderRequired($ret['label'], $ret['html'], $required, $error);
         }
         if ($error && !empty($this->_error)) {
-            $this->_renderError($ret['label'], $ret['html'], $error);
+            $this->_renderError($ret['label'], $ret['html'], $error, $element->_type);
             $ret['error'] = $error;
         }
         // create keys for elements grouped by native group or name
@@ -310,11 +310,12 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * @param    string      The element label
     * @param    string      The element html rendering
     * @param    string      The element error
+    * @param    string      Type of the relevant quickform element
     * @see      setErrorTemplate()
     * @access   private
     * @return   void
     */
-    function _renderError(&$label, &$html, &$error)
+    function _renderError(&$label, &$html, &$error, $elementType)
     {
         $this->_tpl->assign(array('label' => '', 'html' => '', 'error' => $error));
         $error = $this->_tplFetch($this->_error);
@@ -323,7 +324,14 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
         if (!empty($label) && strpos($this->_error, $this->_tpl->left_delimiter . '$label') !== false) {
             $label = $this->_tplFetch($this->_error);
         } elseif (!empty($html) && strpos($this->_error, $this->_tpl->left_delimiter . '$html') !== false) {
-            $html = $this->_tplFetch($this->_error);
+            // Fix dev/core#5571: For 'group'-type elements (checkboxes/radios), merely display $error;
+            // for other types, re-render the error template completely.
+            if ($elementType == 'group') {
+              $html = $error;
+            }
+            else {
+              $html = $this->_tplFetch($this->_error);
+            }
         }
         $this->_tpl->clear_assign(array('label', 'html', 'error'));
     } // end func _renderError
