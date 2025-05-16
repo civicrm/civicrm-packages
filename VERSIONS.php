@@ -124,7 +124,6 @@
  * Package List: Manually installed
  * ================================
  * PHP gettext    1.0.7      GPL 2+      http://savannah.nongnu.org/projects/php-gettext/
- * PHPIDS         0.7        LGPL 3+     http://phpids.org/
  * Smarty         2.6.27     LGPL 2.1+   http://smarty.php.net/                                        local changes ( use only lib )
  * Smarty Gettext 1.0b1      LGPL 2.1+   http://smarty.incutio.com/?page=SmartyGettext
  * TCPDF          6.0.020    GPL 3+      http://www.tcpdf.org/                                         doc, examples, images and most of fonts removed
