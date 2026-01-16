@@ -4872,11 +4872,12 @@ class DB_DataObject extends DB_DataObject_Overload
     {
         global $_DB_DATAOBJECT;
 
-        if (isset($_DB_DATAOBJECT['RESULTFIELDS'][$this->_DB_resultid])) {
-            unset($_DB_DATAOBJECT['RESULTFIELDS'][$this->_DB_resultid]);
+        $key = $this->_DB_resultid ?? '';
+        if (isset($_DB_DATAOBJECT['RESULTFIELDS'][$key])) {
+            unset($_DB_DATAOBJECT['RESULTFIELDS'][$key]);
         }
-        if (isset($_DB_DATAOBJECT['RESULTS'][$this->_DB_resultid])) {
-            unset($_DB_DATAOBJECT['RESULTS'][$this->_DB_resultid]);
+        if (isset($_DB_DATAOBJECT['RESULTS'][$key])) {
+            unset($_DB_DATAOBJECT['RESULTS'][$key]);
         }
         // clear the staticGet cache as well.
         $this->_clear_cache();
