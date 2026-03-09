@@ -499,7 +499,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
                     $option['attr']['selected'] = 'selected';
                 }
                 $strHtml .= $tabs . "\t<option" . $this->_getAttrString($option['attr']) . '>' .
-                            $option['text'] . "</option>\n";
+                            htmlentities($option['text']) . "</option>\n";
             }
 
             return $strHtml . $tabs . '</select>';
@@ -524,7 +524,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
                 if ( $val || is_numeric($val) ) {
                     foreach ($this->_options as $oKey => $oVal ) {
                         if (0 == strcmp($val, $this->_options[$oKey]['attr']['value'])) {
-                            $value[$key] = $oVal['text'];
+                            $value[$key] = htmlentities($oVal['text']);
                             break;
                         }
                     }
