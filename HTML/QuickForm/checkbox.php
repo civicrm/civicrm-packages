@@ -140,7 +140,7 @@ class HTML_QuickForm_checkbox extends HTML_QuickForm_input
         } elseif ($this->_flagFrozen || isset( $attributes['skiplabel']) ) {
             $label = $this->_text;
         } else {
-            $label = '<label for="' . $this->getAttribute('id') . '">' . $this->_text . '</label>';
+            $label = '<label for="' . $this->getAttribute('id') . '">' . htmlentities($this->_text) . '</label>';
         }
 
         unset( $attributes['skipLabel'] );
