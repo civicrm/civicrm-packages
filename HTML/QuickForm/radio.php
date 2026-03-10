@@ -143,8 +143,9 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
         } elseif ($this->_flagFrozen) {
             $label = $this->_text;
         } else {
-            $label = '<label for="' . $this->getAttribute('id') . '">' . htmlentities($this->_text) . '</label>';
+            $label = '<label for="' . htmlspecialchars($this->getAttribute('id'), ENT_QUOTES | ENT_HTML401) . '">' . htmlspecialchars($this->_text, ENT_QUOTES | ENT_HTML401) . '</label>';
         }
+        \Civi::log()->debug('L148', ['label' => $label]);
         return HTML_QuickForm_input::toHtml() . $label;
     } //end func toHtml
 
