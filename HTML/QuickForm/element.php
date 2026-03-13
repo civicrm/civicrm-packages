@@ -100,7 +100,7 @@ class HTML_QuickForm_element extends HTML_Common
             $this->setName($elementName);
         }
         if (isset($elementLabel)) {
-            $this->setLabel($elementLabel);
+            $this->setLabel(htmlspecialchars($elementLabel, ENT_QUOTES | ENT_HTML401));
         }
     } //end constructor
 
