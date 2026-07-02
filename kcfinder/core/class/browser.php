@@ -917,6 +917,13 @@ class browser extends uploader {
     protected function htmlData($str) {
         return htmlentities($str, null, strtoupper($this->charset));
     }
+
+    protected function assetUrl(string $key): string {
+        if ($key === 'kcfinder.js') {
+            $key .= "?lng={$this->lang}";
+        }
+        return (string) \Civi::url("assetBuilder://{$key}");
+    }
 }
 
 ?>
