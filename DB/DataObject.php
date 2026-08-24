@@ -2696,22 +2696,26 @@ class DB_DataObject extends DB_DataObject_Overload
             $result = $DB->query($string);
           }
           catch (PEAR_Exception $e) {
-            if ($tries == 0) {
-              // The original sin was what triggered the retry. Sometimes the retry fails because mysql has done an internal rollback
-              // of previous queries in the transaction so it has essentially failed to recover from the deadlock. If we can't
-              // recover we should return the original error.
-              $firstError = $e;
-            }
-            // CRM-21489 If we have caught a DB lock - let it go around the loop until our tries limit is hit.
-            // else rethrow the exception. The 2 locks we are looking at are mysql code 1205 (lock) and
-            // 1213 (deadlock).
+            // CRM-21489 If we have caught a DB lock - let it go around the loop until our tries limit is hit,
+            // if it is a single statement outside a transaction, else rethrow the exception.
+            // The 2 locks we are looking at are mysql code 1205 (lock) and 1213 (deadlock).
             $dbErrorMessage = $e->getCause()->getUserInfo();
-            if (!stristr($dbErrorMessage, 'nativecode=1205') && !stristr($dbErrorMessage, 'nativecode=1213')) {
-              throw $firstError;
+            $isDeadlock = stristr($dbErrorMessage, 'nativecode=1213');
+            $isLockTimeout = stristr($dbErrorMessage, 'nativecode=1205');
+            if (!$isLockTimeout && !$isDeadlock) {
+              throw $e;
             }
-            $message = (stristr($dbErrorMessage, 'nativecode=1213') ? 'Database deadlock encountered' : 'Database lock encountered');
+            if (\Civi\Core\Transaction\Manager::singleton()->getFrame() !== NULL) {
+              // A 1213 deadlock rolls back the whole transaction, not just the failed statement
+              // (as does a 1205 lock timeout when innodb_rollback_on_timeout=1)
+              // Retrying just the failed statement will commit it without the transaction's earlier statements, so throw instead.
+              if ($isDeadlock || $DB->getOne('SELECT @@innodb_rollback_on_timeout')) {
+                throw $e;
+              }
+            }
+            $message = ($isDeadlock ? 'Database deadlock encountered' : 'Database lock encountered');
             if (($tries + 1) === $maxTries) {
-              throw new CRM_Core_Exception($message, 0, array('sql' => $string, 'trace' => $firstError->getTrace()));
+              throw new CRM_Core_Exception($message, 0, array('sql' => $string, 'trace' => $e->getTrace()));
             }
             CRM_Core_Error::debug_log_message("Retrying after $message hit on attempt " . ($tries + 1) . ' at query : ' . $string);
             continue;
