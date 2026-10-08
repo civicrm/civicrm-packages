@@ -722,10 +722,10 @@ class browser extends uploader {
     protected function sendDefaultThumb($file=null) {
         if ($file !== null) {
             $ext = file::getExtension($file);
-            $thumb = "themes/{$this->config['theme']}/img/files/big/$ext.png";
+            $thumb = \Civi::paths()->getPath("[civicrm.packages]/kcfinder/themes/{$this->config['theme']}/img/files/big/$ext.png");
         }
         if (!isset($thumb) || !file_exists($thumb))
-            $thumb = "themes/{$this->config['theme']}/img/files/big/..png";
+            $thumb = \Civi::paths()->getPath("[civicrm.packages]/kcfinder/themes/{$this->config['theme']}/img/files/big/..png");
         header("Content-Type: image/png");
         readfile($thumb);
         die;
@@ -765,9 +765,9 @@ class browser extends uploader {
             if ($stat === false) continue;
             $name = basename($file);
             $ext = file::getExtension($file);
-            $bigIcon = file_exists("themes/{$this->config['theme']}/img/files/big/$ext.png");
-            $smallIcon = file_exists("themes/{$this->config['theme']}/img/files/small/$ext.png");
             $thumb = file_exists("$thumbDir/$name");
+            $bigIcon = $this->getIconUrl($ext, 'big');
+            $smallIcon = $this->getIconUrl($ext, 'small');
             $return[] = array(
                 'name' => stripcslashes($name),
                 'size' => $stat['size'],
@@ -782,6 +782,14 @@ class browser extends uploader {
             );
         }
         return $return;
+    }
+
+    protected function getIconUrl($ext, $size): string {
+        $path = "[civicrm.packages]/kcfinder/themes/{$this->config['theme']}/img/files/$size/$ext.png";
+        if (!\file_exists(\Civi::paths()->getPath($path))) {
+            $path = "[civicrm.packages]/kcfinder/themes/{$this->config['theme']}/img/files/$size/..png";
+        }
+        return \Civi::paths()->getUrl($path);
     }
 
     protected function getTree($dir, $index=0) {
