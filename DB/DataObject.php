@@ -2571,10 +2571,10 @@ class DB_DataObject extends DB_DataObject_Overload
 
         }
 
-        // Change the connection and results charsets to utf8mb4 if we're using MySQL 5.5.3+
+        // One statement, since each costs a round trip on every new connection: the charsets, and
+        // the id the logging triggers record as log_conn_id.
         $civicrmConfig = CRM_Core_Config::singleton();
-        $this->query("/*!40101 SET NAMES utf8 */");
-        $this->query("/*!50503 SET NAMES utf8mb4 */");
+        $this->query("SET NAMES utf8mb4, @uniqueID = '" . preg_replace('/[^0-9A-Za-z]/', '', CRM_Utils_Request::id()) . "'");
 
         if (!empty($_DB_DATAOBJECT['CONFIG']['debug'])) {
             $this->debug(print_r($_DB_DATAOBJECT['CONNECTIONS'],true), "CONNECT",5);
