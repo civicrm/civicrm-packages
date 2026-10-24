@@ -2571,8 +2571,9 @@ class DB_DataObject extends DB_DataObject_Overload
 
         }
 
-        // One statement, since each costs a round trip on every new connection: the charsets, and
-        // the id the logging triggers record as log_conn_id.
+        // One statement: each costs a round trip on every new connection. @uniqueID is what the
+        // logging triggers record as log_conn_id; it is stripped, not escaped, because the
+        // connection may still be an error object here.
         $civicrmConfig = CRM_Core_Config::singleton();
         $this->query("SET NAMES utf8mb4, @uniqueID = '" . preg_replace('/[^0-9A-Za-z]/', '', CRM_Utils_Request::id()) . "'");
 
