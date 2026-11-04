@@ -2715,7 +2715,7 @@ class DB_DataObject extends DB_DataObject_Overload
             }
             $message = ($isDeadlock ? 'Database deadlock encountered' : 'Database lock encountered');
             if (($tries + 1) === $maxTries) {
-              throw new CRM_Core_Exception($message, 0, array('sql' => $string, 'trace' => $e->getTrace()));
+              throw new \Civi\Core\Exception\DBQueryException($message, $e->getCause()->getCode(), array('sql' => $string, 'trace' => $e->getTrace(), 'exception' => $e->getCause()));
             }
             CRM_Core_Error::debug_log_message("Retrying after $message hit on attempt " . ($tries + 1) . ' at query : ' . $string);
             continue;
