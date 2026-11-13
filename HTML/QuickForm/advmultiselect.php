@@ -767,6 +767,10 @@ class HTML_QuickForm_advmultiselect extends HTML_QuickForm_select
             } else {
                 $arrHtmlHidden = array();
             }
+            // A value that is not one of the options keeps its ' ' placeholder,
+            // which is not an option and cannot be rendered.
+            $arrHtmlSelected = array_filter($arrHtmlSelected, 'is_array');
+            $arrHtmlHidden = array_filter($arrHtmlHidden, 'is_array');
 
             // The 'unselected' multi-select which appears on the left
             $unselected_count = count($arrHtmlUnselected);
