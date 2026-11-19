@@ -138,7 +138,6 @@
  * json2          2012-10-08 PUBDOM      https://github.com/douglascrockford/JSON-js
  * Marionette     1.0.0-rc2  X11/MIT     http://marionettejs.com/
  * Moment.js      2.5..0     X11/MIT     http://momentjs.com/
- * Simple HTML DOM 1.5       X11/MIT     http://simplehtmldom.sourceforge.net/
  *
  *
  * Package List: Payment processors
