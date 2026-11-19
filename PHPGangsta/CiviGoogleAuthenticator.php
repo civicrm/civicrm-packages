@@ -36,19 +36,7 @@ class CiviGoogleAuthenticator {
       throw new Exception('Bad secret length');
     }
     $secret = '';
-    $rnd = FALSE;
-    if (function_exists('random_bytes')) {
-      $rnd = random_bytes($secretLength);
-    }
-    elseif (function_exists('mcrypt_create_iv')) {
-      $rnd = mcrypt_create_iv($secretLength, MCRYPT_DEV_URANDOM);
-    }
-    elseif (function_exists('openssl_random_pseudo_bytes')) {
-      $rnd = openssl_random_pseudo_bytes($secretLength, $cryptoStrong);
-      if (!$cryptoStrong) {
-        $rnd = FALSE;
-      }
-    }
+    $rnd = random_bytes($secretLength);
     if ($rnd !== FALSE) {
       for ($i = 0; $i < $secretLength; ++$i) {
         $secret .= $validChars[ord($rnd[$i]) & 31];
@@ -214,24 +202,7 @@ class CiviGoogleAuthenticator {
    * @return bool True if the two strings are identical
    */
   private function timingSafeEquals($safeString, $userString) {
-    if (function_exists('hash_equals')) {
-      return hash_equals($safeString, $userString);
-    }
-    $safeLen = strlen($safeString);
-    $userLen = strlen($userString);
-
-    if ($userLen != $safeLen) {
-      return FALSE;
-    }
-
-    $result = 0;
-
-    for ($i = 0; $i < $userLen; ++$i) {
-      $result |= (ord($safeString[$i]) ^ ord($userString[$i]));
-    }
-
-    // They are only identical strings if $result is exactly 0...
-    return $result === 0;
+    return hash_equals($safeString, $userString);
   }
 
 }
