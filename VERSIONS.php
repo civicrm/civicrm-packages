@@ -114,7 +114,6 @@
  * HTML_QuickForm_Controller     1.0.9      PHP 3          local changes
  * HTML_Template_IT              1.2.1      BSD 3-cl.
  * Mail_mimeDecode               1.5.6      BSD 3-cl.
- * Pager                         2.4.8      BSD 3-cl.
  * Services_Twilio               3.10.0     MIT
  * Validate                      0.8.2      BSD 3-cl.
  * Validate_Finance              0.5.4      BSD 3-cl.
